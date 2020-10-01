@@ -1,7 +1,7 @@
-.pot{
+.pot {
   overflow: visible;
 
-  &-knob{
+  &-knob {
     stroke: black;
     fill: #181818;
   }
@@ -11,15 +11,21 @@
       stroke: #500000;
       fill: #500000;
 
-      &__on{
+      &__on {
         stroke: red;
         fill: red;
       }
     }
 
-    &-window{
+    &-window {
       stroke: #1f0000;
       fill: none;
     }
+  }
+
+  &-label {
+    fill: white;
+    font-size: 5px;
+    text-transform: uppercase;
   }
 }

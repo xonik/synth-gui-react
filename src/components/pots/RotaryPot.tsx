@@ -9,12 +9,15 @@ interface Props {
   x: number;
   y: number;
   ledRingMode?: LedRingMode
+  label: string
+  position: number;
 }
 
-export default ({ x, y, ledRingMode = 'single' }: Props) => {
+// TODO: Split ledRingMode into two: 'single' | 'multiple' and potMode 'normal' | 'centered'.
+// when centered, position should be in +/- 0.5 (or +/-1)
 
-  // pointer position (led index)
-  const position = 18;
+export default ({ x, y, ledRingMode = 'single', label, position }: Props) => {
+
 
   // For objects centered around 0, use overflow: visible
   // For scaling, use viewBox on the outer svg and unitless the rest of the way
@@ -28,6 +31,9 @@ export default ({ x, y, ledRingMode = 'single' }: Props) => {
   const windowWidth = 4;
   const ledRingRadius = knobRadius + windowToKnobMargin + windowWidth / 2;
 
+  // pointer position (led index)
+  // TODO: Correct rounding here!
+  const ledPosition = Math.round(position * ledCount);
 
   let ledAngles = [];
   for (let i = 0; i < ledCount; i++) {
@@ -43,18 +49,22 @@ export default ({ x, y, ledRingMode = 'single' }: Props) => {
   const windowEndAngle = windowStartAngle * -1;
   const windowArc = arc(0, 0, ledRingRadius, windowStartAngle, windowEndAngle );
 
+  // TODO: Dynamically calculate this based on window
+  // TODO: Set font size in relative units...
+  const labelY = ledRingRadius + 5;
+
   return (
     <svg x={x} y={y} className="pot">
       <circle cx="0" cy="0" r={knobRadius} className="pot-knob"/>
       <path d={windowArc} className="pot-ring-window" strokeWidth={windowWidth}/>
       {ledAngles.map((angle, led) => {
         const ledOn =
-          (ledRingMode === 'single' && led === position) ||
-          (ledRingMode === 'upTo' && led <= position) ||
-          (ledRingMode === 'downTo' && led >= position) ||
+          (ledRingMode === 'single' && led === ledPosition) ||
+          (ledRingMode === 'upTo' && led <= ledPosition) ||
+          (ledRingMode === 'downTo' && led >= ledPosition) ||
           (ledRingMode === 'pan' && (
-            (position >= centerLed && led >= centerLed && led <= position) ||
-            (position <= centerLed && led <= centerLed && led >= position)
+            (ledPosition >= centerLed && led >= centerLed && led <= ledPosition) ||
+            (ledPosition <= centerLed && led <= centerLed && led >= ledPosition)
           ));
 
         return <circle
@@ -62,6 +72,7 @@ export default ({ x, y, ledRingMode = 'single' }: Props) => {
           transform={`rotate(${angle})`}
           className={classNames('pot-ring-led', { 'pot-ring-led__on': ledOn })}/>;
       })}
+      <text x="0" y={labelY} className="pot-label" textAnchor="middle">{label}</text>
     </svg>
   );
 }
