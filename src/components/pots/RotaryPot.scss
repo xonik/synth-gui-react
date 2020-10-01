@@ -3,18 +3,23 @@
 
   &-knob{
     stroke: black;
-    fill: darkslategray;
+    fill: #181818;
   }
 
   &-ring {
     &-led {
-      stroke: #640000;
-      fill: #640000;
+      stroke: #500000;
+      fill: #500000;
 
       &__on{
         stroke: red;
         fill: red;
       }
+    }
+
+    &-window{
+      stroke: #1f0000;
+      fill: none;
     }
   }
 }
