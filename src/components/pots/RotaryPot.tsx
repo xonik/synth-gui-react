@@ -37,7 +37,7 @@ export default ({ x, y, ledRingMode = 'single', label, position }: Props) => {
 
   let ledAngles = [];
   for (let i = 0; i < ledCount; i++) {
-    ledAngles.push(-(ledArc / 2) + Math.round(degreesBetweenLeds * i));
+    ledAngles.push(-(ledArc / 2) + degreesBetweenLeds * i);
   }
 
   // Ideally the window should be a shape, not a path with a stroke, to be able to convert the
