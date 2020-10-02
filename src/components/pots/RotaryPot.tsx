@@ -3,20 +3,41 @@ import classNames from 'classnames';
 import './RotaryPot.scss';
 import arc from '../../utils/svg/arc';
 
-type LedRingMode = 'upTo' | 'downTo' | 'single' | 'pan';
+type LedMode = 'single' | 'multi';
+type PotMode = 'normal' | 'pan' | 'spread';
 
 interface Props {
   x: number;
   y: number;
-  ledRingMode?: LedRingMode
+  ledMode?: LedMode
+  potMode?: PotMode
   label: string
   position: number;
 }
 
-// TODO: Split ledRingMode into two: 'single' | 'multiple' and potMode 'normal' | 'centered'.
-// when centered, position should be in +/- 0.5 (or +/-1)
+const getLedPos = (mode: PotMode, position: number, centerLed: number, ledCount: number): number => {
+  switch(mode){
+    case 'normal':
+      return Math.abs(Math.ceil(position * (ledCount - 1) - 0.5));
+    case 'pan': {
+      // Done this way so that edge case for rounding is the same on both sides of center
+      // Pan is sentered when position is 0.5.
+      const panAmount = Math.round(Math.abs(2 * (position -0.5) * centerLed));
+      const sign = position >= 0.5 ? 1 : -1;
+      return centerLed + (panAmount * sign);
+    }
+    case 'spread': {
+      // Done this way so that edge case for rounding is the same on both sides of center
+      // Spread goes from 0 to 1 where 0 is senter and 1 is max spread.
+      const panAmount = Math.round(Math.abs((position) * centerLed));
+      return centerLed + panAmount;
+    }
+  }
+  return 0;
+}
 
-export default ({ x, y, ledRingMode = 'single', label, position }: Props) => {
+// Position should be in the range 0-1 in all modes but pan. In pan the range is -0.5 - 0.5
+export default ({ x, y, ledMode = 'single', potMode = 'normal', label, position }: Props) => {
 
 
   // For objects centered around 0, use overflow: visible
@@ -31,9 +52,11 @@ export default ({ x, y, ledRingMode = 'single', label, position }: Props) => {
   const windowWidth = 4;
   const ledRingRadius = knobRadius + windowToKnobMargin + windowWidth / 2;
 
-  // pointer position (led index)
-  // TODO: Correct rounding here!
-  const ledPosition = Math.round(position * ledCount);
+  // positive pointer
+  const ledPosition = getLedPos(potMode, position, centerLed, ledCount);
+
+  // negative pointer used for spread
+  const negLedPosition = centerLed - (ledPosition - centerLed);
 
   let ledAngles = [];
   for (let i = 0; i < ledCount; i++) {
@@ -59,12 +82,24 @@ export default ({ x, y, ledRingMode = 'single', label, position }: Props) => {
       <path d={windowArc} className="pot-ring-window" strokeWidth={windowWidth}/>
       {ledAngles.map((angle, led) => {
         const ledOn =
-          (ledRingMode === 'single' && led === ledPosition) ||
-          (ledRingMode === 'upTo' && led <= ledPosition) ||
-          (ledRingMode === 'downTo' && led >= ledPosition) ||
-          (ledRingMode === 'pan' && (
+          // pointer should always be on
+          (ledMode === 'single' && led === ledPosition) ||
+
+          // 'negative' pointer should be on for spread
+          (ledMode === 'single' && potMode === 'spread' && led === negLedPosition) ||
+
+          // highlight all from start to position
+          (ledMode === 'multi' && potMode === 'normal' && led <= ledPosition) ||
+
+          // highlight all from center to position when panning
+          (ledMode === 'multi' && potMode === 'pan' && (
             (ledPosition >= centerLed && led >= centerLed && led <= ledPosition) ||
             (ledPosition <= centerLed && led <= centerLed && led >= ledPosition)
+          )) ||
+
+          // highlight all from center to pointer on both sides when spreading
+          (ledMode === 'multi' && potMode === 'spread' && (
+            (led >= negLedPosition)  && (led <= ledPosition)
           ));
 
         return <circle
