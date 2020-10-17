@@ -1,6 +1,6 @@
-import RotaryPotBase, { Props } from './RotaryPotBase';
+import RotaryPotWithLedRingBase, { Props } from './RotaryPotWithLedRingBase';
 
-class RotaryPot17 extends RotaryPotBase {
+class RotaryPot17 extends RotaryPotWithLedRingBase {
     constructor(props: Props) {
         super(
             props,

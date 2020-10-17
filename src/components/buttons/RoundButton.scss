@@ -14,11 +14,17 @@
       stroke: red;
       fill: red;
     }
+
+    &-label {
+      fill: white;
+      font-size: 4px;
+      //text-transform: uppercase;
+    }
   }
 
   &-label {
     fill: white;
-    font-size: 5px;
+    font-size: 4px;
     //text-transform: uppercase;
   }
 }

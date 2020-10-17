@@ -1,10 +1,11 @@
 import React from 'react';
-import './MainPanel.scss';
+import './CheatSheet.scss';
 import RotaryPot10 from './pots/RotaryPot10';
 import RotaryPot17 from './pots/RotaryPot17';
 import RotaryPot32 from './pots/RotaryPot32';
 import RotaryPot40 from './pots/RotaryPot40';
 import RoundPushButton8 from './buttons/RoundPushButton8';
+
 
 const row1 = 20;
 const row2 = row1 + 35;
@@ -21,7 +22,7 @@ const buttonRow6 = 150;
 export default () => {
 
   return (
-    <svg width="120cm" height="50cm" viewBox="0 0 1200 500" className="panel">
+    <svg width="120cm" height="50cm" viewBox="0 0 1200 500" className="cheat-sheet">
       <RotaryPot10 x={50} y={row1} ledMode="multi" potMode="spread" label="Attack" position={0.5}/>
       <RotaryPot10 x={90} y={row1} ledMode="multi" label="Decay" position={0.8}/>
       <RotaryPot10 x={130} y={row1} ledMode="multi" label="Sustain" position={0.2}/>
@@ -50,7 +51,7 @@ export default () => {
       <RoundPushButton8 x="240" y={buttonRow4} ledPosition="bottom" ledCount="1"/>
 
       <RoundPushButton8 x="220" y={buttonRow5} ledPosition="left" ledCount="2" ledOn={[true, false]} ledLabels={['Lin', 'Log']}/>
-      <RoundPushButton8 x="240" y={buttonRow5} ledPosition="right" ledCount="3" ledOn={[true, false]} ledLabels={['Lin', 'Log']}/>
+      <RoundPushButton8 x="240" y={buttonRow5} ledPosition="right" ledCount="2" ledOn={[true, false]} ledLabels={['Lin', 'Log']}/>
       <RoundPushButton8 x="220" y={buttonRow6} ledPosition="top" ledCount="2" ledOn={[true, false]} ledLabels={['Lin', 'Log']}/>
       <RoundPushButton8 x="240" y={buttonRow6} ledPosition="bottom" ledCount="2" ledOn={[true, false]} ledLabels={['Lin', 'Log']}/>
 

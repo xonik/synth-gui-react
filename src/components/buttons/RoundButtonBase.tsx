@@ -1,8 +1,12 @@
 import React from 'react';
+import classNames from 'classnames';
+import RoundButtonBase from './RoundButtonBase';
+import RotaryPotBase from '../pots/RotaryPotBase';
 import './RoundButton.scss';
 
 type LedPosition = 'left' | 'right' | 'top' | 'bottom' | undefined;
 type LabelPosition = 'left' | 'right' | 'top' | 'bottom' | undefined;
+type ButtonMode = 'push' | 'rotate';
 
 export interface Props {
   x: number;
@@ -12,21 +16,26 @@ export interface Props {
   ledCount?: number;
   ledLabels?: string[];
   ledPosition?: LedPosition;
-  on?: boolean[];
+  ledOn?: boolean[];
 }
 
 interface Config {
   buttonRadius: number;
+  buttonMode: ButtonMode;
   ledMargin?: number; // margin button-led
   ledToLedMargin?: number; // vertical spacing
   labelMargin?: number; // margin button-label
+  ledTolabelMargin?: number; // margin button-label
 }
 
-class RotaryPotBase extends React.Component<any, any> {
+class RoundPushButtonBase extends React.Component<any, any> {
   buttonRadius: number;
+  buttonMode: ButtonMode;
   ledRadius: number;
   labelPos: { x: number, y: number, textAnchor: string };
-  ledPos: { x: number, y: number, textAnchor: string }[];
+  ledPos: { x: number, y: number, labelX: number, textAnchor: string }[];
+  ledOn: boolean[];
+  ledLabels: string[];
 
   constructor(props: Props, config: Config) {
     super(props);
@@ -36,15 +45,18 @@ class RotaryPotBase extends React.Component<any, any> {
     const labelPosition = props.labelPosition || 'left';
 
     const ledCount = props.ledCount || 0;
-    const ledToLedMargin = config.ledToLedMargin || 2;
-    const ledMargin = config.ledMargin || 2;
+    const ledToLedMargin = config.ledToLedMargin || 3;
+    const ledMargin = config.ledMargin || 4;
+    const ledTolabelMargin = config.ledTolabelMargin || 3;
     const ledPosition = props.ledPosition || 'left';
 
     this.ledRadius = 1.5;
     this.buttonRadius = buttonRadius;
     this.labelPos = this.positionLabel(labelPosition, labelMargin);
-    this.ledPos = this.positionLeds(ledCount, ledPosition, ledMargin, ledToLedMargin);
-
+    this.ledPos = this.positionLeds(ledCount, ledPosition, ledMargin, ledToLedMargin, ledTolabelMargin);
+    this.ledOn = props.ledOn || [];
+    this.ledLabels = props.ledLabels || [];
+    this.buttonMode = config.buttonMode;
   }
 
   private positionLabel(labelPosition: LabelPosition, labelMargin: number) {
@@ -78,7 +90,7 @@ class RotaryPotBase extends React.Component<any, any> {
     }
   }
 
-  private positionLeds(ledCount: number, ledPosition: LedPosition, ledMargin: number, ledToLedMargin: number) {
+  private positionLeds(ledCount: number, ledPosition: LedPosition, ledMargin: number, ledToLedMargin: number, ledTolabelMargin: number) {
     if (ledCount === 0) {
       return [];
     }
@@ -86,39 +98,42 @@ class RotaryPotBase extends React.Component<any, any> {
     const yDist = 2 * this.ledRadius + ledToLedMargin;
     const ledPositions = [];
 
-    for (let i = 0; i < ledPosition; i++) {
-
+    for (let i = 0; i < ledCount; i++) {
       switch (ledPosition) {
         case 'left':
           ledPositions.push({
-            x: -(this.buttonRadius + ledMargin + 2),
+            x: -(this.buttonRadius + ledMargin + this.ledRadius),
             y: (i - (ledCount - 1) / 2) * yDist,
+            labelX:  -(this.buttonRadius + ledMargin + ledTolabelMargin + 2 * this.ledRadius),
             textAnchor: 'end'
           });
           break;
         case 'right':
           ledPositions.push({
-            x: this.buttonRadius + ledMargin + 2,
+            x: this.buttonRadius + ledMargin + this.ledRadius,
             y: (i - (ledCount - 1) / 2) * yDist,
+            labelX: this.buttonRadius + ledMargin + ledTolabelMargin + 2 * this.ledRadius,
             textAnchor: 'start'
           });
           break;
         case 'top':
           ledPositions.push({
             x: 0,
-            y: -(ledCount + i) * yDist - (this.buttonRadius + ledMargin + 3),
-            textAnchor: 'middle'
+            y: -((ledCount - 1 - i) * yDist + this.buttonRadius + ledMargin + this.ledRadius),
+            labelX: this.ledRadius + ledTolabelMargin,
+            textAnchor: 'start'
           });
           break;
         case 'bottom':
           ledPositions.push({
             x: 0,
-            y: i * yDist + this.buttonRadius + ledMargin + 3,
-            textAnchor: 'middle'
+            y: i * yDist + this.buttonRadius + ledMargin + this.ledRadius,
+            labelX: this.ledRadius + ledTolabelMargin,
+            textAnchor: 'start'
           });
           break;
         default:
-          ledPositions.push({ x: 0, y: 0, textAnchor: 'right' });
+          ledPositions.push({ x: 0, y: 0, labelX: 0, textAnchor: 'right' });
       }
     }
     return ledPositions;
@@ -127,17 +142,12 @@ class RotaryPotBase extends React.Component<any, any> {
   render() {
     const { x, y, label } = this.props;
 
-    // For objects centered around 0, use overflow: visible
-    // For scaling, use viewBox on the outer svg and unitless the rest of the way
-
-    /*
-    return <circle
-        cx="0" cy={-this.ledRingRadius} r={this.ledRadius} stroke="black" fill="red"
-        transform={`rotate(${angle})`}
-        className={classNames('pot-ring-led', { 'pot-ring-led__on': ledOn })}/>;
-     */
     return (
       <svg x={x} y={y} className="button">
+        {this.buttonMode === 'push'
+          ? <RoundButtonBase buttonRadius={this.buttonRadius}/>
+          : <RotaryPotBase knobRadius={this.buttonRadius}/>
+        }
         <circle cx="0" cy="0" r={this.buttonRadius} className="button-cap"/>
         {label && <text
           x={this.labelPos.x}
@@ -146,9 +156,21 @@ class RotaryPotBase extends React.Component<any, any> {
           textAnchor={this.labelPos.textAnchor}
           alignmentBaseline="middle"
         >{label}</text>}
+        {this.ledPos.map((position, index) => <React.Fragment key={index}>
+          <circle
+            cx={position.x} cy={position.y} r={this.ledRadius} stroke="black" fill="red"
+            className={classNames('button-led', { 'button-led__on': this.ledOn.length > index && this.ledOn[index] })}/>
+          {this.ledLabels[index] && <text
+            x={position.labelX}
+            y={position.y}
+            className="button-led-label"
+            textAnchor={position.textAnchor}
+            alignmentBaseline="middle"
+          >{this.ledLabels[index]}</text>}
+        </React.Fragment>)}
       </svg>
     );
   }
 }
 
-export default RotaryPotBase;
+export default RoundPushButtonBase;
