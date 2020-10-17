@@ -1,0 +1,24 @@
+.button {
+  overflow: visible;
+
+  &-cap {
+    stroke: black;
+    fill: #181818;
+  }
+
+  &-led {
+    stroke: #500000;
+    fill: #500000;
+
+    &__on {
+      stroke: red;
+      fill: red;
+    }
+  }
+
+  &-label {
+    fill: white;
+    font-size: 5px;
+    //text-transform: uppercase;
+  }
+}
