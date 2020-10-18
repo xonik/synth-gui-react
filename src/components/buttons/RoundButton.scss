@@ -4,6 +4,16 @@
   &-cap {
     stroke: black;
     fill: #181818;
+
+    &-led {
+      stroke: #500000;
+      fill: #500000;
+
+      &__on {
+        stroke: red;
+        fill: red;
+      }
+    }
   }
 
   &-led {

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import RoundButtonBase from './RoundButtonBase';
+import RoundPushButtonBase from './RoundPushButtonBase';
 import RotaryPotBase from '../pots/RotaryPotBase';
 import './RoundButton.scss';
 
@@ -26,9 +26,10 @@ interface Config {
   ledToLedMargin?: number; // vertical spacing
   labelMargin?: number; // margin button-label
   ledTolabelMargin?: number; // margin button-label
+  ledButton?: boolean;
 }
 
-class RoundPushButtonBase extends React.Component<any, any> {
+class RoundButtonBase extends React.Component<any, any> {
   buttonRadius: number;
   buttonMode: ButtonMode;
   ledRadius: number;
@@ -36,6 +37,7 @@ class RoundPushButtonBase extends React.Component<any, any> {
   ledPos: { x: number, y: number, labelX: number, textAnchor: string }[];
   ledOn: boolean[];
   ledLabels: string[];
+  ledButton: boolean;
 
   constructor(props: Props, config: Config) {
     super(props);
@@ -57,6 +59,7 @@ class RoundPushButtonBase extends React.Component<any, any> {
     this.ledOn = props.ledOn || [];
     this.ledLabels = props.ledLabels || [];
     this.buttonMode = config.buttonMode;
+    this.ledButton = config.ledButton || false;
   }
 
   private positionLabel(labelPosition: LabelPosition, labelMargin: number) {
@@ -145,10 +148,9 @@ class RoundPushButtonBase extends React.Component<any, any> {
     return (
       <svg x={x} y={y} className="button">
         {this.buttonMode === 'push'
-          ? <RoundButtonBase buttonRadius={this.buttonRadius}/>
-          : <RotaryPotBase knobRadius={this.buttonRadius}/>
+          ? <RoundPushButtonBase buttonRadius={this.buttonRadius} className={classNames('button-cap', { 'button-cap-led': this.ledButton, 'button-cap-led__on': this.ledButton && this.ledOn.length > 0 && this.ledOn[0] })}/>
+          : <RotaryPotBase knobRadius={this.buttonRadius} />
         }
-        <circle cx="0" cy="0" r={this.buttonRadius} className="button-cap"/>
         {label && <text
           x={this.labelPos.x}
           y={this.labelPos.y}
@@ -173,4 +175,4 @@ class RoundPushButtonBase extends React.Component<any, any> {
   }
 }
 
-export default RoundPushButtonBase;
+export default RoundButtonBase;
