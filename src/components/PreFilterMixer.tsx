@@ -1,6 +1,7 @@
 import React from 'react';
 import RotaryPot17 from './pots/RotaryPot17';
 import RoundLedPushButton8 from './buttons/RoundLedPushButton8';
+import Header from './misc/Header';
 
 interface Props {
   x: number,
@@ -24,13 +25,16 @@ const PreFilterMixerChannel = ({ x, y, label }: ChannelProps) => {
 };
 
 const PreFilterMixer = ({ x, y }: Props) => {
+  const offsetX = 20;
+  const offsetY = 27;
   return <>
-    <PreFilterMixerChannel x={x} y={y} label="Osc 1"/>
-    <PreFilterMixerChannel x={x} y={y + rowDistance * 1} label="Osc 2"/>
-    <PreFilterMixerChannel x={x} y={y + rowDistance * 2} label="Osc 3"/>
-    <PreFilterMixerChannel x={x} y={y + rowDistance * 3} label="Noise"/>
-    <PreFilterMixerChannel x={x} y={y + rowDistance * 4} label="Ring mod"/>
-    <PreFilterMixerChannel x={x} y={y + rowDistance * 5} label="Ext aud"/>
+    <Header label="Voice mix" x={x} y={y} width={80}/>
+    <PreFilterMixerChannel x={x+offsetX} y={y + offsetY} label="Osc 1"/>
+    <PreFilterMixerChannel x={x+offsetX} y={y + offsetY + rowDistance * 1} label="Osc 2"/>
+    <PreFilterMixerChannel x={x+offsetX} y={y + offsetY + rowDistance * 2} label="Osc 3"/>
+    <PreFilterMixerChannel x={x+offsetX} y={y + offsetY + rowDistance * 3} label="Noise"/>
+    <PreFilterMixerChannel x={x+offsetX} y={y + offsetY + rowDistance * 4} label="Ring mod"/>
+    <PreFilterMixerChannel x={x+offsetX} y={y + offsetY + rowDistance * 5} label="Ext aud"/>
   </>;
 };
 

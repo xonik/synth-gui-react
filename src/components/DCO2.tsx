@@ -2,6 +2,7 @@ import RotaryPot32 from './pots/RotaryPot32';
 import React from 'react';
 import RotaryPot10 from './pots/RotaryPot10';
 import RoundPushButton8 from './buttons/RoundPushButton8';
+import Header from './misc/Header';
 
 interface Props {
   x: number,
@@ -20,6 +21,7 @@ const dco2 = ({ x, y }: Props) => {
   const col4 = x + 39;
 
   return <>
+    <Header label="Oscillator 2" x={x} y={topRow - 20} width={110} align="center"/>
     <RotaryPot32 x={x} y={y} ledMode="single" label="Waveform" position={0.8}/>
 
     <RotaryPot10 x={col1} y={topRow} ledMode="single" label="Tune" position={0.5}/>

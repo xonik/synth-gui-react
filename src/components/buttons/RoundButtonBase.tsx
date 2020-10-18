@@ -105,17 +105,17 @@ class RoundButtonBase extends React.Component<any, any> {
       switch (ledPosition) {
         case 'left':
           ledPositions.push({
-            x: -(this.buttonRadius + ledMargin + this.ledRadius),
+            x: -(this.buttonRadius + ledMargin + 2 + this.ledRadius),
             y: (i - (ledCount - 1) / 2) * yDist,
-            labelX:  -(this.buttonRadius + ledMargin + ledTolabelMargin + 2 * this.ledRadius),
+            labelX:  -(this.buttonRadius + ledMargin + 2 + ledTolabelMargin + 2 * this.ledRadius),
             textAnchor: 'end'
           });
           break;
         case 'right':
           ledPositions.push({
-            x: this.buttonRadius + ledMargin + this.ledRadius,
+            x: this.buttonRadius + ledMargin + 2 + this.ledRadius,
             y: (i - (ledCount - 1) / 2) * yDist,
-            labelX: this.buttonRadius + ledMargin + ledTolabelMargin + 2 * this.ledRadius,
+            labelX: this.buttonRadius + ledMargin + 2 + ledTolabelMargin + 2 * this.ledRadius,
             textAnchor: 'start'
           });
           break;
