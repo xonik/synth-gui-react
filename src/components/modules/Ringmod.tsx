@@ -1,6 +1,6 @@
 import React from 'react';
-import RoundPushButton8 from './buttons/RoundPushButton8';
-import Header from './misc/Header';
+import RoundPushButton8 from '../buttons/RoundPushButton8';
+import Header from '../misc/Header';
 
 interface Props {
   x: number,

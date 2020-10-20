@@ -1,22 +1,27 @@
 import React from 'react';
 import './MainPanel.scss';
-import DCO1 from './DCO1';
-import DCO2 from './DCO2';
-import VCO from './VCO';
-import PreFilterMixer from './PreFilterMixer';
-import Noise from './Noise';
-import Ringmod from './Ringmod';
+import DCO1 from './modules/DCO1';
+import DCO2 from './modules/DCO2';
+import VCO from './modules/VCO';
+import PreFilterMixer from './modules/PreFilterMixer';
+import Noise from './modules/Noise';
+import Ringmod from './modules/Ringmod';
+import PreFilterFx from './modules/PreFilterFx';
+import LowPassFilter from './modules/LowPassFilter';
 
 export default () => {
 
   return (
-    <svg width="120cm" height="50cm" viewBox="0 0 1200 500" className="panel">
+    <svg width="105cm" height="45cm" viewBox="0 0 1050 450" className="panel">
         <DCO1 x={100} y={55}/>
         <DCO2 x={100} y={195}/>
-        <VCO x={100} y={335}/>
+        <VCO x={100} y={345}/>
         <PreFilterMixer x={170} y={5}/>
         <Noise x={170} y={260}/>
         <Ringmod x={170} y={300}/>
+        <PreFilterFx x={170} y={340}/>
+
+        <LowPassFilter x={350} y={70}/>
     </svg>
   );
 }

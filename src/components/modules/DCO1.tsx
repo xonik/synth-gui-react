@@ -1,8 +1,8 @@
-import RotaryPot32 from './pots/RotaryPot32';
 import React from 'react';
-import RotaryPot10 from './pots/RotaryPot10';
-import RoundPushButton8 from './buttons/RoundPushButton8';
-import Header from './misc/Header';
+import RotaryPot32 from '../pots/RotaryPot32';
+import RotaryPot10 from '../pots/RotaryPot10';
+import RoundPushButton8 from '../buttons/RoundPushButton8';
+import Header from '../misc/Header';
 
 interface Props {
   x: number,
@@ -10,7 +10,8 @@ interface Props {
 }
 
 
-const dco2 = ({ x, y }: Props) => {
+const dco1 = ({ x, y }: Props) => {
+
   const topRow = y - 30;
   const bottomRow1 = y + 40;
   const bottomRow2 = y + 70;
@@ -21,11 +22,10 @@ const dco2 = ({ x, y }: Props) => {
   const col4 = x + 39;
 
   return <>
-    <Header label="Oscillator 2" x={x} y={topRow - 20} width={110} align="center"/>
+    <Header label="Oscillator 1" x={x} y={topRow - 20} width={110} align="center"/>
     <RotaryPot32 x={x} y={y} ledMode="single" label="Waveform" position={0.8}/>
 
     <RotaryPot10 x={col1} y={topRow} ledMode="single" label="Tune" position={0.5}/>
-    <RotaryPot10 x={col1} y={y} ledMode="single" label="Detune" position={0.5}/>
     <RotaryPot10 x={col4} y={topRow} ledMode="multi" label="Super saw" position={0.3}/>
 
     <RoundPushButton8 x={col1} y={bottomRow1}
@@ -43,4 +43,4 @@ const dco2 = ({ x, y }: Props) => {
   </>;
 };
 
-export default dco2;
+export default dco1;

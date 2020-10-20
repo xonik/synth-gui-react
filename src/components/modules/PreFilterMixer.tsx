@@ -1,7 +1,7 @@
 import React from 'react';
-import RotaryPot17 from './pots/RotaryPot17';
-import RoundLedPushButton8 from './buttons/RoundLedPushButton8';
-import Header from './misc/Header';
+import RotaryPot17 from '../pots/RotaryPot17';
+import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
+import Header from '../misc/Header';
 
 interface Props {
   x: number,
@@ -18,7 +18,7 @@ const rowDistance = 40;
 
 const PreFilterMixerChannel = ({ x, y, label }: ChannelProps) => {
   return <>
-    <RotaryPot17 ledMode="multi" label={label} x={x} y={y}/>
+    <RotaryPot17 ledMode="multi" label={label} x={x} y={y} position={0.4}/>
     <RoundLedPushButton8 x={x+30} y={y} ledOn={[true]}/>
     <RoundLedPushButton8 x={x+50} y={y}/>
   </>;
