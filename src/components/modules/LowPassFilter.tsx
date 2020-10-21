@@ -22,7 +22,7 @@ const LowPassFilter = ({ x, y }: Props) => {
     const col4 = x + 39;
 
     return <>
-        <Header label="Low pass filter" x={x} y={topRow - 25} width={110} align="center"/>
+        <Header label="Low pass filter" x={x} y={topRow - 30} width={110} align="center"/>
         <RotaryPot40 x={x} y={y} ledMode="single" label="Cutoff" position={0.8}/>
 
         <RotaryPot17 x={col1} y={topRow} ledMode="multi" label="Drive" position={0.5}/>

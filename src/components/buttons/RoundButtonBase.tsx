@@ -4,7 +4,7 @@ import RoundPushButtonBase from './RoundPushButtonBase';
 import RotaryPotBase from '../pots/RotaryPotBase';
 import './RoundButton.scss';
 
-type LedPosition = 'left' | 'right' | 'top' | 'bottom' | undefined;
+type LedPosition = 'left' | 'right' | 'sides' | 'top' | 'bottom' | undefined;
 type LabelPosition = 'left' | 'right' | 'top' | 'bottom' | undefined;
 type ButtonMode = 'push' | 'rotate';
 
@@ -93,7 +93,13 @@ class RoundButtonBase extends React.Component<any, any> {
     }
   }
 
-  private positionLeds(ledCount: number, ledPosition: LedPosition, ledMargin: number, ledToLedMargin: number, ledTolabelMargin: number) {
+  private positionLeds(
+      ledCount: number,
+      ledPosition: LedPosition,
+      ledMargin: number,
+      ledToLedMargin: number,
+      ledTolabelMargin: number
+  ) {
     if (ledCount === 0) {
       return [];
     }
@@ -102,11 +108,26 @@ class RoundButtonBase extends React.Component<any, any> {
     const ledPositions = [];
 
     for (let i = 0; i < ledCount; i++) {
-      switch (ledPosition) {
+      const leftLeds = Math.ceil(ledCount / 2);
+      let adjustedPosition = ledPosition;
+      let adjustedLedCount = ledCount;
+      let adjustedI = i;
+      if( ledPosition === 'sides' ) {
+        if(i < leftLeds) {
+          adjustedPosition = 'left';
+          adjustedLedCount = leftLeds;
+        } else {
+          adjustedPosition = 'right';
+          adjustedLedCount = ledCount - leftLeds;
+          adjustedI = i - leftLeds;
+        }
+      }
+
+      switch (adjustedPosition) {
         case 'left':
           ledPositions.push({
             x: -(this.buttonRadius + ledMargin + 2 + this.ledRadius),
-            y: (i - (ledCount - 1) / 2) * yDist,
+            y: (adjustedI - (adjustedLedCount - 1) / 2) * yDist,
             labelX:  -(this.buttonRadius + ledMargin + 2 + ledTolabelMargin + 2 * this.ledRadius),
             textAnchor: 'end'
           });
@@ -114,7 +135,7 @@ class RoundButtonBase extends React.Component<any, any> {
         case 'right':
           ledPositions.push({
             x: this.buttonRadius + ledMargin + 2 + this.ledRadius,
-            y: (i - (ledCount - 1) / 2) * yDist,
+            y: (adjustedI - (adjustedLedCount - 1) / 2) * yDist,
             labelX: this.buttonRadius + ledMargin + 2 + ledTolabelMargin + 2 * this.ledRadius,
             textAnchor: 'start'
           });

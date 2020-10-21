@@ -8,6 +8,7 @@ import Noise from './modules/Noise';
 import Ringmod from './modules/Ringmod';
 import PreFilterFx from './modules/PreFilterFx';
 import LowPassFilter from './modules/LowPassFilter';
+import StateVariableFilter from './modules/StateVariableFilter';
 
 export default () => {
 
@@ -21,7 +22,8 @@ export default () => {
         <Ringmod x={170} y={300}/>
         <PreFilterFx x={170} y={340}/>
 
-        <LowPassFilter x={350} y={70}/>
+        <LowPassFilter x={350} y={75}/>
+        <StateVariableFilter x={350} y={240}/>
     </svg>
   );
 }
