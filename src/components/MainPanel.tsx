@@ -9,6 +9,7 @@ import Ringmod from './modules/Ringmod';
 import PreFilterFx from './modules/PreFilterFx';
 import LowPassFilter from './modules/LowPassFilter';
 import StateVariableFilter from './modules/StateVariableFilter';
+import Envelope from './modules/Envelope';
 
 export default () => {
 
@@ -24,6 +25,10 @@ export default () => {
 
         <LowPassFilter x={350} y={75}/>
         <StateVariableFilter x={350} y={240}/>
+
+        <Envelope x={500} y={5} label="Env 1 - filter"/>
+        <Envelope x={500} y={75} label="Env 2 - amp"/>
+        <Envelope x={500} y={145} label="Env 3 - N" showSelect={true}/>
     </svg>
   );
 }
