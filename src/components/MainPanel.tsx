@@ -10,6 +10,7 @@ import PreFilterFx from './modules/PreFilterFx';
 import LowPassFilter from './modules/LowPassFilter';
 import StateVariableFilter from './modules/StateVariableFilter';
 import Envelope from './modules/Envelope';
+import LFO from './modules/LFO';
 
 export default () => {
 
@@ -29,6 +30,7 @@ export default () => {
         <Envelope x={500} y={5} label="Env 1 - filter"/>
         <Envelope x={500} y={75} label="Env 2 - amp"/>
         <Envelope x={500} y={145} label="Env 3 - N" showSelect={true}/>
+        <LFO x={500} y={250} label="LFO 1" showSelect={false}/>
     </svg>
   );
 }

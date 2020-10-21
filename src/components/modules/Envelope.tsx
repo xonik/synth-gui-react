@@ -26,7 +26,7 @@ const Envelope = ({ x, y, label, showSelect = false }: Props) => {
     <RotaryPot17 ledMode="multi" label="Release 1" x={firstPotX + potDistance * 4} y={potY} position={0.7}/>
     <RotaryPot17 ledMode="multi" label="Release 2" x={firstPotX + potDistance * 5} y={potY} position={1}/>
 
-    {showSelect && <RoundPushButton8 label="Env sel." x={firstPotX - potDistance * 0.5} y={topRowY} labelPosition="bottom"/>}
+    {showSelect && <RoundPushButton8 label="Env sel" x={firstPotX - potDistance * 0.5} y={topRowY} labelPosition="bottom"/>}
     <RotaryPot10 ledMode="multi" label="Delay" x={firstPotX + potDistance * 0.5} y={topRowY} position={0.4}/>
     <RotaryPot10 ledMode="multi" label="D1 Level" x={firstPotX + potDistance * 1.5} y={topRowY} position={0.4}/>
     <RoundPushButton8 label="Trigger" x={firstPotX + potDistance * 2.5} y={topRowY} labelPosition="bottom"/>
