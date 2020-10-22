@@ -31,7 +31,7 @@ const PostFilterMixer = ({ x, y }: Props) => {
     <PostFilterMixerChannel x={x+offsetX} y={y + offsetY + rowDistance * 2} label="Sine 1"/>
     <PostFilterMixerChannel x={x+offsetX} y={y + offsetY + rowDistance * 3} label="Sine 2"/>
 
-    <Header label="Out" x={x} y={ + offsetY + rowDistance * 5 - 22} width={40}/>
+    <Header label="Voice out" x={x} y={ + offsetY + rowDistance * 5 - 22} width={40}/>
     <PostFilterMixerChannel x={x+offsetX} y={y + offsetY + rowDistance * 5} label="Pan"/>
     <PostFilterMixerChannel x={x+offsetX} y={y + offsetY + rowDistance * 6} label="FX1 send"/>
     <PostFilterMixerChannel x={x+offsetX} y={y + offsetY + rowDistance * 7} label="FX2 send"/>
