@@ -13,6 +13,7 @@ import StateVariableFilter from './modules/StateVariableFilter';
 import Envelope from './modules/Envelope';
 import LFO from './modules/LFO';
 import DigitalFX from './modules/DigitalFX';
+import OutputMixer from './modules/OutputMixer';
 
 export default () => {
 
@@ -21,8 +22,9 @@ export default () => {
       const osc3Col = osc2Col + 120;
       const sourceMixCol = osc3Col + 70;
       const filterCol = sourceMixCol + 180;
-      const outMixCol = filterCol + 70;
-      const envCol = outMixCol + 55;
+      const voiceMixCol = filterCol + 70;
+      const envCol = voiceMixCol + 55;
+      const outputMixerCol = envCol + 275;
       const fxCol = 290;
       const lfoCol = 20;
 
@@ -45,13 +47,15 @@ export default () => {
         <LowPassFilter x={filterCol} y={72}/>
         <StateVariableFilter x={filterCol} y={240}/>
 
-        <PostFilterMixer x={outMixCol} y={5}/>
+        <PostFilterMixer x={voiceMixCol} y={5}/>
 
         <Envelope x={envCol} y={5} label="Env 1 - filter"/>
         <Envelope x={envCol} y={75} label="Env 2 - amp"/>
         <Envelope x={envCol} y={145} label="Env 3 - N" showSelect={true}/>
 
         <DigitalFX x={envCol} y={225}/>
+
+        <OutputMixer x={outputMixerCol} y={5}/>
 
     </svg>
   );
