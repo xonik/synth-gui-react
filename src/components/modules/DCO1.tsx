@@ -12,7 +12,7 @@ interface Props {
 
 const dco1 = ({ x, y }: Props) => {
 
-  const topRow = y - 30;
+  const topRow = y - 35;
   const bottomRow1 = y + 40;
   const bottomRow2 = y + 70;
 

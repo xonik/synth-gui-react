@@ -4,6 +4,7 @@ import DCO1 from './modules/DCO1';
 import DCO2 from './modules/DCO2';
 import VCO from './modules/VCO';
 import PreFilterMixer from './modules/PreFilterMixer';
+import PostFilterMixer from './modules/PostFilterMixer';
 import Noise from './modules/Noise';
 import Ringmod from './modules/Ringmod';
 import PreFilterFx from './modules/PreFilterFx';
@@ -14,23 +15,41 @@ import LFO from './modules/LFO';
 
 export default () => {
 
+      const osc1Col = 80;
+      const osc2Col = osc1Col + 120;
+      const osc3Col = osc2Col + 120;
+      const sourceMixCol = osc3Col + 70;
+      const filterCol = sourceMixCol + 180;
+      const outMixCol = filterCol + 70;
+      const envCol = outMixCol + 55;
+      const fxCol = 290;
+      const lfoCol = 20;
+
+      const oscRow = 60;
+      const noiseRow = oscRow + 112;
+      const ringModRow = noiseRow + 40;
+
   return (
-    <svg width="105cm" height="45cm" viewBox="0 0 1050 450" className="panel">
-        <DCO1 x={100} y={55}/>
-        <DCO2 x={100} y={195}/>
-        <VCO x={100} y={345}/>
-        <PreFilterMixer x={170} y={5}/>
-        <Noise x={170} y={260}/>
-        <Ringmod x={170} y={300}/>
-        <PreFilterFx x={170} y={340}/>
+    <svg width="105cm" height="35cm" viewBox="0 0 1050 350" className="panel">
+        <DCO1 x={osc1Col} y={oscRow}/>
+        <DCO2 x={osc2Col} y={oscRow}/>
+        <VCO x={osc3Col} y={oscRow}/>
+        <LFO x={lfoCol} y={noiseRow} label="LFO 1" showSelect={false}/>
 
-        <LowPassFilter x={350} y={75}/>
-        <StateVariableFilter x={350} y={240}/>
+        <PreFilterMixer x={sourceMixCol} y={5}/>
+        <Noise x={sourceMixCol - 100} y={noiseRow}/>
+        <Ringmod x={sourceMixCol - 100} y={ringModRow}/>
+        <PreFilterFx x={fxCol} y={250}/>
 
-        <Envelope x={500} y={5} label="Env 1 - filter"/>
-        <Envelope x={500} y={75} label="Env 2 - amp"/>
-        <Envelope x={500} y={145} label="Env 3 - N" showSelect={true}/>
-        <LFO x={500} y={250} label="LFO 1" showSelect={false}/>
+        <LowPassFilter x={filterCol} y={72}/>
+        <StateVariableFilter x={filterCol} y={240}/>
+
+        <PostFilterMixer x={outMixCol} y={5}/>
+
+        <Envelope x={envCol} y={5} label="Env 1 - filter"/>
+        <Envelope x={envCol} y={75} label="Env 2 - amp"/>
+        <Envelope x={envCol} y={145} label="Env 3 - N" showSelect={true}/>
+
     </svg>
   );
 }

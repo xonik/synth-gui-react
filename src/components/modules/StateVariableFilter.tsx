@@ -19,6 +19,7 @@ const StateVariableFilter = ({ x, y }: Props) => {
     const bottomRow1 = y + 45;
     const bottomRow2 = y + 75;
 
+    const inputCol = x - 75;
     const col1 = x - 39;
     const col2 = x - 13;
     const col3 = x + 13;
@@ -49,6 +50,7 @@ const StateVariableFilter = ({ x, y }: Props) => {
 
         <Header label="State variable filter" x={x} y={topRow - 30} width={110} align="center"/>
         <RotaryPot40 x={x} y={y} ledMode="single" label="Cutoff" position={0.8}/>
+        <RotaryPot17 x={inputCol} y={y} ledMode="multi" label="Input" position={0.5}/>
 
         <RotaryPot17 x={col1} y={topRow} ledMode="multi" label="Drive" position={0.5}/>
         <RotaryPot17 x={col4} y={topRow} ledMode="multi" label="Resonance" position={0.3}/>

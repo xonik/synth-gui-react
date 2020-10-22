@@ -1,10 +1,8 @@
 import React from 'react';
 import RotaryPot17 from '../pots/RotaryPot17';
-import RotaryPot10 from '../pots/RotaryPot10';
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
 import Header from '../misc/Header';
-import RoundRotaryButton17 from '../buttons/RoundRotaryButton17';
 
 interface Props {
   x: number,
