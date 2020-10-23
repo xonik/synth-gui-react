@@ -62,7 +62,10 @@ const StateVariableFilter = ({ x, y }: Props) => {
                              label="Slope" labelPosition="bottom"
                              ledPosition="sides" ledCount="10"
                              ledOn={[true, false, false, false, false, false, false, false]}
-                             ledLabels={['12dB LP', '24dB LP', '12dB BP', '24dB BP', '12dB HP', '24dB HP', 'LP + BP', 'HP + BP', 'Notch', 'Notch + LP']}
+                             ledLabels={[
+                                 '12dB LP', '24dB LP', '12dB BP', '24dB BP', 'LP + BP',
+                                 '12dB HP', '24dB HP', 'HP + BP', 'Notch', 'Notch + LP'
+                             ]}
         />
 
         <RotaryPot10 x={col1} y={bottomRow2} ledMode="multi" label="FM amt" position={0.1}/>

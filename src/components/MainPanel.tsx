@@ -14,6 +14,8 @@ import Envelope from './modules/Envelope';
 import LFO from './modules/LFO';
 import DigitalFX from './modules/DigitalFX';
 import OutputMixer from './modules/OutputMixer';
+import Chorus from './modules/Chorus';
+import BitCrusher from './modules/BitCrusher';
 
 export default () => {
 
@@ -24,6 +26,8 @@ export default () => {
       const filterCol = sourceMixCol + 180;
       const voiceMixCol = filterCol + 70;
       const envCol = voiceMixCol + 55;
+      const outFx1Col = envCol;
+      const outFx2Col = outFx1Col + 130;
       const outputMixerCol = envCol + 275;
       const fxCol = 290;
       const lfoCol = 20;
@@ -31,6 +35,7 @@ export default () => {
       const oscRow = 60;
       const noiseRow = oscRow + 112;
       const ringModRow = noiseRow + 40;
+      const outputFxRow = 225;
 
   return (
     <svg width="105cm" height="35cm" viewBox="0 0 1050 350" className="panel">
@@ -53,7 +58,9 @@ export default () => {
         <Envelope x={envCol} y={75} label="Env 2 - amp"/>
         <Envelope x={envCol} y={145} label="Env 3 - N" showSelect={true}/>
 
-        <DigitalFX x={envCol} y={225}/>
+        <DigitalFX x={outFx1Col} y={outputFxRow}/>
+        <Chorus x={outFx2Col} y={outputFxRow}/>
+        <BitCrusher x={outFx2Col} y={outputFxRow+40}/>
 
         <OutputMixer x={outputMixerCol} y={5}/>
 

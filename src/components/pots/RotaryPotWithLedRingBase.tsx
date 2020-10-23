@@ -4,8 +4,8 @@ import arc from '../../utils/svg/arc';
 import RotaryPotBase from './RotaryPotBase';
 import './RotaryPot.scss';
 
-type LedMode = 'single' | 'multi';
-type PotMode = 'normal' | 'pan' | 'spread';
+export type LedMode = 'single' | 'multi';
+export type PotMode = 'normal' | 'pan' | 'spread';
 
 export interface Props {
     x: number;
