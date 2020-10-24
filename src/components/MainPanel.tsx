@@ -16,6 +16,7 @@ import DigitalFX from './modules/DigitalFX';
 import OutputMixer from './modules/OutputMixer';
 import Chorus from './modules/Chorus';
 import BitCrusher from './modules/BitCrusher';
+import Arpeggiator from './modules/Arpeggiator';
 
 export default () => {
 
@@ -31,18 +32,27 @@ export default () => {
       const outputMixerCol = envCol + 275;
       const fxCol = 290;
       const lfoCol = 20;
+      const arpCol = 20;
 
       const oscRow = 60;
       const noiseRow = oscRow + 112;
       const ringModRow = noiseRow + 40;
       const outputFxRow = 225;
+      const arpRow = 250;
 
+      // TODO:
+      //  Arpeggiator
+      //  Patch select
+      //  LFO 2
+      //  Keyboard functions
+      //  Display ++
   return (
     <svg width="105cm" height="35cm" viewBox="0 0 1050 350" className="panel">
         <DCO1 x={osc1Col} y={oscRow}/>
         <DCO2 x={osc2Col} y={oscRow}/>
         <VCO x={osc3Col} y={oscRow}/>
         <LFO x={lfoCol} y={noiseRow} label="LFO 1" showSelect={false}/>
+        <Arpeggiator x={arpCol} y={arpRow}/>
 
         <PreFilterMixer x={sourceMixCol} y={5}/>
         <Noise x={sourceMixCol - 100} y={noiseRow}/>
