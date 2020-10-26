@@ -24,7 +24,7 @@ const vco = ({ x, y }: Props) => {
     <Header label="Oscillator 3" x={x} y={topRow - 20} width={110} align="center"/>
     <RotaryPot32 x={x} y={y} ledMode="single" label="Waveform" position={0.8}/>
 
-    <RotaryPot10 x={col1} y={topRow} ledMode="single" label="Note'" position={0.5}/>
+    <RotaryPot10 x={col1} y={topRow} ledMode="single" label="Note" position={0.5}/>
     <RotaryPot10 x={col1} y={y} ledMode="single" label="Detune" position={0.5}/>
 
     <RoundPushButton8 x={col2} y={topRow}

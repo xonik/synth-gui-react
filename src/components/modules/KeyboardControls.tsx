@@ -2,6 +2,7 @@ import Header from '../misc/Header';
 import RotaryPot10 from '../pots/RotaryPot10';
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
+import Led from '../leds/Led';
 import React from 'react';
 
 interface Props {
@@ -22,26 +23,39 @@ const KeyboardControls = ({ x, y }: Props) => {
     - Button - Chord
      */
 
+    const ledDistance = 10;
+
     const row1 = 0;
     const row2 = 22;
     const col1 = 10;
-    const col2 = col1 + 37;
-    const col3 = col2 + 30;
-    const col4 = col3 + 30;
-    const col5 = col4 + 30;
-    const col6 = col5 + 30;
+    const col2 = col1 + ledDistance;
+    const col3 = col2 + ledDistance;
+    const col4 = col3 + ledDistance;
+    const col5 = col4 + ledDistance;
+    const col6 = col5 + ledDistance;
+    const col7 = col6 + ledDistance;
+    const col8 = col7 + 30;
+    const col9 = col8 + 25;
+    const col10 = col9 + 20;
+    const col11 = col10 + 20;
+    const col12 = col11 + 45;
 
 
     return <svg x={x} y={y}>
-        <Header label="Arpeggiator" x={0} y={row1} width={130}/>
-        <RotaryPot10 ledMode="single" label="Tempo" x={col1} y={row2} position={0.4}/>
-        <RoundLedPushButton8 labelPosition="bottom" x={col2} y={row2} label="On/Off" ledOn={[true]}/>
-        <RoundLedPushButton8 labelPosition="bottom" x={col3} y={row2} label="Trigger" ledOn={[false]}/>
-        <RoundPushButton8 labelPosition="bottom" x={col6} y={row2} label="Mode" ledCount="5" ledPosition="right" ledLabels={['Master', 'LFO1', 'Ext']} ledOn={[false, false, false]}/>
-        <RoundLedPushButton8 labelPosition="bottom" x={col4} y={row2} label="Sync" ledOn={[false]}/>
-        <RoundPushButton8 labelPosition="bottom" x={col5} y={row2} label="Range" ledCount="3" ledPosition="right" ledLabels={['1', '2', '3']} ledOn={[false, true, false]}/>
-        <RoundPushButton8 labelPosition="bottom" x={col6} y={row2} label="Mode" ledCount="5" ledPosition="right" ledLabels={['up', 'down', 'up/down', 'random', 'other']} ledOn={[true, false, false, false, false]}/>
-
+        <Header label="Transpose" x={0} y={row1} width={80}/>
+        <Header label="Keyboard" x={85} y={row1} width={140}/>
+        <RoundPushButton8 labelPosition="bottom" x={col1} y={row2} label="Down" ledOn={[true]}/>
+        <Led x={col2} y={row2} label="-2" on={false}/>
+        <Led x={col3} y={row2} label="-1" on={false}/>
+        <Led x={col4} y={row2} label="0" on={true}/>
+        <Led x={col5} y={row2} label="1" on={false}/>
+        <Led x={col6} y={row2} label="2" on={false}/>
+        <RoundPushButton8 labelPosition="bottom" x={col7} y={row2} label="Up" ledOn={[true]}/>
+        <RotaryPot10 x={col8} y={row2} ledMode="single" label="Portamento" position={0.5}/>
+        <RoundLedPushButton8 labelPosition="bottom" x={col9} y={row2} label="Hold" ledOn={[false]}/>
+        <RoundLedPushButton8 labelPosition="bottom" x={col10} y={row2} label="Chord" ledOn={[false]}/>
+        <RoundPushButton8 labelPosition="bottom" x={col11} y={row2} label="Mode" ledCount="3" ledPosition="right" ledLabels={['Solo', 'Unison', 'Poly']} ledOn={[false, true, false]}/>
+        <RotaryPot10 x={col12} y={row2} ledMode="single" label="Unison detune" position={0.5}/>
     </svg>;
 };
 

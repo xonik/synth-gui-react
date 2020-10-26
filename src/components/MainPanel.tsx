@@ -17,6 +17,7 @@ import OutputMixer from './modules/OutputMixer';
 import Chorus from './modules/Chorus';
 import BitCrusher from './modules/BitCrusher';
 import Arpeggiator from './modules/Arpeggiator';
+import KeyboardControls from './modules/KeyboardControls';
 
 export default () => {
 
@@ -35,24 +36,27 @@ export default () => {
       const arpCol = 20;
 
       const oscRow = 60;
+      const lfo1Row = oscRow + 90;
+      const lfo2Row = lfo1Row + 50;
       const noiseRow = oscRow + 112;
       const ringModRow = noiseRow + 40;
       const outputFxRow = 225;
       const arpRow = 250;
+      const keyboardRow = 300;
 
       // TODO:
-      //  Arpeggiator
       //  Patch select
       //  LFO 2
-      //  Keyboard functions
       //  Display ++
   return (
     <svg width="105cm" height="35cm" viewBox="0 0 1050 350" className="panel">
         <DCO1 x={osc1Col} y={oscRow}/>
         <DCO2 x={osc2Col} y={oscRow}/>
         <VCO x={osc3Col} y={oscRow}/>
-        <LFO x={lfoCol} y={noiseRow} label="LFO 1" showSelect={false}/>
+        <LFO x={lfoCol} y={lfo1Row} label="LFO 1" showSelect={false}/>
+        <LFO x={lfoCol} y={lfo2Row} label="LFO 2" showSelect={false}/>
         <Arpeggiator x={arpCol} y={arpRow}/>
+        <KeyboardControls x={arpCol} y={keyboardRow}/>
 
         <PreFilterMixer x={sourceMixCol} y={5}/>
         <Noise x={sourceMixCol - 100} y={noiseRow}/>

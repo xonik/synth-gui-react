@@ -25,11 +25,11 @@ const dco1 = ({ x, y }: Props) => {
     <Header label="Oscillator 1" x={x} y={topRow - 20} width={110} align="center"/>
     <RotaryPot32 x={x} y={y} ledMode="single" label="Waveform" position={0.8}/>
 
-    <RotaryPot10 x={col1} y={topRow} ledMode="single" label="Tune" position={0.5}/>
+    <RotaryPot10 x={col1} y={topRow} ledMode="single" label="Note" position={0.5}/>
     <RotaryPot10 x={col4} y={topRow} ledMode="multi" label="Super saw" position={0.3}/>
 
     <RoundPushButton8 x={col1} y={bottomRow1}
-                      ledPosition="left" ledCount="2" ledOn={[true, false]} ledLabels={['Sqr', 'Saw']}
+                      ledPosition="top" ledCount="2" ledOn={[true, false]} ledLabels={['Sqr', 'Saw']}
                       label="Sub wave" labelPosition="bottom"
     />
     <RotaryPot10 x={col2} y={bottomRow1} ledMode="multi" label="Sub -1" position={0.1}/>
