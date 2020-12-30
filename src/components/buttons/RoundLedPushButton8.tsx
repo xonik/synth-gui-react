@@ -1,6 +1,6 @@
 import RoundButtonBase, { Props } from './RoundButtonBase';
 
-class RoundPushButton8 extends RoundButtonBase {
+class RoundLedPushButton8 extends RoundButtonBase {
   constructor(props: Props) {
     super(
       props,
@@ -13,4 +13,4 @@ class RoundPushButton8 extends RoundButtonBase {
   }
 }
 
-export default RoundPushButton8
+export default RoundLedPushButton8
