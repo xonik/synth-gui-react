@@ -2,6 +2,7 @@ import React from 'react';
 import RotaryPot32 from '../pots/RotaryPot32';
 import RotaryPot10 from '../pots/RotaryPot10';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
+import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
 import Header from '../misc/Header';
 
 interface Props {
@@ -14,7 +15,7 @@ const dco1 = ({ x, y }: Props) => {
 
   const topRow = y - 35;
   const bottomRow1 = y + 40;
-  const bottomRow2 = y + 70;
+  const bottomRow2 = y + 65;
 
   const col1 = x - 39;
   const col2 = x - 13;
@@ -35,11 +36,10 @@ const dco1 = ({ x, y }: Props) => {
     <RotaryPot10 x={col2} y={bottomRow1} ledMode="multi" label="Sub -1" position={0.1}/>
     <RotaryPot10 x={col3} y={bottomRow1} ledMode="multi" label="Sub -2" position={0.6}/>
     <RotaryPot10 x={col4} y={bottomRow1} ledMode="single" label="PW" position={0.3}/>
-
-    <RoundPushButton8 x={col1} y={bottomRow2} ledPosition="top" ledCount="1" ledOn={[true]} label="Sync" labelPosition="bottom"/>
-    <RoundPushButton8 x={col2} y={bottomRow2} ledPosition="top" ledCount="1" ledOn={[true]} label="Wheel" labelPosition="bottom"/>
-    <RoundPushButton8 x={col3} y={bottomRow2} ledPosition="top" ledCount="1" ledOn={[true]} label="LFO" labelPosition="bottom"/>
-    <RoundPushButton8 x={col4} y={bottomRow2} ledPosition="top" ledCount="1" ledOn={[true]} label="Kbd" labelPosition="bottom"/>
+    <RoundLedPushButton8 x={col1} y={bottomRow2} ledOn={[true]} label="Sync" labelPosition="bottom"/>
+    <RoundLedPushButton8 x={col2} y={bottomRow2} ledOn={[true]} label="Wheel" labelPosition="bottom"/>
+    <RoundLedPushButton8 x={col3} y={bottomRow2} ledOn={[true]} label="LFO" labelPosition="bottom"/>
+    <RoundLedPushButton8 x={col4} y={bottomRow2} ledOn={[true]} label="Kbd" labelPosition="bottom"/>
   </>;
 };
 

@@ -15,11 +15,10 @@ interface Props {
 
 
 const StateVariableFilter = ({ x, y }: Props) => {
-    const topRow = y - 40;
+    const topRow = y - 50;
     const bottomRow1 = y + 45;
     const bottomRow2 = y + 75;
 
-    const inputCol = x - 75;
     const col1 = x - 39;
     const col2 = x - 13;
     const col3 = x + 13;
@@ -40,19 +39,19 @@ const StateVariableFilter = ({ x, y }: Props) => {
      */
 
     return <>
-        <HorizontalLine x={x} y={topRow - 65} width={110} align="center"/>
-        <RoundLedPushButton8 x={col2} y={topRow -45}
+        <HorizontalLine x={x} y={topRow - 62} width={110} align="center"/>
+        <RoundLedPushButton8 x={col2} y={topRow -42}
                           ledOn={[true]} label="Link cutoff" labelPosition="bottom"/>
 
-        <RoundPushButton8 x={col3} y={topRow - 45} ledPosition="right"
+        <RoundPushButton8 x={col3} y={topRow - 42} ledPosition="right"
                           ledCount="2" ledOn={[true, false]}
                           ledLabels={['Series', 'Parallel']} label="Routing" labelPosition="bottom"/>
 
-        <Header label="State variable filter" x={x} y={topRow - 30} width={110} align="center"/>
+        <Header label="State variable filter" x={x} y={topRow - 27} width={110} align="center"/>
         <RotaryPot40 x={x} y={y} ledMode="single" label="Cutoff" position={0.8}/>
-        <RotaryPot17 x={inputCol} y={y} ledMode="multi" label="Input" position={0.5}/>
 
-        <RotaryPot17 x={col1} y={topRow} ledMode="multi" label="Drive" position={0.5}/>
+        <RotaryPot17 x={col1} y={topRow} ledMode="multi" label="Input" position={0.5}/>
+        <RotaryPot17 x={x} y={topRow} ledMode="multi" label="Drive" position={0.5}/>
         <RotaryPot17 x={col4} y={topRow} ledMode="multi" label="Resonance" position={0.3}/>
 
         <RoundLedPushButton8 x={col1} y={y -10} label="Ext CV" labelPosition="bottom"/>

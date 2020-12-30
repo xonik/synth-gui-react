@@ -24,7 +24,7 @@ const LFO = ({ x, y, label, showSelect = false }: Props) => {
                          label="Shape" labelPosition="bottom"
                          ledPosition="right" ledCount="5"
                          ledOn={[true, false, false, false, false]}
-                         ledLabels={['Saw', 'Tri', 'Sqr', 'Sin', 'S&h', ]}
+                         ledLabels={['Saw', 'Tri', 'Sqr', 'Sin', 'S & H', ]}
     />
     <RoundLedPushButton8 label="Sync" x={firstPotX + potDistance * 4 + 10} y={potY} labelPosition="bottom"/>
     <RoundLedPushButton8 label="Reset" x={firstPotX + potDistance * 4.5 + 10} y={potY} labelPosition="bottom"/>

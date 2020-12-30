@@ -17,7 +17,7 @@ interface Config {
   labelMargin?: number; // margin button-label
 }
 
-class RoundButtonBase extends React.Component<any, any> {
+class Led extends React.Component<any, any> {
   radius: number;
   labelMargin: number;
   labelPos: { x: number, y: number, textAnchor: string };
@@ -82,4 +82,4 @@ class RoundButtonBase extends React.Component<any, any> {
   }
 }
 
-export default RoundButtonBase;
+export default Led;

@@ -63,8 +63,8 @@ export default () => {
         <Ringmod x={sourceMixCol - 100} y={ringModRow}/>
         <PreFilterFx x={fxCol} y={250}/>
 
-        <LowPassFilter x={filterCol} y={72}/>
-        <StateVariableFilter x={filterCol} y={240}/>
+        <LowPassFilter x={filterCol} y={82}/>
+        <StateVariableFilter x={filterCol} y={250}/>
 
         <PostFilterMixer x={voiceMixCol} y={5}/>
 
@@ -77,7 +77,8 @@ export default () => {
         <BitCrusher x={outFx2Col} y={outputFxRow+40}/>
 
         <OutputMixer x={outputMixerCol} y={5}/>
-
+        <line x1={0} y1={350 / 3} x2={200} y2={350 / 3} className="line" />
+        <line x1={1050 / 2} y1={0} x2={1050 / 2} y2={350} className="line" />
     </svg>
   );
 }
