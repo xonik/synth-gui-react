@@ -13,16 +13,19 @@ interface Props {
 
 const vco = ({ x, y }: Props) => {
   const topRow = y - 35;
+  const topMidRow = y - (75/6) + 2.5;
+  const bottomMidRow = y + (75/6) + 2.5;
   const bottomRow1 = y + 40;
   const bottomRow2 = y + 65;
 
+  const col0 = x - 65;
   const col1 = x - 39;
   const col2 = x - 13;
   const col3 = x + 13;
   const col4 = x + 39;
 
   return <>
-    <Header label="Oscillator 3" x={x} y={topRow - 20} width={110} align="center"/>
+    <Header label="Oscillator 3" x={x - 10} y={topRow - 20} width={125} align="center"/>
     <RotaryPot32 x={x} y={y} ledMode="single" label="Waveform" position={0.8}/>
 
     <RotaryPot10 x={col1} y={topRow} ledMode="single" label="Note" position={0.5}/>
@@ -40,10 +43,10 @@ const vco = ({ x, y }: Props) => {
     />
     <RotaryPot10 x={col4} y={bottomRow1} ledMode="single" label="PW" position={0.3}/>
 
-    <RoundLedPushButton8 x={col1} y={bottomRow2} ledOn={[true]} label="Ext CV" labelPosition="bottom"/>
-    <RoundLedPushButton8 x={col2} y={bottomRow2} ledOn={[true]} label="Wheel" labelPosition="bottom"/>
-    <RoundLedPushButton8 x={col3} y={bottomRow2} ledOn={[true]} label="LFO" labelPosition="bottom"/>
-    <RoundLedPushButton8 x={col4} y={bottomRow2} ledOn={[true]} label="Kbd" labelPosition="bottom"/>
+    <RoundLedPushButton8 x={col0} y={topRow} ledOn={[true]} label="Ext CV" labelPosition="bottom"/>
+    <RoundLedPushButton8 x={col0} y={topMidRow} ledOn={[true]} label="Wheel" labelPosition="bottom"/>
+    <RoundLedPushButton8 x={col0} y={bottomMidRow} ledOn={[true]} label="LFO" labelPosition="bottom"/>
+    <RoundLedPushButton8 x={col0} y={bottomRow1} ledOn={[true]} label="Kbd" labelPosition="bottom"/>
   </>;
 };
 
