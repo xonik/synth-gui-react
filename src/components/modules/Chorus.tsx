@@ -11,19 +11,20 @@ interface Props {
 const Chorus = ({ x, y }: Props) => {
 
     const row1 = 0;
-    const row2 = 22;
+    const row2 = 20;
+    const row3 = 30;
     const col1 = 10;
-    const col2 = col1 + 37;
+    const col2 = col1 + 25;
     const col3 = col2 + 30;
     const col4 = col3 + 20;
 
 
     return <svg x={x} y={y}>
-        <Header label="Chorus" x={0} y={row1} width={130}/>
-        <RoundPushButton8 x={col1} y={row2} ledCount="2" ledPosition="right" ledLabels={['FX1', 'FX2']} ledOn={[false, true]}/>
+        <Header label="Chorus" x={25} y={row1} width={50}/>
+        <RoundPushButton8 x={col1} y={row3} ledCount="2" ledPosition="top" ledLabels={['FX1', 'FX2']} ledOn={[false, true]}/>
         <RotaryPot10 ledMode="single" label="Rate" x={col2} y={row2} position={0.4}/>
         <RotaryPot10 ledMode="single" label="Depth" x={col3} y={row2} position={0.4}/>
-        <RoundPushButton8 x={col4} y={row2} ledCount="2" ledPosition="right" ledLabels={['Chorus', 'Vibrato']} ledOn={[false, true]}/>
+        <RoundPushButton8 x={col4} y={row3} ledCount="2" ledPosition="top" ledLabels={['Chorus', 'Vibrato']} ledOn={[false, true]}/>
     </svg>;
 };
 

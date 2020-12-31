@@ -63,9 +63,7 @@ export default () => {
     const envCol = voiceMixCol + 55;
     const outFx1Col = envCol;
     const outFx2Col = outFx1Col + 130;
-    const outputMixerCol = envCol + 275;
-
-
+    const outputMixerCol = envCol + 5;
 
     const oscRow = 60;
 
@@ -77,8 +75,10 @@ export default () => {
 
     const displayRow = 60;
 
-    const outputFxRow = 225;
+    const outputFxRow = 215;
     const arpRow = clockRow;
+
+    const outputMixerRow = outputFxRow + 85;
 
     return (
         <svg width="105cm" height="35cm" viewBox="0 0 1050 350" className="panel">
@@ -111,10 +111,10 @@ export default () => {
             <Envelope x={envCol} y={145} label="Env 3 - N" showSelect={true}/>
 
             <DigitalFX x={outFx1Col} y={outputFxRow}/>
-            <Chorus x={outFx2Col} y={outputFxRow}/>
+            <Chorus x={outFx2Col} y={outputFxRow + 10}/>
             <BitCrusher x={outFx2Col} y={outputFxRow + 40}/>
 
-            <OutputMixer x={outputMixerCol} y={5}/>
+            <OutputMixer x={outputMixerCol} y={outputMixerRow}/>
         </svg>
     );
 }

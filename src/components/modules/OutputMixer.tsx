@@ -16,6 +16,7 @@ interface ChannelProps {
 }
 
 const rowDistance = 40;
+const colDistance = 40;
 
 const OutputMixerChannel = ({ x, y, label, potMode="normal" }: ChannelProps) => {
   return <>
@@ -25,18 +26,20 @@ const OutputMixerChannel = ({ x, y, label, potMode="normal" }: ChannelProps) => 
 
 const OutputMixer = ({ x, y }: Props) => {
   const offsetX = 20;
-  const offsetY = 27;
+  const offsetX2 = 195;
+  const offsetY = 25;
   return <svg x={x} y={y}>
-    <Header label="Output" x={0} y={0} width={40}/>
-    <OutputMixerChannel x={offsetX} y={offsetY} label="Volume"/>
-    <OutputMixerChannel x={offsetX} y={offsetY + rowDistance} potMode="spread" label="Spread"/>
-    <OutputMixerChannel x={offsetX} y={offsetY + rowDistance * 2} label="Headphones"/>
-
     <Header label="FX mix" x={0} y={ + offsetY + rowDistance * 4 - 27} width={40}/>
-    <OutputMixerChannel x={offsetX} y={offsetY + rowDistance * 4} label="DSP 1"/>
-    <OutputMixerChannel x={offsetX} y={offsetY + rowDistance * 5} label="DSP 2"/>
-    <OutputMixerChannel x={offsetX} y={offsetY + rowDistance * 6} label="Chorus"/>
-    <OutputMixerChannel x={offsetX} y={offsetY + rowDistance * 7} label="Bit crusher"/>
+    <OutputMixerChannel x={offsetX} y={offsetY} label="DSP 1"/>
+    <OutputMixerChannel x={offsetX + colDistance} y={offsetY} label="DSP 2"/>
+    <OutputMixerChannel x={offsetX + colDistance * 2} y={offsetY} label="Chorus"/>
+    <OutputMixerChannel x={offsetX + colDistance * 3} y={offsetY} label="Bit crusher"/>
+
+
+    <OutputMixerChannel x={offsetX2} y={offsetY} potMode="spread" label="Spread"/>
+    <OutputMixerChannel x={offsetX2 + colDistance} y={offsetY} label="Volume"/>
+    <OutputMixerChannel x={offsetX2 + colDistance} y={offsetY - 40} label="Headphones"/>
+
   </svg>;
 };
 

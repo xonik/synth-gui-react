@@ -10,16 +10,17 @@ interface Props {
 
 const BitCrusher = ({ x, y }: Props) => {
 
-    const row1 = 0;
-    const row2 = 22;
+    const row1 = 10;
+    const row2 = 30;
+    const row3 = 40;
     const col1 = 10;
-    const col2 = col1 + 37;
+    const col2 = col1 + 25;
     const col3 = col2 + 30;
 
 
     return <svg x={x} y={y}>
-        <Header label="Bit crusher" x={0} y={row1} width={130}/>
-        <RoundPushButton8 x={col1} y={row2} ledCount="2" ledPosition="right" ledLabels={['FX1', 'FX2']} ledOn={[false, true]}/>
+        <Header label="Bit crusher" x={25} y={row1} width={50}/>
+        <RoundPushButton8 x={col1} y={row3} ledCount="2" ledPosition="top" ledLabels={['FX1', 'FX2']} ledOn={[false, true]}/>
         <RotaryPot10 ledMode="single" label="Bits" x={col2} y={row2} position={0.4}/>
         <RotaryPot10 ledMode="single" label="Rate" x={col3} y={row2} position={0.4}/>
     </svg>;
