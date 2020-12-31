@@ -20,7 +20,7 @@ export default () => {
     const kbdY = panelHeight - keyboardHeight - bottomThickness;
 
     const ctrlRow = 27;
-    const keyCtrlCol = 40;
+
     // TODO:
     //  Patch select
     //  LFO 2
@@ -46,7 +46,6 @@ export default () => {
             <line x1={kbdX + keyWidth * 28} y1={kbdY} x2={kbdX + keyWidth * 28} y2={kbdY + keyboardHeight} className="keys-octave-divider"/>
 
             <Route x={20} y={ctrlRow}/>
-            <KeyboardControls x={keyCtrlCol} y={ctrlRow-22}/>
             <Route x={panelWidth-20} y={ctrlRow}/>
         </svg>
     );

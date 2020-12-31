@@ -27,7 +27,7 @@ const PostFilterMixerChannel = ({ x, y, label, potMode="normal", ledMode="multi"
 const PostFilterMixer = ({ x, y }: Props) => {
   const offsetX = 20;
   const offsetY = 27;
-  const offsetY2 = 200;
+  const offsetY2 = 195;
   return <svg x={x} y={y}>
     <Header label="Mix" x={0} y={0} width={40}/>
     <PostFilterMixerChannel x={offsetX} y={offsetY} label="LPF"/>

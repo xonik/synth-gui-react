@@ -21,6 +21,7 @@ import MainDisplay from './modules/MainDisplay';
 import Clock from './modules/Clock';
 import BitCrusherPre from './modules/BitCrusherPre';
 import Route from './modules/Route';
+import KeyboardControls from './modules/KeyboardControls';
 
 /**
  * TODO:
@@ -55,6 +56,8 @@ export default () => {
 
     const sourceMixCol = 180;
     const displayCol = osc3Col + 85;
+    const keyCtrlCol = displayCol-22;
+
     const arpCol = clockCol + 93;
 
     const filterCol = displayCol + 270;
@@ -73,9 +76,10 @@ export default () => {
     const lfo1Row = noiseRow + 55;
     const clockRow = lfo1Row + 90;
 
-    const displayRow = 60;
+    const displayRow = 70;
+    const keyCtrlRow = displayRow + 233;
 
-    const outputFxRow = 215;
+    const outputFxRow = 210;
     const arpRow = clockRow;
 
     const outputMixerRow = outputFxRow + 85;
@@ -98,8 +102,8 @@ export default () => {
             <Clock x={clockCol} y={clockRow}/>
             <Arpeggiator x={arpCol} y={arpRow}/>
 
-
             <MainDisplay x={displayCol} y={displayRow}/>
+            <KeyboardControls x={keyCtrlCol} y={keyCtrlRow}/>
 
             <LowPassFilter x={filterCol} y={82}/>
             <StateVariableFilter x={filterCol} y={250}/>
