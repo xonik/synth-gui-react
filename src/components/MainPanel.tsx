@@ -7,7 +7,7 @@ import PreFilterMixer from './modules/PreFilterMixer';
 import PostFilterMixer from './modules/PostFilterMixer';
 import Noise from './modules/Noise';
 import Ringmod from './modules/Ringmod';
-import PreFilterFx from './modules/PreFilterFx';
+import Distortion from './modules/Distortion';
 import LowPassFilter from './modules/LowPassFilter';
 import StateVariableFilter from './modules/StateVariableFilter';
 import Envelope from './modules/Envelope';
@@ -19,6 +19,7 @@ import BitCrusher from './modules/BitCrusher';
 import Arpeggiator from './modules/Arpeggiator';
 import MainDisplay from './modules/MainDisplay';
 import Clock from './modules/Clock';
+import BitCrusherPre from './modules/BitCrusherPre';
 
 /**
  * TODO:
@@ -41,45 +42,44 @@ export default () => {
     const panelWidth = 1050;
     const keyboardWidth = 849;
 
-    const osc1Col = 90;
-    const osc2Col = osc1Col + 120;
-    const osc3Col = osc2Col + 120;
+    const osc1Col = 70;
+    const osc2Col = osc1Col + 115;
+    const osc3Col = osc2Col + 115;
 
-    const lfoCol = osc1Col + 70;
-    const noiseCol = lfoCol;
-    const ringModCol = noiseCol + 90;
+    const lfoCol = 20;
+    const noiseCol = 20;
+    const ringModCol = noiseCol + 55;
+    const fxCol = ringModCol + 35;
 
-    const clockCol = osc1Col + 70;
+    const clockCol = 20;
 
-    const sourceMixCol = lfoCol;
-    const displayCol = sourceMixCol + 210;
-    const arpCol = sourceMixCol + 200;
+    const sourceMixCol = 180;
+    const displayCol = osc3Col + 85;
+    const arpCol = clockCol + 100;
 
     const filterCol = displayCol + 270;
     const voiceMixCol = filterCol + 70;
 
 
-    const envCol = voiceMixCol + 40;
+    const envCol = voiceMixCol + 55;
     const outFx1Col = envCol;
     const outFx2Col = outFx1Col + 130;
     const outputMixerCol = envCol + 275;
-    const fxCol = lfoCol + 40;
+
 
 
     const oscRow = 60;
-    const osc2Row = oscRow + panelHeight / 3;
-    const osc3Row = osc2Row + panelHeight / 3;
 
-    const sourceMixRow = 5;
-    const noiseRow = sourceMixRow + 100;
-    const fxRow = noiseRow + 40;
-    const lfo1Row = fxRow + 85;
-    const clockRow = lfo1Row + 60;
+    const noiseRow = oscRow + 90;
+    const sourceMixRow = noiseRow + 55;
+    const fxRow = noiseRow;
+    const lfo1Row = noiseRow + 55;
+    const clockRow = lfo1Row + 90;
 
     const displayRow = 60;
 
     const outputFxRow = 225;
-    const arpRow = displayRow + 230;
+    const arpRow = clockRow;
     const keyboardRow = 300;
 
     // TODO:
@@ -90,20 +90,22 @@ export default () => {
     /*
             <line x1={panelWidth - keyboardWidth - 5 + keyboardWidth / 2} y1={0} x2={panelWidth - keyboardWidth - 5 + keyboardWidth / 2} y2={350} className="line"/>
             <line x1={panelWidth / 2} y1={0} x2={panelWidth / 2} y2={350} className="line"/>
-
     */
     return (
         <svg width="105cm" height="35cm" viewBox="0 0 1050 350" className="panel">
             <DCO1 x={osc1Col} y={oscRow}/>
-            <DCO2 x={osc1Col} y={osc2Row}/>
-            <VCO x={osc1Col} y={osc3Row}/>
-            <LFO x={lfoCol} y={lfo1Row} label="LFOS" showSelect={false}/>
-            <Clock x={clockCol} y={clockRow}/>
+            <DCO2 x={osc2Col} y={oscRow}/>
+            <VCO x={osc3Col} y={oscRow}/>
 
-            <PreFilterMixer x={sourceMixCol} y={sourceMixRow}/>
             <Noise x={noiseCol} y={noiseRow}/>
             <Ringmod x={ringModCol} y={noiseRow}/>
-            <PreFilterFx x={fxCol} y={fxRow}/>
+            <Distortion x={fxCol} y={fxRow}/>
+            <BitCrusherPre x={fxCol + 120} y={fxRow}/>
+
+            <LFO x={lfoCol} y={lfo1Row}/>
+            <Clock x={clockCol} y={clockRow}/>
+            <PreFilterMixer x={sourceMixCol} y={sourceMixRow}/>
+
 
             <MainDisplay x={displayCol} y={displayRow}/>
             <Arpeggiator x={arpCol} y={arpRow}/>

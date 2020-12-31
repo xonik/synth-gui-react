@@ -13,12 +13,12 @@ interface Props {
 }
 
 const Envelope = ({ x, y, label, showSelect = false }: Props) => {
-  const firstPotX =  x + 30 ;
+  const firstPotX =  x + 25;
   const topRowY = y + 20;
   const potY = y + 45;
   const potDistance = 40;
   return <>
-    <Header align="left" label={label} x={x} y={y} width={260}/>
+    <Header align="left" label={label} x={x} y={y} width={255}/>
     <RotaryPot17 ledMode="single" label="Attack" x={firstPotX} y={potY} position={0.4}/>
     <RotaryPot17 ledMode="single" label="Decay 1" x={firstPotX + potDistance} y={potY} position={0.1}/>
     <RotaryPot17 ledMode="single" label="Decay 2" x={firstPotX + potDistance * 2} y={potY} position={0.4}/>

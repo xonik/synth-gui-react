@@ -13,18 +13,16 @@ interface Props {
 
 const dco2 = ({ x, y }: Props) => {
   const topRow = y - 35;
-  const topMidRow = y - (75/6) + 2.5;
-  const bottomMidRow = y + (75/6) + 2.5;
   const bottomRow1 = y + 40;
+  const bottomRow2 = bottomRow1 + 25;
 
-  const col0 = x - 65;
   const col1 = x - 39;
   const col2 = x - 13;
   const col3 = x + 13;
   const col4 = x + 39;
 
   return <>
-    <Header label="Oscillator 2" x={x - 10} y={topRow - 20} width={125} align="center"/>
+    <Header label="Oscillator 2" x={x} y={topRow - 20} width={100} align="center"/>
     <RotaryPot32 x={x} y={y} ledMode="single" label="Waveform" position={0.8}/>
 
     <RotaryPot10 x={col1} y={topRow} ledMode="single" label="Note" position={0.5}/>
@@ -41,9 +39,9 @@ const dco2 = ({ x, y }: Props) => {
     <RotaryPot10 x={col3} y={bottomRow1} ledMode="multi" label="Sub -2" position={0.6}/>
     <RotaryPot10 x={col4} y={bottomRow1} ledMode="single" label="PW" position={0.3}/>
 
-    <RoundLedPushButton8 x={col0} y={topRow} ledOn={[true]} label="Wheel" labelPosition="bottom"/>
-    <RoundLedPushButton8 x={col0} y={topMidRow} ledOn={[true]} label="LFO" labelPosition="bottom"/>
-    <RoundLedPushButton8 x={col0} y={bottomMidRow} ledOn={[true]} label="Kbd" labelPosition="bottom"/>
+    <RoundLedPushButton8 x={col2} y={bottomRow2} ledOn={[true]} label="Wheel" labelPosition="bottom"/>
+    <RoundLedPushButton8 x={col3} y={bottomRow2} ledOn={[true]} label="LFO" labelPosition="bottom"/>
+    <RoundLedPushButton8 x={col4} y={bottomRow2} ledOn={[true]} label="Kbd" labelPosition="bottom"/>
   </>;
 };
 
