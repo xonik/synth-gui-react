@@ -17,16 +17,23 @@ import OutputMixer from './modules/OutputMixer';
 import Chorus from './modules/Chorus';
 import BitCrusher from './modules/BitCrusher';
 import Arpeggiator from './modules/Arpeggiator';
-import KeyboardControls from './modules/KeyboardControls';
 import MainDisplay from './modules/MainDisplay';
+import Clock from './modules/Clock';
 
 /**
  * TODO:
  * Waveform/mode-knapp på DCOer
  * LFO-selector
  * Load/save, dial w. click.
- * Sync source på DCOer
- *
+ * X Sync source på DCOer
+ * Tettere Oscillatorer
+ * Vurdere å droppe digital fx-output og ha output-mixer under envelopes
+ * Prøve horisontale osc igjen
+ * X Voice volume i tillegg til pan. Kan også funke som wet/dry.
+ *  - DRY/WET MIX! Nå går det ikke an å skru av originallyd'en!
+ * X Clock ctrl
+ * X Route-button
+ * Flytte key ctrl opp på hovedpanel fordi de ikke kan overlappe tangenter. Bytte med arp?
  */
 export default () => {
 
@@ -41,6 +48,8 @@ export default () => {
     const lfoCol = osc1Col + 70;
     const noiseCol = lfoCol;
     const ringModCol = noiseCol + 90;
+
+    const clockCol = osc1Col + 70;
 
     const sourceMixCol = lfoCol;
     const displayCol = sourceMixCol + 210;
@@ -65,7 +74,7 @@ export default () => {
     const noiseRow = sourceMixRow + 100;
     const fxRow = noiseRow + 40;
     const lfo1Row = fxRow + 85;
-    const lfo2Row = lfo1Row + 60;
+    const clockRow = lfo1Row + 60;
 
     const displayRow = 60;
 
@@ -79,8 +88,6 @@ export default () => {
     //  Display ++
 
     /*
-    // Move these to keyboard part.
-    <KeyboardControls x={arpCol} y={keyboardRow}/>
             <line x1={panelWidth - keyboardWidth - 5 + keyboardWidth / 2} y1={0} x2={panelWidth - keyboardWidth - 5 + keyboardWidth / 2} y2={350} className="line"/>
             <line x1={panelWidth / 2} y1={0} x2={panelWidth / 2} y2={350} className="line"/>
 
@@ -91,7 +98,7 @@ export default () => {
             <DCO2 x={osc1Col} y={osc2Row}/>
             <VCO x={osc1Col} y={osc3Row}/>
             <LFO x={lfoCol} y={lfo1Row} label="LFOS" showSelect={false}/>
-
+            <Clock x={clockCol} y={clockRow}/>
 
             <PreFilterMixer x={sourceMixCol} y={sourceMixRow}/>
             <Noise x={noiseCol} y={noiseRow}/>

@@ -29,6 +29,10 @@ const dco1 = ({ x, y }: Props) => {
     <RotaryPot32 x={x} y={y} ledMode="single" label="Waveform" position={0.8}/>
 
     <RotaryPot10 x={col1} y={topRow} ledMode="single" label="Note" position={0.5}/>
+    <RoundPushButton8 x={col2} y={topRow}
+                      ledPosition="right" ledCount="2" ledOn={[true, false]} ledLabels={['1 -> 2', '2 -> 1']}
+                      label="Sync" labelPosition="bottom"
+    />
     <RotaryPot10 x={col4} y={topRow} ledMode="multi" label="Super saw" position={0.3}/>
 
     <RoundPushButton8 x={col1} y={bottomRow1}
@@ -38,7 +42,6 @@ const dco1 = ({ x, y }: Props) => {
     <RotaryPot10 x={col2} y={bottomRow1} ledMode="multi" label="Sub -1" position={0.1}/>
     <RotaryPot10 x={col3} y={bottomRow1} ledMode="multi" label="Sub -2" position={0.6}/>
     <RotaryPot10 x={col4} y={bottomRow1} ledMode="single" label="PW" position={0.3}/>
-    <RoundLedPushButton8 x={col0} y={topRow} ledOn={[true]} label="Sync" labelPosition="bottom"/>
     <RoundLedPushButton8 x={col0} y={topMidRow} ledOn={[true]} label="Wheel" labelPosition="bottom"/>
     <RoundLedPushButton8 x={col0} y={bottomMidRow} ledOn={[true]} label="LFO" labelPosition="bottom"/>
     <RoundLedPushButton8 x={col0} y={bottomRow1} ledOn={[true]} label="Kbd" labelPosition="bottom"/>

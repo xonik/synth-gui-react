@@ -27,6 +27,7 @@ const PostFilterMixerChannel = ({ x, y, label, potMode="normal", ledMode="multi"
 const PostFilterMixer = ({ x, y }: Props) => {
   const offsetX = 20;
   const offsetY = 27;
+  const offsetY2 = 200;
   return <svg x={x} y={y}>
     <Header label="Mix" x={0} y={0} width={40}/>
     <PostFilterMixerChannel x={offsetX} y={offsetY} label="LPF"/>
@@ -34,10 +35,11 @@ const PostFilterMixer = ({ x, y }: Props) => {
     <PostFilterMixerChannel x={offsetX} y={offsetY + rowDistance * 2} label="Sine 1"/>
     <PostFilterMixerChannel x={offsetX} y={offsetY + rowDistance * 3} label="Sine 2"/>
 
-    <Header label="Voice out" x={0} y={offsetY + rowDistance * 5 - 27} width={40}/>
-    <PostFilterMixerChannel x={offsetX} y={offsetY + rowDistance * 5} label="Pan" potMode="pan" ledMode="single"/>
-    <PostFilterMixerChannel x={offsetX} y={offsetY + rowDistance * 6} label="FX1 send"/>
-    <PostFilterMixerChannel x={offsetX} y={offsetY + rowDistance * 7} label="FX2 send"/>
+    <Header label="Voice out" x={0} y={offsetY2-27} width={40}/>
+    <PostFilterMixerChannel x={offsetX} y={offsetY2} label="Pan" potMode="pan" ledMode="single"/>
+    <PostFilterMixerChannel x={offsetX} y={offsetY2 + rowDistance} label="Amt"/>
+    <PostFilterMixerChannel x={offsetX} y={offsetY2 + rowDistance * 2} label="FX1 send"/>
+    <PostFilterMixerChannel x={offsetX} y={offsetY2 + rowDistance * 3} label="FX2 send"/>
   </svg>;
 };
 

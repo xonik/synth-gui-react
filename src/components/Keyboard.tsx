@@ -1,4 +1,6 @@
 import React from 'react';
+import Route from './modules/Route';
+import KeyboardControls from './modules/KeyboardControls';
 import './Keyboard.scss';
 
 export default () => {
@@ -17,6 +19,8 @@ export default () => {
     const kbdX = panelWidth - keyboardWidth - rightEndcapThickness;
     const kbdY = panelHeight - keyboardHeight - bottomThickness;
 
+    const ctrlRow = 27;
+    const keyCtrlCol = 40;
     // TODO:
     //  Patch select
     //  LFO 2
@@ -40,6 +44,10 @@ export default () => {
             <line x1={kbdX + keyWidth * 14} y1={kbdY} x2={kbdX + keyWidth * 14} y2={kbdY + keyboardHeight} className="keys-octave-divider"/>
             <line x1={kbdX + keyWidth * 21} y1={kbdY} x2={kbdX + keyWidth * 21} y2={kbdY + keyboardHeight} className="keys-octave-divider"/>
             <line x1={kbdX + keyWidth * 28} y1={kbdY} x2={kbdX + keyWidth * 28} y2={kbdY + keyboardHeight} className="keys-octave-divider"/>
+
+            <Route x={20} y={ctrlRow}/>
+            <KeyboardControls x={keyCtrlCol} y={ctrlRow-22}/>
+            <Route x={panelWidth-20} y={ctrlRow}/>
         </svg>
     );
 }
