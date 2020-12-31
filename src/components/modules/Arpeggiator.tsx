@@ -30,7 +30,7 @@ const Arpeggiator = ({ x, y }: Props) => {
 
 
     return <svg x={x} y={y}>
-        <Header label="Arpeggiator" x={0} y={row1} width={200}/>
+        <Header label="Arpeggiator" x={0} y={row1} width={213}/>
         <RoundLedPushButton8 labelPosition="bottom" x={col1} y={row2} label="On/Off" ledOn={[true]}/>
         <RoundLedPushButton8 labelPosition="bottom" x={col2} y={row2} label="Trigger" ledOn={[false]}/>
         <RotaryPot17 ledMode="single" label="Tempo" x={col3} y={row2} position={0.4}/>

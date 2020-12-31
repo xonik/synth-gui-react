@@ -20,11 +20,12 @@ import Arpeggiator from './modules/Arpeggiator';
 import MainDisplay from './modules/MainDisplay';
 import Clock from './modules/Clock';
 import BitCrusherPre from './modules/BitCrusherPre';
+import Route from './modules/Route';
 
 /**
  * TODO:
  * Waveform/mode-knapp på DCOer
- * LFO-selector
+ * X LFO-selector
  * Load/save, dial w. click.
  * X Sync source på DCOer
  * Tettere Oscillatorer
@@ -40,7 +41,6 @@ export default () => {
 
     const panelHeight = 350;
     const panelWidth = 1050;
-    const keyboardWidth = 849;
 
     const osc1Col = 70;
     const osc2Col = osc1Col + 115;
@@ -51,15 +51,14 @@ export default () => {
     const ringModCol = noiseCol + 55;
     const fxCol = ringModCol + 35;
 
-    const clockCol = 20;
+    const clockCol = 45;
 
     const sourceMixCol = 180;
     const displayCol = osc3Col + 85;
-    const arpCol = clockCol + 100;
+    const arpCol = clockCol + 93;
 
     const filterCol = displayCol + 270;
     const voiceMixCol = filterCol + 70;
-
 
     const envCol = voiceMixCol + 55;
     const outFx1Col = envCol;
@@ -70,7 +69,7 @@ export default () => {
 
     const oscRow = 60;
 
-    const noiseRow = oscRow + 90;
+    const noiseRow = oscRow + 85;
     const sourceMixRow = noiseRow + 55;
     const fxRow = noiseRow;
     const lfo1Row = noiseRow + 55;
@@ -80,17 +79,7 @@ export default () => {
 
     const outputFxRow = 225;
     const arpRow = clockRow;
-    const keyboardRow = 300;
 
-    // TODO:
-    //  Patch select
-    //  LFO 2
-    //  Display ++
-
-    /*
-            <line x1={panelWidth - keyboardWidth - 5 + keyboardWidth / 2} y1={0} x2={panelWidth - keyboardWidth - 5 + keyboardWidth / 2} y2={350} className="line"/>
-            <line x1={panelWidth / 2} y1={0} x2={panelWidth / 2} y2={350} className="line"/>
-    */
     return (
         <svg width="105cm" height="35cm" viewBox="0 0 1050 350" className="panel">
             <DCO1 x={osc1Col} y={oscRow}/>
@@ -103,13 +92,14 @@ export default () => {
             <BitCrusherPre x={fxCol + 120} y={fxRow}/>
 
             <LFO x={lfoCol} y={lfo1Row}/>
-            <Clock x={clockCol} y={clockRow}/>
             <PreFilterMixer x={sourceMixCol} y={sourceMixRow}/>
+
+            <Route x={30} y={clockRow+30}/>
+            <Clock x={clockCol} y={clockRow}/>
+            <Arpeggiator x={arpCol} y={arpRow}/>
 
 
             <MainDisplay x={displayCol} y={displayRow}/>
-            <Arpeggiator x={arpCol} y={arpRow}/>
-
 
             <LowPassFilter x={filterCol} y={82}/>
             <StateVariableFilter x={filterCol} y={250}/>
