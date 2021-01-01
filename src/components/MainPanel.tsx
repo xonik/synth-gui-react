@@ -60,14 +60,14 @@ export default () => {
     const ringModCol = noiseCol + 45;
     const fxCol = ringModCol + 41;
 
-    const clockCol = 45;
+    const routeCol = 20;
+    const clockCol = routeCol + 56;
+    const arpCol = clockCol + 84;
 
     const sourceMixCol = 180;
     const displayCol = osc3Col + 85;
     const keyCtrlCol = displayCol-22;
     const voiceSelCol = displayCol;
-
-    const arpCol = clockCol + 93;
 
     const filterCol = displayCol + 270;
     const voiceMixCol = filterCol + 70;
@@ -108,7 +108,7 @@ export default () => {
             <LFO x={lfoCol} y={lfo1Row}/>
             <PreFilterMixer x={sourceMixCol} y={sourceMixRow}/>
 
-            <Route x={30} y={clockRow+30}/>
+            <Route x={routeCol} y={clockRow}/>
             <Clock x={clockCol} y={clockRow}/>
             <Arpeggiator x={arpCol} y={arpRow}/>
 

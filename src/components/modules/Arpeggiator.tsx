@@ -23,14 +23,14 @@ const Arpeggiator = ({ x, y }: Props) => {
     const row2 = 30;
     const col1 = 10;
     const col2 = col1 + 20;
-    const col3 = col2 + 30;
-    const col4 = col3 + 30;
+    const col3 = col2 + 25;
+    const col4 = col3 + 25;
     const col5 = col4 + 35;
     const col6 = col5 + 35;
 
 
     return <svg x={x} y={y}>
-        <Header label="Arpeggiator" x={0} y={row1} width={213}/>
+        <Header label="Arpeggiator" x={0} y={row1} width={190}/>
         <RoundLedPushButton8 labelPosition="bottom" x={col1} y={row2} label="On/Off" ledOn={[true]}/>
         <RoundLedPushButton8 labelPosition="bottom" x={col2} y={row2} label="Trigger" ledOn={[false]}/>
         <RotaryPot17 ledMode="single" label="Tempo" x={col3} y={row2} position={0.4}/>

@@ -1,6 +1,4 @@
 import React from 'react';
-import Route from './modules/Route';
-import KeyboardControls from './modules/KeyboardControls';
 import './Keyboard.scss';
 
 export default () => {
@@ -19,18 +17,6 @@ export default () => {
     const kbdX = panelWidth - keyboardWidth - rightEndcapThickness;
     const kbdY = panelHeight - keyboardHeight - bottomThickness;
 
-    const ctrlRow = 27;
-
-    // TODO:
-    //  Patch select
-    //  LFO 2
-    //  Display ++
-
-    /*
-    // Move these to keyboard part.
-    <KeyboardControls x={arpCol} y={keyboardRow}/>
-    <Arpeggiator x={arpCol} y={arpRow}/>
-    */
     return (
         <svg width="105cm" height="20cm" viewBox="0 0 1050 200" className="panel">
             <rect
@@ -44,9 +30,6 @@ export default () => {
             <line x1={kbdX + keyWidth * 14} y1={kbdY} x2={kbdX + keyWidth * 14} y2={kbdY + keyboardHeight} className="keys-octave-divider"/>
             <line x1={kbdX + keyWidth * 21} y1={kbdY} x2={kbdX + keyWidth * 21} y2={kbdY + keyboardHeight} className="keys-octave-divider"/>
             <line x1={kbdX + keyWidth * 28} y1={kbdY} x2={kbdX + keyWidth * 28} y2={kbdY + keyboardHeight} className="keys-octave-divider"/>
-
-            <Route x={20} y={ctrlRow}/>
-            <Route x={panelWidth-20} y={ctrlRow}/>
         </svg>
     );
 }
