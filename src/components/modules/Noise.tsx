@@ -9,9 +9,9 @@ interface Props {
 
 const Noise = ({ x, y }: Props) => {
   return <>
-    <Header label="Noise" x={x} y={y} width={45}/>
-    <RoundPushButton8 x={x+10} y={y+20}
-                      ledPosition="right" ledCount="3" ledOn={[true, false, false]} ledLabels={['White', 'Pink', 'Red']}
+    <Header label="Noise" x={x} y={y} width={35}/>
+    <RoundPushButton8 x={x+20} y={y+38}
+                      ledPosition="top" ledCount="3" ledOn={[true, false, false]} ledLabels={['White', 'Pink', 'Red']}
                       label="Colour" labelPosition="bottom"
     />
   </>;

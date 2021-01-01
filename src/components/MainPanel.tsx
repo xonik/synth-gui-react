@@ -26,10 +26,11 @@ import VoiceSelector from './modules/VoiceSelector';
 
 /**
  * TODO:
- * Voice-selector-knapper over display
+ * Amt-knapp på route?
+ * X Voice-selector-knapper over display
  * Waveform/mode-knapp på DCOer - Vurdere å sette detune rett over, sync til høyre og type-selector til venstre
- * Distortion/Bit crusher står for tett
- * Noise - plassering av leds
+ * X Distortion/Bit crusher står for tett
+ * X Noise - plassering av leds
  * X LFO-selector
  * X Load/save, dial w. click.
  * X Sync source på DCOer
@@ -56,8 +57,8 @@ export default () => {
 
     const lfoCol = 20;
     const noiseCol = 20;
-    const ringModCol = noiseCol + 55;
-    const fxCol = ringModCol + 35;
+    const ringModCol = noiseCol + 45;
+    const fxCol = ringModCol + 41;
 
     const clockCol = 45;
 
@@ -102,7 +103,7 @@ export default () => {
             <Noise x={noiseCol} y={noiseRow}/>
             <Ringmod x={ringModCol} y={noiseRow}/>
             <Distortion x={fxCol} y={fxRow}/>
-            <BitCrusherPre x={fxCol + 120} y={fxRow}/>
+            <BitCrusherPre x={fxCol + 135} y={fxRow}/>
 
             <LFO x={lfoCol} y={lfo1Row}/>
             <PreFilterMixer x={sourceMixCol} y={sourceMixRow}/>
