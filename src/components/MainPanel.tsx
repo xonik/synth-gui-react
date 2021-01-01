@@ -22,21 +22,28 @@ import Clock from './modules/Clock';
 import BitCrusherPre from './modules/BitCrusherPre';
 import Route from './modules/Route';
 import KeyboardControls from './modules/KeyboardControls';
+import VoiceSelector from './modules/VoiceSelector';
 
 /**
  * TODO:
- * Waveform/mode-knapp på DCOer
+ * Voice-selector-knapper over display
+ * Waveform/mode-knapp på DCOer - Vurdere å sette detune rett over, sync til høyre og type-selector til venstre
+ * Distortion/Bit crusher står for tett
+ * Noise - plassering av leds
  * X LFO-selector
- * Load/save, dial w. click.
+ * X Load/save, dial w. click.
  * X Sync source på DCOer
- * Tettere Oscillatorer
+ * X Tettere Oscillatorer
  * Vurdere å droppe digital fx-output og ha output-mixer under envelopes
- * Prøve horisontale osc igjen
+ * X Prøve horisontale osc igjen
  * X Voice volume i tillegg til pan. Kan også funke som wet/dry.
  *  - DRY/WET MIX! Nå går det ikke an å skru av originallyd'en!
  * X Clock ctrl
  * X Route-button
- * Flytte key ctrl opp på hovedpanel fordi de ikke kan overlappe tangenter. Bytte med arp?
+ * X Flytte key ctrl opp på hovedpanel fordi de ikke kan overlappe tangenter.
+ *
+ * FYSISK TESTING:
+ * - Hvordan er det å ha sync-knapper rett over wave-selector
  */
 export default () => {
 
@@ -57,6 +64,7 @@ export default () => {
     const sourceMixCol = 180;
     const displayCol = osc3Col + 85;
     const keyCtrlCol = displayCol-22;
+    const voiceSelCol = displayCol;
 
     const arpCol = clockCol + 93;
 
@@ -76,7 +84,8 @@ export default () => {
     const lfo1Row = noiseRow + 55;
     const clockRow = lfo1Row + 90;
 
-    const displayRow = 70;
+    const voiceSelRow = 12;
+    const displayRow = voiceSelRow + 58;
     const keyCtrlRow = displayRow + 233;
 
     const outputFxRow = 210;
@@ -102,6 +111,7 @@ export default () => {
             <Clock x={clockCol} y={clockRow}/>
             <Arpeggiator x={arpCol} y={arpRow}/>
 
+            <VoiceSelector x={voiceSelCol} y={voiceSelRow}/>
             <MainDisplay x={displayCol} y={displayRow}/>
             <KeyboardControls x={keyCtrlCol} y={keyCtrlRow}/>
 
