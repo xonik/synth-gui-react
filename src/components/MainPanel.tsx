@@ -26,9 +26,9 @@ import VoiceSelector from './modules/VoiceSelector';
 
 /**
  * TODO:
- * Amt-knapp på route?
+ * X Amt-knapp på route?
  * X Voice-selector-knapper over display
- * Waveform/mode-knapp på DCOer - Vurdere å sette detune rett over, sync til høyre og type-selector til venstre
+ * X Waveform/mode-knapp på DCOer - Vurdere å sette detune rett over, sync til høyre og type-selector til venstre
  * X Distortion/Bit crusher står for tett
  * X Noise - plassering av leds
  * X LFO-selector

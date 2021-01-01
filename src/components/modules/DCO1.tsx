@@ -33,6 +33,11 @@ const dco1 = ({ x, y }: Props) => {
     />
     <RotaryPot10 x={col4} y={topRow} ledMode="multi" label="Super saw" position={0.3}/>
 
+    <RoundPushButton8 x={col4} y={y+11}
+                      ledPosition="top" ledCount="3" ledOn={[true, false]} ledLabels={['DCO', 'WT', 'PCM']}
+                      label="Mode" labelPosition="bottom"
+    />
+
     <RoundPushButton8 x={col1} y={bottomRow1}
                       ledPosition="top" ledCount="2" ledOn={[true, false]} ledLabels={['Sqr', 'Saw']}
                       label="Sub wave" labelPosition="bottom"
