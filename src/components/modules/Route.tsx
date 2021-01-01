@@ -1,7 +1,6 @@
 import React from 'react';
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
 import Header from '../misc/Header';
-import RoundPushButton8 from '../buttons/RoundPushButton8';
 import RotaryPot17 from '../pots/RotaryPot17';
 
 interface Props {

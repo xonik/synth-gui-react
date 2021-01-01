@@ -24,9 +24,7 @@ class RotaryPotWOLeds extends React.Component<any, any> {
     }
 
     render() {
-        console.log(this.props)
         const { x, y, label } = this.props;
-        console.log('label', label)
         return <svg x={x} y={y} className="pot">
             <RotaryPotBase knobRadius={this.knobRadius}/>
             {label && <text x="0" y={this.labelY} className="pot-label" textAnchor="middle">{label}</text>}

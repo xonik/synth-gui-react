@@ -1,6 +1,5 @@
 import React from 'react';
 import RotaryPotWOLeds10 from '../pots/RotaryPotWOLeds10';
-import Header from '../misc/Header';
 import Display from '../misc/Display';
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
@@ -37,10 +36,7 @@ const DigitalFX = ({ x, y }: Props) => {
   const col4 = displayX + displayWidth / 2 + knobSpacing;
   const col5 = displayX + displayWidth + 15
 
-  // <Header label="DSP" x={x} y={y} width={120} align="left"/>
   return <>
-
-
     <RoundPushButton8 x={col1} y={row2left} label="Source" ledCount={2} ledLabels={['FX1', 'FX1']} ledOn={[true, false]} labelPosition="bottom" ledPosition="top"/>
     <RoundPushButton8 x={col1} y={row3left} label="Source" ledCount={2} ledLabels={['FX2', 'FX2']} ledOn={[true, false]} labelPosition="top" ledPosition="bottom"/>
 

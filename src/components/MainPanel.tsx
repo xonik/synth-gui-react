@@ -1,5 +1,4 @@
 import React from 'react';
-import './MainPanel.scss';
 import DCO1 from './modules/DCO1';
 import DCO2 from './modules/DCO2';
 import VCO from './modules/VCO';
@@ -23,6 +22,7 @@ import BitCrusherPre from './modules/BitCrusherPre';
 import Route from './modules/Route';
 import KeyboardControls from './modules/KeyboardControls';
 import VoiceSelector from './modules/VoiceSelector';
+import './MainPanel.scss';
 
 /**
  * TODO:
@@ -48,8 +48,8 @@ import VoiceSelector from './modules/VoiceSelector';
  */
 export default () => {
 
-    const panelHeight = 350;
-    const panelWidth = 1050;
+    //const panelHeight = 350;
+    //const panelWidth = 1050;
 
     const osc1Col = 70;
     const osc2Col = osc1Col + 115;
