@@ -26,25 +26,12 @@ import './MainPanel.scss';
 
 /**
  * TODO:
- * X Amt-knapp på route?
- * X Voice-selector-knapper over display
- * X Waveform/mode-knapp på DCOer - Vurdere å sette detune rett over, sync til høyre og type-selector til venstre
- * X Distortion/Bit crusher står for tett
- * X Noise - plassering av leds
- * X LFO-selector
- * X Load/save, dial w. click.
- * X Sync source på DCOer
- * X Tettere Oscillatorer
- * Vurdere å droppe digital fx-output og ha output-mixer under envelopes
- * X Prøve horisontale osc igjen
- * X Voice volume i tillegg til pan. Kan også funke som wet/dry.
- *  - DRY/WET MIX! Nå går det ikke an å skru av originallyd'en!
- * X Clock ctrl
- * X Route-button
- * X Flytte key ctrl opp på hovedpanel fordi de ikke kan overlappe tangenter.
- *
- * FYSISK TESTING:
- * - Hvordan er det å ha sync-knapper rett over wave-selector
+ * VCO sync sources
+ * Cross mod source, hvilke
+ * Saw polarity button
+ * Env amount for D/VCOs - dette er en felles pot med knapp på A6
+ * Lin/log FM? necessary?
+ * SEE RESEARCH.md for more
  */
 export default () => {
 
