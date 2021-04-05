@@ -1,8 +1,127 @@
 // TODO: Combine buttons
 
+const CC = {
+    BUTTONS_LEFT: 0,
+    BUTTONS_CENTER: 1,
+    BUTTONS_RIGHT: 2,
+    DCO1_NOTE: 3,
+    DCO1_SUPER_SAW: 4,
+    DCO1_WAVEFORM: 5,
+    DCO1_SUB1: 6,
+    DCO1_SUB2: 7,
+    DCO1_PW: 8,
+    DCO2_NOTE: 9,
+    DCO2_DETUNE: 10,
+    DCO2_SUPER_SAW: 11,
+    DCO2_WAVEFORM: 12,
+    DCO2_SUB1: 13,
+    DCO2_SUB2: 14,
+    DCO2_PW: 15,
+    VCO_NOTE: 16,
+    VCO_DETUNE: 17,
+    VCO_WAVEFORM: 18,
+    VCO_CROSS_MOD: 19,
+    VCO_PW: 20,
+    DISTORTION_DRIVE: 21,
+    DISTORTION_LEVEL: 22,
+    BIT_CRUSHER_BITS: 23,
+    BIT_CRUSHER_RATE: 24,
+    BIT_CRUSHER_LEVEL: 25,
+    LFO_RATE: 26,
+    LFO_DEPTH: 27,
+    LFO_DELAY: 28,
+    LEVEL_OSC1: 29,
+    LEVEL_OSC2: 30,
+    LEVEL_OSC3: 31,
+    LEVEL_NOISE: 32,
+    LEVEL_RING_MOD: 33,
+    LEVEL_EXT_AUDIO: 34,
+    ROUTE_AMOUNT: 35,
+    MASTER_CLOCK_RATE: 36,
+    ARP_TEMPO: 37,
+    MAIN_POT1: 38,
+    MAIN_POT2: 39,
+    MAIN_POT3: 40,
+    MAIN_POT4: 41,
+    MAIN_POT5: 42,
+    MAIN_POT6: 43,
+    KEYBOARD_PORTAMENTO: 44,
+    KEYBOARD_UNISON_DETUNE: 45,
+    LPF_INPUT: 46,
+    LPF_DRIVE: 47,
+    LPF_RESONANCE: 48,
+    LPF_CUTOFF: 49,
+    LPF_FM_AMT: 50,
+    LPF_ENV_AMT: 51,
+    LPF_LFO_AMT: 52,
+    LPF_KBD_AMT: 53,
+    SVF_INPUT: 54,
+    SVF_DRIVE: 55,
+    SVF_RESONANCE: 56,
+    SVF_CUTOFF: 57,
+    SVF_FM_AMT: 58,
+    SVF_ENV_AMT: 59,
+    SVF_LFO_AMT: 60,
+    SVF_KBD_AMT: 61,
+    POST_MIX_LPF: 62,
+    POST_MIX_SVF: 63,
+    POST_MIX_SINE1: 64,
+    POST_MIX_SINE2: 65,
+    VOICE_OUT_PAN: 66,
+    VOICE_OUT_AMOUNT: 67,
+    VOICE_OUT_FX1_SEND: 68,
+    VOICE_OUT_FX2_SEND: 69,
+    ENV1_ATTACK: 70,
+    ENV1_DECAY1: 71,
+    ENV1_DECAY2: 72,
+    ENV1_SUSTAIN: 73,
+    ENV1_RELEASE1: 74,
+    ENV1_RELEASE2: 75,
+    ENV1_DELAY: 76,
+    ENV1_D1_LEVEL: 77,
+    ENV1_R1_LEVEL: 78,
+    ENV2_ATTACK: 79,
+    ENV2_DECAY1: 80,
+    ENV2_DECAY2: 81,
+    ENV2_SUSTAIN: 82,
+    ENV2_RELEASE1: 83,
+    ENV2_RELEASE2: 84,
+    ENV2_DELAY: 85,
+    ENV2_D1_LEVEL: 86,
+    ENV2_R1_LEVEL: 87,
+    ENV3_ATTACK: 88,
+    ENV3_DECAY1: 89,
+    ENV3_DECAY2: 90,
+    ENV3_SUSTAIN: 91,
+    ENV3_RELEASE1: 92,
+    ENV3_RELEASE2: 93,
+    ENV3_DELAY: 94,
+    ENV3_D1_LEVEL: 95,
+    ENV3_R1_LEVEL: 96,
+    DSP1_POT1: 97,
+    DSP1_POT2: 98,
+    DSP1_POT3: 99,
+    DSP1_EFFECT: 100,
+    DSP2_POT1: 101,
+    DSP2_POT2: 102,
+    DSP2_POT3: 103,
+    DSP2_EFFECT: 104,
+    CHORUS_RATE: 105,
+    CHORUS_DEPTH: 106,
+    FX_BIT_CRUSHER_BITS: 107,
+    FX_BIT_CRUSHER_RATE: 108,
+    FX_MIX_LEVEL_DSP1: 109,
+    FX_MIX_LEVEL_DSP2: 110,
+    FX_MIX_LEVEL_CHORUS: 111,
+    FX_MIX_LEVEL_BIT_CRUSHER: 112,
+    OUTPUT_VOLUME: 113,
+    OUTPUT_SPREAD: 114,
+    OUTPUT_HEADPHONES: 115,
+}
+
 const BUTTONS = {
     BUTTONS_LEFT: {
-        cc: 0,
+        cc: CC.BUTTONS_LEFT,
         values: {
             OSC1_SYNC_OFF: 0,
             OSC1_SYNC_1_2: 1,
@@ -115,7 +234,7 @@ const BUTTONS = {
         },
     },
     BUTTONS_CENTER: {
-        cc: 0,
+        cc: CC.BUTTONS_CENTER,
         values: {
             VOICE1_ON: 0,
             VOICE1_OFF: 1,
@@ -163,7 +282,7 @@ const BUTTONS = {
         }
     },
     BUTTONS_RIGHT: {
-        cc: 0,
+        cc: CC.BUTTONS_RIGHT,
         values: {
             LPF_EXT_CV_ON: 0,
             LPF_EXT_CV_OFF: 1,
@@ -223,14 +342,12 @@ const BUTTONS = {
 
 const DCO1 = {
     // pots
-    NOTE: {
-        cc: 0,
-    },
-    SUPER_SAW: {cc: 0,},
-    WAVEFORM: {cc: 0,},
-    SUB1: {cc: 0,},
-    SUB2: {cc: 0,},
-    PW: {cc: 0,},
+    NOTE: { cc: CC.DCO1_NOTE },
+    SUPER_SAW: {cc: CC.DCO1_SUPER_SAW },
+    WAVEFORM: {cc: CC.DCO1_WAVEFORM },
+    SUB1: {cc: CC.DCO1_SUB1 },
+    SUB2: {cc: CC.DCO1_SUB1 },
+    PW: {cc: CC.DCO1_PW },
 
     //buttons
     SYNC: {
@@ -280,13 +397,13 @@ const DCO1 = {
 }
 const DCO2 = {
     // pots
-    NOTE: {},
-    DETUNE: {},
-    SUPER_SAW: {},
-    WAVEFORM: {},
-    SUB1: {},
-    SUB2: {},
-    PW: {},
+    NOTE: { cc: CC.DCO2_NOTE },
+    DETUNE: { cc: CC.DCO2_DETUNE },
+    SUPER_SAW: {cc: CC.DCO2_SUPER_SAW },
+    WAVEFORM: {cc: CC.DCO2_WAVEFORM },
+    SUB1: {cc: CC.DCO2_SUB1 },
+    SUB2: {cc: CC.DCO2_SUB1 },
+    PW: {cc: CC.DCO2_PW },
 
     //buttons
     SYNC: {
@@ -334,14 +451,13 @@ const DCO2 = {
         ],
     },
 }
-
 const VCO = {
     // pots
-    NOTE: {},
-    DETUNE: {},
-    WAVEFORM: {},
-    CROSS_MOD: {},
-    PW: {},
+    NOTE: { cc: CC.VCO_NOTE },
+    DETUNE: { cc: CC.VCO_DETUNE },
+    WAVEFORM: {cc: CC.VCO_WAVEFORM },
+    CROSS_MOD: {cc: CC.VCO_CROSS_MOD },
+    PW: {cc: CC.VCO_PW },
 
     //buttons
     SYNC: {
@@ -383,7 +499,6 @@ const VCO = {
         ],
     },
 }
-
 const NOISE = {
     COLOUR:{
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -394,7 +509,6 @@ const NOISE = {
         ],
     }
 }
-
 const RING_MOD = {
     SOURCE: {
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -405,11 +519,10 @@ const RING_MOD = {
         ],
     }
 }
-
 const DISTORTION = {
     // Pots
-    DRIVE: {},
-    LEVEL: {},
+    DRIVE: { cc: CC.DISTORTION_DRIVE },
+    LEVEL: { cc: CC.DISTORTION_LEVEL },
     // Buttons
     IN: {
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -435,9 +548,9 @@ const DISTORTION = {
 }
 const BIT_CRUSHER = {
     // Pots
-    BITS: {},
-    RATE: {},
-    LEVEL: {},
+    BITS: { cc: CC.BIT_CRUSHER_BITS },
+    RATE: { cc: CC.BIT_CRUSHER_RATE },
+    LEVEL: { cc: CC.BIT_CRUSHER_LEVEL },
     // Buttons
     IN: {
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -456,9 +569,9 @@ const BIT_CRUSHER = {
 }
 const LFOS = {
     // Pots
-    RATE: {},
-    DEPTH: {},
-    DELAY: {},
+    RATE: { cc: CC.LFO_RATE },
+    DEPTH: { cc: CC.LFO_DEPTH },
+    DELAY: { cc: CC.LFO_DELAY },
     // Buttons
     LFO1: {
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -517,12 +630,12 @@ const LFOS = {
     },
 }
 const SOURCE_MIX = {
-    LEVEL_OSC1: {},
-    LEVEL_OSC2: {},
-    LEVEL_OSC3: {},
-    LEVEL_NOISE: {},
-    LEVEL_RING_MOD: {},
-    LEVEL_EXT_AUDIO: {},
+    LEVEL_OSC1: { cc: CC.LEVEL_OSC1 },
+    LEVEL_OSC2: { cc: CC.LEVEL_OSC2 },
+    LEVEL_OSC3: { cc: CC.LEVEL_OSC3 },
+    LEVEL_NOISE: { cc: CC.LEVEL_NOISE },
+    LEVEL_RING_MOD: { cc: CC.LEVEL_RING_MOD },
+    LEVEL_EXT_AUDIO: { cc: CC.LEVEL_EXT_AUDIO },
     OUT_OSC1: {
         cc: BUTTONS.BUTTONS_LEFT.cc,
         values: [
@@ -567,7 +680,7 @@ const SOURCE_MIX = {
     },
 }
 const ROUTE = {
-    AMOUNT: {},
+    AMOUNT: { cc: CC.ROUTE_AMOUNT },
     FROM: {
         cc: BUTTONS.BUTTONS_LEFT.cc,
         values: [
@@ -584,7 +697,7 @@ const ROUTE = {
     },
 }
 const MASTER_CLOCK = {
-    RATE: {},
+    RATE: { cc: CC.MASTER_CLOCK_RATE },
     SOURCE: {
         cc: BUTTONS.BUTTONS_LEFT.cc,
         values: [
@@ -595,7 +708,7 @@ const MASTER_CLOCK = {
     },
 }
 const ARPEGGIATOR = {
-    TEMPO: {},
+    TEMPO: { cc: CC.ARP_TEMPO },
     ON_OFF: {
         cc: BUTTONS.BUTTONS_LEFT.cc,
         values: [
@@ -697,6 +810,13 @@ const VOICES = {
     },
 }
 const MAIN_PANEL = {
+    POT1: { cc: CC.MAIN_POT1 },
+    POT2: { cc: CC.MAIN_POT2 },
+    POT3: { cc: CC.MAIN_POT3 },
+    POT4: { cc: CC.MAIN_POT4 },
+    POT5: { cc: CC.MAIN_POT5 },
+    POT6: { cc: CC.MAIN_POT6 },
+
     MENU_LFO: {
         cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
@@ -735,62 +855,55 @@ const MAIN_PANEL = {
     },
     //TODO: ARP-meny?
 
-    HOME: {
+    FUNC_HOME: {
         cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
             BUTTONS.BUTTONS_CENTER.values.FUNC_HOME,
         ],
     },
-    SETTINGS: {
+    FUNC_SETTINGS: {
         cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
             BUTTONS.BUTTONS_CENTER.values.FUNC_SETTINGS,
         ],
     },
-    SHIFT: {
+    FUNC_SHIFT: {
         cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
             BUTTONS.BUTTONS_CENTER.values.FUNC_SHIFT_OFF,
             BUTTONS.BUTTONS_CENTER.values.FUNC_SHIFT_ON,
         ],
     },
-    PERFORM: {
+    FUNC_PERFORM: {
         cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
             BUTTONS.BUTTONS_CENTER.values.FUNC_PERFORM,
         ],
     },
-    LOAD: {
+    FUNC_LOAD: {
         cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
             BUTTONS.BUTTONS_CENTER.values.FUNC_LOAD,
         ],
     },
-    SAVE: {
+    FUNC_SAVE: {
         cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
             BUTTONS.BUTTONS_CENTER.values.FUNC_SAVE,
         ],
     },
-    COMPARE: {
+    FUNC_COMPARE: {
         cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
             BUTTONS.BUTTONS_CENTER.values.FUNC_COMPARE,
         ],
     },
-    ROUTE: {
+    FUNC_ROUTE: {
         cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
             BUTTONS.BUTTONS_CENTER.values.FUNC_ROUTE,
         ],
     },
-
-    POT1: {},
-    POT2: {},
-    POT3: {},
-    POT4: {},
-    POT5: {},
-    POT6: {},
 }
 const TRANSPOSE = {
     TRANSPOSE: {
@@ -805,8 +918,8 @@ const TRANSPOSE = {
     },
 }
 const KEYBOARD = {
-    PORTAMENTO: {},
-    UNISON_DETUNE: {},
+    PORTAMENTO: { cc: CC.KEYBOARD_PORTAMENTO },
+    UNISON_DETUNE: { cc: CC.KEYBOARD_UNISON_DETUNE },
     HOLD: {
         cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
@@ -830,16 +943,15 @@ const KEYBOARD = {
         ],
     },
 }
-
 const LPF = {
-    INPUT: {},
-    DRIVE: {},
-    RESONANCE: {},
-    CUTOFF: {},
-    FM_AMT: {},
-    ENV_AMT: {},
-    LFO_AMT: {},
-    KBD_AMT: {},
+    INPUT: { cc: CC.LPF_INPUT },
+    DRIVE: { cc: CC.LPF_DRIVE },
+    RESONANCE: { cc: CC.LPF_RESONANCE },
+    CUTOFF: { cc: CC.LPF_CUTOFF },
+    FM_AMT: { cc: CC.LPF_FM_AMT },
+    ENV_AMT: { cc: CC.LPF_ENV_AMT },
+    LFO_AMT: { cc: CC.LPF_LFO_AMT },
+    KBD_AMT: { cc: CC.LPF_KBD_AMT },
 
     EXT_CV: {
         cc: BUTTONS.BUTTONS_RIGHT.cc,
@@ -880,15 +992,14 @@ const FILTERS = {
     },
 }
 const SVF = {
-    INPUT: {},
-    DRIVE: {},
-    RESONANCE: {},
-    CUTOFF: {},
-
-    FM_AMT: {},
-    ENV_AMT: {},
-    LFO_AMT: {},
-    KBD_AMT: {},
+    INPUT: { cc: CC.SVF_INPUT },
+    DRIVE: { cc: CC.SVF_DRIVE },
+    RESONANCE: { cc: CC.SVF_RESONANCE },
+    CUTOFF: { cc: CC.SVF_CUTOFF },
+    FM_AMT: { cc: CC.SVF_FM_AMT },
+    ENV_AMT: { cc: CC.SVF_ENV_AMT },
+    LFO_AMT: { cc: CC.SVF_LFO_AMT },
+    KBD_AMT: { cc: CC.SVF_KBD_AMT },
 
     EXT_CV: {
         cc: BUTTONS.BUTTONS_RIGHT.cc,
@@ -921,27 +1032,27 @@ const SVF = {
     },
 }
 const POST_MIX = {
-    LPF: {},
-    SVF: {},
-    SINE1: {},
-    SINE2: {},
+    LPF: { cc: CC.POST_MIX_LPF },
+    SVF: { cc: CC.POST_MIX_SVF },
+    SINE1: { cc: CC.POST_MIX_SINE1 },
+    SINE2: { cc: CC.POST_MIX_SINE2 },
 }
 const VOICE_OUT = {
-    PAN: {},
-    AMOUNT: {},
-    FX1_SEND: {},
-    FX2_SEND: {},
+    PAN: { cc: CC.VOICE_OUT_PAN },
+    AMOUNT: { cc: CC.VOICE_OUT_AMOUNT },
+    FX1_SEND: { cc: CC.VOICE_OUT_FX1_SEND },
+    FX2_SEND: { cc: CC.VOICE_OUT_FX2_SEND },
 }
 const ENV1 = {
-    ATTACK: {},
-    DECAY1: {},
-    DECAY2: {},
-    SUSTAIN: {},
-    RELEASE1: {},
-    RELEASE2: {},
-    DELAY: {},
-    D1_LEVEL: {},
-    R1_LEVEL: {},
+    ATTACK: { cc: CC.ENV1_ATTACK },
+    DECAY1: { cc: CC.ENV1_DECAY1 },
+    DECAY2: { cc: CC.ENV1_DECAY2 },
+    SUSTAIN: { cc: CC.ENV1_SUSTAIN },
+    RELEASE1: { cc: CC.ENV1_RELEASE1 },
+    RELEASE2: { cc: CC.ENV1_RELEASE2 },
+    DELAY: { cc: CC.ENV1_DELAY },
+    D1_LEVEL: { cc: CC.ENV1_D1_LEVEL },
+    R1_LEVEL: { cc: CC.ENV1_R1_LEVEL },
 
     TRIGGER: {
         cc: BUTTONS.BUTTONS_RIGHT.cc,
@@ -965,16 +1076,15 @@ const ENV1 = {
     },
 }
 const ENV2 = {
-    ATTACK: {},
-    DECAY1: {},
-    DECAY2: {},
-    SUSTAIN: {},
-    RELEASE1: {},
-    RELEASE2: {},
-    DELAY: {},
-    D1_LEVEL: {},
-    R1_LEVEL: {},
-
+    ATTACK: { cc: CC.ENV2_ATTACK },
+    DECAY1: { cc: CC.ENV2_DECAY1 },
+    DECAY2: { cc: CC.ENV2_DECAY2 },
+    SUSTAIN: { cc: CC.ENV2_SUSTAIN },
+    RELEASE1: { cc: CC.ENV2_RELEASE1 },
+    RELEASE2: { cc: CC.ENV2_RELEASE2 },
+    DELAY: { cc: CC.ENV2_DELAY },
+    D1_LEVEL: { cc: CC.ENV2_D1_LEVEL },
+    R1_LEVEL: { cc: CC.ENV2_R1_LEVEL },
     TRIGGER: {
         cc: BUTTONS.BUTTONS_RIGHT.cc,
         values: [
@@ -997,16 +1107,15 @@ const ENV2 = {
     },
 }
 const ENV3 = {
-    ATTACK: {},
-    DECAY1: {},
-    DECAY2: {},
-    SUSTAIN: {},
-    RELEASE1: {},
-    RELEASE2: {},
-    DELAY: {},
-    D1_LEVEL: {},
-    R1_LEVEL: {},
-
+    ATTACK: { cc: CC.ENV3_ATTACK },
+    DECAY1: { cc: CC.ENV3_DECAY1 },
+    DECAY2: { cc: CC.ENV3_DECAY2 },
+    SUSTAIN: { cc: CC.ENV3_SUSTAIN },
+    RELEASE1: { cc: CC.ENV3_RELEASE1 },
+    RELEASE2: { cc: CC.ENV3_RELEASE2 },
+    DELAY: { cc: CC.ENV3_DELAY },
+    D1_LEVEL: { cc: CC.ENV3_D1_LEVEL },
+    R1_LEVEL: { cc: CC.ENV3_R1_LEVEL },
     ENV_SELECT: {
         cc: BUTTONS.BUTTONS_RIGHT.cc,
         values: [
@@ -1035,10 +1144,10 @@ const ENV3 = {
     },
 }
 const DSP1 = {
-    POT1: {},
-    POT2: {},
-    POT3: {},
-    EFFECT: {},
+    POT1: { cc: CC.DSP1_POT1 },
+    POT2: { cc: CC.DSP1_POT2 },
+    POT3: { cc: CC.DSP1_POT3 },
+    EFFECT: { cc: CC.DSP1_EFFECT },
 
     SOURCE: {
         cc: BUTTONS.BUTTONS_RIGHT.cc,
@@ -1049,10 +1158,10 @@ const DSP1 = {
     },
 }
 const DSP2 = {
-    POT1: {},
-    POT2: {},
-    POT3: {},
-    EFFECT: {},
+    POT1: { cc: CC.DSP2_POT1 },
+    POT2: { cc: CC.DSP2_POT2 },
+    POT3: { cc: CC.DSP2_POT3 },
+    EFFECT: { cc: CC.DSP2_EFFECT },
 
     SOURCE: {
         cc: BUTTONS.BUTTONS_RIGHT.cc,
@@ -1071,8 +1180,8 @@ const DSP2 = {
     },
 }
 const CHORUS = {
-    RATE: {},
-    DEPTH: {},
+    RATE: { cc: CC.CHORUS_RATE },
+    DEPTH: { cc: CC.CHORUS_DEPTH },
 
     SOURCE: {
         cc: BUTTONS.BUTTONS_RIGHT.cc,
@@ -1090,8 +1199,8 @@ const CHORUS = {
     },
 }
 const FX_BIT_CRUSHER = {
-    BITS: {},
-    RATE: {},
+    BITS: { cc: CC.FX_BIT_CRUSHER_BITS },
+    RATE: { cc: CC.FX_BIT_CRUSHER_RATE },
     SOURCE: {
         cc: BUTTONS.BUTTONS_RIGHT.cc,
         values: [
@@ -1101,14 +1210,13 @@ const FX_BIT_CRUSHER = {
     },
 }
 const FX_MIX = {
-    LEVEL_DSP1: {},
-    LEVEL_DSP2: {},
-    LEVEL_CHORUS: {},
-    LEVEL_BIT_CRUSHER: {},
+    LEVEL_DSP1: { cc: CC.FX_MIX_LEVEL_DSP1 },
+    LEVEL_DSP2: { cc: CC.FX_MIX_LEVEL_DSP2 },
+    LEVEL_CHORUS: { cc: CC.FX_MIX_LEVEL_CHORUS },
+    LEVEL_BIT_CRUSHER: { cc: CC.FX_MIX_LEVEL_BIT_CRUSHER },
 }
-
 const OUTPUT = {
-    VOLUME: {},
-    SPREAD: {},
-    HEADPHONES: {},
+    VOLUME: { cc: CC.OUTPUT_VOLUME },
+    SPREAD: { cc: CC.OUTPUT_SPREAD },
+    HEADPHONES: { cc: CC.OUTPUT_HEADPHONES },
 }
