@@ -1,3 +1,12 @@
+59 store pots m/leds
+5 store pots u/leds
+40 små pots m/leds
+6 små pots u/leds
+Tot (FØR keyboard): 110 pots 
+
+6 encoders (hvis stor dial skal være encoder)
+96 knapper!
+
 ## SPØRSMÅL
 - Hvordan er det å ha sync-knapper rett over wave-selector- Velocity, hvordan bestemme at envelope(s) skal påvirkes av velocity?
 - hvorvidt man bør ha noen input-volum-kontroll på ringmod, skal den isåfall være uavhengig av 
