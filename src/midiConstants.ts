@@ -1,4 +1,4 @@
-// TODO: Combine buttons
+// TODO: High value bits. Mod wheels, ribbon controller
 
 const CC = {
     BUTTONS_LEFT: 0,
