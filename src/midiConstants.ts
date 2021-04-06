@@ -1,4 +1,8 @@
 // TODO: High value bits. Mod wheels, ribbon controller
+export type MidiConfig = {
+    cc: number,
+    values?: number[],
+}
 
 export const CC = {
     BUTTONS_LEFT: 0,
@@ -1219,4 +1223,37 @@ const OUTPUT = {
     VOLUME: { cc: CC.OUTPUT_VOLUME },
     SPREAD: { cc: CC.OUTPUT_SPREAD },
     HEADPHONES: { cc: CC.OUTPUT_HEADPHONES },
+}
+
+export default {
+    DCO1,
+    DCO2,
+    VCO,
+    NOISE,
+    RING_MOD,
+    DISTORTION,
+    BIT_CRUSHER,
+    LFOS,
+    SOURCE_MIX,
+    ROUTE,
+    MASTER_CLOCK,
+    ARPEGGIATOR,
+    VOICES,
+    MAIN_PANEL,
+    TRANSPOSE,
+    KEYBOARD,
+    LPF,
+    FILTERS,
+    SVF,
+    POST_MIX,
+    VOICE_OUT,
+    ENV1,
+    ENV2,
+    ENV3,
+    DSP1,
+    DSP2,
+    CHORUS,
+    FX_BIT_CRUSHER,
+    FX_MIX,
+    OUTPUT,
 }

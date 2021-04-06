@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import classNames from 'classnames'
 import RoundPushButtonBase from './RoundPushButtonBase'
 import RotaryPotBase from '../pots/RotaryPotBase'
+import { subscribe, unsubscribe, sendCC } from '../../midibus'
 import './RoundButton.scss'
+import { MidiConfig } from '../../midiConstants'
 
 type LedPosition = 'left' | 'right' | 'sides' | 'top' | 'bottom' | undefined;
 type LabelPosition = 'left' | 'right' | 'top' | 'bottom' | undefined;
@@ -27,6 +29,7 @@ export interface Props {
     ledLabels?: string[];
     ledPosition?: LedPosition;
     ledOn?: boolean[];
+    midiConfig?: MidiConfig;
 }
 
 type LabelPos = {
@@ -183,7 +186,7 @@ const getRenderProps = (props: Props & Config): RenderProps => {
 
 export const RoundButtonBase = (props: Props & Config) => {
 
-    const { x, y, label } = props
+    const { x, y, label, midiConfig } = props
     const {
         buttonRadius,
         buttonMode,
@@ -195,10 +198,17 @@ export const RoundButtonBase = (props: Props & Config) => {
         ledButton
     } = getRenderProps(props);
 
+    const onClick = useCallback(() => {
+        if(midiConfig) {
+            sendCC(midiConfig.cc, 0);
+        }
+    }, [midiConfig])
+
     return (
         <svg x={x} y={y} className="button">
             {buttonMode === 'push'
                 ? <RoundPushButtonBase buttonRadius={buttonRadius}
+                                       onClick={onClick}
                                        className={classNames('button-cap', { 'button-cap-led': ledButton, 'button-cap-led__on': ledButton && ledOn.length > 0 && ledOn[0] })}/>
                 : <RotaryPotBase knobRadius={buttonRadius}/>
             }

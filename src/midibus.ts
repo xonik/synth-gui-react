@@ -1,4 +1,3 @@
-
 type Subscriber = {
     id: number;
     values?: [number];
@@ -34,6 +33,7 @@ const publishCC = (cc: number, value: number) => {
 }
 
 export const sendCC = (cc: number, value: number) => {
+    console.log(`Sending ${cc} with value ${value}`);
     if(loopback) {
         publishCC(cc, value);
     }
