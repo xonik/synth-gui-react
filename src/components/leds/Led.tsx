@@ -1,85 +1,74 @@
-import React from 'react';
-import classNames from 'classnames';
-import './Led.scss';
+import React from 'react'
+import classNames from 'classnames'
+import './Led.scss'
 
 type LabelPosition = 'left' | 'right' | 'top' | 'bottom' | undefined;
 
 export interface Props {
-  x: number;
-  y: number;
-  on?: boolean;
-  label?: string;
-  labelPosition?: LabelPosition;
+    x: number;
+    y: number;
+    on?: boolean;
+    label?: string;
+    labelPosition?: LabelPosition;
 }
 
 interface Config {
-  radius?: number;
-  labelMargin?: number; // margin button-label
+    radius?: number;
+    labelMargin?: number; // margin button-label
 }
 
-class Led extends React.Component<any, any> {
-  radius: number;
-  labelMargin: number;
-  labelPos: { x: number, y: number, textAnchor: string };
 
-  constructor(props: Props, config: Config) {
-    super(props);
-    this.radius = config.radius || 1.5;
-    this.labelMargin = config.labelMargin || 2;
-    this.labelPos = this.positionLabel(props.labelPosition || 'bottom', this.labelMargin);
-  }
-
-  private positionLabel(labelPosition: LabelPosition, labelMargin: number) {
+const positionLabel = (radius: number, labelPosition: LabelPosition, labelMargin: number) => {
     switch (labelPosition) {
-      case 'left':
-        return {
-          x: -(this.radius + labelMargin + 2),
-          y: 0,
-          textAnchor: 'end'
-        };
-      case 'right':
-        return {
-          x: this.radius + labelMargin + 2,
-          y: 0,
-          textAnchor: 'start'
-        };
-      case 'top':
-        return {
-          x: 0,
-          y: -(this.radius + labelMargin + 3),
-          textAnchor: 'middle'
-        };
-      case 'bottom':
-        return {
-          x: 0,
-          y: this.radius + labelMargin + 3,
-          textAnchor: 'middle'
-        };
-      default:
-        return { x: 0, y: 0, textAnchor: 'right' };
+        case 'left':
+            return {
+                x: -(radius + labelMargin + 2),
+                y: 0,
+                textAnchor: 'end'
+            }
+        case 'right':
+            return {
+                x: radius + labelMargin + 2,
+                y: 0,
+                textAnchor: 'start'
+            }
+        case 'top':
+            return {
+                x: 0,
+                y: -(radius + labelMargin + 3),
+                textAnchor: 'middle'
+            }
+        case 'bottom':
+            return {
+                x: 0,
+                y: radius + labelMargin + 3,
+                textAnchor: 'middle'
+            }
+        default:
+            return { x: 0, y: 0, textAnchor: 'right' }
     }
-  }
+}
 
+export default (props: Props & Config) => {
+    const radius = props.radius || 1.5
+    const labelMargin = props.labelMargin || 2
+    const labelPos = positionLabel(radius,props.labelPosition || 'bottom', labelMargin)
 
-  render() {
-    const { x, y, label, on } = this.props;
+    const { x, y, label, on } = props
 
     return (
-      <svg x={x} y={y} className="button">
-        <circle
-            cx={0} cy={0} r={this.radius} stroke="black" fill="red"
-            className={classNames('led', { 'led__on': on })}/>
+        <svg x={x} y={y} className="button">
+            <circle
+                cx={0} cy={0} r={radius} stroke="black" fill="red"
+                className={classNames('led', { 'led__on': on })}/>
 
-        {label && <text
-          x={this.labelPos.x}
-          y={this.labelPos.y}
-          className="led-label"
-          textAnchor={this.labelPos.textAnchor}
-          alignmentBaseline="middle"
-        >{label}</text>}
-      </svg>
-    );
-  }
+            {label && <text
+              x={labelPos.x}
+              y={labelPos.y}
+              className="led-label"
+              textAnchor={labelPos.textAnchor}
+              alignmentBaseline="middle"
+            >{label}</text>}
+        </svg>
+    )
 }
-
-export default Led;

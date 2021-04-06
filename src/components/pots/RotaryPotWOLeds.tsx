@@ -1,6 +1,6 @@
-import RotaryPotBase from './RotaryPotBase';
-import React from 'react';
-import './RotaryPot.scss';
+import RotaryPotBase from './RotaryPotBase'
+import React from 'react'
+import './RotaryPot.scss'
 
 export interface Props {
     x: number,
@@ -12,24 +12,12 @@ interface Config {
     knobRadius: number;
 }
 
-class RotaryPotWOLeds extends React.Component<any, any> {
+export default (props: Props & Config) => {
+    const { x, y, label, knobRadius } = props
+    const labelY = knobRadius + 5
 
-    knobRadius: number;
-    labelY: number;
-
-    constructor(props: Props, config: Config) {
-        super(props);
-        this.knobRadius = config.knobRadius;
-        this.labelY = config.knobRadius + 5;
-    }
-
-    render() {
-        const { x, y, label } = this.props;
-        return <svg x={x} y={y} className="pot">
-            <RotaryPotBase knobRadius={this.knobRadius}/>
-            {label && <text x="0" y={this.labelY} className="pot-label" textAnchor="middle">{label}</text>}
-        </svg>;
-    }
+    return <svg x={x} y={y} className="pot">
+        <RotaryPotBase knobRadius={knobRadius}/>
+        {label && <text x={0} y={labelY} className="pot-label" textAnchor="middle">{label}</text>}
+    </svg>
 }
-
-export default RotaryPotWOLeds;

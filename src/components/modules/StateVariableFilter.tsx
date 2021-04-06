@@ -44,7 +44,7 @@ const StateVariableFilter = ({ x, y }: Props) => {
                           ledOn={[true]} label="Link cutoff" labelPosition="bottom"/>
 
         <RoundPushButton8 x={col3} y={topRow - 42} ledPosition="right"
-                          ledCount="2" ledOn={[true, false]}
+                          ledCount={2} ledOn={[true, false]}
                           ledLabels={['Series', 'Parallel']} label="Routing" labelPosition="bottom"/>
 
         <Header label="State variable filter" x={x} y={topRow - 27} width={110} align="center"/>
@@ -59,7 +59,7 @@ const StateVariableFilter = ({ x, y }: Props) => {
 
         <RoundRotaryButton17 x={x} y={bottomRow1}
                              label="Slope" labelPosition="bottom"
-                             ledPosition="sides" ledCount="10"
+                             ledPosition="sides" ledCount={10}
                              ledOn={[true, false, false, false, false, false, false, false]}
                              ledLabels={[
                                  '12dB LP', '24dB LP', '12dB BP', '24dB BP', 'LP + BP',

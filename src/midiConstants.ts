@@ -1,6 +1,6 @@
 // TODO: High value bits. Mod wheels, ribbon controller
 
-const CC = {
+export const CC = {
     BUTTONS_LEFT: 0,
     BUTTONS_CENTER: 1,
     BUTTONS_RIGHT: 2,

@@ -22,11 +22,11 @@ const BitCrusherPre = ({ x, y }: Props) => {
 
     return <>
         <Header label="Bit crusher" x={x} y={row1} width={110}/>
-        <RoundPushButton8 x={col1} y={row2 + 8} ledPosition="top" ledCount="2" ledOn={[true, false]} label="In" labelPosition="bottom"/>
-        <RotaryPot10 ledMode="single" ledCount="12" label="Bits" x={col2} y={row2-10} position={0.7}/>
+        <RoundPushButton8 x={col1} y={row2 + 8} ledPosition="top" ledCount={2} ledOn={[true, false]} label="In" labelPosition="bottom"/>
+        <RotaryPot10 ledMode="single" ledCount={12} label="Bits" x={col2} y={row2-10} position={0.7}/>
         <RotaryPot10 ledMode="single" label="Rate" x={col3} y={row2 + 5} position={0.4}/>
         <RotaryPot17 ledMode="multi" label="Level" x={col4} y={row2} position={0.4}/>
-        <RoundPushButton8 x={col5} y={row2 + 8} ledPosition="top" ledCount="2" ledOn={[true, false]} label="Out" labelPosition="bottom"/>
+        <RoundPushButton8 x={col5} y={row2 + 8} ledPosition="top" ledCount={2} ledOn={[true, false]} label="Out" labelPosition="bottom"/>
 
     </>;
 };

@@ -37,7 +37,7 @@ const LFO = ({ x, y }: Props) => {
 
     <RoundPushButton8 x={firstPotCol + potDistance + 30} y={potRow1}
                          label="Shape" labelPosition="bottom"
-                         ledPosition="right" ledCount="5"
+                         ledPosition="right" ledCount={5}
                          ledOn={[true, false, false, false, false]}
                          ledLabels={['Saw', 'Tri', 'Sqr', 'Sin', 'S & H', ]}
     />

@@ -1,15 +1,4 @@
+import React from 'react'
 import RoundButtonBase, { Props } from './RoundButtonBase';
 
-class RoundRotaryButton17 extends RoundButtonBase {
-  constructor(props: Props) {
-    super(
-      props,
-      {
-        buttonRadius: 8.5,
-        buttonMode: 'rotate'
-      }
-    );
-  }
-}
-
-export default RoundRotaryButton17
+export default (props: Props) => <RoundButtonBase buttonRadius={8.5} buttonMode="rotate" {...props} />

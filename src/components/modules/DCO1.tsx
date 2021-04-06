@@ -28,18 +28,18 @@ const dco1 = ({ x, y }: Props) => {
 
     <RotaryPot10 x={col1} y={topRow} ledMode="single" label="Note" position={0.5}/>
     <RoundPushButton8 x={col2} y={topRow}
-                      ledPosition="right" ledCount="2" ledOn={[true, false]} ledLabels={['1 -> 2', '2 -> 1']}
+                      ledPosition="right" ledCount={2} ledOn={[true, false]} ledLabels={['1 -> 2', '2 -> 1']}
                       label="Sync" labelPosition="bottom"
     />
     <RotaryPot10 x={col4} y={topRow} ledMode="multi" label="Super saw" position={0.3}/>
 
     <RoundPushButton8 x={col4} y={y+11}
-                      ledPosition="top" ledCount="3" ledOn={[true, false]} ledLabels={['DCO', 'WT', 'PCM']}
+                      ledPosition="top" ledCount={3} ledOn={[true, false]} ledLabels={['DCO', 'WT', 'PCM']}
                       label="Mode" labelPosition="bottom"
     />
 
     <RoundPushButton8 x={col1} y={bottomRow1}
-                      ledPosition="top" ledCount="2" ledOn={[true, false]} ledLabels={['Sqr', 'Saw']}
+                      ledPosition="top" ledCount={2} ledOn={[true, false]} ledLabels={['Sqr', 'Saw']}
                       label="Sub wave" labelPosition="bottom"
     />
     <RotaryPot10 x={col2} y={bottomRow1} ledMode="multi" label="Sub -1" position={0.1}/>

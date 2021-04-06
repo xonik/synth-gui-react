@@ -29,13 +29,13 @@ const vco = ({ x, y }: Props) => {
     <RotaryPot10 x={col1} y={y} ledMode="single" label="Detune" position={0.5}/>
 
     <RoundPushButton8 x={col2} y={topRow}
-                      ledPosition="right" ledCount="3" ledOn={[true, false]} ledLabels={['Hard', 'CEM Hard', 'CEM Soft']}
+                      ledPosition="right" ledCount={3} ledOn={[true, false]} ledLabels={['Hard', 'CEM Hard', 'CEM Soft']}
                       label="Sync" labelPosition="bottom"
     />
 
     <RotaryPot10 x={col1} y={bottomRow1} ledMode="multi" label="Cross mod" position={0.1}/>
     <RoundPushButton8 x={col2} y={bottomRow1}
-                      ledPosition="right" ledCount="2" ledOn={[true, false]} ledLabels={['Osc 1', 'Ext']}
+                      ledPosition="right" ledCount={2} ledOn={[true, false]} ledLabels={['Osc 1', 'Ext']}
                       label="Source" labelPosition="bottom"
     />
     <RotaryPot10 x={col4} y={bottomRow1} ledMode="single" label="PW" position={0.3}/>

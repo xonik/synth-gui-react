@@ -40,20 +40,20 @@ export default () => {
       <RotaryPot40 x={50} y={row4} ledMode="multi" potMode="spread" label="Attack" position={0.5}/>
       <RotaryPot40 x={170} y={row4} ledMode="multi" label="Release" position={0.5}/>
 
-      <RoundPushButton8 x="220" y={buttonRow1} labelPosition="left" label="Button"/>
-      <RoundPushButton8 x="240" y={buttonRow1} labelPosition="right" label="Button"/>
-      <RoundPushButton8 x="220" y={buttonRow2} labelPosition="top" label="Button"/>
-      <RoundPushButton8 x="240" y={buttonRow2} labelPosition="bottom" label="Button"/>
+      <RoundPushButton8 x={220} y={buttonRow1} labelPosition="left" label="Button"/>
+      <RoundPushButton8 x={240} y={buttonRow1} labelPosition="right" label="Button"/>
+      <RoundPushButton8 x={220} y={buttonRow2} labelPosition="top" label="Button"/>
+      <RoundPushButton8 x={240} y={buttonRow2} labelPosition="bottom" label="Button"/>
 
-      <RoundPushButton8 x="220" y={buttonRow3} ledPosition="left" ledCount="1"/>
-      <RoundPushButton8 x="240" y={buttonRow3} ledPosition="right" ledCount="1"/>
-      <RoundPushButton8 x="220" y={buttonRow4} ledPosition="top" ledCount="1"/>
-      <RoundPushButton8 x="240" y={buttonRow4} ledPosition="bottom" ledCount="1"/>
+      <RoundPushButton8 x={220} y={buttonRow3} ledPosition="left" ledCount={1}/>
+      <RoundPushButton8 x={240} y={buttonRow3} ledPosition="right" ledCount={1}/>
+      <RoundPushButton8 x={220} y={buttonRow4} ledPosition="top" ledCount={1}/>
+      <RoundPushButton8 x={240} y={buttonRow4} ledPosition="bottom" ledCount={1}/>
 
-      <RoundPushButton8 x="220" y={buttonRow5} ledPosition="left" ledCount="2" ledOn={[true, false]} ledLabels={['Lin', 'Log']}/>
-      <RoundPushButton8 x="240" y={buttonRow5} ledPosition="right" ledCount="2" ledOn={[true, false]} ledLabels={['Lin', 'Log']}/>
-      <RoundPushButton8 x="220" y={buttonRow6} ledPosition="top" ledCount="2" ledOn={[true, false]} ledLabels={['Lin', 'Log']}/>
-      <RoundPushButton8 x="240" y={buttonRow6} ledPosition="bottom" ledCount="2" ledOn={[true, false]} ledLabels={['Lin', 'Log']}/>
+      <RoundPushButton8 x={220} y={buttonRow5} ledPosition="left" ledCount={2} ledOn={[true, false]} ledLabels={['Lin', 'Log']}/>
+      <RoundPushButton8 x={240} y={buttonRow5} ledPosition="right" ledCount={2} ledOn={[true, false]} ledLabels={['Lin', 'Log']}/>
+      <RoundPushButton8 x={220} y={buttonRow6} ledPosition="top" ledCount={2} ledOn={[true, false]} ledLabels={['Lin', 'Log']}/>
+      <RoundPushButton8 x={240} y={buttonRow6} ledPosition="bottom" ledCount={2} ledOn={[true, false]} ledLabels={['Lin', 'Log']}/>
 
     </svg>
   );

@@ -29,7 +29,7 @@ const LowPassFilter = ({ x, y }: Props) => {
         <RotaryPot17 x={x} y={topRow} ledMode="multi" label="Drive" position={0.5}/>
         <RotaryPot17 x={col4} y={topRow} ledMode="multi" label="Resonance" position={0.3}/>
 
-        <RoundPushButton8 x={col4} y={y + 10} ledPosition="top" ledCount="2" ledOn={[true, false]} ledLabels={['12dB', '24dB']} label="Slope" labelPosition="bottom"/>
+        <RoundPushButton8 x={col4} y={y + 10} ledPosition="top" ledCount={2} ledOn={[true, false]} ledLabels={['12dB', '24dB']} label="Slope" labelPosition="bottom"/>
 
         <RoundLedPushButton8 x={col1} y={y -10} label="Ext CV" labelPosition="bottom"/>
         <RoundLedPushButton8 x={col1} y={y + 10} label="Wheel" labelPosition="bottom"/>

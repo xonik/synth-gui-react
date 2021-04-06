@@ -34,9 +34,9 @@ const Arpeggiator = ({ x, y }: Props) => {
         <RoundLedPushButton8 labelPosition="bottom" x={col1} y={row2} label="On/Off" ledOn={[true]}/>
         <RoundLedPushButton8 labelPosition="bottom" x={col2} y={row2} label="Trigger" ledOn={[false]}/>
         <RotaryPot17 ledMode="single" label="Tempo" x={col3} y={row2} position={0.4}/>
-        <RoundPushButton8 labelPosition="bottom" x={col4} y={row2} label="Sync" ledCount="3" ledPosition="right" ledLabels={['Master', 'LFO1', 'Ext']} ledOn={[false, false, false]}/>
-        <RoundPushButton8 labelPosition="bottom" x={col5} y={row2} label="Range" ledCount="3" ledPosition="right" ledLabels={['1', '2', '3']} ledOn={[false, true, false]}/>
-        <RoundPushButton8 labelPosition="bottom" x={col6} y={row2} label="Mode" ledCount="5" ledPosition="right" ledLabels={['Up', 'Down', 'Up/down', 'Random', 'Other']} ledOn={[true, false, false, false, false]}/>
+        <RoundPushButton8 labelPosition="bottom" x={col4} y={row2} label="Sync" ledCount={3} ledPosition="right" ledLabels={['Master', 'LFO1', 'Ext']} ledOn={[false, false, false]}/>
+        <RoundPushButton8 labelPosition="bottom" x={col5} y={row2} label="Range" ledCount={3} ledPosition="right" ledLabels={['1', '2', '3']} ledOn={[false, true, false]}/>
+        <RoundPushButton8 labelPosition="bottom" x={col6} y={row2} label="Mode" ledCount={5} ledPosition="right" ledLabels={['Up', 'Down', 'Up/down', 'Random', 'Other']} ledOn={[true, false, false, false, false]}/>
     </svg>;
 };
 

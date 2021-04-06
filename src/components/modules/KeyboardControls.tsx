@@ -54,7 +54,7 @@ const KeyboardControls = ({ x, y }: Props) => {
         <RotaryPot10 x={col8} y={row2} ledMode="single" label="Portamento" position={0.5}/>
         <RoundLedPushButton8 labelPosition="bottom" x={col9} y={row2} label="Hold" ledOn={[false]}/>
         <RoundLedPushButton8 labelPosition="bottom" x={col10} y={row2} label="Chord" ledOn={[false]}/>
-        <RoundPushButton8 labelPosition="bottom" x={col11} y={row2} label="Mode" ledCount="3" ledPosition="right" ledLabels={['Solo', 'Unison', 'Poly']} ledOn={[false, true, false]}/>
+        <RoundPushButton8 labelPosition="bottom" x={col11} y={row2} label="Mode" ledCount={3} ledPosition="right" ledLabels={['Solo', 'Unison', 'Poly']} ledOn={[false, true, false]}/>
         <RotaryPot10 x={col12} y={row2} ledMode="single" label="Unison detune" position={0.5}/>
     </svg>;
 };

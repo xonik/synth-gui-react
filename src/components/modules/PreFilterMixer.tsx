@@ -19,7 +19,7 @@ const PreFilterMixerChannel = ({ x, y, label }: ChannelProps) => {
   return <>
     <RotaryPot17 ledMode="multi" label={label} x={x} y={y} position={0.4}/>
     <RoundPushButton8 x={x+25} y={y+3}
-                      ledPosition="top" ledCount="2" ledOn={[true, false]}
+                      ledPosition="top" ledCount={2} ledOn={[true, false]}
     />
   </>;
 };
