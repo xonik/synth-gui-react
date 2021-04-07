@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import classNames from 'classnames'
 import arc from '../../utils/svg/arc'
 import RotaryPotBase from './RotaryPotBase'
 import './RotaryPot.scss'
 import { MidiConfig } from '../../midiConstants'
+import { sendCC } from '../../midibus'
 
 export type LedMode = 'single' | 'multi';
 export type PotMode = 'normal' | 'pan' | 'spread';
@@ -93,7 +94,7 @@ const getLedPos = (centerLed: number, ledCount: number, mode: PotMode, position:
 export default (props: Props & Config) => {
 
     // Position should be in the range 0-1 in all modes but pan. In pan the range is -0.5 - 0.5
-    const { x, y, ledMode = 'single', potMode = 'normal', label, position } = props
+    const { x, y, ledMode = 'single', potMode = 'normal', label, position, midiConfig } = props
 
     const {
         ledRadius,
@@ -115,9 +116,15 @@ export default (props: Props & Config) => {
     // negative pointer used for spread
     const negLedPosition = centerLed - (ledPosition - centerLed)
 
+    const onClick = useCallback(() => {
+        if(midiConfig) {
+            sendCC(midiConfig.cc, 0);
+        }
+    }, [midiConfig])
+
     return (
         <svg x={x} y={y} className="pot">
-            <RotaryPotBase knobRadius={knobRadius}/>
+            <RotaryPotBase knobRadius={knobRadius} onClick={onClick}/>
             <path d={windowArc} className="pot-ring-window"
                   strokeWidth={windowWidth}/>
             {ledAngles.map((angle, led) => {

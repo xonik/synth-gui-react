@@ -1,7 +1,8 @@
 import RotaryPotBase from './RotaryPotBase'
-import React from 'react'
+import React, { useCallback } from 'react'
 import './RotaryPot.scss'
 import { MidiConfig } from '../../midiConstants'
+import { sendCC } from '../../midibus'
 
 export interface Props {
     x: number,
@@ -15,11 +16,17 @@ interface Config {
 }
 
 export default (props: Props & Config) => {
-    const { x, y, label, knobRadius } = props
+    const { x, y, label, knobRadius, midiConfig } = props
     const labelY = knobRadius + 5
 
+    const onClick = useCallback(() => {
+        if(midiConfig) {
+            sendCC(midiConfig.cc, 0);
+        }
+    }, [midiConfig])
+
     return <svg x={x} y={y} className="pot">
-        <RotaryPotBase knobRadius={knobRadius}/>
+        <RotaryPotBase knobRadius={knobRadius} onClick={onClick}/>
         {label && <text x={0} y={labelY} className="pot-label" textAnchor="middle">{label}</text>}
     </svg>
 }

@@ -210,7 +210,7 @@ export const RoundButtonBase = (props: Props & Config) => {
                 ? <RoundPushButtonBase buttonRadius={buttonRadius}
                                        onClick={onClick}
                                        className={classNames('button-cap', { 'button-cap-led': ledButton, 'button-cap-led__on': ledButton && ledOn.length > 0 && ledOn[0] })}/>
-                : <RotaryPotBase knobRadius={buttonRadius}/>
+                : <RotaryPotBase onClick={onClick} knobRadius={buttonRadius}/>
             }
             {label && <text
               x={labelPos.x}
