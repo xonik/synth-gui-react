@@ -4,6 +4,7 @@ import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
 import Led from '../leds/Led';
 import React from 'react';
+import midiConstants from '../../midiConstants'
 
 interface Props {
     x: number,
@@ -44,17 +45,17 @@ const KeyboardControls = ({ x, y }: Props) => {
     return <svg x={x} y={y}>
         <Header label="Transpose" x={0} y={row1} width={80}/>
         <Header label="Keyboard" x={85} y={row1} width={140}/>
-        <RoundPushButton8 labelPosition="bottom" x={col1} y={row2} label="Down" ledOn={[true]}/>
+        <RoundPushButton8 labelPosition="bottom" x={col1} y={row2} label="Down" midiConfig={midiConstants.TRANSPOSE.TRANSPOSE}/>
         <Led x={col2} y={row2} label="-2" on={false}/>
         <Led x={col3} y={row2} label="-1" on={false}/>
         <Led x={col4} y={row2} label="0" on={true}/>
         <Led x={col5} y={row2} label="1" on={false}/>
         <Led x={col6} y={row2} label="2" on={false}/>
-        <RoundPushButton8 labelPosition="bottom" x={col7} y={row2} label="Up" ledOn={[true]}/>
+        <RoundPushButton8 labelPosition="bottom" x={col7} y={row2} label="Up" midiConfig={midiConstants.TRANSPOSE.TRANSPOSE}/>
         <RotaryPot10 x={col8} y={row2} ledMode="single" label="Portamento" position={0.5}/>
-        <RoundLedPushButton8 labelPosition="bottom" x={col9} y={row2} label="Hold" ledOn={[false]}/>
-        <RoundLedPushButton8 labelPosition="bottom" x={col10} y={row2} label="Chord" ledOn={[false]}/>
-        <RoundPushButton8 labelPosition="bottom" x={col11} y={row2} label="Mode" ledCount={3} ledPosition="right" ledLabels={['Solo', 'Unison', 'Poly']} ledOn={[false, true, false]}/>
+        <RoundLedPushButton8 labelPosition="bottom" x={col9} y={row2} label="Hold" midiConfig={midiConstants.KEYBOARD.HOLD}/>
+        <RoundLedPushButton8 labelPosition="bottom" x={col10} y={row2} label="Chord" midiConfig={midiConstants.KEYBOARD.CHORD}/>
+        <RoundPushButton8 labelPosition="bottom" x={col11} y={row2} label="Mode" ledCount={3} ledPosition="right" ledLabels={['Solo', 'Unison', 'Poly']} midiConfig={midiConstants.KEYBOARD.MODE}/>
         <RotaryPot10 x={col12} y={row2} ledMode="single" label="Unison detune" position={0.5}/>
     </svg>;
 };

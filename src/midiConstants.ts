@@ -473,7 +473,13 @@ const VCO = {
             BUTTONS.BUTTONS_LEFT.values.OSC3_SYNC_CEM_SOFT,
         ],
     },
-    CROSS_MOD_SRC: {},
+    CROSS_MOD_SRC: {
+        cc: BUTTONS.BUTTONS_LEFT.cc,
+        values: [
+            BUTTONS.BUTTONS_LEFT.values.OSC3_CROSS_MOD_SRC_OSC1,
+            BUTTONS.BUTTONS_LEFT.values.OSC3_CROSS_MOD_SRC_EXT,
+        ],
+    },
     EXT_CV: {
         cc: BUTTONS.BUTTONS_LEFT.cc,
         values: [

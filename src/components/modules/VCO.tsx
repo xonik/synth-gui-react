@@ -4,6 +4,7 @@ import RotaryPot10 from '../pots/RotaryPot10';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
 import Header from '../misc/Header';
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
+import midiConstants from '../../midiConstants'
 
 interface Props {
   x: number,
@@ -29,21 +30,23 @@ const vco = ({ x, y }: Props) => {
     <RotaryPot10 x={col1} y={y} ledMode="single" label="Detune" position={0.5}/>
 
     <RoundPushButton8 x={col2} y={topRow}
-                      ledPosition="right" ledCount={3} ledOn={[true, false]} ledLabels={['Hard', 'CEM Hard', 'CEM Soft']}
+                      ledPosition="right" ledCount={3} ledLabels={['Hard', 'CEM Hard', 'CEM Soft']}
                       label="Sync" labelPosition="bottom"
+                      midiConfig={midiConstants.VCO.SYNC}
     />
 
     <RotaryPot10 x={col1} y={bottomRow1} ledMode="multi" label="Cross mod" position={0.1}/>
     <RoundPushButton8 x={col2} y={bottomRow1}
-                      ledPosition="right" ledCount={2} ledOn={[true, false]} ledLabels={['Osc 1', 'Ext']}
+                      ledPosition="right" ledCount={2} ledLabels={['Osc 1', 'Ext']}
                       label="Source" labelPosition="bottom"
+                      midiConfig={midiConstants.VCO.CROSS_MOD_SRC}
     />
     <RotaryPot10 x={col4} y={bottomRow1} ledMode="single" label="PW" position={0.3}/>
 
-    <RoundLedPushButton8 x={col1} y={bottomRow2} ledOn={[true]} label="Ext CV" labelPosition="bottom"/>
-    <RoundLedPushButton8 x={col2} y={bottomRow2} ledOn={[true]} label="Wheel" labelPosition="bottom"/>
-    <RoundLedPushButton8 x={col3} y={bottomRow2} ledOn={[true]} label="LFO" labelPosition="bottom"/>
-    <RoundLedPushButton8 x={col4} y={bottomRow2} ledOn={[true]} label="Kbd" labelPosition="bottom"/>
+    <RoundLedPushButton8 x={col1} y={bottomRow2} label="Ext CV" labelPosition="bottom" midiConfig={midiConstants.VCO.EXT_CV}/>
+    <RoundLedPushButton8 x={col2} y={bottomRow2} label="Wheel" labelPosition="bottom" midiConfig={midiConstants.VCO.WHEEL}/>
+    <RoundLedPushButton8 x={col3} y={bottomRow2} label="LFO" labelPosition="bottom" midiConfig={midiConstants.VCO.LFO}/>
+    <RoundLedPushButton8 x={col4} y={bottomRow2} label="Kbd" labelPosition="bottom" midiConfig={midiConstants.VCO.KBD}/>
   </>;
 };
 

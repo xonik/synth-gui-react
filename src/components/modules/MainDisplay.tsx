@@ -4,6 +4,7 @@ import RotaryPotWOLeds17 from '../pots/RotaryPotWOLeds17';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
 import './MainDisplay.scss';
 import RotaryPotWOLeds32 from '../pots/RotaryPotWOLeds32';
+import midiConstants from '../../midiConstants'
 
 interface Props {
   x: number,
@@ -34,12 +35,12 @@ const MainDisplay = ({ x, y }: Props) => {
 
   return <>
     <rect x={x - bezelLRMargin} y={y-bezelTopMargin} height={displayHeight + bezelTopMargin + bezelBottomMargin} width={displayWidth + 2 * bezelLRMargin} className="bezel"/>;
-    <RoundPushButton8 x={displayCenter - 2.5 * buttonSpacing} y={buttonRow} label="LFOs" labelPosition="bottom"/>
-    <RoundPushButton8 x={displayCenter - 1.5 * buttonSpacing} y={buttonRow} label="Osc" labelPosition="bottom"/>
-    <RoundPushButton8 x={displayCenter - 0.5 * buttonSpacing} y={buttonRow} label="Filters" labelPosition="bottom"/>
-    <RoundPushButton8 x={displayCenter + 0.5 * buttonSpacing} y={buttonRow} label="Envelopes" labelPosition="bottom"/>
-    <RoundPushButton8 x={displayCenter + 1.5 * buttonSpacing} y={buttonRow} label="Mods" labelPosition="bottom"/>
-    <RoundPushButton8 x={displayCenter + 2.5 * buttonSpacing} y={buttonRow} label="FX" labelPosition="bottom"/>
+    <RoundPushButton8 x={displayCenter - 2.5 * buttonSpacing} y={buttonRow} label="LFOs" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.MENU_LFO}/>
+    <RoundPushButton8 x={displayCenter - 1.5 * buttonSpacing} y={buttonRow} label="Osc" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.MENU_OSC}/>
+    <RoundPushButton8 x={displayCenter - 0.5 * buttonSpacing} y={buttonRow} label="Filters" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.MENU_FILTER}/>
+    <RoundPushButton8 x={displayCenter + 0.5 * buttonSpacing} y={buttonRow} label="Envelopes" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.MENU_ENVELOPE}/>
+    <RoundPushButton8 x={displayCenter + 1.5 * buttonSpacing} y={buttonRow} label="Mods" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.MENU_MOD}/>
+    <RoundPushButton8 x={displayCenter + 2.5 * buttonSpacing} y={buttonRow} label="FX" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.MENU_FX}/>
     <Display x={x} y={y} width={displayWidth} height={displayHeight}/>
     <RotaryPotWOLeds17 x={displayCenter - 2 * potSpacing} y={potRow}/>
     <RotaryPotWOLeds17 x={displayCenter - 1 * potSpacing} y={potRow}/>
@@ -48,15 +49,15 @@ const MainDisplay = ({ x, y }: Props) => {
     <RotaryPotWOLeds17 x={displayCenter + 2 * potSpacing} y={potRow}/>
     <RotaryPotWOLeds32 x={displayCenter} y={masterPotRow}/>
 
-    <RoundPushButton8 x={displayCenter - 2.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Home" labelPosition="bottom"/>
-    <RoundPushButton8 x={displayCenter - 1.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Settings" labelPosition="bottom"/>
-    <RoundPushButton8 x={displayCenter + 1.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Load" labelPosition="bottom"/>
-    <RoundPushButton8 x={displayCenter + 2.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Save" labelPosition="bottom"/>
+    <RoundPushButton8 x={displayCenter - 2.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Home" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_HOME}/>
+    <RoundPushButton8 x={displayCenter - 1.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Settings" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_SETTINGS}/>
+    <RoundPushButton8 x={displayCenter + 1.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Load" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_LOAD}/>
+    <RoundPushButton8 x={displayCenter + 2.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Save" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_SAVE}/>
 
-    <RoundPushButton8 x={displayCenter - 2.5 * buttonSpacing} y={ctrlSwitchesRow2} label="Shift" labelPosition="bottom"/>
-    <RoundPushButton8 x={displayCenter - 1.5 * buttonSpacing} y={ctrlSwitchesRow2} label="Perform" labelPosition="bottom"/>
-    <RoundPushButton8 x={displayCenter + 1.5 * buttonSpacing} y={ctrlSwitchesRow2} label="Compare" labelPosition="bottom"/>
-    <RoundPushButton8 x={displayCenter + 2.5 * buttonSpacing} y={ctrlSwitchesRow2} label="Route" labelPosition="bottom"/>
+    <RoundPushButton8 x={displayCenter - 2.5 * buttonSpacing} y={ctrlSwitchesRow2} label="Shift" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_SHIFT}/>
+    <RoundPushButton8 x={displayCenter - 1.5 * buttonSpacing} y={ctrlSwitchesRow2} label="Perform" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_PERFORM}/>
+    <RoundPushButton8 x={displayCenter + 1.5 * buttonSpacing} y={ctrlSwitchesRow2} label="Compare" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_COMPARE}/>
+    <RoundPushButton8 x={displayCenter + 2.5 * buttonSpacing} y={ctrlSwitchesRow2} label="Route" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_ROUTE}/>
   </>;
 };
 

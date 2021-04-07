@@ -4,6 +4,7 @@ import RotaryPot10 from '../pots/RotaryPot10';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
 import Header from '../misc/Header';
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
+import midiConstants from '../../midiConstants'
 
 interface Props {
   x: number,
@@ -30,22 +31,24 @@ const dco2 = ({ x, y }: Props) => {
     <RotaryPot10 x={col4} y={topRow} ledMode="multi" label="Super saw" position={0.3}/>
 
     <RoundPushButton8 x={col4} y={y+11}
-                      ledPosition="top" ledCount={3} ledOn={[true, false]} ledLabels={['DCO', 'WT', 'PCM']}
+                      ledPosition="top" ledCount={3} ledLabels={['DCO', 'WT', 'PCM']}
                       label="Mode" labelPosition="bottom"
+                      midiConfig={midiConstants.DCO2.SYNC}
     />
 
 
     <RoundPushButton8 x={col1} y={bottomRow1}
-                      ledPosition="top" ledCount={2} ledOn={[true, false]} ledLabels={['Sqr', 'Saw']}
+                      ledPosition="top" ledCount={2} ledLabels={['Sqr', 'Saw']}
                       label="Sub wave" labelPosition="bottom"
+                      midiConfig={midiConstants.DCO2.SUB_WAVE}
     />
     <RotaryPot10 x={col2} y={bottomRow1} ledMode="multi" label="Sub -1" position={0.1}/>
     <RotaryPot10 x={col3} y={bottomRow1} ledMode="multi" label="Sub -2" position={0.6}/>
     <RotaryPot10 x={col4} y={bottomRow1} ledMode="single" label="PW" position={0.3}/>
 
-    <RoundLedPushButton8 x={col2} y={bottomRow2} ledOn={[true]} label="Wheel" labelPosition="bottom"/>
-    <RoundLedPushButton8 x={col3} y={bottomRow2} ledOn={[true]} label="LFO" labelPosition="bottom"/>
-    <RoundLedPushButton8 x={col4} y={bottomRow2} ledOn={[true]} label="Kbd" labelPosition="bottom"/>
+    <RoundLedPushButton8 x={col2} y={bottomRow2} label="Wheel" labelPosition="bottom" midiConfig={midiConstants.DCO2.WHEEL}/>
+    <RoundLedPushButton8 x={col3} y={bottomRow2} label="LFO" labelPosition="bottom" midiConfig={midiConstants.DCO2.LFO}/>
+    <RoundLedPushButton8 x={col4} y={bottomRow2} label="Kbd" labelPosition="bottom" midiConfig={midiConstants.DCO2.KBD}/>
   </>;
 };
 

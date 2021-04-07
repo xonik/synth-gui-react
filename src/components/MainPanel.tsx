@@ -22,6 +22,7 @@ import BitCrusherPre from './modules/BitCrusherPre';
 import Route from './modules/Route';
 import KeyboardControls from './modules/KeyboardControls';
 import VoiceSelector from './modules/VoiceSelector';
+import midiConstants from '../midiConstants'
 import './MainPanel.scss';
 
 /**
@@ -81,6 +82,52 @@ export default () => {
 
     const outputMixerRow = outputFxRow + 85;
 
+    const midiConfigsEnv1 = {
+        a:  midiConstants.ENV1.ATTACK,
+        d1: midiConstants.ENV1.DECAY1,
+        d2: midiConstants.ENV1.DECAY2,
+        s: midiConstants.ENV1.SUSTAIN,
+        r1: midiConstants.ENV1.RELEASE1,
+        r2: midiConstants.ENV1.RELEASE2,
+        delay: midiConstants.ENV1.DELAY,
+        d1_lev: midiConstants.ENV1.D1_LEVEL,
+        trigger: midiConstants.ENV1.TRIGGER,
+        loop: midiConstants.ENV1.LOOP,
+        r1_lev: midiConstants.ENV1.R1_LEVEL,
+        invert: midiConstants.ENV1.INVERT,
+    }
+
+    const midiConfigsEnv2 = {
+        a:  midiConstants.ENV2.ATTACK,
+        d1: midiConstants.ENV2.DECAY1,
+        d2: midiConstants.ENV2.DECAY2,
+        s: midiConstants.ENV2.SUSTAIN,
+        r1: midiConstants.ENV2.RELEASE1,
+        r2: midiConstants.ENV2.RELEASE2,
+        delay: midiConstants.ENV2.DELAY,
+        d1_lev: midiConstants.ENV2.D1_LEVEL,
+        trigger: midiConstants.ENV2.TRIGGER,
+        loop: midiConstants.ENV2.LOOP,
+        r1_lev: midiConstants.ENV2.R1_LEVEL,
+        invert: midiConstants.ENV2.INVERT,
+    }
+
+    const midiConfigsEnv3 = {
+        a:  midiConstants.ENV3.ATTACK,
+        d1: midiConstants.ENV3.DECAY1,
+        d2: midiConstants.ENV3.DECAY2,
+        s: midiConstants.ENV3.SUSTAIN,
+        r1: midiConstants.ENV3.RELEASE1,
+        r2: midiConstants.ENV3.RELEASE2,
+        envSel: midiConstants.ENV3.ENV_SELECT,
+        delay: midiConstants.ENV3.DELAY,
+        d1_lev: midiConstants.ENV3.D1_LEVEL,
+        trigger: midiConstants.ENV3.TRIGGER,
+        loop: midiConstants.ENV3.LOOP,
+        r1_lev: midiConstants.ENV3.R1_LEVEL,
+        invert: midiConstants.ENV3.INVERT,
+    }
+
     return (
         <svg width="105cm" height="35cm" viewBox="0 0 1050 350" className="panel">
             <DCO1 x={osc1Col} y={oscRow}/>
@@ -108,9 +155,9 @@ export default () => {
             <PostFilterMixer x={voiceMixCol} y={5}/>
 
 
-            <Envelope x={envCol} y={5} label="Env 1 - filter"/>
-            <Envelope x={envCol} y={75} label="Env 2 - amp"/>
-            <Envelope x={envCol} y={145} label="Env 3 - N" showSelect={true}/>
+            <Envelope x={envCol} y={5} label="Env 1 - filter" midiConfigs={midiConfigsEnv1}/>
+            <Envelope x={envCol} y={75} label="Env 2 - amp" midiConfigs={midiConfigsEnv2}/>
+            <Envelope x={envCol} y={145} label="Env 3 - N" showSelect={true} midiConfigs={midiConfigsEnv3}/>
 
             <DigitalFX x={outFx1Col} y={outputFxRow}/>
             <Chorus x={outFx2Col} y={outputFxRow + 10}/>
