@@ -50,10 +50,10 @@ export default () => {
       <RoundPushButton8 x={220} y={buttonRow4} ledPosition="top" ledCount={1}/>
       <RoundPushButton8 x={240} y={buttonRow4} ledPosition="bottom" ledCount={1}/>
 
-      <RoundPushButton8 x={220} y={buttonRow5} ledPosition="left" ledCount={2} ledOn={[true, false]} ledLabels={['Lin', 'Log']}/>
-      <RoundPushButton8 x={240} y={buttonRow5} ledPosition="right" ledCount={2} ledOn={[true, false]} ledLabels={['Lin', 'Log']}/>
-      <RoundPushButton8 x={220} y={buttonRow6} ledPosition="top" ledCount={2} ledOn={[true, false]} ledLabels={['Lin', 'Log']}/>
-      <RoundPushButton8 x={240} y={buttonRow6} ledPosition="bottom" ledCount={2} ledOn={[true, false]} ledLabels={['Lin', 'Log']}/>
+      <RoundPushButton8 x={220} y={buttonRow5} ledPosition="left" ledCount={2} ledLabels={['Lin', 'Log']}/>
+      <RoundPushButton8 x={240} y={buttonRow5} ledPosition="right" ledCount={2} ledLabels={['Lin', 'Log']}/>
+      <RoundPushButton8 x={220} y={buttonRow6} ledPosition="top" ledCount={2} ledLabels={['Lin', 'Log']}/>
+      <RoundPushButton8 x={240} y={buttonRow6} ledPosition="bottom" ledCount={2} ledLabels={['Lin', 'Log']}/>
 
     </svg>
   );

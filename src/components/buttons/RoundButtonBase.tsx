@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import classNames from 'classnames'
 import RoundPushButtonBase from './RoundPushButtonBase'
 import RotaryPotBase from '../pots/RotaryPotBase'
@@ -13,6 +13,7 @@ type ButtonMode = 'push' | 'rotate';
 type Config = {
     buttonRadius: number;
     buttonMode: ButtonMode;
+    hasOff?: boolean;
     ledMargin?: number; // margin button-led
     ledToLedMargin?: number; // vertical spacing
     labelMargin?: number; // margin button-label
@@ -28,7 +29,6 @@ export interface Props {
     ledCount?: number;
     ledLabels?: string[];
     ledPosition?: LedPosition;
-    ledOn?: boolean[];
     midiConfig?: MidiConfig;
 }
 
@@ -51,9 +51,7 @@ type RenderProps = {
     ledRadius: number;
     labelPos: LabelPos;
     ledPos: LedPos[];
-    ledOn: boolean[];
     ledLabels: string[];
-    ledButton: boolean;
 }
 
 const positionLabel = (buttonRadius: number, labelPosition: LabelPosition, labelMargin: number): LabelPos => {
@@ -177,32 +175,66 @@ const getRenderProps = (props: Props & Config): RenderProps => {
         buttonRadius,
         labelPos: positionLabel(buttonRadius, labelPosition, labelMargin),
         ledPos: positionLeds(buttonRadius, ledRadius, ledCount, ledPosition, ledMargin, ledToLedMargin, ledTolabelMargin),
-        ledOn: props.ledOn || [],
         ledLabels: props.ledLabels || [],
         buttonMode: props.buttonMode,
-        ledButton: props.ledButton || false,
     }
 }
 
 export const RoundButtonBase = (props: Props & Config) => {
 
-    const { x, y, label, midiConfig } = props
+    const { x, y, label, midiConfig, hasOff, ledCount, ledButton } = props
+
+    const [currentValue, setCurrentValue] = useState(0);
+
+    const onClick = useCallback(() => {
+        if(midiConfig && midiConfig.values) {
+            const newValue = (currentValue + 1) % midiConfig.values.length;
+            sendCC(midiConfig.cc, midiConfig.values[newValue]);
+        }
+    }, [midiConfig, currentValue])
+
+    useEffect(() => {
+        if(midiConfig && midiConfig.values) {
+            const updateValueFromMidi = (midiValue: number) => {
+                const newValue = midiConfig.values?.indexOf(midiValue) || 0;
+                setCurrentValue(newValue);
+            }
+
+            const subscriberId = subscribe(updateValueFromMidi, midiConfig)
+            return function cleanup() {
+                unsubscribe(midiConfig.cc, subscriberId);
+            };
+        }
+    });
+
+    const ledOn: boolean[] = [];
+    for(let i = 0; i< (ledCount ||1); i++){
+        ledOn[i] = false;
+    }
+
+    // TODO: Set hasOff for multi value buttons with an off state
+    // TODO: Fix LFO selector
+    // TODO: Fix multiple on
+    // TODO: Fix transpose
+    if(hasOff || (ledButton && !ledCount)){
+        if(ledOn.length > currentValue - 1 && currentValue > 0) {
+            ledOn[currentValue-1] = true;
+        }
+    } else {
+        if(ledOn.length > currentValue) {
+            ledOn[currentValue] = true;
+        }
+    }
+
+
     const {
         buttonRadius,
         buttonMode,
         ledRadius,
         labelPos,
         ledPos,
-        ledOn,
         ledLabels,
-        ledButton
     } = getRenderProps(props);
-
-    const onClick = useCallback(() => {
-        if(midiConfig) {
-            sendCC(midiConfig.cc, 0);
-        }
-    }, [midiConfig])
 
     return (
         <svg x={x} y={y} className="button">

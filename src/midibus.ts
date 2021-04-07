@@ -1,6 +1,8 @@
+import { MidiConfig } from './midiConstants'
+
 type Subscriber = {
     id: number;
-    values?: [number];
+    values: number[] | undefined;
     callback: (value: number) => void;
 }
 
@@ -8,9 +10,9 @@ const loopback = true;
 let idPool = 0;
 const subscribers: {[key: number]: Subscriber[]} = {}
 
-export const subscribe = (callback: (value: number) => void, cc: number, values?: [number]) => {
+export const subscribe = (callback: (value: number) => void, { cc, values }: MidiConfig) => {
     const id = idPool++;
-    subscribers[cc] = [...subscribers[cc], {id, values, callback}];
+    subscribers[cc] = [...(subscribers[cc] || []), {id, values, callback}];
     return id;
 }
 
