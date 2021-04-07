@@ -42,12 +42,12 @@ const MainDisplay = ({ x, y }: Props) => {
     <RoundPushButton8 x={displayCenter + 1.5 * buttonSpacing} y={buttonRow} label="Mods" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.MENU_MOD}/>
     <RoundPushButton8 x={displayCenter + 2.5 * buttonSpacing} y={buttonRow} label="FX" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.MENU_FX}/>
     <Display x={x} y={y} width={displayWidth} height={displayHeight}/>
-    <RotaryPotWOLeds17 x={displayCenter - 2 * potSpacing} y={potRow}/>
-    <RotaryPotWOLeds17 x={displayCenter - 1 * potSpacing} y={potRow}/>
-    <RotaryPotWOLeds17 x={displayCenter} y={potRow}/>
-    <RotaryPotWOLeds17 x={displayCenter + 1 * potSpacing} y={potRow}/>
-    <RotaryPotWOLeds17 x={displayCenter + 2 * potSpacing} y={potRow}/>
-    <RotaryPotWOLeds32 x={displayCenter} y={masterPotRow}/>
+    <RotaryPotWOLeds17 x={displayCenter - 2 * potSpacing} y={potRow} midiConfig={midiConstants.MAIN_PANEL.POT1}/>
+    <RotaryPotWOLeds17 x={displayCenter - 1 * potSpacing} y={potRow} midiConfig={midiConstants.MAIN_PANEL.POT2}/>
+    <RotaryPotWOLeds17 x={displayCenter} y={potRow} midiConfig={midiConstants.MAIN_PANEL.POT3}/>
+    <RotaryPotWOLeds17 x={displayCenter + 1 * potSpacing} y={potRow} midiConfig={midiConstants.MAIN_PANEL.POT4}/>
+    <RotaryPotWOLeds17 x={displayCenter + 2 * potSpacing} y={potRow} midiConfig={midiConstants.MAIN_PANEL.POT5}/>
+    <RotaryPotWOLeds32 x={displayCenter} y={masterPotRow} midiConfig={midiConstants.MAIN_PANEL.POT6}/>
 
     <RoundPushButton8 x={displayCenter - 2.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Home" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_HOME}/>
     <RoundPushButton8 x={displayCenter - 1.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Settings" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_SETTINGS}/>

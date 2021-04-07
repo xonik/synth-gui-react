@@ -1,11 +1,13 @@
 import RotaryPotBase from './RotaryPotBase'
 import React from 'react'
 import './RotaryPot.scss'
+import { MidiConfig } from '../../midiConstants'
 
 export interface Props {
     x: number,
     y: number,
     label?: string,
+    midiConfig?: MidiConfig,
 }
 
 interface Config {

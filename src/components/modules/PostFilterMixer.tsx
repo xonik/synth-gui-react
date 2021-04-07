@@ -22,7 +22,7 @@ const rowDistance = 40;
 
 const PostFilterMixerChannel = ({ x, y, label, potMode="normal", ledMode="multi", midiConfig}: ChannelProps) => {
   return <>
-    <RotaryPot17 label={label} x={x} y={y} position={0.4} potMode={potMode} ledMode={ledMode}/>
+    <RotaryPot17 label={label} x={x} y={y} position={0.4} potMode={potMode} ledMode={ledMode} midiConfig={midiConfig}/>
   </>;
 };
 

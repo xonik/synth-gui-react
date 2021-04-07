@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import arc from '../../utils/svg/arc'
 import RotaryPotBase from './RotaryPotBase'
 import './RotaryPot.scss'
+import { MidiConfig } from '../../midiConstants'
 
 export type LedMode = 'single' | 'multi';
 export type PotMode = 'normal' | 'pan' | 'spread';
@@ -15,6 +16,7 @@ export interface Props {
     potMode?: PotMode
     label: string
     position: number;
+    midiConfig?: MidiConfig;
 }
 
 interface Config {

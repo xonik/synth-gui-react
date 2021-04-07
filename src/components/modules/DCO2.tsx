@@ -24,11 +24,11 @@ const dco2 = ({ x, y }: Props) => {
 
   return <>
     <Header label="Oscillator 2" x={x} y={topRow - 20} width={100} align="center"/>
-    <RotaryPot32 x={x} y={y} ledMode="single" label="Waveform" position={0.8}/>
+    <RotaryPot32 x={x} y={y} ledMode="single" label="Waveform" position={0.8} midiConfig={midiConstants.DCO2.WAVEFORM}/>
 
-    <RotaryPot10 x={col1} y={topRow} ledMode="single" label="Note" position={0.5}/>
-    <RotaryPot10 x={col1} y={y} ledMode="single" label="Detune" position={0.5}/>
-    <RotaryPot10 x={col4} y={topRow} ledMode="multi" label="Super saw" position={0.3}/>
+    <RotaryPot10 x={col1} y={topRow} ledMode="single" label="Note" position={0.5} midiConfig={midiConstants.DCO2.NOTE}/>
+    <RotaryPot10 x={col1} y={y} ledMode="single" label="Detune" position={0.5} midiConfig={midiConstants.DCO2.DETUNE}/>
+    <RotaryPot10 x={col4} y={topRow} ledMode="multi" label="Super saw" position={0.3} midiConfig={midiConstants.DCO2.SUPER_SAW}/>
 
     <RoundPushButton8 x={col4} y={y+11}
                       ledPosition="top" ledCount={3} ledLabels={['DCO', 'WT', 'PCM']}
@@ -42,9 +42,9 @@ const dco2 = ({ x, y }: Props) => {
                       label="Sub wave" labelPosition="bottom"
                       midiConfig={midiConstants.DCO2.SUB_WAVE}
     />
-    <RotaryPot10 x={col2} y={bottomRow1} ledMode="multi" label="Sub -1" position={0.1}/>
-    <RotaryPot10 x={col3} y={bottomRow1} ledMode="multi" label="Sub -2" position={0.6}/>
-    <RotaryPot10 x={col4} y={bottomRow1} ledMode="single" label="PW" position={0.3}/>
+    <RotaryPot10 x={col2} y={bottomRow1} ledMode="multi" label="Sub -1" position={0.1} midiConfig={midiConstants.DCO2.SUB1}/>
+    <RotaryPot10 x={col3} y={bottomRow1} ledMode="multi" label="Sub -2" position={0.6} midiConfig={midiConstants.DCO2.SUB2}/>
+    <RotaryPot10 x={col4} y={bottomRow1} ledMode="single" label="PW" position={0.3} midiConfig={midiConstants.DCO2.PW}/>
 
     <RoundLedPushButton8 x={col2} y={bottomRow2} label="Wheel" labelPosition="bottom" midiConfig={midiConstants.DCO2.WHEEL}/>
     <RoundLedPushButton8 x={col3} y={bottomRow2} label="LFO" labelPosition="bottom" midiConfig={midiConstants.DCO2.LFO}/>

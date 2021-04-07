@@ -52,11 +52,11 @@ const KeyboardControls = ({ x, y }: Props) => {
         <Led x={col5} y={row2} label="1" on={false}/>
         <Led x={col6} y={row2} label="2" on={false}/>
         <RoundPushButton8 labelPosition="bottom" x={col7} y={row2} label="Up" midiConfig={midiConstants.TRANSPOSE.TRANSPOSE}/>
-        <RotaryPot10 x={col8} y={row2} ledMode="single" label="Portamento" position={0.5}/>
+        <RotaryPot10 x={col8} y={row2} ledMode="single" label="Portamento" position={0.5} midiConfig={midiConstants.KEYBOARD.PORTAMENTO}/>
         <RoundLedPushButton8 labelPosition="bottom" x={col9} y={row2} label="Hold" midiConfig={midiConstants.KEYBOARD.HOLD}/>
         <RoundLedPushButton8 labelPosition="bottom" x={col10} y={row2} label="Chord" midiConfig={midiConstants.KEYBOARD.CHORD}/>
         <RoundPushButton8 labelPosition="bottom" x={col11} y={row2} label="Mode" ledCount={3} ledPosition="right" ledLabels={['Solo', 'Unison', 'Poly']} midiConfig={midiConstants.KEYBOARD.MODE}/>
-        <RotaryPot10 x={col12} y={row2} ledMode="single" label="Unison detune" position={0.5}/>
+        <RotaryPot10 x={col12} y={row2} ledMode="single" label="Unison detune" position={0.5} midiConfig={midiConstants.KEYBOARD.UNISON_DETUNE}/>
     </svg>;
 };
 

@@ -24,11 +24,11 @@ const LowPassFilter = ({ x, y }: Props) => {
 
     return <>
         <Header label="Low pass filter" x={x} y={topRow - 27} width={110} align="center"/>
-        <RotaryPot40 x={x} y={y} ledMode="single" label="Cutoff" position={0.8}/>
-        <RotaryPot17 x={col1} y={topRow} ledMode="multi" label="Input" position={0.5}/>
+        <RotaryPot40 x={x} y={y} ledMode="single" label="Cutoff" position={0.8} midiConfig={midiConstants.LPF.CUTOFF}/>
+        <RotaryPot17 x={col1} y={topRow} ledMode="multi" label="Input" position={0.5} midiConfig={midiConstants.LPF.INPUT}/>
 
-        <RotaryPot17 x={x} y={topRow} ledMode="multi" label="Drive" position={0.5}/>
-        <RotaryPot17 x={col4} y={topRow} ledMode="multi" label="Resonance" position={0.3}/>
+        <RotaryPot17 x={x} y={topRow} ledMode="multi" label="Drive" position={0.5} midiConfig={midiConstants.LPF.DRIVE}/>
+        <RotaryPot17 x={col4} y={topRow} ledMode="multi" label="Resonance" position={0.3} midiConfig={midiConstants.LPF.RESONANCE}/>
 
         <RoundPushButton8 x={col4} y={y + 10} ledPosition="top" ledCount={2} ledLabels={['12dB', '24dB']} label="Slope" labelPosition="bottom" midiConfig={midiConstants.LPF.SLOPE}/>
 
@@ -36,10 +36,10 @@ const LowPassFilter = ({ x, y }: Props) => {
         <RoundLedPushButton8 x={col1} y={y + 10} label="Wheel" labelPosition="bottom" midiConfig={midiConstants.LPF.WHEEL}/>
 
 
-        <RotaryPot10 x={col1} y={bottomRow2} ledMode="multi" label="FM amt" position={0.1}/>
-        <RotaryPot10 x={col2} y={bottomRow2} ledMode="multi" label="Env amt" position={0.1}/>
-        <RotaryPot10 x={col3} y={bottomRow2} ledMode="multi" label="LFO amt" position={0.1}/>
-        <RotaryPot10 x={col4} y={bottomRow2} ledMode="multi" label="Kbd amt" position={0.1}/>
+        <RotaryPot10 x={col1} y={bottomRow2} ledMode="multi" label="FM amt" position={0.1} midiConfig={midiConstants.LPF.FM_AMT}/>
+        <RotaryPot10 x={col2} y={bottomRow2} ledMode="multi" label="Env amt" position={0.1} midiConfig={midiConstants.LPF.ENV_AMT}/>
+        <RotaryPot10 x={col3} y={bottomRow2} ledMode="multi" label="LFO amt" position={0.1} midiConfig={midiConstants.LPF.LFO_AMT}/>
+        <RotaryPot10 x={col4} y={bottomRow2} ledMode="multi" label="Kbd amt" position={0.1} midiConfig={midiConstants.LPF.KBD_AMT}/>
     </>;
 };
 

@@ -33,8 +33,8 @@ const LFO = ({ x, y }: Props) => {
         <RoundLedPushButton8 label="3" x={buttonCol} y={button3Row} labelPosition="right" midiConfig={midiConstants.LFOS.LFO3}/>
         <RoundLedPushButton8 label="4" x={buttonCol} y={button4Row} labelPosition="right" midiConfig={midiConstants.LFOS.LFO4}/>
 
-        <RotaryPot17 ledMode="single" label="Rate" x={firstPotCol} y={potRow1} position={0.4}/>
-        <RotaryPot17 ledMode="single" label="Depth" x={firstPotCol + potDistance} y={potRow1} position={0.1}/>
+        <RotaryPot17 ledMode="single" label="Rate" x={firstPotCol} y={potRow1} position={0.4} midiConfig={midiConstants.LFOS.RATE}/>
+        <RotaryPot17 ledMode="single" label="Depth" x={firstPotCol + potDistance} y={potRow1} position={0.1} midiConfig={midiConstants.LFOS.DEPTH}/>
 
         <RoundPushButton8 x={firstPotCol + potDistance + 30} y={potRow1}
                           label="Shape" labelPosition="bottom"
@@ -42,7 +42,7 @@ const LFO = ({ x, y }: Props) => {
                           ledLabels={['Saw', 'Tri', 'Sqr', 'Sin', 'S & H',]}
                           midiConfig={midiConstants.LFOS.SHAPE}
         />
-        <RotaryPot17 ledMode="single" label="Delay" x={firstPotCol} y={potRow2} position={0.4}/>
+        <RotaryPot17 ledMode="single" label="Delay" x={firstPotCol} y={potRow2} position={0.4} midiConfig={midiConstants.LFOS.DELAY}/>
         <RoundLedPushButton8 label="Sync" x={buttonCol2} y={potRow2} labelPosition="bottom" midiConfig={midiConstants.LFOS.SYNC}/>
         <RoundLedPushButton8 label="Reset" x={buttonCol3} y={potRow2} labelPosition="bottom" midiConfig={midiConstants.LFOS.RESET}/>
         <RoundLedPushButton8 label="Once" x={buttonCol4} y={potRow2} labelPosition="bottom" midiConfig={midiConstants.LFOS.ONCE}/>

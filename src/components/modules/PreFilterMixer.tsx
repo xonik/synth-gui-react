@@ -18,9 +18,9 @@ interface ChannelProps {
 }
 
 
-const PreFilterMixerChannel = ({ x, y, label, buttonMidiConfig }: ChannelProps) => {
+const PreFilterMixerChannel = ({ x, y, label, buttonMidiConfig, potMidiConfig }: ChannelProps) => {
     return <>
-        <RotaryPot17 ledMode="multi" label={label} x={x} y={y} position={0.4}/>
+        <RotaryPot17 ledMode="multi" label={label} x={x} y={y} position={0.4} midiConfig={potMidiConfig}/>
         <RoundPushButton8 x={x + 25} y={y + 3}
                           ledPosition="top" ledCount={2} midiConfig={buttonMidiConfig}
         />

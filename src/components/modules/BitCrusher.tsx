@@ -22,8 +22,8 @@ const BitCrusher = ({ x, y }: Props) => {
     return <svg x={x} y={y}>
         <Header label="Bit crusher" x={25} y={row1} width={50}/>
         <RoundPushButton8 x={col1} y={row3} ledCount={2} ledPosition="top" ledLabels={['FX1', 'FX2']} midiConfig={midiConstants.FX_BIT_CRUSHER.SOURCE}/>
-        <RotaryPot10 ledMode="single" label="Bits" x={col2} y={row2} position={0.4}/>
-        <RotaryPot10 ledMode="single" label="Rate" x={col3} y={row2} position={0.4}/>
+        <RotaryPot10 ledMode="single" label="Bits" x={col2} y={row2} position={0.4} midiConfig={midiConstants.FX_BIT_CRUSHER.BITS}/>
+        <RotaryPot10 ledMode="single" label="Rate" x={col3} y={row2} position={0.4} midiConfig={midiConstants.FX_BIT_CRUSHER.RATE}/>
     </svg>;
 };
 
