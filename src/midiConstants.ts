@@ -582,27 +582,12 @@ const LFOS = {
     DEPTH: { cc: CC.LFO_DEPTH },
     DELAY: { cc: CC.LFO_DELAY },
     // Buttons
-    LFO1: {
+    LFO: {
         cc: BUTTONS.BUTTONS_LEFT.cc,
         values: [
             BUTTONS.BUTTONS_LEFT.values.LFO1,
-        ],
-    },
-    LFO2: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
             BUTTONS.BUTTONS_LEFT.values.LFO2,
-        ],
-    },
-    LFO3: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
             BUTTONS.BUTTONS_LEFT.values.LFO3,
-        ],
-    },
-    LFO4: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
             BUTTONS.BUTTONS_LEFT.values.LFO4,
         ],
     },

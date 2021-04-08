@@ -30,6 +30,7 @@ export interface Props {
     ledLabels?: string[];
     ledPosition?: LedPosition;
     midiConfig?: MidiConfig;
+    radioButtonIndex?: number; // Used if button is part of a group - "radio button"
 }
 
 type LabelPos = {
@@ -182,16 +183,22 @@ const getRenderProps = (props: Props & Config): RenderProps => {
 
 export const RoundButtonBase = (props: Props & Config) => {
 
-    const { x, y, label, midiConfig, hasOff, ledCount, ledButton } = props
+    const { x, y, label, midiConfig, radioButtonIndex, hasOff, ledCount, ledButton } = props
 
     const [currentValue, setCurrentValue] = useState(0);
 
     const onClick = useCallback(() => {
         if(midiConfig && midiConfig.values) {
-            const newValue = (currentValue + 1) % midiConfig.values.length;
-            sendCC(midiConfig.cc, midiConfig.values[newValue]);
+            if(radioButtonIndex){
+                if(midiConfig.values.length >= radioButtonIndex ){
+                    sendCC(midiConfig.cc, midiConfig.values[radioButtonIndex]);
+                }
+            } else {
+                const newValue = (currentValue + 1) % midiConfig.values.length;
+                sendCC(midiConfig.cc, midiConfig.values[newValue]);
+            }
         }
-    }, [midiConfig, currentValue])
+    }, [midiConfig, currentValue, radioButtonIndex])
 
     useEffect(() => {
         if(midiConfig && midiConfig.values) {
@@ -208,7 +215,7 @@ export const RoundButtonBase = (props: Props & Config) => {
     });
 
     const ledOn: boolean[] = [];
-    for(let i = 0; i< (ledCount ||1); i++){
+    for(let i = 0; i< (ledCount || 1); i++){
         ledOn[i] = false;
     }
 
@@ -216,13 +223,19 @@ export const RoundButtonBase = (props: Props & Config) => {
     // TODO: Fix LFO selector
     // TODO: Fix multiple on
     // TODO: Fix transpose
-    if(hasOff || (ledButton && !ledCount)){
-        if(ledOn.length > currentValue - 1 && currentValue > 0) {
-            ledOn[currentValue-1] = true;
+    if(radioButtonIndex !== undefined){
+        if(currentValue === radioButtonIndex) {
+          ledOn[0] = true;
         }
     } else {
-        if(ledOn.length > currentValue) {
-            ledOn[currentValue] = true;
+        if(hasOff || (ledButton && !ledCount)){
+            if(ledOn.length > currentValue - 1 && currentValue > 0) {
+                ledOn[currentValue-1] = true;
+            }
+        } else {
+            if(ledOn.length > currentValue) {
+                ledOn[currentValue] = true;
+            }
         }
     }
 

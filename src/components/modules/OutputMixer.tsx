@@ -3,7 +3,6 @@ import RotaryPot17 from '../pots/RotaryPot17';
 import Header from '../misc/Header';
 import { PotMode } from '../pots/RotaryPotWithLedRingBase';
 import midiConstants, { MidiConfig } from '../../midiConstants'
-import RoundPushButton8 from '../buttons/RoundPushButton8'
 
 interface Props {
   x: number,

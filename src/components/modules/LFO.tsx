@@ -28,10 +28,10 @@ const LFO = ({ x, y }: Props) => {
 
     return <svg x={x} y={y}>
         <Header align="left" label="LFOs" x={0} y={0} width={145}/>
-        <RoundLedPushButton8 label="1" x={buttonCol} y={button1Row} labelPosition="right" midiConfig={midiConstants.LFOS.LFO1}/>
-        <RoundLedPushButton8 label="2" x={buttonCol} y={button2Row} labelPosition="right" midiConfig={midiConstants.LFOS.LFO2}/>
-        <RoundLedPushButton8 label="3" x={buttonCol} y={button3Row} labelPosition="right" midiConfig={midiConstants.LFOS.LFO3}/>
-        <RoundLedPushButton8 label="4" x={buttonCol} y={button4Row} labelPosition="right" midiConfig={midiConstants.LFOS.LFO4}/>
+        <RoundLedPushButton8 label="1" x={buttonCol} y={button1Row} labelPosition="right" radioButtonIndex={0} midiConfig={midiConstants.LFOS.LFO}/>
+        <RoundLedPushButton8 label="2" x={buttonCol} y={button2Row} labelPosition="right" radioButtonIndex={1} midiConfig={midiConstants.LFOS.LFO}/>
+        <RoundLedPushButton8 label="3" x={buttonCol} y={button3Row} labelPosition="right" radioButtonIndex={2} midiConfig={midiConstants.LFOS.LFO}/>
+        <RoundLedPushButton8 label="4" x={buttonCol} y={button4Row} labelPosition="right" radioButtonIndex={3} midiConfig={midiConstants.LFOS.LFO}/>
 
         <RotaryPot17 ledMode="single" label="Rate" x={firstPotCol} y={potRow1} position={0.4} midiConfig={midiConstants.LFOS.RATE}/>
         <RotaryPot17 ledMode="single" label="Depth" x={firstPotCol + potDistance} y={potRow1} position={0.1} midiConfig={midiConstants.LFOS.DEPTH}/>
