@@ -10,6 +10,7 @@ type LedPosition = 'left' | 'right' | 'sides' | 'top' | 'bottom' | undefined;
 type LabelPosition = 'left' | 'right' | 'top' | 'bottom' | undefined;
 type ButtonMode = 'push' | 'rotate';
 
+// Stuff that is special for a particular kind of button, used in wrapper functions.
 type Config = {
     buttonRadius: number;
     buttonMode: ButtonMode;
@@ -20,20 +21,40 @@ type Config = {
     ledButton?: boolean;
 }
 
+// Per instance properties.
 export interface Props {
     x: number;
     y: number;
     label?: string;
     labelPosition?: LabelPosition;
-    ledCount?: number;
     ledLabels?: string[];
     ledPosition?: LedPosition;
+
+    // Number of leds AROUND the button. If this is undefined but ledButton is true, the button itself is a led.
+    ledCount?: number;
+
+    // What midi messages to send when clicking the button.
+    // If the midi values array is longer than the ledCount (+1 if hasOff is used), all leds will light up on the rest, making it possible
+    // to create a all-on mode.
     midiConfig?: MidiConfig;
+
+    // True if the first midi value is an off state, lets us switch off all diodes
     hasOff?: boolean;
+
+    // Normally, clicking a button adds one modulo the length of the value array to the value. If this is true it subtracts instead
     reverse?: boolean;
+
+    // This is true by default, meaning that modulo is used when the next value is larger than the number of values in the array.
+    // If it is set to false, the button stops sending messages when the end of the value array is reached. Useful for up/down buttons.
     loop?: boolean;
-    radioButtonIndex?: number; // Used if button is part of a group - "radio button"
+
+    // Used if button is part of a group - "radio button"
+    radioButtonIndex?: number;
+
+    // External callback to do stuff like light up external leds when a value changes.
     onUpdate?: (valueIndex: number) => void;
+
+    // Default value is 0 unless this is set to another index in the midi values array. Must be less than the length of the values array.
     defaultValueIndex?: number;
 }
 
