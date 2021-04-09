@@ -33,7 +33,7 @@ const dco2 = ({ x, y }: Props) => {
     <RoundPushButton8 x={col4} y={y+11}
                       ledPosition="top" ledCount={3} ledLabels={['DCO', 'WT', 'PCM']}
                       label="Mode" labelPosition="bottom"
-                      midiConfig={midiConstants.DCO2.SYNC}
+                      midiConfig={midiConstants.DCO2.MODE}
     />
 
 

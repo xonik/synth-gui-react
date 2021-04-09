@@ -13,7 +13,6 @@ type ButtonMode = 'push' | 'rotate';
 type Config = {
     buttonRadius: number;
     buttonMode: ButtonMode;
-    hasOff?: boolean;
     ledMargin?: number; // margin button-led
     ledToLedMargin?: number; // vertical spacing
     labelMargin?: number; // margin button-label
@@ -30,6 +29,7 @@ export interface Props {
     ledLabels?: string[];
     ledPosition?: LedPosition;
     midiConfig?: MidiConfig;
+    hasOff?: boolean;
     radioButtonIndex?: number; // Used if button is part of a group - "radio button"
 }
 
@@ -187,18 +187,27 @@ export const RoundButtonBase = (props: Props & Config) => {
 
     const [currentValue, setCurrentValue] = useState(0);
 
+    // off is always the first element in the midi config values list, so when a radio
+    // button has an off state we need to offset our index by one.
+    const radioButtonValueIndex = hasOff ? (radioButtonIndex || 0) + 1 : radioButtonIndex || 0;
+
     const onClick = useCallback(() => {
         if(midiConfig && midiConfig.values) {
-            if(radioButtonIndex){
-                if(midiConfig.values.length >= radioButtonIndex ){
-                    sendCC(midiConfig.cc, midiConfig.values[radioButtonIndex]);
+            if(radioButtonIndex !== undefined){
+                if(midiConfig.values.length >= radioButtonValueIndex ){
+                    if(hasOff && currentValue === radioButtonValueIndex){
+                        sendCC(midiConfig.cc, midiConfig.values[0]);
+                    } else {
+                        sendCC(midiConfig.cc, midiConfig.values[radioButtonValueIndex]);
+                    }
                 }
             } else {
                 const newValue = (currentValue + 1) % midiConfig.values.length;
+
                 sendCC(midiConfig.cc, midiConfig.values[newValue]);
             }
         }
-    }, [midiConfig, currentValue, radioButtonIndex])
+    }, [hasOff, midiConfig, currentValue, radioButtonIndex])
 
     useEffect(() => {
         if(midiConfig && midiConfig.values) {
@@ -224,7 +233,7 @@ export const RoundButtonBase = (props: Props & Config) => {
     // TODO: Fix multiple on
     // TODO: Fix transpose
     if(radioButtonIndex !== undefined){
-        if(currentValue === radioButtonIndex) {
+        if(currentValue === radioButtonValueIndex) {
           ledOn[0] = true;
         }
     } else {

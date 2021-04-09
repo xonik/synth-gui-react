@@ -32,6 +32,7 @@ const vco = ({ x, y }: Props) => {
     <RoundPushButton8 x={col2} y={topRow}
                       ledPosition="right" ledCount={3} ledLabels={['Hard', 'CEM Hard', 'CEM Soft']}
                       label="Sync" labelPosition="bottom"
+                      hasOff
                       midiConfig={midiConstants.VCO.SYNC}
     />
 

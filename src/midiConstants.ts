@@ -141,9 +141,7 @@ const BUTTONS = {
             OSC1_LFO_ON: 11,
             OSC1_KBD_OFF: 12,
             OSC1_KBD_ON: 13,
-            OSC2_SYNC_OFF: 14,
-            OSC2_SYNC_1_2: 15,
-            OSC2_SYNC_2_1: 16,
+            //Missing 14-16
             OSC2_MODE_DCO: 17,
             OSC2_MODE_WT: 18,
             OSC2_MODE_PCM: 19,
@@ -212,10 +210,9 @@ const BUTTONS = {
             RING_MOD_OUT_B: 83,
             EXT_AUDIO_OUT_A: 84,
             EXT_AUDIO_OUT_B: 85,
-            ROUTE_FROM_ON: 86,
-            ROUTE_FROM_OFF: 87,
+            ROUTE_OFF: 86,
+            ROUTE_FROM_ON: 87,
             ROUTE_TO_ON: 88, //NB!
-            ROUTE_TO_OFF: 89,
             MASTER_CLOCK_SRC_MASTER: 90,
             MASTER_CLOCK_SRC_MIDI: 91,
             MASTER_CLOCK_SRC_EXT: 92,
@@ -410,14 +407,6 @@ const DCO2 = {
     PW: {cc: CC.DCO2_PW },
 
     //buttons
-    SYNC: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.OSC2_SYNC_OFF,
-            BUTTONS.BUTTONS_LEFT.values.OSC2_SYNC_1_2,
-            BUTTONS.BUTTONS_LEFT.values.OSC2_SYNC_2_1,
-        ],
-    },
     MODE: {
         cc: BUTTONS.BUTTONS_LEFT.cc,
         values: [
@@ -678,14 +667,16 @@ const ROUTE = {
     FROM: {
         cc: BUTTONS.BUTTONS_LEFT.cc,
         values: [
-            BUTTONS.BUTTONS_LEFT.values.ROUTE_FROM_OFF,
+            BUTTONS.BUTTONS_LEFT.values.ROUTE_OFF,
             BUTTONS.BUTTONS_LEFT.values.ROUTE_FROM_ON,
+            BUTTONS.BUTTONS_LEFT.values.ROUTE_TO_ON,
         ],
     },
     TO: {
         cc: BUTTONS.BUTTONS_LEFT.cc,
         values: [
-            BUTTONS.BUTTONS_LEFT.values.ROUTE_TO_OFF,
+            BUTTONS.BUTTONS_LEFT.values.ROUTE_OFF,
+            BUTTONS.BUTTONS_LEFT.values.ROUTE_FROM_ON,
             BUTTONS.BUTTONS_LEFT.values.ROUTE_TO_ON,
         ],
     },

@@ -31,6 +31,7 @@ const dco1 = ({ x, y }: Props) => {
     <RoundPushButton8 x={col2} y={topRow}
                       ledPosition="right" ledCount={2} ledLabels={['1 -> 2', '2 -> 1']}
                       label="Sync" labelPosition="bottom"
+                      hasOff
                       midiConfig={midiConstants.DCO1.SYNC}
     />
     <RotaryPot10 x={col4} y={topRow} ledMode="multi" label="Super saw" position={0.3} midiConfig={midiConstants.DCO1.SUPER_SAW}/>
