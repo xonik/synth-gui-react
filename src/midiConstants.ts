@@ -172,17 +172,20 @@ const BUTTONS = {
             NOISE_COLOUR_RED: 44,
             RING_MOD_SOURCE_1_2: 45,
             RING_MOD_SOURCE_EXT_2: 46,
-            // room for two more
             DISTORTION_IN_A: 49,
             DISTORTION_IN_B: 50,
+            DISTORTION_IN_BOTH: 112,
             DISTORTION_SOFT: 51,
             DISTORTION_HARD: 52,
             DISTORTION_OUT_A: 53,
             DISTORTION_OUT_B: 54,
+            DISTORTION_OUT_BOTH: 113,
             BIT_CRUSHER_IN_A: 55,
             BIT_CRUSHER_IN_B: 56,
+            BIT_CRUSHER_IN_BOTH: 114,
             BIT_CRUSHER_OUT_A: 57,
             BIT_CRUSHER_OUT_B: 58,
+            BIT_CRUSHER_OUT_BOTH: 115,
             LFO1: 59,
             LFO2: 60,
             LFO3: 61,
@@ -200,16 +203,22 @@ const BUTTONS = {
             LFO_ONCE_ON: 73,
             OSC1_OUT_A: 74,
             OSC1_OUT_B: 75,
+            OSC1_OUT_BOTH: 14,
             OSC2_OUT_A: 76,
             OSC2_OUT_B: 77,
+            OSC2_OUT_BOTH: 15,
             OSC3_OUT_A: 78,
             OSC3_OUT_B: 79,
+            OSC3_OUT_BOTH: 16,
             NOISE_OUT_A: 80,
             NOISE_OUT_B: 81,
+            NOISE_OUT_BOTH: 109,
             RING_MOD_OUT_A: 82,
             RING_MOD_OUT_B: 83,
+            RING_MOD_OUT_BOTH: 110,
             EXT_AUDIO_OUT_A: 84,
             EXT_AUDIO_OUT_B: 85,
+            EXT_AUDIO_OUT_BOTH: 111,
             ROUTE_OFF: 86,
             ROUTE_FROM_ON: 87,
             ROUTE_TO_ON: 88, //NB!
@@ -527,6 +536,7 @@ const DISTORTION = {
         values: [
             BUTTONS.BUTTONS_LEFT.values.DISTORTION_IN_A,
             BUTTONS.BUTTONS_LEFT.values.DISTORTION_IN_B,
+            BUTTONS.BUTTONS_LEFT.values.DISTORTION_IN_BOTH,
         ],
     },
     CLIP: {
@@ -541,6 +551,7 @@ const DISTORTION = {
         values: [
             BUTTONS.BUTTONS_LEFT.values.DISTORTION_OUT_A,
             BUTTONS.BUTTONS_LEFT.values.DISTORTION_OUT_B,
+            BUTTONS.BUTTONS_LEFT.values.DISTORTION_OUT_BOTH,
         ],
     },
 }
@@ -555,6 +566,7 @@ const BIT_CRUSHER = {
         values: [
             BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_IN_A,
             BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_IN_B,
+            BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_IN_BOTH,
         ],
     },
     OUT: {
@@ -562,6 +574,7 @@ const BIT_CRUSHER = {
         values: [
             BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_OUT_A,
             BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_OUT_B,
+            BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_OUT_BOTH,
         ],
     },
 }
@@ -624,6 +637,7 @@ const SOURCE_MIX = {
         values: [
             BUTTONS.BUTTONS_LEFT.values.OSC1_OUT_A,
             BUTTONS.BUTTONS_LEFT.values.OSC1_OUT_B,
+            BUTTONS.BUTTONS_LEFT.values.OSC1_OUT_BOTH,
         ],
     },
     OUT_OSC2: {
@@ -631,6 +645,7 @@ const SOURCE_MIX = {
         values: [
             BUTTONS.BUTTONS_LEFT.values.OSC2_OUT_A,
             BUTTONS.BUTTONS_LEFT.values.OSC2_OUT_B,
+            BUTTONS.BUTTONS_LEFT.values.OSC2_OUT_BOTH,
         ],
     },
     OUT_OSC3: {
@@ -638,6 +653,7 @@ const SOURCE_MIX = {
         values: [
             BUTTONS.BUTTONS_LEFT.values.OSC3_OUT_A,
             BUTTONS.BUTTONS_LEFT.values.OSC3_OUT_B,
+            BUTTONS.BUTTONS_LEFT.values.OSC3_OUT_BOTH,
         ],
     },
     OUT_NOISE: {
@@ -645,6 +661,7 @@ const SOURCE_MIX = {
         values: [
             BUTTONS.BUTTONS_LEFT.values.NOISE_OUT_A,
             BUTTONS.BUTTONS_LEFT.values.NOISE_OUT_B,
+            BUTTONS.BUTTONS_LEFT.values.NOISE_OUT_BOTH,
         ],
     },
     OUT_RING_MOD: {
@@ -652,6 +669,7 @@ const SOURCE_MIX = {
         values: [
             BUTTONS.BUTTONS_LEFT.values.RING_MOD_OUT_A,
             BUTTONS.BUTTONS_LEFT.values.RING_MOD_OUT_B,
+            BUTTONS.BUTTONS_LEFT.values.RING_MOD_OUT_BOTH,
         ],
     },
     OUT_EXT_AUDIO: {
@@ -659,6 +677,7 @@ const SOURCE_MIX = {
         values: [
             BUTTONS.BUTTONS_LEFT.values.EXT_AUDIO_OUT_A,
             BUTTONS.BUTTONS_LEFT.values.EXT_AUDIO_OUT_B,
+            BUTTONS.BUTTONS_LEFT.values.EXT_AUDIO_OUT_BOTH,
         ],
     },
 }

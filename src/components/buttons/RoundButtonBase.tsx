@@ -190,6 +190,7 @@ export const RoundButtonBase = (props: Props & Config) => {
     // off is always the first element in the midi config values list, so when a radio
     // button has an off state we need to offset our index by one.
     const radioButtonValueIndex = hasOff ? (radioButtonIndex || 0) + 1 : radioButtonIndex || 0;
+    const ledOnIndex = hasOff ? currentValue - 1 : currentValue;
 
     const onClick = useCallback(() => {
         if(midiConfig && midiConfig.values) {
@@ -207,7 +208,7 @@ export const RoundButtonBase = (props: Props & Config) => {
                 sendCC(midiConfig.cc, midiConfig.values[newValue]);
             }
         }
-    }, [hasOff, midiConfig, currentValue, radioButtonIndex])
+    }, [radioButtonValueIndex, hasOff, midiConfig, currentValue, radioButtonIndex])
 
     useEffect(() => {
         if(midiConfig && midiConfig.values) {
@@ -228,22 +229,21 @@ export const RoundButtonBase = (props: Props & Config) => {
         ledOn[i] = false;
     }
 
-    // TODO: Set hasOff for multi value buttons with an off state
-    // TODO: Fix LFO selector
-    // TODO: Fix multiple on
     // TODO: Fix transpose
     if(radioButtonIndex !== undefined){
         if(currentValue === radioButtonValueIndex) {
           ledOn[0] = true;
         }
     } else {
-        if(hasOff || (ledButton && !ledCount)){
-            if(ledOn.length > currentValue - 1 && currentValue > 0) {
-                ledOn[currentValue-1] = true;
+        if(ledOnIndex < ledOn.length ) {
+            // ledOnIndex -1 means all leds are off
+            if(ledOnIndex > -1){
+                ledOn[ledOnIndex] = true;
             }
         } else {
-            if(ledOn.length > currentValue) {
-                ledOn[currentValue] = true;
+            // light up all leds if there are more options than leds (minus off)
+            for(let i = 0; i< (ledCount || 1); i++){
+                ledOn[i] = true;
             }
         }
     }
