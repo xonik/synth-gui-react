@@ -30,7 +30,11 @@ export interface Props {
     ledPosition?: LedPosition;
     midiConfig?: MidiConfig;
     hasOff?: boolean;
+    reverse?: boolean;
+    loop?: boolean;
     radioButtonIndex?: number; // Used if button is part of a group - "radio button"
+    onUpdate?: (valueIndex: number) => void;
+    defaultValueIndex?: number;
 }
 
 type LabelPos = {
@@ -183,38 +187,57 @@ const getRenderProps = (props: Props & Config): RenderProps => {
 
 export const RoundButtonBase = (props: Props & Config) => {
 
-    const { x, y, label, midiConfig, radioButtonIndex, hasOff, ledCount, ledButton } = props
+    const { x, y, label, midiConfig, radioButtonIndex, hasOff, ledCount, ledButton, onUpdate, reverse, loop = true, defaultValueIndex } = props
 
-    const [currentValue, setCurrentValue] = useState(0);
+    const [currentValue, setCurrentValue] = useState(defaultValueIndex || 0);
 
     // off is always the first element in the midi config values list, so when a radio
     // button has an off state we need to offset our index by one.
     const radioButtonValueIndex = hasOff ? (radioButtonIndex || 0) + 1 : radioButtonIndex || 0;
-    const ledOnIndex = hasOff ? currentValue - 1 : currentValue;
+    const hasOffValue = hasOff || (ledButton && ledCount === undefined)
+    const ledOnIndex = hasOffValue ? currentValue - 1 : currentValue;
+
 
     const onClick = useCallback(() => {
         if(midiConfig && midiConfig.values) {
             if(radioButtonIndex !== undefined){
                 if(midiConfig.values.length >= radioButtonValueIndex ){
-                    if(hasOff && currentValue === radioButtonValueIndex){
+                    if(hasOffValue && currentValue === radioButtonValueIndex){
                         sendCC(midiConfig.cc, midiConfig.values[0]);
                     } else {
                         sendCC(midiConfig.cc, midiConfig.values[radioButtonValueIndex]);
                     }
                 }
+            } else if(reverse) {
+                const valueCandidate = (currentValue - 1);
+                if(loop) {
+                    const newValue = (valueCandidate + midiConfig.values.length) % midiConfig.values.length;
+                    sendCC(midiConfig.cc, midiConfig.values[newValue]);
+                } else {
+                    if(valueCandidate >= 0){
+                        sendCC(midiConfig.cc, midiConfig.values[valueCandidate]);
+                    }
+                }
             } else {
-                const newValue = (currentValue + 1) % midiConfig.values.length;
-
-                sendCC(midiConfig.cc, midiConfig.values[newValue]);
+                const valueCandidate = (currentValue + 1);
+                if(loop) {
+                    const newValue = valueCandidate % midiConfig.values.length;
+                    sendCC(midiConfig.cc, midiConfig.values[newValue]);
+                } else {
+                    if(valueCandidate < midiConfig.values.length){
+                        sendCC(midiConfig.cc, midiConfig.values[valueCandidate]);
+                    }
+                }
             }
         }
-    }, [radioButtonValueIndex, hasOff, midiConfig, currentValue, radioButtonIndex])
+    }, [radioButtonValueIndex, hasOffValue, midiConfig, currentValue, radioButtonIndex, reverse, loop])
 
     useEffect(() => {
         if(midiConfig && midiConfig.values) {
             const updateValueFromMidi = (midiValue: number) => {
                 const newValue = midiConfig.values?.indexOf(midiValue) || 0;
                 setCurrentValue(newValue);
+                if(onUpdate) onUpdate(newValue);
             }
 
             const subscriberId = subscribe(updateValueFromMidi, midiConfig)
@@ -229,7 +252,6 @@ export const RoundButtonBase = (props: Props & Config) => {
         ledOn[i] = false;
     }
 
-    // TODO: Fix transpose
     if(radioButtonIndex !== undefined){
         if(currentValue === radioButtonValueIndex) {
           ledOn[0] = true;
