@@ -1,10 +1,10 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import classNames from 'classnames'
 import arc from '../../utils/svg/arc'
-import RotaryPotBase from './RotaryPotBase'
-import './RotaryPot.scss'
+import RotaryPotBase, { Point } from './RotaryPotBase'
 import { MidiConfig } from '../../midiConstants'
 import { sendCC } from '../../midibus'
+import './RotaryPot.scss'
 
 export type LedMode = 'single' | 'multi';
 export type PotMode = 'normal' | 'pan' | 'spread';
@@ -18,6 +18,7 @@ export interface Props {
     label: string
     position: number;
     midiConfig?: MidiConfig;
+    defaultValue?: number;
 }
 
 interface Config {
@@ -67,6 +68,7 @@ const getRenderProps = (props: Props & Config) => {
         labelY,
         ledAngles,
         windowArc,
+        ledArc,
     }
 }
 
@@ -91,10 +93,30 @@ const getLedPos = (centerLed: number, ledCount: number, mode: PotMode, position:
     return 0
 }
 
+// 0 degrees is deltaX > 1, deltaY = +0
+const getAngle = (pointer: Point, center: Point) => {
+    const deltaX = pointer.x - center.x;
+    const deltaY = pointer.y - center.y;
+    return (2 * Math.PI + Math.atan(deltaY / deltaX) + (deltaX < 0 ? Math.PI : 0)) % (2 * Math.PI);
+}
+
+const getValueChangeFromDiff = (angleDiff: number, ledArc:number) => {
+    const changeInDegrees = (360 * angleDiff) / (2 * Math.PI);
+    //console.log({angleDiff, changeInDegrees});
+    return changeInDegrees / ledArc;
+}
 export default (props: Props & Config) => {
 
     // Position should be in the range 0-1 in all modes but pan. In pan the range is -0.5 - 0.5
-    const { x, y, ledMode = 'single', potMode = 'normal', label, position, midiConfig } = props
+    const { x, y, ledMode = 'single', potMode = 'normal', label, midiConfig, defaultValue } = props
+
+    // TODO: use forwarded refs instead of this
+    const [center, setCenter] = useState({x: 0, y: 0});
+
+    const [mouseStartPos, setMouseStartPos] = useState({x: 0, y: 0});
+    const [initialAngle, setInitialAngle] = useState(0);
+    const [isDragging, setIsDragging] = useState(false);
+    const [position, setPosition] = useState(defaultValue || 0);
 
     const {
         ledRadius,
@@ -106,6 +128,7 @@ export default (props: Props & Config) => {
         labelY,
         ledAngles,
         windowArc,
+        ledArc,
     } = getRenderProps(props);
     // For objects centered around 0, use overflow: visible
     // For scaling, use viewBox on the outer svg and unitless the rest of the way
@@ -122,11 +145,61 @@ export default (props: Props & Config) => {
         }
     }, [midiConfig])
 
+    const onMouseDown = useCallback((event: React.MouseEvent, center: Point) => {
+        setCenter(center);
+        setInitialAngle(getAngle({x: event.clientX, y: event.clientY}, center))
+        setMouseStartPos({x: event.clientX, y: event.clientY});
+        setIsDragging(true);
+        if(event.preventDefault) event.preventDefault();
+    }, []);
+
+    const onMouseUp = useCallback((event: MouseEvent) => {
+        if(isDragging) setIsDragging(false);
+    }, [isDragging]);
+
+    const onMouseMove = useCallback((event: MouseEvent) => {
+        if(isDragging) {
+            const newAngle = getAngle({x: event.clientX, y: event.clientY}, center);
+            let angleDiff = newAngle - initialAngle;
+            if(angleDiff > Math.PI){
+                angleDiff = angleDiff - 2 * Math.PI;
+            } else if(angleDiff < -Math.PI) {
+                angleDiff = angleDiff + 2 * Math.PI;
+            }
+
+            if(angleDiff !== 0) {
+                setInitialAngle(newAngle);
+                const valueChange = getValueChangeFromDiff(angleDiff, ledArc);
+                const newValue = position + valueChange;
+                if(newValue < 0){
+                    if(position > 0){
+                        setPosition(0);
+                    }
+                } else if(newValue > 1){
+                    if(position < 1) {
+                        setPosition(1);
+                    }
+                } else {
+                    setPosition(position + valueChange);
+                }
+            }
+        }
+    }, [ledArc, center, initialAngle, isDragging, position]);
+
+    useEffect(() => {
+        document.addEventListener("mousemove", onMouseMove)
+        document.addEventListener("mouseup", onMouseUp)
+
+        return function cleanup() {
+            document.removeEventListener("mousemove", onMouseMove)
+            document.removeEventListener("mouseup", onMouseUp)
+        };
+    })
+
     return (
         <svg x={x} y={y} className="pot">
-            <RotaryPotBase knobRadius={knobRadius} onClick={onClick}/>
-            <path d={windowArc} className="pot-ring-window"
-                  strokeWidth={windowWidth}/>
+            <RotaryPotBase knobRadius={knobRadius} onClick={onClick} onMouseDown={onMouseDown}/>
+            <path d={windowArc} className="pot-ring-window" strokeWidth={windowWidth}/>
             {ledAngles.map((angle, led) => {
                 const ledOn =
                     // pointer should always be on
