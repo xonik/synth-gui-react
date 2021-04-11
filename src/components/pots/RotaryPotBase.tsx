@@ -1,5 +1,4 @@
 import React, { useCallback, useRef } from 'react'
-import throttle from 'lodash.throttle';
 
 export type Point = {x: number, y: number}
 
@@ -21,7 +20,7 @@ const RotaryPot = ({knobRadius, onClick, onMouseDown}: Props) => {
       }
       if(onMouseDown) onMouseDown(event, circlePos);
     }
-  }, [])
+  }, [onMouseDown])
 
   return <circle ref={circleRef} cx={0} cy={0} onClick={onClick} onMouseDown={onMouseDownCallback} r={knobRadius} className="pot-knob"/>
 }

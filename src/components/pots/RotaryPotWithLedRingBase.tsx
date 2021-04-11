@@ -113,10 +113,11 @@ export default (props: Props & Config) => {
     // TODO: use forwarded refs instead of this
     const [center, setCenter] = useState({x: 0, y: 0});
 
-    const [mouseStartPos, setMouseStartPos] = useState({x: 0, y: 0});
-    const [initialAngle, setInitialAngle] = useState(0);
+    const [previousAngle, setPreviousAngle] = useState(0);
+    const [previousY, setPreviousY] = useState(0);
     const [isDragging, setIsDragging] = useState(false);
     const [position, setPosition] = useState(defaultValue || 0);
+    const [isShiftDown, setShiftDown] = useState(false);
 
     const {
         ledRadius,
@@ -146,9 +147,10 @@ export default (props: Props & Config) => {
     }, [midiConfig])
 
     const onMouseDown = useCallback((event: React.MouseEvent, center: Point) => {
+        setShiftDown(event.shiftKey);
         setCenter(center);
-        setInitialAngle(getAngle({x: event.clientX, y: event.clientY}, center))
-        setMouseStartPos({x: event.clientX, y: event.clientY});
+        setPreviousAngle(getAngle({x: event.clientX, y: event.clientY}, center))
+        setPreviousY(event.clientY);
         setIsDragging(true);
         if(event.preventDefault) event.preventDefault();
     }, []);
@@ -157,34 +159,46 @@ export default (props: Props & Config) => {
         if(isDragging) setIsDragging(false);
     }, [isDragging]);
 
+    const setNewValue = useCallback((newValue) => {
+        if(newValue < 0){
+            if(position > 0){
+                setPosition(0);
+            }
+        } else if(newValue > 1){
+            if(position < 1) {
+                setPosition(1);
+            }
+        } else {
+            setPosition(newValue);
+        }
+    },[position])
+
     const onMouseMove = useCallback((event: MouseEvent) => {
         if(isDragging) {
-            const newAngle = getAngle({x: event.clientX, y: event.clientY}, center);
-            let angleDiff = newAngle - initialAngle;
-            if(angleDiff > Math.PI){
-                angleDiff = angleDiff - 2 * Math.PI;
-            } else if(angleDiff < -Math.PI) {
-                angleDiff = angleDiff + 2 * Math.PI;
-            }
+            if(isShiftDown){
+                const yDiff = -(event.clientY - previousY);
+                setPreviousY(event.clientY);
+                const newValue = position + yDiff / 100;
+                setNewValue(newValue);
+            } else {
+                const newAngle = getAngle({x: event.clientX, y: event.clientY}, center);
+                let angleDiff = newAngle - previousAngle;
+                if(angleDiff > Math.PI){
+                    angleDiff = angleDiff - 2 * Math.PI;
+                } else if(angleDiff < -Math.PI) {
+                    angleDiff = angleDiff + 2 * Math.PI;
 
-            if(angleDiff !== 0) {
-                setInitialAngle(newAngle);
-                const valueChange = getValueChangeFromDiff(angleDiff, ledArc);
-                const newValue = position + valueChange;
-                if(newValue < 0){
-                    if(position > 0){
-                        setPosition(0);
-                    }
-                } else if(newValue > 1){
-                    if(position < 1) {
-                        setPosition(1);
-                    }
-                } else {
-                    setPosition(position + valueChange);
+                }
+
+                if(angleDiff !== 0) {
+                    setPreviousAngle(newAngle);
+                    const valueChange = getValueChangeFromDiff(angleDiff, ledArc);
+                    const newValue = position + valueChange;
+                    setNewValue(newValue);
                 }
             }
         }
-    }, [ledArc, center, initialAngle, isDragging, position]);
+    }, [ledArc, center, previousAngle, isDragging, position, isShiftDown, previousY, setNewValue]);
 
     useEffect(() => {
         document.addEventListener("mousemove", onMouseMove)
