@@ -1,4 +1,5 @@
 import { MidiConfig } from './midiConstants'
+type MIDIAccess = WebMidi.MIDIAccess
 
 type Subscriber = {
     id: number;
@@ -46,3 +47,18 @@ export const receiveCC = (cc: number, value: number) => {
     // publish event
     publishCC(cc, value);
 }
+
+const onMIDISuccess = (midiAccess: MIDIAccess) => {
+    console.log(midiAccess);
+
+    const inputs = midiAccess.inputs;
+    const outputs = midiAccess.outputs;
+    console.log('MIDI', {inputs, outputs});
+}
+
+const onMIDIFailure = () => {
+    console.log('Could not access your MIDI devices.');
+}
+
+if(navigator.requestMIDIAccess) navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
+

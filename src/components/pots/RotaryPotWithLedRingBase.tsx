@@ -201,14 +201,14 @@ export default (props: Props & Config) => {
     }, [ledArc, center, previousAngle, isDragging, position, isShiftDown, previousY, setNewValue]);
 
     useEffect(() => {
-        document.addEventListener("mousemove", onMouseMove)
-        document.addEventListener("mouseup", onMouseUp)
+        window.addEventListener("mousemove", onMouseMove)
+        window.addEventListener("mouseup", onMouseUp)
 
-        return function cleanup() {
-            document.removeEventListener("mousemove", onMouseMove)
-            document.removeEventListener("mouseup", onMouseUp)
+        return () => {
+            window.removeEventListener("mousemove", onMouseMove)
+            window.removeEventListener("mouseup", onMouseUp)
         };
-    })
+    },[onMouseMove, onMouseUp])
 
     return (
         <svg x={x} y={y} className="pot">
