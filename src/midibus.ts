@@ -1,4 +1,7 @@
 import { MidiConfig } from './midiConstants'
+
+type MIDIInput = WebMidi.MIDIInput
+type MIDIOutput = WebMidi.MIDIOutput
 type MIDIAccess = WebMidi.MIDIAccess
 
 type Subscriber = {
@@ -6,6 +9,14 @@ type Subscriber = {
     values: number[] | undefined;
     callback: (value: number) => void;
 }
+
+const midiConfig = {
+    inputIds: ['-961056816'],
+    outputIds: ['-259958146'],
+}
+
+let midiOut: MIDIOutput | undefined;
+let midiIn:  MIDIInput | undefined;
 
 const loopback = true;
 let idPool = 0;
@@ -48,17 +59,44 @@ export const receiveCC = (cc: number, value: number) => {
     publishCC(cc, value);
 }
 
-const onMIDISuccess = (midiAccess: MIDIAccess) => {
-    console.log(midiAccess);
+const updateSelectedMidi = (midiAccess: MIDIAccess) => {
+    console.log('UPDATING MIDI CONFIG');
 
-    const inputs = midiAccess.inputs;
-    const outputs = midiAccess.outputs;
-    console.log('MIDI', {inputs, outputs});
+    const foundInputId = midiConfig.inputIds.find(id => midiAccess.inputs.has(id));
+    const foundOutputId = midiConfig.outputIds.find(id => midiAccess.outputs.has(id));
+
+    if(foundInputId){
+        midiIn = midiAccess.inputs.get(foundInputId);
+        console.log('Selected midi input', midiIn?.name);
+    } else {
+        midiIn = undefined;
+        console.log('Desired midi input not found');
+    }
+
+    if(foundOutputId){
+        midiOut = midiAccess.outputs.get(foundOutputId);
+        console.log('Selected midi output', midiOut?.name);
+    } else {
+        midiOut = undefined;
+        console.log('Desired midi output not found');
+    }
+
+}
+
+const onMIDISuccess = (midiAccess: MIDIAccess) => {
+
+    updateSelectedMidi(midiAccess);
+
+    midiAccess.onstatechange = (connectionEvent) => {
+        console.log(`Midi port ${connectionEvent.port.name} state changed to ${connectionEvent.port.state}, updating connections`);
+        updateSelectedMidi(midiAccess);
+    }
 }
 
 const onMIDIFailure = () => {
     console.log('Could not access your MIDI devices.');
 }
 
-if(navigator.requestMIDIAccess) navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
+if(navigator.requestMIDIAccess) navigator.requestMIDIAccess({sysex: true}).then(onMIDISuccess, onMIDIFailure);
 
+//TODO: Close midi connection on app close!
