@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 import arc from '../../utils/svg/arc'
 import RotaryPotBase, { Point } from './RotaryPotBase'
@@ -110,8 +110,8 @@ export default (props: Props & Config) => {
     // Position should be in the range 0-1 in all modes but pan. In pan the range is -0.5 - 0.5
     const { x, y, ledMode = 'single', potMode = 'normal', label, midiConfig, defaultValue } = props
 
-    // TODO: use forwarded refs instead of this
-    const [center, setCenter] = useState({x: 0, y: 0});
+    const potRef = useRef<SVGCircleElement>(null);
+    const [center, setCenter] = useState<Point|null>(null);
 
     const [previousAngle, setPreviousAngle] = useState(0);
     const [previousY, setPreviousY] = useState(0);
@@ -146,14 +146,33 @@ export default (props: Props & Config) => {
         }
     }, [midiConfig])
 
-    const onMouseDown = useCallback((event: React.MouseEvent, center: Point) => {
+    const getCenter = useCallback(() => {
+        if (center === null) {
+            const PotElement = potRef.current;
+            const bb = PotElement?.getBoundingClientRect();
+            let updatedCenter: {x: number, y: number};
+            if (bb) {
+                updatedCenter = {
+                    x: Math.round(bb.x + bb.width / 2),
+                    y: Math.round(bb.y + bb.height / 2)
+                }
+            } else {
+                updatedCenter = { x: 0, y: 0 }
+            }
+            setCenter(updatedCenter);
+            return updatedCenter;
+        } else {
+            return center;
+        }
+    }, [center]);
+
+    const onMouseDown = useCallback((event: React.MouseEvent) => {
         setShiftDown(event.shiftKey);
-        setCenter(center);
-        setPreviousAngle(getAngle({x: event.clientX, y: event.clientY}, center))
+        setPreviousAngle(getAngle({x: event.clientX, y: event.clientY}, getCenter()))
         setPreviousY(event.clientY);
         setIsDragging(true);
         if(event.preventDefault) event.preventDefault();
-    }, []);
+    }, [getCenter]);
 
     const onMouseUp = useCallback((event: MouseEvent) => {
         if(isDragging) setIsDragging(false);
@@ -181,7 +200,7 @@ export default (props: Props & Config) => {
                 const newValue = position + yDiff / 100;
                 setNewValue(newValue);
             } else {
-                const newAngle = getAngle({x: event.clientX, y: event.clientY}, center);
+                const newAngle = getAngle({x: event.clientX, y: event.clientY}, getCenter());
                 let angleDiff = newAngle - previousAngle;
                 if(angleDiff > Math.PI){
                     angleDiff = angleDiff - 2 * Math.PI;
@@ -198,7 +217,7 @@ export default (props: Props & Config) => {
                 }
             }
         }
-    }, [ledArc, center, previousAngle, isDragging, position, isShiftDown, previousY, setNewValue]);
+    }, [ledArc, previousAngle, isDragging, position, isShiftDown, previousY, setNewValue, getCenter]);
 
     useEffect(() => {
         window.addEventListener("mousemove", onMouseMove)
@@ -212,7 +231,7 @@ export default (props: Props & Config) => {
 
     return (
         <svg x={x} y={y} className="pot">
-            <RotaryPotBase knobRadius={knobRadius} onClick={onClick} onMouseDown={onMouseDown}/>
+            <RotaryPotBase ref={potRef} knobRadius={knobRadius} onClick={onClick} onMouseDown={onMouseDown}/>
             <path d={windowArc} className="pot-ring-window" strokeWidth={windowWidth}/>
             {ledAngles.map((angle, led) => {
                 const ledOn =
