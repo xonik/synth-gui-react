@@ -3,7 +3,7 @@ import React, { forwardRef, useCallback } from 'react'
 export type Point = {x: number, y: number}
 
 interface Props {
-  onClick: () => void;
+  onClick?: () => void;
   onMouseDown?: (event: React.MouseEvent) => void;
   knobRadius: number;
 }

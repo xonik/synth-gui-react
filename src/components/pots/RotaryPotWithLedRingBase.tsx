@@ -140,12 +140,6 @@ export default (props: Props & Config) => {
     // negative pointer used for spread
     const negLedPosition = centerLed - (ledPosition - centerLed)
 
-    const onClick = useCallback(() => {
-        if(midiConfig) {
-            sendCC(midiConfig.cc, 0);
-        }
-    }, [midiConfig])
-
     const getCenter = useCallback(() => {
         if (center === null) {
             const PotElement = potRef.current;
@@ -177,22 +171,6 @@ export default (props: Props & Config) => {
     const onMouseUp = useCallback((event: MouseEvent) => {
         if(isDragging) setIsDragging(false);
     }, [isDragging]);
-
-    /*
-        const setNewValue = useCallback((newValue) => {
-        if(newValue < 0){
-            if(position > 0){
-                setPosition(0);
-            }
-        } else if(newValue > 1){
-            if(position < 1) {
-                setPosition(1);
-            }
-        } else {
-            setPosition(newValue);
-        }
-    },[position])
-     */
 
     const updatePosition = useCallback((newPosition) => {
         setPosition(newPosition);
@@ -267,7 +245,7 @@ export default (props: Props & Config) => {
 
     return (
         <svg x={x} y={y} className="pot">
-            <RotaryPotBase ref={potRef} knobRadius={knobRadius} onClick={onClick} onMouseDown={onMouseDown}/>
+            <RotaryPotBase ref={potRef} knobRadius={knobRadius} onMouseDown={onMouseDown}/>
             <path d={windowArc} className="pot-ring-window" strokeWidth={windowWidth}/>
             {ledAngles.map((angle, led) => {
                 const ledOn =
