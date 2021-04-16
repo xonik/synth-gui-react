@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import arc from '../../utils/svg/arc'
 import RotaryPotBase, { Point } from './RotaryPotBase'
 import { MidiConfig } from '../../midiConstants'
-import { sendCC } from '../../midibus'
+import { sendCC, subscribe, unsubscribe } from '../../midibus'
 import './RotaryPot.scss'
 
 export type LedMode = 'single' | 'multi';
@@ -178,7 +178,8 @@ export default (props: Props & Config) => {
         if(isDragging) setIsDragging(false);
     }, [isDragging]);
 
-    const setNewValue = useCallback((newValue) => {
+    /*
+        const setNewValue = useCallback((newValue) => {
         if(newValue < 0){
             if(position > 0){
                 setPosition(0);
@@ -191,6 +192,28 @@ export default (props: Props & Config) => {
             setPosition(newValue);
         }
     },[position])
+     */
+
+    const updatePosition = useCallback((newPosition) => {
+        setPosition(newPosition);
+        if(midiConfig){
+            sendCC(midiConfig.cc, Math.round(127 * newPosition));
+        }
+    }, [midiConfig, setPosition])
+
+    const updatePositionFromValue = useCallback((newPosition) => {
+        if(newPosition < 0){
+            if(position > 0){
+                updatePosition(0);
+            }
+        } else if(newPosition > 1){
+            if(position < 1) {
+                updatePosition(1);
+            }
+        } else if(newPosition !== position){
+            updatePosition(newPosition);
+        }
+    },[position, updatePosition])
 
     const onMouseMove = useCallback((event: MouseEvent) => {
         if(isDragging) {
@@ -198,7 +221,7 @@ export default (props: Props & Config) => {
                 const yDiff = -(event.clientY - previousY);
                 setPreviousY(event.clientY);
                 const newValue = position + yDiff / 100;
-                setNewValue(newValue);
+                updatePositionFromValue(newValue);
             } else {
                 const newAngle = getAngle({x: event.clientX, y: event.clientY}, getCenter());
                 let angleDiff = newAngle - previousAngle;
@@ -213,11 +236,11 @@ export default (props: Props & Config) => {
                     setPreviousAngle(newAngle);
                     const valueChange = getValueChangeFromDiff(angleDiff, ledArc);
                     const newValue = position + valueChange;
-                    setNewValue(newValue);
+                    updatePositionFromValue(newValue);
                 }
             }
         }
-    }, [ledArc, previousAngle, isDragging, position, isShiftDown, previousY, setNewValue, getCenter]);
+    }, [ledArc, previousAngle, isDragging, position, isShiftDown, previousY, updatePositionFromValue, getCenter]);
 
     useEffect(() => {
         window.addEventListener("mousemove", onMouseMove)
@@ -228,6 +251,19 @@ export default (props: Props & Config) => {
             window.removeEventListener("mouseup", onMouseUp)
         };
     },[onMouseMove, onMouseUp])
+
+    useEffect(() => {
+        if(midiConfig) {
+            const updateValueFromMidi = (midiValue: number) => {
+                setPosition(midiValue / 127);
+            }
+
+            const subscriberId = subscribe(updateValueFromMidi, midiConfig)
+            return function cleanup() {
+                unsubscribe(midiConfig.cc, subscriberId);
+            };
+        }
+    });
 
     return (
         <svg x={x} y={y} className="pot">

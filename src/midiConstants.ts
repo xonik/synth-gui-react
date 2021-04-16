@@ -1,8 +1,15 @@
 // TODO: High value bits. Mod wheels, ribbon controller
+import { buttonLeftMidiValues } from './midi/buttonLeftMidiValues'
+import { buttonCenterMidiValues } from './midi/buttonCenterMidiValues'
+import { buttonRightMidiValues } from './midi/buttonRightMidiValues'
+
 export type MidiConfig = {
+    type: ControllerType,
     cc: number,
     values?: number[],
 }
+
+type ControllerType = 'pot' | 'button'
 
 export const CC = {
     BUTTONS_LEFT: 0,
@@ -123,1137 +130,1026 @@ export const CC = {
     OUTPUT_HEADPHONES: 115,
 }
 
+// TODO: Lage enums av button values
 const BUTTONS = {
     BUTTONS_LEFT: {
         cc: CC.BUTTONS_LEFT,
-        values: {
-            OSC1_SYNC_OFF: 0,
-            OSC1_SYNC_1_2: 1,
-            OSC1_SYNC_2_1: 2,
-            OSC1_MODE_DCO: 3,
-            OSC1_MODE_WT: 4,
-            OSC1_MODE_PCM: 5,
-            OSC1_SUB_WAVE_SQR: 6,
-            OSC1_SUB_WAVE_SAW: 7,
-            OSC1_WHEEL_OFF: 8,
-            OSC1_WHEEL_ON: 9,
-            OSC1_LFO_OFF: 10,
-            OSC1_LFO_ON: 11,
-            OSC1_KBD_OFF: 12,
-            OSC1_KBD_ON: 13,
-            //Missing 14-16
-            OSC2_MODE_DCO: 17,
-            OSC2_MODE_WT: 18,
-            OSC2_MODE_PCM: 19,
-            OSC2_SUB_WAVE_SQR: 20,
-            OSC2_SUB_WAVE_SAW: 21,
-            OSC2_WHEEL_OFF: 22,
-            OSC2_WHEEL_ON: 23,
-            OSC2_LFO_OFF: 24,
-            OSC2_LFO_ON: 25,
-            OSC2_KBD_OFF: 26,
-            OSC2_KBD_ON: 27,
-            OSC3_SYNC_OFF: 28,
-            OSC3_SYNC_HARD: 29,
-            OSC3_SYNC_CEM_HARD: 30,
-            OSC3_SYNC_CEM_SOFT: 31,
-            OSC3_CROSS_MOD_SRC_OSC1: 32,
-            OSC3_CROSS_MOD_SRC_EXT: 33,
-            OSC3_EXT_CV_OFF: 34,
-            OSC3_EXT_CV_ON: 35,
-            OSC3_WHEEL_OFF: 36,
-            OSC3_WHEEL_ON: 37,
-            OSC3_LFO_OFF: 38,
-            OSC3_LFO_ON: 39,
-            OSC3_KBD_OFF: 40,
-            OSC3_KBD_ON: 41,
-            NOISE_COLOUR_WHITE: 42,
-            NOISE_COLOUR_PINK: 43,
-            NOISE_COLOUR_RED: 44,
-            RING_MOD_SOURCE_1_2: 45,
-            RING_MOD_SOURCE_EXT_2: 46,
-            DISTORTION_IN_A: 49,
-            DISTORTION_IN_B: 50,
-            DISTORTION_IN_BOTH: 112,
-            DISTORTION_SOFT: 51,
-            DISTORTION_HARD: 52,
-            DISTORTION_OUT_A: 53,
-            DISTORTION_OUT_B: 54,
-            DISTORTION_OUT_BOTH: 113,
-            BIT_CRUSHER_IN_A: 55,
-            BIT_CRUSHER_IN_B: 56,
-            BIT_CRUSHER_IN_BOTH: 114,
-            BIT_CRUSHER_OUT_A: 57,
-            BIT_CRUSHER_OUT_B: 58,
-            BIT_CRUSHER_OUT_BOTH: 115,
-            LFO1: 59,
-            LFO2: 60,
-            LFO3: 61,
-            LFO4: 62,
-            LFO_SHAPE_SAW: 63,
-            LFO_SHAPE_TRI: 64,
-            LFO_SHAPE_SQR: 65,
-            LFO_SHAPE_SIN: 66,
-            LFO_SHAPE_SH: 67,
-            LFO_SYNC_OFF: 68,
-            LFO_SYNC_ON: 69,
-            LFO_RESET_OFF: 70,
-            LFO_RESET_ON: 71,
-            LFO_ONCE_OFF: 72,
-            LFO_ONCE_ON: 73,
-            OSC1_OUT_A: 74,
-            OSC1_OUT_B: 75,
-            OSC1_OUT_BOTH: 14,
-            OSC2_OUT_A: 76,
-            OSC2_OUT_B: 77,
-            OSC2_OUT_BOTH: 15,
-            OSC3_OUT_A: 78,
-            OSC3_OUT_B: 79,
-            OSC3_OUT_BOTH: 16,
-            NOISE_OUT_A: 80,
-            NOISE_OUT_B: 81,
-            NOISE_OUT_BOTH: 109,
-            RING_MOD_OUT_A: 82,
-            RING_MOD_OUT_B: 83,
-            RING_MOD_OUT_BOTH: 110,
-            EXT_AUDIO_OUT_A: 84,
-            EXT_AUDIO_OUT_B: 85,
-            EXT_AUDIO_OUT_BOTH: 111,
-            ROUTE_OFF: 86,
-            ROUTE_FROM_ON: 87,
-            ROUTE_TO_ON: 88, //NB!
-            MASTER_CLOCK_SRC_MASTER: 90,
-            MASTER_CLOCK_SRC_MIDI: 91,
-            MASTER_CLOCK_SRC_EXT: 92,
-            ARP_OFF: 93,
-            ARP_ON: 94,
-            ARP_TRIGGER_OFF: 95,
-            ARP_TRIGGER_ON: 96,
-            ARP_SYNC_OFF: 97,
-            ARP_SYNC_MASTER: 98,
-            ARP_SYNC_LFO1: 99,
-            ARP_SYNC_EXT: 100,
-            ARP_RANGE_1: 101,
-            ARP_RANGE_2: 102,
-            ARP_RANGE_3: 103,
-            ARP_MODE_UP: 104,
-            ARP_MODE_DOWN: 105,
-            ARP_MODE_UP_DOWN: 106,
-            ARP_MODE_RANDOM: 107,
-            ARP_MODE_OTHER: 108,
-        },
+        values: buttonLeftMidiValues,
     },
     BUTTONS_CENTER: {
         cc: CC.BUTTONS_CENTER,
-        values: {
-            VOICE1_ON: 0,
-            VOICE1_OFF: 1,
-            VOICE2_ON: 2,
-            VOICE2_OFF: 3,
-            VOICE3_ON: 4,
-            VOICE3_OFF: 5,
-            VOICE4_ON: 6,
-            VOICE4_OFF: 7,
-            VOICE5_ON: 8,
-            VOICE5_OFF: 9,
-            VOICE6_ON: 10,
-            VOICE6_OFF: 11,
-            VOICE7_ON: 12,
-            VOICE7_OFF: 13,
-            VOICE8_ON: 14,
-            VOICE8_OFF: 15,
-            MENU_LFO: 16,
-            MENU_OSC: 17,
-            MENU_FILTER: 18,
-            MENU_ENV: 19,
-            MENU_MOD: 20,
-            MENU_FX: 21,
-            FUNC_HOME: 22,
-            FUNC_SETTINGS: 23,
-            FUNC_SHIFT_ON: 24,
-            FUNC_SHIFT_OFF: 25,
-            FUNC_PERFORM: 26,
-            FUNC_LOAD: 27,
-            FUNC_SAVE: 28,
-            FUNC_COMPARE: 29,
-            FUNC_ROUTE: 30,
-            TRANSPOSE_NEG_2: 31,
-            TRANSPOSE_NEG_1: 32,
-            TRANSPOSE_0: 33,
-            TRANSPOSE_POS_1: 34,
-            TRANSPOSE_POS_2: 35,
-            KEYBOARD_HOLD_ON: 36,
-            KEYBOARD_HOLD_OFF: 37,
-            KEYBOARD_CHORD_ON: 38,
-            KEYBOARD_CHORD_OFF: 39,
-            KEYBOARD_MODE_SOLO: 40,
-            KEYBOARD_MODE_UNISON: 41,
-            KEYBOARD_MODE_POLY: 42,
-        }
+        values: buttonCenterMidiValues,
     },
     BUTTONS_RIGHT: {
         cc: CC.BUTTONS_RIGHT,
-        values: {
-            LPF_EXT_CV_ON: 0,
-            LPF_EXT_CV_OFF: 1,
-            LPF_WHEEL_ON: 2,
-            LPF_WHEEL_OFF: 3,
-            LPF_SLOPE_12DB: 4,
-            LPF_SLOPE_24DB: 5,
-            FILTER_LINK_CUTOFF_ON: 6,
-            FILTER_LINK_CUTOFF_OFF: 7,
-            FILTER_ROUTING_SERIES: 8,
-            FILTER_ROUTING_PARALLEL: 9,
-            SVF_EXT_CV_ON: 10,
-            SVF_EXT_CV_OFF: 11,
-            SVF_WHEEL_ON: 12,
-            SVF_WHEEL_OFF: 13,
-            SVF_SLOPE_12DB_LP: 14,
-            SVF_SLOPE_24DB_LP: 15,
-            SVF_SLOPE_12DB_BP: 16,
-            SVF_SLOPE_24DB_BP: 17,
-            SVF_SLOPE_LP_BP: 18,
-            SVF_SLOPE_12DB_HP: 19,
-            SVF_SLOPE_24DB_HP: 20,
-            SVF_SLOPE_HP_BP: 21,
-            SVF_SLOPE_NOTCH: 22,
-            SVF_SLOPE_NOTCH_LP: 23,
-            ENV1_TRIGGER: 24,
-            ENV1_LOOP_OFF: 25,
-            ENV1_LOOP_ON: 26,
-            ENV1_INVERT_OFF: 27,
-            ENV1_INVERT_ON: 28,
-            ENV2_TRIGGER: 29,
-            ENV2_LOOP_OFF: 30,
-            ENV2_LOOP_ON: 31,
-            ENV2_INVERT_OFF: 32,
-            ENV2_INVERT_ON: 33,
-            ENV3_SELECT: 34,
-            ENV3_TRIGGER: 35,
-            ENV3_LOOP_OFF: 36,
-            ENV3_LOOP_ON: 37,
-            ENV3_INVERT_OFF: 38,
-            ENV3_INVERT_ON: 39,
-            DSP1_SRC1: 40,
-            DSP1_SRC2: 41,
-            DSP_CHAIN_ON: 42,
-            DSP_CHAIN_OFF: 43,
-            DSP2_SRC1: 44,
-            DSP2_SRC2: 45,
-            CHORUS_SRC1: 46,
-            CHORUS_SRC2: 47,
-            CHORUS_MODE_CHORUS: 48,
-            CHORUS_MODE_VIBRATO: 49,
-            FX_BIT_CRUSHER_SRC1: 50,
-            FX_BIT_CRUSHER_SRC2: 51,
+        values: buttonRightMidiValues,
+    }
+}
+
+const midiControllers: {[key: string]: {[key: string]: MidiConfig}} = {
+    DCO1: {
+        // pots
+        NOTE: { type: 'pot', cc: CC.DCO1_NOTE },
+        SUPER_SAW: { type: 'pot', cc: CC.DCO1_SUPER_SAW },
+        WAVEFORM: { type: 'pot', cc: CC.DCO1_WAVEFORM },
+        SUB1: { type: 'pot', cc: CC.DCO1_SUB1 },
+        SUB2: { type: 'pot', cc: CC.DCO1_SUB1 },
+        PW: { type: 'pot', cc: CC.DCO1_PW },
+
+        //buttons
+        SYNC: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC1_SYNC_OFF,
+                BUTTONS.BUTTONS_LEFT.values.OSC1_SYNC_1_2,
+                BUTTONS.BUTTONS_LEFT.values.OSC1_SYNC_2_1,
+            ],
+        },
+        MODE: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC1_MODE_DCO,
+                BUTTONS.BUTTONS_LEFT.values.OSC1_MODE_WT,
+                BUTTONS.BUTTONS_LEFT.values.OSC1_MODE_PCM,
+            ],
+        },
+        SUB_WAVE: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC1_SUB_WAVE_SQR,
+                BUTTONS.BUTTONS_LEFT.values.OSC1_SUB_WAVE_SAW,
+            ],
+        },
+        WHEEL: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC1_WHEEL_OFF,
+                BUTTONS.BUTTONS_LEFT.values.OSC1_WHEEL_ON,
+            ],
+        },
+        LFO: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC1_LFO_OFF,
+                BUTTONS.BUTTONS_LEFT.values.OSC1_LFO_ON,
+            ],
+        },
+        KBD: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC1_KBD_OFF,
+                BUTTONS.BUTTONS_LEFT.values.OSC1_KBD_ON,
+            ],
+        },
+    },
+    DCO2: {
+        // pots
+        NOTE: { type: 'pot', cc: CC.DCO2_NOTE },
+        DETUNE: { type: 'pot', cc: CC.DCO2_DETUNE },
+        SUPER_SAW: { type: 'pot', cc: CC.DCO2_SUPER_SAW },
+        WAVEFORM: { type: 'pot', cc: CC.DCO2_WAVEFORM },
+        SUB1: { type: 'pot', cc: CC.DCO2_SUB1 },
+        SUB2: { type: 'pot', cc: CC.DCO2_SUB2 },
+        PW: { type: 'pot', cc: CC.DCO2_PW },
+
+        //buttons
+        MODE: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC2_MODE_DCO,
+                BUTTONS.BUTTONS_LEFT.values.OSC2_MODE_WT,
+                BUTTONS.BUTTONS_LEFT.values.OSC2_MODE_PCM,
+            ],
+        },
+        SUB_WAVE: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC2_SUB_WAVE_SQR,
+                BUTTONS.BUTTONS_LEFT.values.OSC2_SUB_WAVE_SAW,
+            ],
+        },
+        WHEEL: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC2_WHEEL_OFF,
+                BUTTONS.BUTTONS_LEFT.values.OSC2_WHEEL_ON,
+            ],
+        },
+        LFO: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC2_LFO_OFF,
+                BUTTONS.BUTTONS_LEFT.values.OSC2_LFO_ON,
+            ],
+        },
+        KBD: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC2_KBD_OFF,
+                BUTTONS.BUTTONS_LEFT.values.OSC2_KBD_ON,
+            ],
+        },
+    },
+    VCO: {
+        // pots
+        NOTE: { type: 'pot', cc: CC.VCO_NOTE },
+        DETUNE: { type: 'pot', cc: CC.VCO_DETUNE },
+        WAVEFORM: { type: 'pot', cc: CC.VCO_WAVEFORM },
+        CROSS_MOD: { type: 'pot', cc: CC.VCO_CROSS_MOD },
+        PW: { type: 'pot', cc: CC.VCO_PW },
+
+        //buttons
+        SYNC: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC3_SYNC_OFF,
+                BUTTONS.BUTTONS_LEFT.values.OSC3_SYNC_HARD,
+                BUTTONS.BUTTONS_LEFT.values.OSC3_SYNC_CEM_HARD,
+                BUTTONS.BUTTONS_LEFT.values.OSC3_SYNC_CEM_SOFT,
+            ],
+        },
+        CROSS_MOD_SRC: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC3_CROSS_MOD_SRC_OSC1,
+                BUTTONS.BUTTONS_LEFT.values.OSC3_CROSS_MOD_SRC_EXT,
+            ],
+        },
+        EXT_CV: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC3_EXT_CV_OFF,
+                BUTTONS.BUTTONS_LEFT.values.OSC3_EXT_CV_ON,
+            ],
+        },
+        WHEEL: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC3_WHEEL_OFF,
+                BUTTONS.BUTTONS_LEFT.values.OSC3_WHEEL_ON,
+            ],
+        },
+        LFO: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC3_LFO_OFF,
+                BUTTONS.BUTTONS_LEFT.values.OSC3_LFO_ON,
+            ],
+        },
+        KBD: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC3_KBD_OFF,
+                BUTTONS.BUTTONS_LEFT.values.OSC3_KBD_ON,
+            ],
+        },
+    },
+    NOISE: {
+        COLOUR: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.NOISE_COLOUR_WHITE,
+                BUTTONS.BUTTONS_LEFT.values.NOISE_COLOUR_PINK,
+                BUTTONS.BUTTONS_LEFT.values.NOISE_COLOUR_RED,
+            ],
         }
-    }
-};
+    },
+    RING_MOD: {
+        SOURCE: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.RING_MOD_SOURCE_1_2,
+                BUTTONS.BUTTONS_LEFT.values.RING_MOD_SOURCE_EXT_2,
+            ],
+        }
+    },
+    DISTORTION: {
+        // Pots
+        DRIVE: { type: 'pot', cc: CC.DISTORTION_DRIVE },
+        LEVEL: { type: 'pot', cc: CC.DISTORTION_LEVEL },
+        // Buttons
+        IN: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.DISTORTION_IN_A,
+                BUTTONS.BUTTONS_LEFT.values.DISTORTION_IN_B,
+                BUTTONS.BUTTONS_LEFT.values.DISTORTION_IN_BOTH,
+            ],
+        },
+        CLIP: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.DISTORTION_SOFT,
+                BUTTONS.BUTTONS_LEFT.values.DISTORTION_HARD,
+            ],
+        },
+        OUT: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.DISTORTION_OUT_A,
+                BUTTONS.BUTTONS_LEFT.values.DISTORTION_OUT_B,
+                BUTTONS.BUTTONS_LEFT.values.DISTORTION_OUT_BOTH,
+            ],
+        },
+    },
+    BIT_CRUSHER: {
+        // Pots
+        BITS: { type: 'pot', cc: CC.BIT_CRUSHER_BITS },
+        RATE: { type: 'pot', cc: CC.BIT_CRUSHER_RATE },
+        LEVEL: { type: 'pot', cc: CC.BIT_CRUSHER_LEVEL },
+        // Buttons
+        IN: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_IN_A,
+                BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_IN_B,
+                BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_IN_BOTH,
+            ],
+        },
+        OUT: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_OUT_A,
+                BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_OUT_B,
+                BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_OUT_BOTH,
+            ],
+        },
+    },
+    LFOS: {
+        // Pots
+        RATE: { type: 'pot', cc: CC.LFO_RATE },
+        DEPTH: { type: 'pot', cc: CC.LFO_DEPTH },
+        DELAY: { type: 'pot', cc: CC.LFO_DELAY },
+        // Buttons
+        LFO: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.LFO1,
+                BUTTONS.BUTTONS_LEFT.values.LFO2,
+                BUTTONS.BUTTONS_LEFT.values.LFO3,
+                BUTTONS.BUTTONS_LEFT.values.LFO4,
+            ],
+        },
+        SHAPE: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SAW,
+                BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_TRI,
+                BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SQR,
+                BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SIN,
+                BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SH,
+            ],
+        },
+        SYNC: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.LFO_SYNC_OFF,
+                BUTTONS.BUTTONS_LEFT.values.LFO_SYNC_ON,
+            ],
+        },
+        RESET: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.LFO_RESET_OFF,
+                BUTTONS.BUTTONS_LEFT.values.LFO_RESET_ON,
+            ],
+        },
+        ONCE: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.LFO_ONCE_OFF,
+                BUTTONS.BUTTONS_LEFT.values.LFO_ONCE_ON,
+            ],
+        },
+    },
+    SOURCE_MIX: {
+        LEVEL_OSC1: { type: 'pot', cc: CC.LEVEL_OSC1 },
+        LEVEL_OSC2: { type: 'pot', cc: CC.LEVEL_OSC2 },
+        LEVEL_OSC3: { type: 'pot', cc: CC.LEVEL_OSC3 },
+        LEVEL_NOISE: { type: 'pot', cc: CC.LEVEL_NOISE },
+        LEVEL_RING_MOD: { type: 'pot', cc: CC.LEVEL_RING_MOD },
+        LEVEL_EXT_AUDIO: { type: 'pot', cc: CC.LEVEL_EXT_AUDIO },
+        OUT_OSC1: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC1_OUT_A,
+                BUTTONS.BUTTONS_LEFT.values.OSC1_OUT_B,
+                BUTTONS.BUTTONS_LEFT.values.OSC1_OUT_BOTH,
+            ],
+        },
+        OUT_OSC2: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC2_OUT_A,
+                BUTTONS.BUTTONS_LEFT.values.OSC2_OUT_B,
+                BUTTONS.BUTTONS_LEFT.values.OSC2_OUT_BOTH,
+            ],
+        },
+        OUT_OSC3: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC3_OUT_A,
+                BUTTONS.BUTTONS_LEFT.values.OSC3_OUT_B,
+                BUTTONS.BUTTONS_LEFT.values.OSC3_OUT_BOTH,
+            ],
+        },
+        OUT_NOISE: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.NOISE_OUT_A,
+                BUTTONS.BUTTONS_LEFT.values.NOISE_OUT_B,
+                BUTTONS.BUTTONS_LEFT.values.NOISE_OUT_BOTH,
+            ],
+        },
+        OUT_RING_MOD: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.RING_MOD_OUT_A,
+                BUTTONS.BUTTONS_LEFT.values.RING_MOD_OUT_B,
+                BUTTONS.BUTTONS_LEFT.values.RING_MOD_OUT_BOTH,
+            ],
+        },
+        OUT_EXT_AUDIO: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.EXT_AUDIO_OUT_A,
+                BUTTONS.BUTTONS_LEFT.values.EXT_AUDIO_OUT_B,
+                BUTTONS.BUTTONS_LEFT.values.EXT_AUDIO_OUT_BOTH,
+            ],
+        },
+    },
+    ROUTE: {
+        AMOUNT: { type: 'pot', cc: CC.ROUTE_AMOUNT },
+        FROM: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.ROUTE_OFF,
+                BUTTONS.BUTTONS_LEFT.values.ROUTE_FROM_ON,
+                BUTTONS.BUTTONS_LEFT.values.ROUTE_TO_ON,
+            ],
+        },
+        TO: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.ROUTE_OFF,
+                BUTTONS.BUTTONS_LEFT.values.ROUTE_FROM_ON,
+                BUTTONS.BUTTONS_LEFT.values.ROUTE_TO_ON,
+            ],
+        },
+    },
+    MASTER_CLOCK: {
+        RATE: { type: 'pot', cc: CC.MASTER_CLOCK_RATE },
+        SOURCE: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.MASTER_CLOCK_SRC_MASTER,
+                BUTTONS.BUTTONS_LEFT.values.MASTER_CLOCK_SRC_MIDI,
+                BUTTONS.BUTTONS_LEFT.values.MASTER_CLOCK_SRC_EXT,
+            ],
+        },
+    },
+    ARPEGGIATOR: {
+        TEMPO: { type: 'pot', cc: CC.ARP_TEMPO },
+        ON_OFF: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.ARP_OFF,
+                BUTTONS.BUTTONS_LEFT.values.ARP_ON,
+            ],
+        },
+        TRIGGER: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.ARP_TRIGGER_OFF,
+                BUTTONS.BUTTONS_LEFT.values.ARP_TRIGGER_ON,
+            ],
+        },
+        SYNC: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.ARP_SYNC_OFF,
+                BUTTONS.BUTTONS_LEFT.values.ARP_SYNC_MASTER,
+                BUTTONS.BUTTONS_LEFT.values.ARP_SYNC_LFO1,
+                BUTTONS.BUTTONS_LEFT.values.ARP_SYNC_EXT,
+            ],
+        },
+        RANGE: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.ARP_RANGE_1,
+                BUTTONS.BUTTONS_LEFT.values.ARP_RANGE_2,
+                BUTTONS.BUTTONS_LEFT.values.ARP_RANGE_3,
+            ],
+        },
+        MODE: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.ARP_MODE_UP,
+                BUTTONS.BUTTONS_LEFT.values.ARP_MODE_DOWN,
+                BUTTONS.BUTTONS_LEFT.values.ARP_MODE_UP_DOWN,
+                BUTTONS.BUTTONS_LEFT.values.ARP_MODE_RANDOM,
+                BUTTONS.BUTTONS_LEFT.values.ARP_MODE_OTHER,
+            ],
+        },
+    },
+    VOICES: {
+        VOICE1: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.VOICE1_OFF,
+                BUTTONS.BUTTONS_CENTER.values.VOICE1_ON,
+            ],
+        },
+        VOICE2: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.VOICE2_OFF,
+                BUTTONS.BUTTONS_CENTER.values.VOICE2_ON,
+            ],
+        },
+        VOICE3: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.VOICE3_OFF,
+                BUTTONS.BUTTONS_CENTER.values.VOICE3_ON,
+            ],
+        },
+        VOICE4: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.VOICE4_OFF,
+                BUTTONS.BUTTONS_CENTER.values.VOICE4_ON,
+            ],
+        },
+        VOICE5: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.VOICE5_OFF,
+                BUTTONS.BUTTONS_CENTER.values.VOICE5_ON,
+            ],
+        },
+        VOICE6: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.VOICE6_OFF,
+                BUTTONS.BUTTONS_CENTER.values.VOICE6_ON,
+            ],
+        },
+        VOICE7: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.VOICE7_OFF,
+                BUTTONS.BUTTONS_CENTER.values.VOICE7_ON,
+            ],
+        },
+        VOICE8: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.VOICE8_OFF,
+                BUTTONS.BUTTONS_CENTER.values.VOICE8_ON,
+            ],
+        },
+    },
+    MAIN_PANEL: {
+        POT1: { type: 'pot', cc: CC.MAIN_POT1 },
+        POT2: { type: 'pot', cc: CC.MAIN_POT2 },
+        POT3: { type: 'pot', cc: CC.MAIN_POT3 },
+        POT4: { type: 'pot', cc: CC.MAIN_POT4 },
+        POT5: { type: 'pot', cc: CC.MAIN_POT5 },
+        POT6: { type: 'pot', cc: CC.MAIN_POT6 },
 
-const DCO1 = {
-    // pots
-    NOTE: { cc: CC.DCO1_NOTE },
-    SUPER_SAW: {cc: CC.DCO1_SUPER_SAW },
-    WAVEFORM: {cc: CC.DCO1_WAVEFORM },
-    SUB1: {cc: CC.DCO1_SUB1 },
-    SUB2: {cc: CC.DCO1_SUB1 },
-    PW: {cc: CC.DCO1_PW },
+        MENU_LFO: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.MENU_LFO,
+            ],
+        },
+        MENU_OSC: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.MENU_OSC,
+            ],
+        },
+        MENU_FILTER: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.MENU_FILTER,
+            ],
+        },
+        MENU_ENVELOPE: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.MENU_ENV,
+            ],
+        },
+        MENU_MOD: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.MENU_MOD,
+            ],
+        },
+        MENU_FX: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.MENU_LFO,
+            ],
+        },
+        //TODO: ARP-meny?
 
-    //buttons
-    SYNC: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.OSC1_SYNC_OFF,
-            BUTTONS.BUTTONS_LEFT.values.OSC1_SYNC_1_2,
-            BUTTONS.BUTTONS_LEFT.values.OSC1_SYNC_2_1,
-        ],
+        FUNC_HOME: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.FUNC_HOME,
+            ],
+        },
+        FUNC_SETTINGS: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.FUNC_SETTINGS,
+            ],
+        },
+        FUNC_SHIFT: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.FUNC_SHIFT_OFF,
+                BUTTONS.BUTTONS_CENTER.values.FUNC_SHIFT_ON,
+            ],
+        },
+        FUNC_PERFORM: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.FUNC_PERFORM,
+            ],
+        },
+        FUNC_LOAD: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.FUNC_LOAD,
+            ],
+        },
+        FUNC_SAVE: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.FUNC_SAVE,
+            ],
+        },
+        FUNC_COMPARE: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.FUNC_COMPARE,
+            ],
+        },
+        FUNC_ROUTE: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.FUNC_ROUTE,
+            ],
+        },
     },
-    MODE: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.OSC1_MODE_DCO,
-            BUTTONS.BUTTONS_LEFT.values.OSC1_MODE_WT,
-            BUTTONS.BUTTONS_LEFT.values.OSC1_MODE_PCM,
-        ],
-    },
-    SUB_WAVE: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.OSC1_SUB_WAVE_SQR,
-            BUTTONS.BUTTONS_LEFT.values.OSC1_SUB_WAVE_SAW,
-        ],
-    },
-    WHEEL: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.OSC1_WHEEL_OFF,
-            BUTTONS.BUTTONS_LEFT.values.OSC1_WHEEL_ON,
-        ],
-    },
-    LFO: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.OSC1_LFO_OFF,
-            BUTTONS.BUTTONS_LEFT.values.OSC1_LFO_ON,
-        ],
-    },
-    KBD: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.OSC1_KBD_OFF,
-            BUTTONS.BUTTONS_LEFT.values.OSC1_KBD_ON,
-        ],
-    },
-}
-const DCO2 = {
-    // pots
-    NOTE: { cc: CC.DCO2_NOTE },
-    DETUNE: { cc: CC.DCO2_DETUNE },
-    SUPER_SAW: {cc: CC.DCO2_SUPER_SAW },
-    WAVEFORM: {cc: CC.DCO2_WAVEFORM },
-    SUB1: {cc: CC.DCO2_SUB1 },
-    SUB2: {cc: CC.DCO2_SUB1 },
-    PW: {cc: CC.DCO2_PW },
-
-    //buttons
-    MODE: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.OSC2_MODE_DCO,
-            BUTTONS.BUTTONS_LEFT.values.OSC2_MODE_WT,
-            BUTTONS.BUTTONS_LEFT.values.OSC2_MODE_PCM,
-        ],
-    },
-    SUB_WAVE: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.OSC2_SUB_WAVE_SQR,
-            BUTTONS.BUTTONS_LEFT.values.OSC2_SUB_WAVE_SAW,
-        ],
-    },
-    WHEEL: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.OSC2_WHEEL_OFF,
-            BUTTONS.BUTTONS_LEFT.values.OSC2_WHEEL_ON,
-        ],
-    },
-    LFO: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.OSC2_LFO_OFF,
-            BUTTONS.BUTTONS_LEFT.values.OSC2_LFO_ON,
-        ],
-    },
-    KBD: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.OSC2_KBD_OFF,
-            BUTTONS.BUTTONS_LEFT.values.OSC2_KBD_ON,
-        ],
-    },
-}
-const VCO = {
-    // pots
-    NOTE: { cc: CC.VCO_NOTE },
-    DETUNE: { cc: CC.VCO_DETUNE },
-    WAVEFORM: {cc: CC.VCO_WAVEFORM },
-    CROSS_MOD: {cc: CC.VCO_CROSS_MOD },
-    PW: {cc: CC.VCO_PW },
-
-    //buttons
-    SYNC: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.OSC3_SYNC_OFF,
-            BUTTONS.BUTTONS_LEFT.values.OSC3_SYNC_HARD,
-            BUTTONS.BUTTONS_LEFT.values.OSC3_SYNC_CEM_HARD,
-            BUTTONS.BUTTONS_LEFT.values.OSC3_SYNC_CEM_SOFT,
-        ],
-    },
-    CROSS_MOD_SRC: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.OSC3_CROSS_MOD_SRC_OSC1,
-            BUTTONS.BUTTONS_LEFT.values.OSC3_CROSS_MOD_SRC_EXT,
-        ],
-    },
-    EXT_CV: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.OSC3_EXT_CV_OFF,
-            BUTTONS.BUTTONS_LEFT.values.OSC3_EXT_CV_ON,
-        ],
-    },
-    WHEEL: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.OSC3_WHEEL_OFF,
-            BUTTONS.BUTTONS_LEFT.values.OSC3_WHEEL_ON,
-        ],
-    },
-    LFO: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.OSC3_LFO_OFF,
-            BUTTONS.BUTTONS_LEFT.values.OSC3_LFO_ON,
-        ],
-    },
-    KBD: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.OSC3_KBD_OFF,
-            BUTTONS.BUTTONS_LEFT.values.OSC3_KBD_ON,
-        ],
-    },
-}
-const NOISE = {
-    COLOUR:{
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.NOISE_COLOUR_WHITE,
-            BUTTONS.BUTTONS_LEFT.values.NOISE_COLOUR_PINK,
-            BUTTONS.BUTTONS_LEFT.values.NOISE_COLOUR_RED,
-        ],
-    }
-}
-const RING_MOD = {
-    SOURCE: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.RING_MOD_SOURCE_1_2,
-            BUTTONS.BUTTONS_LEFT.values.RING_MOD_SOURCE_EXT_2,
-        ],
-    }
-}
-const DISTORTION = {
-    // Pots
-    DRIVE: { cc: CC.DISTORTION_DRIVE },
-    LEVEL: { cc: CC.DISTORTION_LEVEL },
-    // Buttons
-    IN: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.DISTORTION_IN_A,
-            BUTTONS.BUTTONS_LEFT.values.DISTORTION_IN_B,
-            BUTTONS.BUTTONS_LEFT.values.DISTORTION_IN_BOTH,
-        ],
-    },
-    CLIP: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.DISTORTION_SOFT,
-            BUTTONS.BUTTONS_LEFT.values.DISTORTION_HARD,
-        ],
-    },
-    OUT: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.DISTORTION_OUT_A,
-            BUTTONS.BUTTONS_LEFT.values.DISTORTION_OUT_B,
-            BUTTONS.BUTTONS_LEFT.values.DISTORTION_OUT_BOTH,
-        ],
-    },
-}
-const BIT_CRUSHER = {
-    // Pots
-    BITS: { cc: CC.BIT_CRUSHER_BITS },
-    RATE: { cc: CC.BIT_CRUSHER_RATE },
-    LEVEL: { cc: CC.BIT_CRUSHER_LEVEL },
-    // Buttons
-    IN: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_IN_A,
-            BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_IN_B,
-            BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_IN_BOTH,
-        ],
-    },
-    OUT: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_OUT_A,
-            BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_OUT_B,
-            BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_OUT_BOTH,
-        ],
-    },
-}
-const LFOS = {
-    // Pots
-    RATE: { cc: CC.LFO_RATE },
-    DEPTH: { cc: CC.LFO_DEPTH },
-    DELAY: { cc: CC.LFO_DELAY },
-    // Buttons
-    LFO: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.LFO1,
-            BUTTONS.BUTTONS_LEFT.values.LFO2,
-            BUTTONS.BUTTONS_LEFT.values.LFO3,
-            BUTTONS.BUTTONS_LEFT.values.LFO4,
-        ],
-    },
-    SHAPE: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SAW,
-            BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_TRI,
-            BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SQR,
-            BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SIN,
-            BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SH,
-        ],
-    },
-    SYNC: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.LFO_SYNC_OFF,
-            BUTTONS.BUTTONS_LEFT.values.LFO_SYNC_ON,
-        ],
-    },
-    RESET: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.LFO_RESET_OFF,
-            BUTTONS.BUTTONS_LEFT.values.LFO_RESET_ON,
-        ],
-    },
-    ONCE: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.LFO_ONCE_OFF,
-            BUTTONS.BUTTONS_LEFT.values.LFO_ONCE_ON,
-        ],
-    },
-}
-const SOURCE_MIX = {
-    LEVEL_OSC1: { cc: CC.LEVEL_OSC1 },
-    LEVEL_OSC2: { cc: CC.LEVEL_OSC2 },
-    LEVEL_OSC3: { cc: CC.LEVEL_OSC3 },
-    LEVEL_NOISE: { cc: CC.LEVEL_NOISE },
-    LEVEL_RING_MOD: { cc: CC.LEVEL_RING_MOD },
-    LEVEL_EXT_AUDIO: { cc: CC.LEVEL_EXT_AUDIO },
-    OUT_OSC1: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.OSC1_OUT_A,
-            BUTTONS.BUTTONS_LEFT.values.OSC1_OUT_B,
-            BUTTONS.BUTTONS_LEFT.values.OSC1_OUT_BOTH,
-        ],
-    },
-    OUT_OSC2: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.OSC2_OUT_A,
-            BUTTONS.BUTTONS_LEFT.values.OSC2_OUT_B,
-            BUTTONS.BUTTONS_LEFT.values.OSC2_OUT_BOTH,
-        ],
-    },
-    OUT_OSC3: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.OSC3_OUT_A,
-            BUTTONS.BUTTONS_LEFT.values.OSC3_OUT_B,
-            BUTTONS.BUTTONS_LEFT.values.OSC3_OUT_BOTH,
-        ],
-    },
-    OUT_NOISE: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.NOISE_OUT_A,
-            BUTTONS.BUTTONS_LEFT.values.NOISE_OUT_B,
-            BUTTONS.BUTTONS_LEFT.values.NOISE_OUT_BOTH,
-        ],
-    },
-    OUT_RING_MOD: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.RING_MOD_OUT_A,
-            BUTTONS.BUTTONS_LEFT.values.RING_MOD_OUT_B,
-            BUTTONS.BUTTONS_LEFT.values.RING_MOD_OUT_BOTH,
-        ],
-    },
-    OUT_EXT_AUDIO: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.EXT_AUDIO_OUT_A,
-            BUTTONS.BUTTONS_LEFT.values.EXT_AUDIO_OUT_B,
-            BUTTONS.BUTTONS_LEFT.values.EXT_AUDIO_OUT_BOTH,
-        ],
-    },
-}
-const ROUTE = {
-    AMOUNT: { cc: CC.ROUTE_AMOUNT },
-    FROM: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.ROUTE_OFF,
-            BUTTONS.BUTTONS_LEFT.values.ROUTE_FROM_ON,
-            BUTTONS.BUTTONS_LEFT.values.ROUTE_TO_ON,
-        ],
-    },
-    TO: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.ROUTE_OFF,
-            BUTTONS.BUTTONS_LEFT.values.ROUTE_FROM_ON,
-            BUTTONS.BUTTONS_LEFT.values.ROUTE_TO_ON,
-        ],
-    },
-}
-const MASTER_CLOCK = {
-    RATE: { cc: CC.MASTER_CLOCK_RATE },
-    SOURCE: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.MASTER_CLOCK_SRC_MASTER,
-            BUTTONS.BUTTONS_LEFT.values.MASTER_CLOCK_SRC_MIDI,
-            BUTTONS.BUTTONS_LEFT.values.MASTER_CLOCK_SRC_EXT,
-        ],
-    },
-}
-const ARPEGGIATOR = {
-    TEMPO: { cc: CC.ARP_TEMPO },
-    ON_OFF: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.ARP_OFF,
-            BUTTONS.BUTTONS_LEFT.values.ARP_ON,
-        ],
-    },
-    TRIGGER: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.ARP_TRIGGER_OFF,
-            BUTTONS.BUTTONS_LEFT.values.ARP_TRIGGER_ON,
-        ],
-    },
-    SYNC: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.ARP_SYNC_OFF,
-            BUTTONS.BUTTONS_LEFT.values.ARP_SYNC_MASTER,
-            BUTTONS.BUTTONS_LEFT.values.ARP_SYNC_LFO1,
-            BUTTONS.BUTTONS_LEFT.values.ARP_SYNC_EXT,
-        ],
-    },
-    RANGE: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.ARP_RANGE_1,
-            BUTTONS.BUTTONS_LEFT.values.ARP_RANGE_2,
-            BUTTONS.BUTTONS_LEFT.values.ARP_RANGE_3,
-        ],
-    },
-    MODE: {
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.ARP_MODE_UP,
-            BUTTONS.BUTTONS_LEFT.values.ARP_MODE_DOWN,
-            BUTTONS.BUTTONS_LEFT.values.ARP_MODE_UP_DOWN,
-            BUTTONS.BUTTONS_LEFT.values.ARP_MODE_RANDOM,
-            BUTTONS.BUTTONS_LEFT.values.ARP_MODE_OTHER,
-        ],
-    },
-}
-const VOICES = {
-    VOICE1: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.VOICE1_OFF,
-            BUTTONS.BUTTONS_CENTER.values.VOICE1_ON,
-        ],
-    },
-    VOICE2: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.VOICE2_OFF,
-            BUTTONS.BUTTONS_CENTER.values.VOICE2_ON,
-        ],
-    },
-    VOICE3: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.VOICE3_OFF,
-            BUTTONS.BUTTONS_CENTER.values.VOICE3_ON,
-        ],
-    },
-    VOICE4: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.VOICE4_OFF,
-            BUTTONS.BUTTONS_CENTER.values.VOICE4_ON,
-        ],
-    },
-    VOICE5: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.VOICE5_OFF,
-            BUTTONS.BUTTONS_CENTER.values.VOICE5_ON,
-        ],
-    },
-    VOICE6: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.VOICE6_OFF,
-            BUTTONS.BUTTONS_CENTER.values.VOICE6_ON,
-        ],
-    },
-    VOICE7: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.VOICE7_OFF,
-            BUTTONS.BUTTONS_CENTER.values.VOICE7_ON,
-        ],
-    },
-    VOICE8: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.VOICE8_OFF,
-            BUTTONS.BUTTONS_CENTER.values.VOICE8_ON,
-        ],
-    },
-}
-const MAIN_PANEL = {
-    POT1: { cc: CC.MAIN_POT1 },
-    POT2: { cc: CC.MAIN_POT2 },
-    POT3: { cc: CC.MAIN_POT3 },
-    POT4: { cc: CC.MAIN_POT4 },
-    POT5: { cc: CC.MAIN_POT5 },
-    POT6: { cc: CC.MAIN_POT6 },
-
-    MENU_LFO: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.MENU_LFO,
-        ],
-    },
-    MENU_OSC: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.MENU_OSC,
-        ],
-    },
-    MENU_FILTER: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.MENU_FILTER,
-        ],
-    },
-    MENU_ENVELOPE: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.MENU_ENV,
-        ],
-    },
-    MENU_MOD: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.MENU_MOD,
-        ],
-    },
-    MENU_FX: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.MENU_LFO,
-        ],
-    },
-    //TODO: ARP-meny?
-
-    FUNC_HOME: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.FUNC_HOME,
-        ],
-    },
-    FUNC_SETTINGS: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.FUNC_SETTINGS,
-        ],
-    },
-    FUNC_SHIFT: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.FUNC_SHIFT_OFF,
-            BUTTONS.BUTTONS_CENTER.values.FUNC_SHIFT_ON,
-        ],
-    },
-    FUNC_PERFORM: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.FUNC_PERFORM,
-        ],
-    },
-    FUNC_LOAD: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.FUNC_LOAD,
-        ],
-    },
-    FUNC_SAVE: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.FUNC_SAVE,
-        ],
-    },
-    FUNC_COMPARE: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.FUNC_COMPARE,
-        ],
-    },
-    FUNC_ROUTE: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.FUNC_ROUTE,
-        ],
-    },
-}
-const TRANSPOSE = {
     TRANSPOSE: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.TRANSPOSE_NEG_2,
-            BUTTONS.BUTTONS_CENTER.values.TRANSPOSE_NEG_1,
-            BUTTONS.BUTTONS_CENTER.values.TRANSPOSE_0,
-            BUTTONS.BUTTONS_CENTER.values.TRANSPOSE_POS_1,
-            BUTTONS.BUTTONS_CENTER.values.TRANSPOSE_POS_2,
-        ],
+        TRANSPOSE: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.TRANSPOSE_NEG_2,
+                BUTTONS.BUTTONS_CENTER.values.TRANSPOSE_NEG_1,
+                BUTTONS.BUTTONS_CENTER.values.TRANSPOSE_0,
+                BUTTONS.BUTTONS_CENTER.values.TRANSPOSE_POS_1,
+                BUTTONS.BUTTONS_CENTER.values.TRANSPOSE_POS_2,
+            ],
+        },
     },
-}
-const KEYBOARD = {
-    PORTAMENTO: { cc: CC.KEYBOARD_PORTAMENTO },
-    UNISON_DETUNE: { cc: CC.KEYBOARD_UNISON_DETUNE },
-    HOLD: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.KEYBOARD_HOLD_OFF,
-            BUTTONS.BUTTONS_CENTER.values.KEYBOARD_HOLD_ON,
-        ],
+    KEYBOARD: {
+        PORTAMENTO: { type: 'pot', cc: CC.KEYBOARD_PORTAMENTO },
+        UNISON_DETUNE: { type: 'pot', cc: CC.KEYBOARD_UNISON_DETUNE },
+        HOLD: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.KEYBOARD_HOLD_OFF,
+                BUTTONS.BUTTONS_CENTER.values.KEYBOARD_HOLD_ON,
+            ],
+        },
+        CHORD: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.KEYBOARD_CHORD_OFF,
+                BUTTONS.BUTTONS_CENTER.values.KEYBOARD_CHORD_ON,
+            ],
+        },
+        MODE: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_CENTER.cc,
+            values: [
+                BUTTONS.BUTTONS_CENTER.values.KEYBOARD_MODE_SOLO,
+                BUTTONS.BUTTONS_CENTER.values.KEYBOARD_MODE_UNISON,
+                BUTTONS.BUTTONS_CENTER.values.KEYBOARD_MODE_POLY,
+            ],
+        },
     },
-    CHORD: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.KEYBOARD_CHORD_OFF,
-            BUTTONS.BUTTONS_CENTER.values.KEYBOARD_CHORD_ON,
-        ],
-    },
-    MODE: {
-        cc: BUTTONS.BUTTONS_CENTER.cc,
-        values: [
-            BUTTONS.BUTTONS_CENTER.values.KEYBOARD_MODE_SOLO,
-            BUTTONS.BUTTONS_CENTER.values.KEYBOARD_MODE_UNISON,
-            BUTTONS.BUTTONS_CENTER.values.KEYBOARD_MODE_POLY,
-        ],
-    },
-}
-const LPF = {
-    INPUT: { cc: CC.LPF_INPUT },
-    DRIVE: { cc: CC.LPF_DRIVE },
-    RESONANCE: { cc: CC.LPF_RESONANCE },
-    CUTOFF: { cc: CC.LPF_CUTOFF },
-    FM_AMT: { cc: CC.LPF_FM_AMT },
-    ENV_AMT: { cc: CC.LPF_ENV_AMT },
-    LFO_AMT: { cc: CC.LPF_LFO_AMT },
-    KBD_AMT: { cc: CC.LPF_KBD_AMT },
+    LPF: {
+        INPUT: { type: 'pot', cc: CC.LPF_INPUT },
+        DRIVE: { type: 'pot', cc: CC.LPF_DRIVE },
+        RESONANCE: { type: 'pot', cc: CC.LPF_RESONANCE },
+        CUTOFF: { type: 'pot', cc: CC.LPF_CUTOFF },
+        FM_AMT: { type: 'pot', cc: CC.LPF_FM_AMT },
+        ENV_AMT: { type: 'pot', cc: CC.LPF_ENV_AMT },
+        LFO_AMT: { type: 'pot', cc: CC.LPF_LFO_AMT },
+        KBD_AMT: { type: 'pot', cc: CC.LPF_KBD_AMT },
 
-    EXT_CV: {
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
-        values: [
-            BUTTONS.BUTTONS_RIGHT.values.LPF_EXT_CV_OFF,
-            BUTTONS.BUTTONS_RIGHT.values.LPF_EXT_CV_ON,
-        ],
+        EXT_CV: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.LPF_EXT_CV_OFF,
+                BUTTONS.BUTTONS_RIGHT.values.LPF_EXT_CV_ON,
+            ],
+        },
+        WHEEL: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.LPF_WHEEL_OFF,
+                BUTTONS.BUTTONS_RIGHT.values.LPF_WHEEL_ON,
+            ],
+        },
+        SLOPE: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.LPF_SLOPE_12DB,
+                BUTTONS.BUTTONS_RIGHT.values.LPF_SLOPE_24DB,
+            ],
+        },
     },
-    WHEEL: {
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
-        values: [
-            BUTTONS.BUTTONS_RIGHT.values.LPF_WHEEL_OFF,
-            BUTTONS.BUTTONS_RIGHT.values.LPF_WHEEL_ON,
-        ],
+    FILTERS: {
+        LINK_CUTOFF: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.FILTER_LINK_CUTOFF_OFF,
+                BUTTONS.BUTTONS_RIGHT.values.FILTER_LINK_CUTOFF_ON,
+            ],
+        },
+        ROUTING: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.FILTER_ROUTING_SERIES,
+                BUTTONS.BUTTONS_RIGHT.values.FILTER_ROUTING_PARALLEL,
+            ],
+        },
     },
-    SLOPE: {
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
-        values: [
-            BUTTONS.BUTTONS_RIGHT.values.LPF_SLOPE_12DB,
-            BUTTONS.BUTTONS_RIGHT.values.LPF_SLOPE_24DB,
-        ],
-    },
-}
-const FILTERS = {
-    LINK_CUTOFF: {
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
-        values: [
-            BUTTONS.BUTTONS_RIGHT.values.FILTER_LINK_CUTOFF_OFF,
-            BUTTONS.BUTTONS_RIGHT.values.FILTER_LINK_CUTOFF_ON,
-        ],
-    },
-    ROUTING: {
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
-        values: [
-            BUTTONS.BUTTONS_RIGHT.values.FILTER_ROUTING_SERIES,
-            BUTTONS.BUTTONS_RIGHT.values.FILTER_ROUTING_PARALLEL,
-        ],
-    },
-}
-const SVF = {
-    INPUT: { cc: CC.SVF_INPUT },
-    DRIVE: { cc: CC.SVF_DRIVE },
-    RESONANCE: { cc: CC.SVF_RESONANCE },
-    CUTOFF: { cc: CC.SVF_CUTOFF },
-    FM_AMT: { cc: CC.SVF_FM_AMT },
-    ENV_AMT: { cc: CC.SVF_ENV_AMT },
-    LFO_AMT: { cc: CC.SVF_LFO_AMT },
-    KBD_AMT: { cc: CC.SVF_KBD_AMT },
+    SVF: {
+        INPUT: { type: 'pot', cc: CC.SVF_INPUT },
+        DRIVE: { type: 'pot', cc: CC.SVF_DRIVE },
+        RESONANCE: { type: 'pot', cc: CC.SVF_RESONANCE },
+        CUTOFF: { type: 'pot', cc: CC.SVF_CUTOFF },
+        FM_AMT: { type: 'pot', cc: CC.SVF_FM_AMT },
+        ENV_AMT: { type: 'pot', cc: CC.SVF_ENV_AMT },
+        LFO_AMT: { type: 'pot', cc: CC.SVF_LFO_AMT },
+        KBD_AMT: { type: 'pot', cc: CC.SVF_KBD_AMT },
 
-    EXT_CV: {
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
-        values: [
-            BUTTONS.BUTTONS_RIGHT.values.SVF_EXT_CV_OFF,
-            BUTTONS.BUTTONS_RIGHT.values.SVF_EXT_CV_ON,
-        ],
+        EXT_CV: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.SVF_EXT_CV_OFF,
+                BUTTONS.BUTTONS_RIGHT.values.SVF_EXT_CV_ON,
+            ],
+        },
+        WHEEL: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.SVF_WHEEL_OFF,
+                BUTTONS.BUTTONS_RIGHT.values.SVF_WHEEL_ON,
+            ],
+        },
+        SLOPE: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_12DB_LP,
+                BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_24DB_LP,
+                BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_12DB_BP,
+                BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_24DB_BP,
+                BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_LP_BP,
+                BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_12DB_HP,
+                BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_24DB_HP,
+                BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_HP_BP,
+                BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_NOTCH,
+                BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_NOTCH_LP,
+            ],
+        },
     },
-    WHEEL: {
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
-        values: [
-            BUTTONS.BUTTONS_RIGHT.values.SVF_WHEEL_OFF,
-            BUTTONS.BUTTONS_RIGHT.values.SVF_WHEEL_ON,
-        ],
+    POST_MIX: {
+        LPF: { type: 'pot', cc: CC.POST_MIX_LPF },
+        SVF: { type: 'pot', cc: CC.POST_MIX_SVF },
+        SINE1: { type: 'pot', cc: CC.POST_MIX_SINE1 },
+        SINE2: { type: 'pot', cc: CC.POST_MIX_SINE2 },
     },
-    SLOPE: {
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
-        values: [
-            BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_12DB_LP,
-            BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_24DB_LP,
-            BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_12DB_BP,
-            BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_24DB_BP,
-            BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_LP_BP,
-            BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_12DB_HP,
-            BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_24DB_HP,
-            BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_HP_BP,
-            BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_NOTCH,
-            BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_NOTCH_LP,
-        ],
+    VOICE_OUT: {
+        PAN: { type: 'pot', cc: CC.VOICE_OUT_PAN },
+        AMOUNT: { type: 'pot', cc: CC.VOICE_OUT_AMOUNT },
+        FX1_SEND: { type: 'pot', cc: CC.VOICE_OUT_FX1_SEND },
+        FX2_SEND: { type: 'pot', cc: CC.VOICE_OUT_FX2_SEND },
     },
-}
-const POST_MIX = {
-    LPF: { cc: CC.POST_MIX_LPF },
-    SVF: { cc: CC.POST_MIX_SVF },
-    SINE1: { cc: CC.POST_MIX_SINE1 },
-    SINE2: { cc: CC.POST_MIX_SINE2 },
-}
-const VOICE_OUT = {
-    PAN: { cc: CC.VOICE_OUT_PAN },
-    AMOUNT: { cc: CC.VOICE_OUT_AMOUNT },
-    FX1_SEND: { cc: CC.VOICE_OUT_FX1_SEND },
-    FX2_SEND: { cc: CC.VOICE_OUT_FX2_SEND },
-}
-const ENV1 = {
-    ATTACK: { cc: CC.ENV1_ATTACK },
-    DECAY1: { cc: CC.ENV1_DECAY1 },
-    DECAY2: { cc: CC.ENV1_DECAY2 },
-    SUSTAIN: { cc: CC.ENV1_SUSTAIN },
-    RELEASE1: { cc: CC.ENV1_RELEASE1 },
-    RELEASE2: { cc: CC.ENV1_RELEASE2 },
-    DELAY: { cc: CC.ENV1_DELAY },
-    D1_LEVEL: { cc: CC.ENV1_D1_LEVEL },
-    R1_LEVEL: { cc: CC.ENV1_R1_LEVEL },
+    ENV1: {
+        ATTACK: { type: 'pot', cc: CC.ENV1_ATTACK },
+        DECAY1: { type: 'pot', cc: CC.ENV1_DECAY1 },
+        DECAY2: { type: 'pot', cc: CC.ENV1_DECAY2 },
+        SUSTAIN: { type: 'pot', cc: CC.ENV1_SUSTAIN },
+        RELEASE1: { type: 'pot', cc: CC.ENV1_RELEASE1 },
+        RELEASE2: { type: 'pot', cc: CC.ENV1_RELEASE2 },
+        DELAY: { type: 'pot', cc: CC.ENV1_DELAY },
+        D1_LEVEL: { type: 'pot', cc: CC.ENV1_D1_LEVEL },
+        R1_LEVEL: { type: 'pot', cc: CC.ENV1_R1_LEVEL },
 
-    TRIGGER: {
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
-        values: [
-            BUTTONS.BUTTONS_RIGHT.values.ENV1_TRIGGER,
-        ],
+        TRIGGER: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.ENV1_TRIGGER,
+            ],
+        },
+        LOOP: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.ENV1_LOOP_OFF,
+                BUTTONS.BUTTONS_RIGHT.values.ENV1_LOOP_ON,
+            ],
+        },
+        INVERT: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.ENV1_INVERT_OFF,
+                BUTTONS.BUTTONS_RIGHT.values.ENV1_INVERT_ON,
+            ],
+        },
     },
-    LOOP: {
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
-        values: [
-            BUTTONS.BUTTONS_RIGHT.values.ENV1_LOOP_OFF,
-            BUTTONS.BUTTONS_RIGHT.values.ENV1_LOOP_ON,
-        ],
+    ENV2: {
+        ATTACK: { type: 'pot', cc: CC.ENV2_ATTACK },
+        DECAY1: { type: 'pot', cc: CC.ENV2_DECAY1 },
+        DECAY2: { type: 'pot', cc: CC.ENV2_DECAY2 },
+        SUSTAIN: { type: 'pot', cc: CC.ENV2_SUSTAIN },
+        RELEASE1: { type: 'pot', cc: CC.ENV2_RELEASE1 },
+        RELEASE2: { type: 'pot', cc: CC.ENV2_RELEASE2 },
+        DELAY: { type: 'pot', cc: CC.ENV2_DELAY },
+        D1_LEVEL: { type: 'pot', cc: CC.ENV2_D1_LEVEL },
+        R1_LEVEL: { type: 'pot', cc: CC.ENV2_R1_LEVEL },
+        TRIGGER: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.ENV2_TRIGGER,
+            ],
+        },
+        LOOP: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.ENV2_LOOP_OFF,
+                BUTTONS.BUTTONS_RIGHT.values.ENV2_LOOP_ON,
+            ],
+        },
+        INVERT: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.ENV2_INVERT_OFF,
+                BUTTONS.BUTTONS_RIGHT.values.ENV2_INVERT_ON,
+            ],
+        },
     },
-    INVERT: {
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
-        values: [
-            BUTTONS.BUTTONS_RIGHT.values.ENV1_INVERT_OFF,
-            BUTTONS.BUTTONS_RIGHT.values.ENV1_INVERT_ON,
-        ],
+    ENV3: {
+        ATTACK: { type: 'pot', cc: CC.ENV3_ATTACK },
+        DECAY1: { type: 'pot', cc: CC.ENV3_DECAY1 },
+        DECAY2: { type: 'pot', cc: CC.ENV3_DECAY2 },
+        SUSTAIN: { type: 'pot', cc: CC.ENV3_SUSTAIN },
+        RELEASE1: { type: 'pot', cc: CC.ENV3_RELEASE1 },
+        RELEASE2: { type: 'pot', cc: CC.ENV3_RELEASE2 },
+        DELAY: { type: 'pot', cc: CC.ENV3_DELAY },
+        D1_LEVEL: { type: 'pot', cc: CC.ENV3_D1_LEVEL },
+        R1_LEVEL: { type: 'pot', cc: CC.ENV3_R1_LEVEL },
+        ENV_SELECT: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.ENV3_SELECT,
+            ],
+        },
+        TRIGGER: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.ENV3_TRIGGER,
+            ],
+        },
+        LOOP: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.ENV3_LOOP_OFF,
+                BUTTONS.BUTTONS_RIGHT.values.ENV3_LOOP_ON,
+            ],
+        },
+        INVERT: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.ENV3_INVERT_OFF,
+                BUTTONS.BUTTONS_RIGHT.values.ENV3_INVERT_ON,
+            ],
+        },
     },
-}
-const ENV2 = {
-    ATTACK: { cc: CC.ENV2_ATTACK },
-    DECAY1: { cc: CC.ENV2_DECAY1 },
-    DECAY2: { cc: CC.ENV2_DECAY2 },
-    SUSTAIN: { cc: CC.ENV2_SUSTAIN },
-    RELEASE1: { cc: CC.ENV2_RELEASE1 },
-    RELEASE2: { cc: CC.ENV2_RELEASE2 },
-    DELAY: { cc: CC.ENV2_DELAY },
-    D1_LEVEL: { cc: CC.ENV2_D1_LEVEL },
-    R1_LEVEL: { cc: CC.ENV2_R1_LEVEL },
-    TRIGGER: {
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
-        values: [
-            BUTTONS.BUTTONS_RIGHT.values.ENV2_TRIGGER,
-        ],
-    },
-    LOOP: {
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
-        values: [
-            BUTTONS.BUTTONS_RIGHT.values.ENV2_LOOP_OFF,
-            BUTTONS.BUTTONS_RIGHT.values.ENV2_LOOP_ON,
-        ],
-    },
-    INVERT: {
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
-        values: [
-            BUTTONS.BUTTONS_RIGHT.values.ENV2_INVERT_OFF,
-            BUTTONS.BUTTONS_RIGHT.values.ENV2_INVERT_ON,
-        ],
-    },
-}
-const ENV3 = {
-    ATTACK: { cc: CC.ENV3_ATTACK },
-    DECAY1: { cc: CC.ENV3_DECAY1 },
-    DECAY2: { cc: CC.ENV3_DECAY2 },
-    SUSTAIN: { cc: CC.ENV3_SUSTAIN },
-    RELEASE1: { cc: CC.ENV3_RELEASE1 },
-    RELEASE2: { cc: CC.ENV3_RELEASE2 },
-    DELAY: { cc: CC.ENV3_DELAY },
-    D1_LEVEL: { cc: CC.ENV3_D1_LEVEL },
-    R1_LEVEL: { cc: CC.ENV3_R1_LEVEL },
-    ENV_SELECT: {
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
-        values: [
-            BUTTONS.BUTTONS_RIGHT.values.ENV3_SELECT,
-        ],
-    },
-    TRIGGER: {
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
-        values: [
-            BUTTONS.BUTTONS_RIGHT.values.ENV3_TRIGGER,
-        ],
-    },
-    LOOP: {
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
-        values: [
-            BUTTONS.BUTTONS_RIGHT.values.ENV3_LOOP_OFF,
-            BUTTONS.BUTTONS_RIGHT.values.ENV3_LOOP_ON,
-        ],
-    },
-    INVERT: {
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
-        values: [
-            BUTTONS.BUTTONS_RIGHT.values.ENV3_INVERT_OFF,
-            BUTTONS.BUTTONS_RIGHT.values.ENV3_INVERT_ON,
-        ],
-    },
-}
-const DSP1 = {
-    POT1: { cc: CC.DSP1_POT1 },
-    POT2: { cc: CC.DSP1_POT2 },
-    POT3: { cc: CC.DSP1_POT3 },
-    EFFECT: { cc: CC.DSP1_EFFECT },
+    DSP1: {
+        POT1: { type: 'pot', cc: CC.DSP1_POT1 },
+        POT2: { type: 'pot', cc: CC.DSP1_POT2 },
+        POT3: { type: 'pot', cc: CC.DSP1_POT3 },
+        EFFECT: { type: 'pot', cc: CC.DSP1_EFFECT },
 
-    SOURCE: {
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
-        values: [
-            BUTTONS.BUTTONS_RIGHT.values.DSP1_SRC1,
-            BUTTONS.BUTTONS_RIGHT.values.DSP1_SRC2,
-        ],
+        SOURCE: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.DSP1_SRC1,
+                BUTTONS.BUTTONS_RIGHT.values.DSP1_SRC2,
+            ],
+        },
     },
-}
-const DSP2 = {
-    POT1: { cc: CC.DSP2_POT1 },
-    POT2: { cc: CC.DSP2_POT2 },
-    POT3: { cc: CC.DSP2_POT3 },
-    EFFECT: { cc: CC.DSP2_EFFECT },
+    DSP2: {
+        POT1: { type: 'pot', cc: CC.DSP2_POT1 },
+        POT2: { type: 'pot', cc: CC.DSP2_POT2 },
+        POT3: { type: 'pot', cc: CC.DSP2_POT3 },
+        EFFECT: { type: 'pot', cc: CC.DSP2_EFFECT },
 
-    SOURCE: {
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
-        values: [
-            BUTTONS.BUTTONS_RIGHT.values.DSP2_SRC1,
-            BUTTONS.BUTTONS_RIGHT.values.DSP2_SRC2,
-        ],
-    },
+        SOURCE: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.DSP2_SRC1,
+                BUTTONS.BUTTONS_RIGHT.values.DSP2_SRC2,
+            ],
+        },
 
-    CHAIN: {
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
-        values: [
-            BUTTONS.BUTTONS_RIGHT.values.DSP_CHAIN_OFF,
-            BUTTONS.BUTTONS_RIGHT.values.DSP_CHAIN_ON,
-        ],
+        CHAIN: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.DSP_CHAIN_OFF,
+                BUTTONS.BUTTONS_RIGHT.values.DSP_CHAIN_ON,
+            ],
+        },
     },
-}
-const CHORUS = {
-    RATE: { cc: CC.CHORUS_RATE },
-    DEPTH: { cc: CC.CHORUS_DEPTH },
+    CHORUS: {
+        RATE: { type: 'pot', cc: CC.CHORUS_RATE },
+        DEPTH: { type: 'pot', cc: CC.CHORUS_DEPTH },
 
-    SOURCE: {
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
-        values: [
-            BUTTONS.BUTTONS_RIGHT.values.CHORUS_SRC1,
-            BUTTONS.BUTTONS_RIGHT.values.CHORUS_SRC2,
-        ],
+        SOURCE: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.CHORUS_SRC1,
+                BUTTONS.BUTTONS_RIGHT.values.CHORUS_SRC2,
+            ],
+        },
+        MODE: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.CHORUS_MODE_CHORUS,
+                BUTTONS.BUTTONS_RIGHT.values.CHORUS_MODE_VIBRATO,
+            ],
+        },
     },
-    MODE: {
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
-        values: [
-            BUTTONS.BUTTONS_RIGHT.values.CHORUS_MODE_CHORUS,
-            BUTTONS.BUTTONS_RIGHT.values.CHORUS_MODE_VIBRATO,
-        ],
+    FX_BIT_CRUSHER: {
+        BITS: { type: 'pot', cc: CC.FX_BIT_CRUSHER_BITS },
+        RATE: { type: 'pot', cc: CC.FX_BIT_CRUSHER_RATE },
+        SOURCE: {
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.FX_BIT_CRUSHER_SRC1,
+                BUTTONS.BUTTONS_RIGHT.values.FX_BIT_CRUSHER_SRC2,
+            ],
+        },
     },
-}
-const FX_BIT_CRUSHER = {
-    BITS: { cc: CC.FX_BIT_CRUSHER_BITS },
-    RATE: { cc: CC.FX_BIT_CRUSHER_RATE },
-    SOURCE: {
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
-        values: [
-            BUTTONS.BUTTONS_RIGHT.values.FX_BIT_CRUSHER_SRC1,
-            BUTTONS.BUTTONS_RIGHT.values.FX_BIT_CRUSHER_SRC2,
-        ],
+    FX_MIX: {
+        LEVEL_DSP1: { type: 'pot', cc: CC.FX_MIX_LEVEL_DSP1 },
+        LEVEL_DSP2: { type: 'pot', cc: CC.FX_MIX_LEVEL_DSP2 },
+        LEVEL_CHORUS: { type: 'pot', cc: CC.FX_MIX_LEVEL_CHORUS },
+        LEVEL_BIT_CRUSHER: { type: 'pot', cc: CC.FX_MIX_LEVEL_BIT_CRUSHER },
     },
-}
-const FX_MIX = {
-    LEVEL_DSP1: { cc: CC.FX_MIX_LEVEL_DSP1 },
-    LEVEL_DSP2: { cc: CC.FX_MIX_LEVEL_DSP2 },
-    LEVEL_CHORUS: { cc: CC.FX_MIX_LEVEL_CHORUS },
-    LEVEL_BIT_CRUSHER: { cc: CC.FX_MIX_LEVEL_BIT_CRUSHER },
-}
-const OUTPUT = {
-    VOLUME: { cc: CC.OUTPUT_VOLUME },
-    SPREAD: { cc: CC.OUTPUT_SPREAD },
-    HEADPHONES: { cc: CC.OUTPUT_HEADPHONES },
+    OUTPUT: {
+        VOLUME: { type: 'pot', cc: CC.OUTPUT_VOLUME },
+        SPREAD: { type: 'pot', cc: CC.OUTPUT_SPREAD },
+        HEADPHONES: { type: 'pot', cc: CC.OUTPUT_HEADPHONES },
+    }
 }
 
-export default {
-    DCO1,
-    DCO2,
-    VCO,
-    NOISE,
-    RING_MOD,
-    DISTORTION,
-    BIT_CRUSHER,
-    LFOS,
-    SOURCE_MIX,
-    ROUTE,
-    MASTER_CLOCK,
-    ARPEGGIATOR,
-    VOICES,
-    MAIN_PANEL,
-    TRANSPOSE,
-    KEYBOARD,
-    LPF,
-    FILTERS,
-    SVF,
-    POST_MIX,
-    VOICE_OUT,
-    ENV1,
-    ENV2,
-    ENV3,
-    DSP1,
-    DSP2,
-    CHORUS,
-    FX_BIT_CRUSHER,
-    FX_MIX,
-    OUTPUT,
+const generateCppFiles = () => {
+    const buttonEnum: string[] = []
+    const buttonCC: number[] = []
+    const buttonOffset: number[] = []
+    const buttonValuesCount: number[] = []
+
+    const potEnum: string[] = []
+    const potCC: number[] = []
+
+    Object.entries(midiControllers)
+        .forEach(([controllerGroupKey, controllersList]) => {
+            Object.entries(controllersList).forEach(([controllerKey, controller]) => {
+                if(controller.type === 'button'){
+                    buttonEnum.push(`${controllerGroupKey}_${controllerKey}`)
+                    buttonCC.push(controller.cc)
+                    buttonOffset.push(controller.values ? controller.values[0] : 0)
+                    buttonValuesCount.push(controller.values?.length || 0)
+                } else if(controller.type === 'pot'){
+                    potEnum.push(`${controllerGroupKey}_${controllerKey}`)
+                    potCC.push(controller.cc)
+                } else {
+                    console.log('missing controller type', { controllerGroupKey, controllerKey, controller })
+                }
+            })
+        })
+
+    console.log(buttonEnum)
+    console.log(buttonCC)
+    console.log(buttonOffset)
+    console.log(buttonValuesCount)
+    console.log(potEnum)
+    console.log(potCC)
 }
+
+generateCppFiles()
+
+export default midiControllers

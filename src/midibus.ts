@@ -12,7 +12,9 @@ type Subscriber = {
 }
 
 const midiConfig = {
-    inputIds: ['-961056816'],
+    inputIds: [
+        '-213316575', // Akai MPK25 Port 1/A
+    ],
     outputIds: ['-259958146'],
     channel: 0,
 }
@@ -70,6 +72,8 @@ export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
 
 const updateSelectedMidi = async (midiAccess: MIDIAccess) => {
     console.log('UPDATING MIDI CONFIG')
+    midiAccess.inputs.forEach((value, key) => console.log({key, value}))
+    midiAccess.outputs.forEach((value, key) => console.log({key, value}))
 
     const foundInputId = midiConfig.inputIds.find(id => midiAccess.inputs.has(id))
     const foundOutputId = midiConfig.outputIds.find(id => midiAccess.outputs.has(id))
@@ -95,9 +99,9 @@ const updateSelectedMidi = async (midiAccess: MIDIAccess) => {
 
 }
 
-const onMIDISuccess = (midiAccess: MIDIAccess) => {
+const onMIDISuccess = async (midiAccess: MIDIAccess) => {
 
-    updateSelectedMidi(midiAccess)
+    await updateSelectedMidi(midiAccess)
 
     midiAccess.onstatechange = async (connectionEvent) => {
         console.log(`Midi port ${connectionEvent.port.name} state changed to ${connectionEvent.port.state}, updating connections`)
