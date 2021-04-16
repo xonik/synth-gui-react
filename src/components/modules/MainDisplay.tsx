@@ -4,7 +4,7 @@ import RotaryPotWOLeds17 from '../pots/RotaryPotWOLeds17';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
 import './MainDisplay.scss';
 import RotaryPotWOLeds32 from '../pots/RotaryPotWOLeds32';
-import midiConstants from '../../midiConstants'
+import midiConstants from '../../midi/midiControllers'
 
 interface Props {
   x: number,

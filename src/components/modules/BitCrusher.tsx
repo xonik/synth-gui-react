@@ -2,7 +2,7 @@ import React from 'react';
 import RotaryPot10 from '../pots/RotaryPot10';
 import Header from '../misc/Header';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
-import midiConstants from '../../midiConstants'
+import midiConstants from '../../midi/midiControllers'
 
 interface Props {
     x: number,

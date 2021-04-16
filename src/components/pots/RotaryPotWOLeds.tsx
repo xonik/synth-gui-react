@@ -1,8 +1,8 @@
 import RotaryPotBase from './RotaryPotBase'
 import React, { useCallback } from 'react'
 import './RotaryPot.scss'
-import { MidiConfig } from '../../midiConstants'
-import { sendCC } from '../../midibus'
+import { MidiConfig } from '../../midi/midiControllers'
+import { sendCC } from '../../midi/midibus'
 
 export interface Props {
     x: number,

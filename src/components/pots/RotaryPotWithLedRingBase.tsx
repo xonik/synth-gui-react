@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import classNames from 'classnames'
 import arc from '../../utils/svg/arc'
 import RotaryPotBase, { Point } from './RotaryPotBase'
-import { MidiConfig } from '../../midiConstants'
-import { sendCC, subscribe, unsubscribe } from '../../midibus'
+import { MidiConfig } from '../../midi/midiControllers'
+import { sendCC, subscribe, unsubscribe } from '../../midi/midibus'
 import './RotaryPot.scss'
 
 export type LedMode = 'single' | 'multi';

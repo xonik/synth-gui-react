@@ -22,7 +22,7 @@ import BitCrusherPre from './modules/BitCrusherPre';
 import Route from './modules/Route';
 import KeyboardControls from './modules/KeyboardControls';
 import VoiceSelector from './modules/VoiceSelector';
-import midiConstants from '../midiConstants'
+import midiConstants from '../midi/midiControllers'
 import './MainPanel.scss';
 
 /**

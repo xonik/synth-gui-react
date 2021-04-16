@@ -2,9 +2,9 @@ import React, { useCallback, useEffect, useState } from 'react'
 import classNames from 'classnames'
 import RoundPushButtonBase from './RoundPushButtonBase'
 import RotaryPotBase from '../pots/RotaryPotBase'
-import { subscribe, unsubscribe, sendCC } from '../../midibus'
+import { subscribe, unsubscribe, sendCC } from '../../midi/midibus'
 import './RoundButton.scss'
-import { MidiConfig } from '../../midiConstants'
+import { MidiConfig } from '../../midi/midiControllers'
 
 type LedPosition = 'left' | 'right' | 'sides' | 'top' | 'bottom' | undefined;
 type LabelPosition = 'left' | 'right' | 'top' | 'bottom' | undefined;

@@ -1,7 +1,8 @@
 // TODO: High value bits. Mod wheels, ribbon controller
-import { buttonLeftMidiValues } from './midi/buttonLeftMidiValues'
-import { buttonCenterMidiValues } from './midi/buttonCenterMidiValues'
-import { buttonRightMidiValues } from './midi/buttonRightMidiValues'
+import { buttonLeftMidiValues } from './buttonLeftMidiValues'
+import { buttonCenterMidiValues } from './buttonCenterMidiValues'
+import { buttonRightMidiValues } from './buttonRightMidiValues'
+import CC from './ccMap'
 
 export type MidiConfig = {
     type: ControllerType,
@@ -11,126 +12,6 @@ export type MidiConfig = {
 
 type ControllerType = 'pot' | 'button'
 
-export const CC = {
-    BUTTONS_LEFT: 0,
-    BUTTONS_CENTER: 1,
-    BUTTONS_RIGHT: 2,
-    DCO1_NOTE: 3,
-    DCO1_SUPER_SAW: 4,
-    DCO1_WAVEFORM: 5,
-    DCO1_SUB1: 6,
-    DCO1_SUB2: 7,
-    DCO1_PW: 8,
-    DCO2_NOTE: 9,
-    DCO2_DETUNE: 10,
-    DCO2_SUPER_SAW: 11,
-    DCO2_WAVEFORM: 12,
-    DCO2_SUB1: 13,
-    DCO2_SUB2: 14,
-    DCO2_PW: 15,
-    VCO_NOTE: 16,
-    VCO_DETUNE: 17,
-    VCO_WAVEFORM: 18,
-    VCO_CROSS_MOD: 19,
-    VCO_PW: 20,
-    DISTORTION_DRIVE: 21,
-    DISTORTION_LEVEL: 22,
-    BIT_CRUSHER_BITS: 23,
-    BIT_CRUSHER_RATE: 24,
-    BIT_CRUSHER_LEVEL: 25,
-    LFO_RATE: 26,
-    LFO_DEPTH: 27,
-    LFO_DELAY: 28,
-    LEVEL_OSC1: 29,
-    LEVEL_OSC2: 30,
-    LEVEL_OSC3: 31,
-    LEVEL_NOISE: 32,
-    LEVEL_RING_MOD: 33,
-    LEVEL_EXT_AUDIO: 34,
-    ROUTE_AMOUNT: 35,
-    MASTER_CLOCK_RATE: 36,
-    ARP_TEMPO: 37,
-    MAIN_POT1: 38,
-    MAIN_POT2: 39,
-    MAIN_POT3: 40,
-    MAIN_POT4: 41,
-    MAIN_POT5: 42,
-    MAIN_POT6: 43,
-    KEYBOARD_PORTAMENTO: 44,
-    KEYBOARD_UNISON_DETUNE: 45,
-    LPF_INPUT: 46,
-    LPF_DRIVE: 47,
-    LPF_RESONANCE: 48,
-    LPF_CUTOFF: 49,
-    LPF_FM_AMT: 50,
-    LPF_ENV_AMT: 51,
-    LPF_LFO_AMT: 52,
-    LPF_KBD_AMT: 53,
-    SVF_INPUT: 54,
-    SVF_DRIVE: 55,
-    SVF_RESONANCE: 56,
-    SVF_CUTOFF: 57,
-    SVF_FM_AMT: 58,
-    SVF_ENV_AMT: 59,
-    SVF_LFO_AMT: 60,
-    SVF_KBD_AMT: 61,
-    POST_MIX_LPF: 62,
-    POST_MIX_SVF: 63,
-    POST_MIX_SINE1: 64,
-    POST_MIX_SINE2: 65,
-    VOICE_OUT_PAN: 66,
-    VOICE_OUT_AMOUNT: 67,
-    VOICE_OUT_FX1_SEND: 68,
-    VOICE_OUT_FX2_SEND: 69,
-    ENV1_ATTACK: 70,
-    ENV1_DECAY1: 71,
-    ENV1_DECAY2: 72,
-    ENV1_SUSTAIN: 73,
-    ENV1_RELEASE1: 74,
-    ENV1_RELEASE2: 75,
-    ENV1_DELAY: 76,
-    ENV1_D1_LEVEL: 77,
-    ENV1_R1_LEVEL: 78,
-    ENV2_ATTACK: 79,
-    ENV2_DECAY1: 80,
-    ENV2_DECAY2: 81,
-    ENV2_SUSTAIN: 82,
-    ENV2_RELEASE1: 83,
-    ENV2_RELEASE2: 84,
-    ENV2_DELAY: 85,
-    ENV2_D1_LEVEL: 86,
-    ENV2_R1_LEVEL: 87,
-    ENV3_ATTACK: 88,
-    ENV3_DECAY1: 89,
-    ENV3_DECAY2: 90,
-    ENV3_SUSTAIN: 91,
-    ENV3_RELEASE1: 92,
-    ENV3_RELEASE2: 93,
-    ENV3_DELAY: 94,
-    ENV3_D1_LEVEL: 95,
-    ENV3_R1_LEVEL: 96,
-    DSP1_POT1: 97,
-    DSP1_POT2: 98,
-    DSP1_POT3: 99,
-    DSP1_EFFECT: 100,
-    DSP2_POT1: 101,
-    DSP2_POT2: 102,
-    DSP2_POT3: 103,
-    DSP2_EFFECT: 104,
-    CHORUS_RATE: 105,
-    CHORUS_DEPTH: 106,
-    FX_BIT_CRUSHER_BITS: 107,
-    FX_BIT_CRUSHER_RATE: 108,
-    FX_MIX_LEVEL_DSP1: 109,
-    FX_MIX_LEVEL_DSP2: 110,
-    FX_MIX_LEVEL_CHORUS: 111,
-    FX_MIX_LEVEL_BIT_CRUSHER: 112,
-    OUTPUT_VOLUME: 113,
-    OUTPUT_SPREAD: 114,
-    OUTPUT_HEADPHONES: 115,
-}
-
-// TODO: Lage enums av button values
 const BUTTONS = {
     BUTTONS_LEFT: {
         cc: CC.BUTTONS_LEFT,
@@ -1115,41 +996,5 @@ const midiControllers: {[key: string]: {[key: string]: MidiConfig}} = {
         HEADPHONES: { type: 'pot', cc: CC.OUTPUT_HEADPHONES },
     }
 }
-
-const generateCppFiles = () => {
-    const buttonEnum: string[] = []
-    const buttonCC: number[] = []
-    const buttonOffset: number[] = []
-    const buttonValuesCount: number[] = []
-
-    const potEnum: string[] = []
-    const potCC: number[] = []
-
-    Object.entries(midiControllers)
-        .forEach(([controllerGroupKey, controllersList]) => {
-            Object.entries(controllersList).forEach(([controllerKey, controller]) => {
-                if(controller.type === 'button'){
-                    buttonEnum.push(`${controllerGroupKey}_${controllerKey}`)
-                    buttonCC.push(controller.cc)
-                    buttonOffset.push(controller.values ? controller.values[0] : 0)
-                    buttonValuesCount.push(controller.values?.length || 0)
-                } else if(controller.type === 'pot'){
-                    potEnum.push(`${controllerGroupKey}_${controllerKey}`)
-                    potCC.push(controller.cc)
-                } else {
-                    console.log('missing controller type', { controllerGroupKey, controllerKey, controller })
-                }
-            })
-        })
-
-    console.log(buttonEnum)
-    console.log(buttonCC)
-    console.log(buttonOffset)
-    console.log(buttonValuesCount)
-    console.log(potEnum)
-    console.log(potCC)
-}
-
-generateCppFiles()
 
 export default midiControllers
