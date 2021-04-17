@@ -13,12 +13,12 @@ const generateCppFiles = () => {
         .forEach(([controllerGroupKey, controllersList]) => {
             Object.entries(controllersList).forEach(([controllerKey, controller]) => {
                 if(controller.type === 'button'){
-                    buttonEnum.push(`${controllerGroupKey}_${controllerKey}`)
+                    buttonEnum.push(`BUTTON_${controllerGroupKey}_${controllerKey}`)
                     buttonCC.push(controller.cc)
                     buttonOffset.push(controller.values ? controller.values[0] : 0)
                     buttonValuesCount.push(controller.values?.length || 0)
                 } else if(controller.type === 'pot'){
-                    potEnum.push(`${controllerGroupKey}_${controllerKey}`)
+                    potEnum.push(`POT_${controllerGroupKey}_${controllerKey}`)
                     potCC.push(controller.cc)
                 } else {
                     console.log('missing controller type', { controllerGroupKey, controllerKey, controller })
@@ -26,12 +26,20 @@ const generateCppFiles = () => {
             })
         })
 
-    console.log(buttonEnum)
-    console.log(buttonCC)
-    console.log(buttonOffset)
-    console.log(buttonValuesCount)
-    console.log(potEnum)
-    console.log(potCC)
+    const buttonEnumFileContents = `enum Button: char {\n  ${buttonEnum.join(',\n  ')}\n};`;
+    const buttonCCFileContents = `const char buttonCC[${buttonCC.length}] = {\n  ${buttonCC.join(',\n  ')}\n};`;
+    const buttonOffsetFileContents = `const char buttonOffset[${buttonOffset.length}] = {\n  ${buttonOffset.join(',\n  ')}\n};`;
+    const buttonValuesCountFileContents = `const char buttonValuesCount[${buttonOffset.length}] = {\n  ${buttonValuesCount.join(',\n  ')}\n};`;
+
+    const potEnumFileContents = `enum Pot: char {\n  ${potEnum.join(',\n  ')}\n};`;
+    const potCCFileContents = `const char potCC[${potCC.length}] = {\n  ${potCC.join(',\n  ')}\n};`;
+
+    console.log('midiButtons.h', buttonEnumFileContents)
+    console.log('midiButtonsCC.h', buttonCCFileContents)
+    console.log('midiButtonsOffset.h', buttonOffsetFileContents)
+    console.log('midiButtonsValuesCount.h', buttonValuesCountFileContents)
+    console.log('midiPots.h', potEnumFileContents)
+    console.log('midiPotsCC.h', potCCFileContents)
 }
 
 generateCppFiles()
