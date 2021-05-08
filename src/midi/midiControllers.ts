@@ -810,8 +810,8 @@ const midiControllers: {[key: string]: {[key: string]: MidiConfig}} = {
         RELEASE1: { type: 'pot', cc: CC.ENV1_RELEASE1 },
         RELEASE2: { type: 'pot', cc: CC.ENV1_RELEASE2 },
         DELAY: { type: 'pot', cc: CC.ENV1_DELAY },
-        D1_LEVEL: { type: 'pot', cc: CC.ENV1_D1_LEVEL },
-        R1_LEVEL: { type: 'pot', cc: CC.ENV1_R1_LEVEL },
+        D2_LEVEL: { type: 'pot', cc: CC.ENV1_D2_LEVEL },
+        R2_LEVEL: { type: 'pot', cc: CC.ENV1_R2_LEVEL },
 
         TRIGGER: {
             type: 'button',
@@ -845,8 +845,8 @@ const midiControllers: {[key: string]: {[key: string]: MidiConfig}} = {
         RELEASE1: { type: 'pot', cc: CC.ENV2_RELEASE1 },
         RELEASE2: { type: 'pot', cc: CC.ENV2_RELEASE2 },
         DELAY: { type: 'pot', cc: CC.ENV2_DELAY },
-        D1_LEVEL: { type: 'pot', cc: CC.ENV2_D1_LEVEL },
-        R1_LEVEL: { type: 'pot', cc: CC.ENV2_R1_LEVEL },
+        D2_LEVEL: { type: 'pot', cc: CC.ENV2_D2_LEVEL },
+        R2_LEVEL: { type: 'pot', cc: CC.ENV2_R2_LEVEL },
         TRIGGER: {
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
@@ -879,8 +879,8 @@ const midiControllers: {[key: string]: {[key: string]: MidiConfig}} = {
         RELEASE1: { type: 'pot', cc: CC.ENV3_RELEASE1 },
         RELEASE2: { type: 'pot', cc: CC.ENV3_RELEASE2 },
         DELAY: { type: 'pot', cc: CC.ENV3_DELAY },
-        D1_LEVEL: { type: 'pot', cc: CC.ENV3_D1_LEVEL },
-        R1_LEVEL: { type: 'pot', cc: CC.ENV3_R1_LEVEL },
+        D2_LEVEL: { type: 'pot', cc: CC.ENV3_D2_LEVEL },
+        R2_LEVEL: { type: 'pot', cc: CC.ENV3_R2_LEVEL },
         ENV_SELECT: {
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,

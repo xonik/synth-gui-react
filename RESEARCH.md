@@ -290,6 +290,16 @@ Annet:
 - 17mm pot Speed
 - 17mm pot Depth
 
+Ramp idé 2:
+Initial delay (0-30s)
+Time rise
+Slope rise
+Time decay
+Slope decay ink. always max, always off
+Repeat?
+==> Vurdere å bytte ut en av envelopes'ene med ramp controls.
+==> Droppe delay og slikt på LFO og bruk ramp isteden.
+
 Thought 1: let ring mod be an effect along distortion and bitcrush, make it possible to patch ext audio to it.
 Thought 2: Let ext CVs and result of ext audio env generator be sampled and inserted as digital controls
 

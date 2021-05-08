@@ -46,10 +46,10 @@ const Envelope = ({ x, y, label, showSelect = false, midiConfigs }: Props) => {
 
     {showSelect && <RoundPushButton8 label="Env sel" x={firstPotX - potDistance * 0.5} y={topRowY} labelPosition="bottom" midiConfig={midiConfigs.envSel}/>}
     <RotaryPot10 ledMode="single" label="Delay" x={firstPotX + potDistance * 0.5} y={topRowY} position={0.4} midiConfig={midiConfigs.delay}/>
-    <RotaryPot10 ledMode="multi" label="D1 Level" x={firstPotX + potDistance * 1.5} y={topRowY} position={0.4} midiConfig={midiConfigs.d1_lev}/>
+    <RotaryPot10 ledMode="multi" label="D2 Level" x={firstPotX + potDistance * 1.5} y={topRowY} position={0.4} midiConfig={midiConfigs.d1_lev}/>
     <RoundPushButton8 label="Trigger" x={firstPotX + potDistance * 2.5} y={topRowY} labelPosition="bottom" midiConfig={midiConfigs.trigger}/>
     <RoundLedPushButton8 label="Loop" x={firstPotX + potDistance * 3.5} y={topRowY} labelPosition="bottom" midiConfig={midiConfigs.loop}/>
-    <RotaryPot10 ledMode="multi" label="R1 Level" x={firstPotX + potDistance * 4.5} y={topRowY} position={0.4} midiConfig={midiConfigs.r1_lev}/>
+    <RotaryPot10 ledMode="multi" label="R2 Level" x={firstPotX + potDistance * 4.5} y={topRowY} position={0.4} midiConfig={midiConfigs.r1_lev}/>
     <RoundLedPushButton8 label="Invert" x={firstPotX + potDistance * 5.5} y={topRowY} labelPosition="bottom" midiConfig={midiConfigs.invert}/>
   </>;
 };
