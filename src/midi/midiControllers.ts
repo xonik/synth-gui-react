@@ -34,7 +34,7 @@ const midiControllers: {[key: string]: {[key: string]: MidiConfig}} = {
         SUPER_SAW: { type: 'pot', cc: CC.DCO1_SUPER_SAW },
         WAVEFORM: { type: 'pot', cc: CC.DCO1_WAVEFORM },
         SUB1: { type: 'pot', cc: CC.DCO1_SUB1 },
-        SUB2: { type: 'pot', cc: CC.DCO1_SUB1 },
+        SUB2: { type: 'pot', cc: CC.DCO1_SUB2 },
         PW: { type: 'pot', cc: CC.DCO1_PW },
 
         //buttons
