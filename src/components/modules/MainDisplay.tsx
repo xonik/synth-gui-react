@@ -5,6 +5,8 @@ import RoundPushButton8 from '../buttons/RoundPushButton8';
 import './MainDisplay.scss';
 import RotaryPotWOLeds32 from '../pots/RotaryPotWOLeds32';
 import midiConstants from '../../midi/midiControllers'
+import Slope from '../slopes/Slope'
+import { exponentialFunc, logarithmicFunc, squared } from '../slopes/slopeCalculator'
 
 interface Props {
   x: number,
@@ -33,6 +35,14 @@ const MainDisplay = ({ x, y }: Props) => {
   const ctrlSwitchesRow1 = masterPotRow - 10;
   const ctrlSwitchesRow2 = masterPotRow + 10;
 
+
+  const expo1 = exponentialFunc(2.2);
+  const expo2 = exponentialFunc(4.4);
+  const expo3 = exponentialFunc(5.5);
+  const log1 = logarithmicFunc(1.3);
+  const log2 = logarithmicFunc(1.7);
+  const log3 = logarithmicFunc(2.2);
+
   return <>
     <rect x={x - bezelLRMargin} y={y-bezelTopMargin} height={displayHeight + bezelTopMargin + bezelBottomMargin} width={displayWidth + 2 * bezelLRMargin} className="bezel"/>;
     <RoundPushButton8 x={displayCenter - 2.5 * buttonSpacing} y={buttonRow} label="LFOs" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.MENU_LFO}/>
@@ -42,6 +52,13 @@ const MainDisplay = ({ x, y }: Props) => {
     <RoundPushButton8 x={displayCenter + 1.5 * buttonSpacing} y={buttonRow} label="Mods" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.MENU_MOD}/>
     <RoundPushButton8 x={displayCenter + 2.5 * buttonSpacing} y={buttonRow} label="FX" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.MENU_FX}/>
     <Display x={x} y={y} width={displayWidth} height={displayHeight}/>
+
+    <Slope x={x} y={y} width={displayWidth} height={displayHeight} slopeFunc={expo1}/>
+    <Slope x={x} y={y} width={displayWidth} height={displayHeight} slopeFunc={expo3}/>
+    <Slope x={x} y={y} width={displayWidth} height={displayHeight} slopeFunc={expo3} reflectX reflectY/>
+    <Slope x={x} y={y} width={displayWidth} height={displayHeight} slopeFunc={log3}/>
+    <Slope x={x} y={y} width={displayWidth} height={displayHeight} slopeFunc={squared}/>
+
     <RotaryPotWOLeds17 x={displayCenter - 2 * potSpacing} y={potRow} midiConfig={midiConstants.MAIN_PANEL.POT1}/>
     <RotaryPotWOLeds17 x={displayCenter - 1 * potSpacing} y={potRow} midiConfig={midiConstants.MAIN_PANEL.POT2}/>
     <RotaryPotWOLeds17 x={displayCenter} y={potRow} midiConfig={midiConstants.MAIN_PANEL.POT3}/>
