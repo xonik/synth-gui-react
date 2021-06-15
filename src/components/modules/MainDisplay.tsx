@@ -5,7 +5,6 @@ import RoundPushButton8 from '../buttons/RoundPushButton8';
 import './MainDisplay.scss';
 import RotaryPotWOLeds32 from '../pots/RotaryPotWOLeds32';
 import midiConstants from '../../midi/midiControllers'
-import { exponentialFunc, logarithmicFunc, squared } from '../slopes/slopeCalculator'
 import AnimatedSlopes from '../slopes/AnimatedSlopes'
 
 interface Props {
@@ -19,7 +18,7 @@ const MainDisplay = ({ x, y }: Props) => {
   const [slope, setSlope] = useState(0);
 
   const onClick = useCallback(() => {
-    if(slope === 4){
+    if(slope === 5){
       setSlope(0);
     } else {
       setSlope(slope + 1);
@@ -45,14 +44,6 @@ const MainDisplay = ({ x, y }: Props) => {
   const ctrlSwitchesRow1 = masterPotRow - 10;
   const ctrlSwitchesRow2 = masterPotRow + 10;
 
-
-  const expo1 = exponentialFunc(2.2);
-  const expo2 = exponentialFunc(4.4);
-  const expo3 = exponentialFunc(5.5);
-  const log1 = logarithmicFunc(1.3);
-  const log2 = logarithmicFunc(1.7);
-  const log3 = logarithmicFunc(2.2);
-
   return <>
     <rect x={x - bezelLRMargin} y={y-bezelTopMargin} height={displayHeight + bezelTopMargin + bezelBottomMargin} width={displayWidth + 2 * bezelLRMargin} className="bezel"/>;
     <RoundPushButton8 x={displayCenter - 2.5 * buttonSpacing} y={buttonRow} label="LFOs" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.MENU_LFO}/>
@@ -63,7 +54,7 @@ const MainDisplay = ({ x, y }: Props) => {
     <RoundPushButton8 x={displayCenter + 2.5 * buttonSpacing} y={buttonRow} label="FX" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.MENU_FX}/>
     <Display x={x} y={y} width={displayWidth} height={displayHeight}/>
 
-    <AnimatedSlopes from={[x, y]} to={[x + displayWidth, y + displayHeight]} slopeFunc={expo1} slopeFunc2={expo3} selectedSlope={slope}/>
+    <AnimatedSlopes from={[x, y]} to={[x + displayWidth, y + displayHeight]} selectedSlope={slope}/>
 
     <RotaryPotWOLeds17 x={displayCenter - 2 * potSpacing} y={potRow} midiConfig={midiConstants.MAIN_PANEL.POT1}/>
     <RotaryPotWOLeds17 x={displayCenter - 1 * potSpacing} y={potRow} midiConfig={midiConstants.MAIN_PANEL.POT2}/>
