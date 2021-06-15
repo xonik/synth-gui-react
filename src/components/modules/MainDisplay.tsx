@@ -53,11 +53,7 @@ const MainDisplay = ({ x, y }: Props) => {
     <RoundPushButton8 x={displayCenter + 2.5 * buttonSpacing} y={buttonRow} label="FX" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.MENU_FX}/>
     <Display x={x} y={y} width={displayWidth} height={displayHeight}/>
 
-    <Slope x={x} y={y} width={displayWidth} height={displayHeight} slopeFunc={expo1}/>
-    <Slope x={x} y={y} width={displayWidth} height={displayHeight} slopeFunc={expo3}/>
-    <Slope x={x} y={y} width={displayWidth} height={displayHeight} slopeFunc={expo3} reflectX reflectY/>
-    <Slope x={x} y={y} width={displayWidth} height={displayHeight} slopeFunc={log3}/>
-    <Slope x={x} y={y} width={displayWidth} height={displayHeight} slopeFunc={squared}/>
+    <Slope from={[x, y]} to={[x + displayWidth, y + displayHeight]} slopeFunc={expo1}/>
 
     <RotaryPotWOLeds17 x={displayCenter - 2 * potSpacing} y={potRow} midiConfig={midiConstants.MAIN_PANEL.POT1}/>
     <RotaryPotWOLeds17 x={displayCenter - 1 * potSpacing} y={potRow} midiConfig={midiConstants.MAIN_PANEL.POT2}/>

@@ -6,6 +6,7 @@ interface Props {
     from: number[]
     to: number[]
     slopeFunc: (x: number) => number
+    slopeFunc2  : (x: number) => number
 }
 
 const getPoints = (
@@ -21,9 +22,11 @@ const getPoints = (
         .map((point) => `${point.x},${point.y}`)
 }
 
+const expo1 = exponentialFunc(2.2);
+const expo3 = exponentialFunc(5.5);
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
-const Slope = ({ from, to, slopeFunc }: Props) => {
+const Slope = ({ from, to }: Props) => {
 
     const fromX = from[0] < to[0] ? from[0] : to[0];
     const fromY = from[1] < to[1] ? from[1] : to[1];
@@ -34,8 +37,11 @@ const Slope = ({ from, to, slopeFunc }: Props) => {
     const reflectX = from[0] > to[0];
     const reflectY = from[1] > to[1];
 
-    const points = useMemo(() => getPoints(slopeFunc, reflectX, reflectY), [
-        slopeFunc, reflectX, reflectX
+    const points = useMemo(() => getPoints(expo1, reflectX, reflectY), [
+        reflectX, reflectX
+    ]);
+    const points2 = useMemo(() => getPoints(expo3, reflectX, reflectY), [
+        reflectX, reflectX
     ]);
 
     // We use a viewBox of 0,0, 1,1 to make the svg unit size. We can then use width and height to scale it
