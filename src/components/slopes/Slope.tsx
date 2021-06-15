@@ -35,7 +35,7 @@ const Slope = ({ from, to, slopeFunc }: Props) => {
     const reflectY = from[1] > to[1];
 
     const points = useMemo(() => getPoints(slopeFunc, reflectX, reflectY), [
-        slopeFunc, reflectX, reflectX
+        slopeFunc, reflectX, reflectY
     ]);
 
     // We use a viewBox of 0,0, 1,1 to make the svg unit size. We can then use width and height to scale it

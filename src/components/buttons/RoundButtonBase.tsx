@@ -54,6 +54,8 @@ export interface Props {
     // External callback to do stuff like light up external leds when a value changes.
     onUpdate?: (valueIndex: number) => void;
 
+    onClick?: () => void;
+
     // Default value is 0 unless this is set to another index in the midi values array. Must be less than the length of the values array.
     defaultValueIndex?: number;
 }
@@ -208,7 +210,7 @@ const getRenderProps = (props: Props & Config): RenderProps => {
 
 export const RoundButtonBase = (props: Props & Config) => {
 
-    const { x, y, label, midiConfig, radioButtonIndex, hasOff, ledCount, ledButton, onUpdate, reverse, loop = true, defaultValueIndex } = props
+    const { x, y, label, midiConfig, radioButtonIndex, hasOff, ledCount, ledButton, onUpdate, reverse, loop = true, defaultValueIndex, onClick } = props
 
     const [currentValue, setCurrentValue] = useState(defaultValueIndex || 0);
 
@@ -219,7 +221,8 @@ export const RoundButtonBase = (props: Props & Config) => {
     const ledOnIndex = hasOffValue ? currentValue - 1 : currentValue;
 
 
-    const onClick = useCallback(() => {
+    const handleOnClick = useCallback(() => {
+        if(onClick) onClick();
         if(midiConfig && midiConfig.values) {
             if(radioButtonIndex !== undefined){
                 if(midiConfig.values.length >= radioButtonValueIndex ){
@@ -251,7 +254,11 @@ export const RoundButtonBase = (props: Props & Config) => {
                 }
             }
         }
-    }, [radioButtonValueIndex, hasOffValue, midiConfig, currentValue, radioButtonIndex, reverse, loop])
+    }, [
+        radioButtonValueIndex, hasOffValue, midiConfig,
+        currentValue, radioButtonIndex, reverse, loop,
+        onClick
+    ])
 
     useEffect(() => {
         if(midiConfig && midiConfig.values) {
@@ -305,9 +312,9 @@ export const RoundButtonBase = (props: Props & Config) => {
         <svg x={x} y={y} className="button">
             {buttonMode === 'push'
                 ? <RoundPushButtonBase buttonRadius={buttonRadius}
-                                       onClick={onClick}
+                                       onClick={handleOnClick}
                                        className={classNames('button-cap', { 'button-cap-led': ledButton, 'button-cap-led__on': ledButton && ledOn.length > 0 && ledOn[0] })}/>
-                : <RotaryPotBase onClick={onClick} knobRadius={buttonRadius}/>
+                : <RotaryPotBase onClick={handleOnClick} knobRadius={buttonRadius}/>
             }
             {label && <text
               x={labelPos.x}

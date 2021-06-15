@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react'
 import Display from '../misc/Display';
 import RotaryPotWOLeds17 from '../pots/RotaryPotWOLeds17';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
 import './MainDisplay.scss';
 import RotaryPotWOLeds32 from '../pots/RotaryPotWOLeds32';
 import midiConstants from '../../midi/midiControllers'
-import Slope from '../slopes/Slope'
 import { exponentialFunc, logarithmicFunc, squared } from '../slopes/slopeCalculator'
+import AnimatedSlopes from '../slopes/AnimatedSlopes'
 
 interface Props {
   x: number,
@@ -15,6 +15,16 @@ interface Props {
 
 
 const MainDisplay = ({ x, y }: Props) => {
+
+  const [slope, setSlope] = useState(0);
+
+  const onClick = useCallback(() => {
+    if(slope === 4){
+      setSlope(0);
+    } else {
+      setSlope(slope + 1);
+    }
+  }, [slope]);
 
   // approx. 9"
   const displayWidth = 180;
@@ -53,7 +63,7 @@ const MainDisplay = ({ x, y }: Props) => {
     <RoundPushButton8 x={displayCenter + 2.5 * buttonSpacing} y={buttonRow} label="FX" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.MENU_FX}/>
     <Display x={x} y={y} width={displayWidth} height={displayHeight}/>
 
-    <Slope from={[x, y]} to={[x + displayWidth, y + displayHeight]} slopeFunc={expo1}/>
+    <AnimatedSlopes from={[x, y]} to={[x + displayWidth, y + displayHeight]} slopeFunc={expo1} slopeFunc2={expo3} selectedSlope={slope}/>
 
     <RotaryPotWOLeds17 x={displayCenter - 2 * potSpacing} y={potRow} midiConfig={midiConstants.MAIN_PANEL.POT1}/>
     <RotaryPotWOLeds17 x={displayCenter - 1 * potSpacing} y={potRow} midiConfig={midiConstants.MAIN_PANEL.POT2}/>
@@ -62,7 +72,7 @@ const MainDisplay = ({ x, y }: Props) => {
     <RotaryPotWOLeds17 x={displayCenter + 2 * potSpacing} y={potRow} midiConfig={midiConstants.MAIN_PANEL.POT5}/>
     <RotaryPotWOLeds32 x={displayCenter} y={masterPotRow} midiConfig={midiConstants.MAIN_PANEL.POT6}/>
 
-    <RoundPushButton8 x={displayCenter - 2.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Home" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_HOME}/>
+    <RoundPushButton8 onClick={onClick} x={displayCenter - 2.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Home" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_HOME}/>
     <RoundPushButton8 x={displayCenter - 1.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Settings" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_SETTINGS}/>
     <RoundPushButton8 x={displayCenter + 1.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Load" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_LOAD}/>
     <RoundPushButton8 x={displayCenter + 2.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Save" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_SAVE}/>
