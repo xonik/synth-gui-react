@@ -5,8 +5,7 @@ import RoundPushButton8 from '../buttons/RoundPushButton8';
 import './MainDisplay.scss';
 import RotaryPotWOLeds32 from '../pots/RotaryPotWOLeds32';
 import midiConstants from '../../midi/midiControllers'
-import AnimatedSlopes from '../slopes/AnimatedSlopes'
-import Envelope from '../../controller/envelopes/Envelope'
+import EnvelopeControl from '../../controller/envelopes/EnvelopeControl'
 
 interface Props {
   x: number,
@@ -16,15 +15,15 @@ interface Props {
 
 const MainDisplay = ({ x, y }: Props) => {
 
-  const [slope, setSlope] = useState(0);
+  const [curve, setCurve] = useState(0);
 
   const onClick = useCallback(() => {
-    if(slope === 5){
-      setSlope(0);
+    if(curve === 5){
+      setCurve(0);
     } else {
-      setSlope(slope + 1);
+      setCurve(curve + 1);
     }
-  }, [slope]);
+  }, [curve]);
 
   // approx. 9"
   const displayWidth = 180;
@@ -55,7 +54,7 @@ const MainDisplay = ({ x, y }: Props) => {
     <RoundPushButton8 x={displayCenter + 2.5 * buttonSpacing} y={buttonRow} label="FX" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.MENU_FX}/>
     <Display x={x} y={y} width={displayWidth} height={displayHeight}/>
 
-    <Envelope x={x} y={y} width={displayWidth} height={displayHeight}/>
+    <EnvelopeControl x={x} y={y} width={displayWidth} height={displayHeight}/>
 
     <RotaryPotWOLeds17 x={displayCenter - 2 * potSpacing} y={potRow} midiConfig={midiConstants.MAIN_PANEL.POT1}/>
     <RotaryPotWOLeds17 x={displayCenter - 1 * potSpacing} y={potRow} midiConfig={midiConstants.MAIN_PANEL.POT2}/>

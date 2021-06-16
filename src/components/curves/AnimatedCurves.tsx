@@ -1,21 +1,23 @@
 import React, { useMemo } from 'react'
 import { useSpring, animated } from 'react-spring'
-import { exponentialFunc, getScaledPoints, logarithmicFunc } from './slopeCalculator'
-import './Slope.scss'
+import { exponentialFunc, getScaledPoints, logarithmicFunc } from './curveCalculator'
+import classNames from 'classnames'
+import './Curve.scss'
 
 interface Props {
     from: number[]
     to: number[]
-    selectedSlope: number
+    selectedCurve: number
+    className?: string
 }
 
 const getPointsString = (
-    slopeFunc: (x: number) => number,
+    curveFunc: (x: number) => number,
     reflectX?: boolean,
     reflectY?: boolean,
 ): string => {
     const keypoints = 64;
-    return getScaledPoints(slopeFunc, 1, keypoints, false)
+    return getScaledPoints(curveFunc, 1, keypoints, false)
         .map((point, index) => ({x: index / keypoints, y: point}))
         .map((point) => reflectX ? ({x: 1 - point.x, y: point.y}) : point)
         .map((point) => reflectY ? ({x: point.x, y: 1    - point.y}) : point)
@@ -46,8 +48,9 @@ const getPoints = (
     return [e1,e2,e3,lin,l1,l2,l3];
 }
 
-// Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
-const AnimatedSlopes = ({ from, to, selectedSlope }: Props) => {
+// Draw the desired curve between from and to. NB: SVG has 0,0 in upper left corner.
+const AnimatedCurves = ({ from, to, selectedCurve, className }: Props) => {
+
 
     const fromX = from[0] < to[0] ? from[0] : to[0];
     const fromY = from[1] < to[1] ? from[1] : to[1];
@@ -62,20 +65,28 @@ const AnimatedSlopes = ({ from, to, selectedSlope }: Props) => {
         reflectX, reflectY
     ]);
 
-    const [{ animatedPoints }, setSlope] = useSpring(() => ({
-        from: {animatedPoints: points[selectedSlope]},
+    const [{ animatedPoints }, setCurve] = useSpring(() => ({
+        from: {animatedPoints: points[selectedCurve]},
     }));
 
-    setSlope({animatedPoints: points[selectedSlope]})
+    setCurve({animatedPoints: points[selectedCurve]})
+console.log(selectedCurve, points)
+    if(from[1] === to[1]){
+        return <line
+            x1={from[0]} y1={from[1]}
+            x2={to[0]} y2={to[1]}
+            className={classNames('curve', className)}
+        />
+    }
 
     // We use a viewBox of 0,0, 1,1 to make the svg unit size. We can then use width and height to scale it
     // without having to recalculate points.
     return <svg x={fromX} y={fromY} viewBox="0, 0, 1 1" preserveAspectRatio="none" width={width} height={height}>
         <animated.polyline
-            className="slope"
+            className={classNames('curve', className)}
             points={animatedPoints}
         />
     </svg>;
 };
 
-export default AnimatedSlopes;
+export default AnimatedCurves;
