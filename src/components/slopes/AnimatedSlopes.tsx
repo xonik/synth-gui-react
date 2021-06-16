@@ -26,6 +26,7 @@ const getPointsString = (
 const expo1 = exponentialFunc(2.2);
 const expo2 = exponentialFunc(4.4);
 const expo3 = exponentialFunc(5.5);
+const linear = (x:number) => x;
 const log1 = logarithmicFunc(1.3);
 const log2 = logarithmicFunc(1.7);
 const log3 = logarithmicFunc(2.2);
@@ -37,11 +38,12 @@ const getPoints = (
     const e1 = getPointsString(expo1, reflectX, reflectY)
     const e2 = getPointsString(expo2, reflectX, reflectY)
     const e3 = getPointsString(expo3, reflectX, reflectY)
+    const lin = getPointsString(linear, reflectX, reflectY)
     const l1 = getPointsString(log1, reflectX, reflectY)
     const l2 = getPointsString(log2, reflectX, reflectY)
     const l3 = getPointsString(log3, reflectX, reflectY)
 
-    return [e1,e2,e3,l1,l2,l3];
+    return [e1,e2,e3,lin,l1,l2,l3];
 }
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
@@ -60,18 +62,18 @@ const AnimatedSlopes = ({ from, to, selectedSlope }: Props) => {
         reflectX, reflectY
     ]);
 
-    const [{ x }, setSlope] = useSpring(() => ({
-        from: {x: points[0]},
+    const [{ animatedPoints }, setSlope] = useSpring(() => ({
+        from: {animatedPoints: points[selectedSlope]},
     }));
 
-    setSlope({x: points[selectedSlope]})
+    setSlope({animatedPoints: points[selectedSlope]})
 
     // We use a viewBox of 0,0, 1,1 to make the svg unit size. We can then use width and height to scale it
-    // without having to recalculate points. NB:Does not work with negative values!
+    // without having to recalculate points.
     return <svg x={fromX} y={fromY} viewBox="0, 0, 1 1" preserveAspectRatio="none" width={width} height={height}>
         <animated.polyline
             className="slope"
-            points={x}
+            points={animatedPoints}
         />
     </svg>;
 };

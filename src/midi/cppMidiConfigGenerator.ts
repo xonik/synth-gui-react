@@ -42,4 +42,4 @@ const generateCppFiles = () => {
     console.log('midiPotsCC.h', potCCFileContents)
 }
 
-generateCppFiles()
+//generateCppFiles()
