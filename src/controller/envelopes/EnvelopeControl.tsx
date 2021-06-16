@@ -1,6 +1,6 @@
 import React from 'react'
 import { Curve, LoopMode, ReleaseMode, Stage, StageId, Envelope } from './types'
-import Curves from './Curves'
+import Stages from './Stages'
 
 interface Props {
     x: number
@@ -78,7 +78,7 @@ const getDefaultEnvelope = (): Envelope => {
         maxLoops: 0,
         invert:false,
         stages,
-        bipolar: false
+        bipolar: true
     }
 }
 
@@ -90,7 +90,7 @@ const EnvelopeControl = ({ x, y, width, height}: Props) => {
 
     const env = getDefaultEnvelope();
 
-    return <Curves
+    return <Stages
         x={x+hPadding} y={y+vPadding}
         height={height - 2 * vPadding} width={width - 2 * vPadding}
         env={env}/>

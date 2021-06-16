@@ -1,0 +1,16 @@
+.stage {
+  &-line {
+    stroke-width: 3;
+  }
+
+  &-divider {
+    stroke-width: 0.3;
+    stroke-dasharray: 1 1;
+    stroke: gray;
+  }
+
+  &-joint {
+    stroke: white;
+    fill: white;
+  }
+}

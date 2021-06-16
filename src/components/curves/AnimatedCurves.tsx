@@ -70,7 +70,7 @@ const AnimatedCurves = ({ from, to, selectedCurve, className }: Props) => {
     }));
 
     setCurve({animatedPoints: points[selectedCurve]})
-console.log(selectedCurve, points)
+
     if(from[1] === to[1]){
         return <line
             x1={from[0]} y1={from[1]}
