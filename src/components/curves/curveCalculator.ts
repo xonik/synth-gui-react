@@ -43,8 +43,23 @@ export const getDerivated = (yValues: number[], intermediatesPerKeypoint: number
     return derivated
 }
 
-const expo = exponentialFunc(2.2);
-const log = logarithmicFunc(2.2);
+const expo1 = exponentialFunc(2);
+const expo2 = exponentialFunc(4.2);
+const expo3 = exponentialFunc(5.5);
+const linear = (x:number) => x;
+const log1 = logarithmicFunc(1.35);
+const log2 = logarithmicFunc(1.6);
+const log3 = logarithmicFunc(2);
+
+export const curveFuncs = [
+    expo1,
+    expo2,
+    expo3,
+    linear,
+    log1,
+    log2,
+    log3,
+]
 
 const testInterpolation = (
     func: (x: number) => number,

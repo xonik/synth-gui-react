@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import AnimatedCurve from '../../components/curves/AnimatedCurve'
 import { StageId, Stage } from './types'
+import { getPoints } from './envelopeUtils'
+import { curveFuncs } from '../../components/curves/curveCalculator'
 import './StageBlock.scss'
 
 interface Props {
@@ -28,6 +30,15 @@ const StageBlock = ({ x, y, width, height, vCenter, vHeight, stage, nextStage}: 
 
     const startY = vCenter - vHeight * startLev;
     const endY = vCenter - vHeight * endLev;
+    const stageHeight = Math.abs(endY - startY);
+
+    const fromY = startY < endY ? startY : endY;
+
+    const reflectY = startY > endY;
+    const points = useMemo(
+        () => getPoints(curveFuncs[stage.curve], false, reflectY),
+        [stage.curve, reflectY]
+    );
 
     return <svg x={x} y={y}>
         return <>
@@ -43,9 +54,11 @@ const StageBlock = ({ x, y, width, height, vCenter, vHeight, stage, nextStage}: 
                     />
             }
             <AnimatedCurve
-                from={[startX, startY]}
-                to={[endX, endY]}
-                selectedCurve={stage.curve}
+                x={0}
+                y={fromY}
+                width={width}
+                height={stageHeight}
+                points={points}
                 className={'stage-line'}
             />
             <circle

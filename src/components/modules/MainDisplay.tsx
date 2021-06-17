@@ -12,7 +12,6 @@ interface Props {
   y: number
 }
 
-
 const MainDisplay = ({ x, y }: Props) => {
 
   const [curve, setCurve] = useState(0);
