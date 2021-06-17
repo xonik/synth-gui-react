@@ -1,5 +1,5 @@
 import React from 'react'
-import AnimatedCurves from '../../components/curves/AnimatedCurves'
+import AnimatedCurve from '../../components/curves/AnimatedCurve'
 import { StageId, Stage } from './types'
 import './StageBlock.scss'
 
@@ -42,7 +42,7 @@ const StageBlock = ({ x, y, width, height, vCenter, vHeight, stage, nextStage}: 
                         className={'stage-divider'}
                     />
             }
-            <AnimatedCurves
+            <AnimatedCurve
                 from={[startX, startY]}
                 to={[endX, endY]}
                 selectedCurve={stage.curve}

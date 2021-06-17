@@ -9,7 +9,6 @@ interface Props {
     height: number
 }
 
-
 const getDefaultEnvelope = (): Envelope => {
 
     const stages: Stage[] = [];
@@ -82,6 +81,7 @@ const getDefaultEnvelope = (): Envelope => {
     }
 
     setInvert(env, false);
+    updateReleaseLevels(env);
     return env;
 }
 
@@ -156,7 +156,6 @@ const setLoopMode = (env: Envelope, loopMode: LoopMode) => {
 const setMaxLoops = (env: Envelope, loops: number) => {
     env.maxLoops = loops;
 }
-
 
 const hPadding = 10;
 const vPadding = 10;

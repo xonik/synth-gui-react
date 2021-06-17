@@ -49,7 +49,7 @@ const getPoints = (
 }
 
 // Draw the desired curve between from and to. NB: SVG has 0,0 in upper left corner.
-const AnimatedCurves = ({ from, to, selectedCurve, className }: Props) => {
+const AnimatedCurve = ({ from, to, selectedCurve, className }: Props) => {
 
 
     const fromX = from[0] < to[0] ? from[0] : to[0];
@@ -89,4 +89,4 @@ const AnimatedCurves = ({ from, to, selectedCurve, className }: Props) => {
     </svg>;
 };
 
-export default AnimatedCurves;
+export default AnimatedCurve;
