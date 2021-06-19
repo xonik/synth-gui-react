@@ -16,7 +16,7 @@ const vPadding = 10;
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
 const EnvelopeControl = ({ x, y, width, height}: Props) => {
 
-    const env = useAppSelector(selectEnvelope);
+    const env = useAppSelector(selectEnvelope).envs[0];
 
     return <Stages
         x={x+hPadding} y={y+vPadding}

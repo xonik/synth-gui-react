@@ -1,4 +1,3 @@
-// TODO: Make env immutable
 import { Curve, Envelope, LoopMode, ReleaseMode, Stage, StageId } from './types'
 
 export const getDefaultEnvelope = (): Envelope => {
@@ -77,8 +76,7 @@ export const getDefaultEnvelope = (): Envelope => {
     return env;
 }
 
-
-
+// TODO: Duplicated in reducer, fix!
 const updateReleaseLevels =  (env: Envelope) => {
     if(env.stages[StageId.RELEASE1].enabled) {
         env.stages[StageId.RELEASE1].level = env.stages[StageId.SUSTAIN].level;
@@ -87,35 +85,7 @@ const updateReleaseLevels =  (env: Envelope) => {
     }
 }
 
-// TODO: Make env immutable
-const setLevel = (env: Envelope, stage: StageId, value: number) => {
-    if(
-        stage === StageId.DECAY2 ||
-        stage === StageId.SUSTAIN ||
-        (stage === StageId.RELEASE2 && env.stages[StageId.RELEASE1].enabled)
-    ){
-        env.stages[stage].level = value;
-
-        // sustain level is not used directly. Instead it replaces r1 or r2 level depending on if
-        // r1 is enabled or not.
-        if(stage === StageId.SUSTAIN) {
-            updateReleaseLevels(env);
-        }
-    }
-}
-
-// TODO: Make env immutable
-const enableDisableStage = (env: Envelope, stage: StageId, enabled: boolean) => {
-    if(stage === StageId.ATTACK || stage === StageId.RELEASE2){
-        return;
-    }
-    env.stages[stage].enabled = enabled;
-    if(stage === StageId.RELEASE1){
-        updateReleaseLevels(env);
-    }
-}
-
-// TODO: Make env immutable
+// TODO: Duplicated in reducer, fix!
 const setInvert = (env: Envelope, invert: boolean) => {
     env.invert = invert;
     const resetLevel = invert ? 1 : 0;
