@@ -1,5 +1,5 @@
 import React from 'react'
-import { StageId, Envelope } from './types'
+import { StageId, Envelope } from '../../forces/envelope/types'
 import StageBlock from './StageBlock'
 import './Stages.scss'
 

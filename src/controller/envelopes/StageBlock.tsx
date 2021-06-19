@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import AnimatedCurve from '../../components/curves/AnimatedCurve'
-import { StageId, Stage } from './types'
-import { getPoints } from './envelopeUtils'
+import { StageId, Stage } from '../../forces/envelope/types'
+import { getPoints } from './utils'
 import { curveFuncs } from '../../components/curves/curveCalculator'
 import './StageBlock.scss'
 

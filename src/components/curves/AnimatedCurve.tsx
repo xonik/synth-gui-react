@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react'
 import { useSpring, animated } from 'react-spring'
 import classNames from 'classnames'
-import { Point } from '../../controller/envelopes/types'
-import { getPointsString } from '../../controller/envelopes/envelopeUtils'
+import { Point } from '../../utils/types'
+import { getPointsString } from '../../utils/svg/pointsString'
 import './Curve.scss'
 
 interface Props {

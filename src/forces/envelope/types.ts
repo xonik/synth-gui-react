@@ -51,10 +51,6 @@ export type Envelope = {
     bipolar: boolean;
 }
 
-export type Point = {
-    x: number,
-    y: number,
-}
 
 export const MIN_LEVEL = 100;
 export const MAX_LEVEL = 100;
