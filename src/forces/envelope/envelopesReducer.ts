@@ -1,7 +1,7 @@
 // createSlice
 // separate reducer for stage
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, Draft, PayloadAction } from '@reduxjs/toolkit'
 import { Envelope, LoopMode, ReleaseMode, StageId } from './types'
 import { getDefaultEnvelope } from './envelopeUtils'
 import { RootState } from '../store'
@@ -67,72 +67,88 @@ const getBounded = (value: number, from: number = 0, to: number = 1) => {
 
 const cannotDisableStage = (stage: StageId) => stage === StageId.ATTACK || stage === StageId.RELEASE2
 
+const getStage = (state: Draft<any>, payload: StagePayload) => {
+    return state.envs[payload.env].stages[payload.stage];
+}
+
+const getEnv = (state: Draft<any>, payload: StagePayload) => {
+    return state.envs[payload.env];
+}
+
 export const envelopesSlice = createSlice({
     name: 'envelopes',
     initialState,
     reducers: {
         incrementLevel: (state, {payload}: PayloadAction<NumericPayload>) => {
-            state.envs[payload.env].stages[payload.stage].level = getBounded(state.envs[payload.env].stages[payload.stage].level + payload.value);
+            const stage = getStage(state, payload);
+            stage.level = getBounded(stage.level + payload.value);
         },
         setLevel: (state, {payload}: PayloadAction<NumericPayload>) => {
             console.log('updating level', payload.value);
-            const stage = payload.stage;
-            const env = state.envs[payload.env];
+            const stageId = payload.stage;
+            const env = getEnv(state, payload);
+            const stage = getStage(state, payload);
             if(
-                stage === StageId.DECAY2 ||
-                stage === StageId.SUSTAIN ||
-                (stage === StageId.RELEASE2 && env.stages[StageId.RELEASE1].enabled)
+                stageId === StageId.DECAY2 ||
+                stageId === StageId.SUSTAIN ||
+                (stageId === StageId.RELEASE2 && env.stages[StageId.RELEASE1].enabled)
             ){
-                state.envs[payload.env].stages[payload.stage].level = getBounded(payload.value);
+                stage.level = getBounded(payload.value);
 
                 // sustain level is not used directly. Instead it replaces r1 or r2 level depending on if
                 // r1 is enabled or not.
-                if(stage === StageId.SUSTAIN) {
+                if(stageId === StageId.SUSTAIN) {
                     if(env.stages[StageId.RELEASE1].enabled) {
-                        state.envs[payload.env].stages[StageId.RELEASE1].level = env.stages[StageId.SUSTAIN].level;
+                        env.stages[StageId.RELEASE1].level = env.stages[StageId.SUSTAIN].level;
                     } else {
-                        state.envs[payload.env].stages[StageId.RELEASE2].level = env.stages[StageId.SUSTAIN].level;
+                        env.stages[StageId.RELEASE2].level = env.stages[StageId.SUSTAIN].level;
                     }
                 }
             }
-            state.envs[payload.env].stages[payload.stage].level = getBounded(payload.value);
+            stage.level = getBounded(payload.value);
         },
         incrementTime: (state, {payload}: PayloadAction<NumericPayload>) => {
-            state.envs[payload.env].stages[payload.stage].time = getBounded(state.envs[payload.env].stages[payload.stage].time + payload.value);
+            const stage = getStage(state, payload);
+            stage.time = getBounded(stage.time + payload.value);
         },
         setTime: (state, {payload}: PayloadAction<NumericPayload>) => {
-            state.envs[payload.env].stages[payload.stage].time = getBounded(payload.value);
+            const stage = getStage(state, payload);
+            stage.time = getBounded(payload.value);
         },
         incrementCurve: (state, {payload}: PayloadAction<CurveIncPayload>) => {
-            state.envs[payload.env].stages[payload.stage].curve = getBounded(state.envs[payload.env].stages[payload.stage].curve + payload.curveInc);
+            const stage = getStage(state, payload);
+            stage.curve = getBounded(stage.curve + payload.curveInc, 0, curveFuncs.length - 1);
         },
         setCurve: (state, {payload}: PayloadAction<CurvePayload>) => {
-            state.envs[payload.env].stages[payload.stage].curve = getBounded(payload.curve, 0, curveFuncs.length-1);
+            const stage = getStage(state, payload);
+            stage.curve = getBounded(payload.curve, 0, curveFuncs.length - 1);
         },
 
         setReleaseMode: (state, {payload}: PayloadAction<ReleaseModePayload>) => {
-            state.envs[payload.env].releaseMode = payload.releaseMode;
+            getEnv(state, payload).releaseMode = payload.releaseMode;
         },
         setResetOnTrigger: (state, {payload}: PayloadAction<ResetOnTriggerPayload>) => {
-            state.envs[payload.env].resetOnTrigger = payload.resetOnTrigger;
+            getEnv(state, payload).resetOnTrigger = payload.resetOnTrigger;
         },
         setLoopMode: (state, {payload}: PayloadAction<LoopModePayload>) => {
-            state.envs[payload.env].loopMode = payload.loopMode;
+            getEnv(state, payload).loopMode = payload.loopMode;
         },
         setMaxLoops: (state, {payload}: PayloadAction<NumericPayload>) => {
-            state.envs[payload.env].maxLoops = payload.value
+            getEnv(state, payload).maxLoops = payload.value
         },
         enableDisableStage: (state, {payload}: PayloadAction<EnableDisableStagePayload>) => {
             if(cannotDisableStage(payload.stage)){
                 return;
             }
-            state.envs[payload.env].stages[payload.stage].enabled = payload.enabled;
+
+            const stage = getStage(state, payload);
+            stage.enabled = payload.enabled;
             if(payload.stage === StageId.RELEASE1){
-                const env = state.envs[payload.env];
+                const env = getEnv(state, payload);
                 if(env.stages[StageId.RELEASE1].enabled) {
-                    state.envs[payload.env].stages[StageId.RELEASE1].level = env.stages[StageId.SUSTAIN].level;
+                    env.stages[StageId.RELEASE1].level = env.stages[StageId.SUSTAIN].level;
                 } else {
-                    state.envs[payload.env].stages[StageId.RELEASE2].level = env.stages[StageId.SUSTAIN].level;
+                    env.level = env.stages[StageId.SUSTAIN].level;
                 }
             }
         },
@@ -140,16 +156,18 @@ export const envelopesSlice = createSlice({
             if(cannotDisableStage(payload.stage)){
                 return;
             }
-            state.envs[payload.env].stages[payload.stage].enabled = !state.envs[payload.env].stages[payload.stage].enabled;
+            const stage = getStage(state, payload);
+            stage.enabled = !stage.enabled;
         },
         setInvert: (state, {payload}: PayloadAction<SetInvertPayload>) => {
-            state.envs[payload.env].invert = payload.invert;
+            const env = getEnv(state, payload);
+            env.invert = payload.invert;
             const resetLevel = payload.invert ? 1 : 0;
 
-            state.envs[payload.env].stages[StageId.DELAY].level = resetLevel;
-            state.envs[payload.env].stages[StageId.ATTACK].level = resetLevel;
-            state.envs[payload.env].stages[StageId.DECAY1].level = payload.invert ? 0 : 1;
-            state.envs[payload.env].stages[StageId.STOPPED].level = resetLevel;
+            env.stages[StageId.DELAY].level = resetLevel;
+            env.stages[StageId.ATTACK].level = resetLevel;
+            env.stages[StageId.DECAY1].level = payload.invert ? 0 : 1;
+            env.stages[StageId.STOPPED].level = resetLevel;
         }
     }
 })

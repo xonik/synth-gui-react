@@ -188,7 +188,7 @@ export default (props: Props & Config) => {
         if(updateStorePosition) {
             dispatch(updateStorePosition(newPosition))
         }
-    }, [midiConfig, setPosition])
+    }, [midiConfig, setPosition, updateStorePosition, dispatch])
 
     const updatePositionFromValue = useCallback((newPosition) => {
         if(newPosition < 0){
