@@ -8,6 +8,7 @@ import { MidiConfig } from '../../midi/midiControllers'
 import { RootState } from '../../forces/store'
 import { selectLevel, setLevel } from '../../forces/envelope/envelopesReducer'
 import { StageId } from '../../forces/envelope/types'
+import { ControllerId } from '../../forces/synthcore/controllers'
 
 type MidiConfigs = {
     a: MidiConfig;
@@ -41,7 +42,6 @@ const Envelope = ({ x, y, label, showSelect = false, midiConfigs, envId }: Props
     const potDistance = 40
 
     const selectSLevel = useCallback((state: RootState) => selectLevel(state, envId, StageId.SUSTAIN), [envId])
-    const updateSLevel = useCallback((value: number) => setLevel({ env: envId, stage: StageId.SUSTAIN, value }), [envId])
     const selectD2Level = useCallback((state: RootState) => selectLevel(state, envId, StageId.DECAY2), [envId])
     const updateD2Level = useCallback((value: number) => setLevel({ env: envId, stage: StageId.DECAY2, value }), [envId])
     const selectR2Level = useCallback((state: RootState) => selectLevel(state, envId, StageId.RELEASE2), [envId])
@@ -50,13 +50,13 @@ const Envelope = ({ x, y, label, showSelect = false, midiConfigs, envId }: Props
 
     return <>
         <Header align="left" label={label} x={x} y={y} width={255}/>
-        <RotaryPot17 ledMode="single" label="Attack" x={firstPotX} y={potY} position={0.4} midiConfig={midiConfigs.a}/>
+        <RotaryPot17 ledMode="single" label="Attack" x={firstPotX} y={potY} position={0.4} midiConfig={midiConfigs.a} ctrlId={ControllerId.ENV_ATTACK}/>
         <RotaryPot17 ledMode="single" label="Decay 1" x={firstPotX + potDistance} y={potY} position={0.1} midiConfig={midiConfigs.d1}/>
         <RotaryPot17 ledMode="single" label="Decay 2" x={firstPotX + potDistance * 2} y={potY} position={0.4} midiConfig={midiConfigs.d2}/>
         <RotaryPot17 ledMode="multi" label="Sustain" x={firstPotX + potDistance * 3} y={potY} position={0.8}
                      midiConfig={midiConfigs.s}
+                     ctrlId={ControllerId.ENV_SUSTAIN}
                      selectPosition={selectSLevel}
-                     updateStorePosition={updateSLevel}
         />
         <RotaryPot17 ledMode="single" label="Release 1" x={firstPotX + potDistance * 4} y={potY} position={0.7} midiConfig={midiConfigs.r1}/>
         <RotaryPot17 ledMode="single" label="Release 2" x={firstPotX + potDistance * 5} y={potY} position={1} midiConfig={midiConfigs.r2}/>

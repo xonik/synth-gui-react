@@ -92,8 +92,6 @@ export const envelopesSlice = createSlice({
             stage.level = getBounded(stage.level + payload.value);
         },
         setLevel: (state, {payload}: PayloadAction<NumericPayload>) => {
-            const tmp = state.envs[payload.env].stages[payload.stage];
-            console.log('updating level', payload.value);
             const stageId = payload.stage;
             const env = getEnv(state, payload);
             const stage = getStage(state, payload);
