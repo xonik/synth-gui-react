@@ -155,9 +155,9 @@ export default () => {
             <PostFilterMixer x={voiceMixCol} y={5}/>
 
 
-            <Envelope x={envCol} y={5} label="Env 1 - filter" midiConfigs={midiConfigsEnv1}/>
-            <Envelope x={envCol} y={75} label="Env 2 - amp" midiConfigs={midiConfigsEnv2}/>
-            <Envelope x={envCol} y={145} label="Env 3 - N" showSelect={true} midiConfigs={midiConfigsEnv3}/>
+            <Envelope x={envCol} y={5} label="Env 1 - filter" midiConfigs={midiConfigsEnv1} envId={0}/>
+            <Envelope x={envCol} y={75} label="Env 2 - amp" midiConfigs={midiConfigsEnv2} envId={1}/>
+            <Envelope x={envCol} y={145} label="Env 3 - N" showSelect={true} midiConfigs={midiConfigsEnv3} envId={2}/>
 
             <DigitalFX x={outFx1Col} y={outputFxRow}/>
             <Chorus x={outFx2Col} y={outputFxRow + 10}/>

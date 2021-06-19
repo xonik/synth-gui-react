@@ -5,6 +5,8 @@ import RotaryPotBase, { Point } from './RotaryPotBase'
 import { MidiConfig } from '../../midi/midiControllers'
 import { sendCC, subscribe, unsubscribe } from '../../midi/midibus'
 import './RotaryPot.scss'
+import { RootState } from '../../forces/store'
+import { useAppDispatch, useAppSelector } from '../../forces/hooks'
 
 export type LedMode = 'single' | 'multi';
 export type PotMode = 'normal' | 'pan' | 'spread';
@@ -19,6 +21,8 @@ export interface Props {
     position: number;
     midiConfig?: MidiConfig;
     defaultValue?: number;
+    selectPosition?: (state: RootState) => number;
+    updateStorePosition?: (position: number) => any;
 }
 
 interface Config {
@@ -108,8 +112,11 @@ const getValueChangeFromDiff = (angleDiff: number, ledArc:number) => {
 export default (props: Props & Config) => {
 
     // Position should be in the range 0-1 in all modes but pan. In pan the range is -0.5 - 0.5
-    const { x, y, ledMode = 'single', potMode = 'normal', label, midiConfig, defaultValue } = props
+    const { x, y, ledMode = 'single', potMode = 'normal', label, midiConfig, defaultValue,
+        selectPosition, updateStorePosition
+    } = props
 
+    const dispatch = useAppDispatch()
     const potRef = useRef<SVGCircleElement>(null);
     const [center, setCenter] = useState<Point|null>(null);
 
@@ -135,7 +142,8 @@ export default (props: Props & Config) => {
     // For scaling, use viewBox on the outer svg and unitless the rest of the way
 
     // positive pointer
-    const ledPosition = getLedPos(centerLed, ledCount, potMode, position)
+    const storePosition = selectPosition ? useAppSelector(selectPosition) : position
+    const ledPosition = getLedPos(centerLed, ledCount, potMode, storePosition)
 
     // negative pointer used for spread
     const negLedPosition = centerLed - (ledPosition - centerLed)
@@ -176,6 +184,9 @@ export default (props: Props & Config) => {
         setPosition(newPosition);
         if(midiConfig){
             sendCC(midiConfig.cc, Math.round(127 * newPosition));
+        }
+        if(updateStorePosition) {
+            dispatch(updateStorePosition(newPosition))
         }
     }, [midiConfig, setPosition])
 

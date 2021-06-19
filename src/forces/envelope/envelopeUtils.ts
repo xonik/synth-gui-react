@@ -27,7 +27,7 @@ export const getDefaultEnvelope = (): Envelope => {
     })
     stages.push({
         id: StageId.DECAY2,
-        enabled: false,
+        enabled: true,
         curve: Curve.LIN,
         level: 0.5,
         time: 0.001,
@@ -41,7 +41,7 @@ export const getDefaultEnvelope = (): Envelope => {
     })
     stages.push({
         id: StageId.RELEASE1,
-        enabled: false,
+        enabled: true,
         curve: Curve.LOG1,
         level: 0.5,
         time: 0.001,
@@ -126,26 +126,3 @@ const setInvert = (env: Envelope, invert: boolean) => {
     env.stages[StageId.STOPPED].level = resetLevel;
 }
 
-const setTime = (env: Envelope, stage: StageId, value: number) =>{
-    env.stages[stage].time = value;
-}
-
-const setCurve = (env: Envelope, stage: StageId, curve: Curve) => {
-    env.stages[stage].curve = curve;
-}
-
-const setReleaseMode = (env: Envelope, releaseMode: ReleaseMode) => {
-    env.releaseMode = releaseMode;
-}
-
-const setResetToZeroOnTrigger = (env: Envelope, resetToZero: boolean) => {
-    env.resetOnTrigger = resetToZero;
-}
-
-const setLoopMode = (env: Envelope, loopMode: LoopMode) => {
-    env.loopMode = loopMode;
-}
-
-const setMaxLoops = (env: Envelope, loops: number) => {
-    env.maxLoops = loops;
-}
