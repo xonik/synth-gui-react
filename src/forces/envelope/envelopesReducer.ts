@@ -2,7 +2,7 @@
 // separate reducer for stage
 
 import { createSlice, Draft, PayloadAction } from '@reduxjs/toolkit'
-import { Envelope, LoopMode, ReleaseMode, StageId } from './types'
+import { Envelope, LoopMode, ReleaseMode, Stage, StageId } from './types'
 import { getDefaultEnvelope } from './envelopeUtils'
 import { RootState } from '../store'
 import { curveFuncs } from '../../components/curves/curveCalculator'
@@ -67,12 +67,20 @@ const getBounded = (value: number, from: number = 0, to: number = 1) => {
 
 const cannotDisableStage = (stage: StageId) => stage === StageId.ATTACK || stage === StageId.RELEASE2
 
-const getStage = (state: Draft<any>, payload: StagePayload) => {
+const getStage = (state: Draft<any>, payload: StagePayload): Draft<Stage> => {
     return state.envs[payload.env].stages[payload.stage];
 }
 
-const getEnv = (state: Draft<any>, payload: StagePayload) => {
+const getEnv = (state: Draft<any>, payload: StagePayload): Draft<Envelope> => {
     return state.envs[payload.env];
+}
+
+function updateReleaseLevels(env: Draft<Envelope>) {
+    if (env.stages[StageId.RELEASE1].enabled) {
+        env.stages[StageId.RELEASE1].level = env.stages[StageId.SUSTAIN].level
+    } else {
+        env.stages[StageId.RELEASE2].level = env.stages[StageId.SUSTAIN].level
+    }
 }
 
 export const envelopesSlice = createSlice({
@@ -84,6 +92,7 @@ export const envelopesSlice = createSlice({
             stage.level = getBounded(stage.level + payload.value);
         },
         setLevel: (state, {payload}: PayloadAction<NumericPayload>) => {
+            const tmp = state.envs[payload.env].stages[payload.stage];
             console.log('updating level', payload.value);
             const stageId = payload.stage;
             const env = getEnv(state, payload);
@@ -98,11 +107,7 @@ export const envelopesSlice = createSlice({
                 // sustain level is not used directly. Instead it replaces r1 or r2 level depending on if
                 // r1 is enabled or not.
                 if(stageId === StageId.SUSTAIN) {
-                    if(env.stages[StageId.RELEASE1].enabled) {
-                        env.stages[StageId.RELEASE1].level = env.stages[StageId.SUSTAIN].level;
-                    } else {
-                        env.stages[StageId.RELEASE2].level = env.stages[StageId.SUSTAIN].level;
-                    }
+                    updateReleaseLevels(env)
                 }
             }
             stage.level = getBounded(payload.value);
@@ -143,13 +148,9 @@ export const envelopesSlice = createSlice({
 
             const stage = getStage(state, payload);
             stage.enabled = payload.enabled;
+            const env = getEnv(state, payload);
             if(payload.stage === StageId.RELEASE1){
-                const env = getEnv(state, payload);
-                if(env.stages[StageId.RELEASE1].enabled) {
-                    env.stages[StageId.RELEASE1].level = env.stages[StageId.SUSTAIN].level;
-                } else {
-                    env.level = env.stages[StageId.SUSTAIN].level;
-                }
+                updateReleaseLevels(env);
             }
         },
         toggleStageActive: (state, {payload}: PayloadAction<ToggleStageActivePayload>) => {
