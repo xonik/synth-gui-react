@@ -11,7 +11,7 @@ interface Props {
   y: number
 }
 
-const MainDisplay = ({ x, y }: Props) => {
+const MainDisplay = React.forwardRef<SVGRectElement, Props>(({ x, y }, displayRef) => {
 
   const [curve, setCurve] = useState(0);
 
@@ -50,7 +50,7 @@ const MainDisplay = ({ x, y }: Props) => {
     <RoundPushButton8 x={displayCenter + 0.5 * buttonSpacing} y={buttonRow} label="Envelopes" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.MENU_ENVELOPE}/>
     <RoundPushButton8 x={displayCenter + 1.5 * buttonSpacing} y={buttonRow} label="Mods" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.MENU_MOD}/>
     <RoundPushButton8 x={displayCenter + 2.5 * buttonSpacing} y={buttonRow} label="FX" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.MENU_FX}/>
-    <Display x={x} y={y} width={displayWidth} height={displayHeight}/>
+    <Display x={x} y={y} width={displayWidth} height={displayHeight} ref={displayRef}/>
 
     <RotaryPotWOLeds17 x={displayCenter - 2 * potSpacing} y={potRow} midiConfig={midiConstants.MAIN_PANEL.POT1}/>
     <RotaryPotWOLeds17 x={displayCenter - 1 * potSpacing} y={potRow} midiConfig={midiConstants.MAIN_PANEL.POT2}/>
@@ -69,6 +69,6 @@ const MainDisplay = ({ x, y }: Props) => {
     <RoundPushButton8 x={displayCenter + 1.5 * buttonSpacing} y={ctrlSwitchesRow2} label="Compare" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_COMPARE}/>
     <RoundPushButton8 x={displayCenter + 2.5 * buttonSpacing} y={ctrlSwitchesRow2} label="Route" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_ROUTE}/>
   </>;
-};
+});
 
 export default MainDisplay;

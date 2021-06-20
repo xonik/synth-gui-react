@@ -1,30 +1,30 @@
-import React from 'react';
-import DCO1 from './modules/DCO1';
-import DCO2 from './modules/DCO2';
-import VCO from './modules/VCO';
-import PreFilterMixer from './modules/PreFilterMixer';
-import PostFilterMixer from './modules/PostFilterMixer';
-import Noise from './modules/Noise';
-import Ringmod from './modules/Ringmod';
-import Distortion from './modules/Distortion';
-import LowPassFilter from './modules/LowPassFilter';
-import StateVariableFilter from './modules/StateVariableFilter';
-import Envelope from './modules/Envelope';
-import LFO from './modules/LFO';
-import DigitalFX from './modules/DigitalFX';
-import OutputMixer from './modules/OutputMixer';
-import Chorus from './modules/Chorus';
-import BitCrusher from './modules/BitCrusher';
-import Arpeggiator from './modules/Arpeggiator';
-import MainDisplay from './modules/MainDisplay';
-import Clock from './modules/Clock';
-import BitCrusherPre from './modules/BitCrusherPre';
-import Route from './modules/Route';
-import KeyboardControls from './modules/KeyboardControls';
-import VoiceSelector from './modules/VoiceSelector';
+import React, { useRef, useState } from 'react'
+import DCO1 from './modules/DCO1'
+import DCO2 from './modules/DCO2'
+import VCO from './modules/VCO'
+import PreFilterMixer from './modules/PreFilterMixer'
+import PostFilterMixer from './modules/PostFilterMixer'
+import Noise from './modules/Noise'
+import Ringmod from './modules/Ringmod'
+import Distortion from './modules/Distortion'
+import LowPassFilter from './modules/LowPassFilter'
+import StateVariableFilter from './modules/StateVariableFilter'
+import Envelope from './modules/Envelope'
+import LFO from './modules/LFO'
+import DigitalFX from './modules/DigitalFX'
+import OutputMixer from './modules/OutputMixer'
+import Chorus from './modules/Chorus'
+import BitCrusher from './modules/BitCrusher'
+import Arpeggiator from './modules/Arpeggiator'
+import MainDisplay from './modules/MainDisplay'
+import Clock from './modules/Clock'
+import BitCrusherPre from './modules/BitCrusherPre'
+import Route from './modules/Route'
+import KeyboardControls from './modules/KeyboardControls'
+import VoiceSelector from './modules/VoiceSelector'
 import midiConstants from '../midi/midiControllers'
 import Controller from '../controller/Controller'
-import './MainPanel.scss';
+import './MainPanel.scss'
 
 /**
  * TODO:
@@ -40,51 +40,51 @@ export default () => {
     //const panelHeight = 350;
     //const panelWidth = 1050;
 
-    const osc1Col = 70;
-    const osc2Col = osc1Col + 115;
-    const osc3Col = osc2Col + 115;
+    const osc1Col = 70
+    const osc2Col = osc1Col + 115
+    const osc3Col = osc2Col + 115
 
-    const lfoCol = 20;
-    const noiseCol = 20;
-    const ringModCol = noiseCol + 45;
-    const fxCol = ringModCol + 41;
+    const lfoCol = 20
+    const noiseCol = 20
+    const ringModCol = noiseCol + 45
+    const fxCol = ringModCol + 41
 
-    const routeCol = 20;
-    const clockCol = routeCol + 56;
-    const arpCol = clockCol + 84;
+    const routeCol = 20
+    const clockCol = routeCol + 56
+    const arpCol = clockCol + 84
 
-    const sourceMixCol = 180;
-    const displayCol = osc3Col + 85;
-    const keyCtrlCol = displayCol-22;
-    const voiceSelCol = displayCol;
+    const sourceMixCol = 180
+    const displayCol = osc3Col + 85
+    const keyCtrlCol = displayCol - 22
+    const voiceSelCol = displayCol
 
-    const filterCol = displayCol + 270;
-    const voiceMixCol = filterCol + 70;
+    const filterCol = displayCol + 270
+    const voiceMixCol = filterCol + 70
 
-    const envCol = voiceMixCol + 55;
-    const outFx1Col = envCol;
-    const outFx2Col = outFx1Col + 130;
-    const outputMixerCol = envCol + 5;
+    const envCol = voiceMixCol + 55
+    const outFx1Col = envCol
+    const outFx2Col = outFx1Col + 130
+    const outputMixerCol = envCol + 5
 
-    const oscRow = 60;
+    const oscRow = 60
 
-    const noiseRow = oscRow + 85;
-    const sourceMixRow = noiseRow + 55;
-    const fxRow = noiseRow;
-    const lfo1Row = noiseRow + 55;
-    const clockRow = lfo1Row + 90;
+    const noiseRow = oscRow + 85
+    const sourceMixRow = noiseRow + 55
+    const fxRow = noiseRow
+    const lfo1Row = noiseRow + 55
+    const clockRow = lfo1Row + 90
 
-    const voiceSelRow = 12;
-    const displayRow = voiceSelRow + 58;
-    const keyCtrlRow = displayRow + 233;
+    const voiceSelRow = 12
+    const displayRow = voiceSelRow + 58
+    const keyCtrlRow = displayRow + 233
 
-    const outputFxRow = 210;
-    const arpRow = clockRow;
+    const outputFxRow = 210
+    const arpRow = clockRow
 
-    const outputMixerRow = outputFxRow + 85;
+    const outputMixerRow = outputFxRow + 85
 
     const midiConfigsEnv1 = {
-        a:  midiConstants.ENV1.ATTACK,
+        a: midiConstants.ENV1.ATTACK,
         d1: midiConstants.ENV1.DECAY1,
         d2: midiConstants.ENV1.DECAY2,
         s: midiConstants.ENV1.SUSTAIN,
@@ -99,7 +99,7 @@ export default () => {
     }
 
     const midiConfigsEnv2 = {
-        a:  midiConstants.ENV2.ATTACK,
+        a: midiConstants.ENV2.ATTACK,
         d1: midiConstants.ENV2.DECAY1,
         d2: midiConstants.ENV2.DECAY2,
         s: midiConstants.ENV2.SUSTAIN,
@@ -114,7 +114,7 @@ export default () => {
     }
 
     const midiConfigsEnv3 = {
-        a:  midiConstants.ENV3.ATTACK,
+        a: midiConstants.ENV3.ATTACK,
         d1: midiConstants.ENV3.DECAY1,
         d2: midiConstants.ENV3.DECAY2,
         s: midiConstants.ENV3.SUSTAIN,
@@ -128,6 +128,19 @@ export default () => {
         r1_lev: midiConstants.ENV3.R1_LEVEL,
         invert: midiConstants.ENV3.INVERT,
     }
+
+    // Gets the svg placeholder for the display and extracts size and position,
+    // this is used to create an overlay div in the same position further down
+    // that will act as the real display.
+    const [dispRect, setDispRect] = useState<DOMRect | null>(null)
+    const displayRef = useRef<SVGRectElement>(null)
+    React.useEffect(() => {
+        if (displayRef.current) {
+            setDispRect(displayRef.current.getBoundingClientRect())
+        }
+
+    }, [])
+
 
     // PS: 1 inch in svg is 96pixels, so 1cm = 96 / 2.54
     return (
@@ -150,7 +163,7 @@ export default () => {
                 <Arpeggiator x={arpCol} y={arpRow}/>
 
                 <VoiceSelector x={voiceSelCol} y={voiceSelRow}/>
-                <MainDisplay x={displayCol} y={displayRow}/>
+                <MainDisplay x={displayCol} y={displayRow} ref={displayRef}/>
                 <KeyboardControls x={keyCtrlCol} y={keyCtrlRow}/>
 
                 <LowPassFilter x={filterCol} y={82}/>
@@ -168,9 +181,14 @@ export default () => {
 
                 <OutputMixer x={outputMixerCol} y={outputMixerRow}/>
             </svg>
-            <div className="panel-main-display">
-                <Controller />
-            </div>
+            {dispRect && <div className="panel-main-display" style={{
+                top: dispRect.y,
+                left: dispRect.x,
+                width: dispRect.width,
+                height: dispRect.height,
+            }}>
+              <Controller width={dispRect.width} height={dispRect.height}/>
+            </div>}
         </>
-    );
+    )
 }

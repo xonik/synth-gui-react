@@ -9,16 +9,17 @@ interface Props {
   width: number,
 }
 
-const Display = ({ x, y, height, width }: Props) => {
+const Display = React.forwardRef<SVGRectElement, Props>(({ x, y, height, width }, ref) => {
 
   return <rect
+      ref={ref}
       x={x}
       y={y}
       height={height}
       width={width}
       className="display"
     />;
-};
+});
 
 
 
