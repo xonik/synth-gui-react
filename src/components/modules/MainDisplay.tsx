@@ -5,7 +5,6 @@ import RoundPushButton8 from '../buttons/RoundPushButton8';
 import './MainDisplay.scss';
 import RotaryPotWOLeds32 from '../pots/RotaryPotWOLeds32';
 import midiConstants from '../../midi/midiControllers'
-import EnvelopeControl from '../../controller/envelopes/EnvelopeControl'
 
 interface Props {
   x: number,

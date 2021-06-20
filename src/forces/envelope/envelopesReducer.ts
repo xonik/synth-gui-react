@@ -56,10 +56,6 @@ type LoopModePayload = StagePayload & {
     loopMode: LoopMode;
 }
 
-type EnableDisableStagePayload = StagePayload & {
-    enabled: boolean;
-}
-
 type ToggleStageActivePayload = StagePayload
 
 type SetInvertPayload = StagePayload & {
@@ -85,14 +81,6 @@ const getEnv = (state: Draft<any>, payload: StagePayload): Draft<Envelope> => {
     return state.envs[payload.env];
 }
 
-function updateReleaseLevels(env: Draft<Envelope>) {
-    if (env.stages[StageId.RELEASE1].enabled) {
-        env.stages[StageId.RELEASE1].level = env.stages[StageId.SUSTAIN].level
-    } else {
-        env.stages[StageId.RELEASE2].level = env.stages[StageId.SUSTAIN].level
-    }
-}
-
 export const envelopesSlice = createSlice({
     name: 'envelopes',
     initialState,
@@ -107,10 +95,6 @@ export const envelopesSlice = createSlice({
         setTime: (state, {payload}: PayloadAction<NumericPayload>) => {
             const stage = getStage(state, payload);
             stage.time = getBounded(payload.value);
-        },
-        incrementCurve: (state, {payload}: PayloadAction<CurveIncPayload>) => {
-            const stage = getStage(state, payload);
-            stage.curve = getBounded(stage.curve + payload.curveInc, 0, curveFuncs.length - 1);
         },
         setCurve: (state, {payload}: PayloadAction<CurvePayload>) => {
             const stage = getStage(state, payload);
@@ -152,7 +136,6 @@ export const {
     setLevel,
     setDualLevels,
     setTime,
-    incrementCurve,
     setCurve,
     setReleaseMode,
     setResetOnTrigger,

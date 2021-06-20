@@ -6,7 +6,7 @@ import RoundPushButton8 from '../buttons/RoundPushButton8'
 import Header from '../misc/Header'
 import { MidiConfig } from '../../midi/midiControllers'
 import { RootState } from '../../forces/store'
-import { selectLevel, setLevel } from '../../forces/envelope/envelopesReducer'
+import { selectLevel } from '../../forces/envelope/envelopesReducer'
 import { StageId } from '../../forces/envelope/types'
 import { ControllerId } from '../../forces/synthcore/controllers'
 

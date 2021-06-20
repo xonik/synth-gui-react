@@ -61,6 +61,7 @@ export const curveFuncs = [
     log3,
 ]
 
+/*
 const testInterpolation = (
     func: (x: number) => number,
     yScale: number,
@@ -78,7 +79,8 @@ const testInterpolation = (
     }
 }
 
-//testInterpolation(log, 65535, 256,256, 256)
+testInterpolation(log, 65535, 256,256, 256)
+ */
 
 export default {
     logarithmicFunc,
