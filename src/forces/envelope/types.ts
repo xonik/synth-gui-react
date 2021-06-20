@@ -41,6 +41,7 @@ export type Stage = {
 };
 
 export type Envelope = {
+    id: number;
     resetOnTrigger: boolean;
     resetLevel: number;
     releaseMode: ReleaseMode;

@@ -10,18 +10,20 @@ interface Props {
     height: number
 }
 
-const hPadding = 10;
-const vPadding = 10;
+const hPadding = 10
+const vPadding = 10
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
-const EnvelopeControl = ({ x, y, width, height}: Props) => {
+const EnvelopeControl = ({ x, y, width, height }: Props) => {
 
-    const env = useAppSelector(selectEnvelope).envs[0];
+    const env = useAppSelector(selectEnvelope).envs[0]
 
-    return <Stages
-        x={x+hPadding} y={y+vPadding}
-        height={height - 2 * vPadding} width={width - 2 * vPadding}
-        env={env}/>
+    return <>
+        <Stages
+            x={x + hPadding} y={y + vPadding}
+            height={height - 2 * vPadding} width={width - 2 * vPadding}
+            env={env}/>
+    </>
 }
 
-export default EnvelopeControl;
+export default EnvelopeControl

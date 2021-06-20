@@ -13,6 +13,7 @@ const initialState: ControllerState = {
 
 type NumericControllerPayload = {
     ctrlId: ControllerId;
+    ctrlIndex?: number;
     value: number;
 }
 

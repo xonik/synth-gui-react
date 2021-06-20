@@ -1,6 +1,6 @@
 import { Curve, Envelope, LoopMode, ReleaseMode, Stage, StageId } from './types'
 
-export const getDefaultEnvelope = (): Envelope => {
+export const getDefaultEnvelope = (id: number): Envelope => {
 
     const stages: Stage[] = [];
     stages.push({
@@ -61,6 +61,7 @@ export const getDefaultEnvelope = (): Envelope => {
     })
 
     const env = {
+        id,
         resetOnTrigger: false,
         resetLevel: 0,
         releaseMode: ReleaseMode.NORMAL,

@@ -1,14 +1,31 @@
 import { Middleware } from 'redux'
-import { setLevel } from '../envelope/envelopesReducer'
-import { StageId } from '../envelope/types'
 import { increment } from '../controller/controllerReducer'
-import { ControllerId } from './controllers'
+import { ControllerId, envControllerIds } from './controllers'
+import { envApi } from './synthcoreApi'
+import { StageId } from '../envelope/types'
+
+const envApiMapper = {
+    [ControllerId.ENV_DELAY]: (ctrlIndex: number, value: number) => envApi.setStageTime(ctrlIndex, StageId.DELAY, value),
+    [ControllerId.ENV_ATTACK]: (ctrlIndex: number, value: number) => envApi.setStageTime(ctrlIndex, StageId.ATTACK, value),
+    [ControllerId.ENV_DECAY1]: (ctrlIndex: number, value: number) => envApi.setStageTime(ctrlIndex, StageId.DECAY1, value),
+    [ControllerId.ENV_DECAY2]: (ctrlIndex: number, value: number) => envApi.setStageTime(ctrlIndex, StageId.DECAY2, value),
+    [ControllerId.ENV_SUSTAIN]: (ctrlIndex: number, value: number) => envApi.setStageLevel(ctrlIndex, StageId.SUSTAIN, value),
+    [ControllerId.ENV_RELEASE1]: (ctrlIndex: number, value: number) => envApi.setStageTime(ctrlIndex, StageId.RELEASE1, value),
+    [ControllerId.ENV_RELEASE2]: (ctrlIndex: number, value: number) => envApi.setStageTime(ctrlIndex, StageId.RELEASE2, value),
+    [ControllerId.ENV_D2_LEVEL]: (ctrlIndex: number, value: number) => envApi.setStageLevel(ctrlIndex, StageId.DECAY2, value),
+    [ControllerId.ENV_R2_LEVEL]: (ctrlIndex: number, value: number) => envApi.setStageTime(ctrlIndex, StageId.RELEASE2, value),
+}
 
 export const synthcoreMiddleware: Middleware<{},any> = storeAPI => next => action => {
     if(increment.match(action)){
-        if(action.payload.ctrlId === ControllerId.ENV_SUSTAIN){
-            storeAPI.dispatch(setLevel({env: 0, stage: StageId.SUSTAIN, value: action.payload.value}))
+        const ctrlIndex = action.payload.ctrlIndex || 0;
+
+        // this may be against the redux rules, but we do not supply the storeAPI.dispatch
+        // to the apis. Instead, they get dispatch directly from the store.
+        if(envControllerIds.includes(action.payload.ctrlId)){
+            envApiMapper[action.payload.ctrlId](ctrlIndex, action.payload.value);
         }
+
     }
     return next(action);
 }

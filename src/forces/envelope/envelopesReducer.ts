@@ -13,9 +13,9 @@ type EnvelopesState = {
 
 const initialState: EnvelopesState = {
     envs: [
-        getDefaultEnvelope(),
-        getDefaultEnvelope(),
-        getDefaultEnvelope(),
+        getDefaultEnvelope(0),
+        getDefaultEnvelope(1),
+        getDefaultEnvelope(2),
     ]
 
 }
@@ -26,6 +26,13 @@ type StagePayload = {
 }
 
 type NumericPayload = StagePayload & {
+    value: number;
+}
+
+type DualStageLevelPayload = {
+    env: number;
+    stage1: StageId;
+    stage2: StageId;
     value: number;
 }
 
@@ -87,32 +94,12 @@ export const envelopesSlice = createSlice({
     name: 'envelopes',
     initialState,
     reducers: {
-        incrementLevel: (state, {payload}: PayloadAction<NumericPayload>) => {
-            const stage = getStage(state, payload);
-            stage.level = getBounded(stage.level + payload.value);
-        },
         setLevel: (state, {payload}: PayloadAction<NumericPayload>) => {
-            const stageId = payload.stage;
-            const env = getEnv(state, payload);
-            const stage = getStage(state, payload);
-            if(
-                stageId === StageId.DECAY2 ||
-                stageId === StageId.SUSTAIN ||
-                (stageId === StageId.RELEASE2 && env.stages[StageId.RELEASE1].enabled)
-            ){
-                stage.level = getBounded(payload.value);
-
-                // sustain level is not used directly. Instead it replaces r1 or r2 level depending on if
-                // r1 is enabled or not.
-                if(stageId === StageId.SUSTAIN) {
-                    updateReleaseLevels(env)
-                }
-            }
-            stage.level = getBounded(payload.value);
+            getStage(state, payload).level = payload.value;
         },
-        incrementTime: (state, {payload}: PayloadAction<NumericPayload>) => {
-            const stage = getStage(state, payload);
-            stage.time = getBounded(stage.time + payload.value);
+        setDualLevels: (state, {payload}: PayloadAction<DualStageLevelPayload>) => {
+            state.envs[payload.env].stages[payload.stage1].level = payload.value;
+            state.envs[payload.env].stages[payload.stage2].level = payload.value;
         },
         setTime: (state, {payload}: PayloadAction<NumericPayload>) => {
             const stage = getStage(state, payload);
@@ -172,9 +159,8 @@ export const envelopesSlice = createSlice({
 })
 
 export const {
-    incrementLevel,
     setLevel,
-    incrementTime,
+    setDualLevels,
     setTime,
     incrementCurve,
     setCurve,

@@ -6,6 +6,8 @@ export enum ControllerId {
     ENV_SUSTAIN,
     ENV_RELEASE1,
     ENV_RELEASE2,
+    ENV_D2_LEVEL,
+    ENV_R2_LEVEL,
 }
 
 export const envControllerIds = [
@@ -16,4 +18,6 @@ export const envControllerIds = [
     ControllerId.ENV_SUSTAIN,
     ControllerId.ENV_RELEASE1,
     ControllerId.ENV_RELEASE2,
+    ControllerId.ENV_D2_LEVEL,
+    ControllerId.ENV_R2_LEVEL,
 ];

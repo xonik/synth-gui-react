@@ -45,12 +45,12 @@ const StageBlock = ({ x, y, width, height, vCenter, vHeight, stage, nextStage}: 
             <line
                 x1={0} y1={0}
                 x2={0} y2={height}
-                className={'stage-divider'}
+                className={'stage-block-divider'}
             />
             {isLast && <line
                         x1={endX} y1={0}
                         x2={endX} y2={height}
-                        className={'stage-divider'}
+                        className={'stage-block-divider'}
                     />
             }
             <AnimatedCurve
@@ -59,14 +59,14 @@ const StageBlock = ({ x, y, width, height, vCenter, vHeight, stage, nextStage}: 
                 width={width}
                 height={stageHeight}
                 points={points}
-                className={'stage-line'}
+                className={'stage-block-line'}
             />
             <circle
                 cx={startX} cy={startY} r={curveJointRadius}
-                className={'stage-joint'}/>
+                className={'stage-block-joint'}/>
             {isLast && <circle
                         cx={endX} cy={endY} r={curveJointRadius}
-                        className={'stage-joint'}/>
+                        className={'stage-block-joint'}/>
             }
         </>
     </svg>;

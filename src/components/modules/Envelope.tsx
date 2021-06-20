@@ -43,9 +43,7 @@ const Envelope = ({ x, y, label, showSelect = false, midiConfigs, envId }: Props
 
     const selectSLevel = useCallback((state: RootState) => selectLevel(state, envId, StageId.SUSTAIN), [envId])
     const selectD2Level = useCallback((state: RootState) => selectLevel(state, envId, StageId.DECAY2), [envId])
-    const updateD2Level = useCallback((value: number) => setLevel({ env: envId, stage: StageId.DECAY2, value }), [envId])
     const selectR2Level = useCallback((state: RootState) => selectLevel(state, envId, StageId.RELEASE2), [envId])
-    const updateR2Level = useCallback((value: number) => setLevel({ env: envId, stage: StageId.RELEASE2, value }), [envId])
 
 
     return <>
@@ -56,6 +54,7 @@ const Envelope = ({ x, y, label, showSelect = false, midiConfigs, envId }: Props
         <RotaryPot17 ledMode="multi" label="Sustain" x={firstPotX + potDistance * 3} y={potY} position={0.8}
                      midiConfig={midiConfigs.s}
                      ctrlId={ControllerId.ENV_SUSTAIN}
+                     ctrlIndex={envId}
                      selectPosition={selectSLevel}
         />
         <RotaryPot17 ledMode="single" label="Release 1" x={firstPotX + potDistance * 4} y={potY} position={0.7} midiConfig={midiConfigs.r1}/>
@@ -65,15 +64,15 @@ const Envelope = ({ x, y, label, showSelect = false, midiConfigs, envId }: Props
         <RotaryPot10 ledMode="single" label="Delay" x={firstPotX + potDistance * 0.5} y={topRowY} position={0.4} midiConfig={midiConfigs.delay}/>
         <RotaryPot10 ledMode="multi" label="D2 Level" x={firstPotX + potDistance * 1.5} y={topRowY} position={0.4}
                      midiConfig={midiConfigs.d1_lev}
+                     ctrlId={ControllerId.ENV_D2_LEVEL}
                      selectPosition={selectD2Level}
-                     updateStorePosition={updateD2Level}
         />
         <RoundLedPushButton8 label="Invert" x={firstPotX + potDistance * 2.5} y={topRowY} labelPosition="bottom" midiConfig={midiConfigs.invert}/>
         <RoundLedPushButton8 label="Loop" x={firstPotX + potDistance * 3.5} y={topRowY} labelPosition="bottom" midiConfig={midiConfigs.loop}/>
         <RotaryPot10 ledMode="multi" label="R2 Level" x={firstPotX + potDistance * 4.5} y={topRowY} position={0.4}
                      midiConfig={midiConfigs.r1_lev}
+                     ctrlId={ControllerId.ENV_R2_LEVEL}
                      selectPosition={selectR2Level}
-                     updateStorePosition={updateR2Level}
         />
         <RoundPushButton8 label="Trigger" x={firstPotX + potDistance * 5.5} y={topRowY} labelPosition="bottom" midiConfig={midiConfigs.trigger}/>
     </>

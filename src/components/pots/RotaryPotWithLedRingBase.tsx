@@ -26,6 +26,7 @@ export interface Props {
     selectPosition?: (state: RootState) => number;
     updateStorePosition?: (position: number) => any;
     ctrlId?: ControllerId;
+    ctrlIndex?: number
 }
 
 interface Config {
@@ -116,7 +117,7 @@ export default (props: Props & Config) => {
 
     // Position should be in the range 0-1 in all modes but pan. In pan the range is -0.5 - 0.5
     const { x, y, ledMode = 'single', potMode = 'normal', label, midiConfig, defaultValue,
-        selectPosition, ctrlId, updateStorePosition
+        selectPosition, ctrlId, updateStorePosition, ctrlIndex
     } = props
 
     const dispatch = useAppDispatch()
@@ -192,9 +193,9 @@ export default (props: Props & Config) => {
             dispatch(updateStorePosition(newPosition))
         }
         if(ctrlId) {
-            dispatch(increment({ctrlId, value: newPosition}))
+            dispatch(increment({ctrlId, value: newPosition, ctrlIndex}))
         }
-    }, [midiConfig, setPosition, ctrlId, dispatch, updateStorePosition])
+    }, [midiConfig, setPosition, ctrlId, dispatch, updateStorePosition, ctrlIndex])
 
     const updatePositionFromValue = useCallback((newPosition) => {
         if(newPosition < 0){
