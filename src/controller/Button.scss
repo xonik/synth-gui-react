@@ -1,0 +1,17 @@
+.ctrl-button {
+  stroke: #444;
+  fill: #0001;
+
+  &--active {
+    fill: #ddd;
+  }
+
+  &-label {
+    fill: #666;
+    font-size: 4px;
+    &--active {
+      fill: #333;
+    }
+  }
+
+}
