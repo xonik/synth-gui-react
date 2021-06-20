@@ -1,6 +1,7 @@
 import EnvelopeControl from './envelopes/EnvelopeControl'
 import React from 'react'
 
+// PS: 1 inch in svg is 96pixels, so 1cm = 96px / 2.54
 // approx. 9"
 const displayWidth = 180;
 const displayHeight = 9 * displayWidth / 16;

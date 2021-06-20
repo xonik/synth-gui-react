@@ -129,6 +129,7 @@ export default () => {
         invert: midiConstants.ENV3.INVERT,
     }
 
+    // PS: 1 inch in svg is 96pixels, so 1cm = 96 / 2.54
     return (
         <>
             <svg width="105cm" height="35cm" viewBox="0 0 1050 350" className="panel">

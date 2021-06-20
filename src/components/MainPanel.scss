@@ -5,6 +5,7 @@
 
   // positioning div as overlay on top of display svg to be able to use
   // normal tsx inside display.
+  // PS: 1 inch in svg is 96pixels, so 1cm = 96px / 2.54
   &-main-display {
     position: absolute;
     top: 265px;
