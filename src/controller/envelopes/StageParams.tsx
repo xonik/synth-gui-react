@@ -1,5 +1,5 @@
 import React from 'react'
-import { Stage } from '../../forces/envelope/types'
+import { Stage, StageId } from '../../forces/envelope/types'
 import './StageParams.scss'
 
 interface Props {
@@ -26,13 +26,13 @@ const formatTime = (time: number) => {
 const StageParams = ({ x, y, width, height, stage }: Props) => {
     return <svg x={x} y={y} className="stage-params">
         <rect width={width} height={height} className="stage-params"/>
-        <text
+        {stage.id !== StageId.SUSTAIN && <text
             x={width / 2}
             y={5}
             className="stage-params-time"
             textAnchor="middle"
             alignmentBaseline="middle"
-        >{formatTime(stage.time)}</text>
+        >{formatTime(stage.time)}</text>}
     </svg>
 }
 

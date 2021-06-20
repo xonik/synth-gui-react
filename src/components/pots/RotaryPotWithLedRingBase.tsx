@@ -192,7 +192,7 @@ export default (props: Props & Config) => {
         if(updateStorePosition) {
             dispatch(updateStorePosition(newPosition))
         }
-        if(ctrlId) {
+        if(ctrlId !== undefined) {
             dispatch(increment({ctrlId, value: newPosition, ctrlIndex}))
         }
     }, [midiConfig, setPosition, ctrlId, dispatch, updateStorePosition, ctrlIndex])
