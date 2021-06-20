@@ -3,6 +3,8 @@ import { Envelope, StageId } from '../../forces/envelope/types'
 import Button from '../Button'
 import './StageParams.scss'
 import { stageNames } from './utils'
+import { useAppDispatch } from '../../forces/hooks'
+import { toggleStageEnabled } from '../../forces/envelope/envelopesReducer'
 
 interface Props {
     env: Envelope
@@ -14,15 +16,20 @@ interface Props {
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
 const StageActivator = ({ x, y, width, height, env }: Props) => {
+
+    const dispatch = useAppDispatch()
+
     return <svg x={x} y={y} className="stage-params">
         {env.stages.map((stage, index) => {
-            if(stage.id === StageId.STOPPED) return null;
+            if (stage.id === StageId.STOPPED) {
+                return null
+            }
             return <Button
                 x={0} y={(height / 8) * index}
-                width={width} height={height / 8 -2}
+                width={width} height={height / 8 - 2}
                 label={stageNames[stage.id]}
                 active={stage.enabled}
-                onClick={() => {}}
+                onClick={() => dispatch(toggleStageEnabled({ env: env.id, stage: stage.id }))}
             />
         })}
     </svg>

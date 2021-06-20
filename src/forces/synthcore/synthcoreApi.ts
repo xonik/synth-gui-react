@@ -1,4 +1,4 @@
-import { selectEnvelope, setDualLevels, setLevel, setTime } from '../envelope/envelopesReducer'
+import { selectEnvelope, setDualLevels, setLevel, setTime, setStageEnabled } from '../envelope/envelopesReducer'
 import { Envelope, StageId } from '../envelope/types'
 import { AnyAction, Dispatch, } from '@reduxjs/toolkit'
 import { store } from '../store'
@@ -26,6 +26,8 @@ function updateReleaseLevels(env: Envelope, value: number) {
         dispatch(setLevel({env: env.id, stage: StageId.RELEASE2, value}))
     }
 }
+
+const cannotDisableStage = (stage: StageId) => stage === StageId.ATTACK || stage === StageId.RELEASE2
 
 export const envApi = {
 
@@ -57,6 +59,21 @@ export const envApi = {
     setStageTime: (envId: number, stageId: StageId, requestedValue: number) => {
         // TODO: env3 may control env 4-6 etc
         dispatch(setTime({env: envId, stage: stageId, value: getBounded(requestedValue)}));
+    },
+
+    toggleStageEnabled: (envId: number, stageId: StageId) => {
+        if(cannotDisableStage(stageId)){
+            return;
+        }
+
+        const env = selectEnvelope(store.getState()).envs[envId];
+        const stage = env.stages[stageId];
+        const enabled = !stage.enabled;
+        dispatch(setStageEnabled({env:envId, stage: stageId, enabled}))
+
+        if(stageId === StageId.RELEASE1 && !enabled){
+            dispatch(setLevel({env: envId, stage: StageId.RELEASE2, value: env.stages[StageId.SUSTAIN].level}));
+        }
     }
 
 }

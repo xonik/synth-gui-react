@@ -66,13 +66,16 @@ type SetInvertPayload = StagePayload & {
     invert: boolean;
 }
 
+type EnabledStagePayload = StagePayload & {
+    enabled: boolean;
+}
+
 const getBounded = (value: number, from: number = 0, to: number = 1) => {
     if(value > to) return to;
     if(value < from) return from;
     return value;
 }
 
-const cannotDisableStage = (stage: StageId) => stage === StageId.ATTACK || stage === StageId.RELEASE2
 
 const getStage = (state: Draft<any>, payload: StagePayload): Draft<Stage> => {
     return state.envs[payload.env].stages[payload.stage];
@@ -126,24 +129,11 @@ export const envelopesSlice = createSlice({
         setMaxLoops: (state, {payload}: PayloadAction<NumericPayload>) => {
             getEnv(state, payload).maxLoops = payload.value
         },
-        enableDisableStage: (state, {payload}: PayloadAction<EnableDisableStagePayload>) => {
-            if(cannotDisableStage(payload.stage)){
-                return;
-            }
-
-            const stage = getStage(state, payload);
-            stage.enabled = payload.enabled;
-            const env = getEnv(state, payload);
-            if(payload.stage === StageId.RELEASE1){
-                updateReleaseLevels(env);
-            }
+        toggleStageEnabled: (state, {payload}: PayloadAction<ToggleStageActivePayload>) => {
+            // TODO: Make action only, consumed by api
         },
-        toggleStageActive: (state, {payload}: PayloadAction<ToggleStageActivePayload>) => {
-            if(cannotDisableStage(payload.stage)){
-                return;
-            }
-            const stage = getStage(state, payload);
-            stage.enabled = !stage.enabled;
+        setStageEnabled: (state, {payload}: PayloadAction<EnabledStagePayload>) => {
+            getStage(state, payload).enabled = payload.enabled;
         },
         setInvert: (state, {payload}: PayloadAction<SetInvertPayload>) => {
             const env = getEnv(state, payload);
@@ -168,6 +158,8 @@ export const {
     setResetOnTrigger,
     setLoopMode,
     setMaxLoops,
+    toggleStageEnabled,
+    setStageEnabled,
 } = envelopesSlice.actions;
 export const selectEnvelope = (state: RootState) => state.envelopes;
 export const selectLevel = (state: RootState, envId: number, stageId: StageId) => state.envelopes.envs[envId].stages[stageId].level;

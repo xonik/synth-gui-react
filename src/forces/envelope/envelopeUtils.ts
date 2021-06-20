@@ -26,7 +26,7 @@ export const getDefaultEnvelope = (id: number): Envelope => {
     })
     stages.push({
         id: StageId.DECAY2,
-        enabled: true,
+        enabled: false,
         curve: Curve.LIN,
         level: 0.5,
         time: 0.001,
