@@ -1,4 +1,15 @@
 .panel{
+  float: left;
   stroke-width: 0.5;
   background: #3b3b3b;
+
+  // positioning div as overlay on top of display svg to be able to use
+  // normal tsx inside display.
+  &-main-display {
+    position: absolute;
+    top: 265px;
+    height: 382px;
+    width: 677px;
+    left: 1457px;
+  }
 }

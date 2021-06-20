@@ -23,6 +23,7 @@ import Route from './modules/Route';
 import KeyboardControls from './modules/KeyboardControls';
 import VoiceSelector from './modules/VoiceSelector';
 import midiConstants from '../midi/midiControllers'
+import Controller from '../controller/Controller'
 import './MainPanel.scss';
 
 /**
@@ -129,41 +130,46 @@ export default () => {
     }
 
     return (
-        <svg width="105cm" height="35cm" viewBox="0 0 1050 350" className="panel">
-            <DCO1 x={osc1Col} y={oscRow}/>
-            <DCO2 x={osc2Col} y={oscRow}/>
-            <VCO x={osc3Col} y={oscRow}/>
+        <>
+            <svg width="105cm" height="35cm" viewBox="0 0 1050 350" className="panel">
+                <DCO1 x={osc1Col} y={oscRow}/>
+                <DCO2 x={osc2Col} y={oscRow}/>
+                <VCO x={osc3Col} y={oscRow}/>
 
-            <Noise x={noiseCol} y={noiseRow}/>
-            <Ringmod x={ringModCol} y={noiseRow}/>
-            <Distortion x={fxCol} y={fxRow}/>
-            <BitCrusherPre x={fxCol + 135} y={fxRow}/>
+                <Noise x={noiseCol} y={noiseRow}/>
+                <Ringmod x={ringModCol} y={noiseRow}/>
+                <Distortion x={fxCol} y={fxRow}/>
+                <BitCrusherPre x={fxCol + 135} y={fxRow}/>
 
-            <LFO x={lfoCol} y={lfo1Row}/>
-            <PreFilterMixer x={sourceMixCol} y={sourceMixRow}/>
+                <LFO x={lfoCol} y={lfo1Row}/>
+                <PreFilterMixer x={sourceMixCol} y={sourceMixRow}/>
 
-            <Route x={routeCol} y={clockRow}/>
-            <Clock x={clockCol} y={clockRow}/>
-            <Arpeggiator x={arpCol} y={arpRow}/>
+                <Route x={routeCol} y={clockRow}/>
+                <Clock x={clockCol} y={clockRow}/>
+                <Arpeggiator x={arpCol} y={arpRow}/>
 
-            <VoiceSelector x={voiceSelCol} y={voiceSelRow}/>
-            <MainDisplay x={displayCol} y={displayRow}/>
-            <KeyboardControls x={keyCtrlCol} y={keyCtrlRow}/>
+                <VoiceSelector x={voiceSelCol} y={voiceSelRow}/>
+                <MainDisplay x={displayCol} y={displayRow}/>
+                <KeyboardControls x={keyCtrlCol} y={keyCtrlRow}/>
 
-            <LowPassFilter x={filterCol} y={82}/>
-            <StateVariableFilter x={filterCol} y={250}/>
-            <PostFilterMixer x={voiceMixCol} y={5}/>
+                <LowPassFilter x={filterCol} y={82}/>
+                <StateVariableFilter x={filterCol} y={250}/>
+                <PostFilterMixer x={voiceMixCol} y={5}/>
 
 
-            <Envelope x={envCol} y={5} label="Env 1 - filter" midiConfigs={midiConfigsEnv1} envId={0}/>
-            <Envelope x={envCol} y={75} label="Env 2 - amp" midiConfigs={midiConfigsEnv2} envId={1}/>
-            <Envelope x={envCol} y={145} label="Env 3 - N" showSelect={true} midiConfigs={midiConfigsEnv3} envId={2}/>
+                <Envelope x={envCol} y={5} label="Env 1 - filter" midiConfigs={midiConfigsEnv1} envId={0}/>
+                <Envelope x={envCol} y={75} label="Env 2 - amp" midiConfigs={midiConfigsEnv2} envId={1}/>
+                <Envelope x={envCol} y={145} label="Env 3 - N" showSelect={true} midiConfigs={midiConfigsEnv3} envId={2}/>
 
-            <DigitalFX x={outFx1Col} y={outputFxRow}/>
-            <Chorus x={outFx2Col} y={outputFxRow + 10}/>
-            <BitCrusher x={outFx2Col} y={outputFxRow + 40}/>
+                <DigitalFX x={outFx1Col} y={outputFxRow}/>
+                <Chorus x={outFx2Col} y={outputFxRow + 10}/>
+                <BitCrusher x={outFx2Col} y={outputFxRow + 40}/>
 
-            <OutputMixer x={outputMixerCol} y={outputMixerRow}/>
-        </svg>
+                <OutputMixer x={outputMixerCol} y={outputMixerRow}/>
+            </svg>
+            <div className="panel-main-display">
+                <Controller />
+            </div>
+        </>
     );
 }

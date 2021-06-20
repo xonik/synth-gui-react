@@ -1,8 +1,14 @@
-.keys{
+.keyboard {
+  float: left;
   stroke-width: 0.5;
-  fill: #eaeaea;
+  background: #3b3b3b;
 
-  &-octave-divider {
-    stroke: black;
+  &-keys {
+    stroke-width: 0.5;
+    fill: #eaeaea;
+
+    &-octave-divider {
+      stroke: black;
+    }
   }
 }

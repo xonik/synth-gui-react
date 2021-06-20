@@ -18,18 +18,18 @@ export default () => {
     const kbdY = panelHeight - keyboardHeight - bottomThickness;
 
     return (
-        <svg width="105cm" height="20cm" viewBox="0 0 1050 200" className="panel">
+        <svg width="105cm" height="20cm" viewBox="0 0 1050 200" className="keyboard">
             <rect
                 x={kbdX}
                 y={kbdY}
                 height={keyboardHeight}
                 width={keyboardWidth}
-                className="keys"
+                className="keyboard-keys"
             />
-            <line x1={kbdX + keyWidth * 7} y1={kbdY} x2={kbdX + keyWidth * 7} y2={kbdY + keyboardHeight} className="keys-octave-divider"/>
-            <line x1={kbdX + keyWidth * 14} y1={kbdY} x2={kbdX + keyWidth * 14} y2={kbdY + keyboardHeight} className="keys-octave-divider"/>
-            <line x1={kbdX + keyWidth * 21} y1={kbdY} x2={kbdX + keyWidth * 21} y2={kbdY + keyboardHeight} className="keys-octave-divider"/>
-            <line x1={kbdX + keyWidth * 28} y1={kbdY} x2={kbdX + keyWidth * 28} y2={kbdY + keyboardHeight} className="keys-octave-divider"/>
+            <line x1={kbdX + keyWidth * 7} y1={kbdY} x2={kbdX + keyWidth * 7} y2={kbdY + keyboardHeight} className="keyboard-keys-octave-divider"/>
+            <line x1={kbdX + keyWidth * 14} y1={kbdY} x2={kbdX + keyWidth * 14} y2={kbdY + keyboardHeight} className="keyboard-keys-octave-divider"/>
+            <line x1={kbdX + keyWidth * 21} y1={kbdY} x2={kbdX + keyWidth * 21} y2={kbdY + keyboardHeight} className="keyboard-keys-octave-divider"/>
+            <line x1={kbdX + keyWidth * 28} y1={kbdY} x2={kbdX + keyWidth * 28} y2={kbdY + keyboardHeight} className="keyboard-keys-octave-divider"/>
         </svg>
     );
 }

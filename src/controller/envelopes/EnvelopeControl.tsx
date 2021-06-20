@@ -23,7 +23,8 @@ const EnvelopeControl = ({ x, y, width, height }: Props) => {
     const stagesWidth = width - 2 * hPadding - stageActivatorWidth - internalHPadding;
     const stagesHeight = height - 2 * vPadding;
     const stagesX = hPadding + stageActivatorWidth + internalHPadding;
-    return <svg x={x} y={y}>
+
+    return <svg x={x} y={y} width={`${width/10}cm`} height={`${height/10}cm`} viewBox={`0 0 ${width} ${height}`}>
         <StageActivator env={env} x={hPadding} y={vPadding} width={stageActivatorWidth} height={stagesHeight}/>
         <Stages
             x={stagesX} y={vPadding}
