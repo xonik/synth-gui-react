@@ -35,7 +35,7 @@ export const getDefaultEnvelope = (id: number): Envelope => {
         id: StageId.SUSTAIN,
         enabled: true,
         curve: Curve.LIN,
-        level: 0.5,
+        level: -0.5,
         time: 0,
     })
     stages.push({

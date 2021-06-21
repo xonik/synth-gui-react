@@ -12,17 +12,21 @@ interface Props {
     y: number
     width: number
     height: number
-    vCenter: number
-    vHeight: number
+    graphCenter: number
+    graphHeight: number
     stage: Stage
     nextStage: Stage
+    isBipolar: boolean
 }
 
 const curveJointRadius = 0.6
-const mapToSvg = (point: Point) => ({ x: point.x, y: 1 - point.y })
+const mapToSvg = (point: Point, isBipolar: boolean) => ({
+    x: point.x,
+    y: isBipolar ? (1 - point.y) / 2 : 1 - point.y
+})
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
-const StageBlock = ({ x, y, width, height, vCenter, vHeight, stage, nextStage }: Props) => {
+const StageBlock = ({ x, y, width, height, graphCenter, graphHeight, stage, nextStage, isBipolar }: Props) => {
 
     const isLast = nextStage.id === StageId.STOPPED
 
@@ -31,8 +35,8 @@ const StageBlock = ({ x, y, width, height, vCenter, vHeight, stage, nextStage }:
     const startX = 0
     const endX = width
 
-    const startY = vCenter - vHeight * startLev
-    const endY = vCenter - vHeight * endLev
+    const startY = graphCenter - graphCenter * startLev
+    const endY = graphCenter - graphCenter * endLev
 
     const offset = startLev
     const scale = endLev - startLev
@@ -44,8 +48,8 @@ const StageBlock = ({ x, y, width, height, vCenter, vHeight, stage, nextStage }:
 
     const svgPoints = useMemo(
         () => points
-            .map((point, index) => ({ x: point.x, y: point.y * scale + offset }))
-            .map(mapToSvg),
+            .map((point) => ({ x: point.x, y: point.y * scale + offset }))
+            .map((point) => mapToSvg(point, isBipolar)),
         [points, offset, scale]
     )
 
@@ -53,7 +57,12 @@ const StageBlock = ({ x, y, width, height, vCenter, vHeight, stage, nextStage }:
         from: {animatedStartY: startY},
     }));
 
+    const [{ animatedEndY }, setEndY] = useSpring(() => ({
+        from: {animatedEndY: endY},
+    }));
+
     setStartY({animatedStartY: startY})
+    setEndY({animatedEndY: endY})
 
     return <svg x={x} y={y}>
         return <>
@@ -72,15 +81,15 @@ const StageBlock = ({ x, y, width, height, vCenter, vHeight, stage, nextStage }:
             x={0}
             y={0}
             width={width}
-            height={vHeight}
+            height={graphHeight}
             points={svgPoints}
             className={'stage-block-line'}
         />
         <animated.circle
             cx={startX} cy={animatedStartY} r={curveJointRadius}
             className={'stage-block-joint'}/>
-        {isLast && <circle
-          cx={endX} cy={endY} r={curveJointRadius}
+        {isLast && <animated.circle
+          cx={endX} cy={animatedEndY} r={curveJointRadius}
           className={'stage-block-joint'}/>
         }
     </>

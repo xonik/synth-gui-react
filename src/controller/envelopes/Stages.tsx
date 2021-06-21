@@ -20,16 +20,15 @@ const Stages = ({ x, y, width, height, env}: Props) => {
     const stageWidth = width / stageCount;
 
     const stageParamsHeight = 10;
-    const stageGraphHeight = height - stageParamsHeight - 10;
 
-    const vCenter = env.bipolar ? stageGraphHeight / 2 : stageGraphHeight;
-    const vHeight = env.bipolar ? stageGraphHeight / 2 : stageGraphHeight;
+    const graphHeight = height - stageParamsHeight - 10;
+    const graphCenter = env.bipolar ? graphHeight / 2 : graphHeight;
 
     return <svg x={x} y={y}>
         {
             env.bipolar && <line
-              x1={0} y1={vCenter}
-              x2={width} y2={vCenter}
+              x1={0} y1={graphCenter}
+              x2={width} y2={graphCenter}
               className={'stages-center-line'}
             />
         }
@@ -42,14 +41,15 @@ const Stages = ({ x, y, width, height, env}: Props) => {
                        y={0}
                        height={height}
                        width={stageWidth}
-                       vCenter={vCenter}
-                       vHeight={vHeight}
+                       graphCenter={graphCenter}
+                       graphHeight={graphHeight}
                        stage={stage}
                        nextStage={enabledStages[index+1]}
+                       isBipolar={env.bipolar}
                    />
                    <StageParams
                        x={index * stageWidth}
-                       y={stageGraphHeight + 10}
+                       y={graphHeight + 10}
                        width={stageWidth}
                        height={10}
                        stage={stage}
