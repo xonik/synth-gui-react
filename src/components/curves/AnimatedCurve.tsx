@@ -25,13 +25,6 @@ const AnimatedCurve = ({ x, y, width, height, points, className }: Props) => {
 
     setCurve({animatedPoints: pointsString})
 
-    if(height === 0){
-        return <line
-            x1={x} y1={y}
-            x2={x + width} y2={y}
-            className={classNames('curve', className)}
-        />
-    }
 
     // We use a viewBox of 0,0, 1,1 to make the svg unit size. We can then use width and height to scale it
     // without having to recalculate points.
