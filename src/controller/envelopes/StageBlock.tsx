@@ -31,8 +31,6 @@ const StageBlock = ({ x, y, width, graphCenter, height, stage, nextStage, isBipo
 
     const startLev = stage.level
     const endLev = nextStage.level
-    const startX = 0
-    const endX = width
 
     const startY = graphCenter - graphCenter * startLev
     const endY = graphCenter - graphCenter * endLev
@@ -49,38 +47,38 @@ const StageBlock = ({ x, y, width, graphCenter, height, stage, nextStage, isBipo
         () => points
             .map((point) => ({ x: point.x, y: point.y * scale + offset }))
             .map((point) => mapToSvg(point, isBipolar)),
-        [points, offset, scale]
+        [points, offset, scale, isBipolar]
     )
 
     const [{ animatedStartY }, setStartY] = useSpring(() => ({
-        from: {animatedStartY: startY},
-    }));
+        from: { animatedStartY: startY },
+    }))
 
     const [{ animatedEndY }, setEndY] = useSpring(() => ({
-        from: {animatedEndY: endY},
-    }));
+        from: { animatedEndY: endY },
+    }))
 
-    setStartY({animatedStartY: startY})
-    setEndY({animatedEndY: endY})
+    setStartY({ animatedStartY: startY })
+    setEndY({ animatedEndY: endY })
 
     return <svg x={x} y={y}>
-        return <>
-        <AnimatedCurve
-            x={0}
-            y={0}
-            width={width}
-            height={height}
-            points={svgPoints}
-            className={'stage-block-line'}
-        />
-        <animated.circle
-            cx={startX} cy={animatedStartY} r={curveJointRadius}
-            className={'stage-block-joint'}/>
-        {isLast && <animated.circle
-          cx={endX} cy={animatedEndY} r={curveJointRadius}
-          className={'stage-block-joint'}/>
-        }
-    </>
+        <>
+            <AnimatedCurve
+                x={0}
+                y={0}
+                width={width}
+                height={height}
+                points={svgPoints}
+                className={'stage-block-line'}
+            />
+            <animated.circle
+                cx={0} cy={animatedStartY} r={curveJointRadius}
+                className={'stage-block-joint'}/>
+            {isLast && <animated.circle
+              cx={width} cy={animatedEndY} r={curveJointRadius}
+              className={'stage-block-joint'}/>
+            }
+        </>
     </svg>
 }
 
