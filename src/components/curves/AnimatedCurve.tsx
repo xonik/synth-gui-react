@@ -14,7 +14,9 @@ interface Props {
     className?: string
 }
 
-// Draw the desired curve between from and to. NB: SVG has 0,0 in upper left corner.
+// Draw the desired curve between from and to.
+// NB: SVG has 0,0 in upper left corner.
+// NB: points must be between 0 and 1 in the y range.
 const AnimatedCurve = ({ x, y, width, height, points, className }: Props) => {
 
     const pointsString = useMemo(() => getPointsString(points), [points]);

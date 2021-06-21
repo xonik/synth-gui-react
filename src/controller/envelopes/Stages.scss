@@ -3,4 +3,10 @@
     stroke-width: 0.3;
     stroke: gray;
   }
+
+  &-divider {
+    stroke-width: 0.3;
+    stroke-dasharray: 1 1;
+    stroke: gray;
+  }
 }
