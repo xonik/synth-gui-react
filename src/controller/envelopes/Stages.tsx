@@ -1,5 +1,5 @@
 import React from 'react'
-import { StageId, Envelope } from '../../forces/envelope/types'
+import { StageId, Envelope, Stage } from '../../forces/envelope/types'
 import StageBlock from './StageBlock'
 import StageParams from './StageParams'
 import './Stages.scss'
@@ -12,10 +12,21 @@ interface Props {
     height: number
 }
 
+const getNextEnabled = (stages: Stage[], currentId: StageId) => {
+    for (let i = currentId + 1; i < stages.length; i++) {
+        const stage = stages[i]
+        if (stage.enabled) {
+            return stage
+        }
+    }
+    return stages[StageId.STOPPED]
+}
+
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
 const Stages = ({ x, y, width, height, env }: Props) => {
 
-    const enabledStages = env.stages.filter((stage) => stage.enabled)
+    const stages = env.stages
+    const enabledStages = stages.filter((stage) => stage.enabled)
     const stageCount = enabledStages.length - 1 // -1 because stopped is hidden.
     const stageWidth = width / stageCount
 
@@ -23,6 +34,8 @@ const Stages = ({ x, y, width, height, env }: Props) => {
 
     const graphHeight = height - stageParamsHeight - 10
     const graphCenter = env.bipolar ? graphHeight / 2 : graphHeight
+
+    let startX = 0
 
     return <svg x={x} y={y}>
         {
@@ -33,33 +46,36 @@ const Stages = ({ x, y, width, height, env }: Props) => {
             />
         }
         {
-            enabledStages.map((stage, index) => {
+            stages.map((stage, index) => {
                 if (stage.id === StageId.STOPPED) {
                     return null
                 }
-                const startX = index * stageWidth
-                const nextStage = enabledStages[index + 1]
-                const isLast = nextStage.id === StageId.STOPPED
-                return <>
-                    <StageParams
+                const nextStage = getNextEnabled(stages, stage.id)
+                const isLast = index === stages.length - 2
+                const enabled = stage.enabled
+                const content = <>
+                    {enabled &&
+                    <>
+                      <StageParams
                         x={startX}
                         y={graphHeight + 10}
                         width={stageWidth}
                         height={10}
                         stage={stage}
-                    />
-                    <line
+                      />
+                      <line
                         x1={startX} y1={0}
                         x2={startX} y2={height}
                         className={'stages-divider'}
-                    />
+                      />
+                    </>}
                     {isLast && <line
                       x1={startX + stageWidth} y1={0}
                       x2={startX + stageWidth} y2={height}
                       className={'stages-divider'}
                     />}
                     <StageBlock
-                        x={index * stageWidth}
+                        x={startX}
                         y={0}
                         width={stageWidth}
                         graphCenter={graphCenter}
@@ -69,9 +85,13 @@ const Stages = ({ x, y, width, height, env }: Props) => {
                         isBipolar={env.bipolar}
                     />
                 </>
+                if (enabled) {
+                    startX += stageWidth
+                }
+                return content
             })
         }
-    </svg>;
+    </svg>
 }
 
-export default Stages;
+export default Stages

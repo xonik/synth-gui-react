@@ -1,4 +1,7 @@
 .stage-block {
+  &-disabled {
+    visibility: hidden;
+  }
   &-line {
     stroke-width: 3;
   }

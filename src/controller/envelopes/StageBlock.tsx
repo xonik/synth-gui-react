@@ -5,6 +5,7 @@ import { getPoints } from './utils'
 import { curveFuncs } from '../../components/curves/curveCalculator'
 import { Point } from '../../utils/types'
 import { useSpring, animated } from 'react-spring'
+import classNames from 'classnames'
 import './StageBlock.scss'
 
 interface Props {
@@ -29,7 +30,8 @@ const StageBlock = ({ x, y, width, graphCenter, height, stage, nextStage, isBipo
 
     const isLast = nextStage.id === StageId.STOPPED
 
-    const startLev = stage.level
+    const startLev = stage.enabled ? stage.level : nextStage.level;
+
     const endLev = nextStage.level
 
     const startY = graphCenter - graphCenter * startLev
@@ -61,7 +63,7 @@ const StageBlock = ({ x, y, width, graphCenter, height, stage, nextStage, isBipo
     setStartY({ animatedStartY: startY })
     setEndY({ animatedEndY: endY })
 
-    return <svg x={x} y={y}>
+    return <svg x={x} y={y} className={classNames('stage-block', {'stage-block-disabled': !stage.enabled})}>
         <>
             <AnimatedCurve
                 x={0}
