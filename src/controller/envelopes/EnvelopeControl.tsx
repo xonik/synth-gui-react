@@ -11,7 +11,6 @@ import './EnvelopeControl.scss'
 const EnvelopeControl = () => {
 
     const env = useAppSelector(selectEnvelope).envs[0]
-
     return <div className="env-ctrl">
         <StageActivator env={env}/>
         <div>
