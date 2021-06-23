@@ -1,18 +1,15 @@
 .ctrl-button {
-  stroke-width: 0.5;
-  stroke: #444;
-  fill: #0001;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 0.1em solid #444;
+  padding: 0.25rem;
+  color: #666;
 
   &--active {
-    fill: #ddd;
+    background-color: #ddd;
+    color: #333;
   }
-
-  &-label {
-    fill: #666;
-    font-size: 4px;
-    &--active {
-      fill: #333;
-    }
-  }
-
 }

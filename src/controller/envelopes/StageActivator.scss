@@ -1,0 +1,12 @@
+.stage-activator{
+  display: flex;
+  align-items: stretch;
+  width: 4rem;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .ctrl-button {
+    height: 100%;
+    margin-bottom: 0.25rem;
+  }
+}

@@ -113,9 +113,7 @@ export const envelopesSlice = createSlice({
         setMaxLoops: (state, {payload}: PayloadAction<NumericPayload>) => {
             getEnv(state, payload).maxLoops = payload.value
         },
-        toggleStageEnabled: (state, {payload}: PayloadAction<ToggleStageActivePayload>) => {
-            // TODO: Make action only, consumed by api
-        },
+
         setStageEnabled: (state, {payload}: PayloadAction<EnabledStagePayload>) => {
             getStage(state, payload).enabled = payload.enabled;
         },
@@ -128,7 +126,10 @@ export const envelopesSlice = createSlice({
             env.stages[StageId.ATTACK].level = resetLevel;
             env.stages[StageId.DECAY1].level = payload.invert ? 0 : 1;
             env.stages[StageId.STOPPED].level = resetLevel;
-        }
+        },
+        toggleStageEnabled: (state, {payload}: PayloadAction<ToggleStageActivePayload>) => {
+            // TODO: Make action only, consumed by api
+        },
     }
 })
 

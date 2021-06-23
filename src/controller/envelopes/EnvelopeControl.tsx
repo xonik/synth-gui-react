@@ -3,6 +3,8 @@ import Stages from './Stages'
 import { useAppSelector } from '../../forces/hooks'
 import { selectEnvelope } from '../../forces/envelope/envelopesReducer'
 import StageActivator from './StageActivator'
+import EnvOptions from './EnvOptions'
+import './EnvelopeControl.scss'
 
 interface Props {
     x: number
@@ -11,26 +13,25 @@ interface Props {
     height: number
 }
 
-const hPadding = 5
 const vPadding = 5
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
 const EnvelopeControl = ({ x, y, width, height }: Props) => {
 
     const env = useAppSelector(selectEnvelope).envs[0]
-    const stageActivatorWidth = 25;
-    const internalHPadding = hPadding;
-    const stagesWidth = width - 2 * hPadding - stageActivatorWidth - internalHPadding;
+    const stagesWidth = 110;
     const stagesHeight = height - 2 * vPadding;
-    const stagesX = hPadding + stageActivatorWidth + internalHPadding;
 
-    return <svg x={x} y={y} width={`${width/10}cm`} height={`${height/10}cm`} viewBox={`0 0 ${width} ${height}`}>
-        <StageActivator env={env} x={hPadding} y={vPadding} width={stageActivatorWidth} height={stagesHeight}/>
-        <Stages
-            x={stagesX} y={vPadding}
-            height={stagesHeight} width={stagesWidth}
-            env={env}/>
-    </svg>
+    return <div className="env-ctrl">
+        <StageActivator env={env}/>
+        <svg x={x} y={y} width={`${stagesWidth/10}cm`} height={`${stagesHeight/10}cm`} viewBox={`0 0 ${stagesWidth} ${stagesHeight}`} className="env-ctrl-stages">
+            <Stages
+                x={0} y={0}
+                height={stagesHeight} width={stagesWidth}
+                env={env}/>
+        </svg>
+        <EnvOptions env={env}/>
+    </div>
 }
 
 export default EnvelopeControl
