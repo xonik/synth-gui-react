@@ -1,7 +1,8 @@
 .stage-params {
-  fill: #333;
-  &-time {
-    fill: white;
-    font-size: 4px;
+  display: flex;
+  background-color: #333;
+  color: white;
+  &-item {
+    padding: 5px;
   }
 }

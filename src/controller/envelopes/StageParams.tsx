@@ -1,13 +1,9 @@
 import React from 'react'
-import { Stage, StageId } from '../../forces/envelope/types'
+import { Envelope } from '../../forces/envelope/types'
 import './StageParams.scss'
 
 interface Props {
-    stage: Stage
-    x: number
-    y: number
-    width: number
-    height: number
+    env: Envelope
 }
 
 const formatTime = (time: number) => {
@@ -23,17 +19,14 @@ const formatTime = (time: number) => {
 }
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
-const StageParams = ({ x, y, width, height, stage }: Props) => {
-    return <svg x={x} y={y} className="stage-params">
-        <rect width={width} height={height} className="stage-params"/>
-        {stage.id !== StageId.SUSTAIN && <text
-            x={width / 2}
-            y={5}
-            className="stage-params-time"
-            textAnchor="middle"
-            alignmentBaseline="middle"
-        >{formatTime(stage.time)}</text>}
-    </svg>
+const StageParams = ({ env }: Props) => {
+    return <div className="stage-params">
+        {env.stages.filter((stage) => stage.enabled).map((stage) => {
+            return <div className="stage-params-item">
+                {formatTime(stage.time)}
+            </div>
+        })}
+    </div>
 }
 
 export default StageParams

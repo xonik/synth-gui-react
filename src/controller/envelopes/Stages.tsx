@@ -1,15 +1,10 @@
 import React from 'react'
 import { StageId, Envelope, Stage } from '../../forces/envelope/types'
 import StageBlock from './StageBlock'
-import StageParams from './StageParams'
 import './Stages.scss'
 
 interface Props {
     env: Envelope
-    x: number
-    y: number
-    width: number
-    height: number
 }
 
 const getNextEnabled = (stages: Stage[], currentId: StageId) => {
@@ -23,25 +18,21 @@ const getNextEnabled = (stages: Stage[], currentId: StageId) => {
 }
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
-const Stages = ({ x, y, width, height, env }: Props) => {
+const Stages = ({ env }: Props) => {
 
     const stages = env.stages
     const enabledStages = stages.filter((stage) => stage.enabled)
     const stageCount = enabledStages.length - 1 // -1 because stopped is hidden.
-    const stageWidth = width / stageCount
-
-    const stageParamsHeight = 10
-
-    const graphHeight = height - stageParamsHeight - 10
-    const graphCenter = env.bipolar ? graphHeight / 2 : graphHeight
+    const stageWidth = 1 / stageCount
+    const graphCenter = env.bipolar ? 1 / 2 : 1
 
     let startX = 0
 
-    return <svg x={x} y={y}>
+    return <svg x={0} y={0}>
         {
             env.bipolar && <line
               x1={0} y1={graphCenter}
-              x2={width} y2={graphCenter}
+              x2={1} y2={graphCenter}
               className={'stages-center-line'}
             />
         }
@@ -56,30 +47,22 @@ const Stages = ({ x, y, width, height, env }: Props) => {
                 const content = <>
                     {enabled &&
                     <>
-                      <StageParams
-                        x={startX}
-                        y={graphHeight + 10}
-                        width={stageWidth}
-                        height={10}
-                        stage={stage}
-                      />
                       <line
                         x1={startX} y1={0}
-                        x2={startX} y2={height}
+                        x2={startX} y2={1}
                         className={'stages-divider'}
                       />
                     </>}
                     {isLast && <line
                       x1={startX + stageWidth} y1={0}
-                      x2={startX + stageWidth} y2={height}
+                      x2={startX + stageWidth} y2={1}
                       className={'stages-divider'}
                     />}
                     <StageBlock
                         x={startX}
                         y={0}
                         width={stageWidth}
-                        graphCenter={graphCenter}
-                        height={graphHeight}
+                        height={1}
                         stage={stage}
                         nextStage={nextStage}
                         isBipolar={env.bipolar}

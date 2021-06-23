@@ -1,12 +1,9 @@
 .stages {
-  &-center-line {
-    stroke-width: 0.3;
-    stroke: gray;
-  }
-
+  &-center-line,
   &-divider {
-    stroke-width: 0.3;
-    stroke-dasharray: 1 1;
+    stroke-width: 1;
+    stroke-dasharray: 3 3;
     stroke: gray;
+    vector-effect: non-scaling-stroke;
   }
 }

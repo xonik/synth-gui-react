@@ -33,7 +33,7 @@ const AnimatedCurve = ({ x, y, width, height, points, className }: Props) => {
 
     // how to add image from Andromeda A6 as background:
     //<image x={0} y={0} height={1} width={1} xlinkHref={'./RisingExpo3.png'} preserveAspectRatio="none"/>
-    return <svg x={x} y={y} viewBox="0, 0, 1 1" preserveAspectRatio="none" width={width} height={height}>
+    return <svg x={x} y={y} viewBox="0 0 1 1" preserveAspectRatio="none" width={width} height={height}>
         <animated.polyline
             className={classNames('curve', className)}
             points={animatedPoints}

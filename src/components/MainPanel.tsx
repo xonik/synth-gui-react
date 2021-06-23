@@ -187,7 +187,7 @@ export default () => {
                 width: dispRect.width,
                 height: dispRect.height,
             }}>
-              <Controller width={dispRect.width} height={dispRect.height}/>
+              <Controller />
             </div>}
         </>
     )
