@@ -1,7 +1,8 @@
 import React from 'react'
 import { Envelope, StageId } from '../../forces/envelope/types'
-import './StageParams.scss'
+import './StageNames.scss'
 import classNames from 'classnames'
+import { stageNames } from './utils'
 
 interface Props {
     className: string
@@ -22,10 +23,10 @@ const formatTime = (time: number) => {
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
 const StageParams = ({ env, className }: Props) => {
-    return <div className={classNames('stage-params', className)}>
+    return <div className={classNames('stage-names', className)}>
         {env.stages.filter((stage) => stage.enabled && stage.id !== StageId.STOPPED).map((stage) => {
-            return <div className="stage-params-item">
-                {formatTime(stage.time)}
+            return <div className="stage-names-item">
+                {stageNames[stage.id]}
             </div>
         })}
     </div>

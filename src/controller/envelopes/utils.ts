@@ -23,4 +23,5 @@ export const stageNames = {
     [StageId.SUSTAIN]: 'Sustain',
     [StageId.RELEASE1]: 'Release 1',
     [StageId.RELEASE2]: 'Release 2',
+    [StageId.STOPPED]: 'Stopped',
 }

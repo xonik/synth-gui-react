@@ -2,9 +2,10 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  width: 6em;
 
   .ctrl-button {
-    height: 2.5rem;
-    margin-bottom: 0.25rem;
+    height: 2.5em;
+    margin-bottom: 0.25em;
   }
 }

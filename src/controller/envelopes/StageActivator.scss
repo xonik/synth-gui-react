@@ -3,9 +3,10 @@
   align-items: stretch;
   flex-direction: column;
   justify-content: space-between;
+  width:6em;
 
   .ctrl-button {
     height: 100%;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.25em;
   }
 }
