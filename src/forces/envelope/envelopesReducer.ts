@@ -25,6 +25,10 @@ type StagePayload = {
     stage: StageId;
 }
 
+type EnvPayload = {
+    env: number;
+}
+
 type NumericPayload = StagePayload & {
     value: number;
 }
@@ -44,21 +48,19 @@ type CurvePayload = StagePayload & {
     curve: number;
 }
 
-type ReleaseModePayload = StagePayload & {
+type ReleaseModePayload = EnvPayload & {
     releaseMode: ReleaseMode;
 }
 
-type ResetOnTriggerPayload = StagePayload & {
+type ResetOnTriggerPayload = EnvPayload & {
     resetOnTrigger: boolean;
 }
 
-type LoopModePayload = StagePayload & {
+type LoopModePayload = EnvPayload & {
     loopMode: LoopMode;
 }
 
-type ToggleStageActivePayload = StagePayload
-
-type SetInvertPayload = StagePayload & {
+type SetInvertPayload = EnvPayload & {
     invert: boolean;
 }
 
@@ -77,7 +79,7 @@ const getStage = (state: Draft<any>, payload: StagePayload): Draft<Stage> => {
     return state.envs[payload.env].stages[payload.stage];
 }
 
-const getEnv = (state: Draft<any>, payload: StagePayload): Draft<Envelope> => {
+const getEnv = (state: Draft<any>, payload: StagePayload | EnvPayload): Draft<Envelope> => {
     return state.envs[payload.env];
 }
 
@@ -127,9 +129,13 @@ export const envelopesSlice = createSlice({
             env.stages[StageId.DECAY1].level = payload.invert ? 0 : 1;
             env.stages[StageId.STOPPED].level = resetLevel;
         },
-        toggleStageEnabled: (state, {payload}: PayloadAction<ToggleStageActivePayload>) => {
-            // TODO: Make action only, consumed by api
-        },
+
+        // actions ony consumed by api
+        toggleStageEnabled: (state, {payload}: PayloadAction<StagePayload>) => {},
+        toggleInvert: (state, {payload}: PayloadAction<EnvPayload>) => {},
+        toggleRetrigger: (state, {payload}: PayloadAction<EnvPayload>) => {},
+        toggleReleaseMode: (state, {payload}: PayloadAction<EnvPayload>) => {},
+        toggleLoopMode: (state, {payload}: PayloadAction<EnvPayload>) => {},
     }
 })
 
@@ -142,11 +148,20 @@ export const {
     setResetOnTrigger,
     setLoopMode,
     setMaxLoops,
-    toggleStageEnabled,
     setStageEnabled,
+    setInvert,
+    toggleStageEnabled,
+    toggleInvert,
+    toggleRetrigger,
+    toggleReleaseMode,
+    toggleLoopMode,
 } = envelopesSlice.actions;
 export const selectEnvelope = (state: RootState) => state.envelopes;
 export const selectLevel = (state: RootState, envId: number, stageId: StageId) => state.envelopes.envs[envId].stages[stageId].level;
 export const selectTime = (state: RootState, envId: number, stageId: StageId) => state.envelopes.envs[envId].stages[stageId].time;
+export const selectInvert = (envId: number) => (state: RootState) => state.envelopes.envs[envId].invert;
+export const selectRetrigger = (envId: number) => (state: RootState) => state.envelopes.envs[envId].resetOnTrigger;
+export const selectReleaseMode = (envId: number) => (state: RootState) => state.envelopes.envs[envId].releaseMode;
+export const selectLoopMode = (envId: number) => (state: RootState) => state.envelopes.envs[envId].loopMode;
 
 export default envelopesSlice.reducer;

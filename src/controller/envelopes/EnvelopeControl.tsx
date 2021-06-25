@@ -5,15 +5,15 @@ import { selectEnvelope } from '../../forces/envelope/envelopesReducer'
 import StageActivator from './StageActivator'
 import EnvOptions from './EnvOptions'
 import StageParams from './StageParams'
-import './EnvelopeControl.scss'
 import StageNames from './StageNames'
+import './EnvelopeControl.scss'
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
 const EnvelopeControl = () => {
 
     const env = useAppSelector(selectEnvelope).envs[0]
     return <div className="env-ctrl">
-        <StageActivator env={env}/>
+        <EnvOptions env={env}/>
         <div className="env-ctrl-stages">
             <StageNames env={env} className="env-ctrl-stage-names"/>
             <div className="env-ctrl-graph">
@@ -23,7 +23,8 @@ const EnvelopeControl = () => {
             </div>
             <StageParams env={env} className="env-ctrl-stage-params"/>
         </div>
-        <EnvOptions env={env}/>
+        <StageActivator env={env}/>
+
     </div>
 }
 

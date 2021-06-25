@@ -1,4 +1,16 @@
-import { selectEnvelope, setDualLevels, setLevel, setTime, setStageEnabled } from '../envelope/envelopesReducer'
+import {
+    selectEnvelope,
+    setDualLevels,
+    setLevel,
+    setTime,
+    setStageEnabled,
+    toggleRetrigger,
+    toggleReleaseMode,
+    toggleLoopMode,
+    setInvert,
+    setResetOnTrigger,
+    setReleaseMode, setLoopMode
+} from '../envelope/envelopesReducer'
 import { Envelope, StageId } from '../envelope/types'
 import { AnyAction, Dispatch, } from '@reduxjs/toolkit'
 import { store } from '../store'
@@ -74,6 +86,24 @@ export const envApi = {
         if(stageId === StageId.RELEASE1 && !enabled){
             dispatch(setLevel({env: envId, stage: StageId.RELEASE2, value: env.stages[StageId.SUSTAIN].level}));
         }
+    },
+    toggleInvert: (envId: number) => {
+        const env = selectEnvelope(store.getState()).envs[envId];
+        dispatch(setInvert({env: envId, invert: !env.invert}))
+    },
+    toggleRetrigger: (envId: number) => {
+        const env = selectEnvelope(store.getState()).envs[envId];
+        dispatch(setResetOnTrigger({env: envId, resetOnTrigger: !env.resetOnTrigger}))
+    },
+    toggleReleaseMode: (envId: number) => {
+        const env = selectEnvelope(store.getState()).envs[envId];
+        const releaseMode = (env.releaseMode + 1) % 3;
+        dispatch(setReleaseMode({env: envId, releaseMode}))
+    },
+    toggleLoopMode: (envId: number) => {
+        const env = selectEnvelope(store.getState()).envs[envId];
+        const loopMode = (env.loopMode + 1) % 4;
+        dispatch(setLoopMode({env: envId, loopMode}))
     }
 
 }

@@ -3,7 +3,7 @@ import { increment } from '../controller/controllerReducer'
 import { ControllerId, envControllerIds } from './controllers'
 import { envApi } from './synthcoreApi'
 import { StageId } from '../envelope/types'
-import { toggleStageEnabled } from '../envelope/envelopesReducer'
+import { toggleInvert, toggleLoopMode, toggleReleaseMode, toggleRetrigger, toggleStageEnabled } from '../envelope/envelopesReducer'
 
 const envApiMapper = {
     [ControllerId.ENV_DELAY]: (ctrlIndex: number, value: number) => envApi.setStageTime(ctrlIndex, StageId.DELAY, value),
@@ -26,9 +26,16 @@ export const synthcoreMiddleware: Middleware<{},any> = storeAPI => next => actio
         if(envControllerIds.includes(action.payload.ctrlId)){
             envApiMapper[action.payload.ctrlId](ctrlIndex, action.payload.value);
         }
-    }
-    if(toggleStageEnabled.match(action)){
+    } else if(toggleStageEnabled.match(action)){
         envApi.toggleStageEnabled(action.payload.env, action.payload.stage);
+    } else if(toggleInvert.match(action)){
+        envApi.toggleInvert(action.payload.env);
+    } else if(toggleRetrigger.match(action)){
+        envApi.toggleRetrigger(action.payload.env);
+    } else if(toggleReleaseMode.match(action)){
+        envApi.toggleReleaseMode(action.payload.env);
+    } else if(toggleLoopMode.match(action)){
+        envApi.toggleLoopMode(action.payload.env);
     }
     return next(action);
 }

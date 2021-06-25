@@ -4,6 +4,16 @@
   justify-content: flex-start;
   width: 6em;
 
+  &__number {
+    background-color: #333;
+    color: white;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 0.33em;
+    margin-bottom: 0.5em;
+  }
+
   .ctrl-button {
     height: 2.5em;
     margin-bottom: 0.25em;
