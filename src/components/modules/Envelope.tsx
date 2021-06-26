@@ -5,10 +5,10 @@ import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import Header from '../misc/Header'
 import { MidiConfig } from '../../midi/midiControllers'
-import { RootState } from '../../forces/store'
-import { selectLevel } from '../../forces/envelope/envelopesReducer'
+import { selectEnvelope, selectInvert, selectLevel } from '../../forces/envelope/envelopesReducer'
 import { StageId } from '../../forces/envelope/types'
 import { ControllerId } from '../../forces/synthcore/controllers'
+import { useAppSelector } from '../../forces/hooks'
 
 type MidiConfigs = {
     a: MidiConfig;
@@ -41,9 +41,10 @@ const Envelope = ({ x, y, label, showSelect = false, midiConfigs, envId }: Props
     const potY = y + 45
     const potDistance = 40
 
-    const selectSLevel = useCallback((state: RootState) => selectLevel(state, envId, StageId.SUSTAIN), [envId])
-    const selectD2Level = useCallback((state: RootState) => selectLevel(state, envId, StageId.DECAY2), [envId])
-    const selectR2Level = useCallback((state: RootState) => selectLevel(state, envId, StageId.RELEASE2), [envId])
+    const env = useAppSelector(selectEnvelope(envId));
+    const levelS = useAppSelector(selectLevel(envId, StageId.SUSTAIN))
+    const levelD2 = useAppSelector(selectLevel(envId, StageId.DECAY2))
+    const levelR2 = useAppSelector(selectLevel(envId, StageId.RELEASE2))
 
 
     return <>
@@ -67,7 +68,8 @@ const Envelope = ({ x, y, label, showSelect = false, midiConfigs, envId }: Props
                      midiConfig={midiConfigs.s}
                      ctrlId={ControllerId.ENV_SUSTAIN}
                      ctrlIndex={envId}
-                     selectPosition={selectSLevel}
+                     potMode={env.bipolar ? 'pan' : 'normal'}
+                     storePosition={env.bipolar ? (levelS + 1) / 2 : levelS }
         />
         <RotaryPot17 ledMode="single" label="Release 1" x={firstPotX + potDistance * 4} y={potY} position={0.7}
                      midiConfig={midiConfigs.r1}
@@ -91,15 +93,21 @@ const Envelope = ({ x, y, label, showSelect = false, midiConfigs, envId }: Props
                      midiConfig={midiConfigs.d1_lev}
                      ctrlId={ControllerId.ENV_D2_LEVEL}
                      ctrlIndex={envId}
-                     selectPosition={selectD2Level}
+                     potMode={env.bipolar ? 'pan' : 'normal'}
+                     storePosition={env.bipolar ? (levelD2 + 1) / 2 : levelD2}
         />
-        <RoundLedPushButton8 label="Invert" x={firstPotX + potDistance * 2.5} y={topRowY} labelPosition="bottom" midiConfig={midiConfigs.invert}/>
+        <RoundLedPushButton8
+            label="Invert" x={firstPotX + potDistance * 2.5} y={topRowY}
+            labelPosition="bottom"
+            midiConfig={midiConfigs.invert}
+        />
         <RoundLedPushButton8 label="Loop" x={firstPotX + potDistance * 3.5} y={topRowY} labelPosition="bottom" midiConfig={midiConfigs.loop}/>
         <RotaryPot10 ledMode="multi" label="R2 Level" x={firstPotX + potDistance * 4.5} y={topRowY} position={0.4}
                      midiConfig={midiConfigs.r1_lev}
                      ctrlId={ControllerId.ENV_R2_LEVEL}
                      ctrlIndex={envId}
-                     selectPosition={selectR2Level}
+                     potMode={env.bipolar ? 'pan' : 'normal'}
+                     storePosition={env.bipolar ? (levelR2 + 1) / 2 : levelR2}
         />
         <RoundPushButton8 label="Trigger" x={firstPotX + potDistance * 5.5} y={topRowY} labelPosition="bottom" midiConfig={midiConfigs.trigger}/>
     </>

@@ -4,11 +4,10 @@ import arc from '../../utils/svg/arc'
 import RotaryPotBase, { Point } from './RotaryPotBase'
 import { MidiConfig } from '../../midi/midiControllers'
 import { sendCC, subscribe, unsubscribe } from '../../midi/midibus'
-import './RotaryPot.scss'
-import { RootState } from '../../forces/store'
-import { useAppDispatch, useAppSelector } from '../../forces/hooks'
+import { useAppDispatch } from '../../forces/hooks'
 import { ControllerId } from '../../forces/synthcore/controllers'
 import { increment } from '../../forces/controller/controllerReducer'
+import './RotaryPot.scss'
 
 export type LedMode = 'single' | 'multi';
 export type PotMode = 'normal' | 'pan' | 'spread';
@@ -23,7 +22,7 @@ export interface Props {
     position: number;
     midiConfig?: MidiConfig;
     defaultValue?: number;
-    selectPosition?: (state: RootState) => number;
+    storePosition?: number;
     updateStorePosition?: (position: number) => any;
     ctrlId?: ControllerId;
     ctrlIndex?: number
@@ -117,7 +116,7 @@ export default (props: Props & Config) => {
 
     // Position should be in the range 0-1 in all modes but pan. In pan the range is -0.5 - 0.5
     const { x, y, ledMode = 'single', potMode = 'normal', label, midiConfig, defaultValue,
-        selectPosition, ctrlId, updateStorePosition, ctrlIndex
+        storePosition, ctrlId, updateStorePosition, ctrlIndex
     } = props
 
     const dispatch = useAppDispatch()
@@ -146,8 +145,7 @@ export default (props: Props & Config) => {
     // For scaling, use viewBox on the outer svg and unitless the rest of the way
 
     // positive pointer
-    const storePosition = selectPosition ? useAppSelector(selectPosition) : position
-    const ledPosition = getLedPos(centerLed, ledCount, potMode, storePosition)
+    const ledPosition = getLedPos(centerLed, ledCount, potMode, storePosition || position)
 
     // negative pointer used for spread
     const negLedPosition = centerLed - (ledPosition - centerLed)

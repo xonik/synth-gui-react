@@ -1,5 +1,5 @@
 import {
-    selectEnvelope,
+    selectEnvelopes,
     setDualLevels,
     setLevel,
     setTime,
@@ -44,14 +44,15 @@ const cannotDisableStage = (stage: StageId) => stage === StageId.ATTACK || stage
 export const envApi = {
 
     setStageLevel: (envId: number, stageId: StageId, requestedValue: number) => {
-        const env = selectEnvelope(store.getState()).envs[envId];
+        const env = selectEnvelopes(store.getState()).envs[envId];
         const r1enabled = env.stages[StageId.RELEASE1].enabled;
         if(
             stageId === StageId.DECAY2 ||
             stageId === StageId.SUSTAIN ||
             (stageId === StageId.RELEASE2 && r1enabled)
         ){
-            const value = getBounded(requestedValue);
+            let value = getBounded(requestedValue);
+            if(env.bipolar) value = value * 2 -1;
 
             // sustain level is not used directly. Instead it replaces r1 or r2 level depending on if
             // r1 is enabled or not.
@@ -78,7 +79,7 @@ export const envApi = {
             return;
         }
 
-        const env = selectEnvelope(store.getState()).envs[envId];
+        const env = selectEnvelopes(store.getState()).envs[envId];
         const stage = env.stages[stageId];
         const enabled = !stage.enabled;
         dispatch(setStageEnabled({env:envId, stage: stageId, enabled}))
@@ -88,20 +89,20 @@ export const envApi = {
         }
     },
     toggleInvert: (envId: number) => {
-        const env = selectEnvelope(store.getState()).envs[envId];
+        const env = selectEnvelopes(store.getState()).envs[envId];
         dispatch(setInvert({env: envId, invert: !env.invert}))
     },
     toggleRetrigger: (envId: number) => {
-        const env = selectEnvelope(store.getState()).envs[envId];
+        const env = selectEnvelopes(store.getState()).envs[envId];
         dispatch(setResetOnTrigger({env: envId, resetOnTrigger: !env.resetOnTrigger}))
     },
     toggleReleaseMode: (envId: number) => {
-        const env = selectEnvelope(store.getState()).envs[envId];
+        const env = selectEnvelopes(store.getState()).envs[envId];
         const releaseMode = (env.releaseMode + 1) % 3;
         dispatch(setReleaseMode({env: envId, releaseMode}))
     },
     toggleLoopMode: (envId: number) => {
-        const env = selectEnvelope(store.getState()).envs[envId];
+        const env = selectEnvelopes(store.getState()).envs[envId];
         const loopMode = (env.loopMode + 1) % 4;
         dispatch(setLoopMode({env: envId, loopMode}))
     }
