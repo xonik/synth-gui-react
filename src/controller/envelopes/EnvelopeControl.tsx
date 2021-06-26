@@ -15,13 +15,13 @@ const EnvelopeControl = () => {
     return <div className="env-ctrl">
         <EnvOptions env={env}/>
         <div className="env-ctrl-stages">
-            <StageNames env={env} className="env-ctrl-stage-names"/>
+            <StageNames env={env}/>
             <div className="env-ctrl-graph">
                 <svg viewBox={`0 0 1 1`} preserveAspectRatio="none" className="env-ctrl-graph-svg">
                     <Stages env={env}/>
                 </svg>
             </div>
-            <StageParams env={env} className="env-ctrl-stage-params"/>
+            <StageParams env={env}/>
         </div>
         <StageActivator env={env}/>
 

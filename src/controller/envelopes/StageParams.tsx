@@ -1,31 +1,37 @@
 import React from 'react'
-import { Envelope, StageId } from '../../forces/envelope/types'
+import { Envelope, Stage, StageId } from '../../forces/envelope/types'
 import './StageParams.scss'
 import classNames from 'classnames'
 
 interface Props {
-    className: string
+    className?: string
     env: Envelope
 }
 
 const formatTime = (time: number) => {
-    const timeMillis = Math.floor(65534 * time) + 1;
-    if(timeMillis < 500){
-        return `${timeMillis}ms`;
-    } else if(timeMillis < 20000) {
-        return `${Math.floor(timeMillis / 10) / 100}s`;
+    const timeMillis = Math.floor(65534 * time) + 1
+    if (timeMillis < 500) {
+        return `${timeMillis}ms`
+    } else if (timeMillis < 20000) {
+        return `${Math.floor(timeMillis / 10) / 100}s`
     } else {
         const seconds = Math.floor(timeMillis / 1000)
-        return `${seconds}s`;
+        return `${seconds}s`
     }
 }
+
+const formatLevel = (stage: Stage) => Math.round(stage.level * 1000) / 10
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
 const StageParams = ({ env, className }: Props) => {
     return <div className={classNames('stage-params', className)}>
         {env.stages.filter((stage) => stage.enabled && stage.id !== StageId.STOPPED).map((stage) => {
-            return <div className="stage-params-item">
-                {formatTime(stage.time)}
+            const {id} = stage
+            const levelHidden = id !== StageId.DECAY2 && id !== StageId.SUSTAIN && id !== StageId.RELEASE2;
+            const timeHidden = id === StageId.SUSTAIN;
+            return <div className="env-ctrl__footer">
+                <div className={classNames('env-ctrl__footer__item', {'env-ctrl__footer__item--hidden': timeHidden})}>{formatTime(stage.time)}</div>
+                <div className={classNames('env-ctrl__footer__item', {'env-ctrl__footer__item--hidden': levelHidden})}>{formatLevel(stage)}</div>
             </div>
         })}
     </div>

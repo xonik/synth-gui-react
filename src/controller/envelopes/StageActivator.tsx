@@ -16,6 +16,7 @@ const StageActivator = ({ env }: Props) => {
     const dispatch = useAppDispatch()
 
     return <div className="stage-activator">
+        <div className ="env-ctrl__heading">Active</div>
         {env.stages.map((stage, index) => {
             if (stage.id === StageId.STOPPED) {
                 return null
