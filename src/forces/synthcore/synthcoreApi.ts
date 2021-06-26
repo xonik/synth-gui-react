@@ -9,7 +9,7 @@ import {
     toggleLoopMode,
     setInvert,
     setResetOnTrigger,
-    setReleaseMode, setLoopMode
+    setReleaseMode, setLoopMode, deselectStage, selectStage
 } from '../envelope/envelopesReducer'
 import { Envelope, StageId } from '../envelope/types'
 import { AnyAction, Dispatch, } from '@reduxjs/toolkit'
@@ -105,6 +105,14 @@ export const envApi = {
         const env = selectEnvelopes(store.getState()).envs[envId];
         const loopMode = (env.loopMode + 1) % 4;
         dispatch(setLoopMode({env: envId, loopMode}))
+    },
+    toggleStageSelected: (envId: number, stageId: StageId) => {
+        const env = selectEnvelopes(store.getState()).envs[envId];
+        if(env.currGuiStage === stageId){
+            dispatch(deselectStage({env: envId, stage: stageId}))
+        } else {
+            dispatch(selectStage({env: envId, stage: stageId}))
+        }
     }
 
 }

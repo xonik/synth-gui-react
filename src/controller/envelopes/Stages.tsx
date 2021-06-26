@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { StageId, Envelope, Stage } from '../../forces/envelope/types'
 import StageBlock from './StageBlock'
+import {  toggleStageSelected } from '../../forces/envelope/envelopesReducer'
+import { useAppDispatch } from '../../forces/hooks'
+import classNames from 'classnames'
 import './Stages.scss'
 
 interface Props {
@@ -20,6 +23,7 @@ const getNextEnabled = (stages: Stage[], currentId: StageId) => {
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
 const Stages = ({ env }: Props) => {
 
+    const dispatch = useAppDispatch();
     const stages = env.stages
     const enabledStages = stages.filter((stage) => stage.enabled)
     const stageCount = enabledStages.length - 1 // -1 because stopped is hidden.
@@ -27,6 +31,12 @@ const Stages = ({ env }: Props) => {
     const graphCenter = env.bipolar ? 1 / 2 : 1
 
     let startX = 0
+
+
+    const onSvgClicked = useCallback((stageId: number) => {
+        dispatch(toggleStageSelected({env: env.id, stage: stageId}))
+    }, [env, dispatch])
+
 
     return <svg x={0} y={0}>
         {
@@ -47,6 +57,10 @@ const Stages = ({ env }: Props) => {
                 const content = <>
                     {enabled &&
                     <>
+                      <rect x={startX} y={0} width={stageWidth} height={1} onClick={() => onSvgClicked(stage.id)}
+                            className={classNames('stages-background', {'stages-background--selected': env.currGuiStage === stage.id})}
+
+                      />
                       <line
                         x1={startX} y1={0}
                         x2={startX} y2={1}
