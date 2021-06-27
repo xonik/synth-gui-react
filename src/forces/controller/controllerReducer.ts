@@ -13,7 +13,7 @@ const initialState: ControllerState = {
 
 type NumericControllerPayload = {
     ctrlGroup: ControllerGroupIds;
-    ctrlId: EnvControllerId;
+    ctrlId: number;
     ctrlIndex?: number;
     value: number;
 }

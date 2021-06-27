@@ -16,7 +16,7 @@ type EnvelopesState = {
 
 }
 
-const initialState: EnvelopesState = {
+export const initialState: EnvelopesState = {
     envs: [
         getDefaultEnvelope(0),
         getDefaultEnvelope(1),
@@ -170,6 +170,7 @@ export const {
     setInvert,
     selectStage,
     deselectStage,
+    selectEnv,
     toggleStageEnabled,
     toggleInvert,
     toggleRetrigger,

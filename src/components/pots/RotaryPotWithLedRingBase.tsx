@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback} from 'react'
 import classNames from 'classnames'
 import arc from '../../utils/svg/arc'
-import RotaryPotBase, { Point } from './RotaryPotBase'
+import RotaryPotBase from './RotaryPotBase'
 import { MidiConfig } from '../../midi/midiControllers'
-import { sendCC, subscribe, unsubscribe } from '../../midi/midibus'
+import { sendCC } from '../../midi/midibus'
 import { useAppDispatch } from '../../forces/hooks'
 import { ControllerGroupIds, EnvControllerId } from '../../forces/synthcore/controllers'
 import { increment } from '../../forces/controller/controllerReducer'
@@ -101,34 +101,14 @@ const getLedPos = (centerLed: number, ledCount: number, mode: PotMode, position:
     return 0
 }
 
-// 0 degrees is deltaX > 1, deltaY = +0
-const getAngle = (pointer: Point, center: Point) => {
-    const deltaX = pointer.x - center.x;
-    const deltaY = pointer.y - center.y;
-    return (2 * Math.PI + Math.atan(deltaY / deltaX) + (deltaX < 0 ? Math.PI : 0)) % (2 * Math.PI);
-}
-
-const getValueChangeFromDiff = (angleDiff: number, ledArc:number) => {
-    const changeInDegrees = (360 * angleDiff) / (2 * Math.PI);
-    //console.log({angleDiff, changeInDegrees});
-    return changeInDegrees / ledArc;
-}
 export default (props: Props & Config) => {
 
     // Position should be in the range 0-1 in all modes but pan. In pan the range is -0.5 - 0.5
     const { x, y, ledMode = 'single', potMode = 'normal', label, midiConfig, defaultValue,
-        storePosition, ctrlGroup, ctrlId, updateStorePosition, ctrlIndex
+        storePosition, ctrlGroup, ctrlId, ctrlIndex
     } = props
 
     const dispatch = useAppDispatch()
-    const potRef = useRef<SVGCircleElement>(null);
-    const [center, setCenter] = useState<Point|null>(null);
-
-    const [previousAngle, setPreviousAngle] = useState(0);
-    const [previousY, setPreviousY] = useState(0);
-    const [isDragging, setIsDragging] = useState(false);
-    const [position, setPosition] = useState(defaultValue || 0);
-    const [isShiftDown, setShiftDown] = useState(false);
 
     const {
         ledRadius,
@@ -146,107 +126,21 @@ export default (props: Props & Config) => {
     // For scaling, use viewBox on the outer svg and unitless the rest of the way
 
     // positive pointer
-    const ledPosition = getLedPos(centerLed, ledCount, potMode, storePosition || position)
+    const ledPosition = getLedPos(centerLed, ledCount, potMode, storePosition || 0)
 
     // negative pointer used for spread
     const negLedPosition = centerLed - (ledPosition - centerLed)
 
-    const getCenter = useCallback(() => {
-        if (center === null) {
-            const PotElement = potRef.current;
-            const bb = PotElement?.getBoundingClientRect();
-            let updatedCenter: {x: number, y: number};
-            if (bb) {
-                updatedCenter = {
-                    x: Math.round(bb.x + bb.width / 2),
-                    y: Math.round(bb.y + bb.height / 2)
-                }
-            } else {
-                updatedCenter = { x: 0, y: 0 }
-            }
-            setCenter(updatedCenter);
-            return updatedCenter;
-        } else {
-            return center;
-        }
-    }, [center]);
-
-    const onMouseDown = useCallback((event: React.MouseEvent) => {
-        setShiftDown(event.shiftKey);
-        setPreviousAngle(getAngle({x: event.clientX, y: event.clientY}, getCenter()))
-        setPreviousY(event.clientY);
-        setIsDragging(true);
-        if(event.preventDefault) event.preventDefault();
-    }, [getCenter]);
-
-    const onMouseUp = useCallback((event: MouseEvent) => {
-        if(isDragging) setIsDragging(false);
-    }, [isDragging]);
-
-    const updatePosition = useCallback((newPosition) => {
-        setPosition(newPosition);
+    const positionUpdated = useCallback((newPosition) => {
         if(midiConfig){
             sendCC(midiConfig.cc, Math.round(127 * newPosition));
-        }
-        if(updateStorePosition) {
-            dispatch(updateStorePosition(newPosition))
         }
         if(ctrlId !== undefined && ctrlGroup !== undefined) {
             dispatch(increment({ctrlGroup, ctrlId, value: newPosition, ctrlIndex}))
         }
-    }, [midiConfig, setPosition, ctrlGroup, ctrlId, dispatch, updateStorePosition, ctrlIndex])
+    }, [midiConfig, ctrlGroup, ctrlId, dispatch, ctrlIndex])
 
-    const updatePositionFromValue = useCallback((newPosition) => {
-        if(newPosition < 0){
-            if(position > 0){
-                updatePosition(0);
-            }
-        } else if(newPosition > 1){
-            if(position < 1) {
-                updatePosition(1);
-            }
-        } else if(newPosition !== position){
-            updatePosition(newPosition);
-        }
-    },[position, updatePosition])
-
-    const onMouseMove = useCallback((event: MouseEvent) => {
-        if(isDragging) {
-            if(isShiftDown){
-                const yDiff = -(event.clientY - previousY);
-                setPreviousY(event.clientY);
-                const newValue = position + yDiff / 100;
-                updatePositionFromValue(newValue);
-            } else {
-                const newAngle = getAngle({x: event.clientX, y: event.clientY}, getCenter());
-                let angleDiff = newAngle - previousAngle;
-                if(angleDiff > Math.PI){
-                    angleDiff = angleDiff - 2 * Math.PI;
-                } else if(angleDiff < -Math.PI) {
-                    angleDiff = angleDiff + 2 * Math.PI;
-
-                }
-
-                if(angleDiff !== 0) {
-                    setPreviousAngle(newAngle);
-                    const valueChange = getValueChangeFromDiff(angleDiff, ledArc);
-                    const newValue = position + valueChange;
-                    updatePositionFromValue(newValue);
-                }
-            }
-        }
-    }, [ledArc, previousAngle, isDragging, position, isShiftDown, previousY, updatePositionFromValue, getCenter]);
-
-    useEffect(() => {
-        window.addEventListener("mousemove", onMouseMove)
-        window.addEventListener("mouseup", onMouseUp)
-
-        return () => {
-            window.removeEventListener("mousemove", onMouseMove)
-            window.removeEventListener("mouseup", onMouseUp)
-        };
-    },[onMouseMove, onMouseUp])
-
+    /*
     useEffect(() => {
         if(midiConfig) {
             const updateValueFromMidi = (midiValue: number) => {
@@ -259,10 +153,11 @@ export default (props: Props & Config) => {
             };
         }
     });
+     */
 
     return (
         <svg x={x} y={y} className="pot">
-            <RotaryPotBase ref={potRef} knobRadius={knobRadius} onMouseDown={onMouseDown}/>
+            <RotaryPotBase knobRadius={knobRadius} onPositionChange={positionUpdated} arc={ledArc} defaultValue={defaultValue }/>
             <path d={windowArc} className="pot-ring-window" strokeWidth={windowWidth}/>
             {ledAngles.map((angle, led) => {
                 const ledOn =

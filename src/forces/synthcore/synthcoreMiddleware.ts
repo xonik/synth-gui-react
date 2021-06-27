@@ -5,7 +5,11 @@ import { envApi, mainDisplayApi } from './synthcoreApi'
 import { StageId } from '../envelope/types'
 import { toggleInvert, toggleLoopMode, toggleReleaseMode, toggleRetrigger, toggleStageEnabled, toggleStageSelected } from '../envelope/envelopesReducer'
 
-const envApiMapper = {
+type EnvApiMapperType = {
+    [key: number]: (ctrlIndex: number, value: number) => void
+}
+
+const envApiMapper: EnvApiMapperType = {
     [EnvControllerId.ENV_DELAY]: (ctrlIndex: number, value: number) => envApi.setStageTime(ctrlIndex, StageId.DELAY, value),
     [EnvControllerId.ENV_ATTACK]: (ctrlIndex: number, value: number) => envApi.setStageTime(ctrlIndex, StageId.ATTACK, value),
     [EnvControllerId.ENV_DECAY1]: (ctrlIndex: number, value: number) => envApi.setStageTime(ctrlIndex, StageId.DECAY1, value),
@@ -26,7 +30,7 @@ export const synthcoreMiddleware: Middleware<{},any> = storeAPI => next => actio
         if(action.payload.ctrlGroup === ControllerGroupIds.ENV){
             envApiMapper[action.payload.ctrlId](ctrlIndex, action.payload.value);
         } else if(action.payload.ctrlGroup === ControllerGroupIds.MAIN_DISP){
-            mainDisplayApi.handleMainDisplayController(ctrlIndex, action.payload.value);
+            mainDisplayApi.handleMainDisplayController(action.payload.ctrlId, action.payload.value);
         }
     } else if(toggleStageEnabled.match(action)){
         envApi.toggleStageEnabled(action.payload.env, action.payload.stage);
