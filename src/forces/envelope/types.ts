@@ -50,7 +50,6 @@ export type Envelope = {
     maxLoops: number;
     invert: boolean;
     bipolar: boolean;
-    currGuiStage: number;
 }
 
 

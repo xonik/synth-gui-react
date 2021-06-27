@@ -2,9 +2,10 @@ import React, { useCallback, useState } from 'react'
 import Display from '../misc/Display';
 import RotaryPotWOLeds17 from '../pots/RotaryPotWOLeds17';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
-import './MainDisplay.scss';
 import RotaryPotWOLeds32 from '../pots/RotaryPotWOLeds32';
 import midiConstants from '../../midi/midiControllers'
+import { ControllerGroupIds, MainDisplayControllerIds } from '../../forces/synthcore/controllers'
+import './MainDisplay.scss';
 
 interface Props {
   x: number,
@@ -52,12 +53,36 @@ const MainDisplay = React.forwardRef<SVGRectElement, Props>(({ x, y }, displayRe
     <RoundPushButton8 x={displayCenter + 2.5 * buttonSpacing} y={buttonRow} label="FX" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.MENU_FX}/>
     <Display x={x} y={y} width={displayWidth} height={displayHeight} ref={displayRef}/>
 
-    <RotaryPotWOLeds17 x={displayCenter - 2 * potSpacing} y={potRow} midiConfig={midiConstants.MAIN_PANEL.POT1}/>
-    <RotaryPotWOLeds17 x={displayCenter - 1 * potSpacing} y={potRow} midiConfig={midiConstants.MAIN_PANEL.POT2}/>
-    <RotaryPotWOLeds17 x={displayCenter} y={potRow} midiConfig={midiConstants.MAIN_PANEL.POT3}/>
-    <RotaryPotWOLeds17 x={displayCenter + 1 * potSpacing} y={potRow} midiConfig={midiConstants.MAIN_PANEL.POT4}/>
-    <RotaryPotWOLeds17 x={displayCenter + 2 * potSpacing} y={potRow} midiConfig={midiConstants.MAIN_PANEL.POT5}/>
-    <RotaryPotWOLeds32 x={displayCenter} y={masterPotRow} midiConfig={midiConstants.MAIN_PANEL.POT6}/>
+    <RotaryPotWOLeds17 x={displayCenter - 2 * potSpacing} y={potRow}
+                       midiConfig={midiConstants.MAIN_PANEL.POT1}
+                       ctrlGroup={ControllerGroupIds.MAIN_DISP}
+                       ctrlId={MainDisplayControllerIds.POT1}
+    />
+    <RotaryPotWOLeds17 x={displayCenter - 1 * potSpacing} y={potRow}
+                       midiConfig={midiConstants.MAIN_PANEL.POT2}
+                       ctrlGroup={ControllerGroupIds.MAIN_DISP}
+                       ctrlId={MainDisplayControllerIds.POT2}
+    />
+    <RotaryPotWOLeds17 x={displayCenter} y={potRow}
+                       midiConfig={midiConstants.MAIN_PANEL.POT3}
+                       ctrlGroup={ControllerGroupIds.MAIN_DISP}
+                       ctrlId={MainDisplayControllerIds.POT3}
+    />
+    <RotaryPotWOLeds17 x={displayCenter + 1 * potSpacing} y={potRow}
+                       midiConfig={midiConstants.MAIN_PANEL.POT4}
+                       ctrlGroup={ControllerGroupIds.MAIN_DISP}
+                       ctrlId={MainDisplayControllerIds.POT4}
+    />
+    <RotaryPotWOLeds17 x={displayCenter + 2 * potSpacing} y={potRow}
+                       midiConfig={midiConstants.MAIN_PANEL.POT5}
+                       ctrlGroup={ControllerGroupIds.MAIN_DISP}
+                       ctrlId={MainDisplayControllerIds.POT5}
+    />
+    <RotaryPotWOLeds32 x={displayCenter} y={masterPotRow}
+                       midiConfig={midiConstants.MAIN_PANEL.POT6}
+                       ctrlGroup={ControllerGroupIds.MAIN_DISP}
+                       ctrlId={MainDisplayControllerIds.POT6}
+    />
 
     <RoundPushButton8 onClick={onClick} x={displayCenter - 2.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Home" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_HOME}/>
     <RoundPushButton8 x={displayCenter - 1.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Settings" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_SETTINGS}/>

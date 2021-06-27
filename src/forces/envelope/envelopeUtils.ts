@@ -70,7 +70,6 @@ export const getDefaultEnvelope = (id: number): Envelope => {
         invert:false,
         stages,
         bipolar: true,
-        currGuiStage: StageId.STOPPED
     }
 
     setInvert(env, false);

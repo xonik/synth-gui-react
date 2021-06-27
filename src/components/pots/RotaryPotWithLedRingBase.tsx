@@ -5,7 +5,7 @@ import RotaryPotBase, { Point } from './RotaryPotBase'
 import { MidiConfig } from '../../midi/midiControllers'
 import { sendCC, subscribe, unsubscribe } from '../../midi/midibus'
 import { useAppDispatch } from '../../forces/hooks'
-import { ControllerId } from '../../forces/synthcore/controllers'
+import { ControllerGroupIds, EnvControllerId } from '../../forces/synthcore/controllers'
 import { increment } from '../../forces/controller/controllerReducer'
 import './RotaryPot.scss'
 
@@ -24,7 +24,8 @@ export interface Props {
     defaultValue?: number;
     storePosition?: number;
     updateStorePosition?: (position: number) => any;
-    ctrlId?: ControllerId;
+    ctrlGroup?: ControllerGroupIds;
+    ctrlId?: EnvControllerId;
     ctrlIndex?: number
 }
 
@@ -116,7 +117,7 @@ export default (props: Props & Config) => {
 
     // Position should be in the range 0-1 in all modes but pan. In pan the range is -0.5 - 0.5
     const { x, y, ledMode = 'single', potMode = 'normal', label, midiConfig, defaultValue,
-        storePosition, ctrlId, updateStorePosition, ctrlIndex
+        storePosition, ctrlGroup, ctrlId, updateStorePosition, ctrlIndex
     } = props
 
     const dispatch = useAppDispatch()
@@ -190,10 +191,10 @@ export default (props: Props & Config) => {
         if(updateStorePosition) {
             dispatch(updateStorePosition(newPosition))
         }
-        if(ctrlId !== undefined) {
-            dispatch(increment({ctrlId, value: newPosition, ctrlIndex}))
+        if(ctrlId !== undefined && ctrlGroup !== undefined) {
+            dispatch(increment({ctrlGroup, ctrlId, value: newPosition, ctrlIndex}))
         }
-    }, [midiConfig, setPosition, ctrlId, dispatch, updateStorePosition, ctrlIndex])
+    }, [midiConfig, setPosition, ctrlGroup, ctrlId, dispatch, updateStorePosition, ctrlIndex])
 
     const updatePositionFromValue = useCallback((newPosition) => {
         if(newPosition < 0){

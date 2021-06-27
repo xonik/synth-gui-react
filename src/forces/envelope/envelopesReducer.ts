@@ -9,6 +9,11 @@ import { curveFuncs } from '../../components/curves/curveCalculator'
 
 type EnvelopesState = {
     envs: Envelope[];
+    gui: {
+        currEnvId: number;
+        currStageId: StageId;
+    }
+
 }
 
 const initialState: EnvelopesState = {
@@ -17,6 +22,10 @@ const initialState: EnvelopesState = {
         getDefaultEnvelope(1),
         getDefaultEnvelope(2),
     ],
+    gui: {
+        currEnvId: 0,
+        currStageId: StageId.STOPPED,
+    }
 }
 
 type StagePayload = {
@@ -129,10 +138,13 @@ export const envelopesSlice = createSlice({
             env.stages[StageId.STOPPED].level = resetLevel;
         },
         selectStage: (state, {payload}: PayloadAction<StagePayload>) => {
-            getEnv(state, payload).currGuiStage = payload.stage;
+            state.gui.currStageId = payload.stage;
         },
         deselectStage: (state, {payload}: PayloadAction<StagePayload>) => {
-            getEnv(state, payload).currGuiStage = StageId.STOPPED;
+            state.gui.currStageId = StageId.STOPPED;
+        },
+        selectEnv: (state, {payload}: PayloadAction<EnvPayload>) => {
+            state.gui.currEnvId = payload.env;
         },
 
         // actions ony consumed by api
@@ -173,6 +185,7 @@ export const selectInvert = (envId: number) => (state: RootState) => state.envel
 export const selectRetrigger = (envId: number) => (state: RootState) => state.envelopes.envs[envId].resetOnTrigger;
 export const selectReleaseMode = (envId: number) => (state: RootState) => state.envelopes.envs[envId].releaseMode;
 export const selectLoopMode = (envId: number) => (state: RootState) => state.envelopes.envs[envId].loopMode;
-export const selectCurrStage = (envId: number) => (state: RootState) => state.envelopes.envs[envId].currGuiStage;
+export const selectCurrStageId = (state: RootState) => state.envelopes.gui.currStageId;
+export const selectCurrEnvId = (state: RootState) => state.envelopes.gui.currEnvId;
 
 export default envelopesSlice.reducer;

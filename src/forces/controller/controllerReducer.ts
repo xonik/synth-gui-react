@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ControllerId } from '../synthcore/controllers'
+import { ControllerGroupIds, EnvControllerId } from '../synthcore/controllers'
 
 type ControllerState = {
     controller: {
@@ -12,7 +12,8 @@ const initialState: ControllerState = {
 }
 
 type NumericControllerPayload = {
-    ctrlId: ControllerId;
+    ctrlGroup: ControllerGroupIds;
+    ctrlId: EnvControllerId;
     ctrlIndex?: number;
     value: number;
 }

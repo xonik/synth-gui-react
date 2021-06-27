@@ -1,14 +1,18 @@
 import RotaryPotBase from './RotaryPotBase'
 import React, { useCallback } from 'react'
-import './RotaryPot.scss'
 import { MidiConfig } from '../../midi/midiControllers'
 import { sendCC } from '../../midi/midibus'
+import { ControllerGroupIds, EnvControllerId } from '../../forces/synthcore/controllers'
+import './RotaryPot.scss'
 
 export interface Props {
     x: number,
     y: number,
     label?: string,
     midiConfig?: MidiConfig,
+    ctrlGroup?: ControllerGroupIds;
+    ctrlId?: EnvControllerId;
+    ctrlIndex?: number
 }
 
 interface Config {

@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react'
 import { StageId, Envelope, Stage } from '../../forces/envelope/types'
 import StageBlock from './StageBlock'
-import {  toggleStageSelected } from '../../forces/envelope/envelopesReducer'
-import { useAppDispatch } from '../../forces/hooks'
+import { selectCurrStageId, toggleStageSelected } from '../../forces/envelope/envelopesReducer'
+import { useAppDispatch, useAppSelector } from '../../forces/hooks'
 import classNames from 'classnames'
 import './Stages.scss'
 
@@ -24,6 +24,7 @@ const getNextEnabled = (stages: Stage[], currentId: StageId) => {
 const Stages = ({ env }: Props) => {
 
     const dispatch = useAppDispatch();
+    const select = useAppSelector;
     const stages = env.stages
     const enabledStages = stages.filter((stage) => stage.enabled)
     const stageCount = enabledStages.length - 1 // -1 because stopped is hidden.
@@ -32,6 +33,7 @@ const Stages = ({ env }: Props) => {
 
     let startX = 0
 
+    const currStageId = select(selectCurrStageId);
 
     const onSvgClicked = useCallback((stageId: number) => {
         dispatch(toggleStageSelected({env: env.id, stage: stageId}))
@@ -58,7 +60,7 @@ const Stages = ({ env }: Props) => {
                     {enabled &&
                     <>
                       <rect x={startX} y={0} width={stageWidth} height={1} onClick={() => onSvgClicked(stage.id)}
-                            className={classNames('stages-background', {'stages-background--selected': env.currGuiStage === stage.id})}
+                            className={classNames('stages-background', {'stages-background--selected': currStageId === stage.id})}
 
                       />
                       <line

@@ -1,4 +1,11 @@
-export enum ControllerId {
+import CC from '../../midi/ccMap'
+
+export enum ControllerGroupIds {
+    ENV,
+    MAIN_DISP
+}
+
+export enum EnvControllerId {
     ENV_DELAY,
     ENV_ATTACK,
     ENV_DECAY1,
@@ -11,13 +18,36 @@ export enum ControllerId {
 }
 
 export const envControllerIds = [
-    ControllerId.ENV_DELAY,
-    ControllerId.ENV_ATTACK,
-    ControllerId.ENV_DECAY1,
-    ControllerId.ENV_DECAY2,
-    ControllerId.ENV_SUSTAIN,
-    ControllerId.ENV_RELEASE1,
-    ControllerId.ENV_RELEASE2,
-    ControllerId.ENV_D2_LEVEL,
-    ControllerId.ENV_R2_LEVEL,
-];
+    EnvControllerId.ENV_DELAY,
+    EnvControllerId.ENV_ATTACK,
+    EnvControllerId.ENV_DECAY1,
+    EnvControllerId.ENV_DECAY2,
+    EnvControllerId.ENV_SUSTAIN,
+    EnvControllerId.ENV_RELEASE1,
+    EnvControllerId.ENV_RELEASE2,
+    EnvControllerId.ENV_D2_LEVEL,
+    EnvControllerId.ENV_R2_LEVEL,
+]
+
+export enum MainDisplayControllerIds {
+    POT1,
+    POT2,
+    POT3,
+    POT4,
+    POT5,
+    POT6,
+    MENU_LFO,
+    MENU_OSC,
+    MENU_FILTER,
+    MENU_ENVELOPE,
+    MENU_MOD,
+    MENU_FX,
+    FUNC_HOME,
+    FUNC_SETTINGS,
+    FUNC_SHIFT,
+    FUNC_PERFORM,
+    FUNC_LOAD,
+    FUNC_SAVE,
+    FUNC_COMPARE,
+    FUNC_ROUTE,
+}
