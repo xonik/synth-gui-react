@@ -52,9 +52,9 @@ const log2 = logarithmicFunc(1.6);
 const log3 = logarithmicFunc(2);
 
 export const curveFuncs = [
-    expo1,
-    expo2,
     expo3,
+    expo2,
+    expo1,
     linear,
     log1,
     log2,

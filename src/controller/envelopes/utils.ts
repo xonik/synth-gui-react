@@ -1,6 +1,6 @@
 import { getScaledPoints } from '../../components/curves/curveCalculator'
 import { Point } from '../../utils/types'
-import { LoopMode, ReleaseMode, StageId } from '../../forces/envelope/types'
+import { Curve, LoopMode, ReleaseMode, StageId } from '../../forces/envelope/types'
 
 export const getPoints = (
     curveFunc: (x: number) => number,
@@ -29,7 +29,7 @@ export const stageNames = {
 export const loopModeNames = {
     [LoopMode.OFF]: 'off',
     [LoopMode.GATED]: 'gated',
-    [LoopMode.COUNTED]: 'counted',
+    [LoopMode.COUNTED]: 'times',
     [LoopMode.INFINITE]: 'forever',
 }
 
@@ -37,4 +37,14 @@ export const releaseModeNames = {
     [ReleaseMode.NORMAL]: 'Normal release',
     [ReleaseMode.FREE_RUN]: 'Free running',
     [ReleaseMode.SKIP_R1]: 'Skip R1',
+}
+
+export const curveNames = {
+    [Curve.EXP3]: 'Exp 3',
+    [Curve.EXP2]: 'Exp 2',
+    [Curve.EXP1]: 'Exp 1',
+    [Curve.LIN]: 'Linear',
+    [Curve.LOG1]: 'Log 1',
+    [Curve.LOG2]: 'Log 2',
+    [Curve.LOG3]: 'Log 3',
 }

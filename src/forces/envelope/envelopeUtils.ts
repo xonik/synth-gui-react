@@ -66,7 +66,7 @@ export const getDefaultEnvelope = (id: number): Envelope => {
         resetLevel: 0,
         releaseMode: ReleaseMode.NORMAL,
         loopMode: LoopMode.OFF,
-        maxLoops: 0,
+        maxLoops: 2,
         invert:false,
         stages,
         bipolar: true,
