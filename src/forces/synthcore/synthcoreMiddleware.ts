@@ -1,6 +1,6 @@
 import { Middleware } from 'redux'
 import { increment } from '../controller/controllerReducer'
-import { ControllerGroupIds, EnvControllerId, envControllerIds } from './controllers'
+import { ControllerGroupIds, EnvControllerId } from './controllers'
 import { envApi, mainDisplayApi } from './synthcoreApi'
 import { StageId } from '../envelope/types'
 import { toggleInvert, toggleLoopMode, toggleReleaseMode, toggleRetrigger, toggleStageEnabled, toggleStageSelected } from '../envelope/envelopesReducer'
@@ -10,15 +10,15 @@ type EnvApiMapperType = {
 }
 
 const envApiMapper: EnvApiMapperType = {
-    [EnvControllerId.ENV_DELAY]: (ctrlIndex: number, value: number) => envApi.setStageTime(ctrlIndex, StageId.DELAY, value),
-    [EnvControllerId.ENV_ATTACK]: (ctrlIndex: number, value: number) => envApi.setStageTime(ctrlIndex, StageId.ATTACK, value),
-    [EnvControllerId.ENV_DECAY1]: (ctrlIndex: number, value: number) => envApi.setStageTime(ctrlIndex, StageId.DECAY1, value),
-    [EnvControllerId.ENV_DECAY2]: (ctrlIndex: number, value: number) => envApi.setStageTime(ctrlIndex, StageId.DECAY2, value),
-    [EnvControllerId.ENV_SUSTAIN]: (ctrlIndex: number, value: number) => envApi.setStageLevel(ctrlIndex, StageId.SUSTAIN, value),
-    [EnvControllerId.ENV_RELEASE1]: (ctrlIndex: number, value: number) => envApi.setStageTime(ctrlIndex, StageId.RELEASE1, value),
-    [EnvControllerId.ENV_RELEASE2]: (ctrlIndex: number, value: number) => envApi.setStageTime(ctrlIndex, StageId.RELEASE2, value),
-    [EnvControllerId.ENV_D2_LEVEL]: (ctrlIndex: number, value: number) => envApi.setStageLevel(ctrlIndex, StageId.DECAY2, value),
-    [EnvControllerId.ENV_R2_LEVEL]: (ctrlIndex: number, value: number) => envApi.setStageLevel(ctrlIndex, StageId.RELEASE2, value),
+    [EnvControllerId.ENV_DELAY]: (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.DELAY, value),
+    [EnvControllerId.ENV_ATTACK]: (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.ATTACK, value),
+    [EnvControllerId.ENV_DECAY1]: (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.DECAY1, value),
+    [EnvControllerId.ENV_DECAY2]: (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.DECAY2, value),
+    [EnvControllerId.ENV_SUSTAIN]: (ctrlIndex: number, value: number) => envApi.incrementStageLevel(ctrlIndex, StageId.SUSTAIN, value),
+    [EnvControllerId.ENV_RELEASE1]: (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.RELEASE1, value),
+    [EnvControllerId.ENV_RELEASE2]: (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.RELEASE2, value),
+    [EnvControllerId.ENV_D2_LEVEL]: (ctrlIndex: number, value: number) => envApi.incrementStageLevel(ctrlIndex, StageId.DECAY2, value),
+    [EnvControllerId.ENV_R2_LEVEL]: (ctrlIndex: number, value: number) => envApi.incrementStageLevel(ctrlIndex, StageId.RELEASE2, value),
 }
 
 export const synthcoreMiddleware: Middleware<{},any> = storeAPI => next => action => {

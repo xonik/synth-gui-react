@@ -29,7 +29,7 @@ const StageParams = ({ env, className }: Props) => {
             const {id} = stage
             const levelHidden = id !== StageId.DECAY2 && id !== StageId.SUSTAIN && id !== StageId.RELEASE2;
             const timeHidden = id === StageId.SUSTAIN;
-            return <div className="env-ctrl__footer">
+            return <div className="env-ctrl__footer" key={stage.id}>
                 <div className={classNames('env-ctrl__footer__item', {'env-ctrl__footer__item--hidden': timeHidden})}>{formatTime(stage.time)}</div>
                 <div className={classNames('env-ctrl__footer__item', {'env-ctrl__footer__item--hidden': levelHidden})}>{formatLevel(stage)}</div>
             </div>

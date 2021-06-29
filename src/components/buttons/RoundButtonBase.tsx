@@ -5,6 +5,7 @@ import RotaryPotBase from '../pots/RotaryPotBase'
 import { subscribe, unsubscribe, sendCC } from '../../midi/midibus'
 import './RoundButton.scss'
 import { MidiConfig } from '../../midi/midiControllers'
+import RotaryPotBaseLocalControl from '../pots/RotaryPotBaseLocalControl'
 
 type LedPosition = 'left' | 'right' | 'sides' | 'top' | 'bottom' | undefined;
 type LabelPosition = 'left' | 'right' | 'top' | 'bottom' | undefined;
@@ -314,7 +315,7 @@ export const RoundButtonBase = (props: Props & Config) => {
                 ? <RoundPushButtonBase buttonRadius={buttonRadius}
                                        onClick={handleOnClick}
                                        className={classNames('button-cap', { 'button-cap-led': ledButton, 'button-cap-led__on': ledButton && ledOn.length > 0 && ledOn[0] })}/>
-                : <RotaryPotBase onClick={handleOnClick} knobRadius={buttonRadius}/>
+                : <RotaryPotBaseLocalControl onClick={handleOnClick} knobRadius={buttonRadius}/>
             }
             {label && <text
               x={labelPos.x}

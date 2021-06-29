@@ -49,6 +49,7 @@ const cannotDisableStage = (stage: StageId) => stage === StageId.ATTACK || stage
 
 export const envApi = {
 
+    // requestedValue is always 0-1 while store value is -1 to 1 if bipolar
     setStageLevel: (envId: number, stageId: StageId, requestedValue: number) => {
         const env = selectEnvelopes(store.getState()).envs[envId]
         const r1enabled = env.stages[StageId.RELEASE1].enabled
@@ -77,8 +78,22 @@ export const envApi = {
         }
     },
 
+    incrementStageLevel: (envId: number, stageId: StageId, incLevel: number) => {
+        const env = selectEnvelopes(store.getState()).envs[envId]
+        let currentLevel = selectEnvelope(envId)(store.getState()).stages[stageId].level;
+        if (env.bipolar) {
+            currentLevel = (currentLevel + 1) / 2
+        }
+        envApi.setStageLevel(envId, stageId, currentLevel + incLevel)
+    },
+
     setStageTime: (envId: number, stageId: StageId, requestedValue: number) => {
         dispatch(setTime({ env: envId, stage: stageId, value: getBounded(requestedValue) }))
+    },
+
+    incrementStageTime: (envId: number, stageId: StageId, incTime: number) => {
+        const currentTime = selectEnvelope(envId)(store.getState()).stages[stageId].time;
+        envApi.setStageTime(envId, stageId, currentTime + incTime)
     },
 
     toggleStageEnabled: (envId: number, stageId: StageId) => {

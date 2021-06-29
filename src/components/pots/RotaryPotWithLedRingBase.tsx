@@ -1,13 +1,14 @@
-import React, { useCallback} from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import classNames from 'classnames'
 import arc from '../../utils/svg/arc'
 import RotaryPotBase from './RotaryPotBase'
 import { MidiConfig } from '../../midi/midiControllers'
-import { sendCC } from '../../midi/midibus'
+import { sendCC, subscribe, unsubscribe } from '../../midi/midibus'
 import { useAppDispatch } from '../../forces/hooks'
 import { ControllerGroupIds, EnvControllerId } from '../../forces/synthcore/controllers'
 import { increment } from '../../forces/controller/controllerReducer'
 import './RotaryPot.scss'
+import RotaryPotBaseLocalControl from './RotaryPotBaseLocalControl'
 
 export type LedMode = 'single' | 'multi';
 export type PotMode = 'normal' | 'pan' | 'spread';
@@ -108,6 +109,8 @@ export default (props: Props & Config) => {
         storePosition, ctrlGroup, ctrlId, ctrlIndex
     } = props
 
+    const localControl = ctrlGroup === null && ctrlId === null && ctrlIndex === null
+
     const dispatch = useAppDispatch()
 
     const {
@@ -125,26 +128,32 @@ export default (props: Props & Config) => {
     // For objects centered around 0, use overflow: visible
     // For scaling, use viewBox on the outer svg and unitless the rest of the way
 
+    const [statePosition, setStatePosition] = useState(defaultValue || 0);
+
     // positive pointer
-    const ledPosition = getLedPos(centerLed, ledCount, potMode, storePosition || 0)
+    const ledPosition = getLedPos(centerLed, ledCount, potMode, storePosition || statePosition)
 
     // negative pointer used for spread
     const negLedPosition = centerLed - (ledPosition - centerLed)
 
+    // TODO: Remove once all functions go through redux store. Until then, pots without connection will send and receive midi
+    // themselves.
     const positionUpdated = useCallback((newPosition) => {
-        if(midiConfig){
+        if(localControl && midiConfig){
             sendCC(midiConfig.cc, Math.round(127 * newPosition));
         }
-        if(ctrlId !== undefined && ctrlGroup !== undefined) {
-            dispatch(increment({ctrlGroup, ctrlId, value: newPosition, ctrlIndex}))
-        }
-    }, [midiConfig, ctrlGroup, ctrlId, dispatch, ctrlIndex])
+    }, [localControl, midiConfig])
 
-    /*
+    const onIncrement = useCallback((steps: number, stepSize: number) => {
+        if(ctrlId !== undefined && ctrlGroup !== undefined) {
+            dispatch(increment({ ctrlGroup, ctrlId, value: steps * stepSize, ctrlIndex }))
+        }
+    }, [ctrlGroup, ctrlId, ctrlIndex, dispatch])
+
     useEffect(() => {
         if(midiConfig) {
             const updateValueFromMidi = (midiValue: number) => {
-                setPosition(midiValue / 127);
+                setStatePosition(midiValue / 127);
             }
 
             const subscriberId = subscribe(updateValueFromMidi, midiConfig)
@@ -153,11 +162,13 @@ export default (props: Props & Config) => {
             };
         }
     });
-     */
 
     return (
         <svg x={x} y={y} className="pot">
-            <RotaryPotBase knobRadius={knobRadius} onPositionChange={positionUpdated} arc={ledArc} defaultValue={defaultValue }/>
+            {localControl
+                ? <RotaryPotBaseLocalControl knobRadius={knobRadius} onPositionChange={positionUpdated} arc={ledArc} defaultValue={defaultValue }/>
+                : <RotaryPotBase knobRadius={knobRadius} onIncrement={onIncrement} arc={ledArc} defaultValue={defaultValue }/>
+            }
             <path d={windowArc} className="pot-ring-window" strokeWidth={windowWidth}/>
             {ledAngles.map((angle, led) => {
                 const ledOn =

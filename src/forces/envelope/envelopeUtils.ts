@@ -69,7 +69,7 @@ export const getDefaultEnvelope = (id: number): Envelope => {
         maxLoops: 2,
         invert:false,
         stages,
-        bipolar: true,
+        bipolar: false,
     }
 
     setInvert(env, false);

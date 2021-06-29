@@ -6,6 +6,7 @@ import { ControllerGroupIds, EnvControllerId } from '../../forces/synthcore/cont
 import './RotaryPot.scss'
 import { increment } from '../../forces/controller/controllerReducer'
 import { useAppDispatch } from '../../forces/hooks'
+import RotaryPotBaseLocalControl from './RotaryPotBaseLocalControl'
 
 export interface Props {
     x: number,
@@ -43,7 +44,7 @@ export default (props: Props & Config) => {
     }, [midiConfig, ctrlGroup, ctrlId, dispatch, ctrlIndex])
 
     return <svg x={x} y={y} className="pot">
-        <RotaryPotBase knobRadius={knobRadius} onClick={onClick} onPositionChange={positionUpdated}/>
+        <RotaryPotBaseLocalControl knobRadius={knobRadius} onClick={onClick} onPositionChange={positionUpdated}/>
         {label && <text x={0} y={labelY} className="pot-label" textAnchor="middle">{label}</text>}
     </svg>
 }

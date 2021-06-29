@@ -8,6 +8,6 @@ type Props = {
 export default ({ labels }: Props) => {
 
     return <div className="pot-labels">
-        {labels.map((label) => <div className="pot-labels__label">{label}</div>)}
+        {labels.map((label, index) => <div key={index} className="pot-labels__label">{label}</div>)}
     </div>
 }

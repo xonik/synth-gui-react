@@ -22,6 +22,7 @@ const StageActivator = ({ env }: Props) => {
                 return null
             }
             return <Button
+                key={stage.id}
                 active={stage.enabled}
                 onClick={() => dispatch(toggleStageEnabled({ env: env.id, stage: stage.id }))}
             >{stageNames[stage.id]}</Button>

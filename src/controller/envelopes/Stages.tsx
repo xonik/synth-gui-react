@@ -56,7 +56,7 @@ const Stages = ({ env }: Props) => {
                 const nextStage = getNextEnabled(stages, stage.id)
                 const isLast = index === stages.length - 2
                 const enabled = stage.enabled
-                const content = <>
+                const content = <React.Fragment key={stage.id}>
                     {enabled &&
                     <>
                       <rect x={startX} y={0} width={stageWidth} height={1} onClick={() => onSvgClicked(stage.id)}
@@ -83,7 +83,7 @@ const Stages = ({ env }: Props) => {
                         nextStage={nextStage}
                         isBipolar={env.bipolar}
                     />
-                </>
+                </React.Fragment>
                 if (enabled) {
                     startX += stageWidth
                 }
