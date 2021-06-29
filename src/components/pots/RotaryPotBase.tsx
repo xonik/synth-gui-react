@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 export type Point = {x: number, y: number}
 
@@ -19,19 +19,24 @@ const getAngle = (pointer: Point, center: Point) => {
 
 const getValueChangeFromDiff = (angleDiff: number, ledArc:number) => {
   const changeInDegrees = (360 * angleDiff) / (2 * Math.PI);
-  //console.log({angleDiff, changeInDegrees});
   return changeInDegrees / ledArc;
+}
+
+const distToCenter = (center: Point, pointer: Point) => {
+  const xDiff = (center.x - pointer.x);
+  const yDiff = (center.y - pointer.y);
+  return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
 }
 
 const RotaryPot = ({knobRadius, onClick, defaultValue, onPositionChange, arc = 360}: Props) => {
   const [center, setCenter] = useState<Point|null>(null);
-
-  const [previousAngle, setPreviousAngle] = useState(0);
+  const [previousAngle, setPreviousAngle] = useState<number | undefined>(undefined);
   const [previousY, setPreviousY] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [isShiftDown, setShiftDown] = useState(false);
 
-  const getCenter = useCallback((potElement?: SVGCircleElement) => {
+  // TODO: This can probably be done better using refs or someting
+  const findCenter = useCallback((potElement?: SVGCircleElement) => {
     if (center === null) {
       const bb = potElement?.getBoundingClientRect();
       let updatedCenter: {x: number, y: number};
@@ -44,9 +49,6 @@ const RotaryPot = ({knobRadius, onClick, defaultValue, onPositionChange, arc = 3
         updatedCenter = { x: 0, y: 0 }
       }
       setCenter(updatedCenter);
-      return updatedCenter;
-    } else {
-      return center;
     }
   }, [center]);
 
@@ -73,43 +75,53 @@ const RotaryPot = ({knobRadius, onClick, defaultValue, onPositionChange, arc = 3
 
   const onMouseMove = useCallback((event: MouseEvent) => {
     if(isDragging) {
-      if(isShiftDown){
+        if(!center) return
+
+        if(isShiftDown){
         const yDiff = -(event.clientY - previousY);
         setPreviousY(event.clientY);
         const newValue = position + yDiff / 100;
         updatePositionFromValue(newValue);
-      } else {
-        const newAngle = getAngle({x: event.clientX, y: event.clientY}, center || {x: 0, y: 0});
-        let angleDiff = newAngle - previousAngle;
-        if(angleDiff > Math.PI){
-          angleDiff = angleDiff - 2 * Math.PI;
-        } else if(angleDiff < -Math.PI) {
-          angleDiff = angleDiff + 2 * Math.PI;
-
+      } else if(distToCenter(center, {x: event.clientX, y: event.clientY}) > 20) {
+        // We won't start turning untill we are a bit away from the center, that way we prevent the pot
+        // from jumping randomly if you click too close to the center and move the other way
+        const newAngle = getAngle({x: event.clientX, y: event.clientY}, center );
+        if(previousAngle === undefined) {
+            setPreviousAngle(newAngle);
+            return
         }
 
-        if(angleDiff !== 0) {
-          setPreviousAngle(newAngle);
-          const valueChange = getValueChangeFromDiff(angleDiff, arc);
-          const newValue = position + valueChange;
-          updatePositionFromValue(newValue);
+        let angleDiff = newAngle - previousAngle
+        if (angleDiff > Math.PI) {
+            angleDiff = angleDiff - 2 * Math.PI
+        } else if (angleDiff < -Math.PI) {
+            angleDiff = angleDiff + 2 * Math.PI
+        }
+
+        if (angleDiff !== 0) {
+            setPreviousAngle(newAngle)
+            const valueChange = getValueChangeFromDiff(angleDiff, arc)
+            const newValue = position + valueChange
+            updatePositionFromValue(newValue)
         }
       }
     }
-  }, [arc, previousAngle, isDragging, position, isShiftDown, previousY, updatePositionFromValue, getCenter]);
+  }, [center, arc, previousAngle, isDragging, position, isShiftDown, previousY, updatePositionFromValue]);
 
   const onMouseDown = useCallback((event: React.MouseEvent<SVGCircleElement>) => {
+    findCenter(event.currentTarget)
     setShiftDown(event.shiftKey);
-    setPreviousAngle(getAngle({x: event.clientX, y: event.clientY}, getCenter(event.currentTarget)))
+    setPreviousAngle(undefined)
     setPreviousY(event.clientY);
     setIsDragging(true);
     if(event.preventDefault) event.preventDefault();
-  }, [getCenter]);
+  }, [findCenter]);
 
   const onMouseUp = useCallback((event: MouseEvent) => {
     if(isDragging) setIsDragging(false);
   }, [isDragging]);
 
+  // TODO: add and remove these on demand?
   useEffect(() => {
     window.addEventListener("mousemove", onMouseMove)
     window.addEventListener("mouseup", onMouseUp)
