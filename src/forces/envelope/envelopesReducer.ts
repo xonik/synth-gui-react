@@ -177,7 +177,7 @@ export const {
 export const selectEnvelopes = (state: RootState) => state.envelopes
 export const selectEnvelope = (envId: number) => (state: RootState) => state.envelopes.envs[envId]
 export const selectLevel = (envId: number, stageId: StageId) => (state: RootState) => state.envelopes.envs[envId].stages[stageId].level
-export const selectTime = (state: RootState, envId: number, stageId: StageId) => state.envelopes.envs[envId].stages[stageId].time
+export const selectTime = (envId: number, stageId: StageId) => (state: RootState) => state.envelopes.envs[envId].stages[stageId].time
 export const selectInvert = (envId: number) => (state: RootState) => state.envelopes.envs[envId].invert
 export const selectRetrigger = (envId: number) => (state: RootState) => state.envelopes.envs[envId].resetOnTrigger
 export const selectReleaseMode = (envId: number) => (state: RootState) => state.envelopes.envs[envId].releaseMode

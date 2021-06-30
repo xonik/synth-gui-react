@@ -19,7 +19,7 @@ export interface Props {
     ledMode?: LedMode
     potMode?: PotMode
     label: string
-    position: number;
+    position?: number;
     midiConfig?: MidiConfig;
     defaultValue?: number;
     storePosition?: number;
@@ -104,7 +104,7 @@ const getLedPos = (centerLed: number, ledCount: number, mode: PotMode, position:
 export default (props: Props & Config) => {
 
     // Position should be in the range 0-1 in all modes but pan. In pan the range is -0.5 - 0.5
-    const { x, y, ledMode = 'single', potMode = 'normal', label, midiConfig, defaultValue,
+    const { x, y, ledMode = 'single', potMode = 'normal', label, midiConfig, position: defaultValue,
         storePosition, ctrlGroup, ctrlId, ctrlIndex
     } = props
 

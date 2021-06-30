@@ -22,7 +22,7 @@ export const getDefaultEnvelope = (id: number): Envelope => {
         enabled: true,
         curve: Curve.LOG1,
         level: 1,
-        time: 0.002,
+        time: 0.5,
     })
     stages.push({
         id: StageId.DECAY2,
@@ -69,7 +69,7 @@ export const getDefaultEnvelope = (id: number): Envelope => {
         maxLoops: 2,
         invert:false,
         stages,
-        bipolar: false,
+        bipolar: true,
     }
 
     setInvert(env, false);

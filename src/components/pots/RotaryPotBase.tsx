@@ -35,9 +35,7 @@ const RotaryPot = ({knobRadius, onClick, defaultValue, onIncrement, arc = 360, r
 
   const [center, setCenter] = useState<Point|null>(null);
   const [previousAngle, setPreviousAngle] = useState<number | undefined>(undefined);
-  const [previousY, setPreviousY] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
-  const [isShiftDown, setShiftDown] = useState(false);
 
   // TODO: This can probably be done better using refs or someting
   const findCenter = useCallback((potElement?: SVGCircleElement) => {
@@ -78,6 +76,8 @@ const RotaryPot = ({knobRadius, onClick, defaultValue, onIncrement, arc = 360, r
 
         if (angleDiff !== 0) {
           setPreviousAngle(newAngle)
+
+          //  for later: event.shiftKey indicates if shift is down;
           const valueChange = getValueChangeFromDiff(angleDiff, arc)
 
           // TODO: Reset accumulator on external value change.
@@ -97,14 +97,12 @@ const RotaryPot = ({knobRadius, onClick, defaultValue, onIncrement, arc = 360, r
 
   const onMouseDown = useCallback((event: React.MouseEvent<SVGCircleElement>) => {
     findCenter(event.currentTarget)
-    setShiftDown(event.shiftKey);
     setPreviousAngle(undefined)
-    setPreviousY(event.clientY);
     setIsDragging(true);
     if(event.preventDefault) event.preventDefault();
   }, [findCenter]);
 
-  const onMouseUp = useCallback((event: MouseEvent) => {
+  const onMouseUp = useCallback(() => {
     if(isDragging) setIsDragging(false);
   }, [isDragging]);
 
