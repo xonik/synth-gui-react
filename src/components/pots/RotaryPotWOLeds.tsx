@@ -1,12 +1,11 @@
 import RotaryPotBase from './RotaryPotBase'
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { MidiConfig } from '../../midi/midiControllers'
-import { sendCC } from '../../midi/midibus'
-import { ControllerGroupIds, EnvControllerId } from '../../forces/synthcore/controllers'
-import './RotaryPot.scss'
+import { sendCC, subscribe, unsubscribe } from '../../midi/midibus'
+import { ControllerGroupIds } from '../../forces/synthcore/controllers'
 import { increment } from '../../forces/controller/controllerReducer'
 import { useAppDispatch } from '../../forces/hooks'
-import RotaryPotBaseLocalControl from './RotaryPotBaseLocalControl'
+import './RotaryPot.scss'
 
 export interface Props {
     x: number,
@@ -26,6 +25,9 @@ export default (props: Props & Config) => {
     const { x, y, label, knobRadius, midiConfig, ctrlGroup, ctrlId, ctrlIndex } = props
     const labelY = knobRadius + 5
 
+    const [statePosition, setStatePosition] = useState(0);
+    const localControl = ctrlGroup === null && ctrlId === null && ctrlIndex === null
+
     const dispatch = useAppDispatch()
 
     const onClick = useCallback(() => {
@@ -34,17 +36,50 @@ export default (props: Props & Config) => {
         }
     }, [midiConfig])
 
-    const positionUpdated = useCallback((newPosition) => {
+    // TODO: Remove once all functions go through redux store. Until then, pots without connection will send and receive midi
+    // themselves.
+    const sendMidi = useCallback((position: number) => {
         if(midiConfig){
-            sendCC(midiConfig.cc, Math.round(127 * newPosition));
+            sendCC(midiConfig.cc, Math.round(127 * position));
         }
+    }, [midiConfig]);
+
+    const localIncrement = useCallback((steps: number, stepSize: number) => {
+        const newPosition = statePosition + steps * stepSize;
+        if(newPosition < 0){
+            if(statePosition > 0){
+                sendMidi(0);
+            }
+        } else if(newPosition > 1){
+            if(statePosition < 1) {
+                sendMidi(1);
+            }
+        } else if(newPosition !== statePosition){
+            sendMidi(newPosition);
+        }
+    }, [sendMidi, statePosition])
+
+    const onIncrement = useCallback((steps: number, stepSize: number) => {
         if(ctrlId !== undefined && ctrlGroup !== undefined) {
-            dispatch(increment({ctrlGroup, ctrlId, value: newPosition, ctrlIndex}))
+            dispatch(increment({ ctrlGroup, ctrlId, value: steps * stepSize, ctrlIndex }))
         }
-    }, [midiConfig, ctrlGroup, ctrlId, dispatch, ctrlIndex])
+    }, [ctrlGroup, ctrlId, ctrlIndex, dispatch])
+
+    useEffect(() => {
+        if(midiConfig) {
+            const updateValueFromMidi = (midiValue: number) => {
+                setStatePosition(midiValue / 127);
+            }
+
+            const subscriberId = subscribe(updateValueFromMidi, midiConfig)
+            return function cleanup() {
+                unsubscribe(midiConfig.cc, subscriberId);
+            };
+        }
+    });
 
     return <svg x={x} y={y} className="pot">
-        <RotaryPotBaseLocalControl knobRadius={knobRadius} onClick={onClick} onPositionChange={positionUpdated}/>
+        <RotaryPotBase knobRadius={knobRadius} onClick={onClick} onIncrement={localControl ? localIncrement : onIncrement} />
         {label && <text x={0} y={labelY} className="pot-label" textAnchor="middle">{label}</text>}
     </svg>
 }

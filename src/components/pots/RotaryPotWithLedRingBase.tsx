@@ -8,7 +8,6 @@ import { useAppDispatch } from '../../forces/hooks'
 import { ControllerGroupIds, EnvControllerId } from '../../forces/synthcore/controllers'
 import { increment } from '../../forces/controller/controllerReducer'
 import './RotaryPot.scss'
-import RotaryPotBaseLocalControl from './RotaryPotBaseLocalControl'
 
 export type LedMode = 'single' | 'multi';
 export type PotMode = 'normal' | 'pan' | 'spread';
@@ -109,7 +108,7 @@ export default (props: Props & Config) => {
         storePosition, ctrlGroup, ctrlId, ctrlIndex
     } = props
 
-    const localControl = ctrlGroup === null && ctrlId === null && ctrlIndex === null
+    const localControl = ctrlGroup === undefined && ctrlId === undefined && ctrlIndex === undefined
 
     const dispatch = useAppDispatch()
 
@@ -138,11 +137,27 @@ export default (props: Props & Config) => {
 
     // TODO: Remove once all functions go through redux store. Until then, pots without connection will send and receive midi
     // themselves.
-    const positionUpdated = useCallback((newPosition) => {
-        if(localControl && midiConfig){
-            sendCC(midiConfig.cc, Math.round(127 * newPosition));
+    const sendMidi = useCallback((position: number) => {
+        if(midiConfig){
+            sendCC(midiConfig.cc, Math.round(127 * position));
         }
-    }, [localControl, midiConfig])
+    }, [midiConfig]);
+
+    const localIncrement = useCallback((steps: number, stepSize: number) => {
+
+        const newPosition = statePosition + steps * stepSize;
+        if(newPosition < 0){
+            if(statePosition > 0){
+                sendMidi(0);
+            }
+        } else if(newPosition > 1){
+            if(statePosition < 1) {
+                sendMidi(1);
+            }
+        } else if(newPosition !== statePosition){
+            sendMidi(newPosition);
+        }
+    }, [sendMidi, statePosition])
 
     const onIncrement = useCallback((steps: number, stepSize: number) => {
         if(ctrlId !== undefined && ctrlGroup !== undefined) {
@@ -165,10 +180,12 @@ export default (props: Props & Config) => {
 
     return (
         <svg x={x} y={y} className="pot">
-            {localControl
-                ? <RotaryPotBaseLocalControl knobRadius={knobRadius} onPositionChange={positionUpdated} arc={ledArc} defaultValue={defaultValue }/>
-                : <RotaryPotBase knobRadius={knobRadius} onIncrement={onIncrement} arc={ledArc} defaultValue={defaultValue }/>
-            }
+            <RotaryPotBase
+                knobRadius={knobRadius}
+                onIncrement={localControl ? localIncrement : onIncrement}
+                arc={ledArc}
+                defaultValue={defaultValue }
+            />
             <path d={windowArc} className="pot-ring-window" strokeWidth={windowWidth}/>
             {ledAngles.map((angle, led) => {
                 const ledOn =

@@ -5,7 +5,7 @@ export type Point = {x: number, y: number}
 interface Props {
   onClick?: () => void;
   knobRadius: number;
-  onIncrement: (steps: number, stepSize: number) => void;
+  onIncrement?: (steps: number, stepSize: number) => void;
   defaultValue?: number;
   arc?: number;
   resolution?: number
@@ -41,20 +41,18 @@ const RotaryPot = ({knobRadius, onClick, defaultValue, onIncrement, arc = 360, r
 
   // TODO: This can probably be done better using refs or someting
   const findCenter = useCallback((potElement?: SVGCircleElement) => {
-    if (center === null) {
-      const bb = potElement?.getBoundingClientRect();
-      let updatedCenter: {x: number, y: number};
-      if (bb) {
-        updatedCenter = {
-          x: Math.round(bb.x + bb.width / 2),
-          y: Math.round(bb.y + bb.height / 2)
-        }
-      } else {
-        updatedCenter = { x: 0, y: 0 }
+    const bb = potElement?.getBoundingClientRect();
+    let updatedCenter: {x: number, y: number};
+    if (bb) {
+      updatedCenter = {
+        x: Math.round(bb.x + bb.width / 2),
+        y: Math.round(bb.y + bb.height / 2)
       }
-      setCenter(updatedCenter);
+    } else {
+      updatedCenter = { x: 0, y: 0 }
     }
-  }, [center]);
+    setCenter(updatedCenter);
+  }, []);
 
   const [accumulator, setAccumulator] = useState(0);
 
@@ -62,15 +60,7 @@ const RotaryPot = ({knobRadius, onClick, defaultValue, onIncrement, arc = 360, r
     if(isDragging) {
       if(!center) return
 
-      if(isShiftDown){
-        // TODO: Reimplement
-        /*
-        const yDiff = -(event.clientY - previousY);
-        setPreviousY(event.clientY);
-        const newValue = position + yDiff / 100;
-        updatePositionFromValue(newValue);
-        */
-      } else if(distToCenter(center, {x: event.clientX, y: event.clientY}) > 20) {
+      if(distToCenter(center, {x: event.clientX, y: event.clientY}) > 20) {
         // We won't start turning until we are a bit away from the center, that way we prevent the pot
         // from jumping randomly if you click too close to the center and move the other way
         const newAngle = getAngle({x: event.clientX, y: event.clientY}, center );
@@ -96,14 +86,14 @@ const RotaryPot = ({knobRadius, onClick, defaultValue, onIncrement, arc = 360, r
             const absSteps = Math.floor(Math.abs(nextAccumulator) / stepSize);
             const steps = valueChange > 0 ? absSteps : -absSteps;
             setAccumulator(nextAccumulator % stepSize);
-            onIncrement(steps, stepSize);
+            onIncrement && onIncrement(steps, stepSize);
           } else {
             setAccumulator(nextAccumulator)
           }
         }
       }
     }
-  }, [onIncrement, stepSize, accumulator, setAccumulator, center, arc, previousAngle, isDragging, isShiftDown]);
+  }, [onIncrement, stepSize, accumulator, setAccumulator, center, arc, previousAngle, isDragging]);
 
   const onMouseDown = useCallback((event: React.MouseEvent<SVGCircleElement>) => {
     findCenter(event.currentTarget)
