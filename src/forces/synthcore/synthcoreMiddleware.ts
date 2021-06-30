@@ -1,9 +1,10 @@
 import { Middleware } from 'redux'
 import { increment } from '../controller/controllerReducer'
 import { ControllerGroupIds, EnvControllerId } from './controllers'
-import { envApi, mainDisplayApi } from './synthcoreApi'
+import { envApi } from './synthcoreApi'
 import { StageId } from '../envelope/types'
 import { toggleInvert, toggleLoopMode, toggleReleaseMode, toggleRetrigger, toggleStageEnabled, toggleStageSelected } from '../envelope/envelopesReducer'
+import { mainDisplayApi } from './controllerApi'
 
 type EnvApiMapperType = {
     [key: number]: (ctrlIndex: number, value: number) => void

@@ -1,14 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ControllerGroupIds, EnvControllerId } from '../synthcore/controllers'
+import { ControllerGroupIds } from '../synthcore/controllers'
+import { MainDisplayScreenId } from './types'
+import { RootState } from '../store'
 
 type ControllerState = {
     controller: {
         [key: number]: number
     };
+    currentScreen: MainDisplayScreenId
 }
 
 const initialState: ControllerState = {
-    controller: {}
+    controller: {},
+    currentScreen:MainDisplayScreenId.ENV
 }
 
 type NumericControllerPayload = {
@@ -27,6 +31,8 @@ export const controllerSlice = createSlice({
         },
     }
 })
+
+export const selectCurrScreen = (state: RootState) => state.controller.currentScreen
 
 export const {
     increment,

@@ -15,6 +15,7 @@ export interface Props {
     ctrlGroup?: ControllerGroupIds;
     ctrlId?: number;
     ctrlIndex?: number
+    resolution?: number
 }
 
 interface Config {
@@ -22,7 +23,7 @@ interface Config {
 }
 
 export default (props: Props & Config) => {
-    const { x, y, label, knobRadius, midiConfig, ctrlGroup, ctrlId, ctrlIndex } = props
+    const { x, y, label, knobRadius, midiConfig, ctrlGroup, ctrlId, ctrlIndex, resolution } = props
     const labelY = knobRadius + 5
 
     const [statePosition, setStatePosition] = useState(0);
@@ -79,7 +80,12 @@ export default (props: Props & Config) => {
     });
 
     return <svg x={x} y={y} className="pot">
-        <RotaryPotBase knobRadius={knobRadius} onClick={onClick} onIncrement={localControl ? localIncrement : onIncrement} />
+        <RotaryPotBase
+            knobRadius={knobRadius}
+            onClick={onClick}
+            onIncrement={localControl ? localIncrement : onIncrement}
+            resolution={resolution}
+        />
         {label && <text x={0} y={labelY} className="pot-label" textAnchor="middle">{label}</text>}
     </svg>
 }

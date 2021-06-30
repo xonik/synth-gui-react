@@ -4,17 +4,13 @@ import {
     setLevel,
     setTime,
     setStageEnabled,
-    toggleRetrigger,
-    toggleReleaseMode,
-    toggleLoopMode,
     setInvert,
     setResetOnTrigger,
-    setReleaseMode, setLoopMode, deselectStage, selectStage, selectCurrEnvId, selectCurrStageId, initialState, selectEnv, selectEnvelope, setCurve, setMaxLoops
+    setReleaseMode, setLoopMode, deselectStage, selectStage, selectCurrEnvId, selectCurrStageId, selectEnv, selectEnvelope, setCurve, setMaxLoops
 } from '../envelope/envelopesReducer'
-import { Envelope, LoopMode, StageId } from '../envelope/types'
+import { Envelope, StageId } from '../envelope/types'
 import { AnyAction, Dispatch, } from '@reduxjs/toolkit'
 import { store } from '../store'
-import { MainDisplayControllerIds } from './controllers'
 import { curveFuncs } from '../../components/curves/curveCalculator'
 
 let storeDispatch: Dispatch | undefined
@@ -80,7 +76,7 @@ export const envApi = {
 
     incrementStageLevel: (envId: number, stageId: StageId, incLevel: number) => {
         const env = selectEnvelopes(store.getState()).envs[envId]
-        let currentLevel = selectEnvelope(envId)(store.getState()).stages[stageId].level;
+        let currentLevel = selectEnvelope(envId)(store.getState()).stages[stageId].level
         if (env.bipolar) {
             currentLevel = (currentLevel + 1) / 2
         }
@@ -92,7 +88,7 @@ export const envApi = {
     },
 
     incrementStageTime: (envId: number, stageId: StageId, incTime: number) => {
-        const currentTime = selectEnvelope(envId)(store.getState()).stages[stageId].time;
+        const currentTime = selectEnvelope(envId)(store.getState()).stages[stageId].time
         envApi.setStageTime(envId, stageId, currentTime + incTime)
     },
 
@@ -137,9 +133,13 @@ export const envApi = {
         }
     },
     setCurrentEnv: (envId: number) => {
-        if (selectCurrEnvId(store.getState()) !== envId) {
-            dispatch(selectEnv({ env: envId }))
+        const boundedEnv = getBounded(envId, 0, selectEnvelopes(store.getState()).envs.length - 1)
+        if (selectCurrEnvId(store.getState()) !== boundedEnv) {
+            dispatch(selectEnv({ env: boundedEnv }))
         }
+    },
+    incrementCurrentEnvelope: (increment:number) => {
+        envApi.setCurrentEnv(selectCurrEnvId(store.getState()) + increment);
     },
     setStageCurve: (envId: number, stageId: StageId, curve: number) => {
         const stage = selectEnvelope(envId)(store.getState()).stages[stageId]
@@ -148,57 +148,20 @@ export const envApi = {
             dispatch(setCurve({ env: envId, stage: stageId, curve: boundedCurve }))
         }
     },
+    incrementStageCurve: (envId: number, stageId: StageId, increment: number) => {
+        const stage = selectEnvelope(envId)(store.getState()).stages[stageId]
+        envApi.setStageCurve(envId, stageId, stage.curve + increment)
+    },
     setMaxLoops: (envId: number, maxLoops: number) => {
         const currMaxLoops = selectEnvelope(envId)(store.getState()).maxLoops
-        if (maxLoops !== currMaxLoops && (maxLoops > 1) && maxLoops < 257) {
-            dispatch(setMaxLoops({ env: envId, value: maxLoops }))
+        const boundedMaxLoops = getBounded(maxLoops, 2, 256)
+        if (boundedMaxLoops !== currMaxLoops) {
+            dispatch(setMaxLoops({ env: envId, value: boundedMaxLoops }))
         }
+    },
+    incrementMaxLoops: (envId: number, increment: number) => {
+        const currMaxLoops = selectEnvelope(envId)(store.getState()).maxLoops
+        envApi.setMaxLoops(envId, currMaxLoops + increment);
     }
 
-}
-
-const getDiscrete = (value: number, options: number) => {
-    let discrete = Math.floor(value * options)
-    if (discrete === options) {
-        return options - 1
-    } else {
-        return discrete
-    }
-
-}
-
-export const mainDisplayApi = {
-    handleMainDisplayController: (ctrlId: MainDisplayControllerIds, value: number) => {
-        //TODO Check current display page here
-        const envId = selectCurrEnvId(store.getState())
-        if (ctrlId === MainDisplayControllerIds.POT1) {
-            const envCount = initialState.envs.length
-            envApi.setCurrentEnv(getDiscrete(value, envCount))
-        } else if (ctrlId === MainDisplayControllerIds.POT2) {
-            const stageId = selectCurrStageId(store.getState())
-            if (stageId !== StageId.STOPPED) {
-                envApi.setStageTime(envId, stageId, value)
-            }
-        } else if (ctrlId === MainDisplayControllerIds.POT3) {
-            const stageId = selectCurrStageId(store.getState())
-            if (stageId !== StageId.STOPPED) {
-                envApi.setStageLevel(envId, stageId, value)
-            }
-        } else if (ctrlId === MainDisplayControllerIds.POT4) {
-            const stageId = selectCurrStageId(store.getState())
-            if (stageId !== StageId.STOPPED) {
-                const curveCount = curveFuncs.length
-                envApi.setStageCurve(envId, stageId, getDiscrete(value, curveCount))
-            }
-        } else if (ctrlId === MainDisplayControllerIds.POT5) {
-            const env = selectEnvelope(envId)(store.getState())
-            if(env.loopMode !== LoopMode.COUNTED){
-                return;
-            }
-            envApi.setMaxLoops(envId, getDiscrete(value, 254) + 2);
-        } else if (ctrlId === MainDisplayControllerIds.POT6) {
-
-        }
-
-    }
 }
