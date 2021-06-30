@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 export type Point = {x: number, y: number}
 
@@ -37,9 +37,10 @@ const RotaryPot = ({knobRadius, onClick, defaultValue, onIncrement, arc = 360, r
   const [previousAngle, setPreviousAngle] = useState<number | undefined>(undefined);
   const [isDragging, setIsDragging] = useState(false);
 
-  // TODO: This can probably be done better using refs or someting
-  const findCenter = useCallback((potElement?: SVGCircleElement) => {
-    const bb = potElement?.getBoundingClientRect();
+  const svgRef = useRef<SVGCircleElement>(null)
+
+  const updateCenter = useCallback(() => {
+    const bb = svgRef.current?.getBoundingClientRect();
     let updatedCenter: {x: number, y: number};
     if (bb) {
       updatedCenter = {
@@ -96,11 +97,11 @@ const RotaryPot = ({knobRadius, onClick, defaultValue, onIncrement, arc = 360, r
   }, [onIncrement, stepSize, accumulator, setAccumulator, center, arc, previousAngle, isDragging]);
 
   const onMouseDown = useCallback((event: React.MouseEvent<SVGCircleElement>) => {
-    findCenter(event.currentTarget)
+    updateCenter()
     setPreviousAngle(undefined)
     setIsDragging(true);
     if(event.preventDefault) event.preventDefault();
-  }, [findCenter]);
+  }, [updateCenter]);
 
   const onMouseUp = useCallback(() => {
     if(isDragging) setIsDragging(false);
@@ -117,7 +118,7 @@ const RotaryPot = ({knobRadius, onClick, defaultValue, onIncrement, arc = 360, r
     };
   },[onMouseMove, onMouseUp])
 
-  return <circle cx={0} cy={0} onClick={onClick} onMouseDown={onMouseDown} r={knobRadius} className="pot-knob"/>
+  return <circle ref={svgRef} cx={0} cy={0} onClick={onClick} onMouseDown={onMouseDown} r={knobRadius} className="pot-knob"/>
 };
 
 export default RotaryPot;
