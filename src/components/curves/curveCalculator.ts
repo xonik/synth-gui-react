@@ -92,7 +92,9 @@ const testInterpolation = (
 testInterpolation(log, 65535, 256,256, 256)
  */
 
-export const generateTables = (
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const generateAndPrintTables = (
     yScale: number,
     keypointCount: number,
     intermediatesPerKeypoint: number,
@@ -112,7 +114,8 @@ export const generateTables = (
     console.log(`const uint16_t slopes[CURVE_VARIATIONS][CURVE_SAMPLES] = {\n${slopeStrings.join(',\n')}\n};`);
 }
 
-generateTables( 65536, 256,256, 256)
+// Uncomment if you want to generate tables for teensy/c++ again
+// generateAndPrintTables( 65536, 256,256, 256)
 
 export default {
     logarithmicFunc,
