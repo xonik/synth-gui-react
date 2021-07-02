@@ -70,6 +70,7 @@ const Envelope = ({ x, y, label, showSelect = false, midiConfigs, envId }: Props
                      ctrlId={EnvControllerId.ENV_DECAY1}
                      ctrlIndex={envId}
                      storePosition={timeD1}
+                     disabled={!env.stages[StageId.DECAY1].enabled}
         />
         <RotaryPot17 ledMode="single" label="Decay 2" x={firstPotX + potDistance * 2} y={potY}
                      midiConfig={midiConfigs.d2}
@@ -77,6 +78,7 @@ const Envelope = ({ x, y, label, showSelect = false, midiConfigs, envId }: Props
                      ctrlId={EnvControllerId.ENV_DECAY2}
                      ctrlIndex={envId}
                      storePosition={timeD2}
+                     disabled={!env.stages[StageId.DECAY2].enabled}
         />
         <RotaryPot17 ledMode="multi" label="Sustain" x={firstPotX + potDistance * 3} y={potY}
                      midiConfig={midiConfigs.s}
@@ -85,13 +87,15 @@ const Envelope = ({ x, y, label, showSelect = false, midiConfigs, envId }: Props
                      ctrlIndex={envId}
                      potMode={env.bipolar ? 'pan' : 'normal'}
                      storePosition={env.bipolar ? (levelS + 1) / 2 : levelS }
+                     disabled={!env.stages[StageId.SUSTAIN].enabled}
         />
         <RotaryPot17 ledMode="single" label="Release 1" x={firstPotX + potDistance * 4} y={potY}
                      midiConfig={midiConfigs.r1}
                      ctrlGroup={ctrlGroup}
                      ctrlId={EnvControllerId.ENV_RELEASE1}
                      ctrlIndex={envId}
-                     storePosition={timeR1}
+                     storePosition={timeR1}disabled={!env.stages[StageId.RELEASE1].enabled}
+
         />
         <RotaryPot17 ledMode="single" label="Release 2" x={firstPotX + potDistance * 5} y={potY}
                      midiConfig={midiConfigs.r2}
@@ -109,6 +113,7 @@ const Envelope = ({ x, y, label, showSelect = false, midiConfigs, envId }: Props
                      ctrlId={EnvControllerId.ENV_DELAY}
                      ctrlIndex={envId}
                      storePosition={timeDly}
+                     disabled={!env.stages[StageId.DELAY].enabled}
         />
         <RotaryPot10 ledMode="multi" label="D2 Level" x={firstPotX + potDistance * 1.5} y={topRowY}
                      midiConfig={midiConfigs.d1_lev}
@@ -117,6 +122,7 @@ const Envelope = ({ x, y, label, showSelect = false, midiConfigs, envId }: Props
                      ctrlIndex={envId}
                      potMode={env.bipolar ? 'pan' : 'normal'}
                      storePosition={env.bipolar ? (levelD2 + 1) / 2 : levelD2}
+                     disabled={!env.stages[StageId.DECAY2].enabled}
         />
         <RoundLedPushButton8
             label="Invert" x={firstPotX + potDistance * 2.5} y={topRowY}

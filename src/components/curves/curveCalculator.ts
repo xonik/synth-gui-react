@@ -61,6 +61,16 @@ export const curveFuncs = [
     log3,
 ]
 
+export const curveNamesForCpp = [
+    'expo3',
+    'expo2',
+    'expo1',
+    'linear',
+    'log1',
+    'log2',
+    'log3',
+]
+
 /*
 const testInterpolation = (
     func: (x: number) => number,
@@ -81,6 +91,28 @@ const testInterpolation = (
 
 testInterpolation(log, 65535, 256,256, 256)
  */
+
+export const generateTables = (
+    yScale: number,
+    keypointCount: number,
+    intermediatesPerKeypoint: number,
+    accuracy: number
+) => {
+    const valuesForAllFuncs = curveFuncs.map((curveFunc) => getScaledPoints(curveFunc, yScale, keypointCount))
+    const slopesForAllFuncs = valuesForAllFuncs.map((scaledPoints) => getDerivated(scaledPoints, intermediatesPerKeypoint, accuracy))
+
+    const valueStrings = valuesForAllFuncs.map((values, index) => {
+        return `// ${curveNamesForCpp[index]}\n{\n${values.slice(0, values.length-1).join(',\n')}\n}`
+    })
+
+    const slopeStrings = slopesForAllFuncs.map((slopes, index) => {
+        return `// ${curveNamesForCpp[index]}\n{\n${slopes.join(',\n')}\n}`
+    })
+    console.log(`const uint16_t values[CURVE_VARIATIONS][CURVE_SAMPLES] = {\n${valueStrings.join(',\n')}\n};`);
+    console.log(`const uint16_t slopes[CURVE_VARIATIONS][CURVE_SAMPLES] = {\n${slopeStrings.join(',\n')}\n};`);
+}
+
+generateTables( 65536, 256,256, 256)
 
 export default {
     logarithmicFunc,

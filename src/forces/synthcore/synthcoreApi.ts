@@ -1,12 +1,21 @@
 import {
+    deselectStage,
+    selectCurrEnvId,
+    selectCurrStageId,
+    selectEnv,
+    selectEnvelope,
     selectEnvelopes,
+    selectStage,
+    setCurve,
     setDualLevels,
-    setLevel,
-    setTime,
-    setStageEnabled,
     setInvert,
+    setLevel,
+    setLoopMode,
+    setMaxLoops,
+    setReleaseMode,
     setResetOnTrigger,
-    setReleaseMode, setLoopMode, deselectStage, selectStage, selectCurrEnvId, selectCurrStageId, selectEnv, selectEnvelope, setCurve, setMaxLoops
+    setStageEnabled,
+    setTime
 } from '../envelope/envelopesReducer'
 import { Envelope, StageId } from '../envelope/types'
 import { AnyAction, Dispatch, } from '@reduxjs/toolkit'
@@ -41,7 +50,7 @@ function updateReleaseLevels(env: Envelope, value: number) {
     }
 }
 
-const cannotDisableStage = (stage: StageId) => stage === StageId.ATTACK || stage === StageId.RELEASE2
+const cannotDisableStage = (stage: StageId) => stage === StageId.ATTACK || stage === StageId.RELEASE2 || stage === StageId.SUSTAIN
 
 export const envApi = {
 

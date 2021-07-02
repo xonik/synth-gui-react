@@ -26,7 +26,8 @@ export interface Props {
     updateStorePosition?: (position: number) => any;
     ctrlGroup?: ControllerGroupIds;
     ctrlId?: EnvControllerId;
-    ctrlIndex?: number
+    ctrlIndex?: number;
+    disabled?: boolean;
 }
 
 interface Config {
@@ -105,7 +106,7 @@ export default (props: Props & Config) => {
 
     // Position should be in the range 0-1 in all modes but pan. In pan the range is -0.5 - 0.5
     const { x, y, ledMode = 'single', potMode = 'normal', label, midiConfig, position: defaultValue,
-        storePosition, ctrlGroup, ctrlId, ctrlIndex
+        storePosition, ctrlGroup, ctrlId, ctrlIndex, disabled
     } = props
 
     const localControl = ctrlGroup === undefined && ctrlId === undefined && ctrlIndex === undefined
@@ -144,6 +145,7 @@ export default (props: Props & Config) => {
     }, [midiConfig]);
 
     const localIncrement = useCallback((steps: number, stepSize: number) => {
+        if(disabled) return;
 
         const newPosition = statePosition + steps * stepSize;
         if(newPosition < 0){
@@ -157,13 +159,15 @@ export default (props: Props & Config) => {
         } else if(newPosition !== statePosition){
             sendMidi(newPosition);
         }
-    }, [sendMidi, statePosition])
+    }, [disabled, sendMidi, statePosition])
 
     const onIncrement = useCallback((steps: number, stepSize: number) => {
+        if(disabled) return;
+
         if(ctrlId !== undefined && ctrlGroup !== undefined) {
             dispatch(increment({ ctrlGroup, ctrlId, value: steps * stepSize, ctrlIndex }))
         }
-    }, [ctrlGroup, ctrlId, ctrlIndex, dispatch])
+    }, [disabled, ctrlGroup, ctrlId, ctrlIndex, dispatch])
 
     useEffect(() => {
         if(midiConfig) {
@@ -189,6 +193,7 @@ export default (props: Props & Config) => {
             <path d={windowArc} className="pot-ring-window" strokeWidth={windowWidth}/>
             {ledAngles.map((angle, led) => {
                 const ledOn =
+                    !disabled && (
                     // pointer should always be on
                     (ledMode === 'single' && led === ledPosition) ||
 
@@ -208,6 +213,7 @@ export default (props: Props & Config) => {
                     (ledMode === 'multi' && potMode === 'spread' && (
                         (led >= negLedPosition) && (led <= ledPosition)
                     ))
+                    )
 
                 return <circle
                     key={led}
