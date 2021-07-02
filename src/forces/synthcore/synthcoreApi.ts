@@ -21,8 +21,15 @@ import { Envelope, StageId } from '../envelope/types'
 import { AnyAction, Dispatch, } from '@reduxjs/toolkit'
 import { store } from '../store'
 import { curveFuncs } from '../../components/curves/curveCalculator'
+import midiApi from '../../midi/midiApi'
 
 let storeDispatch: Dispatch | undefined
+
+export enum ApiSource {
+    GUI,
+    SPI,
+    MIDI
+}
 
 const dispatch = (action: AnyAction) => {
     if (!storeDispatch) {
@@ -55,7 +62,7 @@ const cannotDisableStage = (stage: StageId) => stage === StageId.ATTACK || stage
 export const envApi = {
 
     // requestedValue is always 0-1 while store value is -1 to 1 if bipolar
-    setStageLevel: (envId: number, stageId: StageId, requestedValue: number) => {
+    setStageLevel: (envId: number, stageId: StageId, requestedValue: number, source: ApiSource) => {
         const env = selectEnvelopes(store.getState()).envs[envId]
         const r1enabled = env.stages[StageId.RELEASE1].enabled
         if (
@@ -63,10 +70,8 @@ export const envApi = {
             stageId === StageId.SUSTAIN ||
             (stageId === StageId.RELEASE2 && r1enabled)
         ) {
-            let value = getBounded(requestedValue)
-            if (env.bipolar) {
-                value = value * 2 - 1
-            }
+            let boundedValue = getBounded(requestedValue)
+            const value = env.bipolar ? boundedValue * 2 - 1 : boundedValue;
 
             // sustain level is not used directly. Instead it replaces r1 or r2 level depending on if
             // r1 is enabled or not.
@@ -80,28 +85,32 @@ export const envApi = {
             if (stageId === StageId.SUSTAIN) {
                 updateReleaseLevels(env, value)
             }
+
+            midiApi.env.sendLevel(source, envId, stageId, boundedValue)
         }
     },
 
-    incrementStageLevel: (envId: number, stageId: StageId, incLevel: number) => {
+    incrementStageLevel: (envId: number, stageId: StageId, incLevel: number, source: ApiSource) => {
         const env = selectEnvelopes(store.getState()).envs[envId]
         let currentLevel = selectEnvelope(envId)(store.getState()).stages[stageId].level
         if (env.bipolar) {
             currentLevel = (currentLevel + 1) / 2
         }
-        envApi.setStageLevel(envId, stageId, currentLevel + incLevel)
+        envApi.setStageLevel(envId, stageId, currentLevel + incLevel, source)
     },
 
-    setStageTime: (envId: number, stageId: StageId, requestedValue: number) => {
-        dispatch(setTime({ env: envId, stage: stageId, value: getBounded(requestedValue) }))
+    setStageTime: (envId: number, stageId: StageId, requestedValue: number, source: ApiSource) => {
+        const boundedValue = getBounded(requestedValue)
+        dispatch(setTime({ env: envId, stage: stageId, value: boundedValue }))
+        midiApi.env.sendTime(source, envId, stageId, boundedValue)
     },
 
-    incrementStageTime: (envId: number, stageId: StageId, incTime: number) => {
+    incrementStageTime: (envId: number, stageId: StageId, incTime: number, source: ApiSource) => {
         const currentTime = selectEnvelope(envId)(store.getState()).stages[stageId].time
-        envApi.setStageTime(envId, stageId, currentTime + incTime)
+        envApi.setStageTime(envId, stageId, currentTime + incTime, source)
     },
 
-    toggleStageEnabled: (envId: number, stageId: StageId) => {
+    toggleStageEnabled: (envId: number, stageId: StageId, source: ApiSource) => {
         if (cannotDisableStage(stageId)) {
             return
         }
@@ -114,63 +123,74 @@ export const envApi = {
         if (stageId === StageId.RELEASE1 && !enabled) {
             dispatch(setLevel({ env: envId, stage: StageId.RELEASE2, value: env.stages[StageId.SUSTAIN].level }))
         }
+        midiApi.env.setStageEnabled(source, envId, stageId, enabled)
     },
-    toggleInvert: (envId: number) => {
+    toggleInvert: (envId: number, source: ApiSource) => {
         const env = selectEnvelopes(store.getState()).envs[envId]
-        dispatch(setInvert({ env: envId, invert: !env.invert }))
+        const invert = !env.invert
+        dispatch(setInvert({ env: envId, invert }))
+        midiApi.env.setInvert(source, envId, invert)
     },
-    toggleRetrigger: (envId: number) => {
+    toggleRetrigger: (envId: number, source: ApiSource) => {
         const env = selectEnvelopes(store.getState()).envs[envId]
-        dispatch(setResetOnTrigger({ env: envId, resetOnTrigger: !env.resetOnTrigger }))
+        const resetOnTrigger = !env.resetOnTrigger
+        dispatch(setResetOnTrigger({ env: envId, resetOnTrigger }))
+        midiApi.env.setResetOnTrigger(source, envId, resetOnTrigger)
     },
-    toggleReleaseMode: (envId: number) => {
+    toggleReleaseMode: (envId: number, source: ApiSource) => {
         const env = selectEnvelopes(store.getState()).envs[envId]
         const releaseMode = (env.releaseMode + 1) % 3
         dispatch(setReleaseMode({ env: envId, releaseMode }))
+        midiApi.env.setReleaseMode(source, envId, releaseMode)
     },
-    toggleLoopMode: (envId: number) => {
+    toggleLoopMode: (envId: number, source: ApiSource) => {
         const env = selectEnvelopes(store.getState()).envs[envId]
         const loopMode = (env.loopMode + 1) % 4
         dispatch(setLoopMode({ env: envId, loopMode }))
+        midiApi.env.setLoopMode(source, envId, loopMode)
     },
-    toggleStageSelected: (envId: number, stageId: StageId) => {
+    toggleStageSelected: (envId: number, stageId: StageId, source: ApiSource) => {
         const currStageId = selectCurrStageId(store.getState())
         if (currStageId === stageId) {
             dispatch(deselectStage({ env: -1, stage: stageId }))
+            midiApi.env.selectStage(source, envId, stageId)
         } else {
             dispatch(selectStage({ env: -1, stage: stageId }))
+            midiApi.env.deselectStage(source, envId, stageId)
         }
     },
-    setCurrentEnv: (envId: number) => {
+    setCurrentEnv: (envId: number, source: ApiSource) => {
         const boundedEnv = getBounded(envId, 0, selectEnvelopes(store.getState()).envs.length - 1)
         if (selectCurrEnvId(store.getState()) !== boundedEnv) {
             dispatch(selectEnv({ env: boundedEnv }))
         }
     },
-    incrementCurrentEnvelope: (increment:number) => {
-        envApi.setCurrentEnv(selectCurrEnvId(store.getState()) + increment);
+    incrementCurrentEnvelope: (increment:number, source: ApiSource) => {
+        envApi.setCurrentEnv(selectCurrEnvId(store.getState()) + increment, source);
     },
-    setStageCurve: (envId: number, stageId: StageId, curve: number) => {
+    setStageCurve: (envId: number, stageId: StageId, curve: number, source: ApiSource) => {
         const stage = selectEnvelope(envId)(store.getState()).stages[stageId]
         const boundedCurve = getBounded(curve, 0, curveFuncs.length - 1)
         if (stage.curve !== boundedCurve) {
             dispatch(setCurve({ env: envId, stage: stageId, curve: boundedCurve }))
+            midiApi.env.setCurve(source, envId, stageId, curve)
         }
     },
-    incrementStageCurve: (envId: number, stageId: StageId, increment: number) => {
+    incrementStageCurve: (envId: number, stageId: StageId, increment: number, source: ApiSource) => {
         const stage = selectEnvelope(envId)(store.getState()).stages[stageId]
-        envApi.setStageCurve(envId, stageId, stage.curve + increment)
+        envApi.setStageCurve(envId, stageId, stage.curve + increment, source)
     },
-    setMaxLoops: (envId: number, maxLoops: number) => {
+    setMaxLoops: (envId: number, maxLoops: number, source: ApiSource) => {
         const currMaxLoops = selectEnvelope(envId)(store.getState()).maxLoops
         const boundedMaxLoops = getBounded(maxLoops, 2, 256)
         if (boundedMaxLoops !== currMaxLoops) {
             dispatch(setMaxLoops({ env: envId, value: boundedMaxLoops }))
+            midiApi.env.setMaxLoops(source, envId, boundedMaxLoops)
         }
     },
-    incrementMaxLoops: (envId: number, increment: number) => {
+    incrementMaxLoops: (envId: number, increment: number, source: ApiSource) => {
         const currMaxLoops = selectEnvelope(envId)(store.getState()).maxLoops
-        envApi.setMaxLoops(envId, currMaxLoops + increment);
+        envApi.setMaxLoops(envId, currMaxLoops + increment, source);
     }
 
 }
