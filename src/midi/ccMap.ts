@@ -82,7 +82,6 @@ export default {
     ENV1_LOOP_MODE: 79,
     ENV1_MAX_LOOPS: 80,
     ENV1_TOGGLE_STAGE: 81,
-    ENV1_CURVE: 82,
     ENV1_SELECT_ENV: 82,
     //83-96 free
     DSP1_POT1: 97,

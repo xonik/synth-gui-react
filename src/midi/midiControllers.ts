@@ -3,6 +3,7 @@ import { buttonLeftMidiValues } from './buttonLeftMidiValues'
 import { buttonCenterMidiValues } from './buttonCenterMidiValues'
 import { buttonRightMidiValues } from './buttonRightMidiValues'
 import CC from './ccMap'
+import SYS_CMD from './sysexCommandMap'
 
 export type MidiConfig = {
     type: ControllerType,
@@ -812,9 +813,9 @@ const midiControllers: {[key: string]: {[key: string]: MidiConfig}} = {
         DELAY: { type: 'pot', cc: CC.ENV1_DELAY },
         D2_LEVEL: { type: 'pot', cc: CC.ENV1_D2_LEVEL },
         R2_LEVEL: { type: 'pot', cc: CC.ENV1_R2_LEVEL },
-        CURVE: { type: 'pot', cc: CC.ENV1_CURVE }, // 7 bit stage, 7 bit curve
-        MAX_LOOPS: { type: 'pot', cc: CC.ENV1_CURVE },
-        TOGGLE_STAGE: { type: 'pot', cc: CC.ENV1_TOGGLE_STAGE }, // 7 bit stage, 7 bit on/off
+        CURVE: { type: 'pot', cc: SYS_CMD.ENV1_CURVE },
+        MAX_LOOPS: { type: 'pot', cc: CC.ENV1_MAX_LOOPS },
+        TOGGLE_STAGE: { type: 'pot', cc: CC.ENV1_TOGGLE_STAGE }, // 4 bit stage, 7 bit on/off
         SELECT: { type: 'pot', cc: CC.ENV1_SELECT_ENV },
         TRIGGER: {
             type: 'button',

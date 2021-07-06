@@ -5,7 +5,10 @@ import * as serviceWorker from './serviceWorker';
 import './midi/cppMidiConfigGenerator';
 import { Provider } from 'react-redux'
 import { store } from './forces/store'
+import midiApi from './midi/midiApi'
 import './index.css';
+
+midiApi.initReceive()
 
 ReactDOM.render(
   <React.StrictMode>
