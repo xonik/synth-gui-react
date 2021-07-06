@@ -153,10 +153,8 @@ export const envApi = {
         const currStageId = selectCurrStageId(store.getState())
         if (currStageId === stageId) {
             dispatch(deselectStage({ env: -1, stage: stageId }))
-            midiApi.env.selectStage(source, envId, stageId)
         } else {
             dispatch(selectStage({ env: -1, stage: stageId }))
-            midiApi.env.deselectStage(source, envId, stageId)
         }
     },
     setCurrentEnv: (envId: number, source: ApiSource) => {
@@ -182,7 +180,7 @@ export const envApi = {
     },
     setMaxLoops: (envId: number, maxLoops: number, source: ApiSource) => {
         const currMaxLoops = selectEnvelope(envId)(store.getState()).maxLoops
-        const boundedMaxLoops = getBounded(maxLoops, 2, 256)
+        const boundedMaxLoops = getBounded(maxLoops, 2, 128)
         if (boundedMaxLoops !== currMaxLoops) {
             dispatch(setMaxLoops({ env: envId, value: boundedMaxLoops }))
             midiApi.env.setMaxLoops(source, envId, boundedMaxLoops)

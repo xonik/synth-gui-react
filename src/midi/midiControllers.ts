@@ -812,7 +812,10 @@ const midiControllers: {[key: string]: {[key: string]: MidiConfig}} = {
         DELAY: { type: 'pot', cc: CC.ENV1_DELAY },
         D2_LEVEL: { type: 'pot', cc: CC.ENV1_D2_LEVEL },
         R2_LEVEL: { type: 'pot', cc: CC.ENV1_R2_LEVEL },
-
+        CURVE: { type: 'pot', cc: CC.ENV1_CURVE }, // 7 bit stage, 7 bit curve
+        MAX_LOOPS: { type: 'pot', cc: CC.ENV1_CURVE },
+        TOGGLE_STAGE: { type: 'pot', cc: CC.ENV1_TOGGLE_STAGE }, // 7 bit stage, 7 bit on/off
+        SELECT: { type: 'pot', cc: CC.ENV1_SELECT_ENV },
         TRIGGER: {
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
@@ -836,79 +839,31 @@ const midiControllers: {[key: string]: {[key: string]: MidiConfig}} = {
                 BUTTONS.BUTTONS_RIGHT.values.ENV1_INVERT_ON,
             ],
         },
-    },
-    ENV2: {
-        ATTACK: { type: 'pot', cc: CC.ENV2_ATTACK },
-        DECAY1: { type: 'pot', cc: CC.ENV2_DECAY1 },
-        DECAY2: { type: 'pot', cc: CC.ENV2_DECAY2 },
-        SUSTAIN: { type: 'pot', cc: CC.ENV2_SUSTAIN },
-        RELEASE1: { type: 'pot', cc: CC.ENV2_RELEASE1 },
-        RELEASE2: { type: 'pot', cc: CC.ENV2_RELEASE2 },
-        DELAY: { type: 'pot', cc: CC.ENV2_DELAY },
-        D2_LEVEL: { type: 'pot', cc: CC.ENV2_D2_LEVEL },
-        R2_LEVEL: { type: 'pot', cc: CC.ENV2_R2_LEVEL },
-        TRIGGER: {
+        RESET_ON_TRIGGER: {
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.ENV2_TRIGGER,
+                BUTTONS.BUTTONS_RIGHT.values.ENV1_RESET_ON_TRIGGER_OFF,
+                BUTTONS.BUTTONS_RIGHT.values.ENV1_RESET_ON_TRIGGER_ON,
             ],
         },
-        LOOP: {
+        RELEASE_MODE: {
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.ENV2_LOOP_OFF,
-                BUTTONS.BUTTONS_RIGHT.values.ENV2_LOOP_ON,
+                BUTTONS.BUTTONS_RIGHT.values.ENV1_RELEASE_MODE_NORMAL,
+                BUTTONS.BUTTONS_RIGHT.values.ENV1_RELEASE_MODE_SKIP_R1,
+                BUTTONS.BUTTONS_RIGHT.values.ENV1_RELEASE_MODE_FREE_RUN,
             ],
         },
-        INVERT: {
+        LOOP_MODE: {
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.ENV2_INVERT_OFF,
-                BUTTONS.BUTTONS_RIGHT.values.ENV2_INVERT_ON,
-            ],
-        },
-    },
-    ENV3: {
-        ATTACK: { type: 'pot', cc: CC.ENV3_ATTACK },
-        DECAY1: { type: 'pot', cc: CC.ENV3_DECAY1 },
-        DECAY2: { type: 'pot', cc: CC.ENV3_DECAY2 },
-        SUSTAIN: { type: 'pot', cc: CC.ENV3_SUSTAIN },
-        RELEASE1: { type: 'pot', cc: CC.ENV3_RELEASE1 },
-        RELEASE2: { type: 'pot', cc: CC.ENV3_RELEASE2 },
-        DELAY: { type: 'pot', cc: CC.ENV3_DELAY },
-        D2_LEVEL: { type: 'pot', cc: CC.ENV3_D2_LEVEL },
-        R2_LEVEL: { type: 'pot', cc: CC.ENV3_R2_LEVEL },
-        ENV_SELECT: {
-            type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
-            values: [
-                BUTTONS.BUTTONS_RIGHT.values.ENV3_SELECT,
-            ],
-        },
-        TRIGGER: {
-            type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
-            values: [
-                BUTTONS.BUTTONS_RIGHT.values.ENV3_TRIGGER,
-            ],
-        },
-        LOOP: {
-            type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
-            values: [
-                BUTTONS.BUTTONS_RIGHT.values.ENV3_LOOP_OFF,
-                BUTTONS.BUTTONS_RIGHT.values.ENV3_LOOP_ON,
-            ],
-        },
-        INVERT: {
-            type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
-            values: [
-                BUTTONS.BUTTONS_RIGHT.values.ENV3_INVERT_OFF,
-                BUTTONS.BUTTONS_RIGHT.values.ENV3_INVERT_ON,
+                BUTTONS.BUTTONS_RIGHT.values.ENV1_LOOP_MODE_OFF,
+                BUTTONS.BUTTONS_RIGHT.values.ENV1_LOOP_MODE_GATED,
+                BUTTONS.BUTTONS_RIGHT.values.ENV1_LOOP_MODE_COUNTED,
+                BUTTONS.BUTTONS_RIGHT.values.ENV1_LOOP_MODE_INFINITE,
             ],
         },
     },
