@@ -1,10 +1,11 @@
 import { Middleware } from 'redux'
 import { increment } from '../controller/controllerReducer'
 import { ControllerGroupIds, EnvControllerId } from './controllers'
-import { ApiSource, envApi } from './synthcoreApi'
+import { envApi } from './synthcoreApi'
 import { StageId } from '../envelope/types'
 import { toggleInvert, toggleLoopMode, toggleReleaseMode, toggleRetrigger, toggleStageEnabled, toggleStageSelected } from '../envelope/envelopesReducer'
 import { mainDisplayApi } from './controllerApi'
+import { ApiSource } from './utils'
 
 type EnvApiMapperType = {
     [key: number]: (ctrlIndex: number, value: number) => void
@@ -20,31 +21,34 @@ const envApiMapper: EnvApiMapperType = {
     [EnvControllerId.ENV_RELEASE2]: (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.RELEASE2, value, ApiSource.GUI),
     [EnvControllerId.ENV_D2_LEVEL]: (ctrlIndex: number, value: number) => envApi.incrementStageLevel(ctrlIndex, StageId.DECAY2, value, ApiSource.GUI),
     [EnvControllerId.ENV_R2_LEVEL]: (ctrlIndex: number, value: number) => envApi.incrementStageLevel(ctrlIndex, StageId.RELEASE2, value, ApiSource.GUI),
+    [EnvControllerId.ENV_SELECT]: (ctrlIndex: number, value: number) => {/* TODO: select next envelope (for env 3 ui)*/},
+    [EnvControllerId.ENV_LOOP]: (ctrlIndex: number, value: number) => {/* TODO: toggle loop on off without changing mode */},
+    [EnvControllerId.ENV_TRIGGER]: (ctrlIndex: number, value: number) => {/* TODO: trigger envelope */},
 }
 
-export const synthcoreMiddleware: Middleware<{},any> = storeAPI => next => action => {
-    if(increment.match(action)){
-        const ctrlIndex = action.payload.ctrlIndex || 0;
+export const synthcoreMiddleware: Middleware<{}, any> = storeAPI => next => action => {
+    if (increment.match(action)) {
+        const ctrlIndex = action.payload.ctrlIndex || 0
 
         // this may be against the redux rules, but we do not supply the storeAPI.dispatch
         // to the apis. Instead, they get dispatch directly from the store.
-        if(action.payload.ctrlGroup === ControllerGroupIds.ENV){
-            envApiMapper[action.payload.ctrlId](ctrlIndex, action.payload.value);
-        } else if(action.payload.ctrlGroup === ControllerGroupIds.MAIN_DISP){
-            mainDisplayApi.handleMainDisplayController(action.payload.ctrlId, action.payload.value);
+        if (action.payload.ctrlGroup === ControllerGroupIds.ENV) {
+            envApiMapper[action.payload.ctrlId](ctrlIndex, action.payload.value)
+        } else if (action.payload.ctrlGroup === ControllerGroupIds.MAIN_DISP) {
+            mainDisplayApi.handleMainDisplayController(action.payload.ctrlId, action.payload.value)
         }
-    } else if(toggleStageEnabled.match(action)){
-        envApi.toggleStageEnabled(action.payload.env, action.payload.stage, ApiSource.GUI);
-    } else if(toggleInvert.match(action)){
-        envApi.toggleInvert(action.payload.env, ApiSource.GUI);
-    } else if(toggleRetrigger.match(action)){
-        envApi.toggleRetrigger(action.payload.env, ApiSource.GUI);
-    } else if(toggleReleaseMode.match(action)){
-        envApi.toggleReleaseMode(action.payload.env, ApiSource.GUI);
-    } else if(toggleLoopMode.match(action)){
-        envApi.toggleLoopMode(action.payload.env, ApiSource.GUI);
-    } else if(toggleStageSelected.match(action)) {
+    } else if (toggleStageEnabled.match(action)) {
+        envApi.toggleStageEnabled(action.payload.env, action.payload.stage, ApiSource.GUI)
+    } else if (toggleInvert.match(action)) {
+        envApi.toggleInvert(action.payload.env, ApiSource.GUI)
+    } else if (toggleRetrigger.match(action)) {
+        envApi.toggleRetrigger(action.payload.env, ApiSource.GUI)
+    } else if (toggleReleaseMode.match(action)) {
+        envApi.toggleReleaseMode(action.payload.env, ApiSource.GUI)
+    } else if (toggleLoopMode.match(action)) {
+        envApi.toggleLoopMode(action.payload.env, ApiSource.GUI)
+    } else if (toggleStageSelected.match(action)) {
         envApi.toggleStageSelected(action.payload.env, action.payload.stage, ApiSource.GUI)
     }
-    return next(action);
+    return next(action)
 }

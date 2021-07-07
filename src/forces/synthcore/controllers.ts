@@ -15,6 +15,9 @@ export enum EnvControllerId {
     ENV_RELEASE2,
     ENV_D2_LEVEL,
     ENV_R2_LEVEL,
+    ENV_SELECT,
+    ENV_LOOP,
+    ENV_TRIGGER,
 }
 
 export const envControllerIds = [
@@ -27,6 +30,9 @@ export const envControllerIds = [
     EnvControllerId.ENV_RELEASE2,
     EnvControllerId.ENV_D2_LEVEL,
     EnvControllerId.ENV_R2_LEVEL,
+    EnvControllerId.ENV_SELECT,
+    EnvControllerId.ENV_LOOP,
+    EnvControllerId.ENV_TRIGGER,
 ]
 
 export enum MainDisplayControllerIds {

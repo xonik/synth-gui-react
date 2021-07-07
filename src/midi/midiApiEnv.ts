@@ -1,7 +1,8 @@
-import { ApiSource, envApi } from '../forces/synthcore/synthcoreApi'
+import { envApi } from '../forces/synthcore/synthcoreApi'
 import { Curve, LoopMode, ReleaseMode } from '../forces/envelope/types'
 import midiControllers from './midiControllers'
 import { send16, send2x7, sendCC, subscribe, subscribeToCmd } from './midibus'
+import { ApiSource } from '../forces/synthcore/utils'
 
 const shouldSend = (source: ApiSource) => {
     // TODO: Make this configurable
@@ -17,140 +18,193 @@ const selectEnv = (envId: number) => {
     }
 }
 
-const setLevel = (source: ApiSource, envId: number, stageId: number, boundedValue: number) => {
-    if(!shouldSend(source)) return;
-    selectEnv(envId)
-    send16(midiControllers.ENV1.LEVEL.cc, Math.round(boundedValue * 65535))
-}
-const receiveLevel = () => {
-    subscribeToCmd((values: number[]) => {
-        const value = values[0] + values[1] * 128 + values[2] * 16384
-        envApi.setStageLevel(currentEnvId, values[3], value, ApiSource.MIDI)
-    }, midiControllers.ENV1.LEVEL)
-}
+const level = (() => {
+    const cfg = midiControllers.ENV1.LEVEL
 
-const setTime = (source: ApiSource, envId: number, stageId: number, boundedValue: number) => {
-    if(!shouldSend(source)) return;
-    selectEnv(envId)
-    send16(midiControllers.ENV1.TIME.cc, Math.round(boundedValue * 65535))
-}
-const receiveTime = () => {
-    subscribeToCmd((values: number[]) => {
-        const value = values[0] + values[1] * 128 + values[2] * 16384
-        envApi.setStageTime(currentEnvId, values[3], value, ApiSource.MIDI)
-    }, midiControllers.ENV1.TIME)
-}
+    return {
+        send: (source: ApiSource, envId: number, stageId: number, boundedValue: number) => {
+            if(!shouldSend(source)) return;
+            selectEnv(envId)
+            send16(cfg.cc, Math.round(boundedValue * 65535))
+        },
+        receive: () => {
+            subscribeToCmd((values: number[]) => {
+                const value = values[0] + values[1] * 128 + values[2] * 16384
+                envApi.setStageLevel(currentEnvId, values[3], value, ApiSource.MIDI)
+            }, cfg)
+        }
+    }
+})()
 
-const setInvert = (source: ApiSource, envId: number, invert: boolean) => {
-    if(!shouldSend(source)) return;
-    selectEnv(envId)
-    const invertIndex = invert ? 1 : 0
-    sendCC(midiControllers.ENV1.INVERT.cc, midiControllers.ENV1.INVERT.values?.[invertIndex] || 0)
-}
-const receiveInvert = () => {
-    subscribe((value: number) => {
-        const invert = value === midiControllers.ENV1.INVERT.values?.[1];
-        envApi.setInvert(currentEnvId, invert, ApiSource.MIDI)
-    }, midiControllers.ENV1.INVERT)
-}
+const time = (() => {
+    const cfg = midiControllers.ENV1.TIME
+    return {
+        send: (source: ApiSource, envId: number, stageId: number, boundedValue: number) => {
+            if(!shouldSend(source)) return;
+            selectEnv(envId)
+            send16(cfg.cc, Math.round(boundedValue * 65535))
+        },
+        receive: () => {
+            subscribeToCmd((values: number[]) => {
+                const value = values[0] + values[1] * 128 + values[2] * 16384
+                envApi.setStageTime(currentEnvId, values[3], value, ApiSource.MIDI)
+            }, cfg)
+        }
+    }
+})()
 
-const setResetOnTrigger = (source: ApiSource, envId: number, resetOnTrigger: boolean) => {
-    if(!shouldSend(source)) return;
-    selectEnv(envId)
-    const resetIndex = resetOnTrigger ? 1 : 0
-    sendCC(midiControllers.ENV1.RESET_ON_TRIGGER.cc, midiControllers.ENV1.RESET_ON_TRIGGER.values?.[resetIndex] || 0)
-}
-const receiveResetOnTrigger = () => {
-    subscribe((value: number) => {
-        const reset = value === midiControllers.ENV1.RESET_ON_TRIGGER.values?.[1];
-        envApi.setRetrigger(currentEnvId, reset, ApiSource.MIDI)
-    }, midiControllers.ENV1.RESET_ON_TRIGGER)
-}
+const invert = (() => {
+    const cfg = midiControllers.ENV1.INVERT
 
-const setReleaseMode = (source: ApiSource, envId: number, releaseMode: ReleaseMode) => {
-    if(!shouldSend(source)) return;
-    selectEnv(envId)
-    sendCC(midiControllers.ENV1.RELEASE_MODE.cc, midiControllers.ENV1.RELEASE_MODE.values?.[releaseMode] || 0)
-}
-const receiveReleaseMode = () => {
-    subscribe((value: number) => {
-        const releaseMode = midiControllers.ENV1.RELEASE_MODE.values?.indexOf(value) || 0;
-        envApi.setReleaseMode(currentEnvId, releaseMode, ApiSource.MIDI)
-    }, midiControllers.ENV1.RELEASE_MODE)
-}
+    return {
+        send: (source: ApiSource, envId: number, invert: boolean) => {
+            if (!shouldSend(source)) return;
+            selectEnv(envId)
+            const invertIndex = invert ? 1 : 0
+            sendCC(cfg.cc, midiControllers.ENV1.INVERT.values?.[invertIndex] || 0)
+        },
+        receive: () => {
+            subscribe((value: number) => {
+                const invert = value === midiControllers.ENV1.INVERT.values?.[1];
+                envApi.setInvert(currentEnvId, invert, ApiSource.MIDI)
+            }, cfg)
+        }
+    }
+})()
 
-const setLoopMode = (source: ApiSource, envId: number, loopMode: LoopMode) => {
-    if(!shouldSend(source)) return;
-    selectEnv(envId)
-    sendCC(midiControllers.ENV1.LOOP_MODE.cc, midiControllers.ENV1.LOOP_MODE.values?.[loopMode] || 0)
-}
-const receiveLoopMode = () => {
-    subscribe((value: number) => {
-        const loopMode = midiControllers.ENV1.LOOP_MODE.values?.indexOf(value) || 0;
-        envApi.setLoopMode(currentEnvId, loopMode, ApiSource.MIDI)
-    }, midiControllers.ENV1.LOOP_MODE)
-}
+const resetOnTrigger = (() => {
+    const cfg = midiControllers.ENV1.RESET_ON_TRIGGER
 
-const setStageEnabled = (source: ApiSource, envId: number, stageId: number, enabled: boolean) => {
-    if(!shouldSend(source)) return;
-    selectEnv(envId)
-    const enableBit = enabled ? 0b1000 : 0;
-    const data = stageId | enableBit;
-    sendCC(midiControllers.ENV1.TOGGLE_STAGE.cc, data)
-}
-const receiveStageEnabled = () => {
-    subscribe((value: number) => {
-        const stageId = value & 0b111
-        const enabled = (value & 0b1000) > 0;
-        envApi.setStageEnabled(currentEnvId, stageId, enabled, ApiSource.MIDI)
-    }, midiControllers.ENV1.TOGGLE_STAGE)
-}
+    return {
+        send: (source: ApiSource, envId: number, resetOnTrigger: boolean) => {
+            if (!shouldSend(source)) return;
+            selectEnv(envId)
+            const resetIndex = resetOnTrigger ? 1 : 0
+            sendCC(cfg.cc, midiControllers.ENV1.RESET_ON_TRIGGER.values?.[resetIndex] || 0)
+        },
+        receive: () => {
+            subscribe((value: number) => {
+                const reset = value === midiControllers.ENV1.RESET_ON_TRIGGER.values?.[1];
+                envApi.setRetrigger(currentEnvId, reset, ApiSource.MIDI)
+            }, cfg)
+        }
+    }
+})()
 
-const setCurve = (source: ApiSource, envId: number, stageId: number, curve: Curve) => {
-    if(!shouldSend(source)) return;
-    selectEnv(envId)
-    send2x7(midiControllers.ENV1.CURVE.cc, stageId, curve)
-}
-const receiveCurve = () => {
-    subscribeToCmd((values: number[]) => {
-        const stageId = values[0]
-        const curve = values[1]
-        envApi.setStageCurve(currentEnvId, stageId, curve, ApiSource.MIDI)
-    }, midiControllers.ENV1.CURVE)
-}
+const releaseMode = (() => {
+    const cfg = midiControllers.ENV1.RELEASE_MODE
 
-const setMaxLoops = (source: ApiSource, envId: number, maxLoops: number) => {
-    if(!shouldSend(source)) return;
-    selectEnv(envId)
-    sendCC(midiControllers.ENV1.MAX_LOOPS.cc, maxLoops)
-}
-const receiveMaxLoops = () => {
-    subscribe((value: number) => {
-        envApi.setMaxLoops(currentEnvId, value, ApiSource.MIDI)
-    }, midiControllers.ENV1.MAX_LOOPS)
-}
+    return {
+        send: (source: ApiSource, envId: number, releaseMode: ReleaseMode) => {
+            if (!shouldSend(source)) return;
+            selectEnv(envId)
+            sendCC(cfg.cc, midiControllers.ENV1.RELEASE_MODE.values?.[releaseMode] || 0)
+        },
+        receive: () => {
+            subscribe((value: number) => {
+                const releaseMode = midiControllers.ENV1.RELEASE_MODE.values?.indexOf(value) || 0;
+                envApi.setReleaseMode(currentEnvId, releaseMode, ApiSource.MIDI)
+            }, cfg)
+        }
+    }
+})()
+
+const loopMode = (() => {
+    const cfg = midiControllers.ENV1.LOOP_MODE
+
+    return {
+        send: (source: ApiSource, envId: number, loopMode: LoopMode) => {
+            if (!shouldSend(source)) return;
+            selectEnv(envId)
+            sendCC(cfg.cc, midiControllers.ENV1.LOOP_MODE.values?.[loopMode] || 0)
+        },
+        receive: () => {
+            subscribe((value: number) => {
+                const loopMode = midiControllers.ENV1.LOOP_MODE.values?.indexOf(value) || 0;
+                envApi.setLoopMode(currentEnvId, loopMode, ApiSource.MIDI)
+            }, cfg)
+        }
+    }
+})()
+
+const stageEnabled = (() => {
+    const cfg = midiControllers.ENV1.TOGGLE_STAGE
+
+    return {
+        send: (source: ApiSource, envId: number, stageId: number, enabled: boolean) => {
+            if (!shouldSend(source)) return;
+            selectEnv(envId)
+            const enableBit = enabled ? 0b1000 : 0;
+            const data = stageId | enableBit;
+            sendCC(cfg.cc, data)
+        },
+        receive: () => {
+            subscribe((value: number) => {
+                const stageId = value & 0b111
+                const enabled = (value & 0b1000) > 0;
+                envApi.setStageEnabled(currentEnvId, stageId, enabled, ApiSource.MIDI)
+            }, cfg)
+        }
+    }
+})()
+
+const curve = (() => {
+    const cfg = midiControllers.ENV1.CURVE
+
+    return {
+        send: (source: ApiSource, envId: number, stageId: number, curve: Curve) => {
+            if (!shouldSend(source)) return;
+            selectEnv(envId)
+            send2x7(cfg.cc, stageId, curve)
+        },
+        receive: () => {
+            subscribeToCmd((values: number[]) => {
+                const stageId = values[0]
+                const curve = values[1]
+                envApi.setStageCurve(currentEnvId, stageId, curve, ApiSource.MIDI)
+            }, cfg)
+        }
+    }
+})()
+
+const maxLoops = (() => {
+    const cfg = midiControllers.ENV1.MAX_LOOPS
+
+    return {
+        send: (source: ApiSource, envId: number, maxLoops: number) => {
+            if (!shouldSend(source)) return;
+            selectEnv(envId)
+            sendCC(cfg.cc, maxLoops)
+        },
+        receive: () => {
+            subscribe((value: number) => {
+                envApi.setMaxLoops(currentEnvId, value, ApiSource.MIDI)
+            }, cfg)
+        }
+    }
+})()
 
 const initReceive = () => {
-    receiveLevel()
-    receiveTime()
-    receiveInvert()
-    receiveResetOnTrigger()
-    receiveReleaseMode()
-    receiveLoopMode()
-    receiveStageEnabled()
-    receiveCurve()
-    receiveMaxLoops()
+    level.receive()
+    time.receive()
+    invert.receive()
+    resetOnTrigger.receive()
+    releaseMode.receive()
+    loopMode.receive()
+    stageEnabled.receive()
+    curve.receive()
+    maxLoops.receive()
 }
 
 export default {
-    setLevel,
-    setTime,
-    setStageEnabled,
-    setInvert,
-    setResetOnTrigger,
-    setReleaseMode,
-    setLoopMode,
-    setCurve,
-    setMaxLoops,
+    setLevel: level.send,
+    setTime: time.send,
+    setInvert: invert.send,
+    setStageEnabled: stageEnabled.send,
+    setResetOnTrigger: resetOnTrigger.send,
+    setReleaseMode: releaseMode.send,
+    setLoopMode: loopMode.send,
+    setCurve: curve.send,
+    setMaxLoops: maxLoops.send,
     initReceive,
 }

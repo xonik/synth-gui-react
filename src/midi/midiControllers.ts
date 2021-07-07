@@ -804,19 +804,12 @@ const midiControllers: {[key: string]: {[key: string]: MidiConfig}} = {
         FX2_SEND: { type: 'pot', cc: CC.VOICE_OUT_FX2_SEND },
     },
     ENV1: {
-        ATTACK: { type: 'pot', cc: CC.ENV1_ATTACK },
-        DECAY1: { type: 'pot', cc: CC.ENV1_DECAY1 },
-        DECAY2: { type: 'pot', cc: CC.ENV1_DECAY2 },
-        SUSTAIN: { type: 'pot', cc: CC.ENV1_SUSTAIN },
-        RELEASE1: { type: 'pot', cc: CC.ENV1_RELEASE1 },
-        RELEASE2: { type: 'pot', cc: CC.ENV1_RELEASE2 },
-        DELAY: { type: 'pot', cc: CC.ENV1_DELAY },
-        D2_LEVEL: { type: 'pot', cc: CC.ENV1_D2_LEVEL },
-        R2_LEVEL: { type: 'pot', cc: CC.ENV1_R2_LEVEL },
-        CURVE: { type: 'pot', cc: SYS_CMD.ENV1_CURVE },
-        MAX_LOOPS: { type: 'pot', cc: CC.ENV1_MAX_LOOPS },
-        TOGGLE_STAGE: { type: 'pot', cc: CC.ENV1_TOGGLE_STAGE }, // 4 bit stage, 7 bit on/off
-        SELECT: { type: 'pot', cc: CC.ENV1_SELECT_ENV },
+        CURVE: { type: 'pot', cc: SYS_CMD.ENV_CURVE },
+        LEVEL: { type: 'pot', cc: SYS_CMD.ENV_LEVEL },
+        TIME: { type: 'pot', cc: SYS_CMD.ENV_TIME },
+        MAX_LOOPS: { type: 'pot', cc: CC.ENV_MAX_LOOPS },
+        TOGGLE_STAGE: { type: 'pot', cc: CC.ENV_TOGGLE_STAGE }, // 4 bit stage, 7 bit on/off
+        SELECT: { type: 'pot', cc: CC.ENV_SELECT_ENV },
         TRIGGER: {
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
