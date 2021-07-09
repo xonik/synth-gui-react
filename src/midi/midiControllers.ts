@@ -17,6 +17,7 @@ import midiControllersSrcMix from './controllers/midiControllersSrcMix'
 import midiControllersTranspose from './controllers/midiControllersTranspose'
 import midiControllersVoiceOut from './controllers/midiControllersVoiceOut'
 import midiControllersVoices from './controllers/midiControllersVoices'
+import midiControllersArp from './controllers/midiControllersArp'
 
 const midiControllers ={
     DCO1: midiControllersOsc.DCO1,
@@ -30,7 +31,7 @@ const midiControllers ={
     SOURCE_MIX: midiControllersSrcMix,
     ROUTE: midiControllersRoute,
     MASTER_CLOCK: midiControllersMasterClock,
-    ARPEGGIATOR: midiControllersEnv,
+    ARPEGGIATOR: midiControllersArp,
     VOICES: midiControllersVoices,
     MAIN_PANEL: midiControllersMainPanel,
     TRANSPOSE: midiControllersTranspose,

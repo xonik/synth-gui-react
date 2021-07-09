@@ -1,6 +1,6 @@
 import RotaryPotBase from './RotaryPotBase'
 import React, { useCallback, useEffect, useState } from 'react'
-import { MidiConfig } from '../../midi/midiControllers'
+import { MidiConfig } from '../../midi/controllers/utils'
 import { sendCC, subscribe, unsubscribe } from '../../midi/midibus'
 import { ControllerGroupIds } from '../../forces/synthcore/controllers'
 import { increment } from '../../forces/controller/controllerReducer'

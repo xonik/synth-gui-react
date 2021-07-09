@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import RoundPushButtonBase from './RoundPushButtonBase'
 import RotaryPotBase from '../pots/RotaryPotBase'
 import { subscribe, unsubscribe, sendCC } from '../../midi/midibus'
-import { MidiConfig } from '../../midi/midiControllers'
+import { MidiConfig } from '../../midi/controllers/utils'
 import './RoundButton.scss'
 
 type LedPosition = 'left' | 'right' | 'sides' | 'top' | 'bottom' | undefined;

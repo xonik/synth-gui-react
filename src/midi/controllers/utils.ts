@@ -6,7 +6,7 @@ import { buttonRightMidiValues } from '../buttonRightMidiValues'
 export interface MidiConfig {
     readonly type: ControllerType
     readonly cc: number
-    //readonly values?: number[]
+    readonly values?: number[]
 }
 
 export interface MidiConfigWithValue extends MidiConfig{
