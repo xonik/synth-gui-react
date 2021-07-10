@@ -2,7 +2,9 @@ import React from 'react';
 import RotaryPot17 from '../pots/RotaryPot17';
 import Header from '../misc/Header';
 import { LedMode, PotMode } from '../pots/RotaryPotWithLedRingBase';
-import midiConstants, { MidiConfig } from '../../midi/midiControllers'
+import midiConstants from '../../midi/midiControllers'
+import { MidiConfig } from '../../midi/types'
+
 
 interface Props {
   x: number,

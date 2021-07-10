@@ -1,4 +1,4 @@
-import midiApiEnv from './midiApiEnv'
+import midiApiEnv from './modules/env/midiApiEnv'
 
 const initReceive = () => {
     midiApiEnv.initReceive()

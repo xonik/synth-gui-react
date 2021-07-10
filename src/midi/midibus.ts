@@ -1,4 +1,4 @@
-import { MidiConfig } from './controllers/utils'
+import { MidiConfig } from './types'
 
 type MIDIMessageEvent = WebMidi.MIDIMessageEvent
 type MIDIInput = WebMidi.MIDIInput

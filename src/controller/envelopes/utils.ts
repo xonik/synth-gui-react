@@ -1,6 +1,6 @@
 import { getScaledPoints } from '../../components/curves/curveCalculator'
 import { Point } from '../../utils/types'
-import { Curve, LoopMode, ReleaseMode, StageId } from '../../forces/envelope/types'
+import { Curve, LoopMode, ReleaseMode, StageId } from '../../synthcore/modules/env/types'
 
 export const getPoints = (
     curveFunc: (x: number) => number,

@@ -1,10 +1,10 @@
 import RotaryPotBase from './RotaryPotBase'
 import React, { useCallback, useEffect, useState } from 'react'
-import { MidiConfig } from '../../midi/controllers/utils'
+import { MidiConfig } from '../../midi/types'
 import { sendCC, subscribe, unsubscribe } from '../../midi/midibus'
-import { ControllerGroupIds } from '../../forces/synthcore/controllers'
-import { increment } from '../../forces/controller/controllerReducer'
-import { useAppDispatch } from '../../forces/hooks'
+import { increment } from '../../synthcore/modules/controller/controllerReducer'
+import { useAppDispatch } from '../../synthcore/hooks'
+import { ControllerGroupIds } from '../../synthcore/modules/mainDisplay/types'
 import './RotaryPot.scss'
 
 export interface Props {

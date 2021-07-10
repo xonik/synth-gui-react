@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import AnimatedCurve from '../../components/curves/AnimatedCurve'
-import { Stage } from '../../forces/envelope/types'
+import { Stage } from '../../synthcore/modules/env/types'
 import { getPoints } from './utils'
 import { curveFuncs } from '../../components/curves/curveCalculator'
 import { Point } from '../../utils/types'

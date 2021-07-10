@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react'
-import { StageId, Envelope, Stage } from '../../forces/envelope/types'
+import { StageId, Envelope, Stage } from '../../synthcore/modules/env/types'
 import StageBlock from './StageBlock'
-import { selectCurrStageId, toggleStageSelected } from '../../forces/envelope/envelopesReducer'
-import { useAppDispatch, useAppSelector } from '../../forces/hooks'
+import { selectCurrStageId, toggleStageSelected } from '../../synthcore/modules/env/envelopesReducer'
+import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import classNames from 'classnames'
 import './Stages.scss'
 

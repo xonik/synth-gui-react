@@ -1,5 +1,5 @@
 import React from 'react'
-import { Envelope, StageId } from '../../forces/envelope/types'
+import { Envelope, StageId } from '../../synthcore/modules/env/types'
 import classNames from 'classnames'
 import { stageNames } from './utils'
 import './StageNames.scss'

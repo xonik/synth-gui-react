@@ -3,8 +3,9 @@ import classNames from 'classnames'
 import RoundPushButtonBase from './RoundPushButtonBase'
 import RotaryPotBase from '../pots/RotaryPotBase'
 import { subscribe, unsubscribe, sendCC } from '../../midi/midibus'
-import { MidiConfig } from '../../midi/controllers/utils'
+import { MidiConfig } from '../../midi/types'
 import './RoundButton.scss'
+import { ControllerGroupIds, EnvControllerId } from '../../synthcore/modules/mainDisplay/types'
 
 type LedPosition = 'left' | 'right' | 'sides' | 'top' | 'bottom' | undefined;
 type LabelPosition = 'left' | 'right' | 'top' | 'bottom' | undefined;
@@ -58,6 +59,10 @@ export interface Props {
 
     // Default value is 0 unless this is set to another index in the midi values array. Must be less than the length of the values array.
     defaultValueIndex?: number;
+
+    ctrlGroup?: ControllerGroupIds;
+    ctrlId?: EnvControllerId;
+    ctrlIndex?: number;
 }
 
 type LabelPos = {

@@ -4,10 +4,10 @@ import RotaryPot10 from '../pots/RotaryPot10'
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import Header from '../misc/Header'
-import { selectEnvelope } from '../../forces/envelope/envelopesReducer'
-import { StageId } from '../../forces/envelope/types'
-import { ControllerGroupIds, EnvControllerId } from '../../forces/synthcore/controllers'
-import { useAppSelector } from '../../forces/hooks'
+import { selectEnvelope } from '../../synthcore/modules/env/envelopesReducer'
+import { StageId } from '../../synthcore/modules/env/types'
+import { useAppSelector } from '../../synthcore/hooks'
+import { ControllerGroupIds, EnvControllerId } from '../../synthcore/modules/mainDisplay/types'
 
 interface Props {
     x: number,

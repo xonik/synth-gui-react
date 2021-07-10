@@ -1,7 +1,7 @@
 import React from 'react'
-import { Envelope, LoopMode, ReleaseMode, StageId } from '../../forces/envelope/types'
+import { Envelope, LoopMode, ReleaseMode, StageId } from '../../synthcore/modules/env/types'
 import Button from '../Button'
-import { useAppDispatch, useAppSelector } from '../../forces/hooks'
+import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import {
     selectCurrStageId,
     selectInvert,
@@ -12,7 +12,7 @@ import {
     toggleLoopMode,
     toggleReleaseMode,
     toggleRetrigger
-} from '../../forces/envelope/envelopesReducer'
+} from '../../synthcore/modules/env/envelopesReducer'
 import { curveNames, loopModeNames, releaseModeNames } from './utils'
 import './EnvOptions.scss'
 
