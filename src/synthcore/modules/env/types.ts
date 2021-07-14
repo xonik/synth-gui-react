@@ -47,6 +47,7 @@ export type Envelope = {
     releaseMode: ReleaseMode;
     stages: Stage[];
     loopMode: LoopMode;
+    loopEnabled: boolean;
     maxLoops: number;
     invert: boolean;
     bipolar: boolean;

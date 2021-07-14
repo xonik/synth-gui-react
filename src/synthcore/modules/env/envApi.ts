@@ -12,6 +12,7 @@ import {
     setInvert as setInvertAction,
     setLevel,
     setLoopMode as setLoopModeAction,
+    setLoopEnabled as setLoopEnabledAction,
     setMaxLoops as setMaxLoopsAction,
     setReleaseMode as setReleaseModeAction,
     setResetOnTrigger,
@@ -128,7 +129,6 @@ const toggleReleaseMode = (envId: number, source: ApiSource) => {
     const releaseMode = (env.releaseMode + 1) % 3
     setReleaseMode(envId, releaseMode, source)
 }
-
 const setLoopMode = (envId: number, loopMode: LoopMode, source: ApiSource) => {
     dispatch(setLoopModeAction({ env: envId, loopMode }))
     midiApi.env.setLoopMode(source, envId, loopMode)
@@ -137,6 +137,15 @@ const toggleLoopMode = (envId: number, source: ApiSource) => {
     const env = selectEnvelopes(store.getState()).envs[envId]
     const loopMode = (env.loopMode + 1) % 4
     setLoopMode(envId, loopMode, source)
+}
+const setLoopEnabled = (envId: number, enabled: boolean, source: ApiSource) => {
+    dispatch(setLoopEnabledAction({env: envId, enabled}))
+    midiApi.env.setLoopEnabled(source, envId, enabled)
+}
+const toggleLoopEnabled = (envId: number, source: ApiSource) => {
+    const env = selectEnvelopes(store.getState()).envs[envId]
+    const loopEnabled = !env.loopEnabled;
+    setLoopEnabled(envId, loopEnabled, source)
 }
 const toggleStageSelected = (envId: number, stageId: StageId, source: ApiSource) => {
     const currStageId = selectCurrStageId(store.getState())
@@ -179,6 +188,9 @@ const incrementMaxLoops = (envId: number, increment: number, source: ApiSource) 
     const currMaxLoops = selectEnvelope(envId)(store.getState()).maxLoops
     setMaxLoops(envId, currMaxLoops + increment, source)
 }
+const trigger = (envId: number, source: ApiSource) => {
+    midiApi.env.trigger(source, envId)
+}
 
 export default {
     setStageLevel,
@@ -195,6 +207,8 @@ export default {
     toggleReleaseMode,
     setLoopMode,
     toggleLoopMode,
+    setLoopEnabled,
+    toggleLoopEnabled,
     toggleStageSelected,
     setCurrentEnv,
     incrementCurrentEnvelope,
@@ -202,4 +216,5 @@ export default {
     incrementStageCurve,
     setMaxLoops,
     incrementMaxLoops,
+    trigger,
 }

@@ -1,5 +1,5 @@
 import { Middleware } from 'redux'
-import { increment } from './modules/controller/controllerReducer'
+import { click, increment } from './modules/controller/controllerReducer'
 import { envApi } from './synthcoreApi'
 import { StageId } from './modules/env/types'
 import { toggleInvert, toggleLoopMode, toggleReleaseMode, toggleRetrigger, toggleStageEnabled, toggleStageSelected } from './modules/env/envelopesReducer'
@@ -22,8 +22,9 @@ const envApiMapper: EnvApiMapperType = {
     [EnvControllerId.ENV_D2_LEVEL]: (ctrlIndex: number, value: number) => envApi.incrementStageLevel(ctrlIndex, StageId.DECAY2, value, ApiSource.GUI),
     [EnvControllerId.ENV_R2_LEVEL]: (ctrlIndex: number, value: number) => envApi.incrementStageLevel(ctrlIndex, StageId.RELEASE2, value, ApiSource.GUI),
     [EnvControllerId.ENV_SELECT]: (ctrlIndex: number, value: number) => {/* TODO: select next envelope (for env 3 ui)*/},
-    [EnvControllerId.ENV_LOOP]: (ctrlIndex: number, value: number) => {/* TODO: toggle loop on off without changing mode */},
-    [EnvControllerId.ENV_TRIGGER]: (ctrlIndex: number, value: number) => {/* TODO: trigger envelope */},
+    [EnvControllerId.ENV_LOOP]: (ctrlIndex: number) => envApi.toggleLoopEnabled(ctrlIndex, ApiSource.GUI),
+    [EnvControllerId.ENV_TRIGGER]: (ctrlIndex: number) => envApi.trigger(ctrlIndex, ApiSource.GUI),
+    [EnvControllerId.ENV_INVERT]: (ctrlIndex: number) => envApi.toggleInvert(ctrlIndex, ApiSource.GUI)
 }
 
 export const synthcoreMiddleware: Middleware<{}, any> = storeAPI => next => action => {
@@ -36,6 +37,11 @@ export const synthcoreMiddleware: Middleware<{}, any> = storeAPI => next => acti
             envApiMapper[action.payload.ctrlId](ctrlIndex, action.payload.value)
         } else if (action.payload.ctrlGroup === ControllerGroupIds.MAIN_DISP) {
             mainDisplayApi.handleMainDisplayController(action.payload.ctrlId, action.payload.value)
+        }
+    } else if (click.match(action)){
+        const ctrlIndex = action.payload.ctrlIndex || 0
+        if (action.payload.ctrlGroup === ControllerGroupIds.ENV) {
+            envApiMapper[action.payload.ctrlId](ctrlIndex, 0)
         }
     } else if (toggleStageEnabled.match(action)) {
         envApi.toggleStageEnabled(action.payload.env, action.payload.stage, ApiSource.GUI)

@@ -6,7 +6,7 @@ import { MidiConfig } from '../../midi/types'
 import { sendCC, subscribe, unsubscribe } from '../../midi/midibus'
 import { useAppDispatch } from '../../synthcore/hooks'
 import { increment } from '../../synthcore/modules/controller/controllerReducer'
-import { ControllerGroupIds, EnvControllerId } from '../../synthcore/modules/mainDisplay/types'
+import { ControllerGroupIds } from '../../synthcore/modules/mainDisplay/types'
 import './RotaryPot.scss'
 
 export type LedMode = 'single' | 'multi';
@@ -23,9 +23,8 @@ export interface Props {
     midiConfig?: MidiConfig;
     defaultValue?: number;
     storePosition?: number;
-    updateStorePosition?: (position: number) => any;
     ctrlGroup?: ControllerGroupIds;
-    ctrlId?: EnvControllerId;
+    ctrlId?: number;
     ctrlIndex?: number;
     disabled?: boolean;
 }
@@ -131,7 +130,8 @@ export default (props: Props & Config) => {
     const [statePosition, setStatePosition] = useState(defaultValue || 0);
 
     // positive pointer
-    const ledPosition = getLedPos(centerLed, ledCount, potMode, storePosition || statePosition)
+    const currentPosition = storePosition !== undefined ? storePosition : statePosition
+    const ledPosition = getLedPos(centerLed, ledCount, potMode, currentPosition)
 
     // negative pointer used for spread
     const negLedPosition = centerLed - (ledPosition - centerLed)

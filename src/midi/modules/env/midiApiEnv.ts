@@ -61,11 +61,11 @@ const invert = (() => {
             if (!shouldSend(source)) return;
             selectEnv(envId)
             const invertIndex = invert ? 1 : 0
-            sendCC(cfg.cc, midiControllers.ENV1.INVERT.values[invertIndex] || 0)
+            sendCC(cfg.cc, cfg.values[invertIndex])
         },
         receive: () => {
             subscribe((value: number) => {
-                const invert = value === midiControllers.ENV1.INVERT.values[1];
+                const invert = value === cfg.values[1];
                 envApi.setInvert(currentEnvId, invert, ApiSource.MIDI)
             }, cfg)
         }
@@ -80,11 +80,11 @@ const resetOnTrigger = (() => {
             if (!shouldSend(source)) return;
             selectEnv(envId)
             const resetIndex = resetOnTrigger ? 1 : 0
-            sendCC(cfg.cc, midiControllers.ENV1.RESET_ON_TRIGGER.values[resetIndex] || 0)
+            sendCC(cfg.cc, cfg.values[resetIndex])
         },
         receive: () => {
             subscribe((value: number) => {
-                const reset = value === midiControllers.ENV1.RESET_ON_TRIGGER.values[1];
+                const reset = value === cfg.values[1];
                 envApi.setRetrigger(currentEnvId, reset, ApiSource.MIDI)
             }, cfg)
         }
@@ -98,11 +98,11 @@ const releaseMode = (() => {
         send: (source: ApiSource, envId: number, releaseMode: ReleaseMode) => {
             if (!shouldSend(source)) return;
             selectEnv(envId)
-            sendCC(cfg.cc, midiControllers.ENV1.RELEASE_MODE.values[releaseMode] || 0)
+            sendCC(cfg.cc, cfg.values[releaseMode])
         },
         receive: () => {
             subscribe((value: number) => {
-                const releaseMode = midiControllers.ENV1.RELEASE_MODE.values.indexOf(value) || 0;
+                const releaseMode = cfg.values.indexOf(value) || 0;
                 envApi.setReleaseMode(currentEnvId, releaseMode, ApiSource.MIDI)
             }, cfg)
         }
@@ -116,12 +116,31 @@ const loopMode = (() => {
         send: (source: ApiSource, envId: number, loopMode: LoopMode) => {
             if (!shouldSend(source)) return;
             selectEnv(envId)
-            sendCC(cfg.cc, midiControllers.ENV1.LOOP_MODE.values[loopMode] || 0)
+            sendCC(cfg.cc, cfg.values[loopMode])
         },
         receive: () => {
             subscribe((value: number) => {
-                const loopMode = midiControllers.ENV1.LOOP_MODE.values.indexOf(value) || 0;
+                const loopMode = cfg.values.indexOf(value) || 0;
                 envApi.setLoopMode(currentEnvId, loopMode, ApiSource.MIDI)
+            }, cfg)
+        }
+    }
+})()
+
+const loopEnabled = (() => {
+    const cfg = midiControllers.ENV1.LOOP
+
+    return {
+        send: (source: ApiSource, envId: number, enabled: boolean) => {
+            if (!shouldSend(source)) return;
+            selectEnv(envId)
+            const loopEnabledIndex = enabled ? 1 : 0
+            sendCC(cfg.cc, cfg.values[loopEnabledIndex])
+        },
+        receive: () => {
+            subscribe((value: number) => {
+                const enabled = value === cfg.values[1];
+                envApi.setLoopEnabled(currentEnvId, enabled, ApiSource.MIDI)
             }, cfg)
         }
     }
@@ -184,6 +203,18 @@ const maxLoops = (() => {
     }
 })()
 
+const trigger = (() => {
+    const cfg = midiControllers.ENV1.TRIGGER
+
+    return {
+        send: (source: ApiSource, envId: number) => {
+            if (!shouldSend(source)) return;
+            selectEnv(envId)
+            sendCC(cfg.cc, cfg.values[0])
+        },
+    }
+})()
+
 const initReceive = () => {
     level.receive()
     time.receive()
@@ -191,9 +222,10 @@ const initReceive = () => {
     resetOnTrigger.receive()
     releaseMode.receive()
     loopMode.receive()
+    loopEnabled.receive()
+    maxLoops.receive()
     stageEnabled.receive()
     curve.receive()
-    maxLoops.receive()
 }
 
 export default {
@@ -204,7 +236,9 @@ export default {
     setResetOnTrigger: resetOnTrigger.send,
     setReleaseMode: releaseMode.send,
     setLoopMode: loopMode.send,
-    setCurve: curve.send,
+    setLoopEnabled: loopEnabled.send,
     setMaxLoops: maxLoops.send,
+    setCurve: curve.send,
+    trigger: trigger.send,
     initReceive,
 }

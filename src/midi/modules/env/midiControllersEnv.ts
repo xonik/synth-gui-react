@@ -32,14 +32,6 @@ const midiControllersEnv: MidiCtrlEnv = {
             BUTTONS.BUTTONS_RIGHT.values.ENV1_TRIGGER,
         ],
     },
-    LOOP: {
-        type: 'button',
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
-        values: [
-            BUTTONS.BUTTONS_RIGHT.values.ENV1_LOOP_OFF,
-            BUTTONS.BUTTONS_RIGHT.values.ENV1_LOOP_ON,
-        ],
-    },
     INVERT: {
         type: 'button',
         cc: BUTTONS.BUTTONS_RIGHT.cc,
@@ -63,6 +55,14 @@ const midiControllersEnv: MidiCtrlEnv = {
             BUTTONS.BUTTONS_RIGHT.values.ENV1_RELEASE_MODE_NORMAL,
             BUTTONS.BUTTONS_RIGHT.values.ENV1_RELEASE_MODE_SKIP_R1,
             BUTTONS.BUTTONS_RIGHT.values.ENV1_RELEASE_MODE_FREE_RUN,
+        ],
+    },
+    LOOP: {
+        type: 'button',
+        cc: BUTTONS.BUTTONS_RIGHT.cc,
+        values: [
+            BUTTONS.BUTTONS_RIGHT.values.ENV1_LOOP_OFF,
+            BUTTONS.BUTTONS_RIGHT.values.ENV1_LOOP_ON,
         ],
     },
     LOOP_MODE: {

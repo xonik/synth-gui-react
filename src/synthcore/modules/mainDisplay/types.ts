@@ -16,22 +16,8 @@ export enum EnvControllerId {
     ENV_SELECT,
     ENV_LOOP,
     ENV_TRIGGER,
+    ENV_INVERT,
 }
-
-export const envControllerIds = [
-    EnvControllerId.ENV_DELAY,
-    EnvControllerId.ENV_ATTACK,
-    EnvControllerId.ENV_DECAY1,
-    EnvControllerId.ENV_DECAY2,
-    EnvControllerId.ENV_SUSTAIN,
-    EnvControllerId.ENV_RELEASE1,
-    EnvControllerId.ENV_RELEASE2,
-    EnvControllerId.ENV_D2_LEVEL,
-    EnvControllerId.ENV_R2_LEVEL,
-    EnvControllerId.ENV_SELECT,
-    EnvControllerId.ENV_LOOP,
-    EnvControllerId.ENV_TRIGGER,
-]
 
 export enum MainDisplayControllerIds {
     POT1,

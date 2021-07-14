@@ -22,6 +22,12 @@ type NumericControllerPayload = {
     value: number;
 }
 
+type ButtonControllerPayload = {
+    ctrlGroup: ControllerGroupIds;
+    ctrlId: number;
+    ctrlIndex?: number;
+}
+
 export const controllerSlice = createSlice({
     name: 'controllers',
     initialState,
@@ -29,6 +35,9 @@ export const controllerSlice = createSlice({
         increment: (state, {payload}: PayloadAction<NumericControllerPayload>) => {
             //Not doing anything yet, just needed to create the action.
         },
+        click: (state, {payload}: PayloadAction<ButtonControllerPayload>) => {
+            //Not doing anything yet, just needed to create the action.
+        }
     }
 })
 
@@ -36,6 +45,7 @@ export const selectCurrScreen = (state: RootState) => state.controller.currentSc
 
 export const {
     increment,
+    click,
 } = controllerSlice.actions;
 
 export default controllerSlice.reducer;

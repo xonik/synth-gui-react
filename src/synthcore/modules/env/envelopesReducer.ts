@@ -67,6 +67,10 @@ type LoopModePayload = EnvPayload & {
     loopMode: LoopMode;
 }
 
+type LoopEnabledPayload = EnvPayload & {
+    enabled: boolean;
+}
+
 type SetInvertPayload = EnvPayload & {
     invert: boolean;
 }
@@ -110,10 +114,12 @@ export const envelopesSlice = createSlice({
         setLoopMode: (state, { payload }: PayloadAction<LoopModePayload>) => {
             getEnv(state, payload).loopMode = payload.loopMode
         },
+        setLoopEnabled: (state, { payload }: PayloadAction<LoopEnabledPayload>) => {
+            getEnv(state, payload).loopEnabled = payload.enabled
+        },
         setMaxLoops: (state, { payload }: PayloadAction<NumericEnvPayload>) => {
             getEnv(state, payload).maxLoops = payload.value
         },
-
         setStageEnabled: (state, { payload }: PayloadAction<EnabledStagePayload>) => {
             getStage(state, payload).enabled = payload.enabled
         },
@@ -161,6 +167,7 @@ export const {
     setReleaseMode,
     setResetOnTrigger,
     setLoopMode,
+    setLoopEnabled,
     setMaxLoops,
     setStageEnabled,
     setInvert,
@@ -174,6 +181,7 @@ export const {
     toggleLoopMode,
     toggleStageSelected,
 } = envelopesSlice.actions
+
 export const selectEnvelopes = (state: RootState) => state.envelopes
 export const selectEnvelope = (envId: number) => (state: RootState) => state.envelopes.envs[envId]
 export const selectLevel = (envId: number, stageId: StageId) => (state: RootState) => state.envelopes.envs[envId].stages[stageId].level

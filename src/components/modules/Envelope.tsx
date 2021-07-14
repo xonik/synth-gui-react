@@ -104,11 +104,16 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
         <RoundLedPushButton8
             label="Invert" x={firstPotX + potDistance * 2.5} y={topRowY}
             labelPosition="bottom"
+            ctrlGroup={ctrlGroup}
+            ctrlId={EnvControllerId.ENV_INVERT}
+            ctrlIndex={envId}
+            storeValue={env.invert ? 1 : 0}
         />
         <RoundLedPushButton8 label="Loop" x={firstPotX + potDistance * 3.5} y={topRowY} labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrlId={EnvControllerId.ENV_LOOP}
                              ctrlIndex={envId}
+                             storeValue={env.loopEnabled ? 1 : 0}
         />
         <RotaryPot10 ledMode="multi" label="R2 Level" x={firstPotX + potDistance * 4.5} y={topRowY}
                      ctrlGroup={ctrlGroup}
