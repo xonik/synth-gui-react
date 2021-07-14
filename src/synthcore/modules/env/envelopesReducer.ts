@@ -12,7 +12,9 @@ type EnvelopesState = {
         currEnvId: number;
         currStageId: StageId;
     }
-
+    ui: {
+        env3Id: number;
+    }
 }
 
 export const initialState: EnvelopesState = {
@@ -20,10 +22,16 @@ export const initialState: EnvelopesState = {
         getDefaultEnvelope(0),
         getDefaultEnvelope(1),
         getDefaultEnvelope(2),
+        getDefaultEnvelope(3),
+        getDefaultEnvelope(4),
+        getDefaultEnvelope(5),
     ],
     gui: {
         currEnvId: 0,
         currStageId: StageId.STOPPED,
+    },
+    ui: {
+        env3Id: 2
     }
 }
 
@@ -79,6 +87,10 @@ type EnabledStagePayload = StagePayload & {
     enabled: boolean;
 }
 
+type Env3IdPayload = {
+    id: number;
+}
+
 const getStage = (state: Draft<any>, payload: StagePayload): Draft<Stage> => {
     return state.envs[payload.env].stages[payload.stage]
 }
@@ -99,7 +111,7 @@ export const envelopesSlice = createSlice({
             state.envs[payload.env].stages[payload.stage2].level = payload.value
         },
         setTime: (state, { payload }: PayloadAction<NumericStagePayload>) => {
-            getStage(state, payload).time =  payload.value
+            getStage(state, payload).time = payload.value
         },
         setCurve: (state, { payload }: PayloadAction<CurvePayload>) => {
             getStage(state, payload).curve = payload.curve
@@ -142,7 +154,9 @@ export const envelopesSlice = createSlice({
         selectEnv: (state, { payload }: PayloadAction<EnvPayload>) => {
             state.gui.currEnvId = payload.env
         },
-
+        setEnv3Id: (state, { payload }: PayloadAction<Env3IdPayload>) => {
+            state.ui.env3Id = payload.id
+        },
         // actions ony consumed by api
         toggleStageEnabled: (state, { payload }: PayloadAction<StagePayload>) => {
         },
@@ -174,6 +188,7 @@ export const {
     selectStage,
     deselectStage,
     selectEnv,
+    setEnv3Id,
     toggleStageEnabled,
     toggleInvert,
     toggleRetrigger,
@@ -192,5 +207,6 @@ export const selectReleaseMode = (envId: number) => (state: RootState) => state.
 export const selectLoopMode = (envId: number) => (state: RootState) => state.envelopes.envs[envId].loopMode
 export const selectCurrStageId = (state: RootState) => state.envelopes.gui.currStageId
 export const selectCurrEnvId = (state: RootState) => state.envelopes.gui.currEnvId
+export const selectEnv3Id = (state: RootState) => state.envelopes.ui.env3Id
 
-export default envelopesSlice.reducer;
+export default envelopesSlice.reducer

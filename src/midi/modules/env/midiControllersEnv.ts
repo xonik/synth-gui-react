@@ -10,6 +10,7 @@ interface MidiCtrlEnv {
     MAX_LOOPS: MidiConfig
     TOGGLE_STAGE: MidiConfig
     SELECT: MidiConfig
+    SELECT_ENV3_ID: MidiConfig
     TRIGGER: MidiConfigWithValue
     LOOP: MidiConfigWithValue
     INVERT: MidiConfigWithValue
@@ -25,6 +26,7 @@ const midiControllersEnv: MidiCtrlEnv = {
     MAX_LOOPS: { type: 'pot', cc: CC.ENV_MAX_LOOPS },
     TOGGLE_STAGE: { type: 'pot', cc: CC.ENV_TOGGLE_STAGE }, // 4 bit stage, 7 bit on/off
     SELECT: { type: 'pot', cc: CC.ENV_SELECT_ENV },
+    SELECT_ENV3_ID: { type: 'pot', cc: CC.ENV_SELECT_ENV3_ID },
     TRIGGER: {
         type: 'button',
         cc: BUTTONS.BUTTONS_RIGHT.cc,

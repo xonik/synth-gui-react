@@ -13,7 +13,7 @@ export enum EnvControllerId {
     ENV_RELEASE2,
     ENV_D2_LEVEL,
     ENV_R2_LEVEL,
-    ENV_SELECT,
+    ENV_SELECT_ENV3ID,
     ENV_LOOP,
     ENV_TRIGGER,
     ENV_INVERT,

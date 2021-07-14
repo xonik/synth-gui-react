@@ -74,6 +74,7 @@ export default {
     ENV_MAX_LOOPS: 71,
     ENV_TOGGLE_STAGE: 73,
     ENV_SELECT_ENV: 74,
+    ENV_SELECT_ENV3_ID: 75,
     //84-96 free
     DSP1_POT1: 97,
     DSP1_POT2: 98,

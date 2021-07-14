@@ -17,7 +17,9 @@ import {
     setReleaseMode as setReleaseModeAction,
     setResetOnTrigger,
     setStageEnabled as setStageEnabledAction,
-    setTime
+    setTime,
+    setEnv3Id as setEnv3IdAction,
+    selectEnv3Id,
 } from '../env/envelopesReducer'
 import { store } from '../../store'
 import midiApi from '../../../midi/midiApi'
@@ -191,6 +193,20 @@ const incrementMaxLoops = (envId: number, increment: number, source: ApiSource) 
 const trigger = (envId: number, source: ApiSource) => {
     midiApi.env.trigger(source, envId)
 }
+const setEnv3Id = (id: number,source: ApiSource) => {
+    const envelopes = selectEnvelopes(store.getState()).envs.length
+    if(id < envelopes && id > 1) {
+        dispatch(setEnv3IdAction({id}))
+        midiApi.env.setEnv3Id(source, id)
+    }
+}
+const toggleEnv3Id = (source: ApiSource) => {
+    const envelopes = selectEnvelopes(store.getState()).envs.length
+    const currEnv3Id = selectEnv3Id(store.getState())
+    let nextEnv3Id = (currEnv3Id + 1);
+    if(nextEnv3Id > envelopes) nextEnv3Id = 2;
+    setEnv3Id(nextEnv3Id, source);
+}
 
 export default {
     setStageLevel,
@@ -217,4 +233,6 @@ export default {
     setMaxLoops,
     incrementMaxLoops,
     trigger,
+    setEnv3Id,
+    toggleEnv3Id,
 }

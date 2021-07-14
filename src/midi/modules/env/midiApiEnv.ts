@@ -203,6 +203,22 @@ const maxLoops = (() => {
     }
 })()
 
+const env3Id = (() => {
+    const cfg = midiControllers.ENV1.SELECT_ENV3_ID
+
+    return {
+        send: (source: ApiSource, id: number) => {
+            if (!shouldSend(source)) return;
+            sendCC(cfg.cc, id)
+        },
+        receive: () => {
+            subscribe((id: number) => {
+                envApi.setEnv3Id(id, ApiSource.MIDI)
+            }, cfg)
+        }
+    }
+})()
+
 const trigger = (() => {
     const cfg = midiControllers.ENV1.TRIGGER
 
@@ -226,6 +242,7 @@ const initReceive = () => {
     maxLoops.receive()
     stageEnabled.receive()
     curve.receive()
+    env3Id.receive()
 }
 
 export default {
@@ -240,5 +257,6 @@ export default {
     setMaxLoops: maxLoops.send,
     setCurve: curve.send,
     trigger: trigger.send,
+    setEnv3Id: env3Id.send,
     initReceive,
 }

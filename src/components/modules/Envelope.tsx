@@ -71,7 +71,8 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
                      ctrlGroup={ctrlGroup}
                      ctrlId={EnvControllerId.ENV_RELEASE1}
                      ctrlIndex={envId}
-                     storePosition={timeR1}disabled={!env.stages[StageId.RELEASE1].enabled}
+                     storePosition={timeR1}
+                     disabled={!env.stages[StageId.RELEASE1].enabled}
 
         />
         <RotaryPot17 ledMode="single" label="Release 2" x={firstPotX + potDistance * 5} y={potY}
@@ -83,7 +84,7 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
 
         {showSelect && <RoundPushButton8 label="Env sel" x={firstPotX - potDistance * 0.5} y={topRowY} labelPosition="bottom"
                                          ctrlGroup={ctrlGroup}
-                                         ctrlId={EnvControllerId.ENV_SELECT}
+                                         ctrlId={EnvControllerId.ENV_SELECT_ENV3ID}
                                          ctrlIndex={envId}
         />}
         <RotaryPot10 ledMode="single" label="Delay" x={firstPotX + potDistance * 0.5} y={topRowY}
