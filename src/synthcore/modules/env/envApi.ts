@@ -94,8 +94,12 @@ const setStageEnabled = (envId: number, stageId: StageId, enabled: boolean, sour
     const env = selectEnvelopes(store.getState()).envs[envId]
     dispatch(setStageEnabledAction({ env: envId, stage: stageId, enabled }))
 
-    if (stageId === StageId.RELEASE1 && !enabled) {
-        dispatch(setLevel({ env: envId, stage: StageId.RELEASE2, value: env.stages[StageId.SUSTAIN].level }))
+    if (stageId === StageId.RELEASE1) {
+        if(enabled){
+            dispatch(setLevel({ env: envId, stage: StageId.RELEASE1, value: env.stages[StageId.SUSTAIN].level }))
+        } else {
+            dispatch(setLevel({ env: envId, stage: StageId.RELEASE2, value: env.stages[StageId.SUSTAIN].level }))
+        }
     }
     midiApi.env.setStageEnabled(source, envId, stageId, enabled)
 }
