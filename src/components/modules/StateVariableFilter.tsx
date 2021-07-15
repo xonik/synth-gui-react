@@ -46,7 +46,8 @@ const StateVariableFilter = ({ x, y }: Props) => {
                           midiConfig={midiConstants.FILTERS.LINK_CUTOFF}
         />
 
-        <RoundPushButton8 x={col3} y={topRow - 42} ledPosition="right"
+        <RoundPushButton8 x={col3} y={topRow - 42}
+                          ledPosition="right"
                           ledCount={2}
                           ledLabels={['Series', 'Parallel']} label="Routing" labelPosition="bottom"
                           midiConfig={midiConstants.FILTERS.ROUTING}

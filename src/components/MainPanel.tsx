@@ -24,6 +24,8 @@ import KeyboardControls from './modules/KeyboardControls'
 import VoiceSelector from './modules/VoiceSelector'
 import Controller from '../controller/Controller'
 import './MainPanel.scss'
+import { useAppSelector } from '../synthcore/hooks'
+import { selectEnv3Id, selectEnvelope } from '../synthcore/modules/env/envelopesReducer'
 
 /**
  * TODO:
@@ -36,6 +38,7 @@ import './MainPanel.scss'
  */
 export default () => {
 
+    const env3Id = useAppSelector(selectEnv3Id);
     //const panelHeight = 350;
     //const panelWidth = 1050;
 
@@ -126,7 +129,7 @@ export default () => {
 
                 <Envelope x={envCol} y={5} label="Env 1 - filter" envId={0}/>
                 <Envelope x={envCol} y={75} label="Env 2 - amp" envId={1}/>
-                <Envelope x={envCol} y={145} label="Env 3 - N" showSelect={true} envId={2}/>
+                <Envelope x={envCol} y={145} label="Env 3 - 5" showSelect={true} envId={env3Id}/>
 
                 <DigitalFX x={outFx1Col} y={outputFxRow}/>
                 <Chorus x={outFx2Col} y={outputFxRow + 10}/>

@@ -205,7 +205,7 @@ const toggleEnv3Id = (source: ApiSource) => {
     const envelopes = selectEnvelopes(store.getState()).envs.length
     const currEnv3Id = selectEnv3Id(store.getState())
     let nextEnv3Id = (currEnv3Id + 1);
-    if(nextEnv3Id > envelopes) nextEnv3Id = 2;
+    if(nextEnv3Id > envelopes-1) nextEnv3Id = 2;
     setEnv3Id(nextEnv3Id, source);
 }
 

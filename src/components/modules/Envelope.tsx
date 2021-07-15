@@ -4,7 +4,7 @@ import RotaryPot10 from '../pots/RotaryPot10'
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import Header from '../misc/Header'
-import { selectEnvelope } from '../../synthcore/modules/env/envelopesReducer'
+import { selectEnv3Id, selectEnvelope } from '../../synthcore/modules/env/envelopesReducer'
 import { StageId } from '../../synthcore/modules/env/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { EnvControllerId } from '../../synthcore/modules/env/types'
@@ -26,7 +26,8 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
     const potY = y + 45
     const potDistance = 40
 
-    const env = useAppSelector(selectEnvelope(envId));
+    const env = useAppSelector(selectEnvelope(envId))
+    const env3Id = useAppSelector(selectEnv3Id)
 
     const levelS = env.stages[StageId.SUSTAIN].level
     const levelD2 = env.stages[StageId.DECAY2].level
@@ -65,7 +66,7 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
                      ctrlId={EnvControllerId.ENV_SUSTAIN}
                      ctrlIndex={envId}
                      potMode={env.bipolar ? 'pan' : 'normal'}
-                     storePosition={env.bipolar ? (levelS + 1) / 2 : levelS }
+                     storePosition={env.bipolar ? (levelS + 1) / 2 : levelS}
                      disabled={!env.stages[StageId.SUSTAIN].enabled}
         />
         <RotaryPot17 ledMode="single" label="Release 1" x={firstPotX + potDistance * 4} y={potY}
@@ -83,10 +84,15 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
                      storePosition={timeR2}
         />
 
-        {showSelect && <RoundPushButton8 label="Env sel" x={firstPotX - potDistance * 0.5} y={topRowY} labelPosition="bottom"
-                                         ctrlGroup={ctrlGroup}
-                                         ctrlId={EnvControllerId.ENV_SELECT_ENV3ID}
-                                         ctrlIndex={envId}
+        {showSelect && <RoundPushButton8
+          ledPosition="right"
+          ledCount={3}
+          ledLabels={['3', '4', '5']}
+          label="Env sel" x={firstPotX - potDistance * 0.5} y={topRowY} labelPosition="bottom"
+          ctrlGroup={ctrlGroup}
+          ctrlId={EnvControllerId.ENV_SELECT_ENV3ID}
+          ctrlIndex={envId}
+          storeValue={env3Id -2}
         />}
         <RotaryPot10 ledMode="single" label="Delay" x={firstPotX + potDistance * 0.5} y={topRowY}
                      ctrlGroup={ctrlGroup}

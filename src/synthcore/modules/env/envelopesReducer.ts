@@ -24,7 +24,6 @@ export const initialState: EnvelopesState = {
         getDefaultEnvelope(2),
         getDefaultEnvelope(3),
         getDefaultEnvelope(4),
-        getDefaultEnvelope(5),
     ],
     gui: {
         currEnvId: 0,
