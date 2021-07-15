@@ -23,9 +23,9 @@ import Route from './modules/Route'
 import KeyboardControls from './modules/KeyboardControls'
 import VoiceSelector from './modules/VoiceSelector'
 import Controller from '../controller/Controller'
-import './MainPanel.scss'
 import { useAppSelector } from '../synthcore/hooks'
-import { selectEnv3Id, selectEnvelope } from '../synthcore/modules/env/envelopesReducer'
+import { selectEnv3Id } from '../synthcore/modules/env/envelopesReducer'
+import './MainPanel.scss'
 
 /**
  * TODO:
