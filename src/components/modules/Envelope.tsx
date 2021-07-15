@@ -7,7 +7,8 @@ import Header from '../misc/Header'
 import { selectEnvelope } from '../../synthcore/modules/env/envelopesReducer'
 import { StageId } from '../../synthcore/modules/env/types'
 import { useAppSelector } from '../../synthcore/hooks'
-import { ControllerGroupIds, EnvControllerId } from '../../synthcore/modules/mainDisplay/types'
+import { EnvControllerId } from '../../synthcore/modules/env/types'
+import { ControllerGroupIds } from '../../synthcore/types'
 
 interface Props {
     x: number,

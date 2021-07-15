@@ -58,3 +58,19 @@ export const MIN_LEVEL = 100;
 export const MAX_LEVEL = 100;
 export const MIN_TIME = 1; //ms
 export const MAX_TIME = 65536; // approx 1 minute.
+
+export enum EnvControllerId {
+    ENV_DELAY,
+    ENV_ATTACK,
+    ENV_DECAY1,
+    ENV_DECAY2,
+    ENV_SUSTAIN,
+    ENV_RELEASE1,
+    ENV_RELEASE2,
+    ENV_D2_LEVEL,
+    ENV_R2_LEVEL,
+    ENV_SELECT_ENV3ID,
+    ENV_LOOP,
+    ENV_TRIGGER,
+    ENV_INVERT,
+}

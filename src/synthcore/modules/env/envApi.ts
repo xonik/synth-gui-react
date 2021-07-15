@@ -24,7 +24,8 @@ import {
 import { store } from '../../store'
 import midiApi from '../../../midi/midiApi'
 import { curveFuncs } from '../../../components/curves/curveCalculator'
-import { ApiSource, dispatch, getBounded } from '../../utils'
+import { ApiSource } from '../../types'
+import { dispatch, getBounded } from '../../utils'
 
 const updateReleaseLevels = (env: Envelope, value: number) => {
     if (env.stages[StageId.RELEASE1].enabled) {

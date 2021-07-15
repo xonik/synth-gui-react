@@ -1,23 +1,3 @@
-export enum ControllerGroupIds {
-    ENV,
-    MAIN_DISP
-}
-
-export enum EnvControllerId {
-    ENV_DELAY,
-    ENV_ATTACK,
-    ENV_DECAY1,
-    ENV_DECAY2,
-    ENV_SUSTAIN,
-    ENV_RELEASE1,
-    ENV_RELEASE2,
-    ENV_D2_LEVEL,
-    ENV_R2_LEVEL,
-    ENV_SELECT_ENV3ID,
-    ENV_LOOP,
-    ENV_TRIGGER,
-    ENV_INVERT,
-}
 
 export enum MainDisplayControllerIds {
     POT1,

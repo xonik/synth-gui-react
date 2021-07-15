@@ -4,7 +4,8 @@ import RotaryPotWOLeds17 from '../pots/RotaryPotWOLeds17';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
 import RotaryPotWOLeds32 from '../pots/RotaryPotWOLeds32';
 import midiConstants from '../../midi/midiControllers'
-import { ControllerGroupIds, MainDisplayControllerIds } from '../../synthcore/modules/mainDisplay/types'
+import { MainDisplayControllerIds } from '../../synthcore/modules/mainDisplay/types'
+import { ControllerGroupIds } from '../../synthcore/types'
 import { getPotResolution } from '../../synthcore/modules/mainDisplay/mainDisplayApi'
 import './MainDisplay.scss';
 

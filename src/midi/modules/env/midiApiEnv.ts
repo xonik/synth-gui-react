@@ -2,7 +2,7 @@ import { envApi } from '../../../synthcore/synthcoreApi'
 import { Curve, LoopMode, ReleaseMode } from '../../../synthcore/modules/env/types'
 import midiControllers from '../../midiControllers'
 import { send16, send2x7, sendCC, subscribe, subscribeToCmd } from '../../midibus'
-import { ApiSource } from '../../../synthcore/utils'
+import { ApiSource } from '../../../synthcore/types'
 
 const shouldSend = (source: ApiSource) => {
     // TODO: Make this configurable

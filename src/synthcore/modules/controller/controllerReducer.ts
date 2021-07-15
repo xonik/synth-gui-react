@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { MainDisplayScreenId } from './types'
 import { RootState } from '../../store'
-import { ControllerGroupIds } from '../mainDisplay/types'
+import { ControllerGroupIds } from '../../types'
 
 type ControllerState = {
     controller: {

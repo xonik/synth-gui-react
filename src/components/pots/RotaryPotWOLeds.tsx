@@ -4,7 +4,7 @@ import { MidiConfig } from '../../midi/types'
 import { sendCC, subscribe, unsubscribe } from '../../midi/midibus'
 import { increment } from '../../synthcore/modules/controller/controllerReducer'
 import { useAppDispatch } from '../../synthcore/hooks'
-import { ControllerGroupIds } from '../../synthcore/modules/mainDisplay/types'
+import { ControllerGroupIds } from '../../synthcore/types'
 import './RotaryPot.scss'
 
 export interface Props {

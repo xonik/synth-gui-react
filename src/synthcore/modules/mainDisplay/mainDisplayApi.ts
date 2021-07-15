@@ -5,7 +5,7 @@ import { LoopMode, StageId } from '../env/types'
 import { selectCurrScreen } from '../controller/controllerReducer'
 import { MainDisplayScreenId } from '../controller/types'
 import { envApi } from '../../synthcoreApi'
-import { ApiSource } from '../../utils'
+import { ApiSource } from '../../types'
 
 type PotResolutions = {
     [key: number]: {
