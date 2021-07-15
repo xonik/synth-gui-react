@@ -5,7 +5,7 @@ import RotaryPotBase from './RotaryPotBase'
 import { MidiConfig } from '../../midi/types'
 import { sendCC, subscribe, unsubscribe } from '../../midi/midibus'
 import { useAppDispatch } from '../../synthcore/hooks'
-import { increment } from '../../synthcore/modules/controller/controllerReducer'
+import { increment } from '../../synthcore/modules/ui/uiReducer'
 import { ControllerGroupIds } from '../../synthcore/types'
 import './RotaryPot.scss'
 

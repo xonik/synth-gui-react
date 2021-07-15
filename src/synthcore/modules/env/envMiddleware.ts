@@ -1,4 +1,4 @@
-import { click, increment } from '../controller/controllerReducer'
+import { click, increment } from '../ui/uiReducer'
 import { envApi } from '../../synthcoreApi'
 import { StageId } from './types'
 import { toggleInvert, toggleLoopMode, toggleReleaseMode, toggleRetrigger, toggleStageEnabled, toggleStageSelected } from './envelopesReducer'

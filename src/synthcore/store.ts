@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import envelopesReducer from './modules/env/envelopesReducer'
 import { synthcoreMiddleware } from './synthcoreMiddleware'
-import controllerReducer from './modules/controller/controllerReducer'
+import uiReducer from './modules/ui/uiReducer'
 
 export const store = configureStore({
     reducer: {
         envelopes: envelopesReducer,
-        controller: controllerReducer,
+        ui: uiReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()

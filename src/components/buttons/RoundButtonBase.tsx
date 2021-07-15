@@ -5,7 +5,7 @@ import RotaryPotBase from '../pots/RotaryPotBase'
 import { subscribe, unsubscribe, sendCC } from '../../midi/midibus'
 import { MidiConfig } from '../../midi/types'
 import { ControllerGroupIds } from '../../synthcore/types'
-import { click } from '../../synthcore/modules/controller/controllerReducer'
+import { click } from '../../synthcore/modules/ui/uiReducer'
 import { dispatch } from '../../synthcore/utils'
 import './RoundButton.scss'
 

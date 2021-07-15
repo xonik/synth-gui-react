@@ -3,14 +3,14 @@ import { MainDisplayScreenId } from './types'
 import { RootState } from '../../store'
 import { ControllerGroupIds } from '../../types'
 
-type ControllerState = {
+type UiState = {
     controller: {
         [key: number]: number
     };
     currentScreen: MainDisplayScreenId
 }
 
-const initialState: ControllerState = {
+const initialState: UiState = {
     controller: {},
     currentScreen:MainDisplayScreenId.ENV
 }
@@ -28,8 +28,8 @@ type ButtonControllerPayload = {
     ctrlIndex?: number;
 }
 
-export const controllerSlice = createSlice({
-    name: 'controllers',
+export const uiSlice = createSlice({
+    name: 'ui',
     initialState,
     reducers: {
         increment: (state, {payload}: PayloadAction<NumericControllerPayload>) => {
@@ -41,11 +41,11 @@ export const controllerSlice = createSlice({
     }
 })
 
-export const selectCurrScreen = (state: RootState) => state.controller.currentScreen
+export const selectCurrScreen = (state: RootState) => state.ui.currentScreen
 
 export const {
     increment,
     click,
-} = controllerSlice.actions;
+} = uiSlice.actions;
 
-export default controllerSlice.reducer;
+export default uiSlice.reducer;
