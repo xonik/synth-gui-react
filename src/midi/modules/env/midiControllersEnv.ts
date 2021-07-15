@@ -71,7 +71,6 @@ const midiControllersEnv: MidiCtrlEnv = {
         type: 'button',
         cc: BUTTONS.BUTTONS_RIGHT.cc,
         values: [
-            BUTTONS.BUTTONS_RIGHT.values.ENV1_LOOP_MODE_OFF,
             BUTTONS.BUTTONS_RIGHT.values.ENV1_LOOP_MODE_GATED,
             BUTTONS.BUTTONS_RIGHT.values.ENV1_LOOP_MODE_COUNTED,
             BUTTONS.BUTTONS_RIGHT.values.ENV1_LOOP_MODE_INFINITE,

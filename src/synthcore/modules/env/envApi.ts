@@ -138,7 +138,7 @@ const setLoopMode = (envId: number, loopMode: LoopMode, source: ApiSource) => {
 }
 const toggleLoopMode = (envId: number, source: ApiSource) => {
     const env = selectEnvelopes(store.getState()).envs[envId]
-    const loopMode = (env.loopMode + 1) % 4
+    const loopMode = (env.loopMode + 1) % 3
     setLoopMode(envId, loopMode, source)
 }
 const setLoopEnabled = (envId: number, enabled: boolean, source: ApiSource) => {

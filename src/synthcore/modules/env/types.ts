@@ -16,7 +16,6 @@ export enum ReleaseMode {
 }
 
 export enum LoopMode {
-    OFF,
     GATED,
     COUNTED,
     INFINITE,

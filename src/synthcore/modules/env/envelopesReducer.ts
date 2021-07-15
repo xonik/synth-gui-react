@@ -168,6 +168,8 @@ export const envelopesSlice = createSlice({
         },
         toggleLoopMode: (state, { payload }: PayloadAction<EnvPayload>) => {
         },
+        toggleLoopEnabled: (state, { payload }: PayloadAction<EnvPayload>) => {
+        },
         toggleStageSelected: (state, { payload }: PayloadAction<StagePayload>) => {
         },
     }
@@ -194,6 +196,7 @@ export const {
     toggleRetrigger,
     toggleReleaseMode,
     toggleLoopMode,
+    toggleLoopEnabled,
     toggleStageSelected,
 } = envelopesSlice.actions
 
@@ -205,6 +208,7 @@ export const selectInvert = (envId: number) => (state: RootState) => state.envel
 export const selectRetrigger = (envId: number) => (state: RootState) => state.envelopes.envs[envId].resetOnTrigger
 export const selectReleaseMode = (envId: number) => (state: RootState) => state.envelopes.envs[envId].releaseMode
 export const selectLoopMode = (envId: number) => (state: RootState) => state.envelopes.envs[envId].loopMode
+export const selectLoopEnabled = (envId: number) => (state: RootState) => state.envelopes.envs[envId].loopEnabled
 export const selectCurrStageId = (state: RootState) => state.envelopes.gui.currStageId
 export const selectCurrEnvId = (state: RootState) => state.envelopes.gui.currEnvId
 export const selectEnv3Id = (state: RootState) => state.envelopes.ui.env3Id

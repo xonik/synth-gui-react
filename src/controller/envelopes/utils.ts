@@ -27,7 +27,6 @@ export const stageNames = {
 }
 
 export const loopModeNames = {
-    [LoopMode.OFF]: 'off',
     [LoopMode.GATED]: 'gated',
     [LoopMode.COUNTED]: 'times',
     [LoopMode.INFINITE]: 'forever',

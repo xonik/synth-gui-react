@@ -1,7 +1,7 @@
 import { click, increment } from '../ui/uiReducer'
 import { envApi } from '../../synthcoreApi'
 import { StageId } from './types'
-import { toggleInvert, toggleLoopMode, toggleReleaseMode, toggleRetrigger, toggleStageEnabled, toggleStageSelected } from './envelopesReducer'
+import { toggleInvert, toggleLoopEnabled, toggleLoopMode, toggleReleaseMode, toggleRetrigger, toggleStageEnabled, toggleStageSelected } from './envelopesReducer'
 import { ApiSource } from '../../types'
 import { EnvControllerId } from './types'
 import { PayloadAction } from '@reduxjs/toolkit'
@@ -43,6 +43,8 @@ export const envMiddleware = (action: PayloadAction): void => {
         envApi.toggleReleaseMode(action.payload.env, ApiSource.GUI)
     } else if (toggleLoopMode.match(action)) {
         envApi.toggleLoopMode(action.payload.env, ApiSource.GUI)
+    } else if (toggleLoopEnabled.match(action)) {
+        envApi.toggleLoopEnabled(action.payload.env, ApiSource.GUI)
     } else if (toggleStageSelected.match(action)) {
         envApi.toggleStageSelected(action.payload.env, action.payload.stage, ApiSource.GUI)
     }

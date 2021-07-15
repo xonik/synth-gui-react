@@ -5,10 +5,12 @@ import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import {
     selectCurrStageId,
     selectInvert,
+    selectLoopEnabled,
     selectLoopMode,
     selectReleaseMode,
     selectRetrigger,
     toggleInvert,
+    toggleLoopEnabled,
     toggleLoopMode,
     toggleReleaseMode,
     toggleRetrigger
@@ -28,6 +30,7 @@ const EnvOptions = ({ env }: Props) => {
     const dispatch = useAppDispatch()
     const releaseMode = useAppSelector(selectReleaseMode(env.id))
     const loopMode = useAppSelector(selectLoopMode(env.id))
+    const loopEnabled = useAppSelector(selectLoopEnabled(env.id))
     const currStageId = useAppSelector(selectCurrStageId)
 
     const hasCurve = currStageId !== StageId.STOPPED && currStageId !== StageId.DELAY && currStageId !== StageId.SUSTAIN
@@ -40,8 +43,11 @@ const EnvOptions = ({ env }: Props) => {
         <Button active={releaseMode !== ReleaseMode.NORMAL} onClick={() => dispatch(toggleReleaseMode({ env: env.id }))}>
             {releaseModeNames[releaseMode]}
         </Button>
-        <Button active={loopMode !== LoopMode.OFF} onClick={() => dispatch(toggleLoopMode({ env: env.id }))}>
+        <Button active={loopEnabled} onClick={() => dispatch(toggleLoopMode({ env: env.id }))}>
             {getLoopLabel(loopMode, env.maxLoops)}
+        </Button>
+        <Button active={loopEnabled} onClick={() => dispatch(toggleLoopEnabled({ env: env.id }))}>
+            Loop
         </Button>
 
     </div>
