@@ -1,4 +1,6 @@
 import { MidiConfig } from './types'
+import { store } from '../synthcore/store'
+import { selectMidiChannel } from '../synthcore/modules/settings/settingsReducer'
 
 type MIDIMessageEvent = WebMidi.MIDIMessageEvent
 type MIDIInput = WebMidi.MIDIInput
@@ -29,7 +31,7 @@ const midiConfig = {
     channel: 0,
 }
 
-let ccForChannel = 0b10110000 + midiConfig.channel
+const MIDI_CC = 0b10110000
 
 let midiOut: MIDIOutput | undefined
 let midiIn: MIDIInput | undefined
@@ -38,6 +40,8 @@ const loopback = true
 let idPool = 0
 const ccSubscribers: { [key: number]: CCSubscriber[] } = {}
 const cmdSubscribers: { [key: number]: CmdSubscriber[] } = {}
+
+const getChannel = () => selectMidiChannel(store.getState())
 
 export const subscribe = (callback: (value: number) => void, { cc, values }: MidiConfig) => {
     const id = idPool++
@@ -92,6 +96,7 @@ export const sendCC = (cc: number, value: number) => {
         publishCC(cc, value)
     }
     if (midiOut) {
+        const ccForChannel = MIDI_CC + getChannel()
         midiOut.send([ccForChannel, cc, value])
     }
 }
@@ -99,23 +104,26 @@ export const sendCC = (cc: number, value: number) => {
 // Data must be max 16 bit.
 export const send16 = (command: number, data: number) => {
 
-    const B3 = data & 0b01111111;
-    const B2 = (data >> 7) & 0b01111111;
-    const B1 = (data >> 14) & 0b01111111;
+    const channel = getChannel()
+    const B3 = data & 0b01111111
+    const B2 = (data >> 7) & 0b01111111
+    const B1 = (data >> 14) & 0b01111111
 
     if (midiOut) {
-        midiOut.send([sysexStartByte, ...midiConfig.sysexAddr, command, B1, B2, B3, sysexEndByte])
+        midiOut.send([sysexStartByte, ...midiConfig.sysexAddr, channel, command, B1, B2, B3, sysexEndByte])
     }
 }
 
 export const send2x7 = (command: number, data1: number, data2: number) => {
+    const channel = getChannel()
     if (midiOut) {
-        midiOut.send([sysexStartByte, ...midiConfig.sysexAddr, command, data1, data2, sysexEndByte])
+        midiOut.send([sysexStartByte, ...midiConfig.sysexAddr, channel, command, data1, data2, sysexEndByte])
     }
 }
 
 export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
     const midiData = midiEvent.data
+    const ccForChannel = MIDI_CC + getChannel()
     if (midiData[0] === ccForChannel) {
         publishCC(midiData[1], midiData[2])
     }
