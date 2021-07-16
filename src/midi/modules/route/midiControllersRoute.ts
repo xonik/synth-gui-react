@@ -1,11 +1,11 @@
-import CC from '../../ccMap'
+import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { MidiConfig, MidiConfigWithValue } from '../../types'
+import { MidiConfigCC, MidiConfigCCWithValue } from '../../types'
 
 interface MidiControllersRoute {
-    AMOUNT: MidiConfig,
-    FROM: MidiConfigWithValue
-    TO: MidiConfigWithValue
+    AMOUNT: MidiConfigCC,
+    FROM: MidiConfigCCWithValue
+    TO: MidiConfigCCWithValue
 }
 
 const midiControllersRoute: MidiControllersRoute = {

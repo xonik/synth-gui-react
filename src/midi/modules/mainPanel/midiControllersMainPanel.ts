@@ -1,29 +1,29 @@
-import CC from '../../ccMap'
+import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { MidiConfig, MidiConfigWithValue } from '../../types'
+import { MidiConfigCC, MidiConfigCCWithValue } from '../../types'
 
 interface MidiControllersMainPanel {
-    POT1: MidiConfig,
-    POT2: MidiConfig,
-    POT3: MidiConfig,
-    POT4: MidiConfig,
-    POT5: MidiConfig,
-    POT6: MidiConfig,
+    POT1: MidiConfigCC,
+    POT2: MidiConfigCC,
+    POT3: MidiConfigCC,
+    POT4: MidiConfigCC,
+    POT5: MidiConfigCC,
+    POT6: MidiConfigCC,
 
-    MENU_LFO: MidiConfigWithValue
-    MENU_OSC: MidiConfigWithValue
-    MENU_FILTER: MidiConfigWithValue
-    MENU_ENVELOPE: MidiConfigWithValue
-    MENU_MOD: MidiConfigWithValue
-    MENU_FX: MidiConfigWithValue
-    FUNC_HOME: MidiConfigWithValue
-    FUNC_SETTINGS: MidiConfigWithValue
-    FUNC_SHIFT: MidiConfigWithValue
-    FUNC_PERFORM: MidiConfigWithValue
-    FUNC_LOAD: MidiConfigWithValue
-    FUNC_SAVE: MidiConfigWithValue
-    FUNC_COMPARE: MidiConfigWithValue
-    FUNC_ROUTE: MidiConfigWithValue
+    MENU_LFO: MidiConfigCCWithValue
+    MENU_OSC: MidiConfigCCWithValue
+    MENU_FILTER: MidiConfigCCWithValue
+    MENU_ENVELOPE: MidiConfigCCWithValue
+    MENU_MOD: MidiConfigCCWithValue
+    MENU_FX: MidiConfigCCWithValue
+    FUNC_HOME: MidiConfigCCWithValue
+    FUNC_SETTINGS: MidiConfigCCWithValue
+    FUNC_SHIFT: MidiConfigCCWithValue
+    FUNC_PERFORM: MidiConfigCCWithValue
+    FUNC_LOAD: MidiConfigCCWithValue
+    FUNC_SAVE: MidiConfigCCWithValue
+    FUNC_COMPARE: MidiConfigCCWithValue
+    FUNC_ROUTE: MidiConfigCCWithValue
 }
 const midiControllersMainPanel: MidiControllersMainPanel = {
     POT1: { type: 'pot', cc: CC.MAIN_POT1 },

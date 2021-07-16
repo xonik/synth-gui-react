@@ -3,7 +3,7 @@ import RotaryPot17 from '../pots/RotaryPot17';
 import Header from '../misc/Header';
 import { PotMode } from '../pots/RotaryPotWithLedRingBase';
 import midiConstants from '../../midi/midiControllers'
-import { MidiConfig } from '../../midi/types'
+import { MidiConfigCC } from '../../midi/types'
 
 interface Props {
   x: number,
@@ -15,7 +15,7 @@ interface ChannelProps {
   potMode?: PotMode,
   x: number,
   y: number,
-  midiConfig: MidiConfig,
+  midiConfig: MidiConfigCC,
 }
 
 const rowDistance = 40;

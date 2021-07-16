@@ -1,9 +1,9 @@
 import { BUTTONS } from '../../buttons'
-import { MidiConfigWithValue } from '../../types'
+import { MidiConfigCCWithValue } from '../../types'
 
 
 interface MidiControllersRingMod {
-    SOURCE: MidiConfigWithValue
+    SOURCE: MidiConfigCCWithValue
 }
 
 const midiControllersRingMod: MidiControllersRingMod = {

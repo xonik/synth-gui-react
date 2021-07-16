@@ -1,13 +1,13 @@
-import CC from '../../ccMap'
+import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { MidiConfig, MidiConfigWithValue } from '../../types'
+import { MidiConfigCC, MidiConfigCCWithValue } from '../../types'
 
 interface MidiControllersKbd {
-    PORTAMENTO: MidiConfig
-    UNISON_DETUNE: MidiConfig
-    HOLD: MidiConfigWithValue
-    CHORD: MidiConfigWithValue
-    MODE: MidiConfigWithValue
+    PORTAMENTO: MidiConfigCC
+    UNISON_DETUNE: MidiConfigCC
+    HOLD: MidiConfigCCWithValue
+    CHORD: MidiConfigCCWithValue
+    MODE: MidiConfigCCWithValue
 }
 
 const midiControllersKbd: MidiControllersKbd = {

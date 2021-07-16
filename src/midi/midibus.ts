@@ -1,14 +1,12 @@
-import { MidiConfig } from './types'
+import { MidiConfigCC, MidiConfigNRPN } from './types'
 import { store } from '../synthcore/store'
 import { selectMidiChannel } from '../synthcore/modules/settings/settingsReducer'
+import CC from './mapCC'
 
 type MIDIMessageEvent = WebMidi.MIDIMessageEvent
 type MIDIInput = WebMidi.MIDIInput
 type MIDIOutput = WebMidi.MIDIOutput
 type MIDIAccess = WebMidi.MIDIAccess
-
-const sysexStartByte = 0xF0
-const sysexEndByte = 0xF7
 
 type CCSubscriber = {
     id: number;
@@ -16,10 +14,10 @@ type CCSubscriber = {
     callback: (value: number) => void;
 }
 
-type CmdSubscriber = {
+type NRPNSubscriber = {
     id: number;
     values: number[] | undefined;
-    callback: (values: number[]) => void;
+    callback: (value: number) => void;
 }
 
 const midiConfig = {
@@ -39,93 +37,129 @@ let midiIn: MIDIInput | undefined
 const loopback = true
 let idPool = 0
 const ccSubscribers: { [key: number]: CCSubscriber[] } = {}
-const cmdSubscribers: { [key: number]: CmdSubscriber[] } = {}
+const nrpnSubscribers: { [key: number]: NRPNSubscriber[] } = {}
 
 const getChannel = () => selectMidiChannel(store.getState())
 
-export const subscribe = (callback: (value: number) => void, { cc, values }: MidiConfig) => {
-    const id = idPool++
-    ccSubscribers[cc] = [...(ccSubscribers[cc] || []), { id, values, callback }]
-    return id
-}
-
-export const unsubscribe = (cc: number, id: number) => {
-    const subscribersForCC = ccSubscribers[cc]
-    const index = subscribersForCC.map(sub => sub.id).indexOf(id)
-    if (index > -1) {
-        ccSubscribers[cc] = [...subscribersForCC.slice(0, index), ...subscribersForCC.slice(index + 1)]
+export const cc = {
+    subscribe: (callback: (value: number) => void, { cc, values }: MidiConfigCC) => {
+        const id = idPool++
+        ccSubscribers[cc] = [...(ccSubscribers[cc] || []), { id, values, callback }]
+        return id
+    },
+    unsubscribe: (cc: number, id: number) => {
+        const subscribersForCC = ccSubscribers[cc]
+        const index = subscribersForCC.map(sub => sub.id).indexOf(id)
+        if (index > -1) {
+            ccSubscribers[cc] = [...subscribersForCC.slice(0, index), ...subscribersForCC.slice(index + 1)]
+        }
+    },
+    publish: (cc: number, value: number) => {
+        if (ccSubscribers[cc]) {
+            ccSubscribers[cc].forEach((subscriber) => {
+                if (!subscriber.values || subscriber.values.includes(value)) {
+                    subscriber.callback(value)
+                }
+            })
+        }
+    },
+    send: (controller: number, value: number) => {
+        if (loopback) {
+            cc.publish(controller, value)
+        }
+        if (midiOut) {
+            const ccForChannel = MIDI_CC + getChannel()
+            midiOut.send([ccForChannel, controller, value])
+        }
     }
 }
 
-export const subscribeToCmd = (callback: (values: number[]) => void, { cc, values }: MidiConfig) => {
-    const id = idPool++
-    cmdSubscribers[cc] = [...(cmdSubscribers[cc] || []), { id, values, callback }]
-    return id
-}
+export const nrpn = {
+    subscribe: (callback: (value: number) => void, { addr, values }: MidiConfigNRPN) => {
+        const id = idPool++
+        nrpnSubscribers[addr] = [...(nrpnSubscribers[addr] || []), { id, values, callback }]
+        return id
+    },
+    unsubscribe: (addr: number, id: number) => {
+        const subscribersForNRPN = nrpnSubscribers[addr]
+        const index = subscribersForNRPN.map(sub => sub.id).indexOf(id)
+        if (index > -1) {
+            nrpnSubscribers[addr] = [...subscribersForNRPN.slice(0, index), ...subscribersForNRPN.slice(index + 1)]
+        }
+    },
+    publish: (addr: number, value: number) => {
+        if (nrpnSubscribers[addr]) {
+            nrpnSubscribers[addr].forEach((subscriber) => {
+                if (!subscriber.values || subscriber.values.includes(value)) {
+                    subscriber.callback(value)
+                }
+            })
+        }
+    },
+    send: (addr: number, value: number) => {
+        if (loopback) {
+            nrpn.publish(addr, value)
+        }
+        if (midiOut) {
+            const loAddr = addr & 0b01111111
+            const hiAddr = (addr >> 7) & 0b01111111
 
-export const unsubscribeFromCmd = (cmd: number, id: number) => {
-    const subscribersForCmd = cmdSubscribers[cmd]
-    const index = subscribersForCmd.map(sub => sub.id).indexOf(id)
-    if (index > -1) {
-        cmdSubscribers[cmd] = [...subscribersForCmd.slice(0, index), ...subscribersForCmd.slice(index + 1)]
-    }
-}
+            const loValue = value & 0b01111111
+            const midValue = (value >> 7) & 0b01111111
+            const hiValue = (value >> 14) & 0b01111111
 
-const publishCC = (cc: number, value: number) => {
-    if (ccSubscribers[cc]) {
-        ccSubscribers[cc].forEach((subscriber) => {
-            if (!subscriber.values || subscriber.values.includes(value)) {
-                subscriber.callback(value)
+            const ccForChannel = MIDI_CC + getChannel()
+
+            let data = [ccForChannel, CC.NRPN_MSB, hiAddr, CC.NRPN_LSB, loAddr]
+            if(value > 16383) {
+                data.push(CC.DATA_ENTRY_HSB)
+                data.push(hiValue)
             }
-        })
-    }
-}
-
-const publishCmd = (cmd: number, values: number[]) => {
-    if (cmdSubscribers[cmd] && values.length > 0) {
-        cmdSubscribers[cmd].forEach((subscriber) => {
-            if (!subscriber.values || subscriber.values.includes(values[0])) {
-                subscriber.callback(values)
+            if(value > 127) {
+                data.push(CC.DATA_ENTRY_MSB)
+                data.push(midValue)
             }
-        })
+            data.push(CC.DATA_ENTRY_LSB)
+            data.push(loValue)
+
+            midiOut.send(data)
+        }
     }
 }
 
-export const sendCC = (cc: number, value: number) => {
-    if (loopback) {
-        publishCC(cc, value)
-    }
-    if (midiOut) {
-        const ccForChannel = MIDI_CC + getChannel()
-        midiOut.send([ccForChannel, cc, value])
-    }
-}
-
-// Data must be max 16 bit.
-export const send16 = (command: number, data: number) => {
-
-    const channel = getChannel()
-    const B3 = data & 0b01111111
-    const B2 = (data >> 7) & 0b01111111
-    const B1 = (data >> 14) & 0b01111111
-
-    if (midiOut) {
-        midiOut.send([sysexStartByte, ...midiConfig.sysexAddr, channel, command, B1, B2, B3, sysexEndByte])
-    }
-}
-
-export const send2x7 = (command: number, data1: number, data2: number) => {
-    const channel = getChannel()
-    if (midiOut) {
-        midiOut.send([sysexStartByte, ...midiConfig.sysexAddr, channel, command, data1, data2, sysexEndByte])
-    }
+const currNRPN = {
+    hiAddr: 0,
+    loAddr: 0,
+    hiValue: 0,
+    midValue: 0,
+    loValue: 0,
 }
 
 export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
     const midiData = midiEvent.data
     const ccForChannel = MIDI_CC + getChannel()
     if (midiData[0] === ccForChannel) {
-        publishCC(midiData[1], midiData[2])
+        if (midiData[1] === CC.NRPN_MSB) {
+            currNRPN.hiAddr = midiData[2]
+        } else if(midiData[1] === CC.NRPN_LSB) {
+            currNRPN.loAddr = midiData[2]
+        } else if(midiData[1] === CC.DATA_ENTRY_HSB) {
+            currNRPN.hiValue = midiData[2]
+        } else if(midiData[1] === CC.DATA_ENTRY_MSB) {
+            currNRPN.midValue = midiData[2]
+        } else if(midiData[1] === CC.DATA_ENTRY_LSB) {
+            // triggering an update on lsb means we don't have to send hsb and msb if we
+            // don't want to
+            currNRPN.loValue = midiData[2]
+            const addr = (currNRPN.hiAddr << 7) + currNRPN.loAddr
+            const value = (currNRPN.midValue << 14) + (currNRPN.midValue << 7) + currNRPN.loValue
+            nrpn.publish(addr, value)
+            currNRPN.hiValue = 0
+            currNRPN.midValue = 0
+            currNRPN.loValue = 0
+        } else {
+            cc.publish(midiData[1], midiData[2])
+        }
     }
 }
 

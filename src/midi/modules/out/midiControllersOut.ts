@@ -1,11 +1,11 @@
-import CC from '../../ccMap'
-import { MidiConfig } from '../../types'
+import CC from '../../mapCC'
+import { MidiConfigCC } from '../../types'
 
 
 interface MidiControllersOut {
-    VOLUME: MidiConfig
-    SPREAD: MidiConfig
-    HEADPHONES: MidiConfig
+    VOLUME: MidiConfigCC
+    SPREAD: MidiConfigCC
+    HEADPHONES: MidiConfigCC
 }
 
 const midiControllersOut: MidiControllersOut ={

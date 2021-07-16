@@ -1,12 +1,12 @@
-import CC from '../../ccMap'
-import { MidiConfig } from '../../types'
+import CC from '../../mapCC'
+import { MidiConfigCC } from '../../types'
 
 
 interface MidiControllersVoiceOut {
-    PAN: MidiConfig
-    AMOUNT: MidiConfig
-    FX1_SEND: MidiConfig
-    FX2_SEND: MidiConfig
+    PAN: MidiConfigCC
+    AMOUNT: MidiConfigCC
+    FX1_SEND: MidiConfigCC
+    FX2_SEND: MidiConfigCC
 }
 
 const midiControllersVoiceOut: MidiControllersVoiceOut = {

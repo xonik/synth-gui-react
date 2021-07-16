@@ -1,39 +1,39 @@
-import CC from '../../ccMap'
+import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { MidiConfig, MidiConfigWithValue } from '../../types'
+import { MidiConfigCC, MidiConfigCCWithValue } from '../../types'
 
 interface MidiControllersCommonFx {
     DSP1: {
-        POT1: MidiConfig,
-        POT2: MidiConfig,
-        POT3: MidiConfig,
-        EFFECT: MidiConfig,
-        SOURCE: MidiConfigWithValue,
+        POT1: MidiConfigCC,
+        POT2: MidiConfigCC,
+        POT3: MidiConfigCC,
+        EFFECT: MidiConfigCC,
+        SOURCE: MidiConfigCCWithValue,
     },
     DSP2: {
-        POT1: MidiConfig,
-        POT2: MidiConfig,
-        POT3: MidiConfig,
-        EFFECT: MidiConfig,
-        SOURCE: MidiConfigWithValue,
-        CHAIN: MidiConfigWithValue,
+        POT1: MidiConfigCC,
+        POT2: MidiConfigCC,
+        POT3: MidiConfigCC,
+        EFFECT: MidiConfigCC,
+        SOURCE: MidiConfigCCWithValue,
+        CHAIN: MidiConfigCCWithValue,
     },
     CHORUS: {
-        RATE: MidiConfig,
-        DEPTH: MidiConfig,
-        SOURCE: MidiConfigWithValue,
-        MODE: MidiConfigWithValue,
+        RATE: MidiConfigCC,
+        DEPTH: MidiConfigCC,
+        SOURCE: MidiConfigCCWithValue,
+        MODE: MidiConfigCCWithValue,
     },
     FX_BIT_CRUSHER: {
-        BITS: MidiConfig,
-        RATE: MidiConfig,
-        SOURCE: MidiConfigWithValue,
+        BITS: MidiConfigCC,
+        RATE: MidiConfigCC,
+        SOURCE: MidiConfigCCWithValue,
     },
     FX_MIX: {
-        LEVEL_DSP1: MidiConfig,
-        LEVEL_DSP2: MidiConfig,
-        LEVEL_CHORUS: MidiConfig,
-        LEVEL_BIT_CRUSHER: MidiConfig,
+        LEVEL_DSP1: MidiConfigCC,
+        LEVEL_DSP2: MidiConfigCC,
+        LEVEL_CHORUS: MidiConfigCC,
+        LEVEL_BIT_CRUSHER: MidiConfigCC,
     }
 }
 

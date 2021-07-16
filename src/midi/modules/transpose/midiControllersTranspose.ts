@@ -1,9 +1,9 @@
 import { BUTTONS } from '../../buttons'
-import { MidiConfigWithValue } from '../../types'
+import { MidiConfigCCWithValue } from '../../types'
 
 
 interface MidiControllersTranspose {
-    TRANSPOSE: MidiConfigWithValue
+    TRANSPOSE: MidiConfigCCWithValue
 }
 
 const midiControllersTranspose: MidiControllersTranspose = {

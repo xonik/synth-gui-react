@@ -3,7 +3,7 @@ import RotaryPot17 from '../pots/RotaryPot17'
 import Header from '../misc/Header'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import midiConstants from '../../midi/midiControllers'
-import { MidiConfig } from '../../midi/types'
+import { MidiConfigCC } from '../../midi/types'
 
 
 interface Props {
@@ -15,8 +15,8 @@ interface ChannelProps {
     label: string,
     x: number,
     y: number
-    potMidiConfig: MidiConfig,
-    buttonMidiConfig: MidiConfig,
+    potMidiConfig: MidiConfigCC,
+    buttonMidiConfig: MidiConfigCC,
 }
 
 

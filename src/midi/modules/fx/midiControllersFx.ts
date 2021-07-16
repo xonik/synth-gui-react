@@ -1,21 +1,21 @@
-import CC from '../../ccMap'
+import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { MidiConfig, MidiConfigWithValue } from '../../types'
+import { MidiConfigCC, MidiConfigCCWithValue } from '../../types'
 
 interface MidiControllersFx {
     DISTORTION: {
-        DRIVE: MidiConfig
-        LEVEL: MidiConfig
-        IN: MidiConfigWithValue
-        CLIP: MidiConfigWithValue
-        OUT: MidiConfigWithValue
+        DRIVE: MidiConfigCC
+        LEVEL: MidiConfigCC
+        IN: MidiConfigCCWithValue
+        CLIP: MidiConfigCCWithValue
+        OUT: MidiConfigCCWithValue
     },
     BIT_CRUSHER: {
-        BITS: MidiConfig
-        RATE: MidiConfig
-        LEVEL: MidiConfig
-        IN: MidiConfigWithValue
-        OUT: MidiConfigWithValue
+        BITS: MidiConfigCC
+        RATE: MidiConfigCC
+        LEVEL: MidiConfigCC
+        IN: MidiConfigCCWithValue
+        OUT: MidiConfigCCWithValue
     }
 }
 

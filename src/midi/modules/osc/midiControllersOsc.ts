@@ -1,48 +1,48 @@
-import CC from '../../ccMap'
+import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { MidiConfig, MidiConfigWithValue } from '../../types'
+import { MidiConfigCC, MidiConfigCCWithValue } from '../../types'
 
 interface MidiControllersOsc {
     DCO1: {
-        NOTE: MidiConfig
-        SUPER_SAW: MidiConfig,
-        WAVEFORM: MidiConfig,
-        SUB1: MidiConfig,
-        SUB2: MidiConfig,
-        PW: MidiConfig,
-        SYNC: MidiConfigWithValue
-        MODE: MidiConfigWithValue
-        SUB_WAVE: MidiConfigWithValue
-        WHEEL: MidiConfigWithValue
-        LFO: MidiConfigWithValue
-        KBD: MidiConfigWithValue
+        NOTE: MidiConfigCC
+        SUPER_SAW: MidiConfigCC,
+        WAVEFORM: MidiConfigCC,
+        SUB1: MidiConfigCC,
+        SUB2: MidiConfigCC,
+        PW: MidiConfigCC,
+        SYNC: MidiConfigCCWithValue
+        MODE: MidiConfigCCWithValue
+        SUB_WAVE: MidiConfigCCWithValue
+        WHEEL: MidiConfigCCWithValue
+        LFO: MidiConfigCCWithValue
+        KBD: MidiConfigCCWithValue
     },
     DCO2: {
-        NOTE: MidiConfig
-        DETUNE: MidiConfig
-        SUPER_SAW: MidiConfig
-        WAVEFORM: MidiConfig
-        SUB1: MidiConfig
-        SUB2: MidiConfig
-        PW: MidiConfig
-        MODE: MidiConfigWithValue
-        SUB_WAVE: MidiConfigWithValue
-        WHEEL: MidiConfigWithValue
-        LFO: MidiConfigWithValue
-        KBD: MidiConfigWithValue
+        NOTE: MidiConfigCC
+        DETUNE: MidiConfigCC
+        SUPER_SAW: MidiConfigCC
+        WAVEFORM: MidiConfigCC
+        SUB1: MidiConfigCC
+        SUB2: MidiConfigCC
+        PW: MidiConfigCC
+        MODE: MidiConfigCCWithValue
+        SUB_WAVE: MidiConfigCCWithValue
+        WHEEL: MidiConfigCCWithValue
+        LFO: MidiConfigCCWithValue
+        KBD: MidiConfigCCWithValue
     },
     VCO: {
-        NOTE: MidiConfig
-        DETUNE: MidiConfig
-        WAVEFORM: MidiConfig
-        CROSS_MOD: MidiConfig
-        PW: MidiConfig
-        SYNC: MidiConfigWithValue
-        CROSS_MOD_SRC: MidiConfigWithValue
-        EXT_CV: MidiConfigWithValue
-        WHEEL: MidiConfigWithValue
-        LFO: MidiConfigWithValue
-        KBD: MidiConfigWithValue
+        NOTE: MidiConfigCC
+        DETUNE: MidiConfigCC
+        WAVEFORM: MidiConfigCC
+        CROSS_MOD: MidiConfigCC
+        PW: MidiConfigCC
+        SYNC: MidiConfigCCWithValue
+        CROSS_MOD_SRC: MidiConfigCCWithValue
+        EXT_CV: MidiConfigCCWithValue
+        WHEEL: MidiConfigCCWithValue
+        LFO: MidiConfigCCWithValue
+        KBD: MidiConfigCCWithValue
     }
 }
 

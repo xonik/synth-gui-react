@@ -7,11 +7,13 @@ const generateCppFiles = () => {
     const buttonNumberOfValues: number[] = []
 
     const potEnum: string[] = []
-    const potCC: number[] = []
+    const potCC: string[] = []
 
     Object.entries(midiControllers)
         .forEach(([controllerGroupKey, controllersList]) => {
-            Object.entries(controllersList).forEach(([controllerKey, controller]) => {
+            Object.entries(controllersList)
+                .filter(([controllerKey, controller]) => controller.cc !== undefined)
+                .forEach(([controllerKey, controller]) => {
                 if(controller.type === 'button'){
                     buttonEnum.push(`BUTTON_${controllerGroupKey}_${controllerKey}`)
                     buttonCC.push(controller.cc)
@@ -19,7 +21,7 @@ const generateCppFiles = () => {
                     buttonNumberOfValues.push(controller.values?.length || 0)
                 } else if(controller.type === 'pot'){
                     potEnum.push(`POT_${controllerGroupKey}_${controllerKey}`)
-                    potCC.push(controller.cc)
+                    potCC.push(`${controller.cc} /* ${controllerGroupKey}_${controllerKey} */`)
                 } else {
                     console.log('missing controller type', { controllerGroupKey, controllerKey, controller })
                 }
@@ -42,4 +44,4 @@ const generateCppFiles = () => {
     console.log('midiPotsCC.h', potCCFileContents)
 }
 
-//generateCppFiles()
+generateCppFiles()

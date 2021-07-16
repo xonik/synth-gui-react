@@ -1,28 +1,28 @@
-import CC from '../../ccMap'
-import SYS_CMD from '../../sysexCommandMap'
+import CC from '../../mapCC'
+import NRPN from '../../mapNRPN'
 import { BUTTONS } from '../../buttons'
-import { MidiConfig, MidiConfigWithValue } from '../../types'
+import { MidiConfigCC, MidiConfigCCWithValue, MidiConfigNRPN } from '../../types'
 
 interface MidiCtrlEnv {
-    CURVE: MidiConfig
-    LEVEL: MidiConfig
-    TIME: MidiConfig
-    MAX_LOOPS: MidiConfig
-    TOGGLE_STAGE: MidiConfig
-    SELECT: MidiConfig
-    SELECT_ENV3_ID: MidiConfig
-    TRIGGER: MidiConfigWithValue
-    LOOP: MidiConfigWithValue
-    INVERT: MidiConfigWithValue
-    RESET_ON_TRIGGER: MidiConfigWithValue
-    RELEASE_MODE: MidiConfigWithValue
-    LOOP_MODE: MidiConfigWithValue
+    CURVE: MidiConfigNRPN
+    LEVEL: MidiConfigNRPN
+    TIME: MidiConfigNRPN
+    MAX_LOOPS: MidiConfigCC
+    TOGGLE_STAGE: MidiConfigCC
+    SELECT: MidiConfigCC
+    SELECT_ENV3_ID: MidiConfigCC
+    TRIGGER: MidiConfigCCWithValue
+    LOOP: MidiConfigCCWithValue
+    INVERT: MidiConfigCCWithValue
+    RESET_ON_TRIGGER: MidiConfigCCWithValue
+    RELEASE_MODE: MidiConfigCCWithValue
+    LOOP_MODE: MidiConfigCCWithValue
 }
 
 const midiControllersEnv: MidiCtrlEnv = {
-    CURVE: { type: 'pot', cc: SYS_CMD.ENV_CURVE },
-    LEVEL: { type: 'pot', cc: SYS_CMD.ENV_LEVEL },
-    TIME: { type: 'pot', cc: SYS_CMD.ENV_TIME },
+    CURVE: { type: 'pot', addr: NRPN.ENV_CURVE },
+    LEVEL: { type: 'pot', addr: NRPN.ENV_LEVEL },
+    TIME: { type: 'pot', addr: NRPN.ENV_TIME },
     MAX_LOOPS: { type: 'pot', cc: CC.ENV_MAX_LOOPS },
     TOGGLE_STAGE: { type: 'pot', cc: CC.ENV_TOGGLE_STAGE }, // 4 bit stage, 7 bit on/off
     SELECT: { type: 'pot', cc: CC.ENV_SELECT_ENV },

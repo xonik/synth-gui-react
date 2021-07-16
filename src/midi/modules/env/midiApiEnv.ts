@@ -1,7 +1,7 @@
 import { envApi } from '../../../synthcore/synthcoreApi'
 import { Curve, LoopMode, ReleaseMode } from '../../../synthcore/modules/env/types'
 import midiControllers from '../../midiControllers'
-import { send16, send2x7, sendCC, subscribe, subscribeToCmd } from '../../midibus'
+import { cc, nrpn } from '../../midibus'
 import { ApiSource } from '../../../synthcore/types'
 
 const shouldSend = (source: ApiSource) => {
@@ -13,7 +13,7 @@ let currentEnvId = -1;
 
 const selectEnv = (envId: number) => {
     if(envId !== currentEnvId){
-        sendCC(midiControllers.ENV1.SELECT.cc, envId)
+        cc.send(midiControllers.ENV1.SELECT.cc, envId)
         currentEnvId = envId;
     }
 }
@@ -25,12 +25,16 @@ const level = (() => {
         send: (source: ApiSource, envId: number, stageId: number, boundedValue: number) => {
             if(!shouldSend(source)) return;
             selectEnv(envId)
-            send16(cfg.cc, Math.round(boundedValue * 65535))
+
+            // stageId is encoded as part of the extra available bits
+            const value = Math.round(boundedValue * 65535) + stageId << 16;
+            nrpn.send(cfg.addr, value)
         },
         receive: () => {
-            subscribeToCmd((values: number[]) => {
-                const value = values[0] + values[1] * 128 + values[2] * 16384
-                envApi.setStageLevel(currentEnvId, values[3], value, ApiSource.MIDI)
+            nrpn.subscribe((value: number) => {
+                const level = value & 0xFF;
+                const stageId = value >> 16;
+                envApi.setStageLevel(currentEnvId, stageId, level, ApiSource.MIDI)
             }, cfg)
         }
     }
@@ -42,12 +46,16 @@ const time = (() => {
         send: (source: ApiSource, envId: number, stageId: number, boundedValue: number) => {
             if(!shouldSend(source)) return;
             selectEnv(envId)
-            send16(cfg.cc, Math.round(boundedValue * 65535))
+
+            // stageId is encoded as part of the extra available bits
+            const value = Math.round(boundedValue * 65535) + stageId << 16;
+            nrpn.send(cfg.addr, value)
         },
         receive: () => {
-            subscribeToCmd((values: number[]) => {
-                const value = values[0] + values[1] * 128 + values[2] * 16384
-                envApi.setStageTime(currentEnvId, values[3], value, ApiSource.MIDI)
+            nrpn.subscribe((value: number) => {
+                const time = value & 0xFF;
+                const stageId = value >> 16;
+                envApi.setStageTime(currentEnvId, stageId, time, ApiSource.MIDI)
             }, cfg)
         }
     }
@@ -61,10 +69,10 @@ const invert = (() => {
             if (!shouldSend(source)) return;
             selectEnv(envId)
             const invertIndex = invert ? 1 : 0
-            sendCC(cfg.cc, cfg.values[invertIndex])
+            cc.send(cfg.cc, cfg.values[invertIndex])
         },
         receive: () => {
-            subscribe((value: number) => {
+            cc.subscribe((value: number) => {
                 const invert = value === cfg.values[1];
                 envApi.setInvert(currentEnvId, invert, ApiSource.MIDI)
             }, cfg)
@@ -80,10 +88,10 @@ const resetOnTrigger = (() => {
             if (!shouldSend(source)) return;
             selectEnv(envId)
             const resetIndex = resetOnTrigger ? 1 : 0
-            sendCC(cfg.cc, cfg.values[resetIndex])
+            cc.send(cfg.cc, cfg.values[resetIndex])
         },
         receive: () => {
-            subscribe((value: number) => {
+            cc.subscribe((value: number) => {
                 const reset = value === cfg.values[1];
                 envApi.setRetrigger(currentEnvId, reset, ApiSource.MIDI)
             }, cfg)
@@ -98,10 +106,10 @@ const releaseMode = (() => {
         send: (source: ApiSource, envId: number, releaseMode: ReleaseMode) => {
             if (!shouldSend(source)) return;
             selectEnv(envId)
-            sendCC(cfg.cc, cfg.values[releaseMode])
+            cc.send(cfg.cc, cfg.values[releaseMode])
         },
         receive: () => {
-            subscribe((value: number) => {
+            cc.subscribe((value: number) => {
                 const releaseMode = cfg.values.indexOf(value) || 0;
                 envApi.setReleaseMode(currentEnvId, releaseMode, ApiSource.MIDI)
             }, cfg)
@@ -116,10 +124,10 @@ const loopMode = (() => {
         send: (source: ApiSource, envId: number, loopMode: LoopMode) => {
             if (!shouldSend(source)) return;
             selectEnv(envId)
-            sendCC(cfg.cc, cfg.values[loopMode])
+            cc.send(cfg.cc, cfg.values[loopMode])
         },
         receive: () => {
-            subscribe((value: number) => {
+            cc.subscribe((value: number) => {
                 const loopMode = cfg.values.indexOf(value) || 0;
                 envApi.setLoopMode(currentEnvId, loopMode, ApiSource.MIDI)
             }, cfg)
@@ -135,10 +143,10 @@ const loopEnabled = (() => {
             if (!shouldSend(source)) return;
             selectEnv(envId)
             const loopEnabledIndex = enabled ? 1 : 0
-            sendCC(cfg.cc, cfg.values[loopEnabledIndex])
+            cc.send(cfg.cc, cfg.values[loopEnabledIndex])
         },
         receive: () => {
-            subscribe((value: number) => {
+            cc.subscribe((value: number) => {
                 const enabled = value === cfg.values[1];
                 envApi.setLoopEnabled(currentEnvId, enabled, ApiSource.MIDI)
             }, cfg)
@@ -155,10 +163,10 @@ const stageEnabled = (() => {
             selectEnv(envId)
             const enableBit = enabled ? 0b1000 : 0;
             const data = stageId | enableBit;
-            sendCC(cfg.cc, data)
+            cc.send(cfg.cc, data)
         },
         receive: () => {
-            subscribe((value: number) => {
+            cc.subscribe((value: number) => {
                 const stageId = value & 0b111
                 const enabled = (value & 0b1000) > 0;
                 envApi.setStageEnabled(currentEnvId, stageId, enabled, ApiSource.MIDI)
@@ -174,12 +182,12 @@ const curve = (() => {
         send: (source: ApiSource, envId: number, stageId: number, curve: Curve) => {
             if (!shouldSend(source)) return;
             selectEnv(envId)
-            send2x7(cfg.cc, stageId, curve)
+            nrpn.send(cfg.addr, stageId << 7 + curve)
         },
         receive: () => {
-            subscribeToCmd((values: number[]) => {
-                const stageId = values[0]
-                const curve = values[1]
+            nrpn.subscribe((value: number) => {
+                const stageId = (value >> 7) & 0b01111111;
+                const curve = value & 0b01111111;
                 envApi.setStageCurve(currentEnvId, stageId, curve, ApiSource.MIDI)
             }, cfg)
         }
@@ -193,10 +201,10 @@ const maxLoops = (() => {
         send: (source: ApiSource, envId: number, maxLoops: number) => {
             if (!shouldSend(source)) return;
             selectEnv(envId)
-            sendCC(cfg.cc, maxLoops)
+            cc.send(cfg.cc, maxLoops)
         },
         receive: () => {
-            subscribe((value: number) => {
+            cc.subscribe((value: number) => {
                 envApi.setMaxLoops(currentEnvId, value, ApiSource.MIDI)
             }, cfg)
         }
@@ -209,10 +217,10 @@ const env3Id = (() => {
     return {
         send: (source: ApiSource, id: number) => {
             if (!shouldSend(source)) return;
-            sendCC(cfg.cc, id)
+            cc.send(cfg.cc, id)
         },
         receive: () => {
-            subscribe((id: number) => {
+            cc.subscribe((id: number) => {
                 envApi.setEnv3Id(id, ApiSource.MIDI)
             }, cfg)
         }
@@ -226,7 +234,7 @@ const trigger = (() => {
         send: (source: ApiSource, envId: number) => {
             if (!shouldSend(source)) return;
             selectEnv(envId)
-            sendCC(cfg.cc, cfg.values[0])
+            cc.send(cfg.cc, cfg.values[0])
         },
     }
 })()

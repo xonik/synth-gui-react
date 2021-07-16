@@ -1,4 +1,4 @@
-import CC from './ccMap'
+import CC from './mapCC'
 import { buttonLeftMidiValues } from './buttonLeftMidiValues'
 import { buttonCenterMidiValues } from './buttonCenterMidiValues'
 import { buttonRightMidiValues } from './buttonRightMidiValues'

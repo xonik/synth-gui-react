@@ -1,10 +1,10 @@
-import CC from '../../ccMap'
+import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { MidiConfig, MidiConfigWithValue } from '../../types'
+import { MidiConfigCC, MidiConfigCCWithValue } from '../../types'
 
 interface MidiControllersMasterClock {
-    RATE: MidiConfig,
-    SOURCE: MidiConfigWithValue
+    RATE: MidiConfigCC,
+    SOURCE: MidiConfigCCWithValue
 }
 
 const midiControllersMasterClock: MidiControllersMasterClock = {

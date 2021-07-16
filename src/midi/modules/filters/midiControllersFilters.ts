@@ -1,37 +1,37 @@
-import CC from '../../ccMap'
+import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { MidiConfig, MidiConfigWithValue } from '../../types'
+import { MidiConfigCC, MidiConfigCCWithValue } from '../../types'
 
 interface MidiControllersFilters {
     LPF: {
-        INPUT: MidiConfig
-        DRIVE: MidiConfig
-        RESONANCE: MidiConfig
-        CUTOFF: MidiConfig
-        FM_AMT: MidiConfig
-        ENV_AMT: MidiConfig
-        LFO_AMT: MidiConfig
-        KBD_AMT: MidiConfig
-        EXT_CV: MidiConfigWithValue
-        WHEEL: MidiConfigWithValue
-        SLOPE: MidiConfigWithValue
+        INPUT: MidiConfigCC
+        DRIVE: MidiConfigCC
+        RESONANCE: MidiConfigCC
+        CUTOFF: MidiConfigCC
+        FM_AMT: MidiConfigCC
+        ENV_AMT: MidiConfigCC
+        LFO_AMT: MidiConfigCC
+        KBD_AMT: MidiConfigCC
+        EXT_CV: MidiConfigCCWithValue
+        WHEEL: MidiConfigCCWithValue
+        SLOPE: MidiConfigCCWithValue
     },
     FILTERS: {
-        LINK_CUTOFF: MidiConfigWithValue
-        ROUTING: MidiConfigWithValue
+        LINK_CUTOFF: MidiConfigCCWithValue
+        ROUTING: MidiConfigCCWithValue
     },
     SVF: {
-        INPUT: MidiConfig
-        DRIVE: MidiConfig
-        RESONANCE: MidiConfig
-        CUTOFF: MidiConfig
-        FM_AMT: MidiConfig
-        ENV_AMT: MidiConfig
-        LFO_AMT: MidiConfig
-        KBD_AMT: MidiConfig
-        EXT_CV: MidiConfigWithValue
-        WHEEL: MidiConfigWithValue
-        SLOPE: MidiConfigWithValue
+        INPUT: MidiConfigCC
+        DRIVE: MidiConfigCC
+        RESONANCE: MidiConfigCC
+        CUTOFF: MidiConfigCC
+        FM_AMT: MidiConfigCC
+        ENV_AMT: MidiConfigCC
+        LFO_AMT: MidiConfigCC
+        KBD_AMT: MidiConfigCC
+        EXT_CV: MidiConfigCCWithValue
+        WHEEL: MidiConfigCCWithValue
+        SLOPE: MidiConfigCCWithValue
     }
 }
 

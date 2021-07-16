@@ -1,16 +1,16 @@
-import CC from '../../ccMap'
+import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { MidiConfig, MidiConfigWithValue } from '../../types'
+import { MidiConfigCC, MidiConfigCCWithValue } from '../../types'
 
 interface MidiControllersLfo {
-    RATE: MidiConfig,
-    DEPTH: MidiConfig,
-    DELAY: MidiConfig,
-    LFO: MidiConfigWithValue
-    SHAPE: MidiConfigWithValue
-    SYNC: MidiConfigWithValue
-    RESET: MidiConfigWithValue
-    ONCE: MidiConfigWithValue
+    RATE: MidiConfigCC,
+    DEPTH: MidiConfigCC,
+    DELAY: MidiConfigCC,
+    LFO: MidiConfigCCWithValue
+    SHAPE: MidiConfigCCWithValue
+    SYNC: MidiConfigCCWithValue
+    RESET: MidiConfigCCWithValue
+    ONCE: MidiConfigCCWithValue
 }
 
 const midiControllersLfo: MidiControllersLfo = {

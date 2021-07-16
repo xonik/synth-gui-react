@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react'
 import classNames from 'classnames'
 import RoundPushButtonBase from './RoundPushButtonBase'
 import RotaryPotBase from '../pots/RotaryPotBase'
-import { subscribe, unsubscribe, sendCC } from '../../midi/midibus'
-import { MidiConfig } from '../../midi/types'
+import { cc } from '../../midi/midibus'
+import { MidiConfigCC } from '../../midi/types'
 import { ControllerGroupIds } from '../../synthcore/types'
 import { click } from '../../synthcore/modules/ui/uiReducer'
 import { dispatch } from '../../synthcore/utils'
@@ -39,7 +39,7 @@ export interface Props {
     // What midi messages to send when clicking the button.
     // If the midi values array is longer than the ledCount (+1 if hasOff is used), all leds will light up on the rest, making it possible
     // to create a all-on mode.
-    midiConfig?: MidiConfig;
+    midiConfig?: MidiConfigCC;
 
     // True if the first midi value is an off state, lets us switch off all diodes
     hasOff?: boolean;
@@ -243,29 +243,29 @@ export const RoundButtonBase = (props: Props & Config) => {
                 if (radioButtonIndex !== undefined) {
                     if (midiConfig.values.length >= radioButtonValueIndex) {
                         if (hasOffValue && currentValue === radioButtonValueIndex) {
-                            sendCC(midiConfig.cc, midiConfig.values[0]);
+                            cc.send(midiConfig.cc, midiConfig.values[0]);
                         } else {
-                            sendCC(midiConfig.cc, midiConfig.values[radioButtonValueIndex]);
+                            cc.send(midiConfig.cc, midiConfig.values[radioButtonValueIndex]);
                         }
                     }
                 } else if (reverse) {
                     const valueCandidate = (currentValue - 1);
                     if (loop) {
                         const newValue = (valueCandidate + midiConfig.values.length) % midiConfig.values.length;
-                        sendCC(midiConfig.cc, midiConfig.values[newValue]);
+                        cc.send(midiConfig.cc, midiConfig.values[newValue]);
                     } else {
                         if (valueCandidate >= 0) {
-                            sendCC(midiConfig.cc, midiConfig.values[valueCandidate]);
+                            cc.send(midiConfig.cc, midiConfig.values[valueCandidate]);
                         }
                     }
                 } else {
                     const valueCandidate = (currentValue + 1);
                     if (loop) {
                         const newValue = valueCandidate % midiConfig.values.length;
-                        sendCC(midiConfig.cc, midiConfig.values[newValue]);
+                        cc.send(midiConfig.cc, midiConfig.values[newValue]);
                     } else {
                         if (valueCandidate < midiConfig.values.length) {
-                            sendCC(midiConfig.cc, midiConfig.values[valueCandidate]);
+                            cc.send(midiConfig.cc, midiConfig.values[valueCandidate]);
                         }
                     }
                 }
@@ -285,9 +285,9 @@ export const RoundButtonBase = (props: Props & Config) => {
                 if(onUpdate) onUpdate(newValue);
             }
 
-            const subscriberId = subscribe(updateValueFromMidi, midiConfig)
+            const subscriberId = cc.subscribe(updateValueFromMidi, midiConfig)
             return function cleanup() {
-                unsubscribe(midiConfig.cc, subscriberId);
+                cc.unsubscribe(midiConfig.cc, subscriberId);
             };
         }
     });

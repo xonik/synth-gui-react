@@ -1,16 +1,16 @@
 import { BUTTONS } from '../../buttons'
-import { MidiConfigWithValue } from '../../types'
+import { MidiConfigCCWithValue } from '../../types'
 
 
 interface MidiControllersVoices {
-    VOICE1: MidiConfigWithValue
-    VOICE2: MidiConfigWithValue
-    VOICE3: MidiConfigWithValue
-    VOICE4: MidiConfigWithValue
-    VOICE5: MidiConfigWithValue
-    VOICE6: MidiConfigWithValue
-    VOICE7: MidiConfigWithValue
-    VOICE8: MidiConfigWithValue
+    VOICE1: MidiConfigCCWithValue
+    VOICE2: MidiConfigCCWithValue
+    VOICE3: MidiConfigCCWithValue
+    VOICE4: MidiConfigCCWithValue
+    VOICE5: MidiConfigCCWithValue
+    VOICE6: MidiConfigCCWithValue
+    VOICE7: MidiConfigCCWithValue
+    VOICE8: MidiConfigCCWithValue
 }
 
 const midiControllersVoices: MidiControllersVoices = {

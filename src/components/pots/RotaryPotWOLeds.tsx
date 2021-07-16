@@ -1,7 +1,7 @@
 import RotaryPotBase from './RotaryPotBase'
 import React, { useCallback, useEffect, useState } from 'react'
-import { MidiConfig } from '../../midi/types'
-import { sendCC, subscribe, unsubscribe } from '../../midi/midibus'
+import { MidiConfigCC } from '../../midi/types'
+import { cc } from '../../midi/midibus'
 import { increment } from '../../synthcore/modules/ui/uiReducer'
 import { useAppDispatch } from '../../synthcore/hooks'
 import { ControllerGroupIds } from '../../synthcore/types'
@@ -11,7 +11,7 @@ export interface Props {
     x: number,
     y: number,
     label?: string,
-    midiConfig?: MidiConfig,
+    midiConfig?: MidiConfigCC,
     ctrlGroup?: ControllerGroupIds;
     ctrlId?: number;
     ctrlIndex?: number
@@ -33,7 +33,7 @@ export default (props: Props & Config) => {
 
     const onClick = useCallback(() => {
         if(midiConfig) {
-            sendCC(midiConfig.cc, 0);
+            cc.send(midiConfig.cc, 0);
         }
     }, [midiConfig])
 
@@ -41,7 +41,7 @@ export default (props: Props & Config) => {
     // themselves.
     const sendMidi = useCallback((position: number) => {
         if(midiConfig){
-            sendCC(midiConfig.cc, Math.round(127 * position));
+            cc.send(midiConfig.cc, Math.round(127 * position));
         }
     }, [midiConfig]);
 
@@ -72,9 +72,9 @@ export default (props: Props & Config) => {
                 setStatePosition(midiValue / 127);
             }
 
-            const subscriberId = subscribe(updateValueFromMidi, midiConfig)
+            const subscriberId = cc.subscribe(updateValueFromMidi, midiConfig)
             return function cleanup() {
-                unsubscribe(midiConfig.cc, subscriberId);
+                cc.unsubscribe(midiConfig.cc, subscriberId);
             };
         }
     });

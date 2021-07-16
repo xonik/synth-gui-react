@@ -1,12 +1,12 @@
-import CC from '../../ccMap'
-import { MidiConfig } from '../../types'
+import CC from '../../mapCC'
+import { MidiConfigCC } from '../../types'
 
 
 interface MidiControllersPostMix {
-    LPF: MidiConfig,
-    SVF: MidiConfig,
-    SINE1: MidiConfig,
-    SINE2: MidiConfig,
+    LPF: MidiConfigCC,
+    SVF: MidiConfigCC,
+    SINE1: MidiConfigCC,
+    SINE2: MidiConfigCC,
 }
 
 const midiControllersPostMix: MidiControllersPostMix = {
