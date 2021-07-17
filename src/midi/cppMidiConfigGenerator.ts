@@ -9,6 +9,9 @@ const generateCppFiles = () => {
     const potEnum: string[] = []
     const potCC: string[] = []
 
+    const potNrpnEnum: string[] = []
+    const potNrpn: string[] = []
+
     Object.entries(midiControllers)
         .forEach(([controllerGroupKey, controllersList]) => {
             Object.entries(controllersList)
@@ -28,6 +31,20 @@ const generateCppFiles = () => {
             })
         })
 
+    Object.entries(midiControllers)
+        .forEach(([controllerGroupKey, controllersList]) => {
+            Object.entries(controllersList)
+                .filter(([controllerKey, controller]) => controller.addr !== undefined)
+                .forEach(([controllerKey, controller]) => {
+                if(controller.type === 'pot'){
+                    potNrpnEnum.push(`POT_${controllerGroupKey}_${controllerKey}`)
+                    potNrpn.push(`${controller.addr} /* ${controllerGroupKey}_${controllerKey} */`)
+                } else {
+                    console.log('missing controller type', { controllerGroupKey, controllerKey, controller })
+                }
+            })
+        })
+
     const buttonEnumFileContents = `enum Button: char {\n  ${buttonEnum.join(',\n  ')}\n};`;
     const buttonCCFileContents = `const char buttonCC[${buttonCC.length}] = {\n  ${buttonCC.join(',\n  ')}\n};`;
     const buttonFirstValueFileContents = `// First value in the button values array.\n// Values are sequential\nconst char buttonFirstValue[${buttonFirstValue.length}] = {\n  ${buttonFirstValue.join(',\n  ')}\n};`;
@@ -36,12 +53,17 @@ const generateCppFiles = () => {
     const potEnumFileContents = `enum Pot: char {\n  ${potEnum.join(',\n  ')}\n};`;
     const potCCFileContents = `const char potCC[${potCC.length}] = {\n  ${potCC.join(',\n  ')}\n};`;
 
+    const potEnumNrpnFileContents = `enum PotNrpn: char {\n  ${potNrpnEnum.join(',\n  ')}\n};`;
+    const potNrpnFileContents = `const char potNrpn[${potCC.length}] = {\n  ${potNrpn.join(',\n  ')}\n};`;
+
     console.log('midiButtons.h', buttonEnumFileContents)
     console.log('midiButtonsCC.h', buttonCCFileContents)
     console.log('midiButtonsFirstValue.h', buttonFirstValueFileContents)
     console.log('midiButtonsNumberOfValues.h', buttonNumberOfValuesFileContents)
     console.log('midiPots.h', potEnumFileContents)
     console.log('midiPotsCC.h', potCCFileContents)
+    console.log('midiPotsNrpnEnum.h', potEnumNrpnFileContents)
+    console.log('midiPotsNrpn.h', potNrpnFileContents)
 }
 
 generateCppFiles()

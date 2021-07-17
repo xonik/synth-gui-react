@@ -186,7 +186,7 @@ const curve = (() => {
         },
         receive: () => {
             nrpn.subscribe((value: number) => {
-                const stageId = (value >> 7) & 0b01111111;
+                const stageId = (value >> 7);
                 const curve = value & 0b01111111;
                 envApi.setStageCurve(currentEnvId, stageId, curve, ApiSource.MIDI)
             }, cfg)
