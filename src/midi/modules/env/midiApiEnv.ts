@@ -3,11 +3,7 @@ import { Curve, LoopMode, ReleaseMode } from '../../../synthcore/modules/env/typ
 import midiControllers from '../../midiControllers'
 import { cc, nrpn } from '../../midibus'
 import { ApiSource } from '../../../synthcore/types'
-
-const shouldSend = (source: ApiSource) => {
-    // TODO: Make this configurable
-    return source !== ApiSource.MIDI
-}
+import { shouldSend } from '../../utils'
 
 let currentEnvId = -1
 

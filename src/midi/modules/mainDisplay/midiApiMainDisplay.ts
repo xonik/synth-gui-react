@@ -2,11 +2,7 @@ import { mainDisplayApi } from '../../../synthcore/synthcoreApi'
 import midiControllers from '../../midiControllers'
 import { cc } from '../../midibus'
 import { ApiSource } from '../../../synthcore/types'
-
-const shouldSend = (source: ApiSource) => {
-    // TODO: Make this configurable
-    return source !== ApiSource.MIDI
-}
+import { shouldSend } from '../../utils'
 
 const currentScreen = (() => {
     const cfg = midiControllers.MAIN_PANEL.GROUP_MENU

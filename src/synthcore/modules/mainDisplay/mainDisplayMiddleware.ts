@@ -1,8 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit'
 import { click, increment } from '../ui/uiReducer'
-import { envApi, mainDisplayApi } from '../../synthcoreApi'
-import { EnvControllerId, StageId } from '../env/types'
-import { ApiSource } from '../../types'
+import { mainDisplayApi } from '../../synthcoreApi'
 import { MainDisplayControllerIds, MainDisplayScreenId } from './types'
 
 type MainDisplayApiMapperType = {
