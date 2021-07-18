@@ -1,18 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { MainDisplayScreenId } from './types'
-import { RootState } from '../../store'
 import { ControllerGroupIds } from '../../types'
 
 type UiState = {
     controller: {
         [key: number]: number
     };
-    currentScreen: MainDisplayScreenId
 }
 
 const initialState: UiState = {
     controller: {},
-    currentScreen:MainDisplayScreenId.ENV
 }
 
 type NumericControllerPayload = {
@@ -28,6 +24,10 @@ type ButtonControllerPayload = {
     ctrlIndex?: number;
 }
 
+type CurrentScreenPayload = {
+    id: number;
+}
+
 export const uiSlice = createSlice({
     name: 'ui',
     initialState,
@@ -37,11 +37,9 @@ export const uiSlice = createSlice({
         },
         click: (state, {payload}: PayloadAction<ButtonControllerPayload>) => {
             //Not doing anything yet, just needed to create the action.
-        }
+        },
     }
 })
-
-export const selectCurrScreen = (state: RootState) => state.ui.currentScreen
 
 export const {
     increment,

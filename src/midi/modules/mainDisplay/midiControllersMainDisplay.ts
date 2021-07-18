@@ -2,7 +2,7 @@ import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
 import { MidiConfigCC, MidiConfigCCWithValue } from '../../types'
 
-interface MidiControllersMainPanel {
+interface MidiControllersMainDisplay {
     POT1: MidiConfigCC,
     POT2: MidiConfigCC,
     POT3: MidiConfigCC,
@@ -10,12 +10,7 @@ interface MidiControllersMainPanel {
     POT5: MidiConfigCC,
     POT6: MidiConfigCC,
 
-    MENU_LFO: MidiConfigCCWithValue
-    MENU_OSC: MidiConfigCCWithValue
-    MENU_FILTER: MidiConfigCCWithValue
-    MENU_ENVELOPE: MidiConfigCCWithValue
-    MENU_MOD: MidiConfigCCWithValue
-    MENU_FX: MidiConfigCCWithValue
+    GROUP_MENU: MidiConfigCCWithValue
     FUNC_HOME: MidiConfigCCWithValue
     FUNC_SETTINGS: MidiConfigCCWithValue
     FUNC_SHIFT: MidiConfigCCWithValue
@@ -25,7 +20,8 @@ interface MidiControllersMainPanel {
     FUNC_COMPARE: MidiConfigCCWithValue
     FUNC_ROUTE: MidiConfigCCWithValue
 }
-const midiControllersMainPanel: MidiControllersMainPanel = {
+
+const midiControllersMainDisplay: MidiControllersMainDisplay = {
     POT1: { type: 'pot', cc: CC.MAIN_POT1 },
     POT2: { type: 'pot', cc: CC.MAIN_POT2 },
     POT3: { type: 'pot', cc: CC.MAIN_POT3 },
@@ -33,107 +29,77 @@ const midiControllersMainPanel: MidiControllersMainPanel = {
     POT5: { type: 'pot', cc: CC.MAIN_POT5 },
     POT6: { type: 'pot', cc: CC.MAIN_POT6 },
 
-    MENU_LFO: {
+    GROUP_MENU: {
         type: 'button',
-            cc: BUTTONS.BUTTONS_CENTER.cc,
-            values: [
+        cc: BUTTONS.BUTTONS_CENTER.cc,
+        values: [
             BUTTONS.BUTTONS_CENTER.values.MENU_LFO,
-        ],
-    },
-    MENU_OSC: {
-        type: 'button',
-            cc: BUTTONS.BUTTONS_CENTER.cc,
-            values: [
             BUTTONS.BUTTONS_CENTER.values.MENU_OSC,
-        ],
-    },
-    MENU_FILTER: {
-        type: 'button',
-            cc: BUTTONS.BUTTONS_CENTER.cc,
-            values: [
             BUTTONS.BUTTONS_CENTER.values.MENU_FILTER,
-        ],
-    },
-    MENU_ENVELOPE: {
-        type: 'button',
-            cc: BUTTONS.BUTTONS_CENTER.cc,
-            values: [
             BUTTONS.BUTTONS_CENTER.values.MENU_ENV,
-        ],
-    },
-    MENU_MOD: {
-        type: 'button',
-            cc: BUTTONS.BUTTONS_CENTER.cc,
-            values: [
             BUTTONS.BUTTONS_CENTER.values.MENU_MOD,
+            BUTTONS.BUTTONS_CENTER.values.MENU_FX,
+            //TODO: ARP-meny?
         ],
     },
-    MENU_FX: {
-        type: 'button',
-            cc: BUTTONS.BUTTONS_CENTER.cc,
-            values: [
-            BUTTONS.BUTTONS_CENTER.values.MENU_LFO,
-        ],
-    },
-    //TODO: ARP-meny?
 
     FUNC_HOME: {
         type: 'button',
-            cc: BUTTONS.BUTTONS_CENTER.cc,
-            values: [
+        cc: BUTTONS.BUTTONS_CENTER.cc,
+        values: [
             BUTTONS.BUTTONS_CENTER.values.FUNC_HOME,
         ],
     },
     FUNC_SETTINGS: {
         type: 'button',
-            cc: BUTTONS.BUTTONS_CENTER.cc,
-            values: [
+        cc: BUTTONS.BUTTONS_CENTER.cc,
+        values: [
             BUTTONS.BUTTONS_CENTER.values.FUNC_SETTINGS,
         ],
     },
     FUNC_SHIFT: {
         type: 'button',
-            cc: BUTTONS.BUTTONS_CENTER.cc,
-            values: [
+        cc: BUTTONS.BUTTONS_CENTER.cc,
+        values: [
             BUTTONS.BUTTONS_CENTER.values.FUNC_SHIFT_OFF,
             BUTTONS.BUTTONS_CENTER.values.FUNC_SHIFT_ON,
         ],
     },
     FUNC_PERFORM: {
         type: 'button',
-            cc: BUTTONS.BUTTONS_CENTER.cc,
-            values: [
+        cc: BUTTONS.BUTTONS_CENTER.cc,
+        values: [
             BUTTONS.BUTTONS_CENTER.values.FUNC_PERFORM,
         ],
     },
     FUNC_LOAD: {
         type: 'button',
-            cc: BUTTONS.BUTTONS_CENTER.cc,
-            values: [
+        cc: BUTTONS.BUTTONS_CENTER.cc,
+        values: [
             BUTTONS.BUTTONS_CENTER.values.FUNC_LOAD,
         ],
     },
     FUNC_SAVE: {
         type: 'button',
-            cc: BUTTONS.BUTTONS_CENTER.cc,
-            values: [
+        cc: BUTTONS.BUTTONS_CENTER.cc,
+        values: [
             BUTTONS.BUTTONS_CENTER.values.FUNC_SAVE,
         ],
     },
     FUNC_COMPARE: {
         type: 'button',
-            cc: BUTTONS.BUTTONS_CENTER.cc,
-            values: [
+        cc: BUTTONS.BUTTONS_CENTER.cc,
+        values: [
             BUTTONS.BUTTONS_CENTER.values.FUNC_COMPARE,
         ],
     },
     FUNC_ROUTE: {
         type: 'button',
-            cc: BUTTONS.BUTTONS_CENTER.cc,
-            values: [
+        cc: BUTTONS.BUTTONS_CENTER.cc,
+        values: [
             BUTTONS.BUTTONS_CENTER.values.FUNC_ROUTE,
         ],
     },
 }
 
-export default midiControllersMainPanel
+export default midiControllersMainDisplay

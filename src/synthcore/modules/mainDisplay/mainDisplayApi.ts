@@ -1,11 +1,11 @@
-import { MainDisplayControllerIds } from './types'
+import { MainDisplayControllerIds, MainDisplayScreenId } from './types'
 import { selectCurrEnvId, selectCurrStageId, selectEnvelope } from '../env/envelopesReducer'
 import { store } from '../../store'
 import { LoopMode, StageId } from '../env/types'
-import { selectCurrScreen } from '../ui/uiReducer'
-import { MainDisplayScreenId } from '../ui/types'
 import { envApi } from '../../synthcoreApi'
 import { ApiSource } from '../../types'
+import { selectCurrScreen, setCurrentScreen } from './mainDisplayReducer'
+import { dispatch } from '../../utils'
 
 type PotResolutions = {
     [key: number]: {
@@ -77,11 +77,16 @@ const mainDisplayEnvApi = {
     }
 }
 
-export const mainDisplayApi = {
+export default {
     handleMainDisplayController: (ctrlId: MainDisplayControllerIds, value: number) => {
         const currScreenId = selectCurrScreen(store.getState())
-        if (currScreenId === MainDisplayScreenId.ENV) {
+        if (currScreenId === MainDisplayScreenId.MOD) {
+
+        } else if (currScreenId === MainDisplayScreenId.ENV) {
             mainDisplayEnvApi.handleMainDisplayController(ctrlId, value)
         }
+    },
+    setCurrentScreen: (id: number) => {
+        dispatch(setCurrentScreen({id}))
     }
 }

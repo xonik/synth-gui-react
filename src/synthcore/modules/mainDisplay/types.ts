@@ -1,3 +1,11 @@
+export enum MainDisplayScreenId {
+    LFO,
+    OSC,
+    FILTER,
+    ENV,
+    MOD,
+    FX
+}
 
 export enum MainDisplayControllerIds {
     POT1,

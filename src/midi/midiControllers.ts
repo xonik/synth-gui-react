@@ -9,7 +9,7 @@ import midiControllersRoute from './modules/route/midiControllersRoute'
 import midiControllersMasterClock from './modules/masterClock/midiControllersMasterClock'
 import midiControllersArp from './modules/arp/midiControllersArp'
 import midiControllersVoices from './modules/voices/midiControllersVoices'
-import midiControllersMainPanel from './modules/mainPanel/midiControllersMainPanel'
+import midiControllersMainDisplay from './modules/mainDisplay/midiControllersMainDisplay'
 import midiControllersTranspose from './modules/transpose/midiControllersTranspose'
 import midiControllersKbd from './modules/kbd/midiControllersKbd'
 import midiControllersFilters from './modules/filters/midiControllersFilters'
@@ -33,7 +33,7 @@ const midiControllers ={
     MASTER_CLOCK: midiControllersMasterClock,
     ARPEGGIATOR: midiControllersArp,
     VOICES: midiControllersVoices,
-    MAIN_PANEL: midiControllersMainPanel,
+    MAIN_PANEL: midiControllersMainDisplay,
     TRANSPOSE: midiControllersTranspose,
     KEYBOARD: midiControllersKbd,
     LPF: midiControllersFilters.LPF,
