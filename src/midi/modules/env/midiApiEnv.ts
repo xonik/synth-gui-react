@@ -29,7 +29,7 @@ const level = (() => {
             selectEnv(envId)
 
             // stageId is encoded as part of the extra available bits
-            const value = (Math.round(boundedValue * 65535)  + 16384) + stageId << 16
+            const value = (Math.round(boundedValue * 65535)  + 32768) + stageId << 16
             nrpn.send(cfg.addr, value)
         },
         receive: () => {
