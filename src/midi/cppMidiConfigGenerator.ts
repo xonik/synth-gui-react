@@ -1,4 +1,7 @@
 import midiControllers from './midiControllers'
+import { buttonLeftMidiValues } from './buttonLeftMidiValues'
+import { buttonCenterMidiValues } from './buttonCenterMidiValues'
+import { buttonRightMidiValues } from './buttonRightMidiValues'
 
 const generateCppFiles = () => {
     const buttonEnum: string[] = []
@@ -56,6 +59,20 @@ const generateCppFiles = () => {
     const potEnumNrpnFileContents = `enum PotNrpn: char {\n  ${potNrpnEnum.join(',\n  ')}\n};`;
     const potNrpnFileContents = `const char potNrpn[${potCC.length}] = {\n  ${potNrpn.join(',\n  ')}\n};`;
 
+    const buttonLeftMidiKeys = Object.keys(buttonLeftMidiValues)
+        .filter(o => isNaN(o as any))
+        .map(key => `BL_${key}`)
+    const buttonCenterMidiKeys = Object.keys(buttonCenterMidiValues)
+        .filter(o => isNaN(o as any))
+        .map(key => `BC_${key}`)
+    const buttonRightMidiKeys = Object.keys(buttonRightMidiValues)
+        .filter(o => isNaN(o as any))
+        .map(key => `BR_${key}`)
+
+    const midiButtonLeftValues = `enum ButtonLeftMidiValues {\n  ${buttonLeftMidiKeys.join(',\n  ')}\n};`;
+    const midiButtonCenterValues = `enum ButtonCenterMidiValues {\n  ${buttonCenterMidiKeys.join(',\n  ')}\n};`;
+    const midiButtonRightValues = `enum ButtonRightMidiValues {\n  ${buttonRightMidiKeys.join(',\n  ')}\n};`;
+
     console.log('midiButtons.h', buttonEnumFileContents)
     console.log('midiButtonsCC.h', buttonCCFileContents)
     console.log('midiButtonsFirstValue.h', buttonFirstValueFileContents)
@@ -64,6 +81,9 @@ const generateCppFiles = () => {
     console.log('midiPotsCC.h', potCCFileContents)
     console.log('midiPotsNrpnEnum.h', potEnumNrpnFileContents)
     console.log('midiPotsNrpn.h', potNrpnFileContents)
+    console.log('midiButtonLeftValues.h', midiButtonLeftValues)
+    console.log('midiButtonCenterValues.h', midiButtonCenterValues)
+    console.log('midiButtonRightValues.h', midiButtonRightValues)
 }
 
 generateCppFiles()
