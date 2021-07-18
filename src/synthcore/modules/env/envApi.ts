@@ -198,6 +198,9 @@ const incrementMaxLoops = (envId: number, increment: number, source: ApiSource) 
 const trigger = (envId: number, source: ApiSource) => {
     midiApi.env.trigger(source, envId)
 }
+const release = (envId: number, source: ApiSource) => {
+    midiApi.env.trigger(source, envId)
+}
 const setEnv3Id = (id: number,source: ApiSource) => {
     const envelopes = selectEnvelopes(store.getState()).envs.length
     if(id < envelopes && id > 1) {

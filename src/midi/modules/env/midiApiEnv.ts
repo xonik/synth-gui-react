@@ -263,6 +263,20 @@ const trigger = (() => {
     }
 })()
 
+const release = (() => {
+    const cfg = midiControllers.ENV.RELEASE
+
+    return {
+        send: (source: ApiSource, envId: number) => {
+            if (!shouldSend(source)) {
+                return
+            }
+            selectEnv(envId)
+            cc.send(cfg.cc, cfg.values[0])
+        },
+    }
+})()
+
 const initReceive = () => {
     level.receive()
     time.receive()
@@ -289,6 +303,7 @@ export default {
     setMaxLoops: maxLoops.send,
     setCurve: curve.send,
     trigger: trigger.send,
+    release: release.send,
     setEnv3Id: env3Id.send,
     initReceive,
 }

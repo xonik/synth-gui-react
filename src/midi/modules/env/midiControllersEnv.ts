@@ -12,6 +12,7 @@ interface MidiCtrlEnv {
     SELECT: MidiConfigCC
     SELECT_ENV3_ID: MidiConfigCC
     TRIGGER: MidiConfigCCWithValue
+    RELEASE: MidiConfigCCWithValue
     LOOP: MidiConfigCCWithValue
     INVERT: MidiConfigCCWithValue
     RESET_ON_TRIGGER: MidiConfigCCWithValue
@@ -32,6 +33,13 @@ const midiControllersEnv: MidiCtrlEnv = {
         cc: BUTTONS.BUTTONS_RIGHT.cc,
         values: [
             BUTTONS.BUTTONS_RIGHT.values.ENV_TRIGGER,
+        ],
+    },
+    RELEASE: {
+        type: 'button',
+        cc: BUTTONS.BUTTONS_RIGHT.cc,
+        values: [
+            BUTTONS.BUTTONS_RIGHT.values.ENV_RELEASE,
         ],
     },
     INVERT: {

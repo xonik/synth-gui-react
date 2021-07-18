@@ -24,6 +24,7 @@ export enum buttonRightMidiValues {
     SVF_SLOPE_NOTCH,
     SVF_SLOPE_NOTCH_LP,
     ENV_TRIGGER,
+    ENV_RELEASE,
     ENV_LOOP_OFF,
     ENV_LOOP_ON,
     ENV_INVERT_OFF,
