@@ -31,49 +31,49 @@ const midiControllersEnv: MidiCtrlEnv = {
         type: 'button',
         cc: BUTTONS.BUTTONS_RIGHT.cc,
         values: [
-            BUTTONS.BUTTONS_RIGHT.values.ENV1_TRIGGER,
+            BUTTONS.BUTTONS_RIGHT.values.ENV_TRIGGER,
         ],
     },
     INVERT: {
         type: 'button',
         cc: BUTTONS.BUTTONS_RIGHT.cc,
         values: [
-            BUTTONS.BUTTONS_RIGHT.values.ENV1_INVERT_OFF,
-            BUTTONS.BUTTONS_RIGHT.values.ENV1_INVERT_ON,
+            BUTTONS.BUTTONS_RIGHT.values.ENV_INVERT_OFF,
+            BUTTONS.BUTTONS_RIGHT.values.ENV_INVERT_ON,
         ],
     },
     RESET_ON_TRIGGER: {
         type: 'button',
         cc: BUTTONS.BUTTONS_RIGHT.cc,
         values: [
-            BUTTONS.BUTTONS_RIGHT.values.ENV1_RESET_ON_TRIGGER_OFF,
-            BUTTONS.BUTTONS_RIGHT.values.ENV1_RESET_ON_TRIGGER_ON,
+            BUTTONS.BUTTONS_RIGHT.values.ENV_RESET_ON_TRIGGER_OFF,
+            BUTTONS.BUTTONS_RIGHT.values.ENV_RESET_ON_TRIGGER_ON,
         ],
     },
     RELEASE_MODE: {
         type: 'button',
         cc: BUTTONS.BUTTONS_RIGHT.cc,
         values: [
-            BUTTONS.BUTTONS_RIGHT.values.ENV1_RELEASE_MODE_NORMAL,
-            BUTTONS.BUTTONS_RIGHT.values.ENV1_RELEASE_MODE_SKIP_R1,
-            BUTTONS.BUTTONS_RIGHT.values.ENV1_RELEASE_MODE_FREE_RUN,
+            BUTTONS.BUTTONS_RIGHT.values.ENV_RELEASE_MODE_NORMAL,
+            BUTTONS.BUTTONS_RIGHT.values.ENV_RELEASE_MODE_SKIP_R1,
+            BUTTONS.BUTTONS_RIGHT.values.ENV_RELEASE_MODE_FREE_RUN,
         ],
     },
     LOOP: {
         type: 'button',
         cc: BUTTONS.BUTTONS_RIGHT.cc,
         values: [
-            BUTTONS.BUTTONS_RIGHT.values.ENV1_LOOP_OFF,
-            BUTTONS.BUTTONS_RIGHT.values.ENV1_LOOP_ON,
+            BUTTONS.BUTTONS_RIGHT.values.ENV_LOOP_OFF,
+            BUTTONS.BUTTONS_RIGHT.values.ENV_LOOP_ON,
         ],
     },
     LOOP_MODE: {
         type: 'button',
         cc: BUTTONS.BUTTONS_RIGHT.cc,
         values: [
-            BUTTONS.BUTTONS_RIGHT.values.ENV1_LOOP_MODE_GATED,
-            BUTTONS.BUTTONS_RIGHT.values.ENV1_LOOP_MODE_COUNTED,
-            BUTTONS.BUTTONS_RIGHT.values.ENV1_LOOP_MODE_INFINITE,
+            BUTTONS.BUTTONS_RIGHT.values.ENV_LOOP_MODE_GATED,
+            BUTTONS.BUTTONS_RIGHT.values.ENV_LOOP_MODE_COUNTED,
+            BUTTONS.BUTTONS_RIGHT.values.ENV_LOOP_MODE_INFINITE,
         ],
     },
 }

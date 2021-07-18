@@ -41,7 +41,7 @@ const midiControllers ={
     SVF: midiControllersFilters.SVF,
     POST_MIX: midiControllersPostMix,
     VOICE_OUT: midiControllersVoiceOut,
-    ENV1: midiControllersEnv,
+    ENV: midiControllersEnv,
     DSP1: midiControllersCommonFx.DSP1,
     DSP2: midiControllersCommonFx.DSP2,
     CHORUS: midiControllersCommonFx.CHORUS,
