@@ -1,14 +1,16 @@
+@import './constants';
+
 .ctrl-button {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 0.1em solid #444;
+  border: 0.1em solid $button-border-color;
   padding: 0.25em;
-  color: #666;
+  color: $button-inactive-color;
 
   &--active {
-    background-color: #ddd;
-    color: #333;
+    background-color: $button-active-bg-color;
+    color: $button-active-color;
   }
 }
