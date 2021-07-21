@@ -79,51 +79,51 @@ const MainDisplay = React.forwardRef<SVGRectElement, Props>(({ x, y }, displayRe
         <Display x={x} y={y} width={displayWidth} height={displayHeight} ref={displayRef}/>
 
         <RotaryPotWOLeds17 x={displayCenter - 2 * potSpacing} y={potRow}
-                           midiConfig={midiConstants.MAIN_PANEL.POT1}
+                           midiConfig={midiConstants.MAIN_DISPLAY.POT1}
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
                            ctrlId={MainDisplayControllerIds.POT1}
                            resolution={getPotResolution(MainDisplayControllerIds.POT1)}
         />
         <RotaryPotWOLeds17 x={displayCenter - 1 * potSpacing} y={potRow}
-                           midiConfig={midiConstants.MAIN_PANEL.POT2}
+                           midiConfig={midiConstants.MAIN_DISPLAY.POT2}
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
                            ctrlId={MainDisplayControllerIds.POT2}
                            resolution={getPotResolution(MainDisplayControllerIds.POT2)}
         />
         <RotaryPotWOLeds17 x={displayCenter} y={potRow}
-                           midiConfig={midiConstants.MAIN_PANEL.POT3}
+                           midiConfig={midiConstants.MAIN_DISPLAY.POT3}
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
                            ctrlId={MainDisplayControllerIds.POT3}
                            resolution={getPotResolution(MainDisplayControllerIds.POT3)}
         />
         <RotaryPotWOLeds17 x={displayCenter + 1 * potSpacing} y={potRow}
-                           midiConfig={midiConstants.MAIN_PANEL.POT4}
+                           midiConfig={midiConstants.MAIN_DISPLAY.POT4}
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
                            ctrlId={MainDisplayControllerIds.POT4}
                            resolution={getPotResolution(MainDisplayControllerIds.POT4)}
         />
         <RotaryPotWOLeds17 x={displayCenter + 2 * potSpacing} y={potRow}
-                           midiConfig={midiConstants.MAIN_PANEL.POT5}
+                           midiConfig={midiConstants.MAIN_DISPLAY.POT5}
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
                            ctrlId={MainDisplayControllerIds.POT5}
                            resolution={getPotResolution(MainDisplayControllerIds.POT5)}
         />
         <RotaryPotWOLeds32 x={displayCenter} y={masterPotRow}
-                           midiConfig={midiConstants.MAIN_PANEL.POT6}
+                           midiConfig={midiConstants.MAIN_DISPLAY.POT6}
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
                            ctrlId={MainDisplayControllerIds.POT6}
                            resolution={getPotResolution(MainDisplayControllerIds.POT6)}
         />
 
-        <RoundPushButton8 x={displayCenter - 2.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Home" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_HOME}/>
-        <RoundPushButton8 x={displayCenter - 1.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Settings" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_SETTINGS}/>
-        <RoundPushButton8 x={displayCenter + 1.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Load" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_LOAD}/>
-        <RoundPushButton8 x={displayCenter + 2.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Save" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_SAVE}/>
+        <RoundPushButton8 x={displayCenter - 2.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Home" labelPosition="bottom" midiConfig={midiConstants.MAIN_DISPLAY.FUNC_HOME}/>
+        <RoundPushButton8 x={displayCenter - 1.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Settings" labelPosition="bottom" midiConfig={midiConstants.MAIN_DISPLAY.FUNC_SETTINGS}/>
+        <RoundPushButton8 x={displayCenter + 1.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Load" labelPosition="bottom" midiConfig={midiConstants.MAIN_DISPLAY.FUNC_LOAD}/>
+        <RoundPushButton8 x={displayCenter + 2.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Save" labelPosition="bottom" midiConfig={midiConstants.MAIN_DISPLAY.FUNC_SAVE}/>
 
-        <RoundPushButton8 x={displayCenter - 2.5 * buttonSpacing} y={ctrlSwitchesRow2} label="Shift" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_SHIFT}/>
-        <RoundPushButton8 x={displayCenter - 1.5 * buttonSpacing} y={ctrlSwitchesRow2} label="Perform" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_PERFORM}/>
-        <RoundPushButton8 x={displayCenter + 1.5 * buttonSpacing} y={ctrlSwitchesRow2} label="Compare" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_COMPARE}/>
-        <RoundPushButton8 x={displayCenter + 2.5 * buttonSpacing} y={ctrlSwitchesRow2} label="Route" labelPosition="bottom" midiConfig={midiConstants.MAIN_PANEL.FUNC_ROUTE}/>
+        <RoundPushButton8 x={displayCenter - 2.5 * buttonSpacing} y={ctrlSwitchesRow2} label="Shift" labelPosition="bottom" midiConfig={midiConstants.MAIN_DISPLAY.FUNC_SHIFT}/>
+        <RoundPushButton8 x={displayCenter - 1.5 * buttonSpacing} y={ctrlSwitchesRow2} label="Perform" labelPosition="bottom" midiConfig={midiConstants.MAIN_DISPLAY.FUNC_PERFORM}/>
+        <RoundPushButton8 x={displayCenter + 1.5 * buttonSpacing} y={ctrlSwitchesRow2} label="Compare" labelPosition="bottom" midiConfig={midiConstants.MAIN_DISPLAY.FUNC_COMPARE}/>
+        <RoundPushButton8 x={displayCenter + 2.5 * buttonSpacing} y={ctrlSwitchesRow2} label="Route" labelPosition="bottom" midiConfig={midiConstants.MAIN_DISPLAY.FUNC_ROUTE}/>
     </>
 })
 

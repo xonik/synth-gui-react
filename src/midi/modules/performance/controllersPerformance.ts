@@ -1,10 +1,10 @@
 import { FuncProps } from '../../types'
 
-interface MidiControllersOut {
+interface ControllersPerformance {
     props: FuncProps
 }
 
-const controllersPlay = {
+export const controllersPerformance = {
     props: { label: 'Play controls' },
     PITCH_BEND: {
         label: 'Pitch bend',

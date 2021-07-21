@@ -5,7 +5,7 @@ import { ApiSource } from '../../../synthcore/types'
 import { shouldSend } from '../../utils'
 
 const currentScreen = (() => {
-    const cfg = controllers.MAIN_PANEL.GROUP_MENU
+    const cfg = controllers.MAIN_DISPLAY.GROUP_MENU
 
     return {
         send: (source: ApiSource, id: number) => {

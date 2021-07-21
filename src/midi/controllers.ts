@@ -18,8 +18,83 @@ import controllersVoiceOut from './modules/voiceOut/controllersVoiceOut'
 import controllersEnv from './modules/env/controllersEnv'
 import controllersCommonFx from './modules/commonFx/controllersCommonFx'
 import controllersOut from './modules/out/controllersOut'
+import { controllersPerformance } from './modules/performance/controllersPerformance'
 
-const controllers ={
+const controllerGroups = {
+    SOUND_SOURCES: {
+        label: 'Sound src',
+        DCO1: controllersOsc.DCO1,
+        DCO2: controllersOsc.DCO2,
+        VCO: controllersOsc.VCO,
+        NOISE: controllersNoise,
+    },
+    PRE_FX: {
+        label: 'Pre FX',
+        RING_MOD: controllersRingMod,
+        DISTORTION: controllersFx.DISTORTION,
+        BIT_CRUSHER: controllersFx.BIT_CRUSHER,
+    },
+    LFOS: {
+        label: 'LFOs',
+        LFO1: controllersLfo,
+        LFO2: controllersLfo,
+        LFO3: controllersLfo,
+        LFO4: controllersLfo,
+    },
+    SOURCE_MIX: {
+        // TODO: This one is a bit weird
+        label: 'Source mix',
+        SOURCE_MIX: controllersSrcMix,
+    },
+    CLK_ARP_KBD: {
+        label: 'Controls',
+        MASTER_CLOCK: controllersMasterClock,
+        ARPEGGIATOR: controllersArp,
+        TRANSPOSE: controllersTranspose,
+        KEYBOARD: controllersKbd,
+    },
+    MAIN_DISPLAY: {
+        VOICES: controllersVoices,
+        MAIN_DISPLAY: controllersMainDisplay,
+    },
+    FILTER: {
+        label: 'Filter',
+        LPF: controllersFilters.LPF,
+        FILTERS: controllersFilters.FILTERS,
+        SVF: controllersFilters.SVF,
+    },
+    VOICE: {
+        label: 'Voice out',
+        POST_MIX: controllersPostMix,
+        VOICE_OUT: controllersVoiceOut,
+
+    },
+    ENV: {
+        label: 'Envelopes',
+        ENV1: controllersEnv,
+        ENV2: controllersEnv,
+        ENV3: controllersEnv,
+        ENV4: controllersEnv,
+        ENV5: controllersEnv,
+    },
+    FX: {
+        label: 'Effects',
+        DSP1: controllersCommonFx.DSP1,
+        DSP2: controllersCommonFx.DSP2,
+        CHORUS: controllersCommonFx.CHORUS,
+        FX_BIT_CRUSHER: controllersCommonFx.FX_BIT_CRUSHER,
+        FX_MIX: controllersCommonFx.FX_MIX,
+    },
+    OUT: {
+        OUTPUT: controllersOut,
+    },
+    PERFORMANCE: {
+        label: 'Performance controls',
+        PERFORMANCE: controllersPerformance
+    }
+}
+
+const controllers = {
     DCO1: controllersOsc.DCO1,
     DCO2: controllersOsc.DCO2,
     VCO: controllersOsc.VCO,
@@ -33,7 +108,7 @@ const controllers ={
     MASTER_CLOCK: controllersMasterClock,
     ARPEGGIATOR: controllersArp,
     VOICES: controllersVoices,
-    MAIN_PANEL: controllersMainDisplay,
+    MAIN_DISPLAY: controllersMainDisplay,
     TRANSPOSE: controllersTranspose,
     KEYBOARD: controllersKbd,
     LPF: controllersFilters.LPF,
@@ -48,6 +123,7 @@ const controllers ={
     FX_BIT_CRUSHER: controllersCommonFx.FX_BIT_CRUSHER,
     FX_MIX: controllersCommonFx.FX_MIX,
     OUTPUT: controllersOut,
+    PERFORMANCE: controllersPerformance
 }
 
 export default controllers
