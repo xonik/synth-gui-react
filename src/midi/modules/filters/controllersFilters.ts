@@ -1,9 +1,10 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { MidiConfigCC, MidiConfigCCWithValue } from '../../types'
+import { FuncProps, MidiConfigCC, MidiConfigCCWithValue } from '../../types'
 
-interface MidiControllersFilters {
+interface ControllersFilters {
     LPF: {
+        props: FuncProps
         INPUT: MidiConfigCC
         DRIVE: MidiConfigCC
         RESONANCE: MidiConfigCC
@@ -17,10 +18,12 @@ interface MidiControllersFilters {
         SLOPE: MidiConfigCCWithValue
     },
     FILTERS: {
+        props: FuncProps
         LINK_CUTOFF: MidiConfigCCWithValue
         ROUTING: MidiConfigCCWithValue
     },
     SVF: {
+        props: FuncProps
         INPUT: MidiConfigCC
         DRIVE: MidiConfigCC
         RESONANCE: MidiConfigCC
@@ -35,18 +38,40 @@ interface MidiControllersFilters {
     }
 }
 
-const midiControllersFilters: MidiControllersFilters = {
+const controllersFilters: ControllersFilters = {
     LPF: {
-        INPUT: { type: 'pot', cc: CC.LPF_INPUT },
-        DRIVE: { type: 'pot', cc: CC.LPF_DRIVE },
-        RESONANCE: { type: 'pot', cc: CC.LPF_RESONANCE },
-        CUTOFF: { type: 'pot', cc: CC.LPF_CUTOFF },
-        FM_AMT: { type: 'pot', cc: CC.LPF_FM_AMT },
-        ENV_AMT: { type: 'pot', cc: CC.LPF_ENV_AMT },
-        LFO_AMT: { type: 'pot', cc: CC.LPF_LFO_AMT },
-        KBD_AMT: { type: 'pot', cc: CC.LPF_KBD_AMT },
+        props: { label: 'Low pass filter' },
+        INPUT: {
+            label: 'Input',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.LPF_INPUT
+        },
+        DRIVE: {
+            label: 'Drive',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.LPF_DRIVE
+        },
+        RESONANCE: {
+            label: 'Resonance',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.LPF_RESONANCE
+        },
+        CUTOFF: {
+            label: 'Cutoff',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.LPF_CUTOFF
+        },
+        FM_AMT: { label: 'FM amount', type: 'pot', cc: CC.LPF_FM_AMT },
+        ENV_AMT: { label: 'Env amount', type: 'pot', cc: CC.LPF_ENV_AMT },
+        LFO_AMT: { label: 'LFO amount', type: 'pot', cc: CC.LPF_LFO_AMT },
+        KBD_AMT: { label: 'Keyboard track', type: 'pot', cc: CC.LPF_KBD_AMT },
 
         EXT_CV: {
+            label: 'Ext. CV',
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
@@ -55,6 +80,7 @@ const midiControllersFilters: MidiControllersFilters = {
             ],
         },
         WHEEL: {
+            label: 'Mod wheel',
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
@@ -63,6 +89,7 @@ const midiControllersFilters: MidiControllersFilters = {
             ],
         },
         SLOPE: {
+            label: 'Slope',
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
@@ -72,7 +99,9 @@ const midiControllersFilters: MidiControllersFilters = {
         },
     },
     FILTERS: {
+        props: { label: 'Link/route' },
         LINK_CUTOFF: {
+            label: 'Link cutoff',
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
@@ -81,6 +110,7 @@ const midiControllersFilters: MidiControllersFilters = {
             ],
         },
         ROUTING: {
+            label: 'Routing',
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
@@ -90,16 +120,38 @@ const midiControllersFilters: MidiControllersFilters = {
         },
     },
     SVF: {
-        INPUT: { type: 'pot', cc: CC.SVF_INPUT },
-        DRIVE: { type: 'pot', cc: CC.SVF_DRIVE },
-        RESONANCE: { type: 'pot', cc: CC.SVF_RESONANCE },
-        CUTOFF: { type: 'pot', cc: CC.SVF_CUTOFF },
-        FM_AMT: { type: 'pot', cc: CC.SVF_FM_AMT },
-        ENV_AMT: { type: 'pot', cc: CC.SVF_ENV_AMT },
-        LFO_AMT: { type: 'pot', cc: CC.SVF_LFO_AMT },
-        KBD_AMT: { type: 'pot', cc: CC.SVF_KBD_AMT },
+        props: { label: 'State variable filter' },
+        INPUT: {
+            label: 'Input',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.SVF_INPUT
+        },
+        DRIVE: {
+            label: 'Drive',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.SVF_DRIVE
+        },
+        RESONANCE: {
+            label: 'Resonance',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.SVF_RESONANCE
+        },
+        CUTOFF: {
+            label: 'Cutoff',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.SVF_CUTOFF
+        },
+        FM_AMT: { label: 'FM amount', type: 'pot', cc: CC.SVF_FM_AMT },
+        ENV_AMT: { label: 'Env amount', type: 'pot', cc: CC.SVF_ENV_AMT },
+        LFO_AMT: { label: 'LFO amount', type: 'pot', cc: CC.SVF_LFO_AMT },
+        KBD_AMT: { label: 'Keyboard track', type: 'pot', cc: CC.SVF_KBD_AMT },
 
         EXT_CV: {
+            label: 'Ext. CV',
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
@@ -108,6 +160,7 @@ const midiControllersFilters: MidiControllersFilters = {
             ],
         },
         WHEEL: {
+            label: 'Wheel',
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
@@ -116,6 +169,7 @@ const midiControllersFilters: MidiControllersFilters = {
             ],
         },
         SLOPE: {
+            label: 'Slope',
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
@@ -134,4 +188,4 @@ const midiControllersFilters: MidiControllersFilters = {
     }
 }
 
-export default midiControllersFilters
+export default controllersFilters

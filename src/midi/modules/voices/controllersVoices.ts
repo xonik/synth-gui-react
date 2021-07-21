@@ -2,7 +2,7 @@ import { BUTTONS } from '../../buttons'
 import { MidiConfigCCWithValue } from '../../types'
 
 
-interface MidiControllersVoices {
+interface ControllersVoices {
     VOICE1: MidiConfigCCWithValue
     VOICE2: MidiConfigCCWithValue
     VOICE3: MidiConfigCCWithValue
@@ -13,7 +13,7 @@ interface MidiControllersVoices {
     VOICE8: MidiConfigCCWithValue
 }
 
-const midiControllersVoices: MidiControllersVoices = {
+const controllersVoices: ControllersVoices = {
     VOICE1: {
         type: 'button',
             cc: BUTTONS.BUTTONS_CENTER.cc,
@@ -80,4 +80,4 @@ const midiControllersVoices: MidiControllersVoices = {
     },
 }
 
-export default midiControllersVoices
+export default controllersVoices

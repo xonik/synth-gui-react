@@ -1,9 +1,10 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { MidiConfigCC, MidiConfigCCWithValue } from '../../types'
+import { FuncProps, MidiConfigCC, MidiConfigCCWithValue } from '../../types'
 
-interface MidiControllersFx {
+interface ControllersFx {
     DISTORTION: {
+        props: FuncProps
         DRIVE: MidiConfigCC
         LEVEL: MidiConfigCC
         IN: MidiConfigCCWithValue
@@ -11,6 +12,7 @@ interface MidiControllersFx {
         OUT: MidiConfigCCWithValue
     },
     BIT_CRUSHER: {
+        props: FuncProps
         BITS: MidiConfigCC
         RATE: MidiConfigCC
         LEVEL: MidiConfigCC
@@ -19,13 +21,25 @@ interface MidiControllersFx {
     }
 }
 
-const midiControllersFx: MidiControllersFx = {
+const controllersFx: ControllersFx = {
     DISTORTION: {
+        label: 'Distortion',
         // Pots
-        DRIVE: { type: 'pot', cc: CC.DISTORTION_DRIVE },
-        LEVEL: { type: 'pot', cc: CC.DISTORTION_LEVEL },
+        DRIVE: {
+            label: 'Drive',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.DISTORTION_DRIVE
+        },
+        LEVEL: {
+            label: 'Level',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.DISTORTION_LEVEL
+        },
         // Buttons
         IN: {
+            label: 'In',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -35,6 +49,7 @@ const midiControllersFx: MidiControllersFx = {
             ],
         },
         CLIP: {
+            label: 'Clip',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -43,6 +58,7 @@ const midiControllersFx: MidiControllersFx = {
             ],
         },
         OUT: {
+            label: 'Out',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -54,11 +70,27 @@ const midiControllersFx: MidiControllersFx = {
     },
     BIT_CRUSHER: {
         // Pots
-        BITS: { type: 'pot', cc: CC.BIT_CRUSHER_BITS },
-        RATE: { type: 'pot', cc: CC.BIT_CRUSHER_RATE },
-        LEVEL: { type: 'pot', cc: CC.BIT_CRUSHER_LEVEL },
+        BITS: {
+            label: 'Bits',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.BIT_CRUSHER_BITS
+        },
+        RATE: {
+            label: 'Rate',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.BIT_CRUSHER_RATE
+        },
+        LEVEL: {
+            label: 'Level',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.BIT_CRUSHER_LEVEL
+        },
         // Buttons
         IN: {
+            label: 'In',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -68,6 +100,7 @@ const midiControllersFx: MidiControllersFx = {
             ],
         },
         OUT: {
+            label: 'Out',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -79,4 +112,4 @@ const midiControllersFx: MidiControllersFx = {
     }
 }
 
-export default midiControllersFx
+export default controllersFx

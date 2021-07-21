@@ -1,4 +1,4 @@
-import midiControllers from './midiControllers'
+import controllers from './controllers'
 import { buttonLeftMidiValues } from './buttonLeftMidiValues'
 import { buttonCenterMidiValues } from './buttonCenterMidiValues'
 import { buttonRightMidiValues } from './buttonRightMidiValues'
@@ -15,7 +15,7 @@ const generateCppFiles = () => {
     const potNrpnEnum: string[] = []
     const potNrpn: string[] = []
 
-    Object.entries(midiControllers)
+    Object.entries(controllers)
         .forEach(([controllerGroupKey, controllersList]) => {
             Object.entries(controllersList)
                 .filter(([controllerKey, controller]) => controller.cc !== undefined)
@@ -34,7 +34,7 @@ const generateCppFiles = () => {
             })
         })
 
-    Object.entries(midiControllers)
+    Object.entries(controllers)
         .forEach(([controllerGroupKey, controllersList]) => {
             Object.entries(controllersList)
                 .filter(([controllerKey, controller]) => controller.addr !== undefined)

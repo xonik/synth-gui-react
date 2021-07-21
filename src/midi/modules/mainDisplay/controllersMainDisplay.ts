@@ -1,8 +1,9 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { MidiConfigCC, MidiConfigCCWithValue } from '../../types'
+import { FuncProps, MidiConfigCC, MidiConfigCCWithValue } from '../../types'
 
-interface MidiControllersMainDisplay {
+interface ControllersMainDisplay {
+    props: FuncProps
     POT1: MidiConfigCC,
     POT2: MidiConfigCC,
     POT3: MidiConfigCC,
@@ -21,15 +22,17 @@ interface MidiControllersMainDisplay {
     FUNC_ROUTE: MidiConfigCCWithValue
 }
 
-const midiControllersMainDisplay: MidiControllersMainDisplay = {
-    POT1: { type: 'pot', cc: CC.MAIN_POT1 },
-    POT2: { type: 'pot', cc: CC.MAIN_POT2 },
-    POT3: { type: 'pot', cc: CC.MAIN_POT3 },
-    POT4: { type: 'pot', cc: CC.MAIN_POT4 },
-    POT5: { type: 'pot', cc: CC.MAIN_POT5 },
-    POT6: { type: 'pot', cc: CC.MAIN_POT6 },
+const controllersMainDisplay: ControllersMainDisplay = {
+    props: { label: 'Main controls' },
+    POT1: { label: 'Pot 1', type: 'pot', cc: CC.MAIN_POT1 },
+    POT2: { label: 'Pot 2', type: 'pot', cc: CC.MAIN_POT2 },
+    POT3: { label: 'Pot 3', type: 'pot', cc: CC.MAIN_POT3 },
+    POT4: { label: 'Pot 4', type: 'pot', cc: CC.MAIN_POT4 },
+    POT5: { label: 'Pot 5', type: 'pot', cc: CC.MAIN_POT5 },
+    POT6: { label: 'Main pot', type: 'pot', cc: CC.MAIN_POT6 },
 
     GROUP_MENU: {
+        label: 'Screen select',
         type: 'button',
         cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
@@ -44,6 +47,7 @@ const midiControllersMainDisplay: MidiControllersMainDisplay = {
     },
 
     FUNC_HOME: {
+        label: 'Home',
         type: 'button',
         cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
@@ -51,6 +55,7 @@ const midiControllersMainDisplay: MidiControllersMainDisplay = {
         ],
     },
     FUNC_SETTINGS: {
+        label: 'Settings',
         type: 'button',
         cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
@@ -58,6 +63,7 @@ const midiControllersMainDisplay: MidiControllersMainDisplay = {
         ],
     },
     FUNC_SHIFT: {
+        label: 'Shift',
         type: 'button',
         cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
@@ -66,6 +72,7 @@ const midiControllersMainDisplay: MidiControllersMainDisplay = {
         ],
     },
     FUNC_PERFORM: {
+        label: 'Perform',
         type: 'button',
         cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
@@ -73,6 +80,7 @@ const midiControllersMainDisplay: MidiControllersMainDisplay = {
         ],
     },
     FUNC_LOAD: {
+        label: 'Load',
         type: 'button',
         cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
@@ -80,6 +88,7 @@ const midiControllersMainDisplay: MidiControllersMainDisplay = {
         ],
     },
     FUNC_SAVE: {
+        label: 'Save',
         type: 'button',
         cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
@@ -87,6 +96,7 @@ const midiControllersMainDisplay: MidiControllersMainDisplay = {
         ],
     },
     FUNC_COMPARE: {
+        label: 'Compare',
         type: 'button',
         cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
@@ -94,6 +104,7 @@ const midiControllersMainDisplay: MidiControllersMainDisplay = {
         ],
     },
     FUNC_ROUTE: {
+        label: 'Route',
         type: 'button',
         cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
@@ -102,4 +113,4 @@ const midiControllersMainDisplay: MidiControllersMainDisplay = {
     },
 }
 
-export default midiControllersMainDisplay
+export default controllersMainDisplay

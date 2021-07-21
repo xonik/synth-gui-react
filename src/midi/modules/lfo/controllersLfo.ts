@@ -1,11 +1,12 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { MidiConfigCC, MidiConfigCCWithValue } from '../../types'
+import { FuncProps, MidiConfigCC, MidiConfigCCWithValue } from '../../types'
 
-interface MidiControllersLfo {
-    RATE: MidiConfigCC,
-    DEPTH: MidiConfigCC,
-    DELAY: MidiConfigCC,
+interface ControllersLfo {
+    props: FuncProps
+    RATE: MidiConfigCC
+    DEPTH: MidiConfigCC
+    DELAY: MidiConfigCC
     LFO: MidiConfigCCWithValue
     SHAPE: MidiConfigCCWithValue
     SYNC: MidiConfigCCWithValue
@@ -13,13 +14,30 @@ interface MidiControllersLfo {
     ONCE: MidiConfigCCWithValue
 }
 
-const midiControllersLfo: MidiControllersLfo = {
+const controllersLfo: ControllersLfo = {
+    props: { label: 'LFO' },
     // Pots
-    RATE: { type: 'pot', cc: CC.LFO_RATE },
-    DEPTH: { type: 'pot', cc: CC.LFO_DEPTH },
-    DELAY: { type: 'pot', cc: CC.LFO_DELAY },
+    RATE: {
+        label: 'Rate',
+        isTargetDigi: true,
+        type: 'pot',
+        cc: CC.LFO_RATE
+    },
+    DEPTH: {
+        label: 'Depth',
+        isTargetDigi: true,
+        type: 'pot',
+        cc: CC.LFO_DEPTH
+    },
+    DELAY: {
+        label: 'Delay',
+        isTargetDigi: true,
+        type: 'pot',
+        cc: CC.LFO_DELAY
+    },
     // Buttons
     LFO: {
+        label: 'Select',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
         values: [
@@ -30,6 +48,7 @@ const midiControllersLfo: MidiControllersLfo = {
         ],
     },
     SHAPE: {
+        label: 'Shape',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
         values: [
@@ -41,6 +60,7 @@ const midiControllersLfo: MidiControllersLfo = {
         ],
     },
     SYNC: {
+        label: 'Sync',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
         values: [
@@ -49,6 +69,7 @@ const midiControllersLfo: MidiControllersLfo = {
         ],
     },
     RESET: {
+        label: 'Reset',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
         values: [
@@ -57,6 +78,7 @@ const midiControllersLfo: MidiControllersLfo = {
         ],
     },
     ONCE: {
+        label: 'Once',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
         values: [
@@ -66,4 +88,4 @@ const midiControllersLfo: MidiControllersLfo = {
     },
 }
 
-export default midiControllersLfo
+export default controllersLfo

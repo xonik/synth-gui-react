@@ -1,9 +1,10 @@
 import CC from '../../mapCC'
 import NRPN from '../../mapNRPN'
 import { BUTTONS } from '../../buttons'
-import { MidiConfigCC, MidiConfigCCWithValue, MidiConfigNRPN } from '../../types'
+import { FuncProps, MidiConfigCC, MidiConfigCCWithValue, MidiConfigNRPN } from '../../types'
 
 interface MidiCtrlEnv {
+    props: FuncProps
     CURVE: MidiConfigNRPN
     LEVEL: MidiConfigNRPN
     TIME: MidiConfigNRPN
@@ -20,7 +21,11 @@ interface MidiCtrlEnv {
     LOOP_MODE: MidiConfigCCWithValue
 }
 
-const midiControllersEnv: MidiCtrlEnv = {
+const controllersEnv: MidiCtrlEnv = {
+    /*
+    TODO: individual levels / times
+     */
+    props: { label: 'Envelope' },
     CURVE: { type: 'pot', addr: NRPN.ENV_CURVE },
     LEVEL: { type: 'pot', addr: NRPN.ENV_LEVEL },
     TIME: { type: 'pot', addr: NRPN.ENV_TIME },
@@ -29,6 +34,7 @@ const midiControllersEnv: MidiCtrlEnv = {
     SELECT: { type: 'pot', cc: CC.ENV_SELECT_ENV },
     SELECT_ENV3_ID: { type: 'pot', cc: CC.ENV_SELECT_ENV3_ID },
     TRIGGER: {
+        label: 'Trigger',
         type: 'button',
         cc: BUTTONS.BUTTONS_RIGHT.cc,
         values: [
@@ -43,6 +49,7 @@ const midiControllersEnv: MidiCtrlEnv = {
         ],
     },
     INVERT: {
+        label: 'Invert',
         type: 'button',
         cc: BUTTONS.BUTTONS_RIGHT.cc,
         values: [
@@ -68,6 +75,7 @@ const midiControllersEnv: MidiCtrlEnv = {
         ],
     },
     LOOP: {
+        label: 'Loop',
         type: 'button',
         cc: BUTTONS.BUTTONS_RIGHT.cc,
         values: [
@@ -86,4 +94,4 @@ const midiControllersEnv: MidiCtrlEnv = {
     },
 }
 
-export default midiControllersEnv
+export default controllersEnv

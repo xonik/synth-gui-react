@@ -1,15 +1,23 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { MidiConfigCC, MidiConfigCCWithValue } from '../../types'
+import { FuncProps, MidiConfigCC, MidiConfigCCWithValue } from '../../types'
 
-interface MidiControllersMasterClock {
+interface ControllersMasterClock {
+    props: FuncProps
     RATE: MidiConfigCC,
     SOURCE: MidiConfigCCWithValue
 }
 
-const midiControllersMasterClock: MidiControllersMasterClock = {
-    RATE: { type: 'pot', cc: CC.MASTER_CLOCK_RATE },
+const controllersMasterClock: ControllersMasterClock = {
+    props: { label: 'Master clock' },
+    RATE: {
+        label: 'Rate',
+        isTargetDigi: true,
+        type: 'pot',
+        cc: CC.MASTER_CLOCK_RATE
+    },
     SOURCE: {
+        label: 'Source',
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -20,4 +28,4 @@ const midiControllersMasterClock: MidiControllersMasterClock = {
     },
 }
 
-export default midiControllersMasterClock
+export default controllersMasterClock

@@ -1,8 +1,9 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { MidiConfigCC, MidiConfigCCWithValue } from '../../types'
+import { FuncProps, MidiConfigCC, MidiConfigCCWithValue } from '../../types'
 
-interface MidiControllersArp {
+interface ControllersArp {
+    props: FuncProps
     TEMPO: MidiConfigCC
     ON_OFF: MidiConfigCCWithValue
     TRIGGER: MidiConfigCCWithValue
@@ -11,9 +12,16 @@ interface MidiControllersArp {
     MODE: MidiConfigCCWithValue
 }
 
-const midiControllersArp: MidiControllersArp = {
-    TEMPO: { type: 'pot', cc: CC.ARP_TEMPO },
+const controllersArp: ControllersArp = {
+    props: { label: 'Arpeggiator' },
+    TEMPO: {
+        label: 'Tempo',
+        isTargetDigi: true,
+        type: 'pot',
+        cc: CC.ARP_TEMPO
+    },
     ON_OFF: {
+        label: 'On/off',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
         values: [
@@ -22,6 +30,7 @@ const midiControllersArp: MidiControllersArp = {
         ],
     },
     TRIGGER: {
+        label: 'Trigger',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
         values: [
@@ -30,6 +39,7 @@ const midiControllersArp: MidiControllersArp = {
         ],
     },
     SYNC: {
+        label: 'Sync',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
         values: [
@@ -40,6 +50,7 @@ const midiControllersArp: MidiControllersArp = {
         ],
     },
     RANGE: {
+        label: 'Range',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
         values: [
@@ -49,6 +60,7 @@ const midiControllersArp: MidiControllersArp = {
         ],
     },
     MODE: {
+        label: 'Mode',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
         values: [
@@ -61,4 +73,4 @@ const midiControllersArp: MidiControllersArp = {
     },
 }
 
-export default midiControllersArp
+export default controllersArp

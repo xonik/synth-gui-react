@@ -2,13 +2,13 @@ import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
 import { MidiConfigCC, MidiConfigCCWithValue } from '../../types'
 
-interface MidiControllersRoute {
+interface ControllersRoute {
     AMOUNT: MidiConfigCC,
     FROM: MidiConfigCCWithValue
     TO: MidiConfigCCWithValue
 }
 
-const midiControllersRoute: MidiControllersRoute = {
+const controllersRoute: ControllersRoute = {
     AMOUNT: { type: 'pot', cc: CC.ROUTE_AMOUNT },
     FROM: {
         type: 'button',
@@ -30,4 +30,4 @@ const midiControllersRoute: MidiControllersRoute = {
     },
 }
 
-export default midiControllersRoute
+export default controllersRoute

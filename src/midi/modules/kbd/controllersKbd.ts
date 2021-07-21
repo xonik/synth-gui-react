@@ -1,8 +1,9 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { MidiConfigCC, MidiConfigCCWithValue } from '../../types'
+import { FuncProps, MidiConfigCC, MidiConfigCCWithValue } from '../../types'
 
-interface MidiControllersKbd {
+interface ControllersKbd {
+    props: FuncProps
     PORTAMENTO: MidiConfigCC
     UNISON_DETUNE: MidiConfigCC
     HOLD: MidiConfigCCWithValue
@@ -10,10 +11,22 @@ interface MidiControllersKbd {
     MODE: MidiConfigCCWithValue
 }
 
-const midiControllersKbd: MidiControllersKbd = {
-    PORTAMENTO: { type: 'pot', cc: CC.KEYBOARD_PORTAMENTO },
-    UNISON_DETUNE: { type: 'pot', cc: CC.KEYBOARD_UNISON_DETUNE },
+const controllersKbd: ControllersKbd = {
+    props: { label: 'Keyboard' },
+    PORTAMENTO: {
+        label: 'Portamento',
+        isTargetDigi: true,
+        type: 'pot',
+        cc: CC.KEYBOARD_PORTAMENTO
+    },
+    UNISON_DETUNE: {
+        label: 'Detune',
+        isTargetDigi: true,
+        type: 'pot',
+        cc: CC.KEYBOARD_UNISON_DETUNE
+    },
     HOLD: {
+        label: 'Hold',
         type: 'button',
         cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
@@ -22,6 +35,7 @@ const midiControllersKbd: MidiControllersKbd = {
         ],
     },
     CHORD: {
+        label: 'Chord',
         type: 'button',
         cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
@@ -30,6 +44,7 @@ const midiControllersKbd: MidiControllersKbd = {
         ],
     },
     MODE: {
+        label: 'Mode',
         type: 'button',
         cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
@@ -40,4 +55,4 @@ const midiControllersKbd: MidiControllersKbd = {
     },
 }
 
-export default midiControllersKbd
+export default controllersKbd

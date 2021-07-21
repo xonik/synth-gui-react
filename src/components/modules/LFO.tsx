@@ -3,7 +3,7 @@ import RotaryPot17 from '../pots/RotaryPot17'
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import Header from '../misc/Header'
-import midiConstants from '../../midi/midiControllers'
+import midiConstants from '../../midi/controllers'
 
 interface Props {
     x: number,

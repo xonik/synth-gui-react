@@ -1,11 +1,11 @@
 import { mainDisplayApi } from '../../../synthcore/synthcoreApi'
-import midiControllers from '../../midiControllers'
+import controllers from '../../controllers'
 import { cc } from '../../midibus'
 import { ApiSource } from '../../../synthcore/types'
 import { shouldSend } from '../../utils'
 
 const currentScreen = (() => {
-    const cfg = midiControllers.MAIN_PANEL.GROUP_MENU
+    const cfg = controllers.MAIN_PANEL.GROUP_MENU
 
     return {
         send: (source: ApiSource, id: number) => {

@@ -1,13 +1,16 @@
 import { BUTTONS } from '../../buttons'
-import { MidiConfigCCWithValue } from '../../types'
+import { FuncProps, MidiConfigCCWithValue } from '../../types'
 
 
-interface MidiControllersNoise {
+interface ControllersNoise {
+    props: FuncProps
     COLOUR: MidiConfigCCWithValue
 }
 
-const midiControllersNoise: MidiControllersNoise = {
+const controllersNoise: ControllersNoise = {
+    props: { label: 'Noise' },
     COLOUR: {
+        label: 'Colour',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
         values: [
@@ -18,4 +21,4 @@ const midiControllersNoise: MidiControllersNoise = {
     }
 }
 
-export default midiControllersNoise
+export default controllersNoise

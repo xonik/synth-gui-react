@@ -1,13 +1,16 @@
 import { BUTTONS } from '../../buttons'
-import { MidiConfigCCWithValue } from '../../types'
+import { FuncProps, MidiConfigCCWithValue } from '../../types'
 
 
-interface MidiControllersRingMod {
+interface ControllersRingMod {
+    props: FuncProps
     SOURCE: MidiConfigCCWithValue
 }
 
-const midiControllersRingMod: MidiControllersRingMod = {
+const controllersRingMod: ControllersRingMod = {
+    props: { label: 'Ring modulator' },
     SOURCE: {
+        label: 'Sources',
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -17,4 +20,4 @@ const midiControllersRingMod: MidiControllersRingMod = {
     }
 }
 
-export default midiControllersRingMod
+export default controllersRingMod

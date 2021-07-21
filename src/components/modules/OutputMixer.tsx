@@ -2,7 +2,7 @@ import React from 'react';
 import RotaryPot17 from '../pots/RotaryPot17';
 import Header from '../misc/Header';
 import { PotMode } from '../pots/RotaryPotWithLedRingBase';
-import midiConstants from '../../midi/midiControllers'
+import midiConstants from '../../midi/controllers'
 import { MidiConfigCC } from '../../midi/types'
 
 interface Props {

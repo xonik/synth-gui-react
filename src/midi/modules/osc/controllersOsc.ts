@@ -1,15 +1,18 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { MidiConfigCC, MidiConfigCCWithValue } from '../../types'
+import { FuncProps, MidiConfigCC, MidiConfigCCWithValue, MidiConfigNRPN } from '../../types'
+import NRPN from '../../mapNRPN'
 
-interface MidiControllersOsc {
+interface ControllersOsc {
     DCO1: {
+        props: FuncProps
+        PITCH: MidiConfigNRPN
         NOTE: MidiConfigCC
-        SUPER_SAW: MidiConfigCC,
-        WAVEFORM: MidiConfigCC,
-        SUB1: MidiConfigCC,
-        SUB2: MidiConfigCC,
-        PW: MidiConfigCC,
+        SUPER_SAW: MidiConfigCC
+        WAVEFORM: MidiConfigCC
+        SUB1: MidiConfigCC
+        SUB2: MidiConfigCC
+        PW: MidiConfigCC
         SYNC: MidiConfigCCWithValue
         MODE: MidiConfigCCWithValue
         SUB_WAVE: MidiConfigCCWithValue
@@ -18,6 +21,8 @@ interface MidiControllersOsc {
         KBD: MidiConfigCCWithValue
     },
     DCO2: {
+        props: FuncProps
+        PITCH: MidiConfigNRPN
         NOTE: MidiConfigCC
         DETUNE: MidiConfigCC
         SUPER_SAW: MidiConfigCC
@@ -32,6 +37,8 @@ interface MidiControllersOsc {
         KBD: MidiConfigCCWithValue
     },
     VCO: {
+        props: FuncProps
+        PITCH: MidiConfigNRPN
         NOTE: MidiConfigCC
         DETUNE: MidiConfigCC
         WAVEFORM: MidiConfigCC
@@ -46,18 +53,55 @@ interface MidiControllersOsc {
     }
 }
 
-const midiControllersOsc: MidiControllersOsc = {
+const controllersOsc: ControllersOsc = {
     DCO1: {
+        props: { label: 'Osc 1' },
         // pots
-        NOTE: { type: 'pot', cc: CC.DCO1_NOTE },
-        SUPER_SAW: { type: 'pot', cc: CC.DCO1_SUPER_SAW },
-        WAVEFORM: { type: 'pot', cc: CC.DCO1_WAVEFORM },
-        SUB1: { type: 'pot', cc: CC.DCO1_SUB1 },
-        SUB2: { type: 'pot', cc: CC.DCO1_SUB2 },
-        PW: { type: 'pot', cc: CC.DCO1_PW },
+        PITCH: {
+            label: 'Pitch',
+            isTargetDigi: true,
+            type: 'pot',
+            addr: NRPN.DCO1_PITCH
+        },
+        NOTE: {
+            label: 'Note',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.DCO1_NOTE
+        },
+        SUPER_SAW: {
+            label: 'Super saw',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.DCO1_SUPER_SAW
+        },
+        WAVEFORM: {
+            label: 'Waveform',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.DCO1_WAVEFORM
+        },
+        SUB1: {
+            label: 'Sub 1',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.DCO1_SUB1
+        },
+        SUB2: {
+            label: 'Sub 2',
+            isTargetDigi: true,
+            type: 'pot', cc: CC.DCO1_SUB2
+        },
+        PW: {
+            label: 'PW',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.DCO1_PW
+        },
 
         //buttons
         SYNC: {
+            label: 'Sync',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -67,6 +111,7 @@ const midiControllersOsc: MidiControllersOsc = {
             ],
         },
         MODE: {
+            label: 'Mode',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -76,6 +121,7 @@ const midiControllersOsc: MidiControllersOsc = {
             ],
         },
         SUB_WAVE: {
+            label: 'Sub wave',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -84,6 +130,7 @@ const midiControllersOsc: MidiControllersOsc = {
             ],
         },
         WHEEL: {
+            label: 'Mod wheel',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -92,6 +139,7 @@ const midiControllersOsc: MidiControllersOsc = {
             ],
         },
         LFO: {
+            label: 'LFO mod',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -100,6 +148,7 @@ const midiControllersOsc: MidiControllersOsc = {
             ],
         },
         KBD: {
+            label: 'Keyboard track',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -109,17 +158,59 @@ const midiControllersOsc: MidiControllersOsc = {
         },
     },
     DCO2: {
+        props: { label: 'Osc 2' },
         // pots
-        NOTE: { type: 'pot', cc: CC.DCO2_NOTE },
-        DETUNE: { type: 'pot', cc: CC.DCO2_DETUNE },
-        SUPER_SAW: { type: 'pot', cc: CC.DCO2_SUPER_SAW },
-        WAVEFORM: { type: 'pot', cc: CC.DCO2_WAVEFORM },
-        SUB1: { type: 'pot', cc: CC.DCO2_SUB1 },
-        SUB2: { type: 'pot', cc: CC.DCO2_SUB2 },
-        PW: { type: 'pot', cc: CC.DCO2_PW },
+        PITCH: {
+            label: 'Pitch',
+            isTargetDigi: true,
+            type: 'pot',
+            addr: NRPN.DCO2_PITCH
+        },
+        NOTE: {
+            label: 'Note',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.DCO2_NOTE
+        },
+        DETUNE: {
+            label: 'Detune',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.DCO2_DETUNE
+        },
+        SUPER_SAW: {
+            label: 'Super saw',
+            isTargetDigi: true,
+            type: 'pot', cc: CC.DCO2_SUPER_SAW
+        },
+        WAVEFORM: {
+            label: 'Waveform',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.DCO2_WAVEFORM
+        },
+        SUB1: {
+            label: 'Sub 1',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.DCO2_SUB1
+        },
+        SUB2: {
+            label: 'Sub 2',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.DCO2_SUB2
+        },
+        PW: {
+            label: 'PW',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.DCO2_PW
+        },
 
         //buttons
         MODE: {
+            label: 'Mode',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -129,6 +220,7 @@ const midiControllersOsc: MidiControllersOsc = {
             ],
         },
         SUB_WAVE: {
+            label: 'Sub wave',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -137,6 +229,7 @@ const midiControllersOsc: MidiControllersOsc = {
             ],
         },
         WHEEL: {
+            label: 'Mod wheel',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -145,6 +238,7 @@ const midiControllersOsc: MidiControllersOsc = {
             ],
         },
         LFO: {
+            label: 'LFO mod',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -153,6 +247,7 @@ const midiControllersOsc: MidiControllersOsc = {
             ],
         },
         KBD: {
+            label: 'Keyboard track',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -162,15 +257,46 @@ const midiControllersOsc: MidiControllersOsc = {
         },
     },
     VCO: {
+        props: { label: 'Osc 3' },
         // pots
-        NOTE: { type: 'pot', cc: CC.VCO_NOTE },
-        DETUNE: { type: 'pot', cc: CC.VCO_DETUNE },
-        WAVEFORM: { type: 'pot', cc: CC.VCO_WAVEFORM },
-        CROSS_MOD: { type: 'pot', cc: CC.VCO_CROSS_MOD },
-        PW: { type: 'pot', cc: CC.VCO_PW },
+        PITCH: {
+            label: 'Pitch',
+            isTargetDigi: true,
+            type: 'pot',
+            addr: NRPN.VCO_PITCH
+        },
+        NOTE: {
+            label: 'Note',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.VCO_NOTE
+        },
+        DETUNE: {
+            label: 'Detune',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.VCO_DETUNE
+        },
+        WAVEFORM: {
+            label: 'Waveform',
+            isTargetDigi: true,
+            type: 'pot', cc: CC.VCO_WAVEFORM
+        },
+        CROSS_MOD: {
+            label: 'Cross mod',
+            isTargetDigi: true,
+            type: 'pot', cc: CC.VCO_CROSS_MOD
+        },
+        PW: {
+            label: 'PW',
+            isTargetDigi: true,
+            type: 'pot',
+            cc: CC.VCO_PW
+        },
 
         //buttons
         SYNC: {
+            label: 'Sync',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -181,6 +307,7 @@ const midiControllersOsc: MidiControllersOsc = {
             ],
         },
         CROSS_MOD_SRC: {
+            label: 'Cross mod source',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -189,6 +316,7 @@ const midiControllersOsc: MidiControllersOsc = {
             ],
         },
         EXT_CV: {
+            label: 'Ext. CV',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -197,6 +325,7 @@ const midiControllersOsc: MidiControllersOsc = {
             ],
         },
         WHEEL: {
+            label: 'Mod wheel',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -205,6 +334,7 @@ const midiControllersOsc: MidiControllersOsc = {
             ],
         },
         LFO: {
+            label: 'LFO mod',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -213,6 +343,7 @@ const midiControllersOsc: MidiControllersOsc = {
             ],
         },
         KBD: {
+            label: 'Keyboard track',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -223,4 +354,4 @@ const midiControllersOsc: MidiControllersOsc = {
     }
 }
 
-export default midiControllersOsc
+export default controllersOsc

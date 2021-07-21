@@ -1,13 +1,16 @@
 import { BUTTONS } from '../../buttons'
-import { MidiConfigCCWithValue } from '../../types'
+import { FuncProps, MidiConfigCCWithValue } from '../../types'
 
 
-interface MidiControllersTranspose {
+interface ControllersTranspose {
+    props: FuncProps
     TRANSPOSE: MidiConfigCCWithValue
 }
 
-const midiControllersTranspose: MidiControllersTranspose = {
+const controllersTranspose: ControllersTranspose = {
+    props: { label: 'Transpose' },
     TRANSPOSE: {
+        label: 'Up/down',
         type: 'button',
             cc: BUTTONS.BUTTONS_CENTER.cc,
             values: [
@@ -20,4 +23,4 @@ const midiControllersTranspose: MidiControllersTranspose = {
     },
 }
 
-export default midiControllersTranspose
+export default controllersTranspose

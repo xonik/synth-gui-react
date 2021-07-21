@@ -4,7 +4,7 @@ import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
 import Led from '../leds/Led';
 import React, { useCallback, useState } from 'react'
-import midiConstants from '../../midi/midiControllers'
+import midiConstants from '../../midi/controllers'
 
 interface Props {
     x: number,

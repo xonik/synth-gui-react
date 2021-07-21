@@ -1,6 +1,6 @@
 import { envApi } from '../../../synthcore/synthcoreApi'
 import { Curve, LoopMode, ReleaseMode } from '../../../synthcore/modules/env/types'
-import midiControllers from '../../midiControllers'
+import controllers from '../../controllers'
 import { cc, nrpn } from '../../midibus'
 import { ApiSource } from '../../../synthcore/types'
 import { shouldSend } from '../../utils'
@@ -9,13 +9,13 @@ let currentEnvId = -1
 
 const selectEnv = (envId: number) => {
     if (envId !== currentEnvId) {
-        cc.send(midiControllers.ENV.SELECT.cc, envId)
+        cc.send(controllers.ENV.SELECT.cc, envId)
         currentEnvId = envId
     }
 }
 
 const level = (() => {
-    const cfg = midiControllers.ENV.LEVEL
+    const cfg = controllers.ENV.LEVEL
 
     return {
         send: (source: ApiSource, envId: number, stageId: number, boundedValue: number) => {
@@ -39,7 +39,7 @@ const level = (() => {
 })()
 
 const time = (() => {
-    const cfg = midiControllers.ENV.TIME
+    const cfg = controllers.ENV.TIME
     return {
         send: (source: ApiSource, envId: number, stageId: number, boundedValue: number) => {
             if (!shouldSend(source)) {
@@ -62,7 +62,7 @@ const time = (() => {
 })()
 
 const invert = (() => {
-    const cfg = midiControllers.ENV.INVERT
+    const cfg = controllers.ENV.INVERT
 
     return {
         send: (source: ApiSource, envId: number, invert: boolean) => {
@@ -83,7 +83,7 @@ const invert = (() => {
 })()
 
 const resetOnTrigger = (() => {
-    const cfg = midiControllers.ENV.RESET_ON_TRIGGER
+    const cfg = controllers.ENV.RESET_ON_TRIGGER
 
     return {
         send: (source: ApiSource, envId: number, resetOnTrigger: boolean) => {
@@ -104,7 +104,7 @@ const resetOnTrigger = (() => {
 })()
 
 const releaseMode = (() => {
-    const cfg = midiControllers.ENV.RELEASE_MODE
+    const cfg = controllers.ENV.RELEASE_MODE
 
     return {
         send: (source: ApiSource, envId: number, releaseMode: ReleaseMode) => {
@@ -124,7 +124,7 @@ const releaseMode = (() => {
 })()
 
 const loopMode = (() => {
-    const cfg = midiControllers.ENV.LOOP_MODE
+    const cfg = controllers.ENV.LOOP_MODE
 
     return {
         send: (source: ApiSource, envId: number, loopMode: LoopMode) => {
@@ -144,7 +144,7 @@ const loopMode = (() => {
 })()
 
 const loopEnabled = (() => {
-    const cfg = midiControllers.ENV.LOOP
+    const cfg = controllers.ENV.LOOP
 
     return {
         send: (source: ApiSource, envId: number, enabled: boolean) => {
@@ -165,7 +165,7 @@ const loopEnabled = (() => {
 })()
 
 const stageEnabled = (() => {
-    const cfg = midiControllers.ENV.TOGGLE_STAGE
+    const cfg = controllers.ENV.TOGGLE_STAGE
 
     return {
         send: (source: ApiSource, envId: number, stageId: number, enabled: boolean) => {
@@ -188,7 +188,7 @@ const stageEnabled = (() => {
 })()
 
 const curve = (() => {
-    const cfg = midiControllers.ENV.CURVE
+    const cfg = controllers.ENV.CURVE
 
     return {
         send: (source: ApiSource, envId: number, stageId: number, curve: Curve) => {
@@ -209,7 +209,7 @@ const curve = (() => {
 })()
 
 const maxLoops = (() => {
-    const cfg = midiControllers.ENV.MAX_LOOPS
+    const cfg = controllers.ENV.MAX_LOOPS
 
     return {
         send: (source: ApiSource, envId: number, maxLoops: number) => {
@@ -228,7 +228,7 @@ const maxLoops = (() => {
 })()
 
 const env3Id = (() => {
-    const cfg = midiControllers.ENV.SELECT_ENV3_ID
+    const cfg = controllers.ENV.SELECT_ENV3_ID
 
     return {
         send: (source: ApiSource, id: number) => {
@@ -246,7 +246,7 @@ const env3Id = (() => {
 })()
 
 const trigger = (() => {
-    const cfg = midiControllers.ENV.TRIGGER
+    const cfg = controllers.ENV.TRIGGER
 
     return {
         send: (source: ApiSource, envId: number) => {
@@ -260,7 +260,7 @@ const trigger = (() => {
 })()
 
 const release = (() => {
-    const cfg = midiControllers.ENV.RELEASE
+    const cfg = controllers.ENV.RELEASE
 
     return {
         send: (source: ApiSource, envId: number) => {

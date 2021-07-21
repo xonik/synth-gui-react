@@ -7,7 +7,7 @@ import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
 import Header from '../misc/Header';
 import HorizontalLine from '../misc/HorizontalLine';
 import RoundRotaryButton17 from '../buttons/RoundRotaryButton17';
-import midiConstants from '../../midi/midiControllers'
+import midiConstants from '../../midi/controllers'
 
 interface Props {
     x: number,

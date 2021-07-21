@@ -1,8 +1,9 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { MidiConfigCC, MidiConfigCCWithValue } from '../../types'
+import { FuncProps, MidiConfigCC, MidiConfigCCWithValue } from '../../types'
 
-interface MidiControllersSrcMix {
+interface ControllersSrcMix {
+    props: FuncProps
     LEVEL_OSC1: MidiConfigCC
     LEVEL_OSC2: MidiConfigCC
     LEVEL_OSC3: MidiConfigCC
@@ -17,14 +18,48 @@ interface MidiControllersSrcMix {
     OUT_EXT_AUDIO: MidiConfigCCWithValue
 }
 
-const midiControllersSrcMix: MidiControllersSrcMix = {
-    LEVEL_OSC1: { type: 'pot', cc: CC.LEVEL_OSC1 },
-    LEVEL_OSC2: { type: 'pot', cc: CC.LEVEL_OSC2 },
-    LEVEL_OSC3: { type: 'pot', cc: CC.LEVEL_OSC3 },
-    LEVEL_NOISE: { type: 'pot', cc: CC.LEVEL_NOISE },
-    LEVEL_RING_MOD: { type: 'pot', cc: CC.LEVEL_RING_MOD },
-    LEVEL_EXT_AUDIO: { type: 'pot', cc: CC.LEVEL_EXT_AUDIO },
+const controllersSrcMix: ControllersSrcMix = {
+    props: {
+        label: 'Source mix'
+    },
+    LEVEL_OSC1: {
+        label: 'Osc 1',
+        isTargetDigi: true,
+        type: 'pot',
+        cc: CC.LEVEL_OSC1
+    },
+    LEVEL_OSC2: {
+        label: 'Osc 2',
+        isTargetDigi: true,
+        type: 'pot',
+        cc: CC.LEVEL_OSC2
+    },
+    LEVEL_OSC3: {
+        label: 'Osc 3',
+        isTargetDigi: true,
+        type: 'pot',
+        cc: CC.LEVEL_OSC3
+    },
+    LEVEL_NOISE: {
+        label: 'Noise',
+        isTargetDigi: true,
+        type: 'pot',
+        cc: CC.LEVEL_NOISE
+    },
+    LEVEL_RING_MOD: {
+        label: 'Ring mod',
+        isTargetDigi: true,
+        type: 'pot',
+        cc: CC.LEVEL_RING_MOD
+    },
+    LEVEL_EXT_AUDIO: {
+        label: 'Ext. audio',
+        isTargetDigi: true,
+        type: 'pot',
+        cc: CC.LEVEL_EXT_AUDIO
+    },
     OUT_OSC1: {
+        label: 'Osc 1 target',
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -34,6 +69,7 @@ const midiControllersSrcMix: MidiControllersSrcMix = {
         ],
     },
     OUT_OSC2: {
+        label: 'Osc 2 target',
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -43,6 +79,7 @@ const midiControllersSrcMix: MidiControllersSrcMix = {
         ],
     },
     OUT_OSC3: {
+        label: 'Osc 3 target',
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -52,6 +89,7 @@ const midiControllersSrcMix: MidiControllersSrcMix = {
         ],
     },
     OUT_NOISE: {
+        label: 'Noise target',
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -61,6 +99,7 @@ const midiControllersSrcMix: MidiControllersSrcMix = {
         ],
     },
     OUT_RING_MOD: {
+        label: 'Ring mod target',
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -70,6 +109,7 @@ const midiControllersSrcMix: MidiControllersSrcMix = {
         ],
     },
     OUT_EXT_AUDIO: {
+        label: 'Ext. audio target',
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -80,4 +120,4 @@ const midiControllersSrcMix: MidiControllersSrcMix = {
     },
 }
 
-export default midiControllersSrcMix
+export default controllersSrcMix

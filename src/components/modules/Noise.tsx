@@ -1,7 +1,7 @@
 import React from 'react';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
 import Header from '../misc/Header';
-import midiConstants from '../../midi/midiControllers'
+import midiConstants from '../../midi/controllers'
 
 interface Props {
   x: number,

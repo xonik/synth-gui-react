@@ -1,25 +1,25 @@
-export interface MidiConfigCC {
+export interface MidiConfig {
+    readonly label: string,
+    readonly isSourceDigi?: boolean,
+    readonly isTargetDigi?: boolean,
     readonly type: ControllerType
-    readonly cc: number
     readonly values?: number[]
+}
+
+export interface MidiConfigCC extends MidiConfig {
+    readonly cc: number
 }
 
 export interface MidiConfigCCWithValue extends MidiConfigCC {
-    readonly type: ControllerType
-    readonly cc: number
     readonly values: number[]
 }
 
-export interface MidiConfigCmd {
-    readonly type: ControllerType
-    readonly cmd: number
-    readonly values?: number[]
+export interface MidiConfigNRPN extends MidiConfig {
+    readonly addr: number
 }
 
-export interface MidiConfigNRPN {
-    readonly type: ControllerType
-    readonly addr: number
-    readonly values?: number[]
+export interface FuncProps {
+    label: string
 }
 
 export type ControllerType = 'pot' | 'button'
