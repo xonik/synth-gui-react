@@ -1,6 +1,7 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
 import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../types'
+import { ControllerId } from '../../controllerIds'
 
 interface ControllersLfo {
     props: FuncProps
@@ -21,18 +22,21 @@ const controllersLfo: ControllersLfo = {
     },
     // Pots
     RATE: {
+        id: ControllerId.LFO_RATE,
         label: 'Rate',
         isTargetDigi: true,
         type: 'pot',
         cc: CC.LFO_RATE
     },
     DEPTH: {
+        id: ControllerId.LFO_DEPTH,
         label: 'Depth',
         isTargetDigi: true,
         type: 'pot',
         cc: CC.LFO_DEPTH
     },
     DELAY: {
+        id: ControllerId.LFO_DELAY,
         label: 'Delay',
         isTargetDigi: true,
         type: 'pot',
@@ -40,6 +44,7 @@ const controllersLfo: ControllersLfo = {
     },
     // Buttons
     LFO: {
+        id: ControllerId.LFO_LFO,
         label: 'Select',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -51,6 +56,7 @@ const controllersLfo: ControllersLfo = {
         ],
     },
     SHAPE: {
+        id: ControllerId.LFO_SHAPE,
         label: 'Shape',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -63,6 +69,7 @@ const controllersLfo: ControllersLfo = {
         ],
     },
     SYNC: {
+        id: ControllerId.LFO_SYNC,
         label: 'Sync',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -72,6 +79,7 @@ const controllersLfo: ControllersLfo = {
         ],
     },
     RESET: {
+        id: ControllerId.LFO_RESET,
         label: 'Reset',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -81,6 +89,7 @@ const controllersLfo: ControllersLfo = {
         ],
     },
     ONCE: {
+        id: ControllerId.LFO_ONCE,
         label: 'Once',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,

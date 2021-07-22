@@ -1,6 +1,7 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
 import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../types'
+import { ControllerId } from '../../controllerIds'
 
 interface ControllersCommonFx {
     DSP1: {
@@ -46,26 +47,30 @@ const controllersCommonFx: ControllersCommonFx = {
     DSP1: {
         props: { label: 'DSP 1' },
         POT1: {
+            id: ControllerId.DSP1_PARAM1,
             label: 'Param 1',
             isTargetDigi: true,
             type: 'pot',
             cc: CC.DSP1_POT1
         },
         POT2: {
+            id: ControllerId.DSP1_PARAM2,
             label: 'Param 2',
             isTargetDigi: true,
             type: 'pot',
             cc: CC.DSP1_POT2
         },
         POT3: {
+            id: ControllerId.DSP1_PARAM3,
             label: 'Param 3',
             isTargetDigi: true,
             type: 'pot',
             cc: CC.DSP1_POT3
         },
-        EFFECT: { label: 'Effect', type: 'pot', cc: CC.DSP1_EFFECT },
+        EFFECT: { id: ControllerId.DSP1_EFFECT, label: 'Effect', type: 'pot', cc: CC.DSP1_EFFECT },
 
         SOURCE: {
+            id: ControllerId.DSP1_SOURCE,
             label: 'Source bus',
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
@@ -78,26 +83,30 @@ const controllersCommonFx: ControllersCommonFx = {
     DSP2: {
         props: { label: 'DSP 2' },
         POT1: {
+            id: ControllerId.DSP2_PARAM1,
             label: 'Param 1',
             isTargetDigi: true,
             type: 'pot',
             cc: CC.DSP2_POT1
         },
         POT2: {
+            id: ControllerId.DSP2_PARAM2,
             label: 'Param 2',
             isTargetDigi: true,
             type: 'pot',
             cc: CC.DSP2_POT2
         },
         POT3: {
+            id: ControllerId.DSP2_PARAM3,
             label: 'Param 3',
             isTargetDigi: true,
             type: 'pot',
             cc: CC.DSP2_POT3
         },
-        EFFECT: { label: 'Effect', type: 'pot', cc: CC.DSP2_EFFECT },
+        EFFECT: { id: ControllerId.DSP2_EFFECT, label: 'Effect', type: 'pot', cc: CC.DSP2_EFFECT },
 
         SOURCE: {
+            id: ControllerId.DSP2_SOURCE,
             label: 'Source bus',
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
@@ -108,6 +117,7 @@ const controllersCommonFx: ControllersCommonFx = {
         },
 
         CHAIN: {
+            id: ControllerId.DSP2_CHAIN,
             label: 'Chain effects',
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
@@ -120,18 +130,21 @@ const controllersCommonFx: ControllersCommonFx = {
     CHORUS: {
         props: { label: 'Chorus' },
         RATE: {
+            id: ControllerId.CHORUS_RATE,
             label: 'Rate',
             isTargetDigi: true,
             type: 'pot',
             cc: CC.CHORUS_RATE
         },
         DEPTH: {
+            id: ControllerId.CHORUS_DEPTH,
             label: 'Depth',
             isTargetDigi: true,
             type: 'pot',
             cc: CC.CHORUS_DEPTH
         },
         SOURCE: {
+            id: ControllerId.CHORUS_SOURCE,
             label: 'Source bus',
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
@@ -141,6 +154,7 @@ const controllersCommonFx: ControllersCommonFx = {
             ],
         },
         MODE: {
+            id: ControllerId.CHORUS_MODE,
             label: 'Mode',
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
@@ -153,18 +167,21 @@ const controllersCommonFx: ControllersCommonFx = {
     FX_BIT_CRUSHER: {
         props: { label: 'Bit crusher' },
         BITS: {
+            id: ControllerId.FX_BIT_CRUSHER_BITS,
             label: 'Bits',
             isTargetDigi: true,
             type: 'pot',
             cc: CC.FX_BIT_CRUSHER_BITS
         },
         RATE: {
+            id: ControllerId.FX_BIT_CRUSHER_RATE,
             label: 'Rate',
             isTargetDigi: true,
             type: 'pot',
             cc: CC.FX_BIT_CRUSHER_RATE
         },
         SOURCE: {
+            id: ControllerId.FX_BIT_CRUSHER_SOURCE,
             label: 'Source bus',
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
@@ -177,24 +194,28 @@ const controllersCommonFx: ControllersCommonFx = {
     FX_MIX: {
         props: { label: 'FX mix' },
         LEVEL_DSP1: {
+            id: ControllerId.FX_MIX_LEVEL_DSP1,
             label: 'DSP 1 level',
             isTargetDigi: true,
             type: 'pot',
             cc: CC.FX_MIX_LEVEL_DSP1
         },
         LEVEL_DSP2: {
+            id: ControllerId.FX_MIX_LEVEL_DSP2,
             label: 'DSP 2 level',
             isTargetDigi: true,
             type: 'pot',
             cc: CC.FX_MIX_LEVEL_DSP2
         },
         LEVEL_CHORUS: {
+            id: ControllerId.FX_MIX_LEVEL_CHORUS,
             label: 'Chorus level',
             isTargetDigi: true,
             type: 'pot',
             cc: CC.FX_MIX_LEVEL_CHORUS
         },
         LEVEL_BIT_CRUSHER: {
+            id: ControllerId.FX_MIX_LEVEL_BIT_CRUSHER,
             label: 'Bit crusher level',
             isTargetDigi: true,
             type: 'pot',

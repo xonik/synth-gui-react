@@ -1,5 +1,6 @@
 import { BUTTONS } from '../../buttons'
 import { FuncProps, ControllerConfigCCWithValue } from '../../types'
+import { ControllerId } from '../../controllerIds'
 
 
 interface ControllersRingMod {
@@ -10,6 +11,7 @@ interface ControllersRingMod {
 const controllersRingMod: ControllersRingMod = {
     props: { label: 'Ring modulator' },
     SOURCE: {
+        id: ControllerId.RING_MOD_SOURCE,
         label: 'Sources',
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,

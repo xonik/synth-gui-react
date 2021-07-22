@@ -1,6 +1,7 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../types'
+import { ControllerConfigCC, ControllerConfigCCWithValue, FuncProps } from '../../types'
+import { ControllerId } from '../../controllerIds'
 
 interface ControllersArp {
     props: FuncProps
@@ -15,12 +16,14 @@ interface ControllersArp {
 const controllersArp: ControllersArp = {
     props: { label: 'Arpeggiator' },
     TEMPO: {
+        id: ControllerId.ARP_TEMPO,
         label: 'Tempo',
         isTargetDigi: true,
         type: 'pot',
         cc: CC.ARP_TEMPO
     },
     ON_OFF: {
+        id: ControllerId.ARP_ON_OFF,
         label: 'On/off',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -30,6 +33,7 @@ const controllersArp: ControllersArp = {
         ],
     },
     TRIGGER: {
+        id: ControllerId.ARP_TRIGGER,
         label: 'Trigger',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -39,6 +43,7 @@ const controllersArp: ControllersArp = {
         ],
     },
     SYNC: {
+        id: ControllerId.ARP_SYNC,
         label: 'Sync',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -50,6 +55,7 @@ const controllersArp: ControllersArp = {
         ],
     },
     RANGE: {
+        id: ControllerId.ARP_RANGE,
         label: 'Range',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -60,6 +66,7 @@ const controllersArp: ControllersArp = {
         ],
     },
     MODE: {
+        id: ControllerId.ARP_MODE,
         label: 'Mode',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,

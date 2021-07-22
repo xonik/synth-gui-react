@@ -1,6 +1,7 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
 import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../types'
+import { ControllerId } from '../../controllerIds'
 
 interface ControllersMasterClock {
     props: FuncProps
@@ -11,12 +12,14 @@ interface ControllersMasterClock {
 const controllersMasterClock: ControllersMasterClock = {
     props: { label: 'Master clock' },
     RATE: {
+        id: ControllerId.MASTER_CLOCK_RATE,
         label: 'Rate',
         isTargetDigi: true,
         type: 'pot',
         cc: CC.MASTER_CLOCK_RATE
     },
     SOURCE: {
+        id: ControllerId.MASTER_CLOCK_SOURCE,
         label: 'Source',
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,

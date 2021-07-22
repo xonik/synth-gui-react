@@ -1,5 +1,6 @@
 import { BUTTONS } from '../../buttons'
 import { FuncProps, ControllerConfigCCWithValue } from '../../types'
+import { ControllerId } from '../../controllerIds'
 
 
 interface ControllersTranspose {
@@ -10,6 +11,7 @@ interface ControllersTranspose {
 const controllersTranspose: ControllersTranspose = {
     props: { label: 'Transpose' },
     TRANSPOSE: {
+        id: ControllerId.KBD_TRANSPOSE,
         label: 'Up/down',
         type: 'button',
             cc: BUTTONS.BUTTONS_CENTER.cc,

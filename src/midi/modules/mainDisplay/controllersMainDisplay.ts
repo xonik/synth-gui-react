@@ -1,6 +1,7 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
 import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../types'
+import { ControllerId } from '../../controllerIds'
 
 interface ControllersMainDisplay {
     props: FuncProps
@@ -24,14 +25,15 @@ interface ControllersMainDisplay {
 
 const controllersMainDisplay: ControllersMainDisplay = {
     props: { label: 'Main controls' },
-    POT1: { label: 'Pot 1', type: 'pot', cc: CC.MAIN_POT1 },
-    POT2: { label: 'Pot 2', type: 'pot', cc: CC.MAIN_POT2 },
-    POT3: { label: 'Pot 3', type: 'pot', cc: CC.MAIN_POT3 },
-    POT4: { label: 'Pot 4', type: 'pot', cc: CC.MAIN_POT4 },
-    POT5: { label: 'Pot 5', type: 'pot', cc: CC.MAIN_POT5 },
-    POT6: { label: 'Main pot', type: 'pot', cc: CC.MAIN_POT6 },
+    POT1: { id: ControllerId.MAIN_DISP_POT1, label: 'Pot 1', type: 'pot', cc: CC.MAIN_POT1 },
+    POT2: { id: ControllerId.MAIN_DISP_POT2, label: 'Pot 2', type: 'pot', cc: CC.MAIN_POT2 },
+    POT3: { id: ControllerId.MAIN_DISP_POT3, label: 'Pot 3', type: 'pot', cc: CC.MAIN_POT3 },
+    POT4: { id: ControllerId.MAIN_DISP_POT4, label: 'Pot 4', type: 'pot', cc: CC.MAIN_POT4 },
+    POT5: { id: ControllerId.MAIN_DISP_POT5, label: 'Pot 5', type: 'pot', cc: CC.MAIN_POT5 },
+    POT6: { id: ControllerId.MAIN_DISP_POT6, label: 'Main pot', type: 'pot', cc: CC.MAIN_POT6 },
 
     GROUP_MENU: {
+        id: ControllerId.MAIN_DISP_GROUP_MENU,
         label: 'Screen select',
         type: 'button',
         cc: BUTTONS.BUTTONS_CENTER.cc,
@@ -47,6 +49,7 @@ const controllersMainDisplay: ControllersMainDisplay = {
     },
 
     FUNC_HOME: {
+        id: ControllerId.MAIN_DISP_FUNC_HOME,
         label: 'Home',
         type: 'button',
         cc: BUTTONS.BUTTONS_CENTER.cc,
@@ -55,6 +58,7 @@ const controllersMainDisplay: ControllersMainDisplay = {
         ],
     },
     FUNC_SETTINGS: {
+        id: ControllerId.MAIN_DISP_FUNC_SETTINGS,
         label: 'Settings',
         type: 'button',
         cc: BUTTONS.BUTTONS_CENTER.cc,
@@ -63,6 +67,7 @@ const controllersMainDisplay: ControllersMainDisplay = {
         ],
     },
     FUNC_SHIFT: {
+        id: ControllerId.MAIN_DISP_FUNC_SHIFT,
         label: 'Shift',
         type: 'button',
         cc: BUTTONS.BUTTONS_CENTER.cc,
@@ -72,6 +77,7 @@ const controllersMainDisplay: ControllersMainDisplay = {
         ],
     },
     FUNC_PERFORM: {
+        id: ControllerId.MAIN_DISP_FUNC_PERFORM,
         label: 'Perform',
         type: 'button',
         cc: BUTTONS.BUTTONS_CENTER.cc,
@@ -80,6 +86,7 @@ const controllersMainDisplay: ControllersMainDisplay = {
         ],
     },
     FUNC_LOAD: {
+        id: ControllerId.MAIN_DISP_FUNC_LOAD,
         label: 'Load',
         type: 'button',
         cc: BUTTONS.BUTTONS_CENTER.cc,
@@ -88,6 +95,7 @@ const controllersMainDisplay: ControllersMainDisplay = {
         ],
     },
     FUNC_SAVE: {
+        id: ControllerId.MAIN_DISP_FUNC_SAVE,
         label: 'Save',
         type: 'button',
         cc: BUTTONS.BUTTONS_CENTER.cc,
@@ -96,6 +104,7 @@ const controllersMainDisplay: ControllersMainDisplay = {
         ],
     },
     FUNC_COMPARE: {
+        id: ControllerId.MAIN_DISP_FUNC_COMPARE,
         label: 'Compare',
         type: 'button',
         cc: BUTTONS.BUTTONS_CENTER.cc,
@@ -104,6 +113,7 @@ const controllersMainDisplay: ControllersMainDisplay = {
         ],
     },
     FUNC_ROUTE: {
+        id: ControllerId.MAIN_DISP_FUNC_ROUTE,
         label: 'Route',
         type: 'button',
         cc: BUTTONS.BUTTONS_CENTER.cc,

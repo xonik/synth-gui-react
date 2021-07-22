@@ -1,5 +1,5 @@
 
-export enum controllerIds {
+export enum ControllerId {
     DCO1_PITCH,
     DCO1_NOTE,
     DCO1_SUPER_SAW,
@@ -165,14 +165,14 @@ export enum controllerIds {
     ENV_RESET_ON_TRIGGER,
     ENV_RELEASE_MODE,
     ENV_LOOP_MODE,
-    DSP1_POT1,
-    DSP1_POT2,
-    DSP1_POT3,
+    DSP1_PARAM1,
+    DSP1_PARAM2,
+    DSP1_PARAM3,
     DSP1_EFFECT,
     DSP1_SOURCE,
-    DSP2_POT1,
-    DSP2_POT2,
-    DSP2_POT3,
+    DSP2_PARAM1,
+    DSP2_PARAM2,
+    DSP2_PARAM3,
     DSP2_EFFECT,
     DSP2_SOURCE,
     DSP2_CHAIN,

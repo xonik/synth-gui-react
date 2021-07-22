@@ -1,4 +1,7 @@
+import { ControllerId } from './controllerIds'
+
 export interface ControllerConfig {
+    readonly id: ControllerId,
     readonly label: string,
     readonly isSourceDigi?: boolean,
     readonly isTargetDigi?: boolean,

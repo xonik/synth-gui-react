@@ -1,6 +1,7 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
 import { ControllerConfigCC, ControllerConfigCCWithValue, FuncProps } from '../../types'
+import { ControllerId } from '../../controllerIds'
 
 interface ControllersRoute {
     props: FuncProps
@@ -11,8 +12,9 @@ interface ControllersRoute {
 
 const controllersRoute: ControllersRoute = {
     props: { label: 'Routing' },
-    AMOUNT: { label: 'Amount', type: 'pot', cc: CC.ROUTE_AMOUNT },
+    AMOUNT: { id: ControllerId.ROUTE_AMOUNT, label: 'Amount', type: 'pot', cc: CC.ROUTE_AMOUNT },
     FROM: {
+        id: ControllerId.ROUTE_FROM,
         label: 'From',
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -23,6 +25,7 @@ const controllersRoute: ControllersRoute = {
         ],
     },
     TO: {
+        id: ControllerId.ROUTE_TO,
         label: 'To',
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
