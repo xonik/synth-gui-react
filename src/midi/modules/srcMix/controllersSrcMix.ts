@@ -1,21 +1,21 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { FuncProps, MidiConfigCC, MidiConfigCCWithValue } from '../../types'
+import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../types'
 
 interface ControllersSrcMix {
     props: FuncProps
-    LEVEL_OSC1: MidiConfigCC
-    LEVEL_OSC2: MidiConfigCC
-    LEVEL_OSC3: MidiConfigCC
-    LEVEL_NOISE: MidiConfigCC
-    LEVEL_RING_MOD: MidiConfigCC
-    LEVEL_EXT_AUDIO: MidiConfigCC
-    OUT_OSC1: MidiConfigCCWithValue
-    OUT_OSC2: MidiConfigCCWithValue
-    OUT_OSC3: MidiConfigCCWithValue
-    OUT_NOISE: MidiConfigCCWithValue
-    OUT_RING_MOD: MidiConfigCCWithValue
-    OUT_EXT_AUDIO: MidiConfigCCWithValue
+    LEVEL_OSC1: ControllerConfigCC
+    LEVEL_OSC2: ControllerConfigCC
+    LEVEL_OSC3: ControllerConfigCC
+    LEVEL_NOISE: ControllerConfigCC
+    LEVEL_RING_MOD: ControllerConfigCC
+    LEVEL_EXT_AUDIO: ControllerConfigCC
+    OUT_OSC1: ControllerConfigCCWithValue
+    OUT_OSC2: ControllerConfigCCWithValue
+    OUT_OSC3: ControllerConfigCCWithValue
+    OUT_NOISE: ControllerConfigCCWithValue
+    OUT_RING_MOD: ControllerConfigCCWithValue
+    OUT_EXT_AUDIO: ControllerConfigCCWithValue
 }
 
 const controllersSrcMix: ControllersSrcMix = {

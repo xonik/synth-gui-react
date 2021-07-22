@@ -1,10 +1,10 @@
 import { BUTTONS } from '../../buttons'
-import { FuncProps, MidiConfigCCWithValue } from '../../types'
+import { FuncProps, ControllerConfigCCWithValue } from '../../types'
 
 
 interface ControllersRingMod {
     props: FuncProps
-    SOURCE: MidiConfigCCWithValue
+    SOURCE: ControllerConfigCCWithValue
 }
 
 const controllersRingMod: ControllersRingMod = {

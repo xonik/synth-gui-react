@@ -1,13 +1,13 @@
 import CC from '../../mapCC'
-import { FuncProps, MidiConfigCC } from '../../types'
+import { FuncProps, ControllerConfigCC } from '../../types'
 
 
 interface ControllersVoiceOut {
     props: FuncProps
-    PAN: MidiConfigCC
-    AMOUNT: MidiConfigCC
-    FX1_SEND: MidiConfigCC
-    FX2_SEND: MidiConfigCC
+    PAN: ControllerConfigCC
+    AMOUNT: ControllerConfigCC
+    FX1_SEND: ControllerConfigCC
+    FX2_SEND: ControllerConfigCC
 }
 
 const controllersVoiceOut: ControllersVoiceOut = {

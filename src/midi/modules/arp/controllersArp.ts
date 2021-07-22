@@ -1,15 +1,15 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { FuncProps, MidiConfigCC, MidiConfigCCWithValue } from '../../types'
+import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../types'
 
 interface ControllersArp {
     props: FuncProps
-    TEMPO: MidiConfigCC
-    ON_OFF: MidiConfigCCWithValue
-    TRIGGER: MidiConfigCCWithValue
-    SYNC: MidiConfigCCWithValue
-    RANGE: MidiConfigCCWithValue
-    MODE: MidiConfigCCWithValue
+    TEMPO: ControllerConfigCC
+    ON_OFF: ControllerConfigCCWithValue
+    TRIGGER: ControllerConfigCCWithValue
+    SYNC: ControllerConfigCCWithValue
+    RANGE: ControllerConfigCCWithValue
+    MODE: ControllerConfigCCWithValue
 }
 
 const controllersArp: ControllersArp = {

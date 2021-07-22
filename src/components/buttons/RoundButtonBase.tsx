@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import RoundPushButtonBase from './RoundPushButtonBase'
 import RotaryPotBase from '../pots/RotaryPotBase'
 import { cc } from '../../midi/midibus'
-import { MidiConfigCC } from '../../midi/types'
+import { ControllerConfigCC } from '../../midi/types'
 import { ControllerGroupIds } from '../../synthcore/types'
 import { click } from '../../synthcore/modules/ui/uiReducer'
 import { dispatch } from '../../synthcore/utils'
@@ -39,7 +39,7 @@ export interface Props {
     // What midi messages to send when clicking the button.
     // If the midi values array is longer than the ledCount (+1 if hasOff is used), all leds will light up on the rest, making it possible
     // to create a all-on mode.
-    midiConfig?: MidiConfigCC;
+    midiConfig?: ControllerConfigCC;
 
     // True if the first midi value is an off state, lets us switch off all diodes
     hasOff?: boolean;

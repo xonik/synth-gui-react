@@ -1,14 +1,14 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { FuncProps, MidiConfigCC, MidiConfigCCWithValue } from '../../types'
+import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../types'
 
 interface ControllersKbd {
     props: FuncProps
-    PORTAMENTO: MidiConfigCC
-    UNISON_DETUNE: MidiConfigCC
-    HOLD: MidiConfigCCWithValue
-    CHORD: MidiConfigCCWithValue
-    MODE: MidiConfigCCWithValue
+    PORTAMENTO: ControllerConfigCC
+    UNISON_DETUNE: ControllerConfigCC
+    HOLD: ControllerConfigCCWithValue
+    CHORD: ControllerConfigCCWithValue
+    MODE: ControllerConfigCCWithValue
 }
 
 const controllersKbd: ControllersKbd = {

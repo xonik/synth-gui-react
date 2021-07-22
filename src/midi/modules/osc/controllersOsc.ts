@@ -1,55 +1,55 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { FuncProps, MidiConfigCC, MidiConfigCCWithValue, MidiConfigNRPN } from '../../types'
+import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue, ControllerConfigNRPN } from '../../types'
 import NRPN from '../../mapNRPN'
 
 interface ControllersOsc {
     DCO1: {
         props: FuncProps
-        PITCH: MidiConfigNRPN
-        NOTE: MidiConfigCC
-        SUPER_SAW: MidiConfigCC
-        WAVEFORM: MidiConfigCC
-        SUB1: MidiConfigCC
-        SUB2: MidiConfigCC
-        PW: MidiConfigCC
-        SYNC: MidiConfigCCWithValue
-        MODE: MidiConfigCCWithValue
-        SUB_WAVE: MidiConfigCCWithValue
-        WHEEL: MidiConfigCCWithValue
-        LFO: MidiConfigCCWithValue
-        KBD: MidiConfigCCWithValue
+        PITCH: ControllerConfigNRPN
+        NOTE: ControllerConfigCC
+        SUPER_SAW: ControllerConfigCC
+        WAVEFORM: ControllerConfigCC
+        SUB1: ControllerConfigCC
+        SUB2: ControllerConfigCC
+        PW: ControllerConfigCC
+        SYNC: ControllerConfigCCWithValue
+        MODE: ControllerConfigCCWithValue
+        SUB_WAVE: ControllerConfigCCWithValue
+        WHEEL: ControllerConfigCCWithValue
+        LFO: ControllerConfigCCWithValue
+        KBD: ControllerConfigCCWithValue
     },
     DCO2: {
         props: FuncProps
-        PITCH: MidiConfigNRPN
-        NOTE: MidiConfigCC
-        DETUNE: MidiConfigCC
-        SUPER_SAW: MidiConfigCC
-        WAVEFORM: MidiConfigCC
-        SUB1: MidiConfigCC
-        SUB2: MidiConfigCC
-        PW: MidiConfigCC
-        MODE: MidiConfigCCWithValue
-        SUB_WAVE: MidiConfigCCWithValue
-        WHEEL: MidiConfigCCWithValue
-        LFO: MidiConfigCCWithValue
-        KBD: MidiConfigCCWithValue
+        PITCH: ControllerConfigNRPN
+        NOTE: ControllerConfigCC
+        DETUNE: ControllerConfigCC
+        SUPER_SAW: ControllerConfigCC
+        WAVEFORM: ControllerConfigCC
+        SUB1: ControllerConfigCC
+        SUB2: ControllerConfigCC
+        PW: ControllerConfigCC
+        MODE: ControllerConfigCCWithValue
+        SUB_WAVE: ControllerConfigCCWithValue
+        WHEEL: ControllerConfigCCWithValue
+        LFO: ControllerConfigCCWithValue
+        KBD: ControllerConfigCCWithValue
     },
     VCO: {
         props: FuncProps
-        PITCH: MidiConfigNRPN
-        NOTE: MidiConfigCC
-        DETUNE: MidiConfigCC
-        WAVEFORM: MidiConfigCC
-        CROSS_MOD: MidiConfigCC
-        PW: MidiConfigCC
-        SYNC: MidiConfigCCWithValue
-        CROSS_MOD_SRC: MidiConfigCCWithValue
-        EXT_CV: MidiConfigCCWithValue
-        WHEEL: MidiConfigCCWithValue
-        LFO: MidiConfigCCWithValue
-        KBD: MidiConfigCCWithValue
+        PITCH: ControllerConfigNRPN
+        NOTE: ControllerConfigCC
+        DETUNE: ControllerConfigCC
+        WAVEFORM: ControllerConfigCC
+        CROSS_MOD: ControllerConfigCC
+        PW: ControllerConfigCC
+        SYNC: ControllerConfigCCWithValue
+        CROSS_MOD_SRC: ControllerConfigCCWithValue
+        EXT_CV: ControllerConfigCCWithValue
+        WHEEL: ControllerConfigCCWithValue
+        LFO: ControllerConfigCCWithValue
+        KBD: ControllerConfigCCWithValue
     }
 }
 

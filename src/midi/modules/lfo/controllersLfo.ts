@@ -1,17 +1,17 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { FuncProps, MidiConfigCC, MidiConfigCCWithValue } from '../../types'
+import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../types'
 
 interface ControllersLfo {
     props: FuncProps
-    RATE: MidiConfigCC
-    DEPTH: MidiConfigCC
-    DELAY: MidiConfigCC
-    LFO: MidiConfigCCWithValue
-    SHAPE: MidiConfigCCWithValue
-    SYNC: MidiConfigCCWithValue
-    RESET: MidiConfigCCWithValue
-    ONCE: MidiConfigCCWithValue
+    RATE: ControllerConfigCC
+    DEPTH: ControllerConfigCC
+    DELAY: ControllerConfigCC
+    LFO: ControllerConfigCCWithValue
+    SHAPE: ControllerConfigCCWithValue
+    SYNC: ControllerConfigCCWithValue
+    RESET: ControllerConfigCCWithValue
+    ONCE: ControllerConfigCCWithValue
 }
 
 const controllersLfo: ControllersLfo = {

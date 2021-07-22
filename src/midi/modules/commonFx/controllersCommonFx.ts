@@ -1,44 +1,44 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { FuncProps, MidiConfigCC, MidiConfigCCWithValue } from '../../types'
+import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../types'
 
 interface ControllersCommonFx {
     DSP1: {
         props: FuncProps
-        POT1: MidiConfigCC,
-        POT2: MidiConfigCC,
-        POT3: MidiConfigCC,
-        EFFECT: MidiConfigCC,
-        SOURCE: MidiConfigCCWithValue,
+        POT1: ControllerConfigCC,
+        POT2: ControllerConfigCC,
+        POT3: ControllerConfigCC,
+        EFFECT: ControllerConfigCC,
+        SOURCE: ControllerConfigCCWithValue,
     },
     DSP2: {
         props: FuncProps
-        POT1: MidiConfigCC,
-        POT2: MidiConfigCC,
-        POT3: MidiConfigCC,
-        EFFECT: MidiConfigCC,
-        SOURCE: MidiConfigCCWithValue,
-        CHAIN: MidiConfigCCWithValue,
+        POT1: ControllerConfigCC,
+        POT2: ControllerConfigCC,
+        POT3: ControllerConfigCC,
+        EFFECT: ControllerConfigCC,
+        SOURCE: ControllerConfigCCWithValue,
+        CHAIN: ControllerConfigCCWithValue,
     },
     CHORUS: {
         props: FuncProps
-        RATE: MidiConfigCC,
-        DEPTH: MidiConfigCC,
-        SOURCE: MidiConfigCCWithValue,
-        MODE: MidiConfigCCWithValue,
+        RATE: ControllerConfigCC,
+        DEPTH: ControllerConfigCC,
+        SOURCE: ControllerConfigCCWithValue,
+        MODE: ControllerConfigCCWithValue,
     },
     FX_BIT_CRUSHER: {
         props: FuncProps
-        BITS: MidiConfigCC,
-        RATE: MidiConfigCC,
-        SOURCE: MidiConfigCCWithValue,
+        BITS: ControllerConfigCC,
+        RATE: ControllerConfigCC,
+        SOURCE: ControllerConfigCCWithValue,
     },
     FX_MIX: {
         props: FuncProps
-        LEVEL_DSP1: MidiConfigCC,
-        LEVEL_DSP2: MidiConfigCC,
-        LEVEL_CHORUS: MidiConfigCC,
-        LEVEL_BIT_CRUSHER: MidiConfigCC,
+        LEVEL_DSP1: ControllerConfigCC,
+        LEVEL_DSP2: ControllerConfigCC,
+        LEVEL_CHORUS: ControllerConfigCC,
+        LEVEL_BIT_CRUSHER: ControllerConfigCC,
     }
 }
 
@@ -108,6 +108,7 @@ const controllersCommonFx: ControllersCommonFx = {
         },
 
         CHAIN: {
+            label: 'Chain effects',
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [

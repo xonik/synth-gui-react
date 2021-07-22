@@ -1,11 +1,11 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { FuncProps, MidiConfigCC, MidiConfigCCWithValue } from '../../types'
+import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../types'
 
 interface ControllersMasterClock {
     props: FuncProps
-    RATE: MidiConfigCC,
-    SOURCE: MidiConfigCCWithValue
+    RATE: ControllerConfigCC,
+    SOURCE: ControllerConfigCCWithValue
 }
 
 const controllersMasterClock: ControllersMasterClock = {

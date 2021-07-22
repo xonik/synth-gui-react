@@ -1,4 +1,4 @@
-import { MidiConfigCC, MidiConfigNRPN } from './types'
+import { ControllerConfigCC, ControllerConfigNRPN } from './types'
 import { store } from '../synthcore/store'
 import { selectMidiChannel } from '../synthcore/modules/settings/settingsReducer'
 import CC from './mapCC'
@@ -42,7 +42,7 @@ const nrpnSubscribers: { [key: number]: NRPNSubscriber[] } = {}
 const getChannel = () => selectMidiChannel(store.getState())
 
 export const cc = {
-    subscribe: (callback: (value: number) => void, { cc, values }: MidiConfigCC) => {
+    subscribe: (callback: (value: number) => void, { cc, values }: ControllerConfigCC) => {
         const id = idPool++
         ccSubscribers[cc] = [...(ccSubscribers[cc] || []), { id, values, callback }]
         return id
@@ -75,7 +75,7 @@ export const cc = {
 }
 
 export const nrpn = {
-    subscribe: (callback: (value: number) => void, { addr, values }: MidiConfigNRPN) => {
+    subscribe: (callback: (value: number) => void, { addr, values }: ControllerConfigNRPN) => {
         const id = idPool++
         nrpnSubscribers[addr] = [...(nrpnSubscribers[addr] || []), { id, values, callback }]
         return id

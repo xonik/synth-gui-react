@@ -1,25 +1,25 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { FuncProps, MidiConfigCC, MidiConfigCCWithValue } from '../../types'
+import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../types'
 
 interface ControllersMainDisplay {
     props: FuncProps
-    POT1: MidiConfigCC,
-    POT2: MidiConfigCC,
-    POT3: MidiConfigCC,
-    POT4: MidiConfigCC,
-    POT5: MidiConfigCC,
-    POT6: MidiConfigCC,
+    POT1: ControllerConfigCC,
+    POT2: ControllerConfigCC,
+    POT3: ControllerConfigCC,
+    POT4: ControllerConfigCC,
+    POT5: ControllerConfigCC,
+    POT6: ControllerConfigCC,
 
-    GROUP_MENU: MidiConfigCCWithValue
-    FUNC_HOME: MidiConfigCCWithValue
-    FUNC_SETTINGS: MidiConfigCCWithValue
-    FUNC_SHIFT: MidiConfigCCWithValue
-    FUNC_PERFORM: MidiConfigCCWithValue
-    FUNC_LOAD: MidiConfigCCWithValue
-    FUNC_SAVE: MidiConfigCCWithValue
-    FUNC_COMPARE: MidiConfigCCWithValue
-    FUNC_ROUTE: MidiConfigCCWithValue
+    GROUP_MENU: ControllerConfigCCWithValue
+    FUNC_HOME: ControllerConfigCCWithValue
+    FUNC_SETTINGS: ControllerConfigCCWithValue
+    FUNC_SHIFT: ControllerConfigCCWithValue
+    FUNC_PERFORM: ControllerConfigCCWithValue
+    FUNC_LOAD: ControllerConfigCCWithValue
+    FUNC_SAVE: ControllerConfigCCWithValue
+    FUNC_COMPARE: ControllerConfigCCWithValue
+    FUNC_ROUTE: ControllerConfigCCWithValue
 }
 
 const controllersMainDisplay: ControllersMainDisplay = {

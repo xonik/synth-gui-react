@@ -1,20 +1,23 @@
 import { BUTTONS } from '../../buttons'
-import { MidiConfigCCWithValue } from '../../types'
+import { ControllerConfigCCWithValue, FuncProps } from '../../types'
 
 
 interface ControllersVoices {
-    VOICE1: MidiConfigCCWithValue
-    VOICE2: MidiConfigCCWithValue
-    VOICE3: MidiConfigCCWithValue
-    VOICE4: MidiConfigCCWithValue
-    VOICE5: MidiConfigCCWithValue
-    VOICE6: MidiConfigCCWithValue
-    VOICE7: MidiConfigCCWithValue
-    VOICE8: MidiConfigCCWithValue
+    props: FuncProps
+    VOICE1: ControllerConfigCCWithValue
+    VOICE2: ControllerConfigCCWithValue
+    VOICE3: ControllerConfigCCWithValue
+    VOICE4: ControllerConfigCCWithValue
+    VOICE5: ControllerConfigCCWithValue
+    VOICE6: ControllerConfigCCWithValue
+    VOICE7: ControllerConfigCCWithValue
+    VOICE8: ControllerConfigCCWithValue
 }
 
 const controllersVoices: ControllersVoices = {
+    props: { label: 'Voice selector' },
     VOICE1: {
+        label: 'Voice 1',
         type: 'button',
             cc: BUTTONS.BUTTONS_CENTER.cc,
             values: [
@@ -23,6 +26,7 @@ const controllersVoices: ControllersVoices = {
         ],
     },
     VOICE2: {
+        label: 'Voice 2',
         type: 'button',
             cc: BUTTONS.BUTTONS_CENTER.cc,
             values: [
@@ -31,6 +35,7 @@ const controllersVoices: ControllersVoices = {
         ],
     },
     VOICE3: {
+        label: 'Voice 3',
         type: 'button',
             cc: BUTTONS.BUTTONS_CENTER.cc,
             values: [
@@ -39,6 +44,7 @@ const controllersVoices: ControllersVoices = {
         ],
     },
     VOICE4: {
+        label: 'Voice 4',
         type: 'button',
             cc: BUTTONS.BUTTONS_CENTER.cc,
             values: [
@@ -47,6 +53,7 @@ const controllersVoices: ControllersVoices = {
         ],
     },
     VOICE5: {
+        label: 'Voice 5',
         type: 'button',
             cc: BUTTONS.BUTTONS_CENTER.cc,
             values: [
@@ -55,6 +62,7 @@ const controllersVoices: ControllersVoices = {
         ],
     },
     VOICE6: {
+        label: 'Voice 6',
         type: 'button',
             cc: BUTTONS.BUTTONS_CENTER.cc,
             values: [
@@ -63,6 +71,7 @@ const controllersVoices: ControllersVoices = {
         ],
     },
     VOICE7: {
+        label: 'Voice 7',
         type: 'button',
             cc: BUTTONS.BUTTONS_CENTER.cc,
             values: [
@@ -71,6 +80,7 @@ const controllersVoices: ControllersVoices = {
         ],
     },
     VOICE8: {
+        label: 'Voice 8',
         type: 'button',
             cc: BUTTONS.BUTTONS_CENTER.cc,
             values: [

@@ -3,7 +3,7 @@ import RotaryPot17 from '../pots/RotaryPot17';
 import Header from '../misc/Header';
 import { LedMode, PotMode } from '../pots/RotaryPotWithLedRingBase';
 import midiConstants from '../../midi/controllers'
-import { MidiConfigCC } from '../../midi/types'
+import { ControllerConfigCC } from '../../midi/types'
 
 
 interface Props {
@@ -15,7 +15,7 @@ interface ChannelProps {
   label: string,
   potMode?: PotMode,
   ledMode?: LedMode,
-  midiConfig: MidiConfigCC,
+  midiConfig: ControllerConfigCC,
   x: number,
   y: number
 }

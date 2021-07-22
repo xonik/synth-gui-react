@@ -1,13 +1,13 @@
 import CC from '../../mapCC'
-import { FuncProps, MidiConfigCC } from '../../types'
+import { FuncProps, ControllerConfigCC } from '../../types'
 
 
 interface ControllersPostMix {
     props: FuncProps
-    LPF: MidiConfigCC,
-    SVF: MidiConfigCC,
-    SINE1: MidiConfigCC,
-    SINE2: MidiConfigCC,
+    LPF: ControllerConfigCC,
+    SVF: ControllerConfigCC,
+    SINE1: ControllerConfigCC,
+    SINE2: ControllerConfigCC,
 }
 
 const controllersPostMix: ControllersPostMix = {

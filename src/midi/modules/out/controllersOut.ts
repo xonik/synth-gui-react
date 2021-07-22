@@ -1,12 +1,12 @@
 import CC from '../../mapCC'
-import { FuncProps, MidiConfigCC } from '../../types'
+import { FuncProps, ControllerConfigCC } from '../../types'
 
 
 interface ControllersOut {
     props: FuncProps
-    VOLUME: MidiConfigCC
-    SPREAD: MidiConfigCC
-    HEADPHONES: MidiConfigCC
+    VOLUME: ControllerConfigCC
+    SPREAD: ControllerConfigCC
+    HEADPHONES: ControllerConfigCC
 }
 
 const controllersOut: ControllersOut = {

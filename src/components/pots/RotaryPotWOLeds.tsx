@@ -1,6 +1,6 @@
 import RotaryPotBase from './RotaryPotBase'
 import React, { useCallback, useEffect, useState } from 'react'
-import { MidiConfigCC } from '../../midi/types'
+import { ControllerConfigCC } from '../../midi/types'
 import { cc } from '../../midi/midibus'
 import { increment } from '../../synthcore/modules/ui/uiReducer'
 import { useAppDispatch } from '../../synthcore/hooks'
@@ -11,7 +11,7 @@ export interface Props {
     x: number,
     y: number,
     label?: string,
-    midiConfig?: MidiConfigCC,
+    midiConfig?: ControllerConfigCC,
     ctrlGroup?: ControllerGroupIds;
     ctrlId?: number;
     ctrlIndex?: number

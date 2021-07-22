@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import classNames from 'classnames'
 import arc from '../../utils/svg/arc'
 import RotaryPotBase from './RotaryPotBase'
-import { MidiConfigCC } from '../../midi/types'
+import { ControllerConfigCC } from '../../midi/types'
 import { cc } from '../../midi/midibus'
 import { useAppDispatch } from '../../synthcore/hooks'
 import { increment } from '../../synthcore/modules/ui/uiReducer'
@@ -20,7 +20,7 @@ export interface Props {
     potMode?: PotMode
     label: string
     position?: number;
-    midiConfig?: MidiConfigCC;
+    midiConfig?: ControllerConfigCC;
     defaultValue?: number;
     storePosition?: number;
     ctrlGroup?: ControllerGroupIds;

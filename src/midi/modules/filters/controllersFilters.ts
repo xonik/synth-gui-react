@@ -1,40 +1,40 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { FuncProps, MidiConfigCC, MidiConfigCCWithValue } from '../../types'
+import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../types'
 
 interface ControllersFilters {
     LPF: {
         props: FuncProps
-        INPUT: MidiConfigCC
-        DRIVE: MidiConfigCC
-        RESONANCE: MidiConfigCC
-        CUTOFF: MidiConfigCC
-        FM_AMT: MidiConfigCC
-        ENV_AMT: MidiConfigCC
-        LFO_AMT: MidiConfigCC
-        KBD_AMT: MidiConfigCC
-        EXT_CV: MidiConfigCCWithValue
-        WHEEL: MidiConfigCCWithValue
-        SLOPE: MidiConfigCCWithValue
+        INPUT: ControllerConfigCC
+        DRIVE: ControllerConfigCC
+        RESONANCE: ControllerConfigCC
+        CUTOFF: ControllerConfigCC
+        FM_AMT: ControllerConfigCC
+        ENV_AMT: ControllerConfigCC
+        LFO_AMT: ControllerConfigCC
+        KBD_AMT: ControllerConfigCC
+        EXT_CV: ControllerConfigCCWithValue
+        WHEEL: ControllerConfigCCWithValue
+        SLOPE: ControllerConfigCCWithValue
     },
     FILTERS: {
         props: FuncProps
-        LINK_CUTOFF: MidiConfigCCWithValue
-        ROUTING: MidiConfigCCWithValue
+        LINK_CUTOFF: ControllerConfigCCWithValue
+        ROUTING: ControllerConfigCCWithValue
     },
     SVF: {
         props: FuncProps
-        INPUT: MidiConfigCC
-        DRIVE: MidiConfigCC
-        RESONANCE: MidiConfigCC
-        CUTOFF: MidiConfigCC
-        FM_AMT: MidiConfigCC
-        ENV_AMT: MidiConfigCC
-        LFO_AMT: MidiConfigCC
-        KBD_AMT: MidiConfigCC
-        EXT_CV: MidiConfigCCWithValue
-        WHEEL: MidiConfigCCWithValue
-        SLOPE: MidiConfigCCWithValue
+        INPUT: ControllerConfigCC
+        DRIVE: ControllerConfigCC
+        RESONANCE: ControllerConfigCC
+        CUTOFF: ControllerConfigCC
+        FM_AMT: ControllerConfigCC
+        ENV_AMT: ControllerConfigCC
+        LFO_AMT: ControllerConfigCC
+        KBD_AMT: ControllerConfigCC
+        EXT_CV: ControllerConfigCCWithValue
+        WHEEL: ControllerConfigCCWithValue
+        SLOPE: ControllerConfigCCWithValue
     }
 }
 

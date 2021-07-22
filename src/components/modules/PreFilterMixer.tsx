@@ -3,7 +3,7 @@ import RotaryPot17 from '../pots/RotaryPot17'
 import Header from '../misc/Header'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import midiConstants from '../../midi/controllers'
-import { MidiConfigCC } from '../../midi/types'
+import { ControllerConfigCC } from '../../midi/types'
 
 
 interface Props {
@@ -15,16 +15,16 @@ interface ChannelProps {
     label: string,
     x: number,
     y: number
-    potMidiConfig: MidiConfigCC,
-    buttonMidiConfig: MidiConfigCC,
+    potControllerConfig: ControllerConfigCC,
+    buttonControllerConfig: ControllerConfigCC,
 }
 
 
-const PreFilterMixerChannel = ({ x, y, label, buttonMidiConfig, potMidiConfig }: ChannelProps) => {
+const PreFilterMixerChannel = ({ x, y, label, buttonControllerConfig, potControllerConfig }: ChannelProps) => {
     return <>
-        <RotaryPot17 ledMode="multi" label={label} x={x} y={y} position={0.4} midiConfig={potMidiConfig}/>
+        <RotaryPot17 ledMode="multi" label={label} x={x} y={y} position={0.4} midiConfig={potControllerConfig}/>
         <RoundPushButton8 x={x + 25} y={y + 3}
-                          ledPosition="top" ledCount={2} midiConfig={buttonMidiConfig}
+                          ledPosition="top" ledCount={2} midiConfig={buttonControllerConfig}
         />
     </>
 }
@@ -44,12 +44,12 @@ const PreFilterMixer = ({ x, y }: Props) => {
 
     return <>
         <Header label="Source mix" x={x} y={y} width={170}/>
-        <PreFilterMixerChannel x={col1} y={row1} label="Osc 1" buttonMidiConfig={midiConstants.SOURCE_MIX.OUT_OSC1} potMidiConfig={midiConstants.SOURCE_MIX.LEVEL_OSC1}/>
-        <PreFilterMixerChannel x={col2} y={row1} label="Osc 2" buttonMidiConfig={midiConstants.SOURCE_MIX.OUT_OSC2} potMidiConfig={midiConstants.SOURCE_MIX.LEVEL_OSC2}/>
-        <PreFilterMixerChannel x={col3} y={row1} label="Osc 3" buttonMidiConfig={midiConstants.SOURCE_MIX.OUT_OSC3} potMidiConfig={midiConstants.SOURCE_MIX.LEVEL_OSC3}/>
-        <PreFilterMixerChannel x={col1} y={row2} label="Noise" buttonMidiConfig={midiConstants.SOURCE_MIX.OUT_NOISE} potMidiConfig={midiConstants.SOURCE_MIX.LEVEL_NOISE}/>
-        <PreFilterMixerChannel x={col2} y={row2} label="Ring mod" buttonMidiConfig={midiConstants.SOURCE_MIX.OUT_RING_MOD} potMidiConfig={midiConstants.SOURCE_MIX.LEVEL_RING_MOD}/>
-        <PreFilterMixerChannel x={col3} y={row2} label="Ext audio" buttonMidiConfig={midiConstants.SOURCE_MIX.OUT_EXT_AUDIO} potMidiConfig={midiConstants.SOURCE_MIX.LEVEL_EXT_AUDIO}/>
+        <PreFilterMixerChannel x={col1} y={row1} label="Osc 1" buttonControllerConfig={midiConstants.SOURCE_MIX.OUT_OSC1} potControllerConfig={midiConstants.SOURCE_MIX.LEVEL_OSC1}/>
+        <PreFilterMixerChannel x={col2} y={row1} label="Osc 2" buttonControllerConfig={midiConstants.SOURCE_MIX.OUT_OSC2} potControllerConfig={midiConstants.SOURCE_MIX.LEVEL_OSC2}/>
+        <PreFilterMixerChannel x={col3} y={row1} label="Osc 3" buttonControllerConfig={midiConstants.SOURCE_MIX.OUT_OSC3} potControllerConfig={midiConstants.SOURCE_MIX.LEVEL_OSC3}/>
+        <PreFilterMixerChannel x={col1} y={row2} label="Noise" buttonControllerConfig={midiConstants.SOURCE_MIX.OUT_NOISE} potControllerConfig={midiConstants.SOURCE_MIX.LEVEL_NOISE}/>
+        <PreFilterMixerChannel x={col2} y={row2} label="Ring mod" buttonControllerConfig={midiConstants.SOURCE_MIX.OUT_RING_MOD} potControllerConfig={midiConstants.SOURCE_MIX.LEVEL_RING_MOD}/>
+        <PreFilterMixerChannel x={col3} y={row2} label="Ext audio" buttonControllerConfig={midiConstants.SOURCE_MIX.OUT_EXT_AUDIO} potControllerConfig={midiConstants.SOURCE_MIX.LEVEL_EXT_AUDIO}/>
     </>
 }
 

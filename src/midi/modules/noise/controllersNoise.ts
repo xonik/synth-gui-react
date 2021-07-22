@@ -1,10 +1,9 @@
 import { BUTTONS } from '../../buttons'
-import { FuncProps, MidiConfigCCWithValue } from '../../types'
-
+import { FuncProps, ControllerConfigCCWithValue } from '../../types'
 
 interface ControllersNoise {
     props: FuncProps
-    COLOUR: MidiConfigCCWithValue
+    COLOUR: ControllerConfigCCWithValue
 }
 
 const controllersNoise: ControllersNoise = {

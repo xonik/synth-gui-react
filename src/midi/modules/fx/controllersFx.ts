@@ -1,29 +1,29 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { FuncProps, MidiConfigCC, MidiConfigCCWithValue } from '../../types'
+import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../types'
 
 interface ControllersFx {
     DISTORTION: {
         props: FuncProps
-        DRIVE: MidiConfigCC
-        LEVEL: MidiConfigCC
-        IN: MidiConfigCCWithValue
-        CLIP: MidiConfigCCWithValue
-        OUT: MidiConfigCCWithValue
+        DRIVE: ControllerConfigCC
+        LEVEL: ControllerConfigCC
+        IN: ControllerConfigCCWithValue
+        CLIP: ControllerConfigCCWithValue
+        OUT: ControllerConfigCCWithValue
     },
     BIT_CRUSHER: {
         props: FuncProps
-        BITS: MidiConfigCC
-        RATE: MidiConfigCC
-        LEVEL: MidiConfigCC
-        IN: MidiConfigCCWithValue
-        OUT: MidiConfigCCWithValue
+        BITS: ControllerConfigCC
+        RATE: ControllerConfigCC
+        LEVEL: ControllerConfigCC
+        IN: ControllerConfigCCWithValue
+        OUT: ControllerConfigCCWithValue
     }
 }
 
 const controllersFx: ControllersFx = {
     DISTORTION: {
-        label: 'Distortion',
+        props: { label: 'Distortion' },
         // Pots
         DRIVE: {
             label: 'Drive',
@@ -69,7 +69,7 @@ const controllersFx: ControllersFx = {
         },
     },
     BIT_CRUSHER: {
-        // Pots
+        props: { label: 'Bit crusher' },
         BITS: {
             label: 'Bits',
             isTargetDigi: true,

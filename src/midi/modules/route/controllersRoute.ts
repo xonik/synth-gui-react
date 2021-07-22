@@ -1,16 +1,19 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { MidiConfigCC, MidiConfigCCWithValue } from '../../types'
+import { ControllerConfigCC, ControllerConfigCCWithValue, FuncProps } from '../../types'
 
 interface ControllersRoute {
-    AMOUNT: MidiConfigCC,
-    FROM: MidiConfigCCWithValue
-    TO: MidiConfigCCWithValue
+    props: FuncProps
+    AMOUNT: ControllerConfigCC
+    FROM: ControllerConfigCCWithValue
+    TO: ControllerConfigCCWithValue
 }
 
 const controllersRoute: ControllersRoute = {
-    AMOUNT: { type: 'pot', cc: CC.ROUTE_AMOUNT },
+    props: { label: 'Routing' },
+    AMOUNT: { label: 'Amount', type: 'pot', cc: CC.ROUTE_AMOUNT },
     FROM: {
+        label: 'From',
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
@@ -20,6 +23,7 @@ const controllersRoute: ControllersRoute = {
         ],
     },
     TO: {
+        label: 'To',
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [

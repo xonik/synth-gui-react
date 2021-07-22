@@ -1,38 +1,53 @@
 import CC from '../../mapCC'
 import NRPN from '../../mapNRPN'
 import { BUTTONS } from '../../buttons'
-import { FuncProps, MidiConfigCC, MidiConfigCCWithValue, MidiConfigNRPN } from '../../types'
+import { FuncProps, ControllerConfig, ControllerConfigCC, ControllerConfigCCWithValue, ControllerConfigNRPN } from '../../types'
 
 interface MidiCtrlEnv {
     props: FuncProps
-    CURVE: MidiConfigNRPN
-    LEVEL: MidiConfigNRPN
-    TIME: MidiConfigNRPN
-    MAX_LOOPS: MidiConfigCC
-    TOGGLE_STAGE: MidiConfigCC
-    SELECT: MidiConfigCC
-    SELECT_ENV3_ID: MidiConfigCC
-    TRIGGER: MidiConfigCCWithValue
-    RELEASE: MidiConfigCCWithValue
-    LOOP: MidiConfigCCWithValue
-    INVERT: MidiConfigCCWithValue
-    RESET_ON_TRIGGER: MidiConfigCCWithValue
-    RELEASE_MODE: MidiConfigCCWithValue
-    LOOP_MODE: MidiConfigCCWithValue
+    DELAY_TIME: ControllerConfig,
+    ATTACK_TIME: ControllerConfig,
+    DECAY1_TIME: ControllerConfig,
+    DECAY2_TIME: ControllerConfig,
+    RELEASE1_TIME: ControllerConfig,
+    RELEASE2_TIME: ControllerConfig,
+    DECAY2_LEVEL: ControllerConfig,
+    SUSTAIN_LEVEL: ControllerConfig,
+    RELEASE2_LEVEL: ControllerConfig,
+    CURVE: ControllerConfigNRPN
+    LEVEL: ControllerConfigNRPN
+    TIME: ControllerConfigNRPN
+    MAX_LOOPS: ControllerConfigCC
+    TOGGLE_STAGE: ControllerConfigCC
+    SELECT: ControllerConfigCC
+    SELECT_ENV3_ID: ControllerConfigCC
+    TRIGGER: ControllerConfigCCWithValue
+    RELEASE: ControllerConfigCCWithValue
+    LOOP: ControllerConfigCCWithValue
+    INVERT: ControllerConfigCCWithValue
+    RESET_ON_TRIGGER: ControllerConfigCCWithValue
+    RELEASE_MODE: ControllerConfigCCWithValue
+    LOOP_MODE: ControllerConfigCCWithValue
 }
 
 const controllersEnv: MidiCtrlEnv = {
-    /*
-    TODO: individual levels / times
-     */
     props: { label: 'Envelope' },
-    CURVE: { type: 'pot', addr: NRPN.ENV_CURVE },
-    LEVEL: { type: 'pot', addr: NRPN.ENV_LEVEL },
-    TIME: { type: 'pot', addr: NRPN.ENV_TIME },
-    MAX_LOOPS: { type: 'pot', cc: CC.ENV_MAX_LOOPS },
-    TOGGLE_STAGE: { type: 'pot', cc: CC.ENV_TOGGLE_STAGE }, // 4 bit stage, 7 bit on/off
-    SELECT: { type: 'pot', cc: CC.ENV_SELECT_ENV },
-    SELECT_ENV3_ID: { type: 'pot', cc: CC.ENV_SELECT_ENV3_ID },
+    DELAY_TIME: { label: 'Delay time', type: 'pot'},
+    ATTACK_TIME: { label: 'Attack time', type: 'pot'},
+    DECAY1_TIME: { label: 'Decay 1 time', type: 'pot'},
+    DECAY2_TIME: { label: 'Decay 2 time', type: 'pot'},
+    RELEASE1_TIME: { label: 'Release 1 time', type: 'pot'},
+    RELEASE2_TIME: { label: 'Release 2 time', type: 'pot'},
+    DECAY2_LEVEL: { label: 'Decay 2 level', type: 'pot'},
+    SUSTAIN_LEVEL: { label: 'Sustain level', type: 'pot'},
+    RELEASE2_LEVEL: { label: 'Release 2 level', type: 'pot'},
+    CURVE: { label: 'Curve', type: 'pot', addr: NRPN.ENV_CURVE },
+    LEVEL: { label: 'Level', type: 'pot', addr: NRPN.ENV_LEVEL },
+    TIME: { label: 'Time', type: 'pot', addr: NRPN.ENV_TIME },
+    MAX_LOOPS: { label: 'Max loops', type: 'pot', cc: CC.ENV_MAX_LOOPS },
+    TOGGLE_STAGE: { label: 'Stage on/off', type: 'pot', cc: CC.ENV_TOGGLE_STAGE }, // 4 bit stage, 7 bit on/off
+    SELECT: { label: 'Select env', type: 'pot', cc: CC.ENV_SELECT_ENV },
+    SELECT_ENV3_ID: { label: 'Select env 3', type: 'pot', cc: CC.ENV_SELECT_ENV3_ID },
     TRIGGER: {
         label: 'Trigger',
         type: 'button',
@@ -42,6 +57,7 @@ const controllersEnv: MidiCtrlEnv = {
         ],
     },
     RELEASE: {
+        label: 'Release',
         type: 'button',
         cc: BUTTONS.BUTTONS_RIGHT.cc,
         values: [
@@ -58,6 +74,7 @@ const controllersEnv: MidiCtrlEnv = {
         ],
     },
     RESET_ON_TRIGGER: {
+        label: 'Reset on trigger',
         type: 'button',
         cc: BUTTONS.BUTTONS_RIGHT.cc,
         values: [
@@ -66,6 +83,7 @@ const controllersEnv: MidiCtrlEnv = {
         ],
     },
     RELEASE_MODE: {
+        label: 'Release mode',
         type: 'button',
         cc: BUTTONS.BUTTONS_RIGHT.cc,
         values: [
@@ -75,7 +93,7 @@ const controllersEnv: MidiCtrlEnv = {
         ],
     },
     LOOP: {
-        label: 'Loop',
+        label: 'Loop on/off',
         type: 'button',
         cc: BUTTONS.BUTTONS_RIGHT.cc,
         values: [
@@ -84,6 +102,7 @@ const controllersEnv: MidiCtrlEnv = {
         ],
     },
     LOOP_MODE: {
+        label: 'Loop mode',
         type: 'button',
         cc: BUTTONS.BUTTONS_RIGHT.cc,
         values: [

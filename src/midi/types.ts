@@ -1,4 +1,4 @@
-export interface MidiConfig {
+export interface ControllerConfig {
     readonly label: string,
     readonly isSourceDigi?: boolean,
     readonly isTargetDigi?: boolean,
@@ -6,15 +6,15 @@ export interface MidiConfig {
     readonly values?: number[]
 }
 
-export interface MidiConfigCC extends MidiConfig {
+export interface ControllerConfigCC extends ControllerConfig {
     readonly cc: number
 }
 
-export interface MidiConfigCCWithValue extends MidiConfigCC {
+export interface ControllerConfigCCWithValue extends ControllerConfigCC {
     readonly values: number[]
 }
 
-export interface MidiConfigNRPN extends MidiConfig {
+export interface ControllerConfigNRPN extends ControllerConfig {
     readonly addr: number
 }
 
