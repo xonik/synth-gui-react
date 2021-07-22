@@ -41,7 +41,7 @@ export const controllerDefs = {
         label: 'LFOs',
         funcs: {
             LFO1: {
-                sourceDigit: true,
+
                 SELECT: {
 
                 },
@@ -66,7 +66,7 @@ export const controllerDefs = {
             },
             LFO2: {
                 label: 'LFO 2',
-                sourceDigit: true,
+                isSourceDigi: true,
                 SELECT: {
                     label: 'Select',
                 },
@@ -97,7 +97,7 @@ export const controllerDefs = {
             },
             LFO3: {
                 label: 'LFO 3',
-                sourceDigit: true,
+                isSourceDigi: true,
                 SELECT: {
                     label: 'Select',
                 },
@@ -128,7 +128,7 @@ export const controllerDefs = {
             },
             LFO4: {
                 label: 'LFO 4',
-                sourceDigit: true,
+                isSourceDigi: true,
                 SELECT: {
                     label: 'Select',
                 },
@@ -440,7 +440,7 @@ export const controllerDefs = {
         funcs: {
             ENV1: {
                 label: 'Env 1',
-                sourceDigit: true,
+                isSourceDigi: true,
                 DELAY: {
                 },
                 ATTACK: {
@@ -487,7 +487,7 @@ export const controllerDefs = {
             },
             ENV2: {
                 label: 'Env 2',
-                sourceDigit: true,
+                isSourceDigi: true,
                 DELAY: {
                     label: 'Delay',
                     isTargetDigi: true,
@@ -536,7 +536,7 @@ export const controllerDefs = {
             },
             ENV3: {
                 label: 'Env 3',
-                sourceDigit: true,
+                isSourceDigi: true,
                 DELAY: {
                     label: 'Delay',
                     isTargetDigi: true,
@@ -585,7 +585,7 @@ export const controllerDefs = {
             },
             ENV4: {
                 label: 'Env 4',
-                sourceDigit: true,
+                isSourceDigi: true,
                 DELAY: {
                     label: 'Delay',
                     isTargetDigi: true,
@@ -634,7 +634,7 @@ export const controllerDefs = {
             },
             ENV5: {
                 label: 'Env 5',
-                sourceDigit: true,
+                isSourceDigi: true,
                 DELAY: {
                     label: 'Delay',
                     isTargetDigi: true,

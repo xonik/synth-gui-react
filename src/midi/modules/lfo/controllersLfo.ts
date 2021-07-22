@@ -15,7 +15,10 @@ interface ControllersLfo {
 }
 
 const controllersLfo: ControllersLfo = {
-    props: { label: 'LFO' },
+    props: {
+        label: 'LFO',
+        isSourceDigi: true,
+    },
     // Pots
     RATE: {
         label: 'Rate',

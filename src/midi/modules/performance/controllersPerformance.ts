@@ -1,37 +1,51 @@
-import { FuncProps } from '../../types'
+import { ControllerConfig, FuncProps } from '../../types'
 
 interface ControllersPerformance {
     props: FuncProps
+    PITCH_BEND: ControllerConfig
+    MOD_WHEEL: ControllerConfig
+    RIBBON_POS: ControllerConfig
+    RIBBON_PRESSURE: ControllerConfig
+    KBD_PITCH: ControllerConfig
+    KBD_VELOCITY: ControllerConfig
+    KBD_AFTERTOUCH: ControllerConfig
 }
 
-export const controllersPerformance = {
+export const controllersPerformance: ControllersPerformance = {
     props: { label: 'Play controls' },
     PITCH_BEND: {
         label: 'Pitch bend',
-        sourceDigit: true,
+        type: 'pot',
+        isSourceDigi: true,
     },
     MOD_WHEEL: {
         label: 'Mod wheel',
-        sourceDigit: true,
+        type: 'pot',
+        isSourceDigi: true,
     },
     RIBBON_POS: {
         label: 'Ribbon position',
-        sourceDigit: true,
+        type: 'pot',
+        isSourceDigi: true,
     },
     RIBBON_PRESSURE: {
         label: 'Ribbon pressure',
-        sourceDigit: true,
+        type: 'pot',
+        isSourceDigi: true,
     },
     KBD_PITCH: {
         label: 'Pitch',
-        sourceDigit: true,
+        type: 'pot',
+        isSourceDigi: true,
     },
     KBD_VELOCITY: {
         label: 'Velocity',
-        sourceDigit: true,
+        type: 'pot',
+        isSourceDigi: true,
     },
     KBD_AFTERTOUCH: {
         label: 'Aftertouch',
-        sourceDigit: true,
+        type: 'pot',
+        isSourceDigi: true,
     }
 }
