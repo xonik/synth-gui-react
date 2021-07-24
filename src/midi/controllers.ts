@@ -19,6 +19,7 @@ import controllersEnv from './modules/env/controllersEnv'
 import controllersCommonFx from './modules/commonFx/controllersCommonFx'
 import controllersOut from './modules/out/controllersOut'
 import { controllersPerformance } from './modules/performance/controllersPerformance'
+import { ControllerConfig } from './types'
 
 const controllerGroups = {
     SOUND_SOURCES: {
@@ -54,6 +55,7 @@ const controllerGroups = {
         KEYBOARD: controllersKbd,
     },
     MAIN_DISPLAY: {
+        label: 'Main controls',
         VOICES: controllersVoices,
         MAIN_DISPLAY: controllersMainDisplay,
     },
@@ -86,6 +88,7 @@ const controllerGroups = {
         FX_MIX: controllersCommonFx.FX_MIX,
     },
     OUT: {
+        label: 'Output',
         OUTPUT: controllersOut,
     },
     PERFORMANCE: {
@@ -93,6 +96,73 @@ const controllerGroups = {
         PERFORMANCE: controllersPerformance
     }
 }
+
+const reduceFuncs = () => {
+    return Object.entries(controllerGroups)
+        .reduce(
+            (digitalTargetGroup, groupEntry) => {
+                const groupKey: string = groupEntry[0]
+                const group = groupEntry[1]
+                const targetFuncs = Object.entries(group)
+                    .reduce(
+                        (digitalTargetFuncs, funcEntry) => {
+                            const funcKey: string = funcEntry[0]
+                            const func = funcEntry[1]
+
+                            const targetParams = Object.entries(func)
+                                .reduce(
+                                    (digitalTargetParams, paramEntry) => {
+                                        // todo: check that not FuncProps
+                                        const paramKey: string = paramEntry[0]
+                                        const param = paramEntry[1] as ControllerConfig
+                                        if (param.isTargetDigi) {
+                                            return {
+                                                ...digitalTargetParams,
+                                                [paramKey]: param
+                                            }
+                                        }
+                                        return digitalTargetParams
+                                    },
+                                    {} as { [key: string]: any }
+                                )
+                            let targetFunc = null;
+                            if (Object.entries(targetParams).length > 0) {
+                                targetFunc = {
+                                    props: func.props,
+                                    ...targetParams,
+                                }
+                            }
+
+                            if (targetFunc !== null) {
+                                return {
+                                    ...digitalTargetFuncs,
+                                    [funcKey]: targetFunc
+                                }
+                            }
+                            return digitalTargetFuncs
+                        },
+                        {}
+                    )
+                let targetGroup = null;
+                if (Object.entries(targetFuncs).length > 0) {
+                    targetGroup = {
+                        label: group.label,
+                        ...targetFuncs,
+                    }
+                }
+
+                if (targetGroup !== null) {
+                    return {
+                        ...digitalTargetGroup,
+                        [groupKey]: targetGroup
+                    }
+                }
+                return digitalTargetGroup
+            }, {})
+}
+
+export const modTargetsDigi = reduceFuncs()
+console.log('modTargetsDigi', modTargetsDigi)
 
 const controllers = {
     DCO1: controllersOsc.DCO1,

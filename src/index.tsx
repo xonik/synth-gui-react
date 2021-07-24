@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import './midi/cppControllerConfigGenerator';
+//import './midi/cppControllerConfigGenerator';
 import { Provider } from 'react-redux'
 import { store } from './synthcore/store'
 import midiApi from './midi/midiApi'
