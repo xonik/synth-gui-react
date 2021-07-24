@@ -21,6 +21,7 @@ import controllersOut from './modules/out/controllersOut'
 import { controllersPerformance } from './modules/performance/controllersPerformance'
 import { ControllerConfig } from './types'
 
+// controller functions grouped by type
 const controllerGroups = {
     SOUND_SOURCES: {
         label: 'Sound src',
@@ -97,72 +98,31 @@ const controllerGroups = {
     }
 }
 
-const reduceFuncs = () => {
-    return Object.entries(controllerGroups)
-        .reduce(
-            (digitalTargetGroup, groupEntry) => {
-                const groupKey: string = groupEntry[0]
-                const group = groupEntry[1]
-                const targetFuncs = Object.entries(group)
-                    .reduce(
-                        (digitalTargetFuncs, funcEntry) => {
-                            const funcKey: string = funcEntry[0]
-                            const func = funcEntry[1]
-
-                            const targetParams = Object.entries(func)
-                                .reduce(
-                                    (digitalTargetParams, paramEntry) => {
-                                        // todo: check that not FuncProps
-                                        const paramKey: string = paramEntry[0]
-                                        const param = paramEntry[1] as ControllerConfig
-                                        if (param.isTargetDigi) {
-                                            return {
-                                                ...digitalTargetParams,
-                                                [paramKey]: param
-                                            }
-                                        }
-                                        return digitalTargetParams
-                                    },
-                                    {} as { [key: string]: any }
-                                )
-                            let targetFunc = null;
-                            if (Object.entries(targetParams).length > 0) {
-                                targetFunc = {
-                                    props: func.props,
-                                    ...targetParams,
-                                }
-                            }
-
-                            if (targetFunc !== null) {
-                                return {
-                                    ...digitalTargetFuncs,
-                                    [funcKey]: targetFunc
-                                }
-                            }
-                            return digitalTargetFuncs
-                        },
-                        {}
-                    )
-                let targetGroup = null;
-                if (Object.entries(targetFuncs).length > 0) {
-                    targetGroup = {
-                        label: group.label,
-                        ...targetFuncs,
-                    }
+const getGroupsWithDigitalTargets = () => {
+    const groups: {[key: string]: any} = {}
+    Object.entries(controllerGroups).forEach(([groupKey, group]) => {
+        const funcs: {[key: string]: any} = {}
+        Object.entries(group).forEach(([funcKey, func]) => {
+            const props: {[key: string]: any} = {}
+            Object.entries(func).forEach(([propKey, prop]) => {
+                const controller = prop as ControllerConfig
+                if(controller.isTargetDigi){
+                    props[propKey] = prop;
                 }
-
-                if (targetGroup !== null) {
-                    return {
-                        ...digitalTargetGroup,
-                        [groupKey]: targetGroup
-                    }
-                }
-                return digitalTargetGroup
-            }, {})
+            })
+            if(Object.entries(props).length > 0){
+                funcs[funcKey] = {props: func.props, ...props}
+            }
+        })
+        if(Object.entries(funcs).length > 0){
+            groups[groupKey] = {label: group.label, ...funcs}
+        }
+    })
+    return groups
 }
 
-export const modTargetsDigi = reduceFuncs()
-console.log('modTargetsDigi', modTargetsDigi)
+// For looping over, group and function names are not tab completable
+export const digitalModTargets = getGroupsWithDigitalTargets()
 
 const controllers = {
     DCO1: controllersOsc.DCO1,
