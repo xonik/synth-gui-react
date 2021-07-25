@@ -121,9 +121,34 @@ const getGroupsWithDigitalTargets = () => {
     return groups
 }
 
+const getGroupsWithDigitalSources = () => {
+    const groups: {[key: string]: any} = {}
+    Object.entries(controllerGroups).forEach(([groupKey, group]) => {
+        const funcs: {[key: string]: any} = {}
+        Object.entries(group).forEach(([funcKey, func]) => {
+            const props: {[key: string]: any} = {}
+            Object.entries(func).forEach(([propKey, prop]) => {
+                const controller = prop as ControllerConfig
+                if(controller.isSourceDigi){
+                    props[propKey] = prop;
+                }
+            })
+            if(Object.entries(props).length > 0 || func.props?.isSourceDigi){
+                funcs[funcKey] = {props: func.props, ...props}
+            }
+        })
+        if(Object.entries(funcs).length > 0){
+            groups[groupKey] = {label: group.label, ...funcs}
+        }
+    })
+    return groups
+}
+
 // For looping over, group and function names are not tab completable
 export const digitalModTargets = getGroupsWithDigitalTargets()
+export const digitalModSources = getGroupsWithDigitalSources()
 
+console.log('digitalModSources', digitalModSources)
 const controllers = {
     DCO1: controllersOsc.DCO1,
     DCO2: controllersOsc.DCO2,

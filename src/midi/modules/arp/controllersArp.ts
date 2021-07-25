@@ -2,6 +2,7 @@ import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
 import { ControllerConfigCC, ControllerConfigCCWithValue, FuncProps } from '../../types'
 import { ControllerId } from '../../controllerIds'
+import { digitalModSources } from '../../controllers'
 
 interface ControllersArp {
     props: FuncProps
@@ -14,7 +15,7 @@ interface ControllersArp {
 }
 
 const controllersArp: ControllersArp = {
-    props: { label: 'Arpeggiator' },
+    props: { label: 'Arpeggiator', isSourceDigi: true },
     TEMPO: {
         id: ControllerId.ARP_TEMPO,
         label: 'Tempo',
