@@ -70,10 +70,10 @@ const controllersFilters: ControllersFilters = {
             type: 'pot',
             cc: CC.LPF_CUTOFF
         },
-        FM_AMT: { id: ControllerId.LPF_FM_AMT, label: 'FM amount', type: 'pot', cc: CC.LPF_FM_AMT },
-        ENV_AMT: { id: ControllerId.LPF_ENV_AMT, label: 'Env amount', type: 'pot', cc: CC.LPF_ENV_AMT },
-        LFO_AMT: { id: ControllerId.LPF_LFO_AMT, label: 'LFO amount', type: 'pot', cc: CC.LPF_LFO_AMT },
-        KBD_AMT: { id: ControllerId.LPF_KBD_AMT, label: 'Keyboard track', type: 'pot', cc: CC.LPF_KBD_AMT },
+        FM_AMT: { id: ControllerId.LPF_FM_AMT, isTargetDigi: true, label: 'FM amount', type: 'pot', cc: CC.LPF_FM_AMT },
+        ENV_AMT: { id: ControllerId.LPF_ENV_AMT, isTargetDigi: true, label: 'Env amount', type: 'pot', cc: CC.LPF_ENV_AMT },
+        LFO_AMT: { id: ControllerId.LPF_LFO_AMT, isTargetDigi: true, label: 'LFO amount', type: 'pot', cc: CC.LPF_LFO_AMT },
+        KBD_AMT: { id: ControllerId.LPF_KBD_AMT, isTargetDigi: true, label: 'Keyboard track', type: 'pot', cc: CC.LPF_KBD_AMT },
 
         EXT_CV: {
             id: ControllerId.LPF_EXT_CV,
@@ -159,10 +159,10 @@ const controllersFilters: ControllersFilters = {
             type: 'pot',
             cc: CC.SVF_CUTOFF
         },
-        FM_AMT: { id: ControllerId.SVF_FM_AMT, label: 'FM amount', type: 'pot', cc: CC.SVF_FM_AMT },
-        ENV_AMT: { id: ControllerId.SVF_ENV_AMT, label: 'Env amount', type: 'pot', cc: CC.SVF_ENV_AMT },
-        LFO_AMT: { id: ControllerId.SVF_LFO_AMT, label: 'LFO amount', type: 'pot', cc: CC.SVF_LFO_AMT },
-        KBD_AMT: { id: ControllerId.SVF_KBD_AMT, label: 'Keyboard track', type: 'pot', cc: CC.SVF_KBD_AMT },
+        FM_AMT: { id: ControllerId.SVF_FM_AMT, label: 'FM amount', isTargetDigi: true, type: 'pot', cc: CC.SVF_FM_AMT },
+        ENV_AMT: { id: ControllerId.SVF_ENV_AMT, label: 'Env amount', isTargetDigi: true, type: 'pot', cc: CC.SVF_ENV_AMT },
+        LFO_AMT: { id: ControllerId.SVF_LFO_AMT, label: 'LFO amount', isTargetDigi: true, type: 'pot', cc: CC.SVF_LFO_AMT },
+        KBD_AMT: { id: ControllerId.SVF_KBD_AMT, label: 'Keyboard track, isTargetDigi: true', type: 'pot', cc: CC.SVF_KBD_AMT },
 
         EXT_CV: {
             id: ControllerId.SVF_EXT_CV,

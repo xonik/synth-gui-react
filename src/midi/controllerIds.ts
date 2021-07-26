@@ -21,6 +21,18 @@ export enum ControllerId {
     LFO3,
     LFO4,
 
+    // Intermediate, controllers that regulate the level of another source and then acts as the
+    // modulator of a target.
+    LPF_FM_AMT,
+    LPF_ENV_AMT,
+    LPF_LFO_AMT,
+    LPF_KBD_AMT,
+
+    SVF_FM_AMT,
+    SVF_ENV_AMT,
+    SVF_LFO_AMT,
+    SVF_KBD_AMT,
+
     // Targets
     DCO1_PITCH,
     DCO1_NOTE,
@@ -200,20 +212,12 @@ export enum ControllerId {
     KBD_CHORD,
     KBD_MODE,
 
-    LPF_FM_AMT,
-    LPF_ENV_AMT,
-    LPF_LFO_AMT,
-    LPF_KBD_AMT,
     LPF_EXT_CV,
     LPF_WHEEL,
     LPF_SLOPE,
     FILTERS_LINK_CUTOFF,
     FILTERS_ROUTING,
 
-    SVF_FM_AMT,
-    SVF_ENV_AMT,
-    SVF_LFO_AMT,
-    SVF_KBD_AMT,
     SVF_EXT_CV,
     SVF_WHEEL,
     SVF_SLOPE,
