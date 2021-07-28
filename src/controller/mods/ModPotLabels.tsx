@@ -2,5 +2,5 @@ import React from 'react'
 import PotLabels from '../PotLabels'
 
 export default () => {
-    return <PotLabels labels={['Group', 'Func', 'Param', 'Source', 'Amount']}/>
+    return <PotLabels labels={['Source', 'Group', 'Func', 'Param', 'Amount']}/>
 }

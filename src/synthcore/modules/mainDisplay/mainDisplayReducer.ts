@@ -7,7 +7,7 @@ type MainDisplayState = {
 }
 
 const initialState: MainDisplayState = {
-    currentScreen:MainDisplayScreenId.ENV
+    currentScreen:MainDisplayScreenId.MOD
 }
 
 type CurrentScreenPayload = {

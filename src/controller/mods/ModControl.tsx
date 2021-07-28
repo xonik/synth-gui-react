@@ -1,23 +1,62 @@
 import React from 'react'
 import { useAppSelector } from '../../synthcore/hooks'
+import { digitalModSources, digitalModTargets } from '../../midi/controllers'
 import './ModControl.scss'
 
-// Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
 const ModControl = () => {
 
+    const targetGroup = digitalModTargets['SOUND_SOURCES']
+
     return <div className="mod-ctrl">
-        {/*<EnvOptions env={env}/>
-        <div className="env-ctrl-stages">
-            <StageNames env={env}/>
-            <div className="env-ctrl-graph">
-                <svg viewBox={`0 0 1 1`} preserveAspectRatio="none" className="env-ctrl-graph-svg">
-                    <Stages env={env}/>
-                </svg>
-            </div>
-            <StageParams env={env}/>
+        <div className="mod-ctrl__sources">
+            {Object.values(digitalModSources)
+                .map((group) => {
+                    return Object.entries(group)
+                        .filter(([funcKey, func]) => funcKey !== 'label')
+                        .map(([funcKey, func]) => {
+                            const funcValue = func as { [key: string]: any }
+
+                            return <div className="mod-ctrl__source" key={funcKey}>
+                                <div className="mod-ctrl__source--heading">
+                                    FUNC {funcValue.props?.label}
+                                </div>
+                                {Object.entries(funcValue)
+                                    .filter(([controllerKey]) => controllerKey !== 'props')
+                                    .map(([, controller]) => {
+                                        console.log('CONT', controller)
+                                        return <div
+                                            className="mod-ctrl__source--controller"
+                                            key={controller.id}>
+                                            PARAM {controller.label}
+                                        </div>
+                                    })}
+                            </div>
+                        })
+                })
+            }
         </div>
-        <StageActivator env={env}/>*/
-        }
+        <div className="mod-ctrl__targets">
+            {Object.entries(targetGroup)
+                .filter(([funcKey, func]) => funcKey !== 'label')
+                .map(([funcKey, func]) => {
+                    const funcValue = func as { [key: string]: any }
+
+                    return <div className="mod-ctrl__target" key={funcKey}>
+                        <div className="mod-ctrl__target--heading">
+                            {funcValue.props.label}
+                        </div>
+                        {Object.entries(funcValue)
+                            .filter(([controllerKey]) => controllerKey !== 'props')
+                            .map(([, controller]) => <div
+                                    className="mod-ctrl__target--controller"
+                                    key={controller.id}>
+                                    {controller.label}
+                                </div>
+                            )}
+                    </div>
+                })
+            }
+        </div>
     </div>
 }
 

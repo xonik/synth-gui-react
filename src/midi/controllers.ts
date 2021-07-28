@@ -148,7 +148,6 @@ const getGroupsWithDigitalSources = () => {
 export const digitalModTargets = getGroupsWithDigitalTargets()
 export const digitalModSources = getGroupsWithDigitalSources()
 
-console.log('digitalModSources', digitalModSources)
 const controllers = {
     DCO1: controllersOsc.DCO1,
     DCO2: controllersOsc.DCO2,
