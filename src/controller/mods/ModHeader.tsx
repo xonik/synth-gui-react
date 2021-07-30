@@ -1,11 +1,12 @@
 import React from 'react'
+import './ModHeader.scss'
 
 export default () => {
-    return <div>
-        <div>Group: OSC</div>
-        <div>Func: DCO1</div>
-        <div>Param: Wave</div>
-        <div>Source: ENV1</div>
-        <div>Amount: 33%</div>
+    return <div className="mod-header">
+        <div className="mod-header__item">Group: OSC</div>
+        <div className="mod-header__item">Func: DCO1</div>
+        <div className="mod-header__item">Param: Wave</div>
+        <div className="mod-header__item">Source: ENV1</div>
+        <div className="mod-header__item">Amount: 33%</div>
     </div>
 }

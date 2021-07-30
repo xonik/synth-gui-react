@@ -8,34 +8,8 @@ const ModControl = () => {
     const targetGroup = digitalModTargets['SOUND_SOURCES']
 
     return <div className="mod-ctrl">
-        <div className="mod-ctrl__sources">
-            {Object.values(digitalModSources)
-                .map((group) => {
-                    return Object.entries(group)
-                        .filter(([funcKey, func]) => funcKey !== 'label')
-                        .map(([funcKey, func]) => {
-                            const funcValue = func as { [key: string]: any }
-
-                            return <div className="mod-ctrl__source" key={funcKey}>
-                                <div className="mod-ctrl__source--heading">
-                                    FUNC {funcValue.props?.label}
-                                </div>
-                                {Object.entries(funcValue)
-                                    .filter(([controllerKey]) => controllerKey !== 'props')
-                                    .map(([, controller]) => {
-                                        console.log('CONT', controller)
-                                        return <div
-                                            className="mod-ctrl__source--controller"
-                                            key={controller.id}>
-                                            PARAM {controller.label}
-                                        </div>
-                                    })}
-                            </div>
-                        })
-                })
-            }
-        </div>
         <div className="mod-ctrl__targets">
+            <div className="mod-ctrl__target">bs</div>
             {Object.entries(targetGroup)
                 .filter(([funcKey, func]) => funcKey !== 'label')
                 .map(([funcKey, func]) => {
@@ -54,6 +28,33 @@ const ModControl = () => {
                                 </div>
                             )}
                     </div>
+                })
+            }
+        </div>
+        <div className="mod-ctrl__sources">
+            {Object.values(digitalModSources)
+                .map((group) => {
+                    return Object.entries(group)
+                        .filter(([funcKey, func]) => funcKey !== 'label')
+                        .map(([funcKey, func]) => {
+                            const funcValue = func as { [key: string]: any }
+
+                            return <>
+                                {Object.values(funcValue).length === 1 && <div className="mod-ctrl__source">
+                                    {funcValue.props?.label}
+                                </div>
+                                }
+                                {Object.entries(funcValue)
+                                    .filter(([controllerKey]) => controllerKey !== 'props')
+                                    .map(([, controller]) => {
+                                        return <div
+                                            className="mod-ctrl__source"
+                                            key={controller.id}>
+                                            {controller.label}
+                                        </div>
+                                    })}
+                            </>
+                        })
                 })
             }
         </div>
