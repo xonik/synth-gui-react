@@ -6,6 +6,7 @@ import { envApi } from '../../synthcoreApi'
 import { ApiSource } from '../../types'
 import { selectCurrScreen, setCurrentScreen } from './mainDisplayReducer'
 import { dispatch } from '../../utils'
+import modsApi from '../mods/modsApi'
 
 type PotResolutions = {
     [key: number]: {
@@ -21,6 +22,14 @@ const potResolution: PotResolutions = {
         [MainDisplayControllerIds.POT4]: 8,
         [MainDisplayControllerIds.POT5]: 32,
         [MainDisplayControllerIds.POT6]: 1000,
+    },
+    [MainDisplayScreenId.MOD]: {
+        [MainDisplayControllerIds.POT1]: 16,
+        [MainDisplayControllerIds.POT2]: 16,
+        [MainDisplayControllerIds.POT3]: 16,
+        [MainDisplayControllerIds.POT4]: 16,
+        [MainDisplayControllerIds.POT5]: 16,
+        [MainDisplayControllerIds.POT6]: 1000,
     }
 }
 
@@ -32,16 +41,14 @@ export const getPotResolution = (ctrlId: MainDisplayControllerIds) => {
     return 1000
 }
 
+const step = (increment: number) => increment > 0 ? 1 : -1
+
 const mainDisplayEnvApi = {
     handleMainDisplayController: (ctrlId: MainDisplayControllerIds, increment: number) => {
         //TODO Check current display page here
         const envId = selectCurrEnvId(store.getState())
         if (ctrlId === MainDisplayControllerIds.POT1) {
-            if (increment > 0) {
-                envApi.incrementCurrentEnvelope(1, ApiSource.GUI)
-            } else {
-                envApi.incrementCurrentEnvelope(-1, ApiSource.GUI)
-            }
+            envApi.incrementCurrentEnvelope(step(increment), ApiSource.GUI)
         } else if (ctrlId === MainDisplayControllerIds.POT2) {
             const stageId = selectCurrStageId(store.getState())
             if (stageId !== StageId.STOPPED) {
@@ -55,22 +62,32 @@ const mainDisplayEnvApi = {
         } else if (ctrlId === MainDisplayControllerIds.POT4) {
             const stageId = selectCurrStageId(store.getState())
             if (stageId !== StageId.STOPPED) {
-                if (increment > 0) {
-                    envApi.incrementStageCurve(envId, stageId, 1, ApiSource.GUI)
-                } else {
-                    envApi.incrementStageCurve(envId, stageId, -1, ApiSource.GUI)
-                }
+                envApi.incrementStageCurve(envId, stageId, step(increment), ApiSource.GUI)
             }
         } else if (ctrlId === MainDisplayControllerIds.POT5) {
             const env = selectEnvelope(envId)(store.getState())
             if (env.loopMode !== LoopMode.COUNTED) {
                 return
             }
-            if (increment > 0) {
-                envApi.incrementMaxLoops(envId, 1, ApiSource.GUI)
-            } else {
-                envApi.incrementMaxLoops(envId, -1, ApiSource.GUI)
-            }
+            envApi.incrementMaxLoops(envId, step(increment), ApiSource.GUI)
+        } else if (ctrlId === MainDisplayControllerIds.POT6) {
+
+        }
+    }
+}
+
+const mainDisplayModsApi = {
+    handleMainDisplayController: (ctrlId: MainDisplayControllerIds, increment: number) => {
+        if (ctrlId === MainDisplayControllerIds.POT1) {
+            modsApi.incrementGuiSource(step(increment), ApiSource.GUI)
+        } else if (ctrlId === MainDisplayControllerIds.POT2) {
+            modsApi.incrementGuiTargetGroup(step(increment), ApiSource.GUI)
+        } else if (ctrlId === MainDisplayControllerIds.POT3) {
+            modsApi.incrementGuiTargetFunc(step(increment), ApiSource.GUI)
+        } else if (ctrlId === MainDisplayControllerIds.POT4) {
+            modsApi.incrementGuiTargetParam(step(increment), ApiSource.GUI)
+        } else if (ctrlId === MainDisplayControllerIds.POT5) {
+            modsApi.incrementGuiModValue(increment, ApiSource.GUI)
         } else if (ctrlId === MainDisplayControllerIds.POT6) {
 
         }
@@ -81,7 +98,7 @@ export default {
     handleMainDisplayController: (ctrlId: MainDisplayControllerIds, value: number) => {
         const currScreenId = selectCurrScreen(store.getState())
         if (currScreenId === MainDisplayScreenId.MOD) {
-
+            mainDisplayModsApi.handleMainDisplayController(ctrlId, value)
         } else if (currScreenId === MainDisplayScreenId.ENV) {
             mainDisplayEnvApi.handleMainDisplayController(ctrlId, value)
         }
