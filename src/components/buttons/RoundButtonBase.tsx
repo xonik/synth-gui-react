@@ -287,7 +287,7 @@ export const RoundButtonBase = (props: Props & Config) => {
 
             const subscriberId = cc.subscribe(updateValueFromMidi, midiConfig)
             return function cleanup() {
-                cc.unsubscribe(midiConfig.cc, subscriberId);
+                cc.unsubscribe(midiConfig, subscriberId);
             };
         }
     });

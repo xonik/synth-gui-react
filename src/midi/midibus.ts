@@ -47,11 +47,11 @@ export const cc = {
         ccSubscribers[cc] = [...(ccSubscribers[cc] || []), { id, values, callback }]
         return id
     },
-    unsubscribe: (cc: number, id: number) => {
-        const subscribersForCC = ccSubscribers[cc]
+    unsubscribe: (controller: ControllerConfigCC, id: number) => {
+        const subscribersForCC = ccSubscribers[controller.cc]
         const index = subscribersForCC.map(sub => sub.id).indexOf(id)
         if (index > -1) {
-            ccSubscribers[cc] = [...subscribersForCC.slice(0, index), ...subscribersForCC.slice(index + 1)]
+            ccSubscribers[controller.cc] = [...subscribersForCC.slice(0, index), ...subscribersForCC.slice(index + 1)]
         }
     },
     publish: (cc: number, value: number) => {
@@ -80,11 +80,11 @@ export const nrpn = {
         nrpnSubscribers[addr] = [...(nrpnSubscribers[addr] || []), { id, values, callback }]
         return id
     },
-    unsubscribe: (addr: number, id: number) => {
-        const subscribersForNRPN = nrpnSubscribers[addr]
+    unsubscribe: (controller: ControllerConfigNRPN, id: number) => {
+        const subscribersForNRPN = nrpnSubscribers[controller.addr]
         const index = subscribersForNRPN.map(sub => sub.id).indexOf(id)
         if (index > -1) {
-            nrpnSubscribers[addr] = [...subscribersForNRPN.slice(0, index), ...subscribersForNRPN.slice(index + 1)]
+            nrpnSubscribers[controller.addr] = [...subscribersForNRPN.slice(0, index), ...subscribersForNRPN.slice(index + 1)]
         }
     },
     publish: (addr: number, value: number) => {
