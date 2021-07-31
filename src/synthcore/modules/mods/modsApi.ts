@@ -2,18 +2,30 @@ import { store } from '../../store'
 import midiApi from '../../../midi/midiApi'
 import { ApiSource } from '../../types'
 import { dispatch, getBounded } from '../../utils'
+import {
+    setGuiSource as setGuiSourceAction,
+    setGuiTargetGroup as setGuiTargetGroupAction,
+    setGuiTargetFunc as setGuiTargetFuncAction,
+    setGuiTargetParam as setGuiTargetParamAction,
+    setModValue as setModValueAction,
+    selectGuiSource,
+    selectGuiTargetGroup,
+    selectGuiTargetFunc,
+    selectGuiTargetParam,
+    selectModValue
+} from './modsReducer'
+import { modSources, modTargets } from '../../../midi/controllers'
 
 const setGuiSource = (guiSource: number, source: ApiSource) => {
     const currSource = selectGuiSource(store.getState())
     if(guiSource !== currSource) {
         dispatch(setGuiSourceAction({ guiSource }))
-        midiApi.mods.setGuiSource(source, guiSource)
     }
 }
 
 const incrementGuiSource = (inc: number, source: ApiSource) => {
     const currSource = selectGuiSource(store.getState());
-    const nextSource = getBounded(currSource + inc, 0, lastGuiSource)
+    const nextSource = getBounded(currSource + inc, 0, modSources.length)
     setGuiSource(nextSource, source);
 }
 
@@ -21,13 +33,12 @@ const setGuiTargetGroup = (guiTargetGroup: number, source: ApiSource) => {
     const currTargetGroup = selectGuiTargetGroup(store.getState())
     if(guiTargetGroup !== currTargetGroup) {
         dispatch(setGuiTargetGroupAction({ guiTargetGroup }))
-        midiApi.mods.setGuiTargetGroup(source, guiTargetGroup)
     }
 }
 
 const incrementGuiTargetGroup = (inc: number, source: ApiSource) => {
     const currTargetGroup = selectGuiTargetGroup(store.getState());
-    const nextTargetGroup = getBounded(currTargetGroup + inc, 0, lastGuiTargetGroup)
+    const nextTargetGroup = getBounded(currTargetGroup + inc, 0, modTargets.length)
     setGuiTargetGroup(nextTargetGroup, source);
 }
 
@@ -35,13 +46,13 @@ const setGuiTargetFunc = (guiTargetFunc: number, source: ApiSource) => {
     const currTargetFunc = selectGuiTargetFunc(store.getState())
     if(guiTargetFunc !== currTargetFunc) {
         dispatch(setGuiTargetFuncAction({ guiTargetFunc }))
-        midiApi.mods.setGuiTargetFunc(source, guiTargetFunc)
     }
 }
 
 const incrementGuiTargetFunc = (inc: number, source: ApiSource) => {
+    const currTargetGroup = selectGuiTargetGroup(store.getState());
     const currTargetFunc = selectGuiTargetFunc(store.getState());
-    const nextTargetFunc = getBounded(currTargetFunc + inc, 0, lastGuiTargetFunc)
+    const nextTargetFunc = getBounded(currTargetFunc + inc, 0, modTargets[currTargetGroup].length)
     setGuiTargetFunc(nextTargetFunc, source);
 }
 
@@ -49,30 +60,40 @@ const setGuiTargetParam = (guiTargetParam: number, source: ApiSource) => {
     const currTargetParam = selectGuiTargetParam(store.getState())
     if(guiTargetParam !== currTargetParam) {
         dispatch(setGuiTargetParamAction({ guiTargetParam }))
-        midiApi.mods.setGuiTargetParam(source, guiTargetParam)
     }
 }
 
 const incrementGuiTargetParam = (inc: number, source: ApiSource) => {
+    const currTargetGroup = selectGuiTargetGroup(store.getState());
+    const currTargetFunc = selectGuiTargetFunc(store.getState());
     const currTargetParam = selectGuiTargetParam(store.getState());
+    const lastGuiTargetParam = modTargets[currTargetGroup][currTargetFunc].length
     const nextTargetParam = getBounded(currTargetParam + inc, 0, lastGuiTargetParam)
     setGuiTargetParam(nextTargetParam, source);
 }
 
-const setGuiModValue = (guiModValue: number, source: ApiSource) => {
-    // Todo: use source and target here to find current value and set new.
-    const currModValue = selectGuiModValue(store.getState())
-    if(guiModValue !== currModValue) {
-        dispatch(setGuiModValueAction({ guiModValue }))
-        midiApi.mods.setGuiModValue(source, guiModValue)
+const setModValue = (sourceId: number, targetId: number, modValue: number, source: ApiSource) => {
+    const currModValue = selectModValue(store.getState())(sourceId, targetId)
+    if(modValue !== currModValue) {
+        dispatch(setModValueAction({ sourceId, targetId, modValue }))
+        midiApi.route.setSource(source, sourceId)
+        midiApi.route.setTarget(source, targetId)
+        midiApi.route.setAmount(source, modValue)
     }
 }
 
 const incrementGuiModValue = (inc: number, source: ApiSource) => {
-    // Todo: use source and target here to find current value and set new.
-    const currModValue = selectGuiModValue(store.getState());
+    const sourceIndex = selectGuiSource(store.getState())
+    const targetGroupIndex = selectGuiTargetGroup(store.getState())
+    const targetFuncIndex = selectGuiTargetFunc(store.getState())
+    const targetParamIndex = selectGuiTargetParam(store.getState())
+
+    const sourceId = modSources[sourceIndex].id
+    const targetId = modTargets[targetGroupIndex][targetFuncIndex][targetParamIndex].id
+
+    const currModValue = selectModValue(store.getState())(sourceId, targetId);
     const nextModValue = getBounded(currModValue + inc)
-    setGuiModValue(nextModValue, source);
+    setModValue(sourceId, targetId, nextModValue, source);
 }
 
 export default {
@@ -84,6 +105,6 @@ export default {
     incrementGuiTargetFunc,
     setGuiTargetParam,
     incrementGuiTargetParam,
-    setGuiModValue,
+    setModValue,
     incrementGuiModValue,
 }

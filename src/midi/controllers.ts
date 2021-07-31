@@ -19,7 +19,8 @@ import controllersEnv from './modules/env/controllersEnv'
 import controllersCommonFx from './modules/commonFx/controllersCommonFx'
 import controllersOut from './modules/out/controllersOut'
 import { controllersPerformance } from './modules/performance/controllersPerformance'
-import { ControllerConfig } from './types'
+import { ControllerConfig, FuncProps } from './types'
+
 
 // controller functions grouped by type
 const controllerGroups = {
@@ -98,6 +99,12 @@ const controllerGroups = {
     }
 }
 
+export const modSources: ControllerConfig[] = [];
+export const modTargets: [[ControllerConfig[]]] = [[[]]];
+export const modTargetGroupLabels: string[] = [];
+export const modTargetFuncProps: [FuncProps[]] = [[]];
+
+
 const getGroupsWithDigitalTargets = () => {
     const groups: {[key: string]: any} = {}
     Object.entries(controllerGroups).forEach(([groupKey, group]) => {
@@ -120,6 +127,33 @@ const getGroupsWithDigitalTargets = () => {
     })
     return groups
 }
+
+const getGroupsWithDigitalTargets2 = () => {
+    const groups: {[key: string]: any} = {}
+    let groupIndex = 0;
+    Object.entries(controllerGroups).forEach(([groupKey, group]) => {
+        let funcIndex = 0;
+        Object.entries(group).forEach(([funcKey, func]) => {
+            Object.entries(func).forEach(([propKey, prop]) => {
+                const controller = prop as ControllerConfig
+                if(controller.isTargetDigi){
+                    modTargets[groupIndex][funcIndex].push(controller)
+                }
+            })
+            if(modTargets[groupIndex][funcIndex].length > 0){
+                modTargetFuncProps[groupIndex].push(func.props)
+                funcIndex++;
+            }
+        })
+        if(modTargetFuncProps[groupIndex].length > 0){
+            modTargetGroupLabels.push(group.label || '')
+            groupIndex++;
+        }
+    })
+    return groups
+}
+
+getGroupsWithDigitalTargets2()
 
 const getGroupsWithDigitalSources = () => {
     const groups: {[key: string]: any} = {}

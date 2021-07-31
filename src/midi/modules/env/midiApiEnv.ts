@@ -25,14 +25,14 @@ const level = (() => {
             selectEnv(envId)
 
             // stageId is encoded as part of the extra available bits
-            const value = (Math.round(boundedValue * 65535) + 32768) + stageId << 16
+            const value = (Math.round(boundedValue * 32767) + 32767) + stageId << 16
             nrpn.send(cfg.addr, value)
         },
         receive: () => {
             nrpn.subscribe((value: number) => {
                 const level = value & 0xFF
                 const stageId = value >> 16
-                envApi.setStageLevel(currentEnvId, stageId, level, ApiSource.MIDI)
+                envApi.setStageLevel(currentEnvId, stageId, (level - 32767) / 32767 , ApiSource.MIDI)
             }, cfg)
         }
     }
@@ -55,7 +55,7 @@ const time = (() => {
             nrpn.subscribe((value: number) => {
                 const time = value & 0xFF
                 const stageId = value >> 16
-                envApi.setStageTime(currentEnvId, stageId, time, ApiSource.MIDI)
+                envApi.setStageTime(currentEnvId, stageId, time / 65535, ApiSource.MIDI)
             }, cfg)
         }
     }
