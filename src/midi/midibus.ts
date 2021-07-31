@@ -63,13 +63,13 @@ export const cc = {
             })
         }
     },
-    send: (controller: number, value: number) => {
+    send: (controller: ControllerConfigCC, value: number) => {
         if (loopback) {
-            cc.publish(controller, value)
+            cc.publish(controller.cc, value)
         }
         if (midiOut) {
             const ccForChannel = MIDI_CC + getChannel()
-            midiOut.send([ccForChannel, controller, value])
+            midiOut.send([ccForChannel, controller.cc, value])
         }
     }
 }
@@ -96,13 +96,13 @@ export const nrpn = {
             })
         }
     },
-    send: (addr: number, value: number) => {
+    send: (controller: ControllerConfigNRPN, value: number) => {
         if (loopback) {
-            nrpn.publish(addr, value)
+            nrpn.publish(controller.addr, value)
         }
         if (midiOut) {
-            const loAddr = addr & 0b01111111
-            const hiAddr = (addr >> 7) & 0b01111111
+            const loAddr = controller.addr & 0b01111111
+            const hiAddr = (controller.addr >> 7) & 0b01111111
 
             const loValue = value & 0b01111111
             const midValue = (value >> 7) & 0b01111111

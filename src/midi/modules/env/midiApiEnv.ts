@@ -9,7 +9,7 @@ let currentEnvId = -1
 
 const selectEnv = (envId: number) => {
     if (envId !== currentEnvId) {
-        cc.send(controllers.ENV.SELECT.cc, envId)
+        cc.send(controllers.ENV.SELECT, envId)
         currentEnvId = envId
     }
 }
@@ -26,7 +26,7 @@ const level = (() => {
 
             // stageId is encoded as part of the extra available bits
             const value = (Math.round(boundedValue * 32767) + 32767) + stageId << 16
-            nrpn.send(cfg.addr, value)
+            nrpn.send(cfg, value)
         },
         receive: () => {
             nrpn.subscribe((value: number) => {
@@ -49,7 +49,7 @@ const time = (() => {
 
             // stageId is encoded as part of the extra available bits
             const value = Math.round(boundedValue * 65535) + stageId << 16
-            nrpn.send(cfg.addr, value)
+            nrpn.send(cfg, value)
         },
         receive: () => {
             nrpn.subscribe((value: number) => {
@@ -71,7 +71,7 @@ const invert = (() => {
             }
             selectEnv(envId)
             const invertIndex = invert ? 1 : 0
-            cc.send(cfg.cc, cfg.values[invertIndex])
+            cc.send(cfg, cfg.values[invertIndex])
         },
         receive: () => {
             cc.subscribe((value: number) => {
@@ -92,7 +92,7 @@ const resetOnTrigger = (() => {
             }
             selectEnv(envId)
             const resetIndex = resetOnTrigger ? 1 : 0
-            cc.send(cfg.cc, cfg.values[resetIndex])
+            cc.send(cfg, cfg.values[resetIndex])
         },
         receive: () => {
             cc.subscribe((value: number) => {
@@ -112,7 +112,7 @@ const releaseMode = (() => {
                 return
             }
             selectEnv(envId)
-            cc.send(cfg.cc, cfg.values[releaseMode])
+            cc.send(cfg, cfg.values[releaseMode])
         },
         receive: () => {
             cc.subscribe((value: number) => {
@@ -132,7 +132,7 @@ const loopMode = (() => {
                 return
             }
             selectEnv(envId)
-            cc.send(cfg.cc, cfg.values[loopMode])
+            cc.send(cfg, cfg.values[loopMode])
         },
         receive: () => {
             cc.subscribe((value: number) => {
@@ -153,7 +153,7 @@ const loopEnabled = (() => {
             }
             selectEnv(envId)
             const loopEnabledIndex = enabled ? 1 : 0
-            cc.send(cfg.cc, cfg.values[loopEnabledIndex])
+            cc.send(cfg, cfg.values[loopEnabledIndex])
         },
         receive: () => {
             cc.subscribe((value: number) => {
@@ -175,7 +175,7 @@ const stageEnabled = (() => {
             selectEnv(envId)
             const enableBit = enabled ? 0b1000 : 0
             const data = stageId | enableBit
-            cc.send(cfg.cc, data)
+            cc.send(cfg, data)
         },
         receive: () => {
             cc.subscribe((value: number) => {
@@ -196,7 +196,7 @@ const curve = (() => {
                 return
             }
             selectEnv(envId)
-            nrpn.send(cfg.addr, stageId << 7 + curve)
+            nrpn.send(cfg, stageId << 7 + curve)
         },
         receive: () => {
             nrpn.subscribe((value: number) => {
@@ -217,7 +217,7 @@ const maxLoops = (() => {
                 return
             }
             selectEnv(envId)
-            cc.send(cfg.cc, maxLoops)
+            cc.send(cfg, maxLoops)
         },
         receive: () => {
             cc.subscribe((value: number) => {
@@ -235,7 +235,7 @@ const env3Id = (() => {
             if (!shouldSend(source)) {
                 return
             }
-            cc.send(cfg.cc, id)
+            cc.send(cfg, id)
         },
         receive: () => {
             cc.subscribe((id: number) => {
@@ -254,7 +254,7 @@ const trigger = (() => {
                 return
             }
             selectEnv(envId)
-            cc.send(cfg.cc, cfg.values[0])
+            cc.send(cfg, cfg.values[0])
         },
     }
 })()
@@ -268,7 +268,7 @@ const release = (() => {
                 return
             }
             selectEnv(envId)
-            cc.send(cfg.cc, cfg.values[0])
+            cc.send(cfg, cfg.values[0])
         },
     }
 })()

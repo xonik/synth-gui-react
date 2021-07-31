@@ -243,29 +243,29 @@ export const RoundButtonBase = (props: Props & Config) => {
                 if (radioButtonIndex !== undefined) {
                     if (midiConfig.values.length >= radioButtonValueIndex) {
                         if (hasOffValue && currentValue === radioButtonValueIndex) {
-                            cc.send(midiConfig.cc, midiConfig.values[0]);
+                            cc.send(midiConfig, midiConfig.values[0]);
                         } else {
-                            cc.send(midiConfig.cc, midiConfig.values[radioButtonValueIndex]);
+                            cc.send(midiConfig, midiConfig.values[radioButtonValueIndex]);
                         }
                     }
                 } else if (reverse) {
                     const valueCandidate = (currentValue - 1);
                     if (loop) {
                         const newValue = (valueCandidate + midiConfig.values.length) % midiConfig.values.length;
-                        cc.send(midiConfig.cc, midiConfig.values[newValue]);
+                        cc.send(midiConfig, midiConfig.values[newValue]);
                     } else {
                         if (valueCandidate >= 0) {
-                            cc.send(midiConfig.cc, midiConfig.values[valueCandidate]);
+                            cc.send(midiConfig, midiConfig.values[valueCandidate]);
                         }
                     }
                 } else {
                     const valueCandidate = (currentValue + 1);
                     if (loop) {
                         const newValue = valueCandidate % midiConfig.values.length;
-                        cc.send(midiConfig.cc, midiConfig.values[newValue]);
+                        cc.send(midiConfig, midiConfig.values[newValue]);
                     } else {
                         if (valueCandidate < midiConfig.values.length) {
-                            cc.send(midiConfig.cc, midiConfig.values[valueCandidate]);
+                            cc.send(midiConfig, midiConfig.values[valueCandidate]);
                         }
                     }
                 }

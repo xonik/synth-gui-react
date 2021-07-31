@@ -20,7 +20,7 @@ const amount = (() => {
 
             // stageId is encoded as part of the extra available bits
             const rounded = Math.round(value * 32767) + 32767
-            nrpn.send(cfg.addr, rounded)
+            nrpn.send(cfg, rounded)
         },
         receive: () => {
             nrpn.subscribe((value: number) => {
@@ -38,7 +38,7 @@ const source = (() => {
             if (!shouldSend(source)) {
                 return
             }
-            cc.send(cfg.cc, value)
+            cc.send(cfg, value)
         },
         receive: () => {
             cc.subscribe((value: number) => {
@@ -56,7 +56,7 @@ const target = (() => {
             if (!shouldSend(source)) {
                 return
             }
-            cc.send(cfg.cc, value)
+            cc.send(cfg, value)
         },
         receive: () => {
             cc.subscribe((value: number) => {

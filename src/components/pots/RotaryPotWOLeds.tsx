@@ -33,7 +33,7 @@ export default (props: Props & Config) => {
 
     const onClick = useCallback(() => {
         if(midiConfig) {
-            cc.send(midiConfig.cc, 0);
+            cc.send(midiConfig, 0);
         }
     }, [midiConfig])
 
@@ -41,7 +41,7 @@ export default (props: Props & Config) => {
     // themselves.
     const sendMidi = useCallback((position: number) => {
         if(midiConfig){
-            cc.send(midiConfig.cc, Math.round(127 * position));
+            cc.send(midiConfig, Math.round(127 * position));
         }
     }, [midiConfig]);
 

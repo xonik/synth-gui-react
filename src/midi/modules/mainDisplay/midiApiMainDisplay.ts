@@ -12,7 +12,7 @@ const currentScreen = (() => {
             if (!shouldSend(source)) {
                 return
             }
-            cc.send(cfg.cc, cfg.values[id])
+            cc.send(cfg, cfg.values[id])
         },
         receive: () => {
             cc.subscribe((value: number) => {
