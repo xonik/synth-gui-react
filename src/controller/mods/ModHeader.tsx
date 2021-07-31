@@ -1,8 +1,8 @@
 import React from 'react'
 import { useAppSelector } from '../../synthcore/hooks'
-import './ModHeader.scss'
 import { selectGuiSource, selectGuiTargetFunc, selectGuiTargetGroup, selectGuiTargetParam, selectModValue } from '../../synthcore/modules/mods/modsReducer'
 import { digitalModSources, modTarget } from '../../synthcore/modules/mods/utils'
+import './ModHeader.scss'
 
 const ModHeader = () => {
 
