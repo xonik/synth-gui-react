@@ -23,7 +23,6 @@ export interface ControllerConfigNRPN extends ControllerConfig {
 
 export interface FuncProps {
     label: string
-    isSourceDigi?: boolean,
 }
 
-export type ControllerType = 'pot' | 'button'
+export type ControllerType = 'pot' | 'button' | 'output'

@@ -7,7 +7,6 @@ import midiConstants from '../../midi/controllers'
 import { MainDisplayControllerIds } from '../../synthcore/modules/mainDisplay/types'
 import { ControllerGroupIds } from '../../synthcore/types'
 import { getPotResolution } from '../../synthcore/modules/mainDisplay/mainDisplayApi'
-import { useAppDispatch } from '../../synthcore/hooks'
 import './MainDisplay.scss'
 
 interface Props {

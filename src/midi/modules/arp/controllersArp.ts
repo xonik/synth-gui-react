@@ -1,8 +1,7 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { ControllerConfigCC, ControllerConfigCCWithValue, FuncProps } from '../../types'
+import { ControllerConfig, ControllerConfigCC, ControllerConfigCCWithValue, FuncProps } from '../../types'
 import { ControllerId } from '../../controllerIds'
-import { digitalModSources } from '../../controllers'
 
 interface ControllersArp {
     props: FuncProps
@@ -12,10 +11,11 @@ interface ControllersArp {
     SYNC: ControllerConfigCCWithValue
     RANGE: ControllerConfigCCWithValue
     MODE: ControllerConfigCCWithValue
+    OUTPUT: ControllerConfig
 }
 
 const controllersArp: ControllersArp = {
-    props: { label: 'Arpeggiator', isSourceDigi: true },
+    props: { label: 'Arpeggiator' },
     TEMPO: {
         id: ControllerId.ARP_TEMPO,
         label: 'Tempo',
@@ -79,6 +79,12 @@ const controllersArp: ControllersArp = {
             BUTTONS.BUTTONS_LEFT.values.ARP_MODE_OTHER,
         ],
     },
+    OUTPUT: {
+        id: ControllerId.ARPEGGIATOR,
+        label: 'Arp',
+        type: 'output',
+        isSourceDigi: true
+    }
 }
 
 export default controllersArp

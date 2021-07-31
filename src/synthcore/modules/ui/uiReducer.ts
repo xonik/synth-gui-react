@@ -24,10 +24,6 @@ type ButtonControllerPayload = {
     ctrlIndex?: number;
 }
 
-type CurrentScreenPayload = {
-    id: number;
-}
-
 export const uiSlice = createSlice({
     name: 'ui',
     initialState,

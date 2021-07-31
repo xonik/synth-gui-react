@@ -28,7 +28,7 @@ const potResolution: PotResolutions = {
         [MainDisplayControllerIds.POT2]: 16,
         [MainDisplayControllerIds.POT3]: 16,
         [MainDisplayControllerIds.POT4]: 16,
-        [MainDisplayControllerIds.POT5]: 16,
+        [MainDisplayControllerIds.POT5]: 100,
         [MainDisplayControllerIds.POT6]: 1000,
     }
 }

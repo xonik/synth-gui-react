@@ -14,7 +14,7 @@ import {
     selectGuiTargetParam,
     selectModValue
 } from './modsReducer'
-import { modSources, modTargets } from '../../../midi/controllers'
+import { digitalModSources, modTarget } from '../../../midi/controllers'
 
 const setGuiSource = (guiSource: number, source: ApiSource) => {
     const currSource = selectGuiSource(store.getState())
@@ -25,26 +25,29 @@ const setGuiSource = (guiSource: number, source: ApiSource) => {
 
 const incrementGuiSource = (inc: number, source: ApiSource) => {
     const currSource = selectGuiSource(store.getState());
-    const nextSource = getBounded(currSource + inc, 0, modSources.length)
+    const nextSource = getBounded(currSource + inc, 0, digitalModSources.length - 1)
     setGuiSource(nextSource, source);
 }
 
 const setGuiTargetGroup = (guiTargetGroup: number, source: ApiSource) => {
     const currTargetGroup = selectGuiTargetGroup(store.getState())
     if(guiTargetGroup !== currTargetGroup) {
+        dispatch(setGuiTargetFuncAction({ guiTargetFunc: 0 }))
+        dispatch(setGuiTargetParamAction({ guiTargetParam: 0 }))
         dispatch(setGuiTargetGroupAction({ guiTargetGroup }))
     }
 }
 
 const incrementGuiTargetGroup = (inc: number, source: ApiSource) => {
     const currTargetGroup = selectGuiTargetGroup(store.getState());
-    const nextTargetGroup = getBounded(currTargetGroup + inc, 0, modTargets.length)
+    const nextTargetGroup = getBounded(currTargetGroup + inc, 0, modTarget.targets.length - 1)
     setGuiTargetGroup(nextTargetGroup, source);
 }
 
 const setGuiTargetFunc = (guiTargetFunc: number, source: ApiSource) => {
     const currTargetFunc = selectGuiTargetFunc(store.getState())
     if(guiTargetFunc !== currTargetFunc) {
+        dispatch(setGuiTargetParamAction({ guiTargetParam: 0 }))
         dispatch(setGuiTargetFuncAction({ guiTargetFunc }))
     }
 }
@@ -52,7 +55,7 @@ const setGuiTargetFunc = (guiTargetFunc: number, source: ApiSource) => {
 const incrementGuiTargetFunc = (inc: number, source: ApiSource) => {
     const currTargetGroup = selectGuiTargetGroup(store.getState());
     const currTargetFunc = selectGuiTargetFunc(store.getState());
-    const nextTargetFunc = getBounded(currTargetFunc + inc, 0, modTargets[currTargetGroup].length)
+    const nextTargetFunc = getBounded(currTargetFunc + inc, 0, modTarget.targets[currTargetGroup].length - 1)
     setGuiTargetFunc(nextTargetFunc, source);
 }
 
@@ -67,13 +70,13 @@ const incrementGuiTargetParam = (inc: number, source: ApiSource) => {
     const currTargetGroup = selectGuiTargetGroup(store.getState());
     const currTargetFunc = selectGuiTargetFunc(store.getState());
     const currTargetParam = selectGuiTargetParam(store.getState());
-    const lastGuiTargetParam = modTargets[currTargetGroup][currTargetFunc].length
+    const lastGuiTargetParam = modTarget.targets[currTargetGroup][currTargetFunc].length - 1
     const nextTargetParam = getBounded(currTargetParam + inc, 0, lastGuiTargetParam)
     setGuiTargetParam(nextTargetParam, source);
 }
 
 const setModValue = (sourceId: number, targetId: number, modValue: number, source: ApiSource) => {
-    const currModValue = selectModValue(store.getState())(sourceId, targetId)
+    const currModValue = selectModValue(sourceId, targetId)(store.getState())
     if(modValue !== currModValue) {
         dispatch(setModValueAction({ sourceId, targetId, modValue }))
         midiApi.route.setSource(source, sourceId)
@@ -88,11 +91,12 @@ const incrementGuiModValue = (inc: number, source: ApiSource) => {
     const targetFuncIndex = selectGuiTargetFunc(store.getState())
     const targetParamIndex = selectGuiTargetParam(store.getState())
 
-    const sourceId = modSources[sourceIndex].id
-    const targetId = modTargets[targetGroupIndex][targetFuncIndex][targetParamIndex].id
+    const sourceId = digitalModSources[sourceIndex].id
+    const targetId = modTarget.targets[targetGroupIndex][targetFuncIndex][targetParamIndex].id
 
-    const currModValue = selectModValue(store.getState())(sourceId, targetId);
-    const nextModValue = getBounded(currModValue + inc)
+    const currModValue = selectModValue(sourceId, targetId)(store.getState());
+    const nextModValue = getBounded(currModValue + inc, -1, 1)
+
     setModValue(sourceId, targetId, nextModValue, source);
 }
 

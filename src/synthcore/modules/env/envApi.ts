@@ -95,7 +95,7 @@ const setStageEnabled = (envId: number, stageId: StageId, enabled: boolean, sour
     dispatch(setStageEnabledAction({ env: envId, stage: stageId, enabled }))
 
     if (stageId === StageId.RELEASE1) {
-        if(enabled){
+        if (enabled) {
             dispatch(setLevel({ env: envId, stage: StageId.RELEASE1, value: env.stages[StageId.SUSTAIN].level }))
         } else {
             dispatch(setLevel({ env: envId, stage: StageId.RELEASE2, value: env.stages[StageId.SUSTAIN].level }))
@@ -146,12 +146,12 @@ const toggleLoopMode = (envId: number, source: ApiSource) => {
     setLoopMode(envId, loopMode, source)
 }
 const setLoopEnabled = (envId: number, enabled: boolean, source: ApiSource) => {
-    dispatch(setLoopEnabledAction({env: envId, enabled}))
+    dispatch(setLoopEnabledAction({ env: envId, enabled }))
     midiApi.env.setLoopEnabled(source, envId, enabled)
 }
 const toggleLoopEnabled = (envId: number, source: ApiSource) => {
     const env = selectEnvelopes(store.getState()).envs[envId]
-    const loopEnabled = !env.loopEnabled;
+    const loopEnabled = !env.loopEnabled
     setLoopEnabled(envId, loopEnabled, source)
 }
 const toggleStageSelected = (envId: number, stageId: StageId, source: ApiSource) => {
@@ -201,19 +201,21 @@ const trigger = (envId: number, source: ApiSource) => {
 const release = (envId: number, source: ApiSource) => {
     midiApi.env.trigger(source, envId)
 }
-const setEnv3Id = (id: number,source: ApiSource) => {
+const setEnv3Id = (id: number, source: ApiSource) => {
     const envelopes = selectEnvelopes(store.getState()).envs.length
-    if(id < envelopes && id > 1) {
-        dispatch(setEnv3IdAction({id}))
+    if (id < envelopes && id > 1) {
+        dispatch(setEnv3IdAction({ id }))
         midiApi.env.setEnv3Id(source, id)
     }
 }
 const toggleEnv3Id = (source: ApiSource) => {
     const envelopes = selectEnvelopes(store.getState()).envs.length
     const currEnv3Id = selectEnv3Id(store.getState())
-    let nextEnv3Id = (currEnv3Id + 1);
-    if(nextEnv3Id > envelopes-1) nextEnv3Id = 2;
-    setEnv3Id(nextEnv3Id, source);
+    let nextEnv3Id = (currEnv3Id + 1)
+    if (nextEnv3Id > envelopes - 1) {
+        nextEnv3Id = 2
+    }
+    setEnv3Id(nextEnv3Id, source)
 }
 
 const envApi = {

@@ -29,10 +29,11 @@ interface MidiCtrlEnv {
     RESET_ON_TRIGGER: ControllerConfigCCWithValue
     RELEASE_MODE: ControllerConfigCCWithValue
     LOOP_MODE: ControllerConfigCCWithValue
+    OUTPUT: ControllerConfig
 }
 
 const controllersEnv: MidiCtrlEnv = {
-    props: { label: 'Envelope', isSourceDigi: true },
+    props: { label: 'Envelope' },
     DELAY_TIME: { id: ControllerId.ENV_DELAY_TIME, label: 'Delay time', isTargetDigi: true, type: 'pot'},
     ATTACK_TIME: { id: ControllerId.ENV_ATTACK_TIME, label: 'Attack time', isTargetDigi: true, type: 'pot'},
     DECAY1_TIME: { id: ControllerId.ENV_DECAY1_TIME, label: 'Decay 1 time', isTargetDigi: true, type: 'pot'},
@@ -119,6 +120,12 @@ const controllersEnv: MidiCtrlEnv = {
             BUTTONS.BUTTONS_RIGHT.values.ENV_LOOP_MODE_INFINITE,
         ],
     },
+    OUTPUT: {
+        id: ControllerId.ENVELOPE1,
+        label: 'Env',
+        type: 'output',
+        isSourceDigi: true
+    }
 }
 
 export default controllersEnv

@@ -1,6 +1,6 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
-import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../types'
+import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue, ControllerConfig } from '../../types'
 import { ControllerId } from '../../controllerIds'
 
 interface ControllersLfo {
@@ -13,12 +13,12 @@ interface ControllersLfo {
     SYNC: ControllerConfigCCWithValue
     RESET: ControllerConfigCCWithValue
     ONCE: ControllerConfigCCWithValue
+    OUTPUT: ControllerConfig
 }
 
 const controllersLfo: ControllersLfo = {
     props: {
         label: 'LFO',
-        isSourceDigi: true,
     },
     // Pots
     RATE: {
@@ -98,6 +98,12 @@ const controllersLfo: ControllersLfo = {
             BUTTONS.BUTTONS_LEFT.values.LFO_ONCE_ON,
         ],
     },
+    OUTPUT: {
+        id: ControllerId.LFO1,
+        label: 'LFO',
+        type: 'output',
+        isSourceDigi: true
+    }
 }
 
 export default controllersLfo

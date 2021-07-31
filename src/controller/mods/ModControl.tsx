@@ -32,31 +32,14 @@ const ModControl = () => {
             }
         </div>
         <div className="mod-ctrl__sources">
-            {Object.values(digitalModSources)
-                .map((group) => {
-                    return Object.entries(group)
-                        .filter(([funcKey, func]) => funcKey !== 'label')
-                        .map(([funcKey, func]) => {
-                            const funcValue = func as { [key: string]: any }
-
-                            return <>
-                                {Object.values(funcValue).length === 1 && <div className="mod-ctrl__source">
-                                    {funcValue.props?.label}
-                                </div>
-                                }
-                                {Object.entries(funcValue)
-                                    .filter(([controllerKey]) => controllerKey !== 'props')
-                                    .map(([, controller]) => {
-                                        return <div
-                                            className="mod-ctrl__source"
-                                            key={controller.id}>
-                                            {controller.label}
-                                        </div>
-                                    })}
-                            </>
-                        })
-                })
-            }
+            {digitalModSources
+                .map((controller) => {
+                    return <div
+                        className="mod-ctrl__source"
+                        key={controller.id}>
+                        {controller.label}
+                    </div>
+                })}
         </div>
     </div>
 }
