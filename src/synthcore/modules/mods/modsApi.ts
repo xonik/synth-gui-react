@@ -14,7 +14,7 @@ import {
     selectGuiTargetParam,
     selectModValue
 } from './modsReducer'
-import { digitalModSources, modTarget } from '../../../midi/controllers'
+import { digitalModSources, modTarget } from './utils'
 
 const setGuiSource = (guiSource: number, source: ApiSource) => {
     const currSource = selectGuiSource(store.getState())
@@ -70,8 +70,10 @@ const incrementGuiTargetParam = (inc: number, source: ApiSource) => {
     const currTargetGroup = selectGuiTargetGroup(store.getState());
     const currTargetFunc = selectGuiTargetFunc(store.getState());
     const currTargetParam = selectGuiTargetParam(store.getState());
+
     const lastGuiTargetParam = modTarget.targets[currTargetGroup][currTargetFunc].length - 1
     const nextTargetParam = getBounded(currTargetParam + inc, 0, lastGuiTargetParam)
+
     setGuiTargetParam(nextTargetParam, source);
 }
 

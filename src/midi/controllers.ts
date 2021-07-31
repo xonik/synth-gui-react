@@ -19,11 +19,9 @@ import controllersEnv from './modules/env/controllersEnv'
 import controllersCommonFx from './modules/commonFx/controllersCommonFx'
 import controllersOut from './modules/out/controllersOut'
 import { controllersPerformance } from './modules/performance/controllersPerformance'
-import { ControllerConfig, FuncProps } from './types'
-
 
 // controller functions grouped by type
-const controllerGroups = {
+export const controllerGroups = {
     SOUND_SOURCES: {
         label: 'Sound src',
         DCO1: controllersOsc.DCO1,
@@ -98,64 +96,6 @@ const controllerGroups = {
         PERFORMANCE: controllersPerformance
     }
 }
-
-
-const getTargets = () => {
-
-    type Func = ControllerConfig[]
-    type Group = Func[];
-
-    const modTargets: Group[] = []
-    const modTargetGroupLabels: string[] = []
-    const modTargetFuncProps: FuncProps[][] = []
-
-    Object.values(controllerGroups).forEach((group) => {
-        const funcs: Func[] = []
-        const funcProps: FuncProps[] = []
-        Object.values(group).forEach((func) => {
-            const params: ControllerConfig[] = []
-            Object.values(func).forEach((param) => {
-                const controller = param as ControllerConfig
-                if (controller.isTargetDigi) {
-                    params.push(controller)
-                }
-            })
-            if (params.length > 0) {
-                funcs.push(params)
-                funcProps.push(func.props)
-            }
-        })
-        if (funcs.length > 0) {
-            modTargets.push(funcs)
-            modTargetGroupLabels.push(group.label)
-            modTargetFuncProps.push(funcProps)
-        }
-    })
-
-    return {
-        targets: modTargets,
-        groupLabels: modTargetGroupLabels,
-        funcProps: modTargetFuncProps
-    }
-}
-
-const getSources = () => {
-    const sources: ControllerConfig[] = []
-    Object.values(controllerGroups).forEach((group) => {
-        Object.values(group).forEach((func) => {
-            Object.values(func).forEach((param) => {
-                const controller = param as ControllerConfig
-                if (controller.isSourceDigi) {
-                    sources.push(controller)
-                }
-            })
-        })
-    })
-    return sources
-}
-
-export const modTarget = getTargets()
-export const digitalModSources = getSources()
 
 const controllers = {
     DCO1: controllersOsc.DCO1,

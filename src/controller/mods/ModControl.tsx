@@ -1,7 +1,7 @@
 import React from 'react'
 import { useAppSelector } from '../../synthcore/hooks'
-import { digitalModSources, modTarget } from '../../midi/controllers'
 import { selectGuiTargetGroup } from '../../synthcore/modules/mods/modsReducer'
+import { digitalModSources, modTarget } from '../../synthcore/modules/mods/utils'
 import './ModControl.scss'
 
 const ModControl = () => {
