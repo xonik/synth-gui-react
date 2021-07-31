@@ -101,7 +101,7 @@ const getLedPos = (centerLed: number, ledCount: number, mode: PotMode, position:
     return 0
 }
 
-export default (props: Props & Config) => {
+const RotaryPotWithLedRingBase = (props: Props & Config) => {
 
     // Position should be in the range 0-1 in all modes but pan. In pan the range is -0.5 - 0.5
     const { x, y, ledMode = 'single', potMode = 'normal', label, midiConfig, position: defaultValue,
@@ -225,3 +225,5 @@ export default (props: Props & Config) => {
         </svg>
     )
 }
+
+export default RotaryPotWithLedRingBase

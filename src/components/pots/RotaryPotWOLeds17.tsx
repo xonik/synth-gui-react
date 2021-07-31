@@ -1,4 +1,5 @@
 import React from 'react'
 import RotaryPotWOLeds, { Props }  from './RotaryPotWOLeds';
 
-export default (props: Props) => <RotaryPotWOLeds knobRadius={8.5} {...props} />
+const RotaryPotWOLeds17 = (props: Props) => <RotaryPotWOLeds knobRadius={8.5} {...props} />
+export default RotaryPotWOLeds17

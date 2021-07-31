@@ -22,7 +22,7 @@ interface Config {
     knobRadius: number;
 }
 
-export default (props: Props & Config) => {
+const RotaryPotWOLeds = (props: Props & Config) => {
     const { x, y, label, knobRadius, midiConfig, ctrlGroup, ctrlId, ctrlIndex, resolution } = props
     const labelY = knobRadius + 5
 
@@ -89,3 +89,5 @@ export default (props: Props & Config) => {
         {label && <text x={0} y={labelY} className="pot-label" textAnchor="middle">{label}</text>}
     </svg>
 }
+
+export default RotaryPotWOLeds

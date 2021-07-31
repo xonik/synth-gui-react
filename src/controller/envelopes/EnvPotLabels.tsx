@@ -1,6 +1,8 @@
 import React from 'react'
 import PotLabels from '../PotLabels'
 
-export default () => {
+const EnvPotLabels = () => {
     return <PotLabels labels={['Envelope', 'Time', 'Level', 'Curve', 'Loops']}/>
 }
+
+export default EnvPotLabels

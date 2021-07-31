@@ -5,8 +5,10 @@ const initReceive = () => {
     midiApiEnv.initReceive()
 }
 
-export default {
+const midiApi = {
     initReceive,
     env: midiApiEnv,
     route: midiApiRoute,
 }
+
+export default midiApi

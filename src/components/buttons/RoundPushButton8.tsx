@@ -1,4 +1,6 @@
 import React from 'react'
 import RoundButtonBase, { Props } from './RoundButtonBase';
 
-export default (props: Props) => <RoundButtonBase buttonRadius={4} buttonMode="push" {...props} />
+const RoundPushButton8 = (props: Props) => <RoundButtonBase buttonRadius={4} buttonMode="push" {...props} />
+
+export default RoundPushButton8

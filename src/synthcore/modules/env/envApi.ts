@@ -216,7 +216,7 @@ const toggleEnv3Id = (source: ApiSource) => {
     setEnv3Id(nextEnv3Id, source);
 }
 
-export default {
+const envApi = {
     setStageLevel,
     incrementStageLevel,
     setStageTime,
@@ -244,3 +244,5 @@ export default {
     setEnv3Id,
     toggleEnv3Id,
 }
+
+export default envApi

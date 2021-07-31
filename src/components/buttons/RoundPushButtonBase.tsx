@@ -7,5 +7,7 @@ interface Props {
   className: string;
 }
 
-export default ({buttonRadius, className, onClick}: Props) =>
+const RoundPushButtonBase = ({buttonRadius, className, onClick}: Props) =>
     <circle cx={0} cy={0} r={buttonRadius} className={className} onClick={onClick}/>
+
+export default RoundPushButtonBase

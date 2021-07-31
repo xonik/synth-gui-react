@@ -1,7 +1,7 @@
 import React from 'react';
 import './Keyboard.scss';
 
-export default () => {
+const Keyboard = () => {
 
     const panelHeight = 200;
     const panelWidth = 1050;
@@ -33,3 +33,5 @@ export default () => {
         </svg>
     );
 }
+
+export default Keyboard

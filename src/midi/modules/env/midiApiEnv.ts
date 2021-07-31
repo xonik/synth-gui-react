@@ -287,7 +287,7 @@ const initReceive = () => {
     env3Id.receive()
 }
 
-export default {
+const midiApiEnv = {
     setLevel: level.send,
     setTime: time.send,
     setInvert: invert.send,
@@ -303,3 +303,5 @@ export default {
     setEnv3Id: env3Id.send,
     initReceive,
 }
+
+export default midiApiEnv

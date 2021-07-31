@@ -1,5 +1,3 @@
-import { envApi } from '../../../synthcore/synthcoreApi'
-import { Curve, LoopMode, ReleaseMode } from '../../../synthcore/modules/env/types'
 import controllers from '../../controllers'
 import { cc, nrpn } from '../../midibus'
 import { ApiSource } from '../../../synthcore/types'
@@ -72,9 +70,11 @@ const initReceive = () => {
     target.receive()
 }
 
-export default {
+const midiApiRoute = {
     setAmount: amount.send,
     setSource: source.send,
     setTarget: target.send,
     initReceive,
 }
+
+export default midiApiRoute

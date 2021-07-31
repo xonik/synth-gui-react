@@ -94,7 +94,7 @@ const mainDisplayModsApi = {
     }
 }
 
-export default {
+const mainDisplayApi = {
     handleMainDisplayController: (ctrlId: MainDisplayControllerIds, value: number) => {
         const currScreenId = selectCurrScreen(store.getState())
         if (currScreenId === MainDisplayScreenId.MOD) {
@@ -107,3 +107,5 @@ export default {
         dispatch(setCurrentScreen({id}))
     }
 }
+
+export default mainDisplayApi

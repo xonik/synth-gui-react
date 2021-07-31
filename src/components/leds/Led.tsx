@@ -49,7 +49,7 @@ const positionLabel = (radius: number, labelPosition: LabelPosition, labelMargin
     }
 }
 
-export default (props: Props & Config) => {
+const Led = (props: Props & Config) => {
     const radius = props.radius || 1.5
     const labelMargin = props.labelMargin || 2
     const labelPos = positionLabel(radius,props.labelPosition || 'bottom', labelMargin)
@@ -72,3 +72,5 @@ export default (props: Props & Config) => {
         </svg>
     )
 }
+
+export default Led

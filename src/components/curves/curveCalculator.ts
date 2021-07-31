@@ -117,9 +117,11 @@ const generateAndPrintTables = (
 // Uncomment if you want to generate tables for teensy/c++ again
 // generateAndPrintTables( 65536, 256,256, 256)
 
-export default {
+const curveCalculator = {
     logarithmicFunc,
     exponentialFunc,
     squared,
     getKeypoints,
 }
+
+export default curveCalculator

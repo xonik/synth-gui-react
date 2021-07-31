@@ -1,4 +1,4 @@
-export default {
+const mapNRPN = {
     ENV_CURVE: 0,
     ENV_LEVEL: 1,
     ENV_TIME: 2,
@@ -6,3 +6,5 @@ export default {
     DCO2_PITCH: 4,
     VCO_PITCH: 5,
 }
+
+export default mapNRPN

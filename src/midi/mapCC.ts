@@ -1,4 +1,4 @@
-export default {
+const mapCC = {
     MIDI_BANK_SELECT: 0, // N/I
     MIDI_MOD_WHEEL: 1, // N/I
     MIDI_BREATH_CTRL: 2, // N/I
@@ -118,3 +118,5 @@ export default {
     OUTPUT_HEADPHONES: 115,
     // 120 - 127 reserved for channel mode messages
 }
+
+export default mapCC

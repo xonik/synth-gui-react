@@ -96,7 +96,7 @@ const incrementGuiModValue = (inc: number, source: ApiSource) => {
     setModValue(sourceId, targetId, nextModValue, source);
 }
 
-export default {
+const modsApi = {
     setGuiSource,
     incrementGuiSource,
     setGuiTargetGroup,
@@ -108,3 +108,5 @@ export default {
     setModValue,
     incrementGuiModValue,
 }
+
+export default modsApi

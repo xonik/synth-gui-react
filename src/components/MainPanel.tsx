@@ -36,7 +36,7 @@ import './MainPanel.scss'
  * Lin/log FM? necessary?
  * SEE RESEARCH.md for more
  */
-export default () => {
+const MainPanel = () => {
 
     const env3Id = useAppSelector(selectEnv3Id);
     //const panelHeight = 350;
@@ -148,3 +148,5 @@ export default () => {
         </>
     )
 }
+
+export default MainPanel
