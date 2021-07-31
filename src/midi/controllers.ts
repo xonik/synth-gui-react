@@ -130,24 +130,23 @@ const getGroupsWithDigitalTargets = () => {
 
 const getGroupsWithDigitalTargets2 = () => {
     const groups: {[key: string]: any} = {}
-    let groupIndex = 0;
     Object.entries(controllerGroups).forEach(([groupKey, group]) => {
-        let funcIndex = 0;
+        const funcs: [ControllerConfig[]] = [[]];
         Object.entries(group).forEach(([funcKey, func]) => {
+            const params: ControllerConfig[] = []
             Object.entries(func).forEach(([propKey, prop]) => {
                 const controller = prop as ControllerConfig
                 if(controller.isTargetDigi){
-                    modTargets[groupIndex][funcIndex].push(controller)
+                    params.push(controller)
                 }
             })
-            if(modTargets[groupIndex][funcIndex].length > 0){
-                modTargetFuncProps[groupIndex].push(func.props)
-                funcIndex++;
+            if(params.length > 0){
+                funcs.push(params)
             }
         })
-        if(modTargetFuncProps[groupIndex].length > 0){
+        if(funcs.length > 0){
+            modTargets.push(funcs)
             modTargetGroupLabels.push(group.label || '')
-            groupIndex++;
         }
     })
     return groups
