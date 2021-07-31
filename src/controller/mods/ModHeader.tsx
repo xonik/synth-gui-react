@@ -20,7 +20,7 @@ const ModHeader = () => {
 
     return <div className="mod-header">
         <div className="mod-header__item">Group: {modTarget.groupLabels[targetGroupId]}</div>
-        <div className="mod-header__item">Func: {modTarget.funcProps[targetFuncId].label}</div>
+        <div className="mod-header__item">Func: {modTarget.funcProps[targetGroupId][targetFuncId].label}</div>
         <div className="mod-header__item">Param: {modTarget.targets[targetGroupId][targetFuncId][targetParamId].label}</div>
         <div className="mod-header__item">Source: {digitalModSources[sourceIndex].label}</div>
         <div className="mod-header__item">Amount: {Math.round(100 * targetValue)}%</div>

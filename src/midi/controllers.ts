@@ -99,43 +99,22 @@ const controllerGroups = {
     }
 }
 
-const getGroupsWithDigitalTargets = () => {
-    const groups: { [key: string]: any } = {}
-    Object.entries(controllerGroups).forEach(([groupKey, group]) => {
-        const funcs: { [key: string]: any } = {}
-        Object.entries(group).forEach(([funcKey, func]) => {
-            const props: { [key: string]: any } = {}
-            Object.entries(func).forEach(([propKey, prop]) => {
-                const controller = prop as ControllerConfig
-                if (controller.isTargetDigi) {
-                    props[propKey] = prop
-                }
-            })
-            if (Object.entries(props).length > 0) {
-                funcs[funcKey] = { props: func.props, ...props }
-            }
-        })
-        if (Object.entries(funcs).length > 0) {
-            groups[groupKey] = { label: group.label, ...funcs }
-        }
-    })
-    return groups
-}
-
-type Func = ControllerConfig[]
-type Group = Func[];
 
 const getTargets = () => {
 
+    type Func = ControllerConfig[]
+    type Group = Func[];
+
     const modTargets: Group[] = []
     const modTargetGroupLabels: string[] = []
-    const modTargetFuncProps: FuncProps[] = []
+    const modTargetFuncProps: FuncProps[][] = []
 
-    Object.entries(controllerGroups).forEach(([groupKey, group]) => {
+    Object.values(controllerGroups).forEach((group) => {
         const funcs: Func[] = []
-        Object.entries(group).forEach(([funcKey, func]) => {
+        const funcProps: FuncProps[] = []
+        Object.values(group).forEach((func) => {
             const params: ControllerConfig[] = []
-            Object.entries(func).forEach(([paramKey, param]) => {
+            Object.values(func).forEach((param) => {
                 const controller = param as ControllerConfig
                 if (controller.isTargetDigi) {
                     params.push(controller)
@@ -143,12 +122,13 @@ const getTargets = () => {
             })
             if (params.length > 0) {
                 funcs.push(params)
-                modTargetFuncProps.push(func.props)
+                funcProps.push(func.props)
             }
         })
         if (funcs.length > 0) {
             modTargets.push(funcs)
             modTargetGroupLabels.push(group.label)
+            modTargetFuncProps.push(funcProps)
         }
     })
 
@@ -161,9 +141,9 @@ const getTargets = () => {
 
 const getSources = () => {
     const sources: ControllerConfig[] = []
-    Object.entries(controllerGroups).forEach(([groupKey, group]) => {
-        Object.entries(group).forEach(([funcKey, func]) => {
-            Object.entries(func).forEach(([paramKey, param]) => {
+    Object.values(controllerGroups).forEach((group) => {
+        Object.values(group).forEach((func) => {
+            Object.values(func).forEach((param) => {
                 const controller = param as ControllerConfig
                 if (controller.isSourceDigi) {
                     sources.push(controller)
@@ -176,9 +156,6 @@ const getSources = () => {
 
 export const modTarget = getTargets()
 export const digitalModSources = getSources()
-
-// For looping over, group and function names are not tab completable
-export const digitalModTargets = getGroupsWithDigitalTargets()
 
 const controllers = {
     DCO1: controllersOsc.DCO1,
