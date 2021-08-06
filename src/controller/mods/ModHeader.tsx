@@ -19,11 +19,16 @@ const ModHeader = () => {
     const targetValue = useAppSelector(selectModValue(sourceId, targetId))
 
     return <div className="mod-header">
-        <div className="mod-header__item">Group: {modTarget.groupLabels[targetGroupId]}</div>
-        <div className="mod-header__item">Func: {modTarget.funcProps[targetGroupId][targetFuncId].label}</div>
-        <div className="mod-header__item">Param: {modTarget.targets[targetGroupId][targetFuncId][targetParamId].label}</div>
-        <div className="mod-header__item">Source: {digitalModSources[sourceIndex].label}</div>
-        <div className="mod-header__item">Amount: {Math.round(100 * targetValue)}%</div>
+        <div className="mod-header__item-label">Group</div>
+        <div className="mod-header__item">{modTarget.groupLabels[targetGroupId]}</div>
+        <div className="mod-header__item-label">Func</div>
+        <div className="mod-header__item">{modTarget.funcProps[targetGroupId][targetFuncId].label}</div>
+        <div className="mod-header__item-label">Param</div>
+        <div className="mod-header__item">{modTarget.targets[targetGroupId][targetFuncId][targetParamId].label}</div>
+        <div className="mod-header__item-label">Src</div>
+        <div className="mod-header__item">{digitalModSources[sourceIndex].label}</div>
+        <div className="mod-header__item-label">Amt</div>
+        <div className="mod-header__item">{Math.round(100 * targetValue)}%</div>
     </div>
 }
 
