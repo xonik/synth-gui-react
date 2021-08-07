@@ -27,15 +27,48 @@ const TargetLabels = () => {
         <div className="mod-ctrl__targets">
             {targetGroup.map((func, funcIndex) => {
                 return <div className="mod-ctrl__target" key={funcIndex}>
-                    <div className="mod-ctrl__target--func">
+                    <div className="mod-ctrl__target__label">
                         {modTarget.funcProps[targetGroupId][funcIndex].label}
                     </div>
-                    {func.map((controller, ctrlIndex) => <div
-                            className="mod-ctrl__target--param"
+                    {func.map((controller, ctrlIndex) =>
+                        <div
+                            className="mod-ctrl__target__label mod-ctrl__target__label--param"
                             key={ctrlIndex}>
                             {controller.label}
                         </div>
                     )}
+                </div>
+            })}
+        </div>
+    )
+}
+
+const AmountsRow = () => {
+    return (
+        <div className="mod-ctrl__sources">
+            {digitalModSources
+                .map((controller, ctrlIndex) => {
+                    return <div
+                        className="mod-ctrl__amount"
+                        key={ctrlIndex}>
+                        {controller.label}
+                    </div>
+                })}
+        </div>
+    )
+}
+
+const AmountsTable = () => {
+    const targetGroupId = useAppSelector(selectGuiTargetGroup)
+    const targetGroup = modTarget.targets[targetGroupId]
+
+    return (
+        <div className="mod-ctrl__amounts--row">
+            {targetGroup.map((func, funcIndex) => {
+                return <div className="mod-ctrl__target" key={funcIndex}>
+                    <div className="mod-ctrl__amount">
+                    </div>
+                    {func.map((controller, ctrlIndex) => <AmountsRow/>)}
                 </div>
             })}
         </div>
@@ -57,56 +90,11 @@ const ModControl = () => {
                     <TargetLabels/>
                 </div>
                 <div className="mod-ctrl__content__amounts-container">
-                    {/* modulation amounts */}
+                    <AmountsTable/>
                 </div>
             </div>
         </div>
     )
-    /*
-        return <div className="mod-ctrl">
-            <div className="mod-ctrl__targets">
-                <div className="mod-ctrl__target">{'\u00A0'}</div>
-                {targetGroup.map((func, funcIndex) => {
-                    return <div className="mod-ctrl__target" key={funcIndex}>
-                        <div className="mod-ctrl__target--heading">
-                            {modTarget.funcProps[targetGroupId][funcIndex].label}
-                        </div>
-                        {func.map((controller, ctrlIndex) => <div
-                                className="mod-ctrl__target--controller"
-                                key={ctrlIndex}>
-                                {controller.label}
-                            </div>
-                        )}
-                    </div>
-                })}
-            </div>
-            <div className="mod-ctrl__sources">
-                {digitalModSources
-                    .map((controller, ctrlIndex) => {
-                        return <div
-                            className="mod-ctrl__source"
-                            key={ctrlIndex}>
-                            {controller.label}
-                        </div>
-                    })}
-            </div>
-            {
-                targetGroup.map((func, funcIndex) => {
-                    return <div className="mod-ctrl__target" key={funcIndex}>
-                        <div className="mod-ctrl__target--heading">
-                            Hello
-                        </div>
-                        {func.map((controller, ctrlIndex) => <div
-                                className="mod-ctrl__target--controller"
-                                key={ctrlIndex}>
-                                World
-                            </div>
-                        )}
-                    </div>
-                })
-            }
-        </div>
-     */
 }
 
 export default ModControl

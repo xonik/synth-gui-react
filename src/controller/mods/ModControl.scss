@@ -7,6 +7,10 @@
   //height: 90%;
 
   $targets-column-width: 7rem;
+  $target-height: 3rem;
+  $target-padding-tb: 0.25rem;
+  $source-width: 7rem;
+  $source-padding-lr: 0.25rem;
 
   &__amounts {
     display: flex;
@@ -51,8 +55,8 @@
   }
 
   &__source {
-    width: 4rem;
-    border: 1px solid red;
+    padding: 0 $source-padding-lr;
+    width: $source-width;
     color: white;
     background-color: #666;
   }
@@ -67,15 +71,22 @@
   &__target {
     color: white;
 
-    &--func {
-      padding: 0.25rem;
+    &__label {
+      height: $target-height;
+      padding: $target-padding-tb 0.25rem;
       color: black;
       background-color: #ddd;
-    }
 
-    &--param {
-      padding: 0.25rem 0.25rem 0.25rem 0.5rem;
-      background-color: #666;
+      &--param {
+        padding: 0.25rem 0.25rem 0.25rem 0.5rem;
+        background-color: #666;
+      }
     }
+  }
+
+  &__amount {
+    width: $source-width;
+    height: $target-height;
+    padding: $target-padding-tb $source-padding-lr;
   }
 }
