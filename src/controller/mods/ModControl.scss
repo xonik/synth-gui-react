@@ -1,5 +1,5 @@
 .mod-ctrl {
- // overflow: hidden;
+  // overflow: hidden;
   display: flex;
   flex-direction: column;
   //justify-content: space-between;
@@ -8,108 +8,74 @@
 
   $targets-column-width: 7rem;
 
+  &__amounts {
+    display: flex;
+    flex-direction: column;
+    background-color: cyan;
+  }
+
   &__header {
-    &-row {
-      display: flex;
-      flex-direction: row;
-      background-color: red;
+    display: flex;
+    flex-direction: row;
+    background-color: red;
+    justify-content: flex-start;
+
+    &__corner {
+      flex: 0 0 $targets-column-width;
+      background-color: green;
     }
-    &-col {
-      &__targets {
-        width: $targets-column-width;
-        background-color: green;
-      }
-      &__sources {
-        display: flex;
-        flex-direction: row;
-        background-color: blue;
-      }
+
+    &__sources-container {
+      background-color: teal;
     }
   }
+
   &__content {
-    &-row {
-      display: flex;
-      flex-direction: row;
-      background-color: magenta;
+    display: flex;
+    flex-direction: row;
+    background-color: magenta;
+
+    &__targets-container {
+      background-color: brown;
     }
-    &-col {
-      &__targets {
-        width: $targets-column-width;
-        display: flex;
-        flex-direction: column;
-        background-color: yellow;
-      }
-      &__amounts {
-        display: flex;
-        flex-direction: column;
-        background-color: cyan;
-      }
+
+    &__amounts-container {
+      background-color: orange;
     }
   }
 
   &__sources {
     display: flex;
     flex-direction: row;
+    background-color: blue;
   }
 
   &__source {
-    //width: 4rem;
+    width: 4rem;
+    border: 1px solid red;
     color: white;
-    margin: 4px;
     background-color: #666;
   }
 
   &__targets {
+    width: $targets-column-width;
     display: flex;
     flex-direction: column;
+    background-color: yellow;
   }
 
   &__target {
-   // width: 6rem;
     color: white;
-    &--heading {
+
+    &--func {
       padding: 0.25rem;
       color: black;
-      margin: 4px;
       background-color: #ddd;
     }
-    &--controller {
-      padding: 0.25rem;
-      padding-left: 0.5rem;
-      margin: 4px;
+
+    &--param {
+      padding: 0.25rem 0.25rem 0.25rem 0.5rem;
       background-color: #666;
-    }
-  }
-
-  &__heading {
-    background-color: #333;
-    color: white;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    padding-top: 0.33em;
-    padding-bottom: 0.33em;
-    margin-bottom: 0.5em;
-  }
-
-  &__footer {
-    background-color: #333;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 100%;
-    padding-top: 0.33em;
-    padding-bottom: 0.33em;
-    margin-top: 0.5em;
-
-    &__item {
-      display: flex;
-      justify-content: center;
-
-      &--hidden {
-        visibility: hidden;
-      }
     }
   }
 }

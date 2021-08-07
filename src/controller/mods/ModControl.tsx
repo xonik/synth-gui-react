@@ -6,7 +6,7 @@ import './ModControl.scss'
 
 const SourceLabels = () => {
     return (
-        <div>
+        <div className="mod-ctrl__sources">
             {digitalModSources
                 .map((controller, ctrlIndex) => {
                     return <div
@@ -24,14 +24,14 @@ const TargetLabels = () => {
     const targetGroup = modTarget.targets[targetGroupId]
 
     return (
-        <div>
+        <div className="mod-ctrl__targets">
             {targetGroup.map((func, funcIndex) => {
                 return <div className="mod-ctrl__target" key={funcIndex}>
-                    <div className="mod-ctrl__target--heading">
+                    <div className="mod-ctrl__target--func">
                         {modTarget.funcProps[targetGroupId][funcIndex].label}
                     </div>
                     {func.map((controller, ctrlIndex) => <div
-                            className="mod-ctrl__target--controller"
+                            className="mod-ctrl__target--param"
                             key={ctrlIndex}>
                             {controller.label}
                         </div>
@@ -46,18 +46,17 @@ const ModControl = () => {
 
     return (
         <div className="mod-ctrl">
-            <div className="mod-ctrl__header-row">
-                <div className="mod-ctrl__header-col__targets">{'\u00A0'}sdf</div>
-                <div className="mod-ctrl__header-col__sources">
+            <div className="mod-ctrl__header">
+                <div className="mod-ctrl__header__corner">{'\u00A0'}sdf</div>
+                <div className="mod-ctrl__header__sources-container">
                     <SourceLabels/>
                 </div>
-
             </div>
-            <div className="mod-ctrl__content-row">
-                <div className="mod-ctrl__content-col__targets">
+            <div className="mod-ctrl__content">
+                <div className="mod-ctrl__content__targets-container">
                     <TargetLabels/>
                 </div>
-                <div className="mod-ctrl__content-col__amounts">
+                <div className="mod-ctrl__content__amounts-container">
                     {/* modulation amounts */}
                 </div>
             </div>
