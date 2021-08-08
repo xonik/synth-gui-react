@@ -1,10 +1,10 @@
 .mod-ctrl {
-  // overflow: hidden;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   //justify-content: space-between;
-  //width: 100%;
-  //height: 90%;
+  width: 100%;
+  height: 90%;
 
   $targets-column-width: 7rem;
   $target-height: 3rem;
@@ -27,6 +27,7 @@
     &__corner {
       flex: 0 0 $targets-column-width;
       background-color: green;
+      z-index: 3;
     }
 
     &__sources-container {
@@ -49,6 +50,8 @@
   }
 
   &__sources {
+    z-index: 2;
+    position: relative;
     display: flex;
     flex-direction: row;
     background-color: blue;
@@ -62,6 +65,8 @@
   }
 
   &__targets {
+    z-index: 2;
+    position: relative;
     width: $targets-column-width;
     display: flex;
     flex-direction: column;
@@ -82,6 +87,13 @@
         background-color: #666;
       }
     }
+  }
+
+  &__amounts-table {
+    z-index: 1;
+    position: relative;
+    top: -2rem;
+    left: -2rem;
   }
 
   &__amount {
