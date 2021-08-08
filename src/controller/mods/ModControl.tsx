@@ -1,19 +1,17 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectGuiTargetGroup } from '../../synthcore/modules/mods/modsReducer'
 import { digitalModSources, modTarget } from '../../synthcore/modules/mods/utils'
+import { Point } from '../../utils/types'
 import './ModControl.scss'
 
 interface DraggableElementProps {
-    offsetX?: number
-    offsetY?: number
+    offset: Point
     onMouseDown: (x: number, y: number, dragX: boolean, dragY: boolean) => void
     onMouseMove: (x: number, y: number) => void
-    containerWidth?: number
-    containerHeight?: number
 }
 
-const SourceLabels = ({ onMouseDown, onMouseMove, offsetX }: DraggableElementProps) => {
+const SourceLabels = ({ onMouseDown, onMouseMove, offset }: DraggableElementProps) => {
 
     const mouseDownHandler = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
         onMouseDown(event.clientX, event.clientY, true, false)
@@ -31,7 +29,7 @@ const SourceLabels = ({ onMouseDown, onMouseMove, offsetX }: DraggableElementPro
 
     return (
         <div className="mod-ctrl__sources"
-             style={{ left: offsetX || 0 }}
+             style={{ left: offset.x }}
              onMouseDown={mouseDownHandler}
              onMouseMove={mouseMoveHandler}
         >
@@ -47,7 +45,7 @@ const SourceLabels = ({ onMouseDown, onMouseMove, offsetX }: DraggableElementPro
     )
 }
 
-const TargetLabels = ({ onMouseDown, onMouseMove, offsetY }: DraggableElementProps) => {
+const TargetLabels = ({ onMouseDown, onMouseMove, offset }: DraggableElementProps) => {
     const targetGroupId = useAppSelector(selectGuiTargetGroup)
     const targetGroup = modTarget.targets[targetGroupId]
 
@@ -67,7 +65,7 @@ const TargetLabels = ({ onMouseDown, onMouseMove, offsetY }: DraggableElementPro
 
     return (
         <div className="mod-ctrl__targets"
-             style={{ top: offsetY || 0 }}
+             style={{ top: offset.y }}
              onMouseDown={mouseDownHandler}
              onMouseMove={mouseMoveHandler}>
             {targetGroup.map((func, funcIndex) => {
@@ -104,7 +102,7 @@ const AmountsRow = () => {
 }
 
 const AmountsTable = React.forwardRef<HTMLDivElement, DraggableElementProps>(
-    ({ onMouseDown, onMouseMove, offsetX, offsetY },
+    ({ onMouseDown, onMouseMove, offset },
      tableRef
     ) => {
         const targetGroupId = useAppSelector(selectGuiTargetGroup)
@@ -129,8 +127,8 @@ const AmountsTable = React.forwardRef<HTMLDivElement, DraggableElementProps>(
             <div className="mod-ctrl__amounts-table"
                  ref={tableRef}
                  style={{
-                     top: offsetY || 0,
-                     left: offsetX || 0
+                     left: offset.x,
+                     top: offset.y,
                  }}
                  onMouseDown={mouseDownHandler}
                  onMouseMove={mouseMoveHandler}>
@@ -146,98 +144,125 @@ const AmountsTable = React.forwardRef<HTMLDivElement, DraggableElementProps>(
     }
 )
 
+interface Dimension {
+    w: number
+    h: number
+}
+
 const ModControl = () => {
 
-    const [prevOffsetX, setPrevOffsetX] = useState(0)
-    const [prevOffsetY, setPrevOffsetY] = useState(0)
-    const [offsetX, setOffsetX] = useState(0)
-    const [offsetY, setOffsetY] = useState(0)
-    const [initialX, setInitialX] = useState(0)
-    const [initialY, setInitialY] = useState(0)
+    const [offset, setOffset] = useState<Point>({ x: 0, y: 0 })
+    const [prevOffset, setPrevOffset] = useState<Point>({ x: 0, y: 0 })
+
     const [isDragging, setIsDragging] = useState(false)
-    const [dragX, setDragX] = useState(false)
-    const [dragY, setDragY] = useState(false)
+    const [dragStart, setDragStart] = useState<Point>({ x: 0, y: 0 })
+    const [canDrag, setCanDrag] = useState<{ x: boolean, y: boolean }>({ x: false, y: false })
+
+    const [containerSize, setContainerSize] = useState<Dimension>()
+    const [cornerSize, setCornerSize] = useState<Dimension>()
+    const [amountsTableSize, setAmountsTableSize] = useState<Dimension>()
+    const [maxOffset, setMaxOffset] = useState<Point>()
+
+    const calcMaxOffset = useCallback(() => {
+        if (containerSize && cornerSize && amountsTableSize) {
+            const amountsContainerHeight = containerSize.h - cornerSize.h
+            const amountsContainerWidth = containerSize.w - cornerSize.w
+
+            setMaxOffset({
+                y: amountsContainerHeight - amountsTableSize.h,
+                x: amountsContainerWidth - amountsTableSize.w
+            })
+
+        }
+    }, [containerSize, cornerSize, amountsTableSize])
+
+    // https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
+    const updateAmountsTableSize = useCallback((div: HTMLDivElement) => {
+        if (div) {
+            setAmountsTableSize({ h: div.clientHeight, w: div.clientWidth })
+        }
+    }, [])
+
+    const updateContainerSize = useCallback((div: HTMLDivElement) => {
+        if (div) {
+            setContainerSize({ h: div.clientHeight, w: div.clientWidth })
+        }
+    }, [])
+
+    const updateCornerSize = useCallback((div: HTMLDivElement) => {
+        if (div) {
+            setCornerSize({ h: div.clientHeight, w: div.clientWidth })
+        }
+    }, [])
 
     const onMouseDown = useCallback((x: number, y: number, dragX: boolean, dragY: boolean) => {
-        setInitialX(x)
-        setInitialY(y)
-        setDragX(dragX)
-        setDragY(dragY)
+        if (!maxOffset) {
+            if (containerSize && cornerSize && amountsTableSize) {
+                calcMaxOffset()
+            } else {
+                return
+            }
+        }
+        setDragStart({ x, y })
+        setCanDrag({ x: dragX, y: dragY })
         setIsDragging(true)
-    }, [])
+
+    }, [amountsTableSize, cornerSize, containerSize, maxOffset, calcMaxOffset])
 
     const onMouseUp = useCallback(() => {
         if (isDragging) {
             setIsDragging(false)
-            setPrevOffsetX(offsetX)
-            setPrevOffsetY(offsetY)
+            setPrevOffset({x: offset.x, y: offset.y})
         }
-    }, [isDragging, setIsDragging, offsetX, offsetY])
-
-    const [tableHeight, setTableHeight] = useState<number>(1)
-    const [tableWidth, setTableWidth] = useState<number>(1)
-    const tableRef = useRef<HTMLDivElement>(null)
-    useEffect(() => {
-        if (tableRef.current) {
-            setTableHeight(tableRef.current.clientHeight)
-            setTableWidth(tableRef.current.clientWidth)
-        }
-    }, [])
-
-    const [containerHeight, setContainerHeight] = useState<number>(1)
-    const [containerWidth, setContainerWidth] = useState<number>(1)
-    const containerRef = useRef<HTMLDivElement>(null)
-    useEffect(() => {
-        if (containerRef.current) {
-            setContainerHeight(containerRef.current.clientHeight)
-            setContainerWidth(containerRef.current.clientWidth)
-        }
-    }, [])
+    }, [isDragging, setIsDragging, offset])
 
     useEffect(() => {
         window.addEventListener('mouseup', onMouseUp)
-
         return () => {
             window.removeEventListener('mouseup', onMouseUp)
         }
     }, [onMouseUp])
 
-    console.log({
-        tableHeight,
-        tableWidth,
-        containerHeight,
-        containerWidth
-    })
-
     const onDrag = useCallback((x: number, y: number) => {
-        if (!isDragging) {
+        if (!isDragging || !maxOffset) {
             return
         }
-        if (dragX) {
-            const newOffsetX = x - initialX + prevOffsetX
+        let offsetX = prevOffset.x
+        let offsetY = prevOffset.y
+        if (canDrag.x) {
+            const newOffsetX = x - dragStart.x + prevOffset.x
             if (newOffsetX < 0) {
-                setOffsetX(x - initialX + prevOffsetX)
+                if (newOffsetX > maxOffset.x) {
+                    offsetX = newOffsetX
+                } else {
+                    offsetX = maxOffset.x
+                }
             } else {
-                setOffsetX(0)
+                offsetX = 0
             }
         }
-        if (dragY) {
-            const newOffsetY = y - initialY + prevOffsetY
+        if (canDrag.y) {
+            const newOffsetY = y - dragStart.y + prevOffset.y
             if (newOffsetY < 0) {
-                setOffsetY(newOffsetY)
+                if (newOffsetY > maxOffset.y) {
+                    offsetY = newOffsetY
+                } else {
+                    offsetY = maxOffset.y
+                }
             } else {
-                setOffsetY(0)
+                offsetY = 0
             }
         }
-    }, [isDragging, dragX, dragY, initialX, initialY, prevOffsetX, prevOffsetY])
+        setOffset({x: offsetX, y: offsetY})
+    }, [isDragging, canDrag, dragStart,prevOffset, maxOffset])
 
     return (
-        <div className="mod-ctrl">
+        <div className="mod-ctrl" ref={updateContainerSize}>
             <div className="mod-ctrl__header">
-                <div className="mod-ctrl__header__corner">{'\u00A0'}sdf</div>
+                <div className="mod-ctrl__header__corner" ref={updateCornerSize}/>
                 <div className="mod-ctrl__header__sources-container">
                     <SourceLabels
-                        offsetX={offsetX}
+                        offset={offset}
                         onMouseMove={onDrag}
                         onMouseDown={onMouseDown}
                     />
@@ -246,16 +271,15 @@ const ModControl = () => {
             <div className="mod-ctrl__content">
                 <div className="mod-ctrl__content__targets-container">
                     <TargetLabels
-                        offsetY={offsetY}
+                        offset={offset}
                         onMouseMove={onDrag}
                         onMouseDown={onMouseDown}
                     />
                 </div>
-                <div className="mod-ctrl__content__amounts-container" ref={containerRef}>
+                <div className="mod-ctrl__content__amounts-container">
                     <AmountsTable
-                        ref={tableRef}
-                        offsetX={offsetX}
-                        offsetY={offsetY}
+                        ref={updateAmountsTableSize}
+                        offset={offset}
                         onMouseMove={onDrag}
                         onMouseDown={onMouseDown}
                     />
