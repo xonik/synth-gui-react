@@ -1,153 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { useAppSelector } from '../../synthcore/hooks'
-import { selectGuiTargetGroup } from '../../synthcore/modules/mods/modsReducer'
-import { digitalModSources, modTarget } from '../../synthcore/modules/mods/utils'
 import { Point } from '../../utils/types'
+import { useDimensions } from '../../hooks'
+import SourceLabels from './SourceLabels'
+import TargetLabels from './TargetLabels'
+import AmountsTable from './AmountsTable'
 import './ModControl.scss'
-
-interface DraggableElementProps {
-    offset: Point
-    onMouseDown: (x: number, y: number, dragX: boolean, dragY: boolean) => void
-    onMouseMove: (x: number, y: number) => void
-}
-
-const SourceLabels = ({ onMouseDown, onMouseMove, offset }: DraggableElementProps) => {
-
-    const mouseDownHandler = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-        onMouseDown(event.clientX, event.clientY, true, false)
-        if (event.preventDefault) {
-            event.preventDefault()
-        }
-    }, [onMouseDown])
-
-    const mouseMoveHandler = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-        onMouseMove(event.clientX, event.clientY)
-        if (event.preventDefault) {
-            event.preventDefault()
-        }
-    }, [onMouseMove])
-
-    return (
-        <div className="mod-ctrl__sources"
-             style={{ left: offset.x }}
-             onMouseDown={mouseDownHandler}
-             onMouseMove={mouseMoveHandler}
-        >
-            {digitalModSources
-                .map((controller, ctrlIndex) => {
-                    return <div
-                        className="mod-ctrl__source"
-                        key={ctrlIndex}>
-                        {controller.label}
-                    </div>
-                })}
-        </div>
-    )
-}
-
-const TargetLabels = ({ onMouseDown, onMouseMove, offset }: DraggableElementProps) => {
-    const targetGroupId = useAppSelector(selectGuiTargetGroup)
-    const targetGroup = modTarget.targets[targetGroupId]
-
-    const mouseDownHandler = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-        onMouseDown(event.clientX, event.clientY, false, true)
-        if (event.preventDefault) {
-            event.preventDefault()
-        }
-    }, [onMouseDown])
-
-    const mouseMoveHandler = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-        onMouseMove(event.clientX, event.clientY)
-        if (event.preventDefault) {
-            event.preventDefault()
-        }
-    }, [onMouseMove])
-
-    return (
-        <div className="mod-ctrl__targets"
-             style={{ top: offset.y }}
-             onMouseDown={mouseDownHandler}
-             onMouseMove={mouseMoveHandler}>
-            {targetGroup.map((func, funcIndex) => {
-                return <div className="mod-ctrl__target" key={funcIndex}>
-                    <div className="mod-ctrl__target__label">
-                        {modTarget.funcProps[targetGroupId][funcIndex].label}
-                    </div>
-                    {func.map((controller, ctrlIndex) =>
-                        <div
-                            className="mod-ctrl__target__label mod-ctrl__target__label--param"
-                            key={ctrlIndex}>
-                            {controller.label}
-                        </div>
-                    )}
-                </div>
-            })}
-        </div>
-    )
-}
-
-const AmountsRow = () => {
-    return (
-        <div className="mod-ctrl__sources">
-            {digitalModSources
-                .map((controller, ctrlIndex) => {
-                    return <div
-                        className="mod-ctrl__amount"
-                        key={ctrlIndex}>
-                        {controller.label}
-                    </div>
-                })}
-        </div>
-    )
-}
-
-const AmountsTable = React.forwardRef<HTMLDivElement, DraggableElementProps>(
-    ({ onMouseDown, onMouseMove, offset },
-     tableRef
-    ) => {
-        const targetGroupId = useAppSelector(selectGuiTargetGroup)
-        const targetGroup = modTarget.targets[targetGroupId]
-
-        const mouseDownHandler = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-            console.log('mouse down')
-            onMouseDown(event.clientX, event.clientY, true, true)
-            if (event.preventDefault) {
-                event.preventDefault()
-            }
-        }, [onMouseDown])
-
-        const mouseMoveHandler = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-            onMouseMove(event.clientX, event.clientY)
-            if (event.preventDefault) {
-                event.preventDefault()
-            }
-        }, [onMouseMove])
-
-        return (
-            <div className="mod-ctrl__amounts-table"
-                 ref={tableRef}
-                 style={{
-                     left: offset.x,
-                     top: offset.y,
-                 }}
-                 onMouseDown={mouseDownHandler}
-                 onMouseMove={mouseMoveHandler}>
-                {targetGroup.map((func, funcIndex) => {
-                    return <div className="mod-ctrl__target" key={funcIndex}>
-                        <div className="mod-ctrl__amount">
-                        </div>
-                        {func.map((controller, ctrlIndex) => <AmountsRow/>)}
-                    </div>
-                })}
-            </div>
-        )
-    }
-)
-
-interface Dimension {
-    w: number
-    h: number
-}
 
 const ModControl = () => {
 
@@ -158,10 +15,10 @@ const ModControl = () => {
     const [dragStart, setDragStart] = useState<Point>({ x: 0, y: 0 })
     const [canDrag, setCanDrag] = useState<{ x: boolean, y: boolean }>({ x: false, y: false })
 
-    const [containerSize, setContainerSize] = useState<Dimension>()
-    const [cornerSize, setCornerSize] = useState<Dimension>()
-    const [amountsTableSize, setAmountsTableSize] = useState<Dimension>()
     const [maxOffset, setMaxOffset] = useState<Point>()
+    const [amountsTableSize, updateAmountsTableSize] = useDimensions()
+    const [containerSize, updateContainerSize] = useDimensions()
+    const [cornerSize, updateCornerSize] = useDimensions()
 
     const calcMaxOffset = useCallback(() => {
         if (containerSize && cornerSize && amountsTableSize) {
@@ -175,25 +32,6 @@ const ModControl = () => {
 
         }
     }, [containerSize, cornerSize, amountsTableSize])
-
-    // https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
-    const updateAmountsTableSize = useCallback((div: HTMLDivElement) => {
-        if (div) {
-            setAmountsTableSize({ h: div.clientHeight, w: div.clientWidth })
-        }
-    }, [])
-
-    const updateContainerSize = useCallback((div: HTMLDivElement) => {
-        if (div) {
-            setContainerSize({ h: div.clientHeight, w: div.clientWidth })
-        }
-    }, [])
-
-    const updateCornerSize = useCallback((div: HTMLDivElement) => {
-        if (div) {
-            setCornerSize({ h: div.clientHeight, w: div.clientWidth })
-        }
-    }, [])
 
     const onMouseDown = useCallback((x: number, y: number, dragX: boolean, dragY: boolean) => {
         if (!maxOffset) {
@@ -212,7 +50,7 @@ const ModControl = () => {
     const onMouseUp = useCallback(() => {
         if (isDragging) {
             setIsDragging(false)
-            setPrevOffset({x: offset.x, y: offset.y})
+            setPrevOffset({ x: offset.x, y: offset.y })
         }
     }, [isDragging, setIsDragging, offset])
 
@@ -253,8 +91,8 @@ const ModControl = () => {
                 offsetY = 0
             }
         }
-        setOffset({x: offsetX, y: offsetY})
-    }, [isDragging, canDrag, dragStart,prevOffset, maxOffset])
+        setOffset({ x: offsetX, y: offsetY })
+    }, [isDragging, canDrag, dragStart, prevOffset, maxOffset])
 
     return (
         <div className="mod-ctrl" ref={updateContainerSize}>
