@@ -26,8 +26,8 @@ const ModControl = () => {
             const amountsContainerWidth = containerSize.w - cornerSize.w
 
             setMaxOffset({
-                y: amountsContainerHeight - amountsTableSize.h,
-                x: amountsContainerWidth - amountsTableSize.w
+                y: amountsTableSize.h - amountsContainerHeight,
+                x: amountsTableSize.w - amountsContainerWidth
             })
 
         }
@@ -72,41 +72,38 @@ const ModControl = () => {
         let offsetY = prevOffset.y
 
         if (canDrag.x) {
-            const offsetX =  prevOffset.x + dragStart.x - x
+            const newOffsetX = prevOffset.x + dragStart.x - x
+            if (newOffsetX < 0) {
+                offsetX = 0
+            } else {
+                //if (newOffsetX < maxOffset.x) {
+                    offsetX = newOffsetX
+                //} else {
+                //    offsetX = maxOffset.x
+                //}
+            }
+
             if (tableRef.current) {
                 tableRef.current.scrollLeft = offsetX
             }
-            /*
-            const newOffsetX = x - dragStart.x + prevOffset.x
-            if (newOffsetX < 0) {
-                if (newOffsetX > maxOffset.x) {
-                    offsetX = newOffsetX
-                } else {
-                    offsetX = maxOffset.x
-                }
-            } else {
-                offsetX = 0
-            }*/
         }
         if (canDrag.y) {
-            offsetY = dragStart.y - y + prevOffset.y
-            console.log(offsetY, prevOffset.y)
-            if (tableRef.current) {
-                tableRef.current.scrollTop = offsetY
-            }
-            /**
-             const newOffsetY = y - dragStart.y + prevOffset.y
+            const newOffsetY = dragStart.y - y + prevOffset.y
 
-             if (newOffsetY < 0) {
-                if (newOffsetY > maxOffset.y) {
+            if (newOffsetY < 0) {
+                offsetY = 0
+            } else {
+                offsetY = newOffsetY
+                if (newOffsetY < maxOffset.y) {
                     offsetY = newOffsetY
                 } else {
                     offsetY = maxOffset.y
                 }
-            } else {
-                offsetY = 0
             }
-             */
+
+            if (tableRef.current) {
+                tableRef.current.scrollTop = offsetY
+            }
         }
         setOffset({ x: offsetX, y: offsetY })
     }, [isDragging, canDrag, dragStart, prevOffset, maxOffset])
