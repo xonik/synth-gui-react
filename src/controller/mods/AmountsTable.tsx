@@ -1,5 +1,5 @@
 import { digitalModSources, modTarget } from '../../synthcore/modules/mods/utils'
-import React, { useCallback, useEffect, useRef } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { DraggableElementProps } from './types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectGuiSource, selectGuiTargetFunc, selectGuiTargetGroup, selectGuiTargetParam, selectModValue } from '../../synthcore/modules/mods/modsReducer'
@@ -11,26 +11,15 @@ interface RowProps {
     paramIndex: number
 }
 
-interface Position {
-    sourceIndex: number,
-    targetFuncIndex: number,
-    targetParam: number,
-    x0: number,
-    y0: number,
-    x1: number,
-    y1: number,
-}
-
 interface CellProps {
     sourceIndex: number
     funcIndex: number
     paramIndex: number
     sourceId: number
     targetId: number
-    positionUpdate: (pos: Position) => void;
 }
 
-const AmountCell = ({ sourceIndex, funcIndex, paramIndex, sourceId, targetId, positionUpdate }: CellProps) => {
+const AmountCell = ({ sourceIndex, funcIndex, paramIndex, sourceId, targetId }: CellProps) => {
     const modValue = useAppSelector(selectModValue(sourceId, targetId))
     const selectedSource = useAppSelector(selectGuiSource)
     const selectedTargetFunc = useAppSelector(selectGuiTargetFunc)
@@ -43,25 +32,7 @@ const AmountCell = ({ sourceIndex, funcIndex, paramIndex, sourceId, targetId, po
     const isSelectedCol = isSource && !isTarget
     const isSelectedCell = isSource && isTarget
 
-    const divRef = useRef<HTMLDivElement>(null)
-
-    const capturePosition = useCallback((div: HTMLDivElement | null) => {
-        if (div) {
-            console.log(div)
-            positionUpdate({
-                sourceIndex: sourceIndex,
-                targetFuncIndex: funcIndex,
-                targetParam: paramIndex,
-                x0: div.clientLeft,
-                y0: div.clientTop,
-                x1: div.clientLeft + div.clientWidth,
-                y1: div.clientTop + div.clientHeight,
-            })
-        }
-    }, [sourceIndex, funcIndex, paramIndex, positionUpdate])
-
-
-    return <div ref={divRef} className={classNames(
+    return <div className={classNames(
         'mod-ctrl__amount',
         {
             'mod-ctrl__amount--highlit-row': isSelectedRow,
@@ -74,10 +45,6 @@ const AmountCell = ({ sourceIndex, funcIndex, paramIndex, sourceId, targetId, po
 
 const AmountsRow = ({ targetId, funcIndex, paramIndex }: RowProps) => {
 
-    const positionUpdate = useCallback((pos: Position) => {
-    //    console.log('Position', pos)
-    }, []);
-
     return (
         <div className="mod-ctrl__sources">
             {digitalModSources
@@ -88,7 +55,6 @@ const AmountsRow = ({ targetId, funcIndex, paramIndex }: RowProps) => {
                                        paramIndex={paramIndex}
                                        sourceId={source.id}
                                        targetId={targetId}
-                                       positionUpdate={positionUpdate}
                     />
                 })}
         </div>
@@ -96,7 +62,7 @@ const AmountsRow = ({ targetId, funcIndex, paramIndex }: RowProps) => {
 }
 
 const AmountsTable = React.forwardRef<HTMLDivElement, DraggableElementProps>(
-    ({ onMouseDown, onMouseMove, offset },
+    ({ onMouseDown, onMouseMove },
      tableRef
     ) => {
         const targetGroupId = useAppSelector(selectGuiTargetGroup)

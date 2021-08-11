@@ -6,6 +6,16 @@ import TargetLabels from './TargetLabels'
 import AmountsTable from './AmountsTable'
 import './ModControl.scss'
 
+const getBounded = (value: number, max: number) => {
+    if (value < 0) {
+        return 0
+    }
+    if (value < max) {
+        return value
+    }
+    return max
+}
+
 const ModControl = () => {
 
     const [offset, setOffset] = useState<Point>({ x: 0, y: 0 })
@@ -61,7 +71,9 @@ const ModControl = () => {
         }
     }, [onMouseUp])
 
-    const tableRef = useRef<HTMLDivElement>(null)
+    const sourcesRef = useRef<HTMLDivElement>(null)
+    const targetsRef = useRef<HTMLDivElement>(null)
+    const amountsRef = useRef<HTMLDivElement>(null)
 
     const onDrag = useCallback((x: number, y: number) => {
         if (!isDragging || !maxOffset) {
@@ -72,37 +84,24 @@ const ModControl = () => {
         let offsetY = prevOffset.y
 
         if (canDrag.x) {
-            const newOffsetX = prevOffset.x + dragStart.x - x
-            if (newOffsetX < 0) {
-                offsetX = 0
-            } else {
-                if (newOffsetX < maxOffset.x) {
-                    offsetX = newOffsetX
-                } else {
-                    offsetX = maxOffset.x
-                }
+            offsetX = getBounded(prevOffset.x + dragStart.x - x, maxOffset.x)
+
+            if (amountsRef.current) {
+                amountsRef.current.scrollLeft = offsetX
+            }
+            if (sourcesRef.current) {
+                sourcesRef.current.scrollLeft = offsetX
             }
 
-            if (tableRef.current) {
-                tableRef.current.scrollLeft = offsetX
-            }
         }
         if (canDrag.y) {
-            const newOffsetY = dragStart.y - y + prevOffset.y
+            offsetY = getBounded(dragStart.y - y + prevOffset.y, maxOffset.y)
 
-            if (newOffsetY < 0) {
-                offsetY = 0
-            } else {
-                offsetY = newOffsetY
-                if (newOffsetY < maxOffset.y) {
-                    offsetY = newOffsetY
-                } else {
-                    offsetY = maxOffset.y
-                }
+            if (amountsRef.current) {
+                amountsRef.current.scrollTop = offsetY
             }
-
-            if (tableRef.current) {
-                tableRef.current.scrollTop = offsetY
+            if (targetsRef.current) {
+                targetsRef.current.scrollTop = offsetY
             }
         }
         setOffset({ x: offsetX, y: offsetY })
@@ -112,26 +111,23 @@ const ModControl = () => {
         <div className="mod-ctrl" ref={updateContainerSize}>
             <div className="mod-ctrl__header">
                 <div className="mod-ctrl__header__corner" ref={updateCornerSize}/>
-                <div className="mod-ctrl__header__sources-container">
+                <div className="mod-ctrl__header__sources-container" ref={sourcesRef}>
                     <SourceLabels
-                        //offset={offset}
                         onMouseMove={onDrag}
                         onMouseDown={onMouseDown}
                     />
                 </div>
             </div>
             <div className="mod-ctrl__content">
-                <div className="mod-ctrl__content__targets-container">
+                <div className="mod-ctrl__content__targets-container" ref={targetsRef}>
                     <TargetLabels
-                        // offset={offset}
                         onMouseMove={onDrag}
                         onMouseDown={onMouseDown}
                     />
                 </div>
-                <div className="mod-ctrl__content__amounts-container" ref={tableRef}>
+                <div className="mod-ctrl__content__amounts-container" ref={amountsRef}>
                     <AmountsTable
                         ref={updateAmountsTableSize}
-                        offset={offset}
                         onMouseMove={onDrag}
                         onMouseDown={onMouseDown}
                     />

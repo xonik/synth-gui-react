@@ -4,7 +4,7 @@ import { modTarget } from '../../synthcore/modules/mods/utils'
 import React, { useCallback } from 'react'
 import { DraggableElementProps } from './types'
 
-const TargetLabels = ({ onMouseDown, onMouseMove, offset }: DraggableElementProps) => {
+const TargetLabels = ({ onMouseDown, onMouseMove }: DraggableElementProps) => {
     const targetGroupId = useAppSelector(selectGuiTargetGroup)
     const targetGroup = modTarget.targets[targetGroupId]
 
@@ -24,7 +24,6 @@ const TargetLabels = ({ onMouseDown, onMouseMove, offset }: DraggableElementProp
 
     return (
         <div className="mod-ctrl__targets"
-             style={{ top: offset?.y || 0 }}
              onMouseDown={mouseDownHandler}
              onMouseMove={mouseMoveHandler}>
             {targetGroup.map((func, funcIndex) => {

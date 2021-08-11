@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { digitalModSources } from '../../synthcore/modules/mods/utils'
 import { DraggableElementProps } from './types'
 
-const SourceLabels = ({ onMouseDown, onMouseMove, offset }: DraggableElementProps) => {
+const SourceLabels = ({ onMouseDown, onMouseMove }: DraggableElementProps) => {
 
     const mouseDownHandler = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
         onMouseDown(event.clientX, event.clientY, true, false)
@@ -20,7 +20,6 @@ const SourceLabels = ({ onMouseDown, onMouseMove, offset }: DraggableElementProp
 
     return (
         <div className="mod-ctrl__sources"
-             style={{ left: offset?.x || 0 }}
              onMouseDown={mouseDownHandler}
              onMouseMove={mouseMoveHandler}
         >
