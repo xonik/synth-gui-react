@@ -1,5 +1,5 @@
 import { digitalModSources, modTarget } from '../../synthcore/modules/mods/utils'
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import { DraggableElementProps } from './types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectGuiSource, selectGuiTargetFunc, selectGuiTargetGroup, selectGuiTargetParam, selectModValue } from '../../synthcore/modules/mods/modsReducer'
@@ -11,15 +11,26 @@ interface RowProps {
     paramIndex: number
 }
 
+interface Position {
+    sourceIndex: number,
+    targetFuncIndex: number,
+    targetParam: number,
+    x0: number,
+    y0: number,
+    x1: number,
+    y1: number,
+}
+
 interface CellProps {
     sourceIndex: number
     funcIndex: number
     paramIndex: number
     sourceId: number
     targetId: number
+    positionUpdate: (pos: Position) => void;
 }
 
-const AmountCell = ({sourceIndex, funcIndex, paramIndex, sourceId, targetId}: CellProps) => {
+const AmountCell = ({ sourceIndex, funcIndex, paramIndex, sourceId, targetId, positionUpdate }: CellProps) => {
     const modValue = useAppSelector(selectModValue(sourceId, targetId))
     const selectedSource = useAppSelector(selectGuiSource)
     const selectedTargetFunc = useAppSelector(selectGuiTargetFunc)
@@ -32,7 +43,25 @@ const AmountCell = ({sourceIndex, funcIndex, paramIndex, sourceId, targetId}: Ce
     const isSelectedCol = isSource && !isTarget
     const isSelectedCell = isSource && isTarget
 
-    return <div className={classNames(
+    const divRef = useRef<HTMLDivElement>(null)
+
+    const capturePosition = useCallback((div: HTMLDivElement | null) => {
+        if (div) {
+            console.log(div)
+            positionUpdate({
+                sourceIndex: sourceIndex,
+                targetFuncIndex: funcIndex,
+                targetParam: paramIndex,
+                x0: div.clientLeft,
+                y0: div.clientTop,
+                x1: div.clientLeft + div.clientWidth,
+                y1: div.clientTop + div.clientHeight,
+            })
+        }
+    }, [sourceIndex, funcIndex, paramIndex, positionUpdate])
+
+
+    return <div ref={divRef} className={classNames(
         'mod-ctrl__amount',
         {
             'mod-ctrl__amount--highlit-row': isSelectedRow,
@@ -42,7 +71,13 @@ const AmountCell = ({sourceIndex, funcIndex, paramIndex, sourceId, targetId}: Ce
     )}>{Math.round(modValue * 100)}%</div>
 }
 
-const AmountsRow = ({targetId, funcIndex, paramIndex}: RowProps) => {
+
+const AmountsRow = ({ targetId, funcIndex, paramIndex }: RowProps) => {
+
+    const positionUpdate = useCallback((pos: Position) => {
+    //    console.log('Position', pos)
+    }, []);
+
     return (
         <div className="mod-ctrl__sources">
             {digitalModSources
@@ -52,7 +87,9 @@ const AmountsRow = ({targetId, funcIndex, paramIndex}: RowProps) => {
                                        funcIndex={funcIndex}
                                        paramIndex={paramIndex}
                                        sourceId={source.id}
-                                       targetId={targetId}/>
+                                       targetId={targetId}
+                                       positionUpdate={positionUpdate}
+                    />
                 })}
         </div>
     )
@@ -64,6 +101,16 @@ const AmountsTable = React.forwardRef<HTMLDivElement, DraggableElementProps>(
     ) => {
         const targetGroupId = useAppSelector(selectGuiTargetGroup)
         const targetGroup = modTarget.targets[targetGroupId]
+
+        const selectedSource = useAppSelector(selectGuiSource)
+        const selectedTargetFunc = useAppSelector(selectGuiTargetFunc)
+        const selectedTargetParam = useAppSelector(selectGuiTargetParam)
+
+        useEffect(() => {
+            console.log('func change', {
+                selectedSource, selectedTargetFunc, selectedTargetParam
+            })
+        }, [selectedSource, selectedTargetFunc, selectedTargetParam])
 
         const mouseDownHandler = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
             onMouseDown(event.clientX, event.clientY, true, true)
@@ -82,15 +129,11 @@ const AmountsTable = React.forwardRef<HTMLDivElement, DraggableElementProps>(
         return (
             <div className="mod-ctrl__amounts-table"
                  ref={tableRef}
-                 style={{
-                     left: offset.x,
-                     top: offset.y,
-                 }}
                  onMouseDown={mouseDownHandler}
                  onMouseMove={mouseMoveHandler}>
                 {targetGroup.map((func, funcIndex) => {
                     return <div className="mod-ctrl__target" key={funcIndex}>
-                        <div className="mod-ctrl__amount" style={{width: '100%'}}>
+                        <div className="mod-ctrl__amount" style={{ width: '100%' }}>
                         </div>
                         {func.map((target, paramIndex) => {
                             return <AmountsRow

@@ -24,7 +24,7 @@ const TargetLabels = ({ onMouseDown, onMouseMove, offset }: DraggableElementProp
 
     return (
         <div className="mod-ctrl__targets"
-             style={{ top: offset.y }}
+             style={{ top: offset?.y || 0 }}
              onMouseDown={mouseDownHandler}
              onMouseMove={mouseMoveHandler}>
             {targetGroup.map((func, funcIndex) => {

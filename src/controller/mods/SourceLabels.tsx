@@ -20,7 +20,7 @@ const SourceLabels = ({ onMouseDown, onMouseMove, offset }: DraggableElementProp
 
     return (
         <div className="mod-ctrl__sources"
-             style={{ left: offset.x }}
+             style={{ left: offset?.x || 0 }}
              onMouseDown={mouseDownHandler}
              onMouseMove={mouseMoveHandler}
         >

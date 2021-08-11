@@ -46,6 +46,7 @@
   }
 
   &__content {
+    overflow: hidden;
     display: flex;
     flex-direction: row;
 
@@ -53,6 +54,7 @@
     }
 
     &__amounts-container {
+      overflow: scroll;
     }
   }
 
@@ -105,8 +107,6 @@
   &__amounts-table {
     z-index: 1;
     position: relative;
-    top: -2rem;
-    left: -2rem;
   }
 
   &__amount {
@@ -115,7 +115,7 @@
 
     display: flex;
     justify-content: center;
-    width: $source-width;
+    min-width: $source-width;
     height: $target-height;
     padding: $target-padding-tb $source-padding-lr;
     background-color: #333;

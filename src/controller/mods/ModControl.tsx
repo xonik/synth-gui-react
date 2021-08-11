@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Point } from '../../utils/types'
 import { useDimensions } from '../../hooks'
 import SourceLabels from './SourceLabels'
@@ -61,13 +61,22 @@ const ModControl = () => {
         }
     }, [onMouseUp])
 
+    const tableRef = useRef<HTMLDivElement>(null)
+
     const onDrag = useCallback((x: number, y: number) => {
         if (!isDragging || !maxOffset) {
             return
         }
+
         let offsetX = prevOffset.x
         let offsetY = prevOffset.y
+
         if (canDrag.x) {
+            const offsetX =  prevOffset.x + dragStart.x - x
+            if (tableRef.current) {
+                tableRef.current.scrollLeft = offsetX
+            }
+            /*
             const newOffsetX = x - dragStart.x + prevOffset.x
             if (newOffsetX < 0) {
                 if (newOffsetX > maxOffset.x) {
@@ -77,11 +86,18 @@ const ModControl = () => {
                 }
             } else {
                 offsetX = 0
-            }
+            }*/
         }
         if (canDrag.y) {
-            const newOffsetY = y - dragStart.y + prevOffset.y
-            if (newOffsetY < 0) {
+            offsetY = dragStart.y - y + prevOffset.y
+            console.log(offsetY, prevOffset.y)
+            if (tableRef.current) {
+                tableRef.current.scrollTop = offsetY
+            }
+            /**
+             const newOffsetY = y - dragStart.y + prevOffset.y
+
+             if (newOffsetY < 0) {
                 if (newOffsetY > maxOffset.y) {
                     offsetY = newOffsetY
                 } else {
@@ -90,6 +106,7 @@ const ModControl = () => {
             } else {
                 offsetY = 0
             }
+             */
         }
         setOffset({ x: offsetX, y: offsetY })
     }, [isDragging, canDrag, dragStart, prevOffset, maxOffset])
@@ -100,7 +117,7 @@ const ModControl = () => {
                 <div className="mod-ctrl__header__corner" ref={updateCornerSize}/>
                 <div className="mod-ctrl__header__sources-container">
                     <SourceLabels
-                        offset={offset}
+                        //offset={offset}
                         onMouseMove={onDrag}
                         onMouseDown={onMouseDown}
                     />
@@ -109,12 +126,12 @@ const ModControl = () => {
             <div className="mod-ctrl__content">
                 <div className="mod-ctrl__content__targets-container">
                     <TargetLabels
-                        offset={offset}
+                        // offset={offset}
                         onMouseMove={onDrag}
                         onMouseDown={onMouseDown}
                     />
                 </div>
-                <div className="mod-ctrl__content__amounts-container">
+                <div className="mod-ctrl__content__amounts-container" ref={tableRef}>
                     <AmountsTable
                         ref={updateAmountsTableSize}
                         offset={offset}
