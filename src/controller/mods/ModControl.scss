@@ -61,7 +61,7 @@
   &__sources {
     z-index: 2;
     position: relative;
-    display: flex;
+    display: inline-flex; // inline required to make contents grow the size of the div
     flex-direction: row;
   }
 
@@ -88,6 +88,7 @@
   }
 
   &__target {
+    display: inline-block; // required to make contents grow the size of the div
 
     &__label {
       height: $target-height;
@@ -107,6 +108,7 @@
   &__amounts-table {
     z-index: 1;
     position: relative;
+    display: inline-block; // required to make contents grow the size of the div
   }
 
   &__amount {

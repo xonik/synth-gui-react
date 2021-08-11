@@ -76,11 +76,11 @@ const ModControl = () => {
             if (newOffsetX < 0) {
                 offsetX = 0
             } else {
-                //if (newOffsetX < maxOffset.x) {
+                if (newOffsetX < maxOffset.x) {
                     offsetX = newOffsetX
-                //} else {
-                //    offsetX = maxOffset.x
-                //}
+                } else {
+                    offsetX = maxOffset.x
+                }
             }
 
             if (tableRef.current) {
