@@ -17,7 +17,8 @@ const getBounded = (value: number, max: number) => {
 }
 
 const ModControl = () => {
-
+// TODO: TRY
+//  https://stackoverflow.com/questions/41290824/synchronise-scroll-of-two-react-components-without-using-state-and-actions
     const [scrollSource, setScrollSource] = useState<string>('')
     const [startScroll, setStartScroll] = useState<Point>({ x: 0, y: 0 })
     const [isScrolling, setIsScrolling] = useState<boolean>(false)
