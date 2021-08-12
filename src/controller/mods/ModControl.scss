@@ -58,6 +58,7 @@
     flex-direction: row;
 
     &__targets-container {
+      border-right: $cell-border-width solid $cell-border-color;
       min-width: $targets-column-width;
       overflow: scroll;
       overflow-x: hidden;
@@ -108,7 +109,7 @@
     width: $targets-column-width;
     display: flex;
     flex-direction: column;
-    border-right: $cell-border-width solid $cell-border-color;
+
   }
 
   &__target {
