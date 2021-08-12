@@ -18,6 +18,9 @@ const getBounded = (value: number, max: number) => {
 
 const ModControl = () => {
 
+    const [scrollSource, setScrollSource] = useState<string>('')
+    const [startScroll, setStartScroll] = useState<Point>({ x: 0, y: 0 })
+    const [isScrolling, setIsScrolling] = useState<boolean>(false)
     const [currentScroll, setCurrentScroll] = useState<Point>({ x: 0, y: 0 })
     const [maxScroll, setMaxScroll] = useState<Point>()
 
@@ -54,14 +57,12 @@ const ModControl = () => {
                 return
             }
         }
-        if (amountsRef.current) {
-            setCurrentScroll({ x: amountsRef.current.scrollLeft, y: amountsRef.current.scrollTop })
-        }
+        setStartScroll(currentScroll)
         setDragStart({ x, y })
         setCanDrag({ x: dragX, y: dragY })
         setIsDragging(true)
 
-    }, [amountsTableSize, cornerSize, containerSize, maxScroll, calcMaxScroll])
+    }, [amountsTableSize, currentScroll, cornerSize, containerSize, maxScroll, calcMaxScroll])
 
     const onMouseUp = useCallback(() => {
         if (isDragging) {
@@ -81,70 +82,69 @@ const ModControl = () => {
         if (!isDragging || !maxScroll) {
             return
         }
+        setScrollSource('drag')
+        const newScroll = {
+            x: startScroll.x,
+            y: startScroll.y,
+        }
 
         if (canDrag.x) {
-            const scrollX = getBounded(currentScroll.x + dragStart.x - x, maxScroll.x)
+            newScroll.x = getBounded(startScroll.x + dragStart.x - x, maxScroll.x)
 
-            if (amountsRef.current) {
-                amountsRef.current.scrollLeft = scrollX
-            }
-            if (sourcesRef.current) {
-                sourcesRef.current.scrollLeft = scrollX
-            }
         }
         if (canDrag.y) {
-            const scrollY = getBounded(dragStart.y - y + currentScroll.y, maxScroll.y)
-
-            if (amountsRef.current) {
-                amountsRef.current.scrollTop = scrollY
-            }
-            if (targetsRef.current) {
-                targetsRef.current.scrollTop = scrollY
-            }
+            newScroll.y = getBounded(dragStart.y - y + startScroll.y, maxScroll.y)
         }
-    }, [isDragging, canDrag, dragStart, currentScroll, maxScroll])
+        setCurrentScroll(newScroll)
 
-    const updateScrollFromSource = useCallback((e: React.UIEvent<HTMLDivElement>) => {
-        if (!isDragging) {
+    }, [isDragging, canDrag, dragStart, startScroll, maxScroll])
+
+    useEffect(() => {
+        if (scrollSource !== 'amounts' && amountsRef.current) {
+            amountsRef.current.scrollLeft = currentScroll.x
+            amountsRef.current.scrollTop = currentScroll.y
+        }
+        if (scrollSource !== 'sources' && sourcesRef.current) {
+            sourcesRef.current.scrollLeft = currentScroll.x
+        }
+        if (scrollSource !== 'targets' && targetsRef.current) {
+            targetsRef.current.scrollTop = currentScroll.y
+        }
+        setIsScrolling(false)
+    }, [currentScroll, scrollSource])
+
+    const updateScrollFromSources = useCallback((e: React.UIEvent<HTMLDivElement>) => {
+        if (!isDragging && !isScrolling) {
+            setIsScrolling(true)
+            setScrollSource('sources')
             setCurrentScroll({
                 x: e.currentTarget.scrollLeft,
                 y: currentScroll.y
             })
-
-            if (amountsRef.current) {
-                amountsRef.current.scrollLeft = e.currentTarget.scrollLeft
-            }
         }
-    }, [isDragging, currentScroll.y])
+    }, [isDragging, isScrolling, currentScroll.y])
 
-    const updateScrollFromTarget = useCallback((e: React.UIEvent<HTMLDivElement>) => {
-        if (!isDragging) {
+    const updateScrollFromTargets = useCallback((e: React.UIEvent<HTMLDivElement>) => {
+        if (!isDragging && !isScrolling) {
+            setIsScrolling(true)
+            setScrollSource('targets')
             setCurrentScroll({
                 x: currentScroll.x,
                 y: e.currentTarget.scrollTop,
             })
-
-            if (amountsRef.current) {
-                amountsRef.current.scrollTop = e.currentTarget.scrollTop
-            }
         }
-    }, [isDragging, currentScroll.x])
+    }, [isDragging, isScrolling, currentScroll.x])
 
     const updateScrollFromAmounts = useCallback((e: React.UIEvent<HTMLDivElement>) => {
-        if (!isDragging) {
+        if (!isDragging && !isScrolling) {
+            setIsScrolling(true)
+            setScrollSource('amounts')
             setCurrentScroll({
                 x: e.currentTarget.scrollLeft,
                 y: e.currentTarget.scrollTop,
             })
-
-            if (sourcesRef.current) {
-                sourcesRef.current.scrollLeft = e.currentTarget.scrollLeft
-            }
-            if (targetsRef.current) {
-                targetsRef.current.scrollTop = e.currentTarget.scrollTop
-            }
         }
-    }, [isDragging])
+    }, [isDragging, isScrolling])
 
     return (
         <div className="mod-ctrl" ref={updateContainerSize}>
@@ -152,7 +152,7 @@ const ModControl = () => {
                 <div className="mod-ctrl__header__corner" ref={updateCornerSize}/>
                 <div className="mod-ctrl__header__sources-container"
                      ref={sourcesRef}
-                     onScroll={updateScrollFromSource}>
+                     onScroll={updateScrollFromSources}>
                     <SourceLabels
                         onMouseMove={onDrag}
                         onMouseDown={onMouseDown}
@@ -162,7 +162,7 @@ const ModControl = () => {
             <div className="mod-ctrl__content">
                 <div className="mod-ctrl__content__targets-container"
                      ref={targetsRef}
-                     onScroll={updateScrollFromTarget}>
+                     onScroll={updateScrollFromTargets}>
                     <TargetLabels
                         onMouseMove={onDrag}
                         onMouseDown={onMouseDown}
