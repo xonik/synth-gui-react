@@ -18,24 +18,27 @@ const getBounded = (value: number, max: number) => {
 
 const ModControl = () => {
 
-    const [offset, setOffset] = useState<Point>({ x: 0, y: 0 })
-    const [prevOffset, setPrevOffset] = useState<Point>({ x: 0, y: 0 })
+    const [currentScroll, setCurrentScroll] = useState<Point>({ x: 0, y: 0 })
+    const [maxScroll, setMaxScroll] = useState<Point>()
 
     const [isDragging, setIsDragging] = useState(false)
     const [dragStart, setDragStart] = useState<Point>({ x: 0, y: 0 })
-    const [canDrag, setCanDrag] = useState<{ x: boolean, y: boolean }>({ x: false, y: false })
 
-    const [maxOffset, setMaxOffset] = useState<Point>()
+    const [canDrag, setCanDrag] = useState<{ x: boolean, y: boolean }>({ x: false, y: false })
     const [amountsTableSize, updateAmountsTableSize] = useDimensions()
     const [containerSize, updateContainerSize] = useDimensions()
     const [cornerSize, updateCornerSize] = useDimensions()
 
-    const calcMaxOffset = useCallback(() => {
+    const sourcesRef = useRef<HTMLDivElement>(null)
+    const targetsRef = useRef<HTMLDivElement>(null)
+    const amountsRef = useRef<HTMLDivElement>(null)
+
+    const calcMaxScroll = useCallback(() => {
         if (containerSize && cornerSize && amountsTableSize) {
             const amountsContainerHeight = containerSize.h - cornerSize.h
             const amountsContainerWidth = containerSize.w - cornerSize.w
 
-            setMaxOffset({
+            setMaxScroll({
                 y: amountsTableSize.h - amountsContainerHeight,
                 x: amountsTableSize.w - amountsContainerWidth
             })
@@ -44,26 +47,29 @@ const ModControl = () => {
     }, [containerSize, cornerSize, amountsTableSize])
 
     const onMouseDown = useCallback((x: number, y: number, dragX: boolean, dragY: boolean) => {
-        if (!maxOffset) {
+        if (!maxScroll) {
             if (containerSize && cornerSize && amountsTableSize) {
-                calcMaxOffset()
+                calcMaxScroll()
             } else {
                 return
             }
+        }
+        if(amountsRef.current){
+            setCurrentScroll({ x: amountsRef.current.scrollLeft, y: amountsRef.current.scrollTop })
         }
         setDragStart({ x, y })
         setCanDrag({ x: dragX, y: dragY })
         setIsDragging(true)
 
-    }, [amountsTableSize, cornerSize, containerSize, maxOffset, calcMaxOffset])
+    }, [amountsTableSize, cornerSize, containerSize, maxScroll, calcMaxScroll])
 
     const onMouseUp = useCallback(() => {
         if (isDragging) {
             setIsDragging(false)
-            setPrevOffset({ x: offset.x, y: offset.y })
         }
-    }, [isDragging, setIsDragging, offset])
+    }, [isDragging, setIsDragging])
 
+    // captures mouse up even if mouse is no longer on top of display
     useEffect(() => {
         window.addEventListener('mouseup', onMouseUp)
         return () => {
@@ -71,41 +77,33 @@ const ModControl = () => {
         }
     }, [onMouseUp])
 
-    const sourcesRef = useRef<HTMLDivElement>(null)
-    const targetsRef = useRef<HTMLDivElement>(null)
-    const amountsRef = useRef<HTMLDivElement>(null)
-
     const onDrag = useCallback((x: number, y: number) => {
-        if (!isDragging || !maxOffset) {
+        if (!isDragging || !maxScroll) {
             return
         }
 
-        let offsetX = prevOffset.x
-        let offsetY = prevOffset.y
-
         if (canDrag.x) {
-            offsetX = getBounded(prevOffset.x + dragStart.x - x, maxOffset.x)
+            const scrollX = getBounded(currentScroll.x + dragStart.x - x, maxScroll.x)
 
             if (amountsRef.current) {
-                amountsRef.current.scrollLeft = offsetX
+                amountsRef.current.scrollLeft = scrollX
             }
             if (sourcesRef.current) {
-                sourcesRef.current.scrollLeft = offsetX
+                sourcesRef.current.scrollLeft = scrollX
             }
 
         }
         if (canDrag.y) {
-            offsetY = getBounded(dragStart.y - y + prevOffset.y, maxOffset.y)
+            const scrollY = getBounded(dragStart.y - y + currentScroll.y, maxScroll.y)
 
             if (amountsRef.current) {
-                amountsRef.current.scrollTop = offsetY
+                amountsRef.current.scrollTop = scrollY
             }
             if (targetsRef.current) {
-                targetsRef.current.scrollTop = offsetY
+                targetsRef.current.scrollTop = scrollY
             }
         }
-        setOffset({ x: offsetX, y: offsetY })
-    }, [isDragging, canDrag, dragStart, prevOffset, maxOffset])
+    }, [isDragging, canDrag, dragStart, currentScroll, maxScroll])
 
     return (
         <div className="mod-ctrl" ref={updateContainerSize}>
