@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { FC, useRef, useState } from 'react'
-import { ScrollConfig } from './ScrollSyncNode'
-import { Simulate } from 'react-dom/test-utils'
+import { LockAxis, ScrollConfig } from './ScrollSyncNode'
 
 export interface ScrollSyncProps {
     children: React.ReactNode;
@@ -19,7 +18,7 @@ interface RecordMap<T> {
 /**
  * node should be scrollable
  */
-type Node = (EventTarget & HTMLElement) | null;
+export type Node = (EventTarget & HTMLElement) | null;
 
 /**
  * node should be scrollable
@@ -41,9 +40,9 @@ interface ScrollingSyncerContextValues {
     /**
      * scroll handler for each node.onScroll
      */
-    onScroll: (e: React.UIEvent<HTMLElement>, groups: string[]) => void;
+    onScroll: (e: React.UIEvent<HTMLElement>, groups: string[], lockAxis: LockAxis) => void;
 
-    onDrag: (dragElementId: string) => void;
+    onDrag: (dragNode: Node) => void;
 }
 
 /**
@@ -54,9 +53,10 @@ export const ScrollingSyncerContext: React.Context<ScrollingSyncerContextValues>
     },
     unregisterNode: (_node: SyncableElement, _group: string[]) => {
     },
-    onScroll: (_e, _groups: string[]) => {
+    onScroll: (_e, _groups: string[], _lockAxis: LockAxis) => {
     },
-    onDrag: (dragElementId: string) => {},
+    onDrag: (dragNode: Node) => {
+    },
 })
 
 /**
@@ -73,7 +73,7 @@ export const ScrollSync: FC<ScrollSyncProps> = props => {
      *  groupC: [node1, node4],
      * }
      */
-    const nodesRef = useRef<RecordMap<SyncableElement[]>>({})
+    const nodesRef = useRef<RecordMap<(SyncableElement)[]>>({})
     const elements = nodesRef.current
     /**
      * A simple trick to avoid calling `requestAnimationFrame` before the frame is painted, to enhance performance!
@@ -115,14 +115,14 @@ export const ScrollSync: FC<ScrollSyncProps> = props => {
      * @param node to be registred
      * @param groups to wich groups the node should be registered
      */
-    const registerNode = (element: SyncableElement, groups: string[]) => {
+    const registerNode = (node: SyncableElement, groups: string[]) => {
         groups.forEach(group => {
             const groupExists = findGroup(group)
             if (!groupExists) {
                 elements[group] = []
             }
 
-            elements[group].push({ ...element })
+            elements[group].push({ ...node })
         })
     }
 
@@ -152,33 +152,40 @@ export const ScrollSync: FC<ScrollSyncProps> = props => {
      * @param scrolledNode !!
      * @param node other node to be scroll-synced
      */
-    const syncScrollPosition = (scrolledNode: Node, node: Node) => {
+    const syncScrollPosition = (scrolledNode: Node, node: Node, lockAxis: LockAxis) => {
         if (!scrolledNode || !node) {
             return
         }
 
-        const { scrollTop, scrollHeight, offsetHeight, scrollLeft, scrollWidth, offsetLeft, offsetWidth } = scrolledNode
-        console.log('set pos from', scrolledNode.id, node.id)
-        node.scrollLeft = scrollLeft
-        node.scrollTop = scrollTop
+        const { scrollTop, scrollLeft } = scrolledNode
+        if (!lockAxis?.includes('X')) {
+            node.scrollLeft = scrollLeft
+        }
+        if (!lockAxis?.includes('Y')) {
+            node.scrollTop = scrollTop
+        }
+
     }
 
-    const [draggedElementId, setDraggedElementId] = useState<string>('')
+    const [draggedNode, setDraggedNode] = useState<Node>(null)
 
     /**
      * We sync all other nodes in the registered groups
      * @param scrolledNode !!
      * @param groups groups to be scroll-synced
+     * @param lockAxis axis that should not be synced
      */
-    const syncScrollPositions = (scrolledNode: Node, groups: string[]) => {
-        if(scrolledNode?.id !== draggedElementId) return;
+    const syncScrollPositions = (scrolledNode: Node, groups: string[], lockAxis: LockAxis) => {
+        if (scrolledNode !== draggedNode) {
+            return
+        }
         groups.forEach(group => {
             elements[group].forEach(element => {
                 /* For all nodes other than the currently scrolled one */
                 if (scrolledNode !== element.node) {
                     const isEnabled = element.scroll === 'two-way'
                     const isSynced = element.scroll === 'synced-only';
-                    (isEnabled || isSynced) && syncScrollPosition(scrolledNode, element.node)
+                    (isEnabled || isSynced) && syncScrollPosition(scrolledNode, element.node, lockAxis)
                 }
             })
         })
@@ -191,11 +198,12 @@ export const ScrollSync: FC<ScrollSyncProps> = props => {
      *
      * @param node node to be scrolled
      * @param groups groups to be scroll-synced
+     * @param lockAxis axis that should not be synced
      */
-    const handleNodeScroll = (node: Node, groups: string[]) => {
+    const handleNodeScroll = (node: Node, groups: string[], lockAxis: LockAxis) => {
         if (shouldPaintFrame) {
             window.requestAnimationFrame(() => {
-                syncScrollPositions(node, groups)
+                syncScrollPositions(node, groups, lockAxis)
                 shouldPaintFrame = true
             })
             shouldPaintFrame = false
@@ -207,8 +215,8 @@ export const ScrollSync: FC<ScrollSyncProps> = props => {
             value={{
                 registerNode,
                 unregisterNode,
-                onScroll: (e, groups) => !props.disabled && handleNodeScroll(e.currentTarget, groups),
-                onDrag: (dragElementId: string) => setDraggedElementId(dragElementId)
+                onScroll: (e, groups, lockAxis: LockAxis) => !props.disabled && handleNodeScroll(e.currentTarget, groups, lockAxis),
+                onDrag: (dragNode: Node) => setDraggedNode(dragNode)
             }}
         >
             {React.Children.only(props.children)}

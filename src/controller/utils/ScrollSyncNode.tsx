@@ -2,6 +2,7 @@ import React, { forwardRef, useCallback, useContext, useEffect, useRef, useState
 import { ScrollingSyncerContext } from './ScrollSync'
 import { getMovingAxis, toArray } from './utils'
 import { Point } from '../../utils/types'
+import { useDrag } from '../../hooks'
 
 /**
  * ScrollSyncNode Component
@@ -27,21 +28,11 @@ interface ScrollSyncNodeProps {
     /**
      * Prevent scroll on current node if axis is locked
      */
-    selfLockAxis?: LockAxis;
+    lockAxis?: LockAxis;
     /**
      * Callback for scroll handling
      */
     onScroll?: (e: React.UIEvent<HTMLElement>) => void;
-}
-
-const getBounded = (value: number, max: number) => {
-    if (value < 0) {
-        return 0
-    }
-    if (value < max) {
-        return value
-    }
-    return max
 }
 
 const ScrollSyncNode: React.ForwardRefExoticComponent<ScrollSyncNodeProps &
@@ -51,7 +42,7 @@ const ScrollSyncNode: React.ForwardRefExoticComponent<ScrollSyncNodeProps &
             children,
             group = 'default',
             scroll = 'two-way',
-            selfLockAxis = null,
+            lockAxis = null,
             onScroll: onNodeScroll = () => undefined,
         } = props
 
@@ -65,30 +56,30 @@ const ScrollSyncNode: React.ForwardRefExoticComponent<ScrollSyncNodeProps &
             }
         }, [forwardedRef])
 
-        const applySelfLockAxis = (event: WheelEvent) => {
+        const applyLockAxis = (event: WheelEvent) => {
             const movingAxis = getMovingAxis(event)
-            if (selfLockAxis === 'X' && movingAxis === 'X') {
+            if (lockAxis === 'X' && movingAxis === 'X') {
                 event.preventDefault()
-            } else if (selfLockAxis === 'Y' && movingAxis === 'Y') {
+            } else if (lockAxis === 'Y' && movingAxis === 'Y') {
                 event.preventDefault()
-            } else if (selfLockAxis === 'XY' && (movingAxis === 'XY' || movingAxis === 'X' || movingAxis === 'Y')) {
+            } else if (lockAxis === 'XY' && (movingAxis === 'XY' || movingAxis === 'X' || movingAxis === 'Y')) {
                 event.preventDefault()
             }
         }
 
         useEffect(() => {
-            const syncableElement = { node: ref.current, scroll }
+            const syncableElement = { node: ref.current, scroll, lockAxis }
             if (syncableElement) {
                 registerNode(syncableElement, toArray(group))
             }
 
-            ref.current?.addEventListener('wheel', applySelfLockAxis, { passive: false })
+            ref.current?.addEventListener('wheel', applyLockAxis, { passive: false })
 
             return () => {
                 unregisterNode(syncableElement, toArray(group))
-                ref.current?.removeEventListener('wheel', applySelfLockAxis)
+                ref.current?.removeEventListener('wheel', applyLockAxis)
             }
-        }, [applySelfLockAxis, group, registerNode, unregisterNode, scroll])
+        }, [applyLockAxis, group, registerNode, unregisterNode, scroll])
 
         useEffect(() => {
             const syncableElement = { node: ref.current, scroll }
@@ -101,108 +92,27 @@ const ScrollSyncNode: React.ForwardRefExoticComponent<ScrollSyncNodeProps &
         const isSyncer = scroll === 'syncer-only'
         const isEnabled = scroll === 'two-way'
 
-        const [startScroll, setStartScroll] = useState<Point>({ x: 0, y: 0 })
-        const [isDragging, setIsDragging] = useState(false)
-        const [dragStart, setDragStart] = useState<Point>({ x: 0, y: 0 })
-        const [maxScroll, setMaxScroll] = useState<Point>()
-
-        const calcMaxScroll = useCallback(() => {
-            if (ref.current) {
-                const {
-                    clientHeight,
-                    clientWidth,
-                    scrollHeight,
-                    scrollWidth,
-                } = ref.current
-
-                console.log({
-                    clientHeight,
-                    clientWidth,
-                    scrollHeight,
-                    scrollWidth,
-                })
-
-                setMaxScroll({
-                    y: scrollHeight - clientHeight,
-                    x: scrollWidth - clientWidth
-                })
-            }
-        }, [])
-
-        const onMouseUp = useCallback(() => {
-            if (isDragging) {
-                setIsDragging(false)
-            }
-        }, [isDragging, setIsDragging])
-
-        // captures mouse up even if mouse is no longer on top of display
-        useEffect(() => {
-            window.addEventListener('mouseup', onMouseUp)
-            return () => {
-                window.removeEventListener('mouseup', onMouseUp)
-            }
-        }, [onMouseUp])
+        const {onMouseDown,onMouseMove} = useDrag(lockAxis, ref, onDrag);
 
         return React.cloneElement(children, {
             ref,
             onScroll: (e: React.UIEvent<HTMLElement>) => {
                 e.persist()
                 if (isSyncer || isEnabled) {
-                    onScroll(e, toArray(group))
+                    onScroll(e, toArray(group), lockAxis)
                     onNodeScroll(e)
                 }
             },
             onWheel: (e: React.UIEvent<HTMLElement>) => {
                 e.persist()
                 if (isSyncer || isEnabled) {
-                    onScroll(e, toArray(group))
-                    onDrag(e.currentTarget.id)
+                    onScroll(e, toArray(group), lockAxis)
+                    onDrag(e.currentTarget)
                     onNodeScroll(e)
                 }
             },
-            onMouseDown: (event: React.MouseEvent<HTMLDivElement>) => {
-                if (event.preventDefault) {
-                    event.preventDefault()
-                }
-                if (!maxScroll) {
-                    calcMaxScroll()
-                }
-                setStartScroll({
-                    x: ref.current?.scrollLeft || 0,
-                    y: ref.current?.scrollTop || 0,
-                })
-                setDragStart({ x: event.clientX, y: event.clientY })
-                setIsDragging(true)
-            },
-            onMouseMove: (event: React.MouseEvent<HTMLDivElement>) => {
-                if (event.preventDefault) {
-                    event.preventDefault()
-                }
-                if (!isDragging || !maxScroll) {
-                    return
-                }
-                onDrag(event.currentTarget.id)
-
-                const x = event.clientX
-                const y = event.clientY
-
-                const newScroll = {
-                    x: startScroll.x,
-                    y: startScroll.y,
-                }
-
-                if (true /*canDrag.x*/) {
-                    newScroll.x = getBounded(startScroll.x + dragStart.x - x, maxScroll.x)
-                }
-                if (true /*canDrag.y*/) {
-                    newScroll.y = getBounded(dragStart.y - y + startScroll.y, maxScroll.y)
-                }
-
-                if(ref.current) {
-                    ref.current.scrollLeft = newScroll.x
-                    ref.current.scrollTop = newScroll.y
-                }
-            }
+            onMouseDown: onMouseDown,
+            onMouseMove: onMouseMove,
         })
     },
 )

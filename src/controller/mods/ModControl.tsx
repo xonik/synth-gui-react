@@ -13,20 +13,20 @@ const ModControl = () => {
                 <>
                     <div className="mod-ctrl__header">
                         <div className="mod-ctrl__header__corner"/>
-                        <ScrollSyncNode>
-                            <div className="mod-ctrl__header__sources-container" id="mod-src">
+                        <ScrollSyncNode lockAxis="Y">
+                            <div className="mod-ctrl__header__sources-container">
                                 <SourceLabels/>
                             </div>
                         </ScrollSyncNode>
                     </div>
                     <div className="mod-ctrl__content">
-                        <ScrollSyncNode>
-                            <div className="mod-ctrl__content__targets-container" id="mod-trg">
+                        <ScrollSyncNode lockAxis="X">
+                            <div className="mod-ctrl__content__targets-container">
                                 <TargetLabels/>
                             </div>
                         </ScrollSyncNode>
                         <ScrollSyncNode>
-                            <div className="mod-ctrl__content__amounts-container" id="mod-amt">
+                            <div className="mod-ctrl__content__amounts-container">
                                 <AmountsTable/>
                             </div>
                         </ScrollSyncNode>
