@@ -1,31 +1,17 @@
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectGuiTargetGroup } from '../../synthcore/modules/mods/modsReducer'
 import { modTarget } from '../../synthcore/modules/mods/utils'
-import React, { useCallback } from 'react'
+import React from 'react'
 import { DraggableElementProps } from './types'
 
 const TargetLabels = ({ onMouseDown, onMouseMove }: DraggableElementProps) => {
     const targetGroupId = useAppSelector(selectGuiTargetGroup)
     const targetGroup = modTarget.targets[targetGroupId]
 
-    const mouseDownHandler = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-        onMouseDown(event.clientX, event.clientY, false, true)
-        if (event.preventDefault) {
-            event.preventDefault()
-        }
-    }, [onMouseDown])
-
-    const mouseMoveHandler = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-        onMouseMove(event.clientX, event.clientY)
-        if (event.preventDefault) {
-            event.preventDefault()
-        }
-    }, [onMouseMove])
-
     return (
         <div className="mod-ctrl__targets"
-             onMouseDown={mouseDownHandler}
-             onMouseMove={mouseMoveHandler}>
+             onMouseDown={onMouseDown}
+             onMouseMove={onMouseMove}>
             {targetGroup.map((func, funcIndex) => {
                 return <div className="mod-ctrl__target" key={funcIndex}>
                     <div className="mod-ctrl__target__label mod-ctrl__target__label--group">

@@ -1,6 +1,6 @@
-import { Point } from '../../utils/types'
+import React from 'react'
 
 export interface DraggableElementProps {
-    onMouseDown: (x: number, y: number, dragX: boolean, dragY: boolean) => void
-    onMouseMove: (x: number, y: number) => void
+    onMouseDown?: (event: React.MouseEvent<HTMLDivElement>) => void
+    onMouseMove?: (event: React.MouseEvent<HTMLDivElement>) => void
 }

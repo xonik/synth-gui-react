@@ -1,5 +1,5 @@
 import { digitalModSources, modTarget } from '../../synthcore/modules/mods/utils'
-import React, { useCallback, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { DraggableElementProps } from './types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectGuiSource, selectGuiTargetFunc, selectGuiTargetGroup, selectGuiTargetParam, selectModValue } from '../../synthcore/modules/mods/modsReducer'
@@ -78,25 +78,11 @@ const AmountsTable = React.forwardRef<HTMLDivElement, DraggableElementProps>(
             })
         }, [selectedSource, selectedTargetFunc, selectedTargetParam])
 
-        const mouseDownHandler = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-            onMouseDown(event.clientX, event.clientY, true, true)
-            if (event.preventDefault) {
-                event.preventDefault()
-            }
-        }, [onMouseDown])
-
-        const mouseMoveHandler = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-            onMouseMove(event.clientX, event.clientY)
-            if (event.preventDefault) {
-                event.preventDefault()
-            }
-        }, [onMouseMove])
-
         return (
             <div className="mod-ctrl__amounts-table"
                  ref={tableRef}
-                 onMouseDown={mouseDownHandler}
-                 onMouseMove={mouseMoveHandler}>
+                 onMouseDown={onMouseDown}
+                 onMouseMove={onMouseMove}>
                 {targetGroup.map((func, funcIndex) => {
                     return <div className="mod-ctrl__target" key={funcIndex}>
                         <div className="mod-ctrl__amount" style={{ width: '100%' }}>
