@@ -156,7 +156,8 @@ export const envelopesSlice = createSlice({
         setEnv3Id: (state, { payload }: PayloadAction<Env3IdPayload>) => {
             state.ui.env3Id = payload.id
         },
-        // actions ony consumed by api
+
+        // actions only consumed by api
         toggleStageEnabled: (state, { payload }: PayloadAction<StagePayload>) => {
         },
         toggleInvert: (state, { payload }: PayloadAction<EnvPayload>) => {

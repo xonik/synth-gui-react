@@ -37,6 +37,12 @@ type GuiTargetParamPayload = {
     guiTargetParam: number;
 }
 
+type GuiSelectModPayload = {
+    guiSource: number;
+    guiTargetFunc: number;
+    guiTargetParam: number;
+}
+
 type ModValuePayload = {
     sourceId: number;
     targetId: number;
@@ -66,6 +72,9 @@ export const modsSlice = createSlice({
             state.modValues[payload.sourceId][payload.targetId] = payload.modValue
         },
 
+        // actions only consumed by api
+        setGuiMod: (state, { payload }: PayloadAction<GuiSelectModPayload>) => {
+        },
     }
 })
 
@@ -74,6 +83,7 @@ export const {
     setGuiTargetGroup,
     setGuiTargetFunc,
     setGuiTargetParam,
+    setGuiMod,
     setModValue
 } = modsSlice.actions
 

@@ -1,10 +1,11 @@
 import { digitalModSources, modTarget } from '../../synthcore/modules/mods/utils'
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { DraggableElementProps } from './types'
-import { useAppSelector } from '../../synthcore/hooks'
-import { selectGuiSource, selectGuiTargetFunc, selectGuiTargetGroup, selectGuiTargetParam, selectModValue } from '../../synthcore/modules/mods/modsReducer'
+import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
+import { setGuiMod, selectGuiSource, selectGuiTargetFunc, selectGuiTargetGroup, selectGuiTargetParam, selectModValue } from '../../synthcore/modules/mods/modsReducer'
 import classNames from 'classnames'
 import AmountBar from './AmountBar'
+import { Point } from '../../utils/types'
 
 interface RowProps {
     targetId: number
@@ -21,6 +22,8 @@ interface CellProps {
 }
 
 const AmountCell = ({ sourceIndex, funcIndex, paramIndex, sourceId, targetId }: CellProps) => {
+
+    const dispatch = useAppDispatch()
     const modValue = useAppSelector(selectModValue(sourceId, targetId))
     const selectedSource = useAppSelector(selectGuiSource)
     const selectedTargetFunc = useAppSelector(selectGuiTargetFunc)
@@ -36,6 +39,25 @@ const AmountCell = ({ sourceIndex, funcIndex, paramIndex, sourceId, targetId }: 
     const amtPercentage = Math.round(modValue * 100)
     const amountText = isSelectedCell || modValue !== 0 ? `${amtPercentage}` : '\u00A0'
 
+    const [clickPos, setClickPos] = useState<Point>({x: 0, y: 0})
+
+    const onMouseDown = useCallback((event: React.MouseEvent<HTMLElement>) => {
+        setClickPos({
+            x: event.clientX,
+            y: event.clientY,
+        })
+    },[])
+
+    const onMouseUp = useCallback((event: React.MouseEvent<HTMLElement>) => {
+        if(event.clientX === clickPos?.x && event.clientY === clickPos?.y){
+            console.log('clocked')
+            dispatch(setGuiMod({
+                guiSource: sourceIndex,
+                guiTargetFunc: funcIndex,
+                guiTargetParam: paramIndex,
+            }))
+        }
+    },[clickPos])
 
     return <div className={classNames(
         'mod-ctrl__amount',
@@ -44,7 +66,7 @@ const AmountCell = ({ sourceIndex, funcIndex, paramIndex, sourceId, targetId }: 
             'mod-ctrl__amount--highlit-col': isSelectedCol,
             'mod-ctrl__amount--selected': isSelectedCell,
         }
-    )}><div className="mod-ctrl__amount__number">{amountText}</div>
+    )}><div className="mod-ctrl__amount__number" onMouseDown={onMouseDown} onMouseUp={onMouseUp}>{amountText}</div>
         <AmountBar amtPercentage={amtPercentage}/>
     </div>
 }
