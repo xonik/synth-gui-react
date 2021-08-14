@@ -50,7 +50,8 @@ const AmountsRow = ({ targetId, funcIndex, paramIndex }: RowProps) => {
             {digitalModSources
                 .map((source, sourceIndex) => {
 
-                    return <AmountCell sourceIndex={sourceIndex}
+                    return <AmountCell key={sourceIndex}
+                                       sourceIndex={sourceIndex}
                                        funcIndex={funcIndex}
                                        paramIndex={paramIndex}
                                        sourceId={source.id}

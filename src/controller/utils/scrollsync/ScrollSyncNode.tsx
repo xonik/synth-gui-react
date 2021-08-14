@@ -1,8 +1,7 @@
-import React, { forwardRef, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import React, { forwardRef, useContext, useEffect, useRef } from 'react'
 import { ScrollingSyncerContext } from './ScrollSync'
 import { getMovingAxis, toArray } from './utils'
-import { Point } from '../../utils/types'
-import { useDrag } from '../../hooks'
+import { useDrag } from '../../../hooks'
 
 /**
  * ScrollSyncNode Component
@@ -56,30 +55,33 @@ const ScrollSyncNode: React.ForwardRefExoticComponent<ScrollSyncNodeProps &
             }
         }, [forwardedRef])
 
-        const applyLockAxis = (event: WheelEvent) => {
-            const movingAxis = getMovingAxis(event)
-            if (lockAxis === 'X' && movingAxis === 'X') {
-                event.preventDefault()
-            } else if (lockAxis === 'Y' && movingAxis === 'Y') {
-                event.preventDefault()
-            } else if (lockAxis === 'XY' && (movingAxis === 'XY' || movingAxis === 'X' || movingAxis === 'Y')) {
-                event.preventDefault()
-            }
-        }
 
         useEffect(() => {
-            const syncableElement = { node: ref.current, scroll, lockAxis }
+            const applyLockAxis = (event: WheelEvent) => {
+                const movingAxis = getMovingAxis(event)
+                if (lockAxis === 'X' && movingAxis === 'X') {
+                    event.preventDefault()
+                } else if (lockAxis === 'Y' && movingAxis === 'Y') {
+                    event.preventDefault()
+                } else if (lockAxis === 'XY' && movingAxis !== null) {
+                    event.preventDefault()
+                }
+            }
+
+            const node = ref.current
+            const syncableElement = { node, scroll, lockAxis }
+
             if (syncableElement) {
                 registerNode(syncableElement, toArray(group))
             }
 
-            ref.current?.addEventListener('wheel', applyLockAxis, { passive: false })
+            node?.addEventListener('wheel', applyLockAxis, { passive: false })
 
             return () => {
                 unregisterNode(syncableElement, toArray(group))
-                ref.current?.removeEventListener('wheel', applyLockAxis)
+                node?.removeEventListener('wheel', applyLockAxis)
             }
-        }, [applyLockAxis, group, registerNode, unregisterNode, scroll])
+        }, [lockAxis, group, registerNode, unregisterNode, scroll])
 
         useEffect(() => {
             const syncableElement = { node: ref.current, scroll }
@@ -92,7 +94,7 @@ const ScrollSyncNode: React.ForwardRefExoticComponent<ScrollSyncNodeProps &
         const isSyncer = scroll === 'syncer-only'
         const isEnabled = scroll === 'two-way'
 
-        const {onMouseDown,onMouseMove} = useDrag(lockAxis, ref, onDrag);
+        const { onMouseDown, onMouseMove } = useDrag(lockAxis?.includes('X') || false, lockAxis?.includes('Y') || false, ref, onDrag)
 
         return React.cloneElement(children, {
             ref,
@@ -119,4 +121,4 @@ const ScrollSyncNode: React.ForwardRefExoticComponent<ScrollSyncNodeProps &
 
 ScrollSyncNode.displayName = 'ScrollSyncNode'
 
-export default ScrollSyncNode;
+export default ScrollSyncNode

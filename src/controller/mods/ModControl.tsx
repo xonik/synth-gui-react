@@ -2,8 +2,8 @@ import React from 'react'
 import SourceLabels from './SourceLabels'
 import TargetLabels from './TargetLabels'
 import AmountsTable from './AmountsTable'
-import ScrollSync from '../utils/ScrollSync'
-import ScrollSyncNode from '../utils/ScrollSyncNode'
+import ScrollSync from '../utils/scrollsync/ScrollSync'
+import ScrollSyncNode from '../utils/scrollsync/ScrollSyncNode'
 import './ModControl.scss'
 
 const ModControl = () => {

@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Dimension } from './types'
 import { Point } from './utils/types'
-import { LockAxis } from './controller/utils/ScrollSyncNode'
-import { Node } from './controller/utils/ScrollSync'
 
 const getBounded = (value: number, max: number) => {
     if (value < 0) {
@@ -26,9 +24,10 @@ export const useDimensions = (): [Dimension | undefined, (div: HTMLDivElement) =
 }
 
 export const useDrag = (
-    lockAxis: LockAxis,
+    lockX: boolean,
+    lockY: boolean,
     ref: React.RefObject<HTMLElement>,
-    onDrag: (dragNode: Node) => void
+    onDrag: (dragNode: HTMLElement) => void
 ) => {
     const [startScroll, setStartScroll] = useState<Point>({ x: 0, y: 0 })
     const [isDragging, setIsDragging] = useState(false)
@@ -90,16 +89,16 @@ export const useDrag = (
             y: startScroll.y,
         }
 
-        if (!lockAxis?.includes('X')) {
+        if (!lockX) {
             newScroll.x = getBounded(startScroll.x + dragStart.x - x, maxScroll.x)
         }
-        if (!lockAxis?.includes('Y')) {
+        if (!lockY) {
             newScroll.y = getBounded(dragStart.y - y + startScroll.y, maxScroll.y)
         }
 
         event.currentTarget.scrollLeft = newScroll.x
         event.currentTarget.scrollTop = newScroll.y
-    }, [dragStart.x, dragStart.y, isDragging, lockAxis, maxScroll, onDrag, startScroll.x, startScroll.y])
+    }, [dragStart.x, dragStart.y, isDragging, lockX, lockY, maxScroll, onDrag, startScroll.x, startScroll.y])
 
     // captures mouse up even if mouse is no longer on top of display
     useEffect(() => {
