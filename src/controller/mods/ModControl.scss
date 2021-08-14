@@ -3,7 +3,6 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 90%;
 
   $source-height: 1.5rem;
   $targets-column-width: 7rem;
@@ -13,12 +12,17 @@
   $source-padding-lr: 0.25rem;
 
   $amount-text-color: white;
-  $label-background: #666;
+  $amount-background-color: #1f1f1f;
+
+  $label-background: #333;
   $label-group-color: #333;
   $label-color: white;
   $label-group-background: #ddd;
   $cell-border-width: 1px;
-  $cell-border-color: #444;
+
+  $cell-border-color: #353535;
+  $label-cell-border-color: #222;
+
   $highlit-border-color: #ccc;
   $highlit-row-col-color: #505050;
   $highlit-cell-color: #666;
@@ -32,8 +36,8 @@
       flex: 0 0 $targets-column-width;
       background-color: $label-background;
       z-index: 3;
-      border-right: $cell-border-width solid $cell-border-color;
-      border-bottom: $cell-border-width solid $cell-border-color;
+      border-right: $cell-border-width solid $label-cell-border-color;
+      border-bottom: $cell-border-width solid $label-cell-border-color;
     }
 
     &__sources-container {
@@ -97,7 +101,7 @@
     width: $source-width;
     color: $label-color;
     background-color: $label-background;
-    border-right: $cell-border-width solid $cell-border-color;
+    border-right: $cell-border-width solid $label-cell-border-color;
     border-bottom: $cell-border-width solid $cell-border-color;
 
   }
@@ -113,10 +117,9 @@
 
   &__target {
     display: inline-block; // required to make contents grow the size of the div
-
     &__label {
       height: $target-height;
-      border-bottom: $cell-border-width solid $cell-border-color;
+      border-bottom: $cell-border-width solid $label-cell-border-color;
       color: $label-color;
       padding: 0.25rem 0.25rem 0.25rem 0.5rem;
       background-color: $label-background;
@@ -152,7 +155,7 @@
     min-width: $source-width;
     height: $target-height;
     padding: $target-padding-tb $source-padding-lr;
-    background-color: #333;
+    background-color: $amount-background-color;
     color: $amount-text-color;
 
     &__number {

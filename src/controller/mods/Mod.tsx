@@ -1,12 +1,12 @@
 import React from 'react'
-import ModHeader from './ModHeader'
+import ModValues from './ModValues'
 import ModControl from './ModControl'
 import ModPotLabels from './ModPotLabels'
 
 const Mod = () => {
     return <>
-        <ModHeader/>
         <ModControl/>
+        <ModValues/>
         <ModPotLabels/>
     </>
 }
