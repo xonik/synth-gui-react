@@ -22,12 +22,6 @@
   $highlit-row-col-color: #505050;
   $highlit-cell-color: #666;
 
-  &__amounts {
-    display: flex;
-    flex-direction: column;
-    background-color: cyan;
-  }
-
   &__header {
     display: flex;
     flex-direction: row;
@@ -130,13 +124,21 @@
     }
   }
 
-  &__amounts-table {
+  &__amounts {
     z-index: 1;
     position: relative;
     display: inline-block; // required to make contents grow the size of the div
   }
 
   &__amount {
+
+    &--header {
+      padding-left: 0;
+      padding-right: 0;
+      border-left: 0;
+      border-right: 0;
+    }
+
     border-right: $cell-border-width solid $cell-border-color;
     border-bottom: $cell-border-width solid $cell-border-color;
 

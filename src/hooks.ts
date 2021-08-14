@@ -41,7 +41,14 @@ export const useDrag = (
                 clientWidth,
                 scrollHeight,
                 scrollWidth,
+                offsetWidth
             } = ref.current
+
+            console.log({
+                scrollWidth,
+                clientWidth,
+                offsetWidth,
+            })
 
             setMaxScroll({
                 y: scrollHeight - clientHeight,

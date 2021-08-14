@@ -80,13 +80,13 @@ const AmountsTable = React.forwardRef<HTMLDivElement, DraggableElementProps>(
         }, [selectedSource, selectedTargetFunc, selectedTargetParam])
 
         return (
-            <div className="mod-ctrl__amounts-table"
+            <div className="mod-ctrl__amounts"
                  ref={tableRef}
                  onMouseDown={onMouseDown}
                  onMouseMove={onMouseMove}>
                 {targetGroup.map((func, funcIndex) => {
                     return <div className="mod-ctrl__target" key={funcIndex}>
-                        <div className="mod-ctrl__amount" style={{ width: '100%' }}>
+                        <div className="mod-ctrl__amount mod-ctrl__amount--header" style={{ width: '100%' }}>
                         </div>
                         {func.map((target, paramIndex) => {
                             return <AmountsRow
