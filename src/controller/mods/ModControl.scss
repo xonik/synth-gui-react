@@ -5,8 +5,9 @@
   width: 100%;
   height: 90%;
 
+  $source-height: 1.5rem;
   $targets-column-width: 7rem;
-  $target-height: 3rem;
+  $target-height: 2rem;
   $target-padding-tb: 0.25rem;
   $source-width: 7rem;
   $source-padding-lr: 0.25rem;
@@ -37,6 +38,7 @@
 
     &__sources-container {
       overflow: scroll;
+      overflow-y: hidden;
       &::-webkit-scrollbar {
         width: 0;  // Remove scrollbar space
         height: 0;
@@ -82,11 +84,14 @@
     position: relative;
     display: inline-flex; // inline required to make contents grow the size of the div
     flex-direction: row;
+    overflow-y: hidden;
   }
 
   &__source {
     display: flex;
     justify-content: center;
+    align-items: center;
+    height: $source-height;
 
     padding: 0 $source-padding-lr;
     width: $source-width;
