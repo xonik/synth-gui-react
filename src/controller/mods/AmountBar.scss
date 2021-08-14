@@ -1,0 +1,32 @@
+.amount-bar {
+
+  $pos-amt-color: green;
+  $neg-amt-color: red;
+  $amt-bar-height: 0.25rem;
+
+  display: flex;
+  width: 100%;
+
+  &__left{
+    display: flex;
+    justify-content: flex-end;
+    height: $amt-bar-height;
+    width: 50%;
+  }
+  &__right{
+    display: flex;
+    justify-content: flex-start;
+    height: $amt-bar-height;
+    width: 50%;
+  }
+  &__neg{
+    height: $amt-bar-height;
+    width: 25%;
+    background-color: $neg-amt-color;
+  }
+  &__pos{
+    height: $amt-bar-height;
+    width: 25%;
+    background-color: $pos-amt-color;
+  }
+}

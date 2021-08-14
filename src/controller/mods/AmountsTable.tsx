@@ -4,6 +4,7 @@ import { DraggableElementProps } from './types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectGuiSource, selectGuiTargetFunc, selectGuiTargetGroup, selectGuiTargetParam, selectModValue } from '../../synthcore/modules/mods/modsReducer'
 import classNames from 'classnames'
+import AmountBar from './AmountBar'
 
 interface RowProps {
     targetId: number
@@ -32,6 +33,10 @@ const AmountCell = ({ sourceIndex, funcIndex, paramIndex, sourceId, targetId }: 
     const isSelectedCol = isSource && !isTarget
     const isSelectedCell = isSource && isTarget
 
+    const amtPercentage = Math.round(modValue * 100)
+    const amountText = isSelectedCell || modValue !== 0 ? `${amtPercentage}` : '\u00A0'
+
+
     return <div className={classNames(
         'mod-ctrl__amount',
         {
@@ -39,7 +44,9 @@ const AmountCell = ({ sourceIndex, funcIndex, paramIndex, sourceId, targetId }: 
             'mod-ctrl__amount--highlit-col': isSelectedCol,
             'mod-ctrl__amount--selected': isSelectedCell,
         }
-    )}>{Math.round(modValue * 100)}%</div>
+    )}><div className="mod-ctrl__amount__number">{amountText}</div>
+        <AmountBar amtPercentage={amtPercentage}/>
+    </div>
 }
 
 

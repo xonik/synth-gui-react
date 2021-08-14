@@ -143,12 +143,20 @@
     border-bottom: $cell-border-width solid $cell-border-color;
 
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     min-width: $source-width;
     height: $target-height;
     padding: $target-padding-tb $source-padding-lr;
     background-color: #333;
     color: $amount-text-color;
+
+    &__number {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
 
     &--highlit-row {
       background-color: $highlit-row-col-color;
