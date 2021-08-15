@@ -1,11 +1,12 @@
 import { digitalModSources, modTarget } from '../../synthcore/modules/mods/utils'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { DraggableElementProps } from './types'
 import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import { setGuiMod, selectGuiSource, selectGuiTargetFunc, selectGuiTargetGroup, selectGuiTargetParam, selectModValue } from '../../synthcore/modules/mods/modsReducer'
 import classNames from 'classnames'
 import AmountBar from './AmountBar'
 import { Point } from '../../utils/types'
+import { ScrollingSyncNodeContext } from '../utils/scrollsync/ScrollSyncNode'
 
 interface RowProps {
     targetId: number
@@ -14,6 +15,7 @@ interface RowProps {
 }
 
 interface CellProps {
+    onSelected: (offsetLeft: number, offsetWidth: number) => void,
     sourceIndex: number
     funcIndex: number
     paramIndex: number
@@ -21,7 +23,7 @@ interface CellProps {
     targetId: number
 }
 
-const AmountCell = ({ sourceIndex, funcIndex, paramIndex, sourceId, targetId }: CellProps) => {
+const AmountCell = ({ sourceIndex, funcIndex, paramIndex, sourceId, targetId, onSelected }: CellProps) => {
 
     const dispatch = useAppDispatch()
     const modValue = useAppSelector(selectModValue(sourceId, targetId))
@@ -39,34 +41,51 @@ const AmountCell = ({ sourceIndex, funcIndex, paramIndex, sourceId, targetId }: 
     const amtPercentage = Math.round(modValue * 100)
     const amountText = isSelectedCell || modValue !== 0 ? `${amtPercentage}` : '\u00A0'
 
-    const [clickPos, setClickPos] = useState<Point>({x: 0, y: 0})
-
+    const [clickPos, setClickPos] = useState<Point>({ x: 0, y: 0 })
     const onMouseDown = useCallback((event: React.MouseEvent<HTMLElement>) => {
         setClickPos({
             x: event.clientX,
             y: event.clientY,
         })
-    },[])
+    }, [])
 
     const onMouseUp = useCallback((event: React.MouseEvent<HTMLElement>) => {
-        if(event.clientX === clickPos?.x && event.clientY === clickPos?.y){
-            console.log('clocked')
+        if (event.clientX === clickPos?.x && event.clientY === clickPos?.y) {
             dispatch(setGuiMod({
                 guiSource: sourceIndex,
                 guiTargetFunc: funcIndex,
                 guiTargetParam: paramIndex,
             }))
         }
-    },[clickPos])
+    }, [dispatch, sourceIndex, funcIndex, paramIndex, clickPos])
 
-    return <div className={classNames(
+    const cellRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if(isSelectedCell && cellRef.current){
+            const {
+                offsetWidth,
+                offsetLeft,
+            } = cellRef.current
+
+            onSelected(
+                offsetLeft,
+                offsetWidth,
+            )
+        }
+    }, [onSelected, isSelectedCell])
+
+
+
+    return <div ref={cellRef} className={classNames(
         'mod-ctrl__amount',
         {
             'mod-ctrl__amount--highlit-row': isSelectedRow,
             'mod-ctrl__amount--highlit-col': isSelectedCol,
             'mod-ctrl__amount--selected': isSelectedCell,
         }
-    )}><div className="mod-ctrl__amount__number" onMouseDown={onMouseDown} onMouseUp={onMouseUp}>{amountText}</div>
+    )}>
+        <div className="mod-ctrl__amount__number" onMouseDown={onMouseDown} onMouseUp={onMouseUp}>{amountText}</div>
         <AmountBar amtPercentage={amtPercentage}/>
     </div>
 }
@@ -74,8 +93,22 @@ const AmountCell = ({ sourceIndex, funcIndex, paramIndex, sourceId, targetId }: 
 
 const AmountsRow = ({ targetId, funcIndex, paramIndex }: RowProps) => {
 
+    const ref = useRef<HTMLDivElement>(null)
+    const { onScrollToElement } = useContext(ScrollingSyncNodeContext)
+
+    const onSelected = useCallback((offsetLeft: number, offsetWidth: number) => {
+        if(ref.current){
+            onScrollToElement(
+                offsetLeft,
+                ref.current.offsetTop,
+                offsetWidth,
+                ref.current.offsetHeight,
+            )
+        }
+    }, [onScrollToElement])
+
     return (
-        <div className="mod-ctrl__sources">
+        <div className="mod-ctrl__sources" ref={ref}>
             {digitalModSources
                 .map((source, sourceIndex) => {
 
@@ -85,6 +118,7 @@ const AmountsRow = ({ targetId, funcIndex, paramIndex }: RowProps) => {
                                        paramIndex={paramIndex}
                                        sourceId={source.id}
                                        targetId={targetId}
+                                       onSelected={onSelected}
                     />
                 })}
         </div>
@@ -97,16 +131,6 @@ const AmountsTable = React.forwardRef<HTMLDivElement, DraggableElementProps>(
     ) => {
         const targetGroupId = useAppSelector(selectGuiTargetGroup)
         const targetGroup = modTarget.targets[targetGroupId]
-
-        const selectedSource = useAppSelector(selectGuiSource)
-        const selectedTargetFunc = useAppSelector(selectGuiTargetFunc)
-        const selectedTargetParam = useAppSelector(selectGuiTargetParam)
-
-        useEffect(() => {
-            console.log('func change', {
-                selectedSource, selectedTargetFunc, selectedTargetParam
-            })
-        }, [selectedSource, selectedTargetFunc, selectedTargetParam])
 
         return (
             <div className="mod-ctrl__amounts"

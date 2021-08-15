@@ -66,7 +66,7 @@ export const modsSlice = createSlice({
             state.gui.targetParam = payload.guiTargetParam
         },
         setModValue: (state, { payload }: PayloadAction<ModValuePayload>) => {
-            if(!state.modValues[payload.sourceId]) {
+            if (!state.modValues[payload.sourceId]) {
                 state.modValues[payload.sourceId] = []
             }
             state.modValues[payload.sourceId][payload.targetId] = payload.modValue

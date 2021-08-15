@@ -41,14 +41,7 @@ export const useDrag = (
                 clientWidth,
                 scrollHeight,
                 scrollWidth,
-                offsetWidth
             } = ref.current
-
-            console.log({
-                scrollWidth,
-                clientWidth,
-                offsetWidth,
-            })
 
             setMaxScroll({
                 y: scrollHeight - clientHeight,
@@ -115,5 +108,27 @@ export const useDrag = (
         }
     }, [onMouseUp])
 
-    return {onMouseDown,onMouseMove}
+    return { onMouseDown, onMouseMove }
+}
+
+export const useClickDetector = (onClick: () => void) => {
+    const [clickPos, setClickPos] = useState<Point>({ x: 0, y: 0 })
+    const onMouseDown = useCallback((event: React.MouseEvent<HTMLElement>) => {
+        setClickPos({
+            x: event.clientX,
+            y: event.clientY,
+        })
+        if (onMouseDown) {
+            onMouseDown(event)
+        }
+    }, [])
+
+    const onMouseUp = useCallback((event: React.MouseEvent<HTMLElement>) => {
+        if (event.clientX === clickPos?.x && event.clientY === clickPos?.y) {
+            console.log('clocked')
+            onClick()
+        }
+    }, [onClick, clickPos])
+
+    return [onMouseDown, onMouseUp]
 }

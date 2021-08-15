@@ -4,6 +4,19 @@ import { modTarget } from '../../synthcore/modules/mods/utils'
 import React from 'react'
 import { DraggableElementProps } from './types'
 
+interface TargetLabelProps {
+    paramIndex: number,
+    label: string
+}
+
+const TargetLabel = ({ paramIndex, label }: TargetLabelProps) => {
+    return <div
+        className="mod-ctrl__target__label"
+        key={paramIndex}>
+        {label}
+    </div>
+}
+
 const TargetLabels = ({ onMouseDown, onMouseMove }: DraggableElementProps) => {
     const targetGroupId = useAppSelector(selectGuiTargetGroup)
     const targetGroup = modTarget.targets[targetGroupId]
@@ -17,13 +30,10 @@ const TargetLabels = ({ onMouseDown, onMouseMove }: DraggableElementProps) => {
                     <div className="mod-ctrl__target__label mod-ctrl__target__label--group">
                         {modTarget.funcProps[targetGroupId][funcIndex].label}
                     </div>
-                    {func.map((controller, ctrlIndex) =>
-                        <div
-                            className="mod-ctrl__target__label"
-                            key={ctrlIndex}>
-                            {controller.label}
-                        </div>
-                    )}
+                    {func.map((controller, paramIndex) => <TargetLabel
+                        label={controller.label}
+                        paramIndex={paramIndex}
+                    />)}
                 </div>
             })}
         </div>

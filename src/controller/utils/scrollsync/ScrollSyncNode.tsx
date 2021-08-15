@@ -1,4 +1,4 @@
-import React, { forwardRef, useContext, useEffect, useRef } from 'react'
+import React, { forwardRef, useCallback, useContext, useEffect, useRef } from 'react'
 import { ScrollingSyncerContext } from './ScrollSync'
 import { getMovingAxis, toArray } from './utils'
 import { useDrag } from '../../../hooks'
@@ -33,6 +33,24 @@ interface ScrollSyncNodeProps {
      */
     onScroll?: (e: React.UIEvent<HTMLElement>) => void;
 }
+
+interface ScrollingSyncNodeContextValues {
+    onScrollToElement: (
+        offsetLeft: number,
+        offsetTop: number,
+        offsetWidth: number,
+        offsetHeight: number
+    ) => void,
+}
+
+export const ScrollingSyncNodeContext: React.Context<ScrollingSyncNodeContextValues> = React.createContext({
+    onScrollToElement: (
+        offsetLeft: number,
+        offsetTop: number,
+        offsetWidth: number,
+        offsetHeight: number
+    ) => {},
+})
 
 const ScrollSyncNode: React.ForwardRefExoticComponent<ScrollSyncNodeProps &
     React.RefAttributes<EventTarget & HTMLElement>> = forwardRef<EventTarget & HTMLElement, ScrollSyncNodeProps>(
@@ -96,26 +114,45 @@ const ScrollSyncNode: React.ForwardRefExoticComponent<ScrollSyncNodeProps &
 
         const { onMouseDown, onMouseMove } = useDrag(lockAxis?.includes('X') || false, lockAxis?.includes('Y') || false, ref, onDrag)
 
-        return React.cloneElement(children, {
-            ref,
-            onScroll: (e: React.UIEvent<HTMLElement>) => {
-                e.persist()
-                if (isSyncer || isEnabled) {
-                    onScroll(e, toArray(group), lockAxis)
-                    onNodeScroll(e)
-                }
-            },
-            onWheel: (e: React.UIEvent<HTMLElement>) => {
-                e.persist()
-                if (isSyncer || isEnabled) {
-                    onScroll(e, toArray(group), lockAxis)
-                    onDrag(e.currentTarget)
-                    onNodeScroll(e)
-                }
-            },
-            onMouseDown: onMouseDown,
-            onMouseMove: onMouseMove,
-        })
+        const onScrollToElement = useCallback((
+            offsetLeft: number,
+            offsetTop: number,
+            offsetWidth: number,
+            offsetHeight: number
+        ) => {
+            if(ref.current){
+                ref.current.scrollTop = offsetTop
+                ref.current.scrollLeft = offsetLeft
+            }
+        }, [])
+
+        return (
+            <ScrollingSyncNodeContext.Provider
+                value={{
+                    onScrollToElement
+                }}>
+                {React.cloneElement(children, {
+                    ref,
+                    onScroll: (e: React.UIEvent<HTMLElement>) => {
+                        e.persist()
+                        if (isSyncer || isEnabled) {
+                            onScroll(e, toArray(group), lockAxis)
+                            onNodeScroll(e)
+                        }
+                    },
+                    onWheel: (e: React.UIEvent<HTMLElement>) => {
+                        e.persist()
+                        if (isSyncer || isEnabled) {
+                            onScroll(e, toArray(group), lockAxis)
+                            onDrag(e.currentTarget)
+                            onNodeScroll(e)
+                        }
+                    },
+                    onMouseDown: onMouseDown,
+                    onMouseMove: onMouseMove,
+                })}
+            </ScrollingSyncNodeContext.Provider>
+        )
     },
 )
 
