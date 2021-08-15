@@ -22,15 +22,15 @@ const setGuiMod = (
     guiTargetParam: number,
     source: ApiSource
 ) => {
-    dispatch(setGuiSourceAction({ guiSource }))
-    dispatch(setGuiTargetFuncAction({ guiTargetFunc }))
-    dispatch(setGuiTargetParamAction({ guiTargetParam }))
+    dispatch(setGuiSourceAction({ guiSource, source }))
+    dispatch(setGuiTargetFuncAction({ guiTargetFunc, source }))
+    dispatch(setGuiTargetParamAction({ guiTargetParam, source }))
 }
 
 const setGuiSource = (guiSource: number, source: ApiSource) => {
     const currSource = selectGuiSource(store.getState())
     if (guiSource !== currSource) {
-        dispatch(setGuiSourceAction({ guiSource }))
+        dispatch(setGuiSourceAction({ guiSource, source }))
     }
 }
 
@@ -43,9 +43,9 @@ const incrementGuiSource = (inc: number, source: ApiSource) => {
 const setGuiTargetGroup = (guiTargetGroup: number, source: ApiSource) => {
     const currTargetGroup = selectGuiTargetGroup(store.getState())
     if (guiTargetGroup !== currTargetGroup) {
-        dispatch(setGuiTargetFuncAction({ guiTargetFunc: 0 }))
-        dispatch(setGuiTargetParamAction({ guiTargetParam: 0 }))
-        dispatch(setGuiTargetGroupAction({ guiTargetGroup }))
+        dispatch(setGuiTargetFuncAction({ guiTargetFunc: 0, source }))
+        dispatch(setGuiTargetParamAction({ guiTargetParam: 0, source }))
+        dispatch(setGuiTargetGroupAction({ guiTargetGroup, source }))
     }
 }
 
@@ -58,8 +58,8 @@ const incrementGuiTargetGroup = (inc: number, source: ApiSource) => {
 const setGuiTargetFunc = (guiTargetFunc: number, source: ApiSource) => {
     const currTargetFunc = selectGuiTargetFunc(store.getState())
     if (guiTargetFunc !== currTargetFunc) {
-        dispatch(setGuiTargetParamAction({ guiTargetParam: 0 }))
-        dispatch(setGuiTargetFuncAction({ guiTargetFunc }))
+        dispatch(setGuiTargetParamAction({ guiTargetParam: 0, source }))
+        dispatch(setGuiTargetFuncAction({ guiTargetFunc, source }))
     }
 }
 
@@ -73,7 +73,7 @@ const incrementGuiTargetFunc = (inc: number, source: ApiSource) => {
 const setGuiTargetParam = (guiTargetParam: number, source: ApiSource) => {
     const currTargetParam = selectGuiTargetParam(store.getState())
     if (guiTargetParam !== currTargetParam) {
-        dispatch(setGuiTargetParamAction({ guiTargetParam }))
+        dispatch(setGuiTargetParamAction({ guiTargetParam, source }))
     }
 }
 

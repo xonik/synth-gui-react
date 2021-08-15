@@ -11,19 +11,19 @@ type EnvApiMapperType = {
 }
 
 const envApiMapper: EnvApiMapperType = {
-    [EnvControllerId.ENV_DELAY]: (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.DELAY, value, ApiSource.GUI),
-    [EnvControllerId.ENV_ATTACK]: (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.ATTACK, value, ApiSource.GUI),
-    [EnvControllerId.ENV_DECAY1]: (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.DECAY1, value, ApiSource.GUI),
-    [EnvControllerId.ENV_DECAY2]: (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.DECAY2, value, ApiSource.GUI),
-    [EnvControllerId.ENV_SUSTAIN]: (ctrlIndex: number, value: number) => envApi.incrementStageLevel(ctrlIndex, StageId.SUSTAIN, value, ApiSource.GUI),
-    [EnvControllerId.ENV_RELEASE1]: (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.RELEASE1, value, ApiSource.GUI),
-    [EnvControllerId.ENV_RELEASE2]: (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.RELEASE2, value, ApiSource.GUI),
-    [EnvControllerId.ENV_D2_LEVEL]: (ctrlIndex: number, value: number) => envApi.incrementStageLevel(ctrlIndex, StageId.DECAY2, value, ApiSource.GUI),
-    [EnvControllerId.ENV_R2_LEVEL]: (ctrlIndex: number, value: number) => envApi.incrementStageLevel(ctrlIndex, StageId.RELEASE2, value, ApiSource.GUI),
-    [EnvControllerId.ENV_SELECT_ENV3ID]: () => envApi.toggleEnv3Id(ApiSource.GUI),
-    [EnvControllerId.ENV_LOOP]: (ctrlIndex: number) => envApi.toggleLoopEnabled(ctrlIndex, ApiSource.GUI),
-    [EnvControllerId.ENV_TRIGGER]: (ctrlIndex: number) => envApi.trigger(ctrlIndex, ApiSource.GUI),
-    [EnvControllerId.ENV_INVERT]: (ctrlIndex: number) => envApi.toggleInvert(ctrlIndex, ApiSource.GUI)
+    [EnvControllerId.ENV_DELAY]: (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.DELAY, value, ApiSource.UI),
+    [EnvControllerId.ENV_ATTACK]: (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.ATTACK, value, ApiSource.UI),
+    [EnvControllerId.ENV_DECAY1]: (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.DECAY1, value, ApiSource.UI),
+    [EnvControllerId.ENV_DECAY2]: (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.DECAY2, value, ApiSource.UI),
+    [EnvControllerId.ENV_SUSTAIN]: (ctrlIndex: number, value: number) => envApi.incrementStageLevel(ctrlIndex, StageId.SUSTAIN, value, ApiSource.UI),
+    [EnvControllerId.ENV_RELEASE1]: (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.RELEASE1, value, ApiSource.UI),
+    [EnvControllerId.ENV_RELEASE2]: (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.RELEASE2, value, ApiSource.UI),
+    [EnvControllerId.ENV_D2_LEVEL]: (ctrlIndex: number, value: number) => envApi.incrementStageLevel(ctrlIndex, StageId.DECAY2, value, ApiSource.UI),
+    [EnvControllerId.ENV_R2_LEVEL]: (ctrlIndex: number, value: number) => envApi.incrementStageLevel(ctrlIndex, StageId.RELEASE2, value, ApiSource.UI),
+    [EnvControllerId.ENV_SELECT_ENV3ID]: () => envApi.toggleEnv3Id(ApiSource.UI),
+    [EnvControllerId.ENV_LOOP]: (ctrlIndex: number) => envApi.toggleLoopEnabled(ctrlIndex, ApiSource.UI),
+    [EnvControllerId.ENV_TRIGGER]: (ctrlIndex: number) => envApi.trigger(ctrlIndex, ApiSource.UI),
+    [EnvControllerId.ENV_INVERT]: (ctrlIndex: number) => envApi.toggleInvert(ctrlIndex, ApiSource.UI)
 }
 
 export const envMiddleware = (action: PayloadAction): void => {

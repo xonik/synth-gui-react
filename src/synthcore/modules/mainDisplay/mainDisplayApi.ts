@@ -48,28 +48,28 @@ const mainDisplayEnvApi = {
         //TODO Check current display page here
         const envId = selectCurrEnvId(store.getState())
         if (ctrlId === MainDisplayControllerIds.POT1) {
-            envApi.incrementCurrentEnvelope(step(increment), ApiSource.GUI)
+            envApi.incrementCurrentEnvelope(step(increment), ApiSource.UI)
         } else if (ctrlId === MainDisplayControllerIds.POT2) {
             const stageId = selectCurrStageId(store.getState())
             if (stageId !== StageId.STOPPED) {
-                envApi.incrementStageTime(envId, stageId, increment, ApiSource.GUI)
+                envApi.incrementStageTime(envId, stageId, increment, ApiSource.UI)
             }
         } else if (ctrlId === MainDisplayControllerIds.POT3) {
             const stageId = selectCurrStageId(store.getState())
             if (stageId !== StageId.STOPPED) {
-                envApi.incrementStageLevel(envId, stageId, increment, ApiSource.GUI)
+                envApi.incrementStageLevel(envId, stageId, increment, ApiSource.UI)
             }
         } else if (ctrlId === MainDisplayControllerIds.POT4) {
             const stageId = selectCurrStageId(store.getState())
             if (stageId !== StageId.STOPPED) {
-                envApi.incrementStageCurve(envId, stageId, step(increment), ApiSource.GUI)
+                envApi.incrementStageCurve(envId, stageId, step(increment), ApiSource.UI)
             }
         } else if (ctrlId === MainDisplayControllerIds.POT5) {
             const env = selectEnvelope(envId)(store.getState())
             if (env.loopMode !== LoopMode.COUNTED) {
                 return
             }
-            envApi.incrementMaxLoops(envId, step(increment), ApiSource.GUI)
+            envApi.incrementMaxLoops(envId, step(increment), ApiSource.UI)
         } else if (ctrlId === MainDisplayControllerIds.POT6) {
 
         }
@@ -79,15 +79,15 @@ const mainDisplayEnvApi = {
 const mainDisplayModsApi = {
     handleMainDisplayController: (ctrlId: MainDisplayControllerIds, increment: number) => {
         if (ctrlId === MainDisplayControllerIds.POT1) {
-            modsApi.incrementGuiSource(step(increment), ApiSource.GUI)
+            modsApi.incrementGuiSource(step(increment), ApiSource.UI)
         } else if (ctrlId === MainDisplayControllerIds.POT2) {
-            modsApi.incrementGuiTargetGroup(step(increment), ApiSource.GUI)
+            modsApi.incrementGuiTargetGroup(step(increment), ApiSource.UI)
         } else if (ctrlId === MainDisplayControllerIds.POT3) {
-            modsApi.incrementGuiTargetFunc(step(increment), ApiSource.GUI)
+            modsApi.incrementGuiTargetFunc(step(increment), ApiSource.UI)
         } else if (ctrlId === MainDisplayControllerIds.POT4) {
-            modsApi.incrementGuiTargetParam(step(increment), ApiSource.GUI)
+            modsApi.incrementGuiTargetParam(step(increment), ApiSource.UI)
         } else if (ctrlId === MainDisplayControllerIds.POT5) {
-            modsApi.incrementGuiModValue(increment, ApiSource.GUI)
+            modsApi.incrementGuiModValue(increment, ApiSource.UI)
         } else if (ctrlId === MainDisplayControllerIds.POT6) {
 
         }

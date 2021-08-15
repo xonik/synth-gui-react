@@ -5,6 +5,7 @@ export enum ControllerGroupIds {
 }
 
 export enum ApiSource {
+    UI,
     GUI,
     SPI,
     MIDI

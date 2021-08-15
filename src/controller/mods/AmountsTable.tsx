@@ -2,11 +2,12 @@ import { digitalModSources, modTarget } from '../../synthcore/modules/mods/utils
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { DraggableElementProps } from './types'
 import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
-import { setGuiMod, selectGuiSource, selectGuiTargetFunc, selectGuiTargetGroup, selectGuiTargetParam, selectModValue } from '../../synthcore/modules/mods/modsReducer'
+import { setGuiMod, selectGuiSource, selectGuiTargetFunc, selectGuiTargetGroup, selectGuiTargetParam, selectModValue, selectGuiLastModSelectSource } from '../../synthcore/modules/mods/modsReducer'
 import classNames from 'classnames'
 import AmountBar from './AmountBar'
 import { Point } from '../../utils/types'
 import { ScrollingSyncNodeContext } from '../utils/scrollsync/ScrollSyncNode'
+import { ApiSource } from '../../synthcore/types'
 
 interface RowProps {
     targetId: number
@@ -30,6 +31,7 @@ const AmountCell = ({ sourceIndex, funcIndex, paramIndex, sourceId, targetId, on
     const selectedSource = useAppSelector(selectGuiSource)
     const selectedTargetFunc = useAppSelector(selectGuiTargetFunc)
     const selectedTargetParam = useAppSelector(selectGuiTargetParam)
+    const modSelectSource = useAppSelector(selectGuiLastModSelectSource)
 
     const isTarget = paramIndex === selectedTargetParam && funcIndex === selectedTargetFunc
     const isSource = sourceIndex === selectedSource
@@ -62,7 +64,7 @@ const AmountCell = ({ sourceIndex, funcIndex, paramIndex, sourceId, targetId, on
     const cellRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        if(isSelectedCell && cellRef.current){
+        if(isSelectedCell && cellRef.current && modSelectSource === ApiSource.UI){
             const {
                 offsetWidth,
                 offsetLeft,
@@ -73,7 +75,7 @@ const AmountCell = ({ sourceIndex, funcIndex, paramIndex, sourceId, targetId, on
                 offsetWidth,
             )
         }
-    }, [onSelected, isSelectedCell])
+    }, [onSelected, isSelectedCell, modSelectSource])
 
 
 
