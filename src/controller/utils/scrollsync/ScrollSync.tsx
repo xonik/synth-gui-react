@@ -45,7 +45,7 @@ interface ScrollingSyncerContextValues {
      */
     onScroll: (e: React.UIEvent<HTMLElement>, groups: string[], lockAxis: LockAxis) => void;
 
-    onDrag: (dragNode: HTMLElement) => void;
+    setScrollSource: (dragNode: HTMLElement) => void;
 }
 
 /**
@@ -58,7 +58,7 @@ export const ScrollingSyncerContext: React.Context<ScrollingSyncerContextValues>
     },
     onScroll: (_e, _groups: string[], _lockAxis: LockAxis) => {
     },
-    onDrag: (dragNode: HTMLElement) => {
+    setScrollSource: (dragNode: HTMLElement) => {
     },
 })
 
@@ -157,7 +157,7 @@ export const ScrollSync: FC<ScrollSyncProps> = props => {
     }
 
     // Set to prevent circular updates of positions
-    const [draggedNode, setDraggedNode] = useState<Node>(null)
+    const [scrollSource, setScrollSource] = useState<Node>(null)
 
     /**
      * We sync all other nodes in the registered groups
@@ -166,7 +166,7 @@ export const ScrollSync: FC<ScrollSyncProps> = props => {
      * @param lockAxis axis that should not be synced
      */
     const syncScrollPositions = (scrolledNode: Node, groups: string[], lockAxis: LockAxis) => {
-        if (scrolledNode !== draggedNode) {
+        if (scrolledNode !== scrollSource) {
             return
         }
         groups.forEach(group => {
@@ -203,7 +203,7 @@ export const ScrollSync: FC<ScrollSyncProps> = props => {
                 registerNode,
                 unregisterNode,
                 onScroll: (e, groups, lockAxis: LockAxis) => !props.disabled && handleNodeScroll(e.currentTarget, groups, lockAxis),
-                onDrag: (draggedNode: HTMLElement) => setDraggedNode(draggedNode)
+                setScrollSource: (scrollSource: HTMLElement) => setScrollSource(scrollSource)
             }}>
             {React.Children.only(props.children)}
         </ScrollingSyncerContext.Provider>

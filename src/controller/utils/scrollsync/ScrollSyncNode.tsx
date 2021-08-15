@@ -63,7 +63,7 @@ const ScrollSyncNode: React.ForwardRefExoticComponent<ScrollSyncNodeProps &
             onScroll: onNodeScroll = () => undefined,
         } = props
 
-        const { registerNode, unregisterNode, onScroll, onDrag } = useContext(ScrollingSyncerContext)
+        const { registerNode, unregisterNode, onScroll, setScrollSource } = useContext(ScrollingSyncerContext)
 
         const ref = useRef<EventTarget & HTMLElement>(null)
 
@@ -112,7 +112,7 @@ const ScrollSyncNode: React.ForwardRefExoticComponent<ScrollSyncNodeProps &
         const isSyncer = scroll === 'syncer-only'
         const isEnabled = scroll === 'two-way'
 
-        const { onMouseDown, onMouseMove } = useDrag(lockAxis?.includes('X') || false, lockAxis?.includes('Y') || false, ref, onDrag)
+        const { onMouseDown, onMouseMove } = useDrag(lockAxis?.includes('X') || false, lockAxis?.includes('Y') || false, ref, setScrollSource)
 
         const onScrollToElement = useCallback((
             offsetLeft: number,
@@ -121,8 +121,10 @@ const ScrollSyncNode: React.ForwardRefExoticComponent<ScrollSyncNodeProps &
             offsetHeight: number
         ) => {
             if(ref.current){
-                ref.current.scrollTop = offsetTop
-                ref.current.scrollLeft = offsetLeft
+                const left = offsetLeft + offsetWidth / 2 - ref.current.clientWidth / 2
+                const top = offsetTop + offsetHeight / 2 - ref.current.clientHeight / 2
+                setScrollSource(ref.current)
+                ref.current.scrollTo({top, left, behavior: 'smooth' })
             }
         }, [])
 
@@ -144,7 +146,7 @@ const ScrollSyncNode: React.ForwardRefExoticComponent<ScrollSyncNodeProps &
                         e.persist()
                         if (isSyncer || isEnabled) {
                             onScroll(e, toArray(group), lockAxis)
-                            onDrag(e.currentTarget)
+                            setScrollSource(e.currentTarget)
                             onNodeScroll(e)
                         }
                     },
