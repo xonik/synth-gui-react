@@ -1,17 +1,24 @@
 import { useAppSelector } from '../../synthcore/hooks'
-import { selectGuiTargetGroup } from '../../synthcore/modules/mods/modsReducer'
+import { selectGuiTargetFunc, selectGuiTargetGroup, selectGuiTargetParam } from '../../synthcore/modules/mods/modsReducer'
 import { modTarget } from '../../synthcore/modules/mods/utils'
 import React from 'react'
 import { DraggableElementProps } from './types'
+import classNames from 'classnames'
 
 interface TargetLabelProps {
     paramIndex: number,
+    funcIndex: number,
     label: string
 }
 
-const TargetLabel = ({ paramIndex, label }: TargetLabelProps) => {
+const TargetLabel = ({ funcIndex, paramIndex, label }: TargetLabelProps) => {
+    const selectedTargetFunc = useAppSelector(selectGuiTargetFunc)
+    const selectedTargetParam = useAppSelector(selectGuiTargetParam)
+
+    const isSelected = funcIndex === selectedTargetFunc && paramIndex === selectedTargetParam
+
     return <div
-        className="mod-ctrl__target__label"
+        className={classNames('mod-ctrl__target__label', { 'mod-ctrl__target__label--selected': isSelected })}
         key={paramIndex}>
         {label}
     </div>
@@ -33,6 +40,7 @@ const TargetLabels = ({ onMouseDown, onMouseMove }: DraggableElementProps) => {
                     {func.map((controller, paramIndex) => <TargetLabel
                         label={controller.label}
                         paramIndex={paramIndex}
+                        funcIndex={funcIndex}
                     />)}
                 </div>
             })}

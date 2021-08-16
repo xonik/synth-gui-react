@@ -14,10 +14,12 @@
   $amount-text-color: white;
   $amount-background-color: #1f1f1f;
 
-  $label-background: #333;
-  $label-group-color: #333;
   $label-color: white;
-  $label-group-background: #ddd;
+  $label-background: #333;
+  $label-background-selected: #ddd;
+  $label-color-selected: #333;
+  $label-group-color: white;
+  $label-group-background: #666;
   $cell-border-width: 1px;
 
   $cell-border-color: #353535;
@@ -97,6 +99,11 @@
     align-items: center;
     height: $source-height;
 
+    &--selected {
+      color: $label-color-selected;
+      background-color: $label-background-selected;
+    }
+
     padding: 0 $source-padding-lr;
     width: $source-width;
     color: $label-color;
@@ -123,6 +130,11 @@
       color: $label-color;
       padding: 0.25rem 0.25rem 0.25rem 0.5rem;
       background-color: $label-background;
+
+      &--selected {
+        color: $label-color-selected;
+        background-color: $label-background-selected;
+      }
 
       &--group {
         padding: $target-padding-tb 0.25rem;
