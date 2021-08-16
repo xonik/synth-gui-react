@@ -110,15 +110,18 @@ export const nrpn = {
 
             const ccForChannel = MIDI_CC + getChannel()
 
-            let data = [ccForChannel, CC.NRPN_MSB, hiAddr, CC.NRPN_LSB, loAddr]
+            let data = [ccForChannel, CC.NRPN_MSB, hiAddr, ccForChannel, CC.NRPN_LSB, loAddr]
             if(value > 16383) {
+                data.push(ccForChannel)
                 data.push(CC.DATA_ENTRY_HSB)
                 data.push(hiValue)
             }
             if(value > 127) {
+                data.push(ccForChannel)
                 data.push(CC.DATA_ENTRY_MSB)
                 data.push(midValue)
             }
+            data.push(ccForChannel)
             data.push(CC.DATA_ENTRY_LSB)
             data.push(loValue)
 
