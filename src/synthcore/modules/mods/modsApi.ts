@@ -43,8 +43,8 @@ const incrementGuiSource = (inc: number, source: ApiSource) => {
 const setGuiTargetGroup = (guiTargetGroup: number, source: ApiSource) => {
     const currTargetGroup = selectGuiTargetGroup(store.getState())
     if (guiTargetGroup !== currTargetGroup) {
-        dispatch(setGuiTargetFuncAction({ guiTargetFunc: 0, source }))
         dispatch(setGuiTargetParamAction({ guiTargetParam: 0, source }))
+        dispatch(setGuiTargetFuncAction({ guiTargetFunc: 0, source }))
         dispatch(setGuiTargetGroupAction({ guiTargetGroup, source }))
     }
 }
@@ -77,15 +77,28 @@ const setGuiTargetParam = (guiTargetParam: number, source: ApiSource) => {
     }
 }
 
-const incrementGuiTargetParam = (inc: number, source: ApiSource) => {
+const incrementGuiTargetParam = (inc: -1 | 1, source: ApiSource) => {
     const currTargetGroup = selectGuiTargetGroup(store.getState())
     const currTargetFunc = selectGuiTargetFunc(store.getState())
     const currTargetParam = selectGuiTargetParam(store.getState())
 
     const lastGuiTargetParam = modTarget.targets[currTargetGroup][currTargetFunc].length - 1
-    const nextTargetParam = getBounded(currTargetParam + inc, 0, lastGuiTargetParam)
+    const requestedGuiTargetParam = currTargetParam + inc
+    if(requestedGuiTargetParam < 0){
+        if(currTargetFunc > 0){
+            const prevTargetFunc = currTargetFunc - 1
+            setGuiTargetFunc(prevTargetFunc, source)
+            const lastTargetParam = modTarget.targets[currTargetGroup][prevTargetFunc].length - 1
+            setGuiTargetParam(lastTargetParam, source)
+        }
+    } else if(requestedGuiTargetParam > lastGuiTargetParam){
+        if(currTargetFunc < modTarget.targets[currTargetGroup].length -1){
+            setGuiTargetFunc(currTargetFunc + 1, source)
+        }
 
-    setGuiTargetParam(nextTargetParam, source)
+    } else {
+        setGuiTargetParam(requestedGuiTargetParam, source)
+    }
 }
 
 const setModValue = (sourceId: number, targetId: number, modValue: number, source: ApiSource) => {
