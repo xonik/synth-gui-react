@@ -109,7 +109,8 @@
 
   &__source {
     user-select: none;
-    display: inline-block; // required to make contents grow the size of the div
+    display: inline-flex; // required to make contents grow the size of the div
+    align-items: center;
     height: $source-height;
     border-bottom: $cell-border-width solid $label-cell-border-color;
     color: $label-color;
