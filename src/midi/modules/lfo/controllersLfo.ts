@@ -13,7 +13,10 @@ interface ControllersLfo {
     SYNC: ControllerConfigCCWithValue
     RESET: ControllerConfigCCWithValue
     ONCE: ControllerConfigCCWithValue
-    OUTPUT: ControllerConfig
+    OUTPUT1: ControllerConfig
+    OUTPUT2: ControllerConfig
+    OUTPUT3: ControllerConfig
+    OUTPUT4: ControllerConfig
 }
 
 const controllersLfo: ControllersLfo = {
@@ -98,9 +101,27 @@ const controllersLfo: ControllersLfo = {
             BUTTONS.BUTTONS_LEFT.values.LFO_ONCE_ON,
         ],
     },
-    OUTPUT: {
+    OUTPUT1: {
         id: ControllerId.LFO1,
-        label: 'LFO',
+        label: 'LFO 1',
+        type: 'output',
+        isSourceDigi: true
+    },
+    OUTPUT2: {
+        id: ControllerId.LFO2,
+        label: 'LFO 2',
+        type: 'output',
+        isSourceDigi: true
+    },
+    OUTPUT3: {
+        id: ControllerId.LFO3,
+        label: 'LFO 3',
+        type: 'output',
+        isSourceDigi: true
+    },
+    OUTPUT4: {
+        id: ControllerId.LFO4,
+        label: 'LFO 4',
         type: 'output',
         isSourceDigi: true
     }

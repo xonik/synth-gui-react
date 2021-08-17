@@ -37,10 +37,7 @@ export const controllerGroups = {
     },
     LFOS: {
         label: 'LFOs',
-        LFO1: controllersLfo,
-        LFO2: controllersLfo,
-        LFO3: controllersLfo,
-        LFO4: controllersLfo,
+        LFO: controllersLfo,
     },
     SOURCE_MIX: {
         // TODO: This one is a bit weird
@@ -73,11 +70,7 @@ export const controllerGroups = {
     },
     ENV: {
         label: 'Envelopes',
-        ENV1: controllersEnv,
-        ENV2: controllersEnv,
-        ENV3: controllersEnv,
-        ENV4: controllersEnv,
-        ENV5: controllersEnv,
+        ENV: controllersEnv,
     },
     FX: {
         label: 'Effects',
