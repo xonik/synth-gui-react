@@ -108,6 +108,7 @@
   }
 
   &__source {
+    user-select: none;
     display: inline-block; // required to make contents grow the size of the div
     height: $source-height;
     border-bottom: $cell-border-width solid $label-cell-border-color;
@@ -126,6 +127,7 @@
     flex-direction: column;
 
     &__func {
+      user-select: none;
       display: flex;
       flex-direction: row;
       justify-content: center;
@@ -144,6 +146,7 @@
     }
 
     &__label {
+      user-select: none;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -181,6 +184,7 @@
     color: $amount-text-color;
 
     &__number {
+      user-select: none;
       flex-grow: 1;
       display: flex;
       flex-direction: column;
