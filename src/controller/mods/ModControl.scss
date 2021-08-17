@@ -33,13 +33,14 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
+    border-bottom: $cell-border-width solid $label-cell-border-color;
+    background-color: $label-group-background;
 
     &__corner {
       flex: 0 0 $sources-column-width;
       background-color: $label-background;
       z-index: 3;
       border-right: $cell-border-width solid $label-cell-border-color;
-      border-bottom: $cell-border-width solid $label-cell-border-color;
     }
 
     &__targets-container {
@@ -152,7 +153,6 @@
       justify-content: center;
       align-items: center;
       height: $target-height;
-      border-bottom: $cell-border-width solid $cell-border-color;
       border-right: $cell-border-width solid $label-cell-border-color;
       background-color: $label-background;
       color: $label-color;
