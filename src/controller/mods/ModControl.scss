@@ -37,7 +37,11 @@
     background-color: $label-group-background;
 
     &__corner {
+      display: flex;
       flex: 0 0 $sources-column-width;
+      justify-content: center;
+      align-items: center;
+      color: white;
       background-color: $label-background;
       z-index: 3;
       border-right: $cell-border-width solid $label-cell-border-color;
