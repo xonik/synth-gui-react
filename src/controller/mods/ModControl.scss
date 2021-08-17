@@ -8,7 +8,7 @@
   $sources-column-width: 7rem;
   $source-height: 2rem;
   $source-padding-tb: 0.25rem;
-  $target-width: 7rem;
+  $target-width: 5rem;
   $target-padding-lr: 0.25rem;
 
   $amount-text-color: white;
@@ -19,7 +19,7 @@
   $label-background-selected: #ddd;
   $label-color-selected: #333;
   $label-group-color: white;
-  $label-group-background: #666;
+  $label-group-background: #333;
   $cell-border-width: 1px;
 
   $cell-border-color: #353535;
@@ -123,10 +123,30 @@
 
   &__target {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+
+    &__func {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+
+      border-bottom: $cell-border-width solid $label-cell-border-color;
+      border-right: $cell-border-width solid $label-cell-border-color;
+      padding: $source-padding-tb 0.25rem;
+      color: $label-group-color;
+      background-color: $label-group-background;
+    }
+
+    &__props {
+      display: flex;
+      flex-direction: row;
+    }
 
     &__label {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       height: $target-height;
       border-bottom: $cell-border-width solid $cell-border-color;
       border-right: $cell-border-width solid $label-cell-border-color;
@@ -138,12 +158,6 @@
       &--selected {
         color: $label-color-selected;
         background-color: $label-background-selected;
-      }
-
-      &--group {
-        padding: $source-padding-tb 0.25rem;
-        color: $label-group-color;
-        background-color: $label-group-background;
       }
     }
   }

@@ -34,15 +34,17 @@ const TargetLabels = ({ onMouseDown, onMouseMove }: DraggableElementProps) => {
              onMouseMove={onMouseMove}>
             {targetGroup.map((func, funcIndex) => {
                 return <div className="mod-ctrl__target" key={funcIndex}>
-                    {/*<div className="mod-ctrl__target__label mod-ctrl__target__label--group">
+                    {<div className="mod-ctrl__target__func">
                         {modTarget.funcProps[targetGroupId][funcIndex].label}
-                    </div>*/}
-                    {func.map((controller, paramIndex) => <TargetLabel
-                        key={paramIndex}
-                        label={controller.label}
-                        paramIndex={paramIndex}
-                        funcIndex={funcIndex}
-                    />)}
+                    </div>}
+                    <div className="mod-ctrl__target__props">
+                        {func.map((controller, paramIndex) => <TargetLabel
+                            key={paramIndex}
+                            label={controller.label}
+                            paramIndex={paramIndex}
+                            funcIndex={funcIndex}
+                        />)}
+                    </div>
                 </div>
             })}
         </div>
