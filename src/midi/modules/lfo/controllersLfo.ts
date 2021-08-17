@@ -13,15 +13,13 @@ interface ControllersLfo {
     SYNC: ControllerConfigCCWithValue
     RESET: ControllerConfigCCWithValue
     ONCE: ControllerConfigCCWithValue
-    OUTPUT1: ControllerConfig
-    OUTPUT2: ControllerConfig
-    OUTPUT3: ControllerConfig
-    OUTPUT4: ControllerConfig
+    OUTPUT: ControllerConfig
 }
 
-const controllersLfo: ControllersLfo = {
+const controllersLfo = (ctrlIndex: number): ControllersLfo => ({
     props: {
-        label: 'LFO',
+        label: `LFO ${1 + ctrlIndex}`,
+        ctrlIndex
     },
     // Pots
     RATE: {
@@ -101,30 +99,12 @@ const controllersLfo: ControllersLfo = {
             BUTTONS.BUTTONS_LEFT.values.LFO_ONCE_ON,
         ],
     },
-    OUTPUT1: {
-        id: ControllerId.LFO1,
-        label: 'LFO 1',
+    OUTPUT: {
+        id: ControllerId.LFO1 + ctrlIndex,
+        label: `LFO ${1 + ctrlIndex}`,
         type: 'output',
         isSourceDigi: true
     },
-    OUTPUT2: {
-        id: ControllerId.LFO2,
-        label: 'LFO 2',
-        type: 'output',
-        isSourceDigi: true
-    },
-    OUTPUT3: {
-        id: ControllerId.LFO3,
-        label: 'LFO 3',
-        type: 'output',
-        isSourceDigi: true
-    },
-    OUTPUT4: {
-        id: ControllerId.LFO4,
-        label: 'LFO 4',
-        type: 'output',
-        isSourceDigi: true
-    }
-}
+})
 
 export default controllersLfo

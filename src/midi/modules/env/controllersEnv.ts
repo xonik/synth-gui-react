@@ -29,15 +29,11 @@ interface MidiCtrlEnv {
     RESET_ON_TRIGGER: ControllerConfigCCWithValue
     RELEASE_MODE: ControllerConfigCCWithValue
     LOOP_MODE: ControllerConfigCCWithValue
-    OUTPUT1: ControllerConfig
-    OUTPUT2: ControllerConfig
-    OUTPUT3: ControllerConfig
-    OUTPUT4: ControllerConfig
-    OUTPUT5: ControllerConfig
+    OUTPUT: ControllerConfig
 }
 
-const controllersEnv: MidiCtrlEnv = {
-    props: { label: 'Envelope' },
+const controllersEnv = (ctrlIndex: number): MidiCtrlEnv => ({
+    props: { label: `Env ${1 + ctrlIndex}`, ctrlIndex },
     DELAY_TIME: { id: ControllerId.ENV_DELAY_TIME, label: 'Delay time', isTargetDigi: true, type: 'pot'},
     ATTACK_TIME: { id: ControllerId.ENV_ATTACK_TIME, label: 'Attack time', isTargetDigi: true, type: 'pot'},
     DECAY1_TIME: { id: ControllerId.ENV_DECAY1_TIME, label: 'Decay 1 time', isTargetDigi: true, type: 'pot'},
@@ -124,36 +120,12 @@ const controllersEnv: MidiCtrlEnv = {
             BUTTONS.BUTTONS_RIGHT.values.ENV_LOOP_MODE_INFINITE,
         ],
     },
-    OUTPUT1: {
-        id: ControllerId.ENVELOPE1,
-        label: 'Env 1',
+    OUTPUT: {
+        id: ControllerId.ENVELOPE1 + ctrlIndex,
+        label: `Env ${1 + ctrlIndex}`,
         type: 'output',
         isSourceDigi: true
     },
-    OUTPUT2: {
-        id: ControllerId.ENVELOPE2,
-        label: 'Env 2',
-        type: 'output',
-        isSourceDigi: true
-    },
-    OUTPUT3: {
-        id: ControllerId.ENVELOPE3,
-        label: 'Env 3',
-        type: 'output',
-        isSourceDigi: true
-    },
-    OUTPUT4: {
-        id: ControllerId.ENVELOPE4,
-        label: 'Env 4',
-        type: 'output',
-        isSourceDigi: true
-    },
-    OUTPUT5: {
-        id: ControllerId.ENVELOPE5,
-        label: 'Env 5',
-        type: 'output',
-        isSourceDigi: true
-    }
-}
+})
 
 export default controllersEnv

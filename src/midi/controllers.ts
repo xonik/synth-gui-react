@@ -37,7 +37,10 @@ export const controllerGroups = {
     },
     LFOS: {
         label: 'LFOs',
-        LFO: controllersLfo,
+        LFO1: controllersLfo(0),
+        LFO2: controllersLfo(1),
+        LFO3: controllersLfo(2),
+        LFO4: controllersLfo(3),
     },
     SOURCE_MIX: {
         // TODO: This one is a bit weird
@@ -70,7 +73,11 @@ export const controllerGroups = {
     },
     ENV: {
         label: 'Envelopes',
-        ENV: controllersEnv,
+        ENV1: controllersEnv(0),
+        ENV2: controllersEnv(1),
+        ENV3: controllersEnv(2),
+        ENV4: controllersEnv(3),
+        ENV5: controllersEnv(4),
     },
     FX: {
         label: 'Effects',
@@ -98,7 +105,7 @@ const controllers = {
     RING_MOD: controllersRingMod,
     DISTORTION: controllersFx.DISTORTION,
     BIT_CRUSHER: controllersFx.BIT_CRUSHER,
-    LFOS: controllersLfo,
+    LFOS: controllersLfo(0), // most cc values are shared so the ones for 0 are used
     SOURCE_MIX: controllersSrcMix,
     ROUTE: controllersRoute,
     MASTER_CLOCK: controllersMasterClock,
@@ -112,7 +119,7 @@ const controllers = {
     SVF: controllersFilters.SVF,
     POST_MIX: controllersPostMix,
     VOICE_OUT: controllersVoiceOut,
-    ENV: controllersEnv,
+    ENV: controllersEnv(0), // most cc values are shared so the ones for 0 are used
     DSP1: controllersCommonFx.DSP1,
     DSP2: controllersCommonFx.DSP2,
     CHORUS: controllersCommonFx.CHORUS,

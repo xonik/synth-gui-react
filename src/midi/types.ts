@@ -23,6 +23,7 @@ export interface ControllerConfigNRPN extends ControllerConfig {
 
 export interface FuncProps {
     label: string
+    ctrlIndex?: number
 }
 
 export type ControllerType = 'pot' | 'button' | 'output'
