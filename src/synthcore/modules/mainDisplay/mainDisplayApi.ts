@@ -79,9 +79,9 @@ const mainDisplayEnvApi = {
 const mainDisplayModsApi = {
     handleMainDisplayController: (ctrlId: MainDisplayControllerIds, increment: number) => {
         if (ctrlId === MainDisplayControllerIds.POT1) {
-            modsApi.incrementGuiSource(step(increment), ApiSource.UI)
-        } else if (ctrlId === MainDisplayControllerIds.POT2) {
             modsApi.incrementGuiTargetGroup(step(increment), ApiSource.UI)
+        } else if (ctrlId === MainDisplayControllerIds.POT2) {
+            modsApi.incrementGuiSource(step(increment), ApiSource.UI)
         } else if (ctrlId === MainDisplayControllerIds.POT3) {
             modsApi.incrementGuiTargetFunc(step(increment), ApiSource.UI)
         } else if (ctrlId === MainDisplayControllerIds.POT4) {

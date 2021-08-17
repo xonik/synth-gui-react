@@ -19,8 +19,8 @@ const ModValues = () => {
     const targetValue = useAppSelector(selectModValue(sourceId, targetId))
 
     return <div className="mod-values">
-        <div className="mod-values__item">{digitalModSources[sourceIndex].label}</div>
         <div className="mod-values__item">{modTarget.groupLabels[targetGroupId]}</div>
+        <div className="mod-values__item">{digitalModSources[sourceIndex].label}</div>
         <div className="mod-values__item">{modTarget.funcProps[targetGroupId][targetFuncId].label}</div>
         <div className="mod-values__item">{modTarget.targets[targetGroupId][targetFuncId][targetParamId].label}</div>
         <div className="mod-values__item">{Math.round(100 * targetValue)}%</div>

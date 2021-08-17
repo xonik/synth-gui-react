@@ -9,12 +9,6 @@ import { Point } from '../../utils/types'
 import { ScrollingSyncNodeContext } from '../utils/scrollsync/ScrollSyncNode'
 import { ApiSource } from '../../synthcore/types'
 
-interface RowProps {
-    targetId: number
-    funcIndex: number
-    paramIndex: number
-}
-
 interface CellProps {
     onSelected: (offsetLeft: number, offsetWidth: number) => void,
     sourceIndex: number
@@ -64,7 +58,7 @@ const AmountCell = ({ sourceIndex, funcIndex, paramIndex, sourceId, targetId, on
     const cellRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        if(isSelectedCell && cellRef.current && modSelectSource === ApiSource.UI){
+        if (isSelectedCell && cellRef.current && modSelectSource === ApiSource.UI) {
             const {
                 offsetWidth,
                 offsetLeft,
@@ -76,7 +70,6 @@ const AmountCell = ({ sourceIndex, funcIndex, paramIndex, sourceId, targetId, on
             )
         }
     }, [onSelected, isSelectedCell, modSelectSource])
-
 
 
     return <div ref={cellRef} className={classNames(
@@ -92,14 +85,21 @@ const AmountCell = ({ sourceIndex, funcIndex, paramIndex, sourceId, targetId, on
     </div>
 }
 
+interface RowProps {
+    sourceId: number
+    sourceIndex: number
+}
 
-const AmountsRow = ({ targetId, funcIndex, paramIndex }: RowProps) => {
+const AmountsRow = ({ sourceId, sourceIndex }: RowProps) => {
+
+    const targetGroupId = useAppSelector(selectGuiTargetGroup)
+    const targetGroup = modTarget.targets[targetGroupId]
 
     const ref = useRef<HTMLDivElement>(null)
     const { onScrollToElement } = useContext(ScrollingSyncNodeContext)
 
     const onSelected = useCallback((offsetLeft: number, offsetWidth: number) => {
-        if(ref.current){
+        if (ref.current) {
             onScrollToElement(
                 offsetLeft,
                 ref.current.offsetTop,
@@ -110,19 +110,20 @@ const AmountsRow = ({ targetId, funcIndex, paramIndex }: RowProps) => {
     }, [onScrollToElement])
 
     return (
-        <div className="mod-ctrl__sources" ref={ref}>
-            {digitalModSources
-                .map((source, sourceIndex) => {
-
-                    return <AmountCell key={sourceIndex}
-                                       sourceIndex={sourceIndex}
-                                       funcIndex={funcIndex}
-                                       paramIndex={paramIndex}
-                                       sourceId={source.id}
-                                       targetId={targetId}
-                                       onSelected={onSelected}
-                    />
-                })}
+        <div className="mod-ctrl__targets" ref={ref}>
+            {targetGroup.map((func, funcIndex) => <React.Fragment key={funcIndex}>
+                    {func.map((target, paramIndex) => <AmountCell
+                                    key={paramIndex}
+                                    sourceIndex={sourceIndex}
+                                    funcIndex={funcIndex}
+                                    paramIndex={paramIndex}
+                                    sourceId={sourceId}
+                                    targetId={target.id}
+                                    onSelected={onSelected}
+                        />
+                    )}
+                </React.Fragment>
+            )}
         </div>
     )
 }
@@ -131,28 +132,18 @@ const AmountsTable = React.forwardRef<HTMLDivElement, DraggableElementProps>(
     ({ onMouseDown, onMouseMove },
      tableRef
     ) => {
-        const targetGroupId = useAppSelector(selectGuiTargetGroup)
-        const targetGroup = modTarget.targets[targetGroupId]
 
         return (
             <div className="mod-ctrl__amounts"
                  ref={tableRef}
                  onMouseDown={onMouseDown}
                  onMouseMove={onMouseMove}>
-                {targetGroup.map((func, funcIndex) => {
-                    return <div className="mod-ctrl__target" key={funcIndex}>
-                        <div className="mod-ctrl__amount mod-ctrl__amount--header" style={{ width: '100%' }}>
-                        </div>
-                        {func.map((target, paramIndex) => {
-                            return <AmountsRow
-                                key={paramIndex}
-                                funcIndex={funcIndex}
-                                paramIndex={paramIndex}
-                                targetId={target.id}/>
-
-                        })}
-                    </div>
-                })}
+                {digitalModSources
+                    .map((source, sourceIndex) => <AmountsRow
+                        key={sourceIndex}
+                        sourceIndex={sourceIndex}
+                        sourceId={source.id}/>
+                    )}
             </div>
         )
     }

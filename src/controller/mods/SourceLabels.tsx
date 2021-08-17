@@ -30,6 +30,7 @@ const SourceLabels = ({ onMouseDown, onMouseMove }: DraggableElementProps) => {
         >
             {digitalModSources
                 .map((controller, sourceIndex) => <SourceLabel
+                    key={sourceIndex}
                     sourceIndex={sourceIndex}
                     label={controller.label}
                 />)}

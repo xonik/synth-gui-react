@@ -126,7 +126,7 @@ const ScrollSyncNode: React.ForwardRefExoticComponent<ScrollSyncNodeProps &
                 setScrollSource(ref.current)
                 ref.current.scrollTo({top, left, behavior: 'smooth' })
             }
-        }, [])
+        }, [setScrollSource])
 
         return (
             <ScrollingSyncNodeContext.Provider
