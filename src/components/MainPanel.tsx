@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import DCO1 from './modules/DCO1'
 import DCO2 from './modules/DCO2'
 import VCO from './modules/VCO'
@@ -38,7 +38,7 @@ import './MainPanel.scss'
  */
 const MainPanel = () => {
 
-    const env3Id = useAppSelector(selectEnv3Id);
+    const env3Id = useAppSelector(selectEnv3Id)
     //const panelHeight = 350;
     //const panelWidth = 1050;
 
@@ -88,14 +88,21 @@ const MainPanel = () => {
     // Gets the svg placeholder for the display and extracts size and position,
     // this is used to create an overlay div in the same position further down
     // that will act as the real display.
-    const [dispRect, setDispRect] = useState<DOMRect | null>(null)
+    const [dispRect, setDispRect] = useState<{
+        x: number, y: number, width: number, height: number
+    }>()
     const displayRef = useRef<SVGRectElement>(null)
-    React.useEffect(() => {
+    useEffect(() => {
         if (displayRef.current) {
-            setDispRect(displayRef.current.getBoundingClientRect())
+            const bound = displayRef.current.getBoundingClientRect()
+            setDispRect({
+                x: window.scrollX + bound.left,
+                y: window.scrollY + bound.top,
+                width: bound.width,
+                height: bound.height,
+            })
         }
-
-    }, [])
+    },[])
 
 
     // PS: 1 inch in svg is 96pixels, so 1cm = 96 / 2.54
@@ -143,7 +150,7 @@ const MainPanel = () => {
                 width: dispRect.width,
                 height: dispRect.height,
             }}>
-              <Controller />
+              <Controller/>
             </div>}
         </>
     )
