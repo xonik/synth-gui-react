@@ -172,6 +172,14 @@ const incrementCurrentEnvelope = (increment: number, source: ApiSource) => {
     setCurrentEnv(selectCurrEnvId(store.getState()) + increment, source)
 }
 const setStageCurve = (envId: number, stageId: StageId, curve: number, source: ApiSource) => {
+    console.log('set', {
+        envId,
+        stageId,
+        curve,
+        source,
+        env: selectEnvelope(envId),
+        stages: selectEnvelope(envId)(store.getState()).stages
+    })
     const stage = selectEnvelope(envId)(store.getState()).stages[stageId]
     const boundedCurve = getBounded(curve, 0, curveFuncs.length - 1)
     if (stage.curve !== boundedCurve) {
@@ -181,6 +189,15 @@ const setStageCurve = (envId: number, stageId: StageId, curve: number, source: A
 }
 const incrementStageCurve = (envId: number, stageId: StageId, increment: number, source: ApiSource) => {
     const stage = selectEnvelope(envId)(store.getState()).stages[stageId]
+    console.log('increment', {
+        envId,
+        stageId,
+        increment,
+        source,
+        env: selectEnvelope(envId),
+        stages: selectEnvelope(envId)(store.getState()).stages,
+        stage,
+    })
     setStageCurve(envId, stageId, stage.curve + increment, source)
 }
 const setMaxLoops = (envId: number, maxLoops: number, source: ApiSource) => {
