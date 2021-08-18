@@ -61,16 +61,14 @@ export const useDrag = (
             if (event.preventDefault) {
                 event.preventDefault()
             }
-            if (!maxScroll) {
-                calcMaxScroll()
-            }
+            calcMaxScroll()
             setStartScroll({
                 x: event.currentTarget.scrollLeft || 0,
                 y: event.currentTarget.scrollTop || 0,
             })
             setDragStart({ x: event.clientX, y: event.clientY })
             setIsDragging(true)
-        }, [maxScroll, calcMaxScroll])
+        }, [calcMaxScroll])
 
     const onMouseMove = useCallback((event: React.MouseEvent<HTMLElement>) => {
         if (event.preventDefault) {
@@ -125,7 +123,6 @@ export const useClickDetector = (onClick: () => void) => {
 
     const onMouseUp = useCallback((event: React.MouseEvent<HTMLElement>) => {
         if (event.clientX === clickPos?.x && event.clientY === clickPos?.y) {
-            console.log('clocked')
             onClick()
         }
     }, [onClick, clickPos])

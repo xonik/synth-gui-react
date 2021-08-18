@@ -153,7 +153,6 @@ export const ScrollSync: FC<ScrollSyncProps> = props => {
         if (!lockAxis?.includes('Y')) {
             node.scrollTop = scrollTop
         }
-
     }
 
     // Set to prevent circular updates of positions

@@ -69,7 +69,7 @@ const AmountCell = ({ sourceIndex, funcIndex, paramIndex, sourceId, targetId, on
                 offsetWidth,
             )
         }
-    }, [onSelected, isSelectedCell, modSelectSource])
+    }, [isSelectedCell, modSelectSource])
 
 
     return <div ref={cellRef} className={classNames(
