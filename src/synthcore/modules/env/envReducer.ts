@@ -3,7 +3,7 @@
 
 import { createSlice, Draft, PayloadAction } from '@reduxjs/toolkit'
 import { Envelope, LoopMode, ReleaseMode, Stage, StageId } from './types'
-import { getDefaultEnvelope } from './envelopeUtils'
+import { getDefaultEnvelope } from './envUtils'
 import { RootState } from '../../store'
 
 type EnvelopesState = {

@@ -1,7 +1,7 @@
 import React from 'react'
 import Stages from './Stages'
 import { useAppSelector } from '../../synthcore/hooks'
-import { selectCurrEnvId, selectEnvelope } from '../../synthcore/modules/env/envelopesReducer'
+import { selectCurrEnvId, selectEnvelope } from '../../synthcore/modules/env/envReducer'
 import StageActivator from './StageActivator'
 import EnvOptions from './EnvOptions'
 import StageParams from './StageParams'

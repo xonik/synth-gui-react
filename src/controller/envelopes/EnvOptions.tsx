@@ -14,7 +14,7 @@ import {
     toggleLoopMode,
     toggleReleaseMode,
     toggleRetrigger
-} from '../../synthcore/modules/env/envelopesReducer'
+} from '../../synthcore/modules/env/envReducer'
 import { curveNames, loopModeNames, releaseModeNames } from './utils'
 import './EnvOptions.scss'
 

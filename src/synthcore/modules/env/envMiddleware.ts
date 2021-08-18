@@ -1,7 +1,7 @@
 import { click, increment } from '../ui/uiReducer'
 import { envApi } from '../../synthcoreApi'
 import { StageId } from './types'
-import { toggleInvert, toggleLoopEnabled, toggleLoopMode, toggleReleaseMode, toggleRetrigger, toggleStageEnabled, toggleStageSelected } from './envelopesReducer'
+import { toggleInvert, toggleLoopEnabled, toggleLoopMode, toggleReleaseMode, toggleRetrigger, toggleStageEnabled, toggleStageSelected } from './envReducer'
 import { ApiSource } from '../../types'
 import { EnvControllerId } from './types'
 import { PayloadAction } from '@reduxjs/toolkit'

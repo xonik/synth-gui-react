@@ -19,3 +19,5 @@ export const getBounded = (value: number, from: number = 0, to: number = 1) => {
     }
     return value
 }
+
+export const step = (increment: number) => increment > 0 ? 1 : -1

@@ -3,7 +3,7 @@ import { Envelope, StageId } from '../../synthcore/modules/env/types'
 import Button from '../Button'
 import { stageNames } from './utils'
 import { useAppDispatch } from '../../synthcore/hooks'
-import { toggleStageEnabled } from '../../synthcore/modules/env/envelopesReducer'
+import { toggleStageEnabled } from '../../synthcore/modules/env/envReducer'
 import './StageActivator.scss'
 
 interface Props {

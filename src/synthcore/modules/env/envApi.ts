@@ -20,7 +20,7 @@ import {
     setTime,
     setEnv3Id as setEnv3IdAction,
     selectEnv3Id,
-} from '../env/envelopesReducer'
+} from '../env/envReducer'
 import { store } from '../../store'
 import midiApi from '../../../midi/midiApi'
 import { curveFuncs } from '../../../components/curves/curveCalculator'

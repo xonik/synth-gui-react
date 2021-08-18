@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import envelopesReducer from './modules/env/envelopesReducer'
+import envReducer from './modules/env/envReducer'
 import { synthcoreMiddleware } from './synthcoreMiddleware'
 import uiReducer from './modules/ui/uiReducer'
 import settingsReducer from './modules/settings/settingsReducer'
@@ -8,7 +8,7 @@ import modsReducer from './modules/mods/modsReducer'
 
 export const store = configureStore({
     reducer: {
-        envelopes: envelopesReducer,
+        envelopes: envReducer,
         mods: modsReducer,
         settings: settingsReducer,
         ui: uiReducer,
