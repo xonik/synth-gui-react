@@ -15,7 +15,7 @@ interface ControllersArp {
 }
 
 const controllersArp: ControllersArp = {
-    props: { label: 'Arpeggiator' },
+    props: { label: 'Arpeggiator', shortLabel: 'Arp' },
     TEMPO: {
         id: ControllerId.ARP_TEMPO,
         label: 'Tempo',

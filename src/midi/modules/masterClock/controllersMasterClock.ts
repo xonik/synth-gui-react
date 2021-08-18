@@ -10,7 +10,7 @@ interface ControllersMasterClock {
 }
 
 const controllersMasterClock: ControllersMasterClock = {
-    props: { label: 'Master clock' },
+    props: { label: 'Master clock', shortLabel: 'Master clk' },
     RATE: {
         id: ControllerId.MASTER_CLOCK_RATE,
         label: 'Rate',

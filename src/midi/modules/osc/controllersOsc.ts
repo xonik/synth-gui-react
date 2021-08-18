@@ -316,6 +316,7 @@ const controllersOsc: ControllersOsc = {
         CROSS_MOD: {
             id: ControllerId.VCO_CROSS_MOD,
             label: 'Cross mod',
+            shortLabel: 'X-mod',
             isTargetDigi: true,
             type: 'pot', cc: CC.VCO_CROSS_MOD
         },

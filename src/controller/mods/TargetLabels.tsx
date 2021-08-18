@@ -1,17 +1,18 @@
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectGuiTargetFunc, selectGuiTargetGroup, selectGuiTargetParam } from '../../synthcore/modules/mods/modsReducer'
-import { modTarget } from '../../synthcore/modules/mods/utils'
+import { modTarget, shortLabel } from '../../synthcore/modules/mods/utils'
 import React from 'react'
 import { DraggableElementProps } from './types'
 import classNames from 'classnames'
+import { ControllerConfig } from '../../midi/types'
 
 interface TargetLabelProps {
     paramIndex: number,
     funcIndex: number,
-    label: string
+    target: ControllerConfig
 }
 
-const TargetLabel = ({ funcIndex, paramIndex, label }: TargetLabelProps) => {
+const TargetLabel = ({ funcIndex, paramIndex, target }: TargetLabelProps) => {
     const selectedTargetFunc = useAppSelector(selectGuiTargetFunc)
     const selectedTargetParam = useAppSelector(selectGuiTargetParam)
 
@@ -20,7 +21,7 @@ const TargetLabel = ({ funcIndex, paramIndex, label }: TargetLabelProps) => {
     return <div
         className={classNames('mod-ctrl__target__label', { 'mod-ctrl__target__label--selected': isSelected })}
         key={paramIndex}>
-        {label}
+        {shortLabel(target)}
     </div>
 }
 
@@ -35,12 +36,12 @@ const TargetLabels = ({ onMouseDown, onMouseMove }: DraggableElementProps) => {
             {targetGroup.map((func, funcIndex) => {
                 return <div className="mod-ctrl__target" key={funcIndex}>
                     {<div className="mod-ctrl__target__func">
-                        {modTarget.funcProps[targetGroupId][funcIndex].label}
+                        {shortLabel(modTarget.funcProps[targetGroupId][funcIndex])}
                     </div>}
                     <div className="mod-ctrl__target__props">
                         {func.map((controller, paramIndex) => <TargetLabel
                             key={paramIndex}
-                            label={controller.label}
+                            target={controller}
                             paramIndex={paramIndex}
                             funcIndex={funcIndex}
                         />)}

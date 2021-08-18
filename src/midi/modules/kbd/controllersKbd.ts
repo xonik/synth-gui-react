@@ -16,7 +16,7 @@ const controllersKbd: ControllersKbd = {
     props: { label: 'Keyboard' },
     PORTAMENTO: {
         id: ControllerId.KBD_PORTAMENTO,
-        label: 'Portamento',
+        label: 'Portamento', shortLabel: 'Portam.',
         isTargetDigi: true,
         type: 'pot',
         cc: CC.KEYBOARD_PORTAMENTO

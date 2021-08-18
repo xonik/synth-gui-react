@@ -196,6 +196,7 @@ const controllersCommonFx: ControllersCommonFx = {
         LEVEL_DSP1: {
             id: ControllerId.FX_MIX_LEVEL_DSP1,
             label: 'DSP 1 level',
+            shortLabel: 'DSP 1',
             isTargetDigi: true,
             type: 'pot',
             cc: CC.FX_MIX_LEVEL_DSP1
@@ -203,6 +204,7 @@ const controllersCommonFx: ControllersCommonFx = {
         LEVEL_DSP2: {
             id: ControllerId.FX_MIX_LEVEL_DSP2,
             label: 'DSP 2 level',
+            shortLabel: 'DSP 2',
             isTargetDigi: true,
             type: 'pot',
             cc: CC.FX_MIX_LEVEL_DSP2
@@ -210,6 +212,7 @@ const controllersCommonFx: ControllersCommonFx = {
         LEVEL_CHORUS: {
             id: ControllerId.FX_MIX_LEVEL_CHORUS,
             label: 'Chorus level',
+            shortLabel: 'Chorus',
             isTargetDigi: true,
             type: 'pot',
             cc: CC.FX_MIX_LEVEL_CHORUS
@@ -217,6 +220,7 @@ const controllersCommonFx: ControllersCommonFx = {
         LEVEL_BIT_CRUSHER: {
             id: ControllerId.FX_MIX_LEVEL_BIT_CRUSHER,
             label: 'Bit crusher level',
+            shortLabel: 'Bit crush',
             isTargetDigi: true,
             type: 'pot',
             cc: CC.FX_MIX_LEVEL_BIT_CRUSHER

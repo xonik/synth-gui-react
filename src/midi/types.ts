@@ -3,6 +3,7 @@ import { ControllerId } from './controllerIds'
 export interface ControllerConfig {
     readonly id: ControllerId,
     readonly label: string,
+    readonly shortLabel?: string,
     readonly isSourceDigi?: boolean,
     readonly isTargetDigi?: boolean,
     readonly type: ControllerType
@@ -23,6 +24,7 @@ export interface ControllerConfigNRPN extends ControllerConfig {
 
 export interface FuncProps {
     label: string
+    shortLabel?: string
     ctrlIndex?: number
 }
 

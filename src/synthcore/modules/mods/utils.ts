@@ -1,6 +1,8 @@
 import { ControllerConfig, FuncProps } from '../../../midi/types'
 import { controllerGroups } from '../../../midi/controllers'
 
+export const shortLabel = (element: ControllerConfig | FuncProps) => element.shortLabel || element.label
+
 const getTargets = () => {
 
     type Func = ControllerConfig[]
