@@ -22,7 +22,7 @@ import {
     selectEnv3Id,
 } from '../env/envReducer'
 import { store } from '../../store'
-import midiApi from '../../../midi/midiApi'
+import midiApi from './envMidiApi'
 import { curveFuncs } from '../../../components/curves/curveCalculator'
 import { ApiSource } from '../../types'
 import { dispatch, getBounded, getQuantized } from '../../utils'
@@ -67,7 +67,7 @@ const setStageLevel = (envId: number, stageId: StageId, requestedValue: number, 
             updateReleaseLevels(env, value)
         }
 
-        midiApi.env.setLevel(source, envId, stageId, boundedValue)
+        midiApi.setLevel(source, envId, stageId, boundedValue)
     }
 }
 
@@ -88,7 +88,7 @@ const setStageTime = (envId: number, stageId: StageId, requestedValue: number, s
     }
 
     dispatch(setTime({ env: envId, stage: stageId, value: boundedValue }))
-    midiApi.env.setTime(source, envId, stageId, boundedValue)
+    midiApi.setTime(source, envId, stageId, boundedValue)
 }
 
 const incrementStageTime = (envId: number, stageId: StageId, incTime: number, source: ApiSource) => {
@@ -115,7 +115,7 @@ const setStageEnabled = (envId: number, stageId: StageId, enabled: boolean, sour
             dispatch(setLevel({ env: envId, stage: StageId.RELEASE2, value: env.stages[StageId.SUSTAIN].level }))
         }
     }
-    midiApi.env.setStageEnabled(source, envId, stageId, enabled)
+    midiApi.setStageEnabled(source, envId, stageId, enabled)
 }
 const toggleStageEnabled = (envId: number, stageId: StageId, source: ApiSource) => {
     const env = selectEnvelopes(store.getState()).envs[envId]
@@ -130,7 +130,7 @@ const setInvert = (envId: number, invert: boolean, source: ApiSource) => {
     }
 
     dispatch(setInvertAction({ env: envId, invert }))
-    midiApi.env.setInvert(source, envId, invert)
+    midiApi.setInvert(source, envId, invert)
 }
 const toggleInvert = (envId: number, source: ApiSource) => {
     const env = selectEnvelopes(store.getState()).envs[envId]
@@ -144,7 +144,7 @@ const setRetrigger = (envId: number, resetOnTrigger: boolean, source: ApiSource)
     }
 
     dispatch(setResetOnTrigger({ env: envId, resetOnTrigger }))
-    midiApi.env.setResetOnTrigger(source, envId, resetOnTrigger)
+    midiApi.setResetOnTrigger(source, envId, resetOnTrigger)
 }
 const toggleRetrigger = (envId: number, source: ApiSource) => {
     const env = selectEnvelopes(store.getState()).envs[envId]
@@ -158,7 +158,7 @@ const setReleaseMode = (envId: number, releaseMode: ReleaseMode, source: ApiSour
     }
 
     dispatch(setReleaseModeAction({ env: envId, releaseMode }))
-    midiApi.env.setReleaseMode(source, envId, releaseMode)
+    midiApi.setReleaseMode(source, envId, releaseMode)
 }
 const toggleReleaseMode = (envId: number, source: ApiSource) => {
     const env = selectEnvelopes(store.getState()).envs[envId]
@@ -172,7 +172,7 @@ const setLoopMode = (envId: number, loopMode: LoopMode, source: ApiSource) => {
     }
 
     dispatch(setLoopModeAction({ env: envId, loopMode }))
-    midiApi.env.setLoopMode(source, envId, loopMode)
+    midiApi.setLoopMode(source, envId, loopMode)
 }
 const toggleLoopMode = (envId: number, source: ApiSource) => {
     const env = selectEnvelopes(store.getState()).envs[envId]
@@ -186,7 +186,7 @@ const setLoopEnabled = (envId: number, enabled: boolean, source: ApiSource) => {
     }
 
     dispatch(setLoopEnabledAction({ env: envId, enabled }))
-    midiApi.env.setLoopEnabled(source, envId, enabled)
+    midiApi.setLoopEnabled(source, envId, enabled)
 }
 const toggleLoopEnabled = (envId: number, source: ApiSource) => {
     const env = selectEnvelopes(store.getState()).envs[envId]
@@ -218,7 +218,7 @@ const setStageCurve = (envId: number, stageId: StageId, curve: number, source: A
     }
 
     dispatch(setCurve({ env: envId, stage: stageId, curve: boundedCurve }))
-    midiApi.env.setCurve(source, envId, stageId, curve)
+    midiApi.setCurve(source, envId, stageId, curve)
 }
 const incrementStageCurve = (envId: number, stageId: StageId, increment: number, source: ApiSource) => {
     const stage = selectEnvelope(envId)(store.getState()).stages[stageId]
@@ -241,24 +241,24 @@ const setMaxLoops = (envId: number, maxLoops: number, source: ApiSource) => {
     }
 
     dispatch(setMaxLoopsAction({ env: envId, value: boundedMaxLoops }))
-    midiApi.env.setMaxLoops(source, envId, boundedMaxLoops)
+    midiApi.setMaxLoops(source, envId, boundedMaxLoops)
 }
 const incrementMaxLoops = (envId: number, increment: number, source: ApiSource) => {
     const currMaxLoops = selectEnvelope(envId)(store.getState()).maxLoops
     setMaxLoops(envId, currMaxLoops + increment, source)
 }
 const trigger = (envId: number, source: ApiSource) => {
-    midiApi.env.trigger(source, envId)
+    midiApi.trigger(source, envId)
 }
 const release = (envId: number, source: ApiSource) => {
-    midiApi.env.trigger(source, envId)
+    midiApi.trigger(source, envId)
 }
 const setEnv3Id = (id: number, source: ApiSource) => {
     const envelopes = selectEnvelopes(store.getState()).envs.length
     const currentEnv3Id = selectEnv3Id(store.getState())
     if (id !== currentEnv3Id && id < envelopes && id > 1) {
         dispatch(setEnv3IdAction({ id }))
-        midiApi.env.setEnv3Id(source, id)
+        midiApi.setEnv3Id(source, id)
     }
 }
 const toggleEnv3Id = (source: ApiSource) => {

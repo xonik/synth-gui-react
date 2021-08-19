@@ -1,9 +1,9 @@
-import CC from '../../mapCC'
-import { BUTTONS } from '../../buttons'
-import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../types'
-import { ControllerId } from '../../controllerIds'
+import CC from '../../../midi/mapCC'
+import { BUTTONS } from '../../../midi/buttons'
+import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
+import { ControllerId } from '../../../midi/controllerIds'
 
-interface ControllersMainDisplay {
+interface MainDisplayControllers {
     props: FuncProps
     POT1: ControllerConfigCC,
     POT2: ControllerConfigCC,
@@ -23,7 +23,7 @@ interface ControllersMainDisplay {
     FUNC_ROUTE: ControllerConfigCCWithValue
 }
 
-const controllersMainDisplay: ControllersMainDisplay = {
+const mainDisplayControllers: MainDisplayControllers = {
     props: { label: 'Main controls' },
     POT1: { id: ControllerId.MAIN_DISP_POT1, label: 'Pot 1', type: 'pot', cc: CC.MAIN_POT1 },
     POT2: { id: ControllerId.MAIN_DISP_POT2, label: 'Pot 2', type: 'pot', cc: CC.MAIN_POT2 },
@@ -123,4 +123,4 @@ const controllersMainDisplay: ControllersMainDisplay = {
     },
 }
 
-export default controllersMainDisplay
+export default mainDisplayControllers

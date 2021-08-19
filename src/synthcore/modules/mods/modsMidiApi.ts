@@ -1,8 +1,8 @@
-import controllers from '../../controllers'
-import { cc, nrpn } from '../../midibus'
-import { ApiSource } from '../../../synthcore/types'
-import { shouldSend } from '../../utils'
-import modsApi from '../../../synthcore/modules/mods/modsApi'
+import controllers from '../../../midi/controllers'
+import { cc, nrpn } from '../../../midi/midibus'
+import { shouldSend } from '../../../midi/utils'
+import modsApi from './modsApi'
+import { ApiSource } from '../../types'
 
 let currentSourceId = 0;
 let currentTargetId = 0;
@@ -70,11 +70,11 @@ const initReceive = () => {
     target.receive()
 }
 
-const midiApiRoute = {
+const modsMidiApi = {
     setAmount: amount.send,
     setSource: source.send,
     setTarget: target.send,
     initReceive,
 }
 
-export default midiApiRoute
+export default modsMidiApi

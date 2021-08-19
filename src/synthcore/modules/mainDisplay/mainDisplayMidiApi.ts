@@ -1,8 +1,8 @@
-import { mainDisplayApi } from '../../../synthcore/synthcoreApi'
-import controllers from '../../controllers'
-import { cc } from '../../midibus'
-import { ApiSource } from '../../../synthcore/types'
-import { shouldSend } from '../../utils'
+import { mainDisplayApi } from '../../synthcoreApi'
+import controllers from '../../../midi/controllers'
+import { cc } from '../../../midi/midibus'
+import { ApiSource } from '../../types'
+import { shouldSend } from '../../../midi/utils'
 
 const currentScreen = (() => {
     const cfg = controllers.MAIN_DISPLAY.GROUP_MENU
@@ -27,7 +27,9 @@ const initReceive = () => {
     currentScreen.receive()
 }
 
-export default {
+const mainDisplayMidiApi = {
     setCurrentScreen: currentScreen.send,
     initReceive,
 }
+
+export default mainDisplayMidiApi

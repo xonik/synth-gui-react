@@ -5,17 +5,17 @@ import controllersRingMod from './modules/ringMod/controllersRingMod'
 import controllersFx from './modules/fx/controllersFx'
 import controllersLfo from './modules/lfo/controllersLfo'
 import controllersSrcMix from './modules/srcMix/controllersSrcMix'
-import controllersRoute from './modules/route/controllersRoute'
+import modsControllers from '../synthcore/modules/mods/modsControllers'
 import controllersMasterClock from './modules/masterClock/controllersMasterClock'
 import controllersArp from './modules/arp/controllersArp'
 import controllersVoices from './modules/voices/controllersVoices'
-import controllersMainDisplay from './modules/mainDisplay/controllersMainDisplay'
+import mainDisplayControllers from '../synthcore/modules/mainDisplay/mainDisplayControllers'
 import controllersTranspose from './modules/transpose/controllersTranspose'
 import controllersKbd from './modules/kbd/controllersKbd'
 import controllersFilters from './modules/filters/controllersFilters'
 import controllersPostMix from './modules/postMix/controllersPostMix'
 import controllersVoiceOut from './modules/voiceOut/controllersVoiceOut'
-import controllersEnv from './modules/env/controllersEnv'
+import envControllers from '../synthcore/modules/env/envControllers'
 import controllersCommonFx from './modules/commonFx/controllersCommonFx'
 import controllersOut from './modules/out/controllersOut'
 import { controllersPerformance } from './modules/performance/controllersPerformance'
@@ -57,7 +57,7 @@ export const controllerGroups = {
     MAIN_DISPLAY: {
         label: 'Main controls',
         VOICES: controllersVoices,
-        MAIN_DISPLAY: controllersMainDisplay,
+        MAIN_DISPLAY: mainDisplayControllers,
     },
     FILTER: {
         label: 'Filter',
@@ -73,11 +73,11 @@ export const controllerGroups = {
     },
     ENV: {
         label: 'Envelopes',
-        ENV1: controllersEnv(0),
-        ENV2: controllersEnv(1),
-        ENV3: controllersEnv(2),
-        ENV4: controllersEnv(3),
-        ENV5: controllersEnv(4),
+        ENV1: envControllers(0),
+        ENV2: envControllers(1),
+        ENV3: envControllers(2),
+        ENV4: envControllers(3),
+        ENV5: envControllers(4),
     },
     FX: {
         label: 'Effects',
@@ -107,11 +107,11 @@ const controllers = {
     BIT_CRUSHER: controllersFx.BIT_CRUSHER,
     LFOS: controllersLfo(0), // most cc values are shared so the ones for 0 are used
     SOURCE_MIX: controllersSrcMix,
-    ROUTE: controllersRoute,
+    ROUTE: modsControllers,
     MASTER_CLOCK: controllersMasterClock,
     ARPEGGIATOR: controllersArp,
     VOICES: controllersVoices,
-    MAIN_DISPLAY: controllersMainDisplay,
+    MAIN_DISPLAY: mainDisplayControllers,
     TRANSPOSE: controllersTranspose,
     KEYBOARD: controllersKbd,
     LPF: controllersFilters.LPF,
@@ -119,7 +119,7 @@ const controllers = {
     SVF: controllersFilters.SVF,
     POST_MIX: controllersPostMix,
     VOICE_OUT: controllersVoiceOut,
-    ENV: controllersEnv(0), // most cc values are shared so the ones for 0 are used
+    ENV: envControllers(0), // most cc values are shared so the ones for 0 are used
     DSP1: controllersCommonFx.DSP1,
     DSP2: controllersCommonFx.DSP2,
     CHORUS: controllersCommonFx.CHORUS,

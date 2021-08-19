@@ -1,16 +1,16 @@
-import CC from '../../mapCC'
-import { BUTTONS } from '../../buttons'
-import { ControllerConfigCCWithValue, ControllerConfigNRPN, FuncProps } from '../../types'
-import { ControllerId } from '../../controllerIds'
+import CC from '../../../midi/mapCC'
+import { BUTTONS } from '../../../midi/buttons'
+import { ControllerConfigCCWithValue, ControllerConfigNRPN, FuncProps } from '../../../midi/types'
+import { ControllerId } from '../../../midi/controllerIds'
 
-interface ControllersRoute {
+interface ModsControllers {
     props: FuncProps
     AMOUNT: ControllerConfigNRPN
     FROM: ControllerConfigCCWithValue
     TO: ControllerConfigCCWithValue
 }
 
-const controllersRoute: ControllersRoute = {
+const modsControllers: ModsControllers = {
     props: { label: 'Routing' },
     AMOUNT: { id: ControllerId.ROUTE_AMOUNT, label: 'Amount', type: 'pot', addr: CC.ROUTE_AMOUNT },
     FROM: {
@@ -37,4 +37,4 @@ const controllersRoute: ControllersRoute = {
     },
 }
 
-export default controllersRoute
+export default modsControllers

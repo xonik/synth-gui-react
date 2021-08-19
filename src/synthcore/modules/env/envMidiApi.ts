@@ -1,9 +1,9 @@
-import { envApi } from '../../../synthcore/synthcoreApi'
-import { Curve, LoopMode, ReleaseMode } from '../../../synthcore/modules/env/types'
-import controllers from '../../controllers'
-import { cc, nrpn } from '../../midibus'
-import { ApiSource } from '../../../synthcore/types'
-import { shouldSend } from '../../utils'
+import { envApi } from '../../synthcoreApi'
+import { Curve, LoopMode, ReleaseMode } from './types'
+import controllers from '../../../midi/controllers'
+import { cc, nrpn } from '../../../midi/midibus'
+import { ApiSource } from '../../types'
+import { shouldSend } from '../../../midi/utils'
 
 let currentEnvId = -1
 
@@ -287,7 +287,7 @@ const initReceive = () => {
     env3Id.receive()
 }
 
-const midiApiEnv = {
+const envMidiApi = {
     setLevel: level.send,
     setTime: time.send,
     setInvert: invert.send,
@@ -304,4 +304,4 @@ const midiApiEnv = {
     initReceive,
 }
 
-export default midiApiEnv
+export default envMidiApi

@@ -1,5 +1,5 @@
 import { store } from '../../store'
-import midiApi from '../../../midi/midiApi'
+import midiApi from './modsMidiApi'
 import { ApiSource } from '../../types'
 import { dispatch, getBounded, getQuantized } from '../../utils'
 import {
@@ -110,9 +110,9 @@ const setModValue = (sourceId: number, targetId: number, modValue: number, sourc
     }
 
     dispatch(setModValueAction({ sourceId, targetId, modValue: quantizedValue }))
-    midiApi.route.setSource(source, sourceId)
-    midiApi.route.setTarget(source, targetId)
-    midiApi.route.setAmount(source, modValue)
+    midiApi.setSource(source, sourceId)
+    midiApi.setTarget(source, targetId)
+    midiApi.setAmount(source, modValue)
 }
 
 const incrementGuiModValue = (inc: number, source: ApiSource) => {

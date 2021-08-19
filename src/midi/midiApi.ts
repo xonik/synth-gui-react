@@ -1,14 +1,18 @@
-import midiApiEnv from './modules/env/midiApiEnv'
-import midiApiRoute from './modules/route/midiApiRoute'
+import envMidiApi from '../synthcore/modules/env/envMidiApi'
+import modsMidiApi from '../synthcore/modules/mods/modsMidiApi'
+import mainDisplayMidiApi from '../synthcore/modules/mainDisplay/mainDisplayMidiApi'
 
 const initReceive = () => {
-    midiApiEnv.initReceive()
+    envMidiApi.initReceive()
+    modsMidiApi.initReceive()
+    mainDisplayMidiApi.initReceive()
 }
 
 const midiApi = {
     initReceive,
-    env: midiApiEnv,
-    route: midiApiRoute,
+    env: envMidiApi,
+    mods: modsMidiApi,
+    mainDisplay: mainDisplayMidiApi
 }
 
 export default midiApi

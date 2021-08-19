@@ -1,8 +1,8 @@
-import CC from '../../mapCC'
-import NRPN from '../../mapNRPN'
-import { BUTTONS } from '../../buttons'
-import { FuncProps, ControllerConfig, ControllerConfigCC, ControllerConfigCCWithValue, ControllerConfigNRPN } from '../../types'
-import { ControllerId } from '../../controllerIds'
+import CC from '../../../midi/mapCC'
+import NRPN from '../../../midi/mapNRPN'
+import { BUTTONS } from '../../../midi/buttons'
+import { FuncProps, ControllerConfig, ControllerConfigCC, ControllerConfigCCWithValue, ControllerConfigNRPN } from '../../../midi/types'
+import { ControllerId } from '../../../midi/controllerIds'
 
 interface MidiCtrlEnv {
     props: FuncProps
@@ -32,17 +32,17 @@ interface MidiCtrlEnv {
     OUTPUT: ControllerConfig
 }
 
-const controllersEnv = (ctrlIndex: number): MidiCtrlEnv => ({
+const envControllers = (ctrlIndex: number): MidiCtrlEnv => ({
     props: { label: `Env ${1 + ctrlIndex}`, ctrlIndex },
-    DELAY_TIME: { id: ControllerId.ENV_DELAY_TIME, label: 'Delay time', shortLabel: 'Delay', isTargetDigi: true, type: 'pot'},
-    ATTACK_TIME: { id: ControllerId.ENV_ATTACK_TIME, label: 'Attack time', shortLabel: 'Attack', isTargetDigi: true, type: 'pot'},
-    DECAY1_TIME: { id: ControllerId.ENV_DECAY1_TIME, label: 'Decay 1 time', shortLabel: 'Decay 1', isTargetDigi: true, type: 'pot'},
-    DECAY2_TIME: { id: ControllerId.ENV_DECAY2_TIME, label: 'Decay 2 time', shortLabel: 'Decay 2', isTargetDigi: true, type: 'pot'},
-    SUSTAIN_LEVEL: { id: ControllerId.ENV_SUSTAIN_LEVEL, label: 'Sustain level', shortLabel: 'Sustain', isTargetDigi: true, type: 'pot'},
-    RELEASE1_TIME: { id: ControllerId.ENV_RELEASE1_TIME, label: 'Release 1 time', shortLabel: 'Release 1', isTargetDigi: true, type: 'pot'},
-    RELEASE2_TIME: { id: ControllerId.ENV_RELEASE2_TIME, label: 'Release 2 time', shortLabel: 'Release 2', isTargetDigi: true, type: 'pot'},
-    DECAY2_LEVEL: { id: ControllerId.ENV_DECAY2_LEVEL, label: 'Decay 2 level', shortLabel: 'D2 level', isTargetDigi: true, type: 'pot'},
-    RELEASE2_LEVEL: { id: ControllerId.ENV_RELEASE2_LEVEL, label: 'Release 2 level', shortLabel: 'R2 level', isTargetDigi: true, type: 'pot'},
+    DELAY_TIME: { id: ControllerId.ENV_DELAY_TIME, label: 'Delay time', shortLabel: 'Delay', isTargetDigi: true, type: 'pot' },
+    ATTACK_TIME: { id: ControllerId.ENV_ATTACK_TIME, label: 'Attack time', shortLabel: 'Attack', isTargetDigi: true, type: 'pot' },
+    DECAY1_TIME: { id: ControllerId.ENV_DECAY1_TIME, label: 'Decay 1 time', shortLabel: 'Decay 1', isTargetDigi: true, type: 'pot' },
+    DECAY2_TIME: { id: ControllerId.ENV_DECAY2_TIME, label: 'Decay 2 time', shortLabel: 'Decay 2', isTargetDigi: true, type: 'pot' },
+    SUSTAIN_LEVEL: { id: ControllerId.ENV_SUSTAIN_LEVEL, label: 'Sustain level', shortLabel: 'Sustain', isTargetDigi: true, type: 'pot' },
+    RELEASE1_TIME: { id: ControllerId.ENV_RELEASE1_TIME, label: 'Release 1 time', shortLabel: 'Release 1', isTargetDigi: true, type: 'pot' },
+    RELEASE2_TIME: { id: ControllerId.ENV_RELEASE2_TIME, label: 'Release 2 time', shortLabel: 'Release 2', isTargetDigi: true, type: 'pot' },
+    DECAY2_LEVEL: { id: ControllerId.ENV_DECAY2_LEVEL, label: 'Decay 2 level', shortLabel: 'D2 level', isTargetDigi: true, type: 'pot' },
+    RELEASE2_LEVEL: { id: ControllerId.ENV_RELEASE2_LEVEL, label: 'Release 2 level', shortLabel: 'R2 level', isTargetDigi: true, type: 'pot' },
     CURVE: { id: ControllerId.ENV_CURVE, label: 'Curve', type: 'pot', addr: NRPN.ENV_CURVE },
     LEVEL: { id: ControllerId.ENV_LEVEL, label: 'Level', type: 'pot', addr: NRPN.ENV_LEVEL },
     TIME: { id: ControllerId.ENV_TIME, label: 'Time', type: 'pot', addr: NRPN.ENV_TIME },
@@ -128,4 +128,4 @@ const controllersEnv = (ctrlIndex: number): MidiCtrlEnv => ({
     },
 })
 
-export default controllersEnv
+export default envControllers
