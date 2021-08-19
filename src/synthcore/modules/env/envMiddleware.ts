@@ -1,4 +1,4 @@
-import { click, increment } from '../ui/uiReducer'
+import { click, increment, release } from '../ui/uiReducer'
 import { envApi } from '../../synthcoreApi'
 import { StageId } from './types'
 import { toggleInvert, toggleLoopEnabled, toggleLoopMode, toggleReleaseMode, toggleRetrigger, toggleStageEnabled, toggleStageSelected } from './envReducer'
@@ -33,6 +33,11 @@ export const envMiddleware = (action: PayloadAction): void => {
     } else if (click.match(action)) {
         const ctrlIndex = action.payload.ctrlIndex || 0
         envApiMapper[action.payload.ctrlId](ctrlIndex, 0)
+    } else if (release.match(action)) {
+        const ctrlIndex = action.payload.ctrlIndex || 0
+        if(action.payload.ctrlId === EnvControllerId.ENV_TRIGGER){
+            envApi.release(ctrlIndex, ApiSource.UI)
+        }
     } else if (toggleStageEnabled.match(action)) {
         envApi.toggleStageEnabled(action.payload.env, action.payload.stage, ApiSource.GUI)
     } else if (toggleInvert.match(action)) {

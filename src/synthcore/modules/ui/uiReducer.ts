@@ -34,12 +34,16 @@ export const uiSlice = createSlice({
         click: (state, {payload}: PayloadAction<ButtonControllerPayload>) => {
             //Not doing anything yet, just needed to create the action.
         },
+        release: (state, {payload}: PayloadAction<ButtonControllerPayload>) => {
+            //Not doing anything yet, just needed to create the action.
+        },
     }
 })
 
 export const {
     increment,
     click,
+    release,
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

@@ -5,7 +5,7 @@ import RotaryPotBase from '../pots/RotaryPotBase'
 import { cc } from '../../midi/midibus'
 import { ControllerConfigCC } from '../../midi/types'
 import { ControllerGroupIds } from '../../synthcore/types'
-import { click } from '../../synthcore/modules/ui/uiReducer'
+import { click, release } from '../../synthcore/modules/ui/uiReducer'
 import { dispatch } from '../../synthcore/utils'
 import './RoundButton.scss'
 
@@ -277,6 +277,14 @@ export const RoundButtonBase = (props: Props & Config) => {
         onClick, ctrlId, ctrlGroup, ctrlIndex
     ])
 
+    const handleOnRelease = useCallback(() => {
+        if(ctrlId !== undefined && ctrlGroup !== undefined) {
+            dispatch(release({ ctrlGroup, ctrlId, ctrlIndex }))
+        }
+    }, [
+        ctrlId, ctrlGroup, ctrlIndex
+    ])
+
     useEffect(() => {
         if(midiConfig && midiConfig.values) {
             const updateValueFromMidi = (midiValue: number) => {
@@ -330,6 +338,7 @@ export const RoundButtonBase = (props: Props & Config) => {
             {buttonMode === 'push'
                 ? <RoundPushButtonBase buttonRadius={buttonRadius}
                                        onClick={handleOnClick}
+                                       onRelease={handleOnRelease}
                                        className={classNames('button-cap', { 'button-cap-led': ledButton, 'button-cap-led__on': ledButton && ledOn.length > 0 && ledOn[0] })}/>
                 : <RotaryPotBase onClick={handleOnClick} knobRadius={buttonRadius}/>
             }
