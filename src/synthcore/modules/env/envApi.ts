@@ -25,7 +25,7 @@ import { store } from '../../store'
 import midiApi from '../../../midi/midiApi'
 import { curveFuncs } from '../../../components/curves/curveCalculator'
 import { ApiSource } from '../../types'
-import { dispatch, getBounded } from '../../utils'
+import { dispatch, getBounded, getQuantized } from '../../utils'
 
 const updateReleaseLevels = (env: Envelope, value: number) => {
     if (env.stages[StageId.RELEASE1].enabled) {
@@ -46,7 +46,7 @@ const setStageLevel = (envId: number, stageId: StageId, requestedValue: number, 
         stageId === StageId.SUSTAIN ||
         (stageId === StageId.RELEASE2 && r1enabled)
     ) {
-        let boundedValue = getBounded(requestedValue)
+        const boundedValue = getQuantized(getBounded(requestedValue), 32767)
         const value = env.bipolar ? boundedValue * 2 - 1 : boundedValue
 
         // sustain level is not used directly. Instead it replaces r1 or r2 level depending on if
@@ -76,7 +76,7 @@ const incrementStageLevel = (envId: number, stageId: StageId, incLevel: number, 
 }
 
 const setStageTime = (envId: number, stageId: StageId, requestedValue: number, source: ApiSource) => {
-    const boundedValue = getBounded(requestedValue)
+    const boundedValue = getQuantized(getBounded(requestedValue))
     dispatch(setTime({ env: envId, stage: stageId, value: boundedValue }))
     midiApi.env.setTime(source, envId, stageId, boundedValue)
 }

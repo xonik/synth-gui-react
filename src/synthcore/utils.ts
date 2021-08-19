@@ -20,4 +20,7 @@ export const getBounded = (value: number, from: number = 0, to: number = 1) => {
     return value
 }
 
+// Quantize to 16 bit to store same number as we send over midi
+export const getQuantized = (value: number, factor: number = 65535) => Math.round(value * factor) / factor
+
 export const step = (increment: number) => increment > 0 ? 1 : -1
