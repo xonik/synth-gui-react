@@ -49,6 +49,11 @@ const setStageLevel = (envId: number, stageId: StageId, requestedValue: number, 
         const boundedValue = getQuantized(getBounded(requestedValue), 32767)
         const value = env.bipolar ? boundedValue * 2 - 1 : boundedValue
 
+        const currentLevel = env.stages[stageId].level
+        if(value === currentLevel){
+            return
+        }
+
         // sustain level is not used directly. Instead it replaces r1 or r2 level depending on if
         // r1 is enabled or not.
         if (stageId === StageId.SUSTAIN) {
@@ -77,6 +82,11 @@ const incrementStageLevel = (envId: number, stageId: StageId, incLevel: number, 
 
 const setStageTime = (envId: number, stageId: StageId, requestedValue: number, source: ApiSource) => {
     const boundedValue = getQuantized(getBounded(requestedValue))
+    const currentTime = selectEnvelope(envId)(store.getState()).stages[stageId].time
+    if (boundedValue === currentTime) {
+        return
+    }
+
     dispatch(setTime({ env: envId, stage: stageId, value: boundedValue }))
     midiApi.env.setTime(source, envId, stageId, boundedValue)
 }
@@ -92,6 +102,10 @@ const setStageEnabled = (envId: number, stageId: StageId, enabled: boolean, sour
     }
 
     const env = selectEnvelopes(store.getState()).envs[envId]
+    if (env.stages[stageId].enabled === enabled) {
+        return
+    }
+
     dispatch(setStageEnabledAction({ env: envId, stage: stageId, enabled }))
 
     if (stageId === StageId.RELEASE1) {
@@ -110,6 +124,11 @@ const toggleStageEnabled = (envId: number, stageId: StageId, source: ApiSource) 
     setStageEnabled(envId, stageId, enabled, source)
 }
 const setInvert = (envId: number, invert: boolean, source: ApiSource) => {
+    const env = selectEnvelopes(store.getState()).envs[envId]
+    if (env.invert === invert) {
+        return
+    }
+
     dispatch(setInvertAction({ env: envId, invert }))
     midiApi.env.setInvert(source, envId, invert)
 }
@@ -119,6 +138,11 @@ const toggleInvert = (envId: number, source: ApiSource) => {
     setInvert(envId, invert, source)
 }
 const setRetrigger = (envId: number, resetOnTrigger: boolean, source: ApiSource) => {
+    const env = selectEnvelopes(store.getState()).envs[envId]
+    if (env.resetOnTrigger === resetOnTrigger) {
+        return
+    }
+
     dispatch(setResetOnTrigger({ env: envId, resetOnTrigger }))
     midiApi.env.setResetOnTrigger(source, envId, resetOnTrigger)
 }
@@ -128,6 +152,11 @@ const toggleRetrigger = (envId: number, source: ApiSource) => {
     setRetrigger(envId, resetOnTrigger, source)
 }
 const setReleaseMode = (envId: number, releaseMode: ReleaseMode, source: ApiSource) => {
+    const env = selectEnvelopes(store.getState()).envs[envId]
+    if (env.releaseMode === releaseMode) {
+        return
+    }
+
     dispatch(setReleaseModeAction({ env: envId, releaseMode }))
     midiApi.env.setReleaseMode(source, envId, releaseMode)
 }
@@ -137,6 +166,11 @@ const toggleReleaseMode = (envId: number, source: ApiSource) => {
     setReleaseMode(envId, releaseMode, source)
 }
 const setLoopMode = (envId: number, loopMode: LoopMode, source: ApiSource) => {
+    const env = selectEnvelopes(store.getState()).envs[envId]
+    if (env.loopMode === loopMode) {
+        return
+    }
+
     dispatch(setLoopModeAction({ env: envId, loopMode }))
     midiApi.env.setLoopMode(source, envId, loopMode)
 }
@@ -146,6 +180,11 @@ const toggleLoopMode = (envId: number, source: ApiSource) => {
     setLoopMode(envId, loopMode, source)
 }
 const setLoopEnabled = (envId: number, enabled: boolean, source: ApiSource) => {
+    const env = selectEnvelopes(store.getState()).envs[envId]
+    if (env.loopEnabled === enabled) {
+        return
+    }
+
     dispatch(setLoopEnabledAction({ env: envId, enabled }))
     midiApi.env.setLoopEnabled(source, envId, enabled)
 }
@@ -172,20 +211,14 @@ const incrementCurrentEnvelope = (increment: number, source: ApiSource) => {
     setCurrentEnv(selectCurrEnvId(store.getState()) + increment, source)
 }
 const setStageCurve = (envId: number, stageId: StageId, curve: number, source: ApiSource) => {
-    console.log('set', {
-        envId,
-        stageId,
-        curve,
-        source,
-        env: selectEnvelope(envId),
-        stages: selectEnvelope(envId)(store.getState()).stages
-    })
     const stage = selectEnvelope(envId)(store.getState()).stages[stageId]
     const boundedCurve = getBounded(curve, 0, curveFuncs.length - 1)
-    if (stage.curve !== boundedCurve) {
-        dispatch(setCurve({ env: envId, stage: stageId, curve: boundedCurve }))
-        midiApi.env.setCurve(source, envId, stageId, curve)
+    if (stage.curve === boundedCurve) {
+        return
     }
+
+    dispatch(setCurve({ env: envId, stage: stageId, curve: boundedCurve }))
+    midiApi.env.setCurve(source, envId, stageId, curve)
 }
 const incrementStageCurve = (envId: number, stageId: StageId, increment: number, source: ApiSource) => {
     const stage = selectEnvelope(envId)(store.getState()).stages[stageId]
@@ -203,10 +236,12 @@ const incrementStageCurve = (envId: number, stageId: StageId, increment: number,
 const setMaxLoops = (envId: number, maxLoops: number, source: ApiSource) => {
     const currMaxLoops = selectEnvelope(envId)(store.getState()).maxLoops
     const boundedMaxLoops = getBounded(maxLoops, 2, 128)
-    if (boundedMaxLoops !== currMaxLoops) {
-        dispatch(setMaxLoopsAction({ env: envId, value: boundedMaxLoops }))
-        midiApi.env.setMaxLoops(source, envId, boundedMaxLoops)
+    if (boundedMaxLoops === currMaxLoops) {
+        return
     }
+
+    dispatch(setMaxLoopsAction({ env: envId, value: boundedMaxLoops }))
+    midiApi.env.setMaxLoops(source, envId, boundedMaxLoops)
 }
 const incrementMaxLoops = (envId: number, increment: number, source: ApiSource) => {
     const currMaxLoops = selectEnvelope(envId)(store.getState()).maxLoops
@@ -220,7 +255,8 @@ const release = (envId: number, source: ApiSource) => {
 }
 const setEnv3Id = (id: number, source: ApiSource) => {
     const envelopes = selectEnvelopes(store.getState()).envs.length
-    if (id < envelopes && id > 1) {
+    const currentEnv3Id = selectEnv3Id(store.getState())
+    if (id !== currentEnv3Id && id < envelopes && id > 1) {
         dispatch(setEnv3IdAction({ id }))
         midiApi.env.setEnv3Id(source, id)
     }

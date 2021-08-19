@@ -1,7 +1,7 @@
 import { store } from '../../store'
 import midiApi from '../../../midi/midiApi'
 import { ApiSource } from '../../types'
-import { dispatch, getBounded } from '../../utils'
+import { dispatch, getBounded, getQuantized } from '../../utils'
 import {
     setGuiSource as setGuiSourceAction,
     setGuiTargetGroup as setGuiTargetGroupAction,
@@ -102,13 +102,17 @@ const incrementGuiTargetParam = (inc: -1 | 1, source: ApiSource) => {
 }
 
 const setModValue = (sourceId: number, targetId: number, modValue: number, source: ApiSource) => {
+    const quantizedValue = getQuantized(modValue, 32767)
     const currModValue = selectModValue(sourceId, targetId)(store.getState())
-    if (modValue !== currModValue) {
-        dispatch(setModValueAction({ sourceId, targetId, modValue }))
-        midiApi.route.setSource(source, sourceId)
-        midiApi.route.setTarget(source, targetId)
-        midiApi.route.setAmount(source, modValue)
+
+    if (quantizedValue === currModValue) {
+        return
     }
+
+    dispatch(setModValueAction({ sourceId, targetId, modValue: quantizedValue }))
+    midiApi.route.setSource(source, sourceId)
+    midiApi.route.setTarget(source, targetId)
+    midiApi.route.setAmount(source, modValue)
 }
 
 const incrementGuiModValue = (inc: number, source: ApiSource) => {
