@@ -16,8 +16,8 @@ const potResolution: PotResolutions = {
     [MainDisplayScreenId.MOD]: mainDisplayModsPotResolutions
 }
 
-export const getPotResolution = (ctrlId: MainDisplayControllerIds) => {
-    const screenPots = potResolution[selectCurrScreen(store.getState())]
+export const getPotResolution = (ctrlId: MainDisplayControllerIds, currScreen: number) => {
+    const screenPots = potResolution[currScreen]
     if (screenPots?.[ctrlId]) {
         return screenPots[ctrlId]
     }

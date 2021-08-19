@@ -7,6 +7,8 @@ import midiConstants from '../../midi/controllers'
 import { MainDisplayControllerIds } from '../../synthcore/modules/mainDisplay/types'
 import { ControllerGroupIds } from '../../synthcore/types'
 import { getPotResolution } from '../../synthcore/modules/mainDisplay/mainDisplayApi'
+import { useAppSelector } from '../../synthcore/hooks'
+import { selectCurrScreen } from '../../synthcore/modules/mainDisplay/mainDisplayReducer'
 import './MainDisplay.scss'
 
 interface Props {
@@ -17,6 +19,8 @@ interface Props {
 const ctrlGroup = ControllerGroupIds.MAIN_DISP
 
 const MainDisplay = React.forwardRef<SVGRectElement, Props>(({ x, y }, displayRef) => {
+
+    const currScreen = useAppSelector(selectCurrScreen)
 
     // approx. 9"
     const displayWidth = 180
@@ -81,37 +85,37 @@ const MainDisplay = React.forwardRef<SVGRectElement, Props>(({ x, y }, displayRe
                            midiConfig={midiConstants.MAIN_DISPLAY.POT1}
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
                            ctrlId={MainDisplayControllerIds.POT1}
-                           resolution={getPotResolution(MainDisplayControllerIds.POT1)}
+                           resolution={getPotResolution(MainDisplayControllerIds.POT1, currScreen)}
         />
         <RotaryPotWOLeds17 x={displayCenter - 1 * potSpacing} y={potRow}
                            midiConfig={midiConstants.MAIN_DISPLAY.POT2}
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
                            ctrlId={MainDisplayControllerIds.POT2}
-                           resolution={getPotResolution(MainDisplayControllerIds.POT2)}
+                           resolution={getPotResolution(MainDisplayControllerIds.POT2, currScreen)}
         />
         <RotaryPotWOLeds17 x={displayCenter} y={potRow}
                            midiConfig={midiConstants.MAIN_DISPLAY.POT3}
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
                            ctrlId={MainDisplayControllerIds.POT3}
-                           resolution={getPotResolution(MainDisplayControllerIds.POT3)}
+                           resolution={getPotResolution(MainDisplayControllerIds.POT3, currScreen)}
         />
         <RotaryPotWOLeds17 x={displayCenter + 1 * potSpacing} y={potRow}
                            midiConfig={midiConstants.MAIN_DISPLAY.POT4}
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
                            ctrlId={MainDisplayControllerIds.POT4}
-                           resolution={getPotResolution(MainDisplayControllerIds.POT4)}
+                           resolution={getPotResolution(MainDisplayControllerIds.POT4, currScreen)}
         />
         <RotaryPotWOLeds17 x={displayCenter + 2 * potSpacing} y={potRow}
                            midiConfig={midiConstants.MAIN_DISPLAY.POT5}
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
                            ctrlId={MainDisplayControllerIds.POT5}
-                           resolution={getPotResolution(MainDisplayControllerIds.POT5)}
+                           resolution={getPotResolution(MainDisplayControllerIds.POT5, currScreen)}
         />
         <RotaryPotWOLeds32 x={displayCenter} y={masterPotRow}
                            midiConfig={midiConstants.MAIN_DISPLAY.POT6}
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
                            ctrlId={MainDisplayControllerIds.POT6}
-                           resolution={getPotResolution(MainDisplayControllerIds.POT6)}
+                           resolution={getPotResolution(MainDisplayControllerIds.POT6, currScreen)}
         />
 
         <RoundPushButton8 x={displayCenter - 2.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Home" labelPosition="bottom" midiConfig={midiConstants.MAIN_DISPLAY.FUNC_HOME}/>
