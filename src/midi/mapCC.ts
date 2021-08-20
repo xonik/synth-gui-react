@@ -49,7 +49,7 @@ const mapCC = {
     LEVEL_NOISE: 45,
     LEVEL_RING_MOD: 46,
     LEVEL_EXT_AUDIO: 47,
-    ROUTE_AMOUNT: 48,
+    //ROUTE_AMOUNT: 48,
     MASTER_CLOCK_RATE: 49,
     ARP_TEMPO: 50,
     MAIN_POT1: 51,
@@ -116,6 +116,9 @@ const mapCC = {
     OUTPUT_VOLUME: 113,
     OUTPUT_SPREAD: 114,
     OUTPUT_HEADPHONES: 115,
+    MOD_SRC_ID: 116,
+    MOD_DST_ID: 117,
+    MOD_DST_INDEX: 118, // Used when there are multiple modules using same dst, such as LFOs and envs
     // 120 - 127 reserved for channel mode messages
 }
 

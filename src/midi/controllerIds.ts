@@ -92,6 +92,7 @@ export enum ControllerId {
     VOICE_MIX_SVF,
     VOICE_MIX_SINE1,
     VOICE_MIX_SINE2,
+
     VOICE_OUT_PAN,
     VOICE_OUT_AMOUNT,
     VOICE_OUT_FX1_SEND,
@@ -100,6 +101,7 @@ export enum ControllerId {
     DSP1_PARAM1,
     DSP1_PARAM2,
     DSP1_PARAM3,
+
     DSP2_PARAM1,
     DSP2_PARAM2,
     DSP2_PARAM3,
@@ -109,6 +111,7 @@ export enum ControllerId {
 
     FX_BIT_CRUSHER_BITS,
     FX_BIT_CRUSHER_RATE,
+
     FX_MIX_LEVEL_DSP1,
     FX_MIX_LEVEL_DSP2,
     FX_MIX_LEVEL_CHORUS,
@@ -172,9 +175,12 @@ export enum ControllerId {
     LFO_SYNC,
     LFO_RESET,
     LFO_ONCE,
-    ROUTE_AMOUNT,
-    ROUTE_FROM,
-    ROUTE_TO,
+    MOD_AMOUNT,
+    MOD_DST,
+    MOD_SRC,
+    MOD_SET_SRC_ID,
+    MOD_SET_DST_ID,
+    MOD_SET_DST_INDEX,
 
     MASTER_CLOCK_SOURCE,
     ARP_ON_OFF,

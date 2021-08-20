@@ -101,17 +101,17 @@ const incrementGuiTargetParam = (inc: -1 | 1, source: ApiSource) => {
     }
 }
 
-const setModValue = (sourceId: number, targetId: number, modValue: number, source: ApiSource) => {
+const setModValue = (sourceId: number, targetId: number, targetCtrlIndex: number, modValue: number, source: ApiSource) => {
     const quantizedValue = getQuantized(modValue, 32767)
-    const currModValue = selectModValue(sourceId, targetId)(store.getState())
+    const currModValue = selectModValue(sourceId, targetId, targetCtrlIndex)(store.getState())
 
     if (quantizedValue === currModValue) {
         return
     }
 
-    dispatch(setModValueAction({ sourceId, targetId, modValue: quantizedValue }))
-    midiApi.setSource(source, sourceId)
-    midiApi.setTarget(source, targetId)
+    dispatch(setModValueAction({ sourceId, targetId, targetCtrlIndex, modValue: quantizedValue, source }))
+    midiApi.setSourceId(source, sourceId)
+    midiApi.setTargetId(source, targetId, targetCtrlIndex)
     midiApi.setAmount(source, modValue)
 }
 
@@ -123,11 +123,11 @@ const incrementGuiModValue = (inc: number, source: ApiSource) => {
 
     const sourceId = digitalModSources[sourceIndex].id
     const targetId = modTarget.targets[targetGroupIndex][targetFuncIndex][targetParamIndex].id
+    const targetCtrlIndex = modTarget.funcProps[targetGroupIndex][targetFuncIndex].ctrlIndex || 0
 
-    const currModValue = selectModValue(sourceId, targetId)(store.getState())
+    const currModValue = selectModValue(sourceId, targetId, targetCtrlIndex)(store.getState())
     const nextModValue = getBounded(currModValue + inc, -1, 1)
-
-    setModValue(sourceId, targetId, nextModValue, source)
+    setModValue(sourceId, targetId, targetCtrlIndex, nextModValue, source)
 }
 
 const modsApi = {

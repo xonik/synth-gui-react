@@ -13,15 +13,16 @@ interface CellProps {
     onSelected: (offsetLeft: number, offsetWidth: number) => void,
     sourceIndex: number
     funcIndex: number
+    funcCtrlIndex: number
     paramIndex: number
     sourceId: number
     targetId: number
 }
 
-const AmountCell = ({ sourceIndex, funcIndex, paramIndex, sourceId, targetId, onSelected }: CellProps) => {
+const AmountCell = ({ sourceIndex, funcIndex, funcCtrlIndex, paramIndex, sourceId, targetId, onSelected }: CellProps) => {
 
     const dispatch = useAppDispatch()
-    const modValue = useAppSelector(selectModValue(sourceId, targetId))
+    const modValue = useAppSelector(selectModValue(sourceId, targetId, funcCtrlIndex))
     const selectedSource = useAppSelector(selectGuiSource)
     const selectedTargetFunc = useAppSelector(selectGuiTargetFunc)
     const selectedTargetParam = useAppSelector(selectGuiTargetParam)
@@ -70,7 +71,8 @@ const AmountCell = ({ sourceIndex, funcIndex, paramIndex, sourceId, targetId, on
             )
         }
     }, [isSelectedCell, modSelectSource])
-
+    // onSelected is missing here on purpose. If it is included we get constant updates.
+    // I can't seem to make onSelected stay the same, it goes all the way up to ScrollSync.
 
     return <div ref={cellRef} className={classNames(
         'mod-ctrl__amount',
@@ -116,6 +118,7 @@ const AmountsRow = ({ sourceId, sourceIndex }: RowProps) => {
                                     key={paramIndex}
                                     sourceIndex={sourceIndex}
                                     funcIndex={funcIndex}
+                                    funcCtrlIndex={modTarget.funcProps[targetGroupId][funcIndex].ctrlIndex || 0}
                                     paramIndex={paramIndex}
                                     sourceId={sourceId}
                                     targetId={target.id}

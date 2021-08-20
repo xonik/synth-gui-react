@@ -107,7 +107,7 @@ const controllers = {
     BIT_CRUSHER: controllersFx.BIT_CRUSHER,
     LFOS: controllersLfo(0), // most cc values are shared so the ones for 0 are used
     SOURCE_MIX: controllersSrcMix,
-    ROUTE: modsControllers,
+    MODS: modsControllers,
     MASTER_CLOCK: controllersMasterClock,
     ARPEGGIATOR: controllersArp,
     VOICES: controllersVoices,

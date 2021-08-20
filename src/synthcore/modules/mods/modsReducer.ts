@@ -10,7 +10,7 @@ type ModsState = {
         targetParam: number;
         lastModSelectSource: ApiSource | undefined;
     },
-    modValues: number[][];
+    modValues: number[][][];
 }
 
 export const initialState: ModsState = {
@@ -57,7 +57,10 @@ type GuiLastModSelectSourcePayload = {
 type ModValuePayload = {
     sourceId: number;
     targetId: number;
+    targetCtrlIndex: number;
     modValue: number;
+    source: ApiSource
+
 }
 
 export const modsSlice = createSlice({
@@ -86,10 +89,15 @@ export const modsSlice = createSlice({
             state.gui.lastModSelectSource = payload.source
         },
         setModValue: (state, { payload }: PayloadAction<ModValuePayload>) => {
-            if (!state.modValues[payload.sourceId]) {
-                state.modValues[payload.sourceId] = []
+            const {sourceId, targetId, targetCtrlIndex = 0, modValue} = payload;
+            console.log(payload)
+            if (!state.modValues[sourceId]) {
+                state.modValues[sourceId] = []
             }
-            state.modValues[payload.sourceId][payload.targetId] = payload.modValue
+            if (!state.modValues[sourceId][targetId]) {
+                state.modValues[sourceId][targetId] = []
+            }
+            state.modValues[sourceId][targetId][targetCtrlIndex] = modValue
         },
 
         // actions only consumed by api
@@ -113,8 +121,8 @@ export const selectGuiTargetGroup = (state: RootState) => state.mods.gui.targetG
 export const selectGuiTargetFunc = (state: RootState) => state.mods.gui.targetFunc
 export const selectGuiTargetParam = (state: RootState) => state.mods.gui.targetParam
 export const selectGuiLastModSelectSource = (state: RootState) => state.mods.gui.lastModSelectSource
-export const selectModValue = (sourceId: number, targetId: number) => (state: RootState) => {
-    return state.mods.modValues?.[sourceId]?.[targetId] || 0
+export const selectModValue = (sourceId: number, targetId: number, targetCtrlIndex: number) => (state: RootState) => {
+    return state.mods.modValues?.[sourceId]?.[targetId]?.[targetCtrlIndex] || 0
 }
 
 export default modsSlice.reducer
