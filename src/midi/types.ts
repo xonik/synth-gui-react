@@ -36,4 +36,8 @@ export interface FuncProps {
     ctrlIndex?: number
 }
 
-export type ControllerType = 'pot' | 'button' | 'output'
+// pot: Variable value
+// button: Fixed value set
+// output: Output of a function such as env or LFO
+// com: Communication only, not mapped to any physical controller or modulation source
+export type ControllerType = 'pot' | 'button' | 'output' | 'com'

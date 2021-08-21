@@ -121,6 +121,7 @@ const envControllers = (ctrlIndex: number): MidiCtrlEnv => ({
         ],
     },
     OUTPUT: {
+        // does not have a midi mapping as it is only used as a modulation source
         id: ControllerId.ENVELOPE1 + ctrlIndex,
         label: `Env ${1 + ctrlIndex}`,
         type: 'output',

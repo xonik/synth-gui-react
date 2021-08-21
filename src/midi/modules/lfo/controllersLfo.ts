@@ -100,6 +100,7 @@ const controllersLfo = (ctrlIndex: number): ControllersLfo => ({
         ],
     },
     OUTPUT: {
+        // does not have a midi mapping as it is only used as a modulation source
         id: ControllerId.LFO1 + ctrlIndex,
         label: `LFO ${1 + ctrlIndex}`,
         type: 'output',

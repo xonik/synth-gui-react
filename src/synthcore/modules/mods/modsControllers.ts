@@ -35,7 +35,7 @@ const modsControllers: ModsControllers = {
     SET_SRC_ID: {
         id: ControllerId.MOD_SET_SRC_ID,
         label: 'From',
-        type: 'pot',
+        type: 'com',
         cc: CC.MOD_SRC_ID,
     },
 
@@ -56,7 +56,7 @@ const modsControllers: ModsControllers = {
     SET_DST_ID: {
         id: ControllerId.MOD_SET_DST_ID,
         label: 'To index',
-        type: 'pot',
+        type: 'com',
         cc: CC.MOD_DST_ID,
     },
 
@@ -64,7 +64,7 @@ const modsControllers: ModsControllers = {
     SET_DST_INDEX: {
         id: ControllerId.MOD_SET_DST_INDEX,
         label: 'To',
-        type: 'pot',
+        type: 'com',
         cc: CC.MOD_DST_INDEX,
     },
 }
