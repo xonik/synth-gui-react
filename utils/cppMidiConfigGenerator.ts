@@ -3,6 +3,10 @@ import { buttonLeftMidiValues } from '../src/midi/buttonLeftMidiValues'
 import { buttonCenterMidiValues } from '../src/midi/buttonCenterMidiValues'
 import { buttonRightMidiValues } from '../src/midi/buttonRightMidiValues'
 
+const fs = require('fs');
+
+const outputRoot = '/Users/joakimtysseng/Documents/Arduino/xm8-voice-controller/xm8-voice-controller/'
+
 const generateCppFiles = () => {
     const buttonEnum: string[] = []
     const buttonCC: number[] = []
@@ -73,17 +77,17 @@ const generateCppFiles = () => {
     const midiButtonCenterValues = `enum ButtonCenterMidiValues {\n  ${buttonCenterMidiKeys.join(',\n  ')}\n};`;
     const midiButtonRightValues = `enum ButtonRightMidiValues {\n  ${buttonRightMidiKeys.join(',\n  ')}\n};`;
 
-    console.log('midiButtons.h', buttonEnumFileContents)
-    console.log('midiButtonsCC.h', buttonCCFileContents)
-    console.log('midiButtonsFirstValue.h', buttonFirstValueFileContents)
-    console.log('midiButtonsNumberOfValues.h', buttonNumberOfValuesFileContents)
-    console.log('midiPots.h', potEnumFileContents)
-    console.log('midiPotsCC.h', potCCFileContents)
-    console.log('midiPotsNrpnEnum.h', potEnumNrpnFileContents)
-    console.log('midiPotsNrpn.h', potNrpnFileContents)
-    console.log('midiButtonLeftValues.h', midiButtonLeftValues)
-    console.log('midiButtonCenterValues.h', midiButtonCenterValues)
-    console.log('midiButtonRightValues.h', midiButtonRightValues)
+    fs.writeFileSync(`${outputRoot}midiButtons.h`, buttonEnumFileContents)
+    fs.writeFileSync(`${outputRoot}midiButtonsCC.h`, buttonCCFileContents)
+    fs.writeFileSync(`${outputRoot}midiButtonsFirstValue.h`, buttonFirstValueFileContents)
+    fs.writeFileSync(`${outputRoot}midiButtonsNumberOfValues.h`, buttonNumberOfValuesFileContents)
+    fs.writeFileSync(`${outputRoot}midiPots.h`, potEnumFileContents)
+    fs.writeFileSync(`${outputRoot}midiPotsCC.h`, potCCFileContents)
+    fs.writeFileSync(`${outputRoot}midiPotsNrpnEnum.h`, potEnumNrpnFileContents)
+    fs.writeFileSync(`${outputRoot}midiPotsNrpn.h`, potNrpnFileContents)
+    fs.writeFileSync(`${outputRoot}midiButtonLeftValues.h`, midiButtonLeftValues)
+    fs.writeFileSync(`${outputRoot}midiButtonCenterValues.h`, midiButtonCenterValues)
+    fs.writeFileSync(`${outputRoot}midiButtonRightValues.h`, midiButtonRightValues)
 }
 
 generateCppFiles()
