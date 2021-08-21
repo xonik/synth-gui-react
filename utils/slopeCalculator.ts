@@ -65,7 +65,6 @@ const testInterpolation = (
 
 testInterpolation(log, 65535, 256,256, 256)
 
-export {}
 /**
 export default {
     logarithmicFunc,

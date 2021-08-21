@@ -1,7 +1,7 @@
-import controllers from './controllers'
-import { buttonLeftMidiValues } from './buttonLeftMidiValues'
-import { buttonCenterMidiValues } from './buttonCenterMidiValues'
-import { buttonRightMidiValues } from './buttonRightMidiValues'
+import controllers from '../src/midi/controllers'
+import { buttonLeftMidiValues } from '../src/midi/buttonLeftMidiValues'
+import { buttonCenterMidiValues } from '../src/midi/buttonCenterMidiValues'
+import { buttonRightMidiValues } from '../src/midi/buttonRightMidiValues'
 
 const generateCppFiles = () => {
     const buttonEnum: string[] = []
