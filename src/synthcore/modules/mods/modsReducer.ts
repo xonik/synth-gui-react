@@ -90,7 +90,6 @@ export const modsSlice = createSlice({
         },
         setModValue: (state, { payload }: PayloadAction<ModValuePayload>) => {
             const {sourceId, targetId, targetCtrlIndex = 0, modValue} = payload;
-            console.log(payload)
             if (!state.modValues[sourceId]) {
                 state.modValues[sourceId] = []
             }

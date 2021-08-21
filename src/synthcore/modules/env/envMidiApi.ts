@@ -4,6 +4,7 @@ import controllers from '../../../midi/controllers'
 import { cc, nrpn } from '../../../midi/midibus'
 import { ApiSource } from '../../types'
 import { shouldSend } from '../../../midi/utils'
+import logger from '../../../utils/logger'
 
 let currentEnvId = -1
 
@@ -26,6 +27,7 @@ const level = (() => {
 
             // stageId is encoded as part of the extra available bits
             const value = (Math.round(boundedValue * 32767) + 32767) + (stageId << 16)
+            logger.midi(`Setting level for env ${envId} stage ${stageId} to ${boundedValue}`)
             nrpn.send(cfg, value)
         },
         receive: () => {
@@ -49,6 +51,7 @@ const time = (() => {
 
             // stageId is encoded as part of the extra available bits
             const value = Math.round(boundedValue * 65535) + (stageId << 16)
+            logger.midi(`Setting time for env ${envId} stage ${stageId} to ${boundedValue}`)
             nrpn.send(cfg, value)
         },
         receive: () => {
@@ -71,6 +74,7 @@ const invert = (() => {
             }
             selectEnv(envId)
             const invertIndex = invert ? 1 : 0
+            logger.midi(`Setting invert for env ${envId} to ${invert}`)
             cc.send(cfg, cfg.values[invertIndex])
         },
         receive: () => {
@@ -92,6 +96,7 @@ const resetOnTrigger = (() => {
             }
             selectEnv(envId)
             const resetIndex = resetOnTrigger ? 1 : 0
+            logger.midi(`Setting reset on trigger for env ${envId} to ${resetOnTrigger}`)
             cc.send(cfg, cfg.values[resetIndex])
         },
         receive: () => {
@@ -112,6 +117,7 @@ const releaseMode = (() => {
                 return
             }
             selectEnv(envId)
+            logger.midi(`Setting release mode for env ${envId} to ${releaseMode}`)
             cc.send(cfg, cfg.values[releaseMode])
         },
         receive: () => {
@@ -132,6 +138,7 @@ const loopMode = (() => {
                 return
             }
             selectEnv(envId)
+            logger.midi(`Setting loop mode for env ${envId} to ${loopMode}`)
             cc.send(cfg, cfg.values[loopMode])
         },
         receive: () => {
@@ -153,6 +160,7 @@ const loopEnabled = (() => {
             }
             selectEnv(envId)
             const loopEnabledIndex = enabled ? 1 : 0
+            logger.midi(`Changing loop enabled for env ${envId} to ${enabled}`)
             cc.send(cfg, cfg.values[loopEnabledIndex])
         },
         receive: () => {
@@ -175,6 +183,7 @@ const stageEnabled = (() => {
             selectEnv(envId)
             const enableBit = enabled ? 0b1000 : 0
             const data = stageId | enableBit
+            logger.midi(`Changing enable for env ${envId} stage ${stageId} to ${enabled}`)
             cc.send(cfg, data)
         },
         receive: () => {
@@ -196,6 +205,7 @@ const curve = (() => {
                 return
             }
             selectEnv(envId)
+            logger.midi(`Setting curve for env ${envId} stage ${stageId} to ${curve}`)
             nrpn.send(cfg, (stageId << 7) + curve)
         },
         receive: () => {
@@ -216,6 +226,7 @@ const maxLoops = (() => {
             if (!shouldSend(source)) {
                 return
             }
+            logger.midi(`Setting max loops for ${envId} to ${maxLoops}`)
             selectEnv(envId)
             cc.send(cfg, maxLoops)
         },
@@ -235,6 +246,7 @@ const env3Id = (() => {
             if (!shouldSend(source)) {
                 return
             }
+            logger.midi(`Setting 3rd env id to ${id}`)
             cc.send(cfg, id)
         },
         receive: () => {
@@ -253,6 +265,7 @@ const trigger = (() => {
             if (!shouldSend(source)) {
                 return
             }
+            logger.midi(`Env trigger for ${envId}`)
             selectEnv(envId)
             cc.send(cfg, cfg.values[0])
         },
@@ -268,6 +281,7 @@ const release = (() => {
                 return
             }
             selectEnv(envId)
+            logger.midi(`Env release for ${envId}`)
             cc.send(cfg, cfg.values[0])
         },
     }

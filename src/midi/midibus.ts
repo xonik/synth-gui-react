@@ -2,6 +2,7 @@ import { ControllerConfigCC, ControllerConfigNRPN } from './types'
 import { store } from '../synthcore/store'
 import { selectMidiChannel } from '../synthcore/modules/settings/settingsReducer'
 import CC from './mapCC'
+import logger from '../utils/logger'
 
 type MIDIMessageEvent = WebMidi.MIDIMessageEvent
 type MIDIInput = WebMidi.MIDIInput
@@ -69,7 +70,9 @@ export const cc = {
         }
         if (midiOut) {
             const ccForChannel = MIDI_CC + getChannel()
-            midiOut.send([ccForChannel, controller.cc, value])
+            const data = [ccForChannel, controller.cc, value]
+            logger.midiMsg(data)
+            midiOut.send(data)
         }
     }
 }
@@ -125,6 +128,7 @@ export const nrpn = {
             data.push(CC.DATA_ENTRY_LSB)
             data.push(loValue)
 
+            logger.midiMsg(data)
             midiOut.send(data)
         }
     }

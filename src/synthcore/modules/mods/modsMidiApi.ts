@@ -3,6 +3,7 @@ import { cc, nrpn } from '../../../midi/midibus'
 import { shouldSend } from '../../../midi/utils'
 import modsApi from './modsApi'
 import { ApiSource } from '../../types'
+import logger from '../../../utils/logger'
 
 let currentSourceId = 0;
 let currentTargetId = 0;
@@ -19,6 +20,7 @@ const amount = (() => {
 
             // stageId is encoded as part of the extra available bits
             const rounded = Math.round(value * 32767) + 32767
+            logger.midi(`Setting modulation amount to ${value}`)
             nrpn.send(cfg, rounded)
         },
         receive: () => {
@@ -34,10 +36,11 @@ const source = (() => {
 
     return {
         send: (source: ApiSource, value: number) => {
-            if (!shouldSend(source)) {
+            if (!shouldSend(source) || value === currentSourceId) {
                 return
             }
             currentSourceId = value
+            logger.midi(`Setting modulation source to ${value}`)
             cc.send(cfg, value)
         },
         receive: () => {
@@ -57,17 +60,21 @@ const target = (() => {
             if (!shouldSend(source)) {
                 return
             }
-            currentTargetId = value
-            currentTargetIndex = ctrlIndex
-
-            cc.send(cfg, value)
-
-            // We don't send index when it is zero, as almost all controllers have
-            // and index of zero. Instead, we reset it when receiving a targetId.
-            if(ctrlIndex !== 0){
-                cc.send(indexCfg, ctrlIndex)
+            if(value !== currentTargetId){
+                currentTargetId = value
+                logger.midi(`Setting modulation destination id to ${value}`)
+                cc.send(cfg, value)
             }
 
+            if(ctrlIndex !== currentTargetIndex) {
+                currentTargetIndex = ctrlIndex
+                // We don't send index when it is zero, as almost all controllers have
+                // and index of zero. Instead, we reset it when receiving a targetId.
+                if (ctrlIndex !== 0) {
+                    logger.midi(`Setting modulation destination ctrl index to ${ctrlIndex}`)
+                    cc.send(indexCfg, ctrlIndex)
+                }
+            }
         },
         receive: () => {
             // NB: Synth must send targetId before targetIndex as targetIndex is reset to 0 when targetId is received.
