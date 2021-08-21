@@ -11,10 +11,22 @@ import { ApiSource } from '../../synthcore/types'
 
 interface CellProps {
     onSelected: (offsetLeft: number, offsetWidth: number) => void,
+
+    // the index in the array of sources (e.g. source controllers)
     sourceIndex: number
+
+    // the index in the array of functions
     funcIndex: number
+
+    // the controller index, e.g. the index uniquely identifying THIS func when there are several of the
+    // same type such as LFOs and envs.
     funcCtrlIndex: number
+
+    // the index in the array of params for the function (e.g. controllers)
     paramIndex: number
+
+    // unique IDs for source and target params, but must be combined with funcCtrlIndex for params that
+    // occur on multiple functions such as LFOs and envs.
     sourceId: number
     targetId: number
 }
@@ -114,14 +126,14 @@ const AmountsRow = ({ sourceId, sourceIndex }: RowProps) => {
     return (
         <div className="mod-ctrl__targets" ref={ref}>
             {targetGroup.map((func, funcIndex) => <React.Fragment key={funcIndex}>
-                    {func.map((target, paramIndex) => <AmountCell
+                    {func.map((targetParam, paramIndex) => <AmountCell
                                     key={paramIndex}
                                     sourceIndex={sourceIndex}
                                     funcIndex={funcIndex}
                                     funcCtrlIndex={modTarget.funcProps[targetGroupId][funcIndex].ctrlIndex || 0}
                                     paramIndex={paramIndex}
                                     sourceId={sourceId}
-                                    targetId={target.id}
+                                    targetId={targetParam.id}
                                     onSelected={onSelected}
                         />
                     )}
