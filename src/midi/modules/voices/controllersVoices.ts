@@ -1,6 +1,6 @@
 import { BUTTONS } from '../../buttons'
 import { ControllerConfigCCWithValue, FuncProps } from '../../types'
-import { ControllerId } from '../../controllerIds'
+import { ControllerIdNonMod } from '../../controllerIds'
 
 
 interface ControllersVoices {
@@ -18,7 +18,7 @@ interface ControllersVoices {
 const controllersVoices: ControllersVoices = {
     props: { label: 'Voice selector' },
     VOICE1: {
-        id: ControllerId.VOICE_SELECTOR_1,
+        id: ControllerIdNonMod.VOICE_SELECTOR_1,
         label: 'Voice 1',
         type: 'button',
             cc: BUTTONS.BUTTONS_CENTER.cc,
@@ -28,7 +28,7 @@ const controllersVoices: ControllersVoices = {
         ],
     },
     VOICE2: {
-        id: ControllerId.VOICE_SELECTOR_2,
+        id: ControllerIdNonMod.VOICE_SELECTOR_2,
         label: 'Voice 2',
         type: 'button',
             cc: BUTTONS.BUTTONS_CENTER.cc,
@@ -38,7 +38,7 @@ const controllersVoices: ControllersVoices = {
         ],
     },
     VOICE3: {
-        id: ControllerId.VOICE_SELECTOR_3,
+        id: ControllerIdNonMod.VOICE_SELECTOR_3,
         label: 'Voice 3',
         type: 'button',
             cc: BUTTONS.BUTTONS_CENTER.cc,
@@ -48,7 +48,7 @@ const controllersVoices: ControllersVoices = {
         ],
     },
     VOICE4: {
-        id: ControllerId.VOICE_SELECTOR_4,
+        id: ControllerIdNonMod.VOICE_SELECTOR_4,
         label: 'Voice 4',
         type: 'button',
             cc: BUTTONS.BUTTONS_CENTER.cc,
@@ -58,7 +58,7 @@ const controllersVoices: ControllersVoices = {
         ],
     },
     VOICE5: {
-        id: ControllerId.VOICE_SELECTOR_5,
+        id: ControllerIdNonMod.VOICE_SELECTOR_5,
         label: 'Voice 5',
         type: 'button',
             cc: BUTTONS.BUTTONS_CENTER.cc,
@@ -68,7 +68,7 @@ const controllersVoices: ControllersVoices = {
         ],
     },
     VOICE6: {
-        id: ControllerId.VOICE_SELECTOR_6,
+        id: ControllerIdNonMod.VOICE_SELECTOR_6,
         label: 'Voice 6',
         type: 'button',
             cc: BUTTONS.BUTTONS_CENTER.cc,
@@ -78,7 +78,7 @@ const controllersVoices: ControllersVoices = {
         ],
     },
     VOICE7: {
-        id: ControllerId.VOICE_SELECTOR_7,
+        id: ControllerIdNonMod.VOICE_SELECTOR_7,
         label: 'Voice 7',
         type: 'button',
             cc: BUTTONS.BUTTONS_CENTER.cc,
@@ -88,7 +88,7 @@ const controllersVoices: ControllersVoices = {
         ],
     },
     VOICE8: {
-        id: ControllerId.VOICE_SELECTOR_7,
+        id: ControllerIdNonMod.VOICE_SELECTOR_7,
         label: 'Voice 8',
         type: 'button',
             cc: BUTTONS.BUTTONS_CENTER.cc,

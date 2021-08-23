@@ -1,10 +1,10 @@
-import { ControllerId } from './controllerIds'
+import { ControllerIdDst, ControllerIdEnvDst, ControllerIdIntermediate, ControllerIdLfoDst, ControllerIdNonMod, ControllerIdSrc } from './controllerIds'
 
 export interface ControllerConfig {
     // ID is uniquely identifying a controller TYPE, but some controllers may be repeated
     // as params on multiple functions LFOs and Envs - params on these have the same
     // controllerId and ctrlIndex on the function is used to tell them apart.
-    readonly id: ControllerId,
+    readonly id: ControllerIdSrc | ControllerIdIntermediate | ControllerIdDst | ControllerIdEnvDst | ControllerIdLfoDst | ControllerIdNonMod,
     readonly label: string,
     readonly shortLabel?: string,
     readonly isSourceDigi?: boolean,

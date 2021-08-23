@@ -1,5 +1,5 @@
 import { ControllerConfig, FuncProps } from '../../types'
-import { ControllerId } from '../../controllerIds'
+import { ControllerIdSrc } from '../../controllerIds'
 
 interface ControllersPerformance {
     props: FuncProps
@@ -15,43 +15,43 @@ interface ControllersPerformance {
 export const controllersPerformance: ControllersPerformance = {
     props: { label: 'Play controls' },
     PITCH_BEND: {
-        id: ControllerId.PERF_PITCH_BEND,
+        id: ControllerIdSrc.PERF_PITCH_BEND,
         label: 'Pitch bend',
         type: 'pot',
         isSourceDigi: true,
     },
     MOD_WHEEL: {
-        id: ControllerId.PERF_MOD_WHEEL,
+        id: ControllerIdSrc.PERF_MOD_WHEEL,
         label: 'Mod wheel',
         type: 'pot',
         isSourceDigi: true,
     },
     RIBBON_POS: {
-        id: ControllerId.PERF_RIBBON_POS,
+        id: ControllerIdSrc.PERF_RIBBON_POS,
         label: 'Ribbon position',
         type: 'pot',
         isSourceDigi: true,
     },
     RIBBON_PRESSURE: {
-        id: ControllerId.PERF_RIBBON_PRESSURE,
+        id: ControllerIdSrc.PERF_RIBBON_PRESSURE,
         label: 'Ribbon pressure',
         type: 'pot',
         isSourceDigi: true,
     },
     KBD_PITCH: {
-        id: ControllerId.PERF_KBD_PITCH,
+        id: ControllerIdSrc.PERF_KBD_PITCH,
         label: 'Pitch',
         type: 'pot',
         isSourceDigi: true,
     },
     KBD_VELOCITY: {
-        id: ControllerId.PERF_KBD_VELOCITY,
+        id: ControllerIdSrc.PERF_KBD_VELOCITY,
         label: 'Velocity',
         type: 'pot',
         isSourceDigi: true,
     },
     KBD_AFTERTOUCH: {
-        id: ControllerId.PERF_KBD_AFTERTOUCH,
+        id: ControllerIdSrc.PERF_KBD_AFTERTOUCH,
         label: 'Aftertouch',
         type: 'pot',
         isSourceDigi: true,

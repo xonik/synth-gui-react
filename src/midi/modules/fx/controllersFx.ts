@@ -1,7 +1,7 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
 import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../types'
-import { ControllerId } from '../../controllerIds'
+import { ControllerIdDst, ControllerIdNonMod } from '../../controllerIds'
 
 interface ControllersFx {
     DISTORTION: {
@@ -27,14 +27,14 @@ const controllersFx: ControllersFx = {
         props: { label: 'Distortion' },
         // Pots
         DRIVE: {
-            id: ControllerId.DISTORTION_DRIVE,
+            id: ControllerIdDst.DISTORTION_DRIVE,
             label: 'Drive',
             isTargetDigi: true,
             type: 'pot',
             cc: CC.DISTORTION_DRIVE
         },
         LEVEL: {
-            id: ControllerId.DISTORTION_LEVEL,
+            id: ControllerIdDst.DISTORTION_LEVEL,
             label: 'Level',
             isTargetDigi: true,
             type: 'pot',
@@ -42,7 +42,7 @@ const controllersFx: ControllersFx = {
         },
         // Buttons
         IN: {
-            id: ControllerId.DISTORTION_IN,
+            id: ControllerIdNonMod.DISTORTION_IN,
             label: 'In',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -53,7 +53,7 @@ const controllersFx: ControllersFx = {
             ],
         },
         CLIP: {
-            id: ControllerId.DISTORTION_CLIP,
+            id: ControllerIdNonMod.DISTORTION_CLIP,
             label: 'Clip',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -63,7 +63,7 @@ const controllersFx: ControllersFx = {
             ],
         },
         OUT: {
-            id: ControllerId.DISTORTION_OUT,
+            id: ControllerIdNonMod.DISTORTION_OUT,
             label: 'Out',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -77,21 +77,21 @@ const controllersFx: ControllersFx = {
     BIT_CRUSHER: {
         props: { label: 'Bit crusher' },
         BITS: {
-            id: ControllerId.BIT_CRUSHER_BITS,
+            id: ControllerIdDst.BIT_CRUSHER_BITS,
             label: 'Bits',
             isTargetDigi: true,
             type: 'pot',
             cc: CC.BIT_CRUSHER_BITS
         },
         RATE: {
-            id: ControllerId.BIT_CRUSHER_RATE,
+            id: ControllerIdDst.BIT_CRUSHER_RATE,
             label: 'Rate',
             isTargetDigi: true,
             type: 'pot',
             cc: CC.BIT_CRUSHER_RATE
         },
         LEVEL: {
-            id: ControllerId.BIT_CRUSHER_LEVEL,
+            id: ControllerIdDst.BIT_CRUSHER_LEVEL,
             label: 'Level',
             isTargetDigi: true,
             type: 'pot',
@@ -99,7 +99,7 @@ const controllersFx: ControllersFx = {
         },
         // Buttons
         IN: {
-            id: ControllerId.BIT_CRUSHER_IN,
+            id: ControllerIdNonMod.BIT_CRUSHER_IN,
             label: 'In',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -110,7 +110,7 @@ const controllersFx: ControllersFx = {
             ],
         },
         OUT: {
-            id: ControllerId.BIT_CRUSHER_OUT,
+            id: ControllerIdNonMod.BIT_CRUSHER_OUT,
             label: 'Out',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,

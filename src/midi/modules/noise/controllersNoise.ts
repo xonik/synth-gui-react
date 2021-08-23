@@ -1,6 +1,6 @@
 import { BUTTONS } from '../../buttons'
 import { FuncProps, ControllerConfigCCWithValue } from '../../types'
-import { ControllerId } from '../../controllerIds'
+import { ControllerIdNonMod } from '../../controllerIds'
 
 interface ControllersNoise {
     props: FuncProps
@@ -10,7 +10,7 @@ interface ControllersNoise {
 const controllersNoise: ControllersNoise = {
     props: { label: 'Noise' },
     COLOUR: {
-        id: ControllerId.NOISE_COLOUR,
+        id: ControllerIdNonMod.NOISE_COLOUR,
         label: 'Colour',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,

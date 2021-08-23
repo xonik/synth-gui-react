@@ -1,7 +1,7 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
 import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../types'
-import { ControllerId } from '../../controllerIds'
+import { ControllerIdDst, ControllerIdNonMod } from '../../controllerIds'
 
 interface ControllersSrcMix {
     props: FuncProps
@@ -24,49 +24,49 @@ const controllersSrcMix: ControllersSrcMix = {
         label: 'Source mix'
     },
     LEVEL_OSC1: {
-        id: ControllerId.SRC_MIX_LEVEL_OSC1,
+        id: ControllerIdDst.SOURCE_MIX_LEVEL_OSC1,
         label: 'Osc 1',
         isTargetDigi: true,
         type: 'pot',
         cc: CC.LEVEL_OSC1
     },
     LEVEL_OSC2: {
-        id: ControllerId.SRC_MIX_LEVEL_OSC2,
+        id: ControllerIdDst.SOURCE_MIX_LEVEL_OSC2,
         label: 'Osc 2',
         isTargetDigi: true,
         type: 'pot',
         cc: CC.LEVEL_OSC2
     },
     LEVEL_OSC3: {
-        id: ControllerId.SRC_MIX_LEVEL_OSC3,
+        id: ControllerIdDst.SOURCE_MIX_LEVEL_OSC3,
         label: 'Osc 3',
         isTargetDigi: true,
         type: 'pot',
         cc: CC.LEVEL_OSC3
     },
     LEVEL_NOISE: {
-        id: ControllerId.SRC_MIX_LEVEL_NOISE,
+        id: ControllerIdDst.SOURCE_MIX_LEVEL_NOISE,
         label: 'Noise',
         isTargetDigi: true,
         type: 'pot',
         cc: CC.LEVEL_NOISE
     },
     LEVEL_RING_MOD: {
-        id: ControllerId.SRC_MIX_LEVEL_RING_MOD,
+        id: ControllerIdDst.SOURCE_MIX_LEVEL_RING_MOD,
         label: 'Ring mod',
         isTargetDigi: true,
         type: 'pot',
         cc: CC.LEVEL_RING_MOD
     },
     LEVEL_EXT_AUDIO: {
-        id: ControllerId.SRC_MIX_LEVEL_EXT_AUDIO,
+        id: ControllerIdDst.SOURCE_MIX_LEVEL_EXT_AUDIO,
         label: 'Ext. audio',
         isTargetDigi: true,
         type: 'pot',
         cc: CC.LEVEL_EXT_AUDIO
     },
     OUT_OSC1: {
-        id: ControllerId.SRC_MIX_OUT_OSC1,
+        id: ControllerIdNonMod.SRC_MIX_OUT_OSC1,
         label: 'Osc 1 target',
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -77,7 +77,7 @@ const controllersSrcMix: ControllersSrcMix = {
         ],
     },
     OUT_OSC2: {
-        id: ControllerId.SRC_MIX_OUT_OSC2,
+        id: ControllerIdNonMod.SRC_MIX_OUT_OSC2,
         label: 'Osc 2 target',
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -88,7 +88,7 @@ const controllersSrcMix: ControllersSrcMix = {
         ],
     },
     OUT_OSC3: {
-        id: ControllerId.SRC_MIX_OUT_OSC3,
+        id: ControllerIdNonMod.SRC_MIX_OUT_OSC3,
         label: 'Osc 3 target',
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -99,7 +99,7 @@ const controllersSrcMix: ControllersSrcMix = {
         ],
     },
     OUT_NOISE: {
-        id: ControllerId.SRC_MIX_OUT_NOISE,
+        id: ControllerIdNonMod.SRC_MIX_OUT_NOISE,
         label: 'Noise target',
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -110,7 +110,7 @@ const controllersSrcMix: ControllersSrcMix = {
         ],
     },
     OUT_RING_MOD: {
-        id: ControllerId.SRC_MIX_OUT_RING_MOD,
+        id: ControllerIdNonMod.SRC_MIX_OUT_RING_MOD,
         label: 'Ring mod target',
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -121,7 +121,7 @@ const controllersSrcMix: ControllersSrcMix = {
         ],
     },
     OUT_EXT_AUDIO: {
-        id: ControllerId.SRC_MIX_OUT_RING_MOD,
+        id: ControllerIdNonMod.SRC_MIX_OUT_RING_MOD,
         label: 'Ext. audio target',
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,

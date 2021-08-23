@@ -1,7 +1,7 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
 import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue, ControllerConfig } from '../../types'
-import { ControllerId } from '../../controllerIds'
+import { ControllerIdLfoDst, ControllerIdNonMod, ControllerIdSrc } from '../../controllerIds'
 
 interface ControllersLfo {
     props: FuncProps
@@ -23,21 +23,21 @@ const controllersLfo = (ctrlIndex: number): ControllersLfo => ({
     },
     // Pots
     RATE: {
-        id: ControllerId.LFO_RATE,
+        id: ControllerIdLfoDst.RATE,
         label: 'Rate',
         isTargetDigi: true,
         type: 'pot',
         cc: CC.LFO_RATE
     },
     DEPTH: {
-        id: ControllerId.LFO_DEPTH,
+        id: ControllerIdLfoDst.DEPTH,
         label: 'Depth',
         isTargetDigi: true,
         type: 'pot',
         cc: CC.LFO_DEPTH
     },
     DELAY: {
-        id: ControllerId.LFO_DELAY,
+        id: ControllerIdLfoDst.DELAY,
         label: 'Delay',
         isTargetDigi: true,
         type: 'pot',
@@ -45,7 +45,7 @@ const controllersLfo = (ctrlIndex: number): ControllersLfo => ({
     },
     // Buttons
     LFO: {
-        id: ControllerId.LFO_LFO,
+        id: ControllerIdNonMod.LFO_LFO,
         label: 'Select',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -57,7 +57,7 @@ const controllersLfo = (ctrlIndex: number): ControllersLfo => ({
         ],
     },
     SHAPE: {
-        id: ControllerId.LFO_SHAPE,
+        id: ControllerIdNonMod.LFO_SHAPE,
         label: 'Shape',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -70,7 +70,7 @@ const controllersLfo = (ctrlIndex: number): ControllersLfo => ({
         ],
     },
     SYNC: {
-        id: ControllerId.LFO_SYNC,
+        id: ControllerIdNonMod.LFO_SYNC,
         label: 'Sync',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -80,7 +80,7 @@ const controllersLfo = (ctrlIndex: number): ControllersLfo => ({
         ],
     },
     RESET: {
-        id: ControllerId.LFO_RESET,
+        id: ControllerIdNonMod.LFO_RESET,
         label: 'Reset',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -90,7 +90,7 @@ const controllersLfo = (ctrlIndex: number): ControllersLfo => ({
         ],
     },
     ONCE: {
-        id: ControllerId.LFO_ONCE,
+        id: ControllerIdNonMod.LFO_ONCE,
         label: 'Once',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -101,7 +101,7 @@ const controllersLfo = (ctrlIndex: number): ControllersLfo => ({
     },
     OUTPUT: {
         // does not have a midi mapping as it is only used as a modulation source
-        id: ControllerId.LFO1 + ctrlIndex,
+        id: ControllerIdSrc.LFO1 + ctrlIndex,
         label: `LFO ${1 + ctrlIndex}`,
         type: 'output',
         isSourceDigi: true

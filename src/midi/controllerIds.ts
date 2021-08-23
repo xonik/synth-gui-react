@@ -1,5 +1,4 @@
-
-export enum ControllerId {
+export enum ControllerIdSrc {
     // Sources
     ARPEGGIATOR,
     PERF_PITCH_BEND,
@@ -21,9 +20,15 @@ export enum ControllerId {
     LFO3,
     LFO4,
 
+    LAST // Used for array indexing in C++
+}
+
+export const FIRST_INTERMEDIATE = ControllerIdSrc.LAST.valueOf()
+
+export enum ControllerIdIntermediate {
     // Intermediate, controllers that regulate the level of another source and then acts as the
     // modulator of a target.
-    LPF_FM_AMT,
+    LPF_FM_AMT = 17,
     LPF_ENV_AMT,
     LPF_LFO_AMT,
     LPF_KBD_AMT,
@@ -33,23 +38,34 @@ export enum ControllerId {
     SVF_LFO_AMT,
     SVF_KBD_AMT,
 
+    LAST, // Used for array indexing in C++
+
+    // TODO: Note and pitch should perhaps be part of this? But
+    // Note needs to be quantized
+}
+
+export const FIRST_DST = ControllerIdIntermediate.LAST.valueOf()
+
+export enum ControllerIdDst {
     // Targets
-    DCO1_PITCH,
-    DCO1_NOTE,
+    DCO1_PITCH = 25,
+    DCO1_NOTE, // TODO: Not an output destination?
     DCO1_WAVEFORM,
     DCO1_SUB1,
     DCO1_SUB2,
     DCO1_PW,
     DCO1_SUPER_SAW,
+    //(Wheel amt, Lfo amt, Kbd amt?)
 
-    DCO2_PITCH,
-    DCO2_NOTE,
+    DCO2_PITCH, // TODO: Not an output destination?
+    DCO2_NOTE,  // TODO: Not an output destination?
     DCO2_DETUNE,
     DCO2_WAVEFORM,
     DCO2_SUB1,
     DCO2_SUB2,
     DCO2_PW,
     DCO2_SUPER_SAW,
+    //(Wheel amt, Lfo amt, Kbd amt?)
 
     VCO_PITCH,
     VCO_NOTE,
@@ -57,6 +73,7 @@ export enum ControllerId {
     VCO_WAVEFORM,
     VCO_CROSS_MOD,
     VCO_PW,
+    //(Ext CV, Wheel amt, Lfo amt, Kbd amt?)
 
     DISTORTION_DRIVE,
     DISTORTION_LEVEL,
@@ -65,12 +82,12 @@ export enum ControllerId {
     BIT_CRUSHER_RATE,
     BIT_CRUSHER_LEVEL,
 
-    SRC_MIX_LEVEL_OSC1,
-    SRC_MIX_LEVEL_OSC2,
-    SRC_MIX_LEVEL_OSC3,
-    SRC_MIX_LEVEL_NOISE,
-    SRC_MIX_LEVEL_RING_MOD,
-    SRC_MIX_LEVEL_EXT_AUDIO,
+    SOURCE_MIX_LEVEL_OSC1,
+    SOURCE_MIX_LEVEL_OSC2,
+    SOURCE_MIX_LEVEL_OSC3,
+    SOURCE_MIX_LEVEL_NOISE,
+    SOURCE_MIX_LEVEL_RING_MOD,
+    SOURCE_MIX_LEVEL_EXT_AUDIO,
 
     MASTER_CLOCK_RATE,
     ARP_TEMPO,
@@ -117,23 +134,39 @@ export enum ControllerId {
     FX_MIX_LEVEL_CHORUS,
     FX_MIX_LEVEL_BIT_CRUSHER,
 
+    LAST, // Used for array indexing in C++
+}
+
+export const FIRST_ENV_DST = ControllerIdDst.LAST.valueOf()
+
+export enum ControllerIdEnvDst {
     // LFO and ENV targets
-    ENV_DELAY_TIME,
-    ENV_ATTACK_TIME,
-    ENV_DECAY1_TIME,
-    ENV_DECAY2_TIME,
-    ENV_SUSTAIN_LEVEL,
-    ENV_RELEASE1_TIME,
-    ENV_RELEASE2_TIME,
-    ENV_DECAY2_LEVEL,
-    ENV_RELEASE2_LEVEL,
+    DELAY_TIME = 91,
+    ATTACK_TIME,
+    DECAY1_TIME,
+    DECAY2_TIME,
+    SUSTAIN_LEVEL,
+    RELEASE1_TIME,
+    RELEASE2_TIME,
+    DECAY2_LEVEL,
+    RELEASE2_LEVEL,
+    LAST, // Used for array indexing in C++
+}
 
-    LFO_RATE,
-    LFO_DEPTH,
-    LFO_DELAY,
+export const FIRST_LFO_DST = ControllerIdEnvDst.LAST.valueOf()
 
+export enum ControllerIdLfoDst {
+    RATE = 100,
+    DEPTH,
+    DELAY,
+    DST_LAST, // Used for array indexing in C++
+}
+
+export const FIRST_NON_MOD = ControllerIdLfoDst.DST_LAST.valueOf()
+
+export enum ControllerIdNonMod {
     // Non-modulatable controllers
-    DCO1_SYNC,
+    DCO1_SYNC = 103,
     DCO1_MODE,
     DCO1_SUB_WAVE,
     DCO1_WHEEL,

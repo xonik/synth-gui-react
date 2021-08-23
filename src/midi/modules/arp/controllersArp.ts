@@ -1,7 +1,7 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
 import { ControllerConfig, ControllerConfigCC, ControllerConfigCCWithValue, FuncProps } from '../../types'
-import { ControllerId } from '../../controllerIds'
+import { ControllerIdDst, ControllerIdNonMod, ControllerIdSrc } from '../../controllerIds'
 
 interface ControllersArp {
     props: FuncProps
@@ -17,14 +17,14 @@ interface ControllersArp {
 const controllersArp: ControllersArp = {
     props: { label: 'Arpeggiator', shortLabel: 'Arp' },
     TEMPO: {
-        id: ControllerId.ARP_TEMPO,
+        id: ControllerIdDst.ARP_TEMPO,
         label: 'Tempo',
         isTargetDigi: true,
         type: 'pot',
         cc: CC.ARP_TEMPO
     },
     ON_OFF: {
-        id: ControllerId.ARP_ON_OFF,
+        id: ControllerIdNonMod.ARP_ON_OFF,
         label: 'On/off',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -34,7 +34,7 @@ const controllersArp: ControllersArp = {
         ],
     },
     TRIGGER: {
-        id: ControllerId.ARP_TRIGGER,
+        id: ControllerIdNonMod.ARP_TRIGGER,
         label: 'Trigger',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -44,7 +44,7 @@ const controllersArp: ControllersArp = {
         ],
     },
     SYNC: {
-        id: ControllerId.ARP_SYNC,
+        id: ControllerIdNonMod.ARP_SYNC,
         label: 'Sync',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -56,7 +56,7 @@ const controllersArp: ControllersArp = {
         ],
     },
     RANGE: {
-        id: ControllerId.ARP_RANGE,
+        id: ControllerIdNonMod.ARP_RANGE,
         label: 'Range',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -67,7 +67,7 @@ const controllersArp: ControllersArp = {
         ],
     },
     MODE: {
-        id: ControllerId.ARP_MODE,
+        id: ControllerIdNonMod.ARP_MODE,
         label: 'Mode',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -80,7 +80,7 @@ const controllersArp: ControllersArp = {
         ],
     },
     OUTPUT: {
-        id: ControllerId.ARPEGGIATOR,
+        id: ControllerIdSrc.ARPEGGIATOR,
         label: 'Arp',
         type: 'output',
         isSourceDigi: true

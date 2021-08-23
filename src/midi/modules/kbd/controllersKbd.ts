@@ -1,7 +1,7 @@
 import CC from '../../mapCC'
 import { BUTTONS } from '../../buttons'
 import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../types'
-import { ControllerId } from '../../controllerIds'
+import { ControllerIdDst, ControllerIdNonMod } from '../../controllerIds'
 
 interface ControllersKbd {
     props: FuncProps
@@ -15,21 +15,21 @@ interface ControllersKbd {
 const controllersKbd: ControllersKbd = {
     props: { label: 'Keyboard' },
     PORTAMENTO: {
-        id: ControllerId.KBD_PORTAMENTO,
+        id: ControllerIdDst.KBD_PORTAMENTO,
         label: 'Portamento', shortLabel: 'Portam.',
         isTargetDigi: true,
         type: 'pot',
         cc: CC.KEYBOARD_PORTAMENTO
     },
     UNISON_DETUNE: {
-        id: ControllerId.KBD_UNISON_DETUNE,
+        id: ControllerIdDst.KBD_UNISON_DETUNE,
         label: 'Detune',
         isTargetDigi: true,
         type: 'pot',
         cc: CC.KEYBOARD_UNISON_DETUNE
     },
     HOLD: {
-        id: ControllerId.KBD_HOLD,
+        id: ControllerIdNonMod.KBD_HOLD,
         label: 'Hold',
         type: 'button',
         cc: BUTTONS.BUTTONS_CENTER.cc,
@@ -39,7 +39,7 @@ const controllersKbd: ControllersKbd = {
         ],
     },
     CHORD: {
-        id: ControllerId.KBD_CHORD,
+        id: ControllerIdNonMod.KBD_CHORD,
         label: 'Chord',
         type: 'button',
         cc: BUTTONS.BUTTONS_CENTER.cc,
@@ -49,7 +49,7 @@ const controllersKbd: ControllersKbd = {
         ],
     },
     MODE: {
-        id: ControllerId.KBD_MODE,
+        id: ControllerIdNonMod.KBD_MODE,
         label: 'Mode',
         type: 'button',
         cc: BUTTONS.BUTTONS_CENTER.cc,

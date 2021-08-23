@@ -1,6 +1,6 @@
 import CC from '../../mapCC'
 import { FuncProps, ControllerConfigCC } from '../../types'
-import { ControllerId } from '../../controllerIds'
+import { ControllerIdNonMod } from '../../controllerIds'
 
 
 interface ControllersOut {
@@ -12,9 +12,9 @@ interface ControllersOut {
 
 const controllersOut: ControllersOut = {
     props: { label: 'Out' },
-    VOLUME: { id: ControllerId.OUT_VOLUME, label: 'Volume', type: 'pot', cc: CC.OUTPUT_VOLUME },
-    SPREAD: { id: ControllerId.OUT_SPREAD, label: 'Spread', type: 'pot', cc: CC.OUTPUT_SPREAD },
-    HEADPHONES: { id: ControllerId.OUT_HEADPHONES, label: 'Headphones', type: 'pot', cc: CC.OUTPUT_HEADPHONES },
+    VOLUME: { id: ControllerIdNonMod.OUT_VOLUME, label: 'Volume', type: 'pot', cc: CC.OUTPUT_VOLUME },
+    SPREAD: { id: ControllerIdNonMod.OUT_SPREAD, label: 'Spread', type: 'pot', cc: CC.OUTPUT_SPREAD },
+    HEADPHONES: { id: ControllerIdNonMod.OUT_HEADPHONES, label: 'Headphones', type: 'pot', cc: CC.OUTPUT_HEADPHONES },
 }
 
 export default controllersOut

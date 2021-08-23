@@ -1,6 +1,6 @@
 import CC from '../../mapCC'
 import { FuncProps, ControllerConfigCC } from '../../types'
-import { ControllerId } from '../../controllerIds'
+import { ControllerIdDst } from '../../controllerIds'
 
 
 interface ControllersVoiceOut {
@@ -14,28 +14,28 @@ interface ControllersVoiceOut {
 const controllersVoiceOut: ControllersVoiceOut = {
     props: { label: 'Voice out' },
     PAN: {
-        id: ControllerId.VOICE_OUT_PAN,
+        id: ControllerIdDst.VOICE_OUT_PAN,
         label: 'Pan',
         isTargetDigi: true,
         type: 'pot',
         cc: CC.VOICE_OUT_PAN
     },
     AMOUNT: {
-        id: ControllerId.VOICE_OUT_AMOUNT,
+        id: ControllerIdDst.VOICE_OUT_AMOUNT,
         label: 'Level',
         isTargetDigi: true,
         type: 'pot',
         cc: CC.VOICE_OUT_AMOUNT
     },
     FX1_SEND: {
-        id: ControllerId.VOICE_OUT_FX1_SEND,
+        id: ControllerIdDst.VOICE_OUT_FX1_SEND,
         label: 'FX1',
         isTargetDigi: true,
         type: 'pot',
         cc: CC.VOICE_OUT_FX1_SEND
     },
     FX2_SEND: {
-        id: ControllerId.VOICE_OUT_FX2_SEND,
+        id: ControllerIdDst.VOICE_OUT_FX2_SEND,
         label: 'FX2',
         isTargetDigi: true,
         type: 'pot',
