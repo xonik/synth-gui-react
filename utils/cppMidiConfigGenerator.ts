@@ -178,6 +178,9 @@ const generateCppFiles = () => {
     const buttonFirstValueFileContents = `// First value in the button values array.\n// Values are sequential\nconst char buttonFirstValue[${buttonFirstValue.length}] = {\n  ${buttonFirstValue.join(',\n  ')}\n};`
     const buttonNumberOfValuesFileContents = `// Number of values for button\nconst char buttonNumberOfValues[${buttonNumberOfValues.length}] = {\n  ${buttonNumberOfValues.join(',\n  ')}\n};`
 
+    const comEnumFileContents = `enum Com: char {\n  ${comEnum.join(',\n  ')}\n};`
+    const comCCFileContents = `const char comCC[${comCC.length}] = {\n  ${comCC.join(',\n  ')}\n};`
+
     const potEnumFileContents = `enum Pot: char {\n  ${potEnum.join(',\n  ')}\n};`
     const potCCFileContents = `const char potCC[${potCC.length}] = {\n  ${potCC.join(',\n  ')}\n};`
 
@@ -205,6 +208,8 @@ const generateCppFiles = () => {
     fs.writeFileSync(`${outputRoot}midiButtonsNumberOfValues.h`, buttonNumberOfValuesFileContents)
     fs.writeFileSync(`${outputRoot}midiPots.h`, potEnumFileContents)
     fs.writeFileSync(`${outputRoot}midiPotsCC.h`, potCCFileContents)
+    fs.writeFileSync(`${outputRoot}midiCom.h`, comEnumFileContents)
+    fs.writeFileSync(`${outputRoot}midiComCC.h`, comCCFileContents)
     fs.writeFileSync(`${outputRoot}midiPotsNrpnEnum.h`, potEnumNrpnFileContents)
     fs.writeFileSync(`${outputRoot}midiPotsNrpn.h`, potNrpnFileContents)
     fs.writeFileSync(`${outputRoot}midiButtonLeftValues.h`, midiButtonLeftValues)
