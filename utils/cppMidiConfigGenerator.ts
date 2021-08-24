@@ -131,6 +131,9 @@ const generateCppFiles = () => {
     const potEnum: string[] = []
     const potCC: string[] = []
 
+    const comEnum: string[] = []
+    const comCC: string[] = []
+
     const potNrpnEnum: string[] = []
     const potNrpn: string[] = []
 
@@ -147,6 +150,9 @@ const generateCppFiles = () => {
                     } else if (controller.type === 'pot') {
                         potEnum.push(`POT_${controllerGroupKey}_${controllerKey}`)
                         potCC.push(`${controller.cc} /* ${controllerGroupKey}_${controllerKey} */`)
+                    } else if (controller.type === 'com') {
+                        comEnum.push(`COM_${controllerGroupKey}_${controllerKey}`)
+                        comCC.push(`${controller.cc} /* ${controllerGroupKey}_${controllerKey} */`)
                     } else {
                         console.log('missing controller type', { controllerGroupKey, controllerKey, controller })
                     }
