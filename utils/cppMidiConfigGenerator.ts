@@ -52,9 +52,6 @@ const generateParamIO = (): string => {
 namespace paramIO {
   const unsigned short SRC_COUNT = ${SRC_COUNT};
   
-  const unsigned short FIRST_ENV = ${ControllerIdSrc.ENVELOPE1};
-  const unsigned short FIRST_LFO = ${ControllerIdSrc.LFO1};
-  
   const unsigned short FIRST_INTERMEDIATE = ${FIRST_INTERMEDIATE};
   const unsigned short INT_COUNT = ${INT_COUNT};
   const unsigned short LAST_INTERMEDIATE = ${FIRST_INTERMEDIATE + INT_COUNT - 1}; 
@@ -62,21 +59,18 @@ namespace paramIO {
   const unsigned short FIRST_DST = ${FIRST_DST};
   const unsigned short DST_COUNT = ${DST_COUNT};
   const unsigned short LAST_DST = ${FIRST_DST + DST_COUNT - 1};  
+      
+  const unsigned short FIRST_ENV_DST = ${FIRST_ENV_DST};
+  const unsigned short DST_ENV_COUNT = ${DST_ENV_COUNT};
+  const unsigned short LAST_ENV_DST = ${FIRST_ENV_DST + DST_ENV_COUNT - 1};
+  
+  const unsigned short FIRST_LFO_DST = ${FIRST_LFO_DST};
+  const unsigned short DST_LFO_COUNT = ${DST_LFO_COUNT};
+  const unsigned short LAST_LFO_DST = ${FIRST_LFO_DST + DST_LFO_COUNT - 1};     
   
   const unsigned short SRC_INT_COUNT = ${SRC_COUNT + INT_COUNT};
   const unsigned short SRC_INT_DST_COUNT = ${SRC_COUNT + INT_COUNT + DST_COUNT};
-  
-  const unsigned short FIRST_ENV_DEST_ID = ${FIRST_ENV_DST};
-  const unsigned short DST_ENV_COUNT = ${DST_ENV_COUNT};
-  const unsigned short LAST_ENV_DEST_ID = ${FIRST_ENV_DST + DST_ENV_COUNT - 1};
-  
-  const unsigned short FIRST_LFO_DEST_ID = ${FIRST_LFO_DST};
-  const unsigned short DST_LFO_COUNT = ${DST_LFO_COUNT};
-  const unsigned short LAST_LFO_DEST_ID = ${FIRST_LFO_DST + DST_LFO_COUNT - 1};  
-    
-  const unsigned short DESTINATIONS = ${FIRST_ENV_DST - FIRST_INTERMEDIATE};
-  
-  
+  const unsigned short INT_DST_COUNT = ${INT_COUNT + DST_COUNT};  
   
   enum SrcCtrlPos {
     ${Object.keys(ControllerIdSrc).filter(o => isNaN(o as any)).map((key) => `SRC_${key}`).join(',\n    ')}
@@ -86,19 +80,31 @@ namespace paramIO {
   };
    
   enum IntermediateCtrlPos {
-    ${Object.keys(ControllerIdIntermediate).filter(o => isNaN(o as any)).map((key) => `INT_SRC_${key}`).join(',\n    ')}
+    ${Object.keys(ControllerIdIntermediate)
+            .filter(o => isNaN(o as any))
+            .map((key, index) => `INT_SRC_${key}${index === 0 ? ' = ' + FIRST_INTERMEDIATE : ''}`)
+            .join(',\n    ')}
   };
   
   enum DstCtrlPos {
-    ${Object.keys(ControllerIdDst).filter(o => isNaN(o as any)).map((key) => `DST_${key}`).join(',\n    ')}
+    ${Object.keys(ControllerIdDst)
+            .filter(o => isNaN(o as any))
+            .map((key, index) => `DST_${key}${index === 0 ? ' = ' + FIRST_DST : ''}`)
+            .join(',\n    ')}
   };  
   
   enum EnvDestinations {
-    ${Object.keys(ControllerIdEnvDst).filter(o => isNaN(o as any)).map((key) => `DST_ENV_${key}`).join(',\n    ')}
+    ${Object.keys(ControllerIdEnvDst)
+            .filter(o => isNaN(o as any))
+            .map((key, index) => `DST_ENV_${key}${index === 0 ? ' = ' + FIRST_ENV_DST : ''}`)
+            .join(',\n    ')}
   };  
   
   enum LfoDestinations {
-    ${Object.keys(ControllerIdLfoDst).filter(o => isNaN(o as any)).map((key) => `DST_LFO_${key}`).join(',\n    ')}
+    ${Object.keys(ControllerIdLfoDst)
+            .filter(o => isNaN(o as any))
+            .map((key, index) => `DST_LFO_${key}${index === 0 ? ' = ' + FIRST_LFO_DST : ''}`)
+            .join(',\n    ')}
   };    
   
   enum DirectDestinatons {
@@ -114,7 +120,7 @@ namespace paramIO {
     DDST_OUTPUT_VOLUME,
     DDST_OUTPUT_SPREAD,
     DDST_OUTPUT_HEADPHONES,
-    DDST_COUNT // Used for array indexing;
+    DIRECT_DST_COUNT // Used for array indexing;
   };  
 }
 #endif
