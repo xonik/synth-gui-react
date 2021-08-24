@@ -1,30 +1,30 @@
 import React from 'react'
 import { useAppSelector } from '../../synthcore/hooks'
-import { selectGuiSource, selectGuiTargetFunc, selectGuiTargetGroup, selectGuiTargetParam, selectModValue } from '../../synthcore/modules/mods/modsReducer'
-import { digitalModSources, modTarget } from '../../synthcore/modules/mods/utils'
+import { selectGuiSource, selectGuiDstFunc, selectGuiDstGroup, selectGuiDstParam, selectModValue } from '../../synthcore/modules/mods/modsReducer'
+import { digitalModSources, modDst } from '../../synthcore/modules/mods/utils'
 import './ModValues.scss'
 
 const ModValues = () => {
 
     const sourceIndex = useAppSelector(selectGuiSource)
-    const targetGroupId = useAppSelector(selectGuiTargetGroup)
-    const targetFuncId = useAppSelector(selectGuiTargetFunc)
-    const targetParamId = useAppSelector(selectGuiTargetParam)
+    const dstGroupId = useAppSelector(selectGuiDstGroup)
+    const dstFuncId = useAppSelector(selectGuiDstFunc)
+    const dstParamId = useAppSelector(selectGuiDstParam)
 
-    const target = modTarget.targets[targetGroupId][targetFuncId][targetParamId]
-    const targetCtrlIndex = modTarget.funcProps[targetGroupId][targetFuncId].ctrlIndex || 0
+    const dst = modDst.dsts[dstGroupId][dstFuncId][dstParamId]
+    const dstCtrlIndex = modDst.funcProps[dstGroupId][dstFuncId].ctrlIndex || 0
     const source = digitalModSources[sourceIndex]
 
     const sourceId = source.id
-    const targetId = target.id
-    const targetValue = useAppSelector(selectModValue(sourceId, targetId, targetCtrlIndex))
+    const dstId = dst.id
+    const dstValue = useAppSelector(selectModValue(sourceId, dstId, dstCtrlIndex))
 
     return <div className="mod-values">
-        <div className="mod-values__item">{modTarget.groupLabels[targetGroupId]}</div>
+        <div className="mod-values__item">{modDst.groupLabels[dstGroupId]}</div>
         <div className="mod-values__item">{digitalModSources[sourceIndex].label}</div>
-        <div className="mod-values__item">{modTarget.funcProps[targetGroupId][targetFuncId].label}</div>
-        <div className="mod-values__item">{modTarget.targets[targetGroupId][targetFuncId][targetParamId].label}</div>
-        <div className="mod-values__item">{Math.round(100 * targetValue)}%</div>
+        <div className="mod-values__item">{modDst.funcProps[dstGroupId][dstFuncId].label}</div>
+        <div className="mod-values__item">{modDst.dsts[dstGroupId][dstFuncId][dstParamId].label}</div>
+        <div className="mod-values__item">{Math.round(100 * dstValue)}%</div>
     </div>
 }
 

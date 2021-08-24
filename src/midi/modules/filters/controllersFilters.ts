@@ -47,14 +47,14 @@ const controllersFilters: ControllersFilters = {
         INPUT: {
             id: ControllerIdDst.LPF_INPUT,
             label: 'Input',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.LPF_INPUT
         },
         DRIVE: {
             id: ControllerIdDst.LPF_DRIVE,
             label: 'Drive',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.LPF_DRIVE
         },
@@ -62,21 +62,21 @@ const controllersFilters: ControllersFilters = {
             id: ControllerIdDst.LPF_RESONANCE,
             label: 'Resonance',
             shortLabel: 'Reso',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.LPF_RESONANCE
         },
         CUTOFF: {
             id: ControllerIdDst.LPF_CUTOFF,
             label: 'Cutoff',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.LPF_CUTOFF
         },
-        FM_AMT: { id: ControllerIdIntermediate.LPF_FM_AMT, isTargetDigi: true, label: 'FM amount', shortLabel: 'FM amt', type: 'pot', cc: CC.LPF_FM_AMT },
-        ENV_AMT: { id: ControllerIdIntermediate.LPF_ENV_AMT, isTargetDigi: true, label: 'Env amount', shortLabel: 'Env amt', type: 'pot', cc: CC.LPF_ENV_AMT },
-        LFO_AMT: { id: ControllerIdIntermediate.LPF_LFO_AMT, isTargetDigi: true, label: 'LFO amount', shortLabel: 'LFO amt', type: 'pot', cc: CC.LPF_LFO_AMT },
-        KBD_AMT: { id: ControllerIdIntermediate.LPF_KBD_AMT, isTargetDigi: true, label: 'Keyboard track', shortLabel: 'Kbd trk', type: 'pot', cc: CC.LPF_KBD_AMT },
+        FM_AMT: { id: ControllerIdIntermediate.LPF_FM_AMT, isDstDigi: true, label: 'FM amount', shortLabel: 'FM amt', type: 'pot', cc: CC.LPF_FM_AMT },
+        ENV_AMT: { id: ControllerIdIntermediate.LPF_ENV_AMT, isDstDigi: true, label: 'Env amount', shortLabel: 'Env amt', type: 'pot', cc: CC.LPF_ENV_AMT },
+        LFO_AMT: { id: ControllerIdIntermediate.LPF_LFO_AMT, isDstDigi: true, label: 'LFO amount', shortLabel: 'LFO amt', type: 'pot', cc: CC.LPF_LFO_AMT },
+        KBD_AMT: { id: ControllerIdIntermediate.LPF_KBD_AMT, isDstDigi: true, label: 'Keyboard track', shortLabel: 'Kbd trk', type: 'pot', cc: CC.LPF_KBD_AMT },
 
         EXT_CV: {
             id: ControllerIdNonMod.LPF_EXT_CV,
@@ -137,14 +137,14 @@ const controllersFilters: ControllersFilters = {
         INPUT: {
             id: ControllerIdDst.SVF_INPUT,
             label: 'Input',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.SVF_INPUT
         },
         DRIVE: {
             id: ControllerIdDst.SVF_DRIVE,
             label: 'Drive',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.SVF_DRIVE
         },
@@ -152,21 +152,21 @@ const controllersFilters: ControllersFilters = {
             id: ControllerIdDst.SVF_RESONANCE,
             label: 'Resonance',
             shortLabel: 'Reso',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.SVF_RESONANCE
         },
         CUTOFF: {
             id: ControllerIdDst.SVF_CUTOFF,
             label: 'Cutoff',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.SVF_CUTOFF
         },
-        FM_AMT: { id: ControllerIdIntermediate.SVF_FM_AMT, label: 'FM amount', shortLabel: 'FM amt', isTargetDigi: true, type: 'pot', cc: CC.SVF_FM_AMT },
-        ENV_AMT: { id: ControllerIdIntermediate.SVF_ENV_AMT, label: 'Env amount', shortLabel: 'Env amt', isTargetDigi: true, type: 'pot', cc: CC.SVF_ENV_AMT },
-        LFO_AMT: { id: ControllerIdIntermediate.SVF_LFO_AMT, label: 'LFO amount', shortLabel: 'LFO amt', isTargetDigi: true, type: 'pot', cc: CC.SVF_LFO_AMT },
-        KBD_AMT: { id: ControllerIdIntermediate.SVF_KBD_AMT, label: 'Keyboard track', shortLabel: 'Kbd trk', isTargetDigi: true, type: 'pot', cc: CC.SVF_KBD_AMT },
+        FM_AMT: { id: ControllerIdIntermediate.SVF_FM_AMT, label: 'FM amount', shortLabel: 'FM amt', isDstDigi: true, type: 'pot', cc: CC.SVF_FM_AMT },
+        ENV_AMT: { id: ControllerIdIntermediate.SVF_ENV_AMT, label: 'Env amount', shortLabel: 'Env amt', isDstDigi: true, type: 'pot', cc: CC.SVF_ENV_AMT },
+        LFO_AMT: { id: ControllerIdIntermediate.SVF_LFO_AMT, label: 'LFO amount', shortLabel: 'LFO amt', isDstDigi: true, type: 'pot', cc: CC.SVF_LFO_AMT },
+        KBD_AMT: { id: ControllerIdIntermediate.SVF_KBD_AMT, label: 'Keyboard track', shortLabel: 'Kbd trk', isDstDigi: true, type: 'pot', cc: CC.SVF_KBD_AMT },
 
         EXT_CV: {
             id: ControllerIdNonMod.SVF_EXT_CV,

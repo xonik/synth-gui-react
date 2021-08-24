@@ -25,21 +25,21 @@ const controllersLfo = (ctrlIndex: number): ControllersLfo => ({
     RATE: {
         id: ControllerIdLfoDst.RATE,
         label: 'Rate',
-        isTargetDigi: true,
+        isDstDigi: true,
         type: 'pot',
         cc: CC.LFO_RATE
     },
     DEPTH: {
         id: ControllerIdLfoDst.DEPTH,
         label: 'Depth',
-        isTargetDigi: true,
+        isDstDigi: true,
         type: 'pot',
         cc: CC.LFO_DEPTH
     },
     DELAY: {
         id: ControllerIdLfoDst.DELAY,
         label: 'Delay',
-        isTargetDigi: true,
+        isDstDigi: true,
         type: 'pot',
         cc: CC.LFO_DELAY
     },

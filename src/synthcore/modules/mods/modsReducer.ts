@@ -5,9 +5,9 @@ import { ApiSource } from '../../types'
 type ModsState = {
     gui: {
         source: number;
-        targetGroup: number;
-        targetFunc: number;
-        targetParam: number;
+        dstGroup: number;
+        dstFunc: number;
+        dstParam: number;
         lastModSelectSource: ApiSource | undefined;
     },
     modValues: number[][][];
@@ -16,9 +16,9 @@ type ModsState = {
 export const initialState: ModsState = {
     gui: {
         source: 0,
-        targetGroup: 0,
-        targetFunc: 0,
-        targetParam: 0,
+        dstGroup: 0,
+        dstFunc: 0,
+        dstParam: 0,
         lastModSelectSource: undefined
     },
     modValues: [],
@@ -29,25 +29,25 @@ type GuiSourcePayload = {
     guiSource: number;
 }
 
-type GuiTargetGroupPayload = {
+type GuiDstGroupPayload = {
     source: ApiSource;
-    guiTargetGroup: number;
+    guiDstGroup: number;
 }
 
-type GuiTargetFuncPayload = {
+type GuiDstFuncPayload = {
     source: ApiSource;
-    guiTargetFunc: number;
+    guiDstFunc: number;
 }
 
-type GuiTargetParamPayload = {
+type GuiDstParamPayload = {
     source: ApiSource;
-    guiTargetParam: number;
+    guiDstParam: number;
 }
 
 type GuiSelectModPayload = {
     guiSource: number;
-    guiTargetFunc: number;
-    guiTargetParam: number;
+    guiDstFunc: number;
+    guiDstParam: number;
 }
 
 type GuiLastModSelectSourcePayload = {
@@ -56,8 +56,8 @@ type GuiLastModSelectSourcePayload = {
 
 type ModValuePayload = {
     sourceId: number;
-    targetId: number;
-    targetCtrlIndex: number;
+    dstId: number;
+    dstCtrlIndex: number;
     modValue: number;
     source: ApiSource
 
@@ -72,31 +72,31 @@ export const modsSlice = createSlice({
             state.gui.source = payload.guiSource
 
         },
-        setGuiTargetGroup: (state, { payload }: PayloadAction<GuiTargetGroupPayload>) => {
+        setGuiDstGroup: (state, { payload }: PayloadAction<GuiDstGroupPayload>) => {
             state.gui.lastModSelectSource = payload.source;
-            state.gui.targetGroup = payload.guiTargetGroup
+            state.gui.dstGroup = payload.guiDstGroup
         },
-        setGuiTargetFunc: (state, { payload }: PayloadAction<GuiTargetFuncPayload>) => {
+        setGuiDstFunc: (state, { payload }: PayloadAction<GuiDstFuncPayload>) => {
             state.gui.lastModSelectSource = payload.source;
-            state.gui.targetFunc = payload.guiTargetFunc
+            state.gui.dstFunc = payload.guiDstFunc
         },
-        setGuiTargetParam: (state, { payload }: PayloadAction<GuiTargetParamPayload>) => {
+        setGuiDstParam: (state, { payload }: PayloadAction<GuiDstParamPayload>) => {
             state.gui.lastModSelectSource = payload.source;
-            state.gui.targetParam = payload.guiTargetParam
+            state.gui.dstParam = payload.guiDstParam
         },
         setLastModSelectSource: (state, { payload }: PayloadAction<GuiLastModSelectSourcePayload>) => {
             state.gui.lastModSelectSource = payload.source;
             state.gui.lastModSelectSource = payload.source
         },
         setModValue: (state, { payload }: PayloadAction<ModValuePayload>) => {
-            const {sourceId, targetId, targetCtrlIndex = 0, modValue} = payload;
+            const {sourceId, dstId, dstCtrlIndex = 0, modValue} = payload;
             if (!state.modValues[sourceId]) {
                 state.modValues[sourceId] = []
             }
-            if (!state.modValues[sourceId][targetId]) {
-                state.modValues[sourceId][targetId] = []
+            if (!state.modValues[sourceId][dstId]) {
+                state.modValues[sourceId][dstId] = []
             }
-            state.modValues[sourceId][targetId][targetCtrlIndex] = modValue
+            state.modValues[sourceId][dstId][dstCtrlIndex] = modValue
         },
 
         // actions only consumed by api
@@ -107,21 +107,21 @@ export const modsSlice = createSlice({
 
 export const {
     setGuiSource,
-    setGuiTargetGroup,
-    setGuiTargetFunc,
-    setGuiTargetParam,
+    setGuiDstGroup,
+    setGuiDstFunc,
+    setGuiDstParam,
     setGuiMod,
     setModValue,
     setLastModSelectSource,
 } = modsSlice.actions
 
 export const selectGuiSource = (state: RootState) => state.mods.gui.source
-export const selectGuiTargetGroup = (state: RootState) => state.mods.gui.targetGroup
-export const selectGuiTargetFunc = (state: RootState) => state.mods.gui.targetFunc
-export const selectGuiTargetParam = (state: RootState) => state.mods.gui.targetParam
+export const selectGuiDstGroup = (state: RootState) => state.mods.gui.dstGroup
+export const selectGuiDstFunc = (state: RootState) => state.mods.gui.dstFunc
+export const selectGuiDstParam = (state: RootState) => state.mods.gui.dstParam
 export const selectGuiLastModSelectSource = (state: RootState) => state.mods.gui.lastModSelectSource
-export const selectModValue = (sourceId: number, targetId: number, targetCtrlIndex: number) => (state: RootState) => {
-    return state.mods.modValues?.[sourceId]?.[targetId]?.[targetCtrlIndex] || 0
+export const selectModValue = (sourceId: number, dstId: number, dstCtrlIndex: number) => (state: RootState) => {
+    return state.mods.modValues?.[sourceId]?.[dstId]?.[dstCtrlIndex] || 0
 }
 
 export default modsSlice.reducer

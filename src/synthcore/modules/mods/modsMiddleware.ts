@@ -7,8 +7,8 @@ export const modsMiddleware = (action: PayloadAction): void => {
     if (setGuiMod.match(action)) {
         modsApi.setGuiMod(
             action.payload.guiSource,
-            action.payload.guiTargetFunc,
-            action.payload.guiTargetParam,
+            action.payload.guiDstFunc,
+            action.payload.guiDstParam,
             ApiSource.GUI
         )
     }

@@ -4,27 +4,27 @@ import { ApiSource } from '../../types'
 import { dispatch, getBounded, getQuantized } from '../../utils'
 import {
     setGuiSource as setGuiSourceAction,
-    setGuiTargetGroup as setGuiTargetGroupAction,
-    setGuiTargetFunc as setGuiTargetFuncAction,
-    setGuiTargetParam as setGuiTargetParamAction,
+    setGuiDstGroup as setGuiDstGroupAction,
+    setGuiDstFunc as setGuiDstFuncAction,
+    setGuiDstParam as setGuiDstParamAction,
     setModValue as setModValueAction,
     selectGuiSource,
-    selectGuiTargetGroup,
-    selectGuiTargetFunc,
-    selectGuiTargetParam,
+    selectGuiDstGroup,
+    selectGuiDstFunc,
+    selectGuiDstParam,
     selectModValue
 } from './modsReducer'
-import { digitalModSources, modTarget } from './utils'
+import { digitalModSources, modDst } from './utils'
 
 const setGuiMod = (
     guiSource: number,
-    guiTargetFunc: number,
-    guiTargetParam: number,
+    guiDstFunc: number,
+    guiDstParam: number,
     source: ApiSource
 ) => {
     dispatch(setGuiSourceAction({ guiSource, source }))
-    dispatch(setGuiTargetFuncAction({ guiTargetFunc, source }))
-    dispatch(setGuiTargetParamAction({ guiTargetParam, source }))
+    dispatch(setGuiDstFuncAction({ guiDstFunc, source }))
+    dispatch(setGuiDstParamAction({ guiDstParam, source }))
 }
 
 const setGuiSource = (guiSource: number, source: ApiSource) => {
@@ -40,106 +40,106 @@ const incrementGuiSource = (inc: number, source: ApiSource) => {
     setGuiSource(nextSource, source)
 }
 
-const setGuiTargetGroup = (guiTargetGroup: number, source: ApiSource) => {
-    const currTargetGroup = selectGuiTargetGroup(store.getState())
-    if (guiTargetGroup !== currTargetGroup) {
-        dispatch(setGuiTargetParamAction({ guiTargetParam: 0, source }))
-        dispatch(setGuiTargetFuncAction({ guiTargetFunc: 0, source }))
-        dispatch(setGuiTargetGroupAction({ guiTargetGroup, source }))
+const setGuiDstGroup = (guiDstGroup: number, source: ApiSource) => {
+    const currDstGroup = selectGuiDstGroup(store.getState())
+    if (guiDstGroup !== currDstGroup) {
+        dispatch(setGuiDstParamAction({ guiDstParam: 0, source }))
+        dispatch(setGuiDstFuncAction({ guiDstFunc: 0, source }))
+        dispatch(setGuiDstGroupAction({ guiDstGroup, source }))
     }
 }
 
-const incrementGuiTargetGroup = (inc: number, source: ApiSource) => {
-    const currTargetGroup = selectGuiTargetGroup(store.getState())
-    const nextTargetGroup = getBounded(currTargetGroup + inc, 0, modTarget.targets.length - 1)
-    setGuiTargetGroup(nextTargetGroup, source)
+const incrementGuiDstGroup = (inc: number, source: ApiSource) => {
+    const currDstGroup = selectGuiDstGroup(store.getState())
+    const nextDstGroup = getBounded(currDstGroup + inc, 0, modDst.dsts.length - 1)
+    setGuiDstGroup(nextDstGroup, source)
 }
 
-const setGuiTargetFunc = (guiTargetFunc: number, source: ApiSource) => {
-    const currTargetFunc = selectGuiTargetFunc(store.getState())
-    if (guiTargetFunc !== currTargetFunc) {
-        dispatch(setGuiTargetParamAction({ guiTargetParam: 0, source }))
-        dispatch(setGuiTargetFuncAction({ guiTargetFunc, source }))
+const setGuiDstFunc = (guiDstFunc: number, source: ApiSource) => {
+    const currDstFunc = selectGuiDstFunc(store.getState())
+    if (guiDstFunc !== currDstFunc) {
+        dispatch(setGuiDstParamAction({ guiDstParam: 0, source }))
+        dispatch(setGuiDstFuncAction({ guiDstFunc, source }))
     }
 }
 
-const incrementGuiTargetFunc = (inc: number, source: ApiSource) => {
-    const currTargetGroup = selectGuiTargetGroup(store.getState())
-    const currTargetFunc = selectGuiTargetFunc(store.getState())
-    const nextTargetFunc = getBounded(currTargetFunc + inc, 0, modTarget.targets[currTargetGroup].length - 1)
-    setGuiTargetFunc(nextTargetFunc, source)
+const incrementGuiDstFunc = (inc: number, source: ApiSource) => {
+    const currDstGroup = selectGuiDstGroup(store.getState())
+    const currDstFunc = selectGuiDstFunc(store.getState())
+    const nextDstFunc = getBounded(currDstFunc + inc, 0, modDst.dsts[currDstGroup].length - 1)
+    setGuiDstFunc(nextDstFunc, source)
 }
 
-const setGuiTargetParam = (guiTargetParam: number, source: ApiSource) => {
-    const currTargetParam = selectGuiTargetParam(store.getState())
-    if (guiTargetParam !== currTargetParam) {
-        dispatch(setGuiTargetParamAction({ guiTargetParam, source }))
+const setGuiDstParam = (guiDstParam: number, source: ApiSource) => {
+    const currDstParam = selectGuiDstParam(store.getState())
+    if (guiDstParam !== currDstParam) {
+        dispatch(setGuiDstParamAction({ guiDstParam, source }))
     }
 }
 
-const incrementGuiTargetParam = (inc: -1 | 1, source: ApiSource) => {
-    const currTargetGroup = selectGuiTargetGroup(store.getState())
-    const currTargetFunc = selectGuiTargetFunc(store.getState())
-    const currTargetParam = selectGuiTargetParam(store.getState())
+const incrementGuiDstParam = (inc: -1 | 1, source: ApiSource) => {
+    const currDstGroup = selectGuiDstGroup(store.getState())
+    const currDstFunc = selectGuiDstFunc(store.getState())
+    const currDstParam = selectGuiDstParam(store.getState())
 
-    const lastGuiTargetParam = modTarget.targets[currTargetGroup][currTargetFunc].length - 1
-    const requestedGuiTargetParam = currTargetParam + inc
-    if(requestedGuiTargetParam < 0){
-        if(currTargetFunc > 0){
-            const prevTargetFunc = currTargetFunc - 1
-            setGuiTargetFunc(prevTargetFunc, source)
-            const lastTargetParam = modTarget.targets[currTargetGroup][prevTargetFunc].length - 1
-            setGuiTargetParam(lastTargetParam, source)
+    const lastGuiDstParam = modDst.dsts[currDstGroup][currDstFunc].length - 1
+    const requestedGuiDstParam = currDstParam + inc
+    if(requestedGuiDstParam < 0){
+        if(currDstFunc > 0){
+            const prevDstFunc = currDstFunc - 1
+            setGuiDstFunc(prevDstFunc, source)
+            const lastDstParam = modDst.dsts[currDstGroup][prevDstFunc].length - 1
+            setGuiDstParam(lastDstParam, source)
         }
-    } else if(requestedGuiTargetParam > lastGuiTargetParam){
-        if(currTargetFunc < modTarget.targets[currTargetGroup].length -1){
-            setGuiTargetFunc(currTargetFunc + 1, source)
+    } else if(requestedGuiDstParam > lastGuiDstParam){
+        if(currDstFunc < modDst.dsts[currDstGroup].length -1){
+            setGuiDstFunc(currDstFunc + 1, source)
         }
 
     } else {
-        setGuiTargetParam(requestedGuiTargetParam, source)
+        setGuiDstParam(requestedGuiDstParam, source)
     }
 }
 
-const setModValue = (sourceId: number, targetId: number, targetCtrlIndex: number, modValue: number, source: ApiSource) => {
+const setModValue = (sourceId: number, dstId: number, dstCtrlIndex: number, modValue: number, source: ApiSource) => {
     const quantizedValue = getQuantized(modValue, 32767)
-    const currModValue = selectModValue(sourceId, targetId, targetCtrlIndex)(store.getState())
+    const currModValue = selectModValue(sourceId, dstId, dstCtrlIndex)(store.getState())
 
     if (quantizedValue === currModValue) {
         return
     }
 
-    dispatch(setModValueAction({ sourceId, targetId, targetCtrlIndex, modValue: quantizedValue, source }))
+    dispatch(setModValueAction({ sourceId, dstId, dstCtrlIndex, modValue: quantizedValue, source }))
     midiApi.setSourceId(source, sourceId)
-    midiApi.setTargetId(source, targetId, targetCtrlIndex)
+    midiApi.setDstId(source, dstId, dstCtrlIndex)
     midiApi.setAmount(source, modValue)
 }
 
 const incrementGuiModValue = (inc: number, source: ApiSource) => {
     const sourceIndex = selectGuiSource(store.getState())
-    const targetGroupIndex = selectGuiTargetGroup(store.getState())
-    const targetFuncIndex = selectGuiTargetFunc(store.getState())
-    const targetParamIndex = selectGuiTargetParam(store.getState())
+    const dstGroupIndex = selectGuiDstGroup(store.getState())
+    const dstFuncIndex = selectGuiDstFunc(store.getState())
+    const dstParamIndex = selectGuiDstParam(store.getState())
 
     const sourceId = digitalModSources[sourceIndex].id
-    const targetId = modTarget.targets[targetGroupIndex][targetFuncIndex][targetParamIndex].id
-    const targetCtrlIndex = modTarget.funcProps[targetGroupIndex][targetFuncIndex].ctrlIndex || 0
+    const dstId = modDst.dsts[dstGroupIndex][dstFuncIndex][dstParamIndex].id
+    const dstCtrlIndex = modDst.funcProps[dstGroupIndex][dstFuncIndex].ctrlIndex || 0
 
-    const currModValue = selectModValue(sourceId, targetId, targetCtrlIndex)(store.getState())
+    const currModValue = selectModValue(sourceId, dstId, dstCtrlIndex)(store.getState())
     const nextModValue = getBounded(currModValue + inc, -1, 1)
-    setModValue(sourceId, targetId, targetCtrlIndex, nextModValue, source)
+    setModValue(sourceId, dstId, dstCtrlIndex, nextModValue, source)
 }
 
 const modsApi = {
     setGuiMod,
     setGuiSource,
     incrementGuiSource,
-    setGuiTargetGroup,
-    incrementGuiTargetGroup,
-    setGuiTargetFunc,
-    incrementGuiTargetFunc,
-    setGuiTargetParam,
-    incrementGuiTargetParam,
+    setGuiDstGroup,
+    incrementGuiDstGroup,
+    setGuiDstFunc,
+    incrementGuiDstFunc,
+    setGuiDstParam,
+    incrementGuiDstParam,
     setModValue,
     incrementGuiModValue,
 }

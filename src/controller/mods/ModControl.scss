@@ -4,12 +4,12 @@
   flex-direction: column;
   width: 100%;
 
-  $target-height: 1.5rem;
+  $dst-height: 1.5rem;
   $sources-column-width: 7rem;
   $source-height: 2rem;
   $source-padding-tb: 0.25rem;
-  $target-width: 5rem;
-  $target-padding-lr: 0.25rem;
+  $dst-width: 5rem;
+  $dst-padding-lr: 0.25rem;
 
   $amount-text-color: white;
   $amount-background-color: #1f1f1f;
@@ -47,7 +47,7 @@
       border-right: $cell-border-width solid $label-cell-border-color;
     }
 
-    &__targets-container {
+    &__dsts-container {
       overflow: scroll;
       overflow-y: hidden;
 
@@ -94,7 +94,7 @@
     }
   }
 
-  &__targets {
+  &__dsts {
     z-index: 2;
     position: relative;
     display: inline-flex; // inline required to make contents grow the size of the div
@@ -128,7 +128,7 @@
     }
   }
 
-  &__target {
+  &__dst {
     display: flex;
     flex-direction: column;
 
@@ -156,12 +156,12 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: $target-height;
+      height: $dst-height;
       border-right: $cell-border-width solid $label-cell-border-color;
       background-color: $label-background;
       color: $label-color;
-      padding: 0 $target-padding-lr;
-      width: $target-width;
+      padding: 0 $dst-padding-lr;
+      width: $dst-width;
 
       &--selected {
         color: $label-color-selected;
@@ -182,9 +182,9 @@
 
     display: flex;
     flex-direction: column;
-    min-width: $target-width;
+    min-width: $dst-width;
     height: $source-height;
-    padding: $source-padding-tb $target-padding-lr;
+    padding: $source-padding-tb $dst-padding-lr;
     background-color: $amount-background-color;
     color: $amount-text-color;
 

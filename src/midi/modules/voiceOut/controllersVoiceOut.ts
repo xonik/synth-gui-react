@@ -16,28 +16,28 @@ const controllersVoiceOut: ControllersVoiceOut = {
     PAN: {
         id: ControllerIdDst.VOICE_OUT_PAN,
         label: 'Pan',
-        isTargetDigi: true,
+        isDstDigi: true,
         type: 'pot',
         cc: CC.VOICE_OUT_PAN
     },
     AMOUNT: {
         id: ControllerIdDst.VOICE_OUT_AMOUNT,
         label: 'Level',
-        isTargetDigi: true,
+        isDstDigi: true,
         type: 'pot',
         cc: CC.VOICE_OUT_AMOUNT
     },
     FX1_SEND: {
         id: ControllerIdDst.VOICE_OUT_FX1_SEND,
         label: 'FX1',
-        isTargetDigi: true,
+        isDstDigi: true,
         type: 'pot',
         cc: CC.VOICE_OUT_FX1_SEND
     },
     FX2_SEND: {
         id: ControllerIdDst.VOICE_OUT_FX2_SEND,
         label: 'FX2',
-        isTargetDigi: true,
+        isDstDigi: true,
         type: 'pot',
         cc: CC.VOICE_OUT_FX2_SEND
     },

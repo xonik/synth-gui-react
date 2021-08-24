@@ -17,14 +17,14 @@ const controllersKbd: ControllersKbd = {
     PORTAMENTO: {
         id: ControllerIdDst.KBD_PORTAMENTO,
         label: 'Portamento', shortLabel: 'Portam.',
-        isTargetDigi: true,
+        isDstDigi: true,
         type: 'pot',
         cc: CC.KBD_PORTAMENTO
     },
     UNISON_DETUNE: {
         id: ControllerIdDst.KBD_UNISON_DETUNE,
         label: 'Detune',
-        isTargetDigi: true,
+        isDstDigi: true,
         type: 'pot',
         cc: CC.KBD_UNISON_DETUNE
     },

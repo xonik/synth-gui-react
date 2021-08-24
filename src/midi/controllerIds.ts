@@ -26,7 +26,7 @@ export const FIRST_INTERMEDIATE = SRC_COUNT
 
 export enum ControllerIdIntermediate {
     // Intermediate, controllers that regulate the level of another source and then acts as the
-    // modulator of a target.
+    // modulator of a dst.
     LPF_FM_AMT = 17,
     LPF_ENV_AMT,
     LPF_LFO_AMT,
@@ -44,7 +44,7 @@ export const INT_COUNT = Object.keys(ControllerIdIntermediate).filter(o => isNaN
 export const FIRST_DST = FIRST_INTERMEDIATE + INT_COUNT
 
 export enum ControllerIdDst {
-    // Targets
+    // Dsts
     DCO1_PITCH = 25,
     DCO1_NOTE, // TODO: Not an output destination?
     DCO1_WAVEFORM,
@@ -135,7 +135,7 @@ export const DST_COUNT = Object.keys(ControllerIdDst).filter(o => isNaN(o as any
 export const FIRST_ENV_DST = FIRST_DST + DST_COUNT
 
 export enum ControllerIdEnvDst {
-    // LFO and ENV targets
+    // LFO and ENV dsts
     DELAY_TIME = 91,
     ATTACK_TIME,
     DECAY1_TIME,

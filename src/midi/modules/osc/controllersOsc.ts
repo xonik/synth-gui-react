@@ -61,48 +61,48 @@ const controllersOsc: ControllersOsc = {
         PITCH: {
             id: ControllerIdDst.DCO1_PITCH,
             label: 'Pitch',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             addr: NRPN.DCO1_PITCH
         },
         NOTE: {
             id: ControllerIdDst.DCO1_NOTE,
             label: 'Note',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.DCO1_NOTE
         },
         SUPER_SAW: {
             id: ControllerIdDst.DCO1_SUPER_SAW,
             label: 'Super saw',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.DCO1_SUPER_SAW
         },
         WAVEFORM: {
             id: ControllerIdDst.DCO1_WAVEFORM,
             label: 'Waveform',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.DCO1_WAVEFORM
         },
         SUB1: {
             id: ControllerIdDst.DCO1_SUB1,
             label: 'Sub 1',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.DCO1_SUB1
         },
         SUB2: {
             id: ControllerIdDst.DCO1_SUB2,
             label: 'Sub 2',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot', cc: CC.DCO1_SUB2
         },
         PW: {
             id: ControllerIdDst.DCO1_PW,
             label: 'PW',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.DCO1_PW
         },
@@ -177,55 +177,55 @@ const controllersOsc: ControllersOsc = {
         PITCH: {
             id: ControllerIdDst.DCO2_PITCH,
             label: 'Pitch',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             addr: NRPN.DCO2_PITCH
         },
         NOTE: {
             id: ControllerIdDst.DCO2_NOTE,
             label: 'Note',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.DCO2_NOTE
         },
         DETUNE: {
             id: ControllerIdDst.DCO2_DETUNE,
             label: 'Detune',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.DCO2_DETUNE
         },
         SUPER_SAW: {
             id: ControllerIdDst.DCO2_SUPER_SAW,
             label: 'Super saw',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot', cc: CC.DCO2_SUPER_SAW
         },
         WAVEFORM: {
             id: ControllerIdDst.DCO2_WAVEFORM,
             label: 'Waveform',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.DCO2_WAVEFORM
         },
         SUB1: {
             id: ControllerIdDst.DCO2_SUB1,
             label: 'Sub 1',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.DCO2_SUB1
         },
         SUB2: {
             id: ControllerIdDst.DCO2_SUB2,
             label: 'Sub 2',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.DCO2_SUB2
         },
         PW: {
             id: ControllerIdDst.DCO2_PW,
             label: 'PW',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.DCO2_PW
         },
@@ -289,41 +289,41 @@ const controllersOsc: ControllersOsc = {
         PITCH: {
             id: ControllerIdDst.VCO_PITCH,
             label: 'Pitch',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             addr: NRPN.VCO_PITCH
         },
         NOTE: {
             id: ControllerIdDst.VCO_NOTE,
             label: 'Note',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.VCO_NOTE
         },
         DETUNE: {
             id: ControllerIdDst.VCO_DETUNE,
             label: 'Detune',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.VCO_DETUNE
         },
         WAVEFORM: {
             id: ControllerIdDst.VCO_WAVEFORM,
             label: 'Waveform',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot', cc: CC.VCO_WAVEFORM
         },
         CROSS_MOD: {
             id: ControllerIdDst.VCO_CROSS_MOD,
             label: 'Cross mod',
             shortLabel: 'X-mod',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot', cc: CC.VCO_CROSS_MOD
         },
         PW: {
             id: ControllerIdDst.VCO_PW,
             label: 'PW',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.VCO_PW
         },

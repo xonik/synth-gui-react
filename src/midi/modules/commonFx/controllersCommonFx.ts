@@ -49,21 +49,21 @@ const controllersCommonFx: ControllersCommonFx = {
         PARAM1: {
             id: ControllerIdDst.DSP1_PARAM1,
             label: 'Param 1',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.DSP1_PARAM1
         },
         PARAM2: {
             id: ControllerIdDst.DSP1_PARAM2,
             label: 'Param 2',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.DSP1_PARAM2
         },
         PARAM3: {
             id: ControllerIdDst.DSP1_PARAM3,
             label: 'Param 3',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.DSP1_PARAM3
         },
@@ -85,21 +85,21 @@ const controllersCommonFx: ControllersCommonFx = {
         PARAM1: {
             id: ControllerIdDst.DSP2_PARAM1,
             label: 'Param 1',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.DSP2_PARAM1
         },
         PARAM2: {
             id: ControllerIdDst.DSP2_PARAM2,
             label: 'Param 2',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.DSP2_PARAM2
         },
         PARAM3: {
             id: ControllerIdDst.DSP2_PARAM3,
             label: 'Param 3',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.DSP2_PARAM3
         },
@@ -132,14 +132,14 @@ const controllersCommonFx: ControllersCommonFx = {
         RATE: {
             id: ControllerIdDst.CHORUS_RATE,
             label: 'Rate',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.CHORUS_RATE
         },
         DEPTH: {
             id: ControllerIdDst.CHORUS_DEPTH,
             label: 'Depth',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.CHORUS_DEPTH
         },
@@ -169,14 +169,14 @@ const controllersCommonFx: ControllersCommonFx = {
         BITS: {
             id: ControllerIdDst.FX_BIT_CRUSHER_BITS,
             label: 'Bits',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.FX_BIT_CRUSHER_BITS
         },
         RATE: {
             id: ControllerIdDst.FX_BIT_CRUSHER_RATE,
             label: 'Rate',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.FX_BIT_CRUSHER_RATE
         },
@@ -197,7 +197,7 @@ const controllersCommonFx: ControllersCommonFx = {
             id: ControllerIdDst.FX_MIX_LEVEL_DSP1,
             label: 'DSP 1 level',
             shortLabel: 'DSP 1',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.FX_MIX_LEVEL_DSP1
         },
@@ -205,7 +205,7 @@ const controllersCommonFx: ControllersCommonFx = {
             id: ControllerIdDst.FX_MIX_LEVEL_DSP2,
             label: 'DSP 2 level',
             shortLabel: 'DSP 2',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.FX_MIX_LEVEL_DSP2
         },
@@ -213,7 +213,7 @@ const controllersCommonFx: ControllersCommonFx = {
             id: ControllerIdDst.FX_MIX_LEVEL_CHORUS,
             label: 'Chorus level',
             shortLabel: 'Chorus',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.FX_MIX_LEVEL_CHORUS
         },
@@ -221,7 +221,7 @@ const controllersCommonFx: ControllersCommonFx = {
             id: ControllerIdDst.FX_MIX_LEVEL_BIT_CRUSHER,
             label: 'Bit crusher level',
             shortLabel: 'Bit crush',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.FX_MIX_LEVEL_BIT_CRUSHER
         },

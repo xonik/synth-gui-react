@@ -58,8 +58,8 @@ We know the stage duration and our refresh rate:
 7) Check: Max index = 349525 * 48 = 16777200 => / 256 = 65535
 8) => Index is also the linear value.
 9) Use index to lookup value.
-10) Now, figure out the difference between the current level and the target level,
-for example, target level is 2/3 of the maximum level, our desired range is
+10) Now, figure out the difference between the current level and the dst level,
+for example, dst level is 2/3 of the maximum level, our desired range is
   
 2 * 65536 / 3 = 43690
 

@@ -19,7 +19,7 @@ const controllersArp: ControllersArp = {
     TEMPO: {
         id: ControllerIdDst.ARP_TEMPO,
         label: 'Tempo',
-        isTargetDigi: true,
+        isDstDigi: true,
         type: 'pot',
         cc: CC.ARP_TEMPO
     },

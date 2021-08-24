@@ -14,7 +14,7 @@ const controllersMasterClock: ControllersMasterClock = {
     RATE: {
         id: ControllerIdDst.MASTER_CLOCK_RATE,
         label: 'Rate',
-        isTargetDigi: true,
+        isDstDigi: true,
         type: 'pot',
         cc: CC.MASTER_CLOCK_RATE
     },

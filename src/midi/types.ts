@@ -8,7 +8,7 @@ export interface ControllerConfig {
     readonly label: string,
     readonly shortLabel?: string,
     readonly isSourceDigi?: boolean,
-    readonly isTargetDigi?: boolean,
+    readonly isDstDigi?: boolean,
     readonly type: ControllerType
     readonly values?: number[]
 }

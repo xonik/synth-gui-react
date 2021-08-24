@@ -6,8 +6,8 @@ import { ApiSource } from '../../types'
 import logger from '../../../utils/logger'
 
 let currentSourceId = 0;
-let currentTargetId = 0;
-let currentTargetIndex = 0;
+let currentDstId = 0;
+let currentDstIndex = 0;
 
 const amount = (() => {
     const cfg = controllers.MODS.AMOUNT
@@ -25,7 +25,7 @@ const amount = (() => {
         },
         receive: () => {
             nrpn.subscribe((value: number) => {
-                modsApi.setModValue( currentSourceId, currentTargetId, currentTargetIndex, (value - 32767) / 32767, ApiSource.MIDI)
+                modsApi.setModValue( currentSourceId, currentDstId, currentDstIndex, (value - 32767) / 32767, ApiSource.MIDI)
             }, cfg)
         }
     }
@@ -51,7 +51,7 @@ const source = (() => {
     }
 })()
 
-const target = (() => {
+const dst = (() => {
     const cfg = controllers.MODS.SET_DST_ID
     const indexCfg = controllers.MODS.SET_DST_INDEX
 
@@ -60,16 +60,16 @@ const target = (() => {
             if (!shouldSend(source)) {
                 return
             }
-            if(value !== currentTargetId){
-                currentTargetId = value
+            if(value !== currentDstId){
+                currentDstId = value
                 logger.midi(`Setting modulation destination id to ${value}`)
                 cc.send(cfg, value)
             }
 
-            if(ctrlIndex !== currentTargetIndex) {
-                currentTargetIndex = ctrlIndex
+            if(ctrlIndex !== currentDstIndex) {
+                currentDstIndex = ctrlIndex
                 // We don't send index when it is zero, as almost all controllers have
-                // and index of zero. Instead, we reset it when receiving a targetId.
+                // and index of zero. Instead, we reset it when receiving a dstId.
                 if (ctrlIndex !== 0) {
                     logger.midi(`Setting modulation destination ctrl index to ${ctrlIndex}`)
                     cc.send(indexCfg, ctrlIndex)
@@ -77,13 +77,13 @@ const target = (() => {
             }
         },
         receive: () => {
-            // NB: Synth must send targetId before targetIndex as targetIndex is reset to 0 when targetId is received.
+            // NB: Synth must send dstId before dstIndex as dstIndex is reset to 0 when dstId is received.
             cc.subscribe((value: number) => {
-                currentTargetId = value
-                currentTargetIndex = 0;
+                currentDstId = value
+                currentDstIndex = 0;
             }, cfg)
             cc.subscribe((value: number) => {
-                currentTargetIndex = value
+                currentDstIndex = value
             }, indexCfg)
         }
     }
@@ -92,13 +92,13 @@ const target = (() => {
 const initReceive = () => {
     amount.receive()
     source.receive()
-    target.receive()
+    dst.receive()
 }
 
 const modsMidiApi = {
     setAmount: amount.send,
     setSourceId: source.send,
-    setTargetId: target.send,
+    setDstId: dst.send,
     initReceive,
 }
 

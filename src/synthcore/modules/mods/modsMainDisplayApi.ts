@@ -15,13 +15,13 @@ export const mainDisplayModsPotResolutions = {
 export const mainDisplayModsApi = {
     handleMainDisplayController: (ctrlId: MainDisplayControllerIds, increment: number) => {
         if (ctrlId === MainDisplayControllerIds.POT1) {
-            modsApi.incrementGuiTargetGroup(step(increment), ApiSource.UI)
+            modsApi.incrementGuiDstGroup(step(increment), ApiSource.UI)
         } else if (ctrlId === MainDisplayControllerIds.POT2) {
             modsApi.incrementGuiSource(step(increment), ApiSource.UI)
         } else if (ctrlId === MainDisplayControllerIds.POT3) {
-            modsApi.incrementGuiTargetFunc(step(increment), ApiSource.UI)
+            modsApi.incrementGuiDstFunc(step(increment), ApiSource.UI)
         } else if (ctrlId === MainDisplayControllerIds.POT4) {
-            modsApi.incrementGuiTargetParam(step(increment), ApiSource.UI)
+            modsApi.incrementGuiDstParam(step(increment), ApiSource.UI)
         } else if (ctrlId === MainDisplayControllerIds.POT5) {
             modsApi.incrementGuiModValue(increment, ApiSource.UI)
         } else if (ctrlId === MainDisplayControllerIds.POT6) {

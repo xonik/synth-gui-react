@@ -29,14 +29,14 @@ const controllersFx: ControllersFx = {
         DRIVE: {
             id: ControllerIdDst.DISTORTION_DRIVE,
             label: 'Drive',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.DISTORTION_DRIVE
         },
         LEVEL: {
             id: ControllerIdDst.DISTORTION_LEVEL,
             label: 'Level',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.DISTORTION_LEVEL
         },
@@ -79,21 +79,21 @@ const controllersFx: ControllersFx = {
         BITS: {
             id: ControllerIdDst.BIT_CRUSHER_BITS,
             label: 'Bits',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.BIT_CRUSHER_BITS
         },
         RATE: {
             id: ControllerIdDst.BIT_CRUSHER_RATE,
             label: 'Rate',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.BIT_CRUSHER_RATE
         },
         LEVEL: {
             id: ControllerIdDst.BIT_CRUSHER_LEVEL,
             label: 'Level',
-            isTargetDigi: true,
+            isDstDigi: true,
             type: 'pot',
             cc: CC.BIT_CRUSHER_LEVEL
         },

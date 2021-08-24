@@ -3,14 +3,14 @@ import { controllerGroups } from '../../../midi/controllers'
 
 export const shortLabel = (element: ControllerConfig | FuncProps) => element.shortLabel || element.label
 
-const getTargets = () => {
+const getDsts = () => {
 
     type Func = ControllerConfig[]
     type Group = Func[];
 
-    const modTargets: Group[] = []
-    const modTargetGroupLabels: string[] = []
-    const modTargetFuncProps: FuncProps[][] = []
+    const modDsts: Group[] = []
+    const modDstGroupLabels: string[] = []
+    const modDstFuncProps: FuncProps[][] = []
 
     Object.values(controllerGroups).forEach((group) => {
         const funcs: Func[] = []
@@ -19,7 +19,7 @@ const getTargets = () => {
             const params: ControllerConfig[] = []
             Object.values(func).forEach((param) => {
                 const controller = param as ControllerConfig
-                if (controller.isTargetDigi) {
+                if (controller.isDstDigi) {
                     params.push(controller)
                 }
             })
@@ -29,16 +29,16 @@ const getTargets = () => {
             }
         })
         if (funcs.length > 0) {
-            modTargets.push(funcs)
-            modTargetGroupLabels.push(group.label)
-            modTargetFuncProps.push(funcProps)
+            modDsts.push(funcs)
+            modDstGroupLabels.push(group.label)
+            modDstFuncProps.push(funcProps)
         }
     })
 
     return {
-        targets: modTargets,
-        groupLabels: modTargetGroupLabels,
-        funcProps: modTargetFuncProps
+        dsts: modDsts,
+        groupLabels: modDstGroupLabels,
+        funcProps: modDstFuncProps
     }
 }
 
@@ -57,5 +57,5 @@ const getSources = () => {
     return sources
 }
 
-export const modTarget = getTargets()
+export const modDst = getDsts()
 export const digitalModSources = getSources()

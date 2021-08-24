@@ -1,8 +1,8 @@
-import { digitalModSources, modTarget } from '../../synthcore/modules/mods/utils'
+import { digitalModSources, modDst } from '../../synthcore/modules/mods/utils'
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { DraggableElementProps } from './types'
 import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
-import { setGuiMod, selectGuiSource, selectGuiTargetFunc, selectGuiTargetGroup, selectGuiTargetParam, selectModValue, selectGuiLastModSelectSource } from '../../synthcore/modules/mods/modsReducer'
+import { setGuiMod, selectGuiSource, selectGuiDstFunc, selectGuiDstGroup, selectGuiDstParam, selectModValue, selectGuiLastModSelectSource } from '../../synthcore/modules/mods/modsReducer'
 import classNames from 'classnames'
 import AmountBar from './AmountBar'
 import { Point } from '../../utils/types'
@@ -25,27 +25,27 @@ interface CellProps {
     // the index in the array of params for the function (e.g. controllers)
     paramIndex: number
 
-    // unique IDs for source and target params, but must be combined with funcCtrlIndex for params that
+    // unique IDs for source and dst params, but must be combined with funcCtrlIndex for params that
     // occur on multiple functions such as LFOs and envs.
     sourceId: number
-    targetId: number
+    dstId: number
 }
 
-const AmountCell = ({ sourceIndex, funcIndex, funcCtrlIndex, paramIndex, sourceId, targetId, onSelected }: CellProps) => {
+const AmountCell = ({ sourceIndex, funcIndex, funcCtrlIndex, paramIndex, sourceId, dstId, onSelected }: CellProps) => {
 
     const dispatch = useAppDispatch()
-    const modValue = useAppSelector(selectModValue(sourceId, targetId, funcCtrlIndex))
+    const modValue = useAppSelector(selectModValue(sourceId, dstId, funcCtrlIndex))
     const selectedSource = useAppSelector(selectGuiSource)
-    const selectedTargetFunc = useAppSelector(selectGuiTargetFunc)
-    const selectedTargetParam = useAppSelector(selectGuiTargetParam)
+    const selectedDstFunc = useAppSelector(selectGuiDstFunc)
+    const selectedDstParam = useAppSelector(selectGuiDstParam)
     const modSelectSource = useAppSelector(selectGuiLastModSelectSource)
 
-    const isTarget = paramIndex === selectedTargetParam && funcIndex === selectedTargetFunc
+    const isDst = paramIndex === selectedDstParam && funcIndex === selectedDstFunc
     const isSource = sourceIndex === selectedSource
 
-    const isSelectedRow = isTarget && !isSource
-    const isSelectedCol = isSource && !isTarget
-    const isSelectedCell = isSource && isTarget
+    const isSelectedRow = isDst && !isSource
+    const isSelectedCol = isSource && !isDst
+    const isSelectedCell = isSource && isDst
 
     const amtPercentage = Math.round(modValue * 100)
     const amountText = isSelectedCell || modValue !== 0 ? `${amtPercentage}` : '\u00A0'
@@ -62,8 +62,8 @@ const AmountCell = ({ sourceIndex, funcIndex, funcCtrlIndex, paramIndex, sourceI
         if (event.clientX === clickPos?.x && event.clientY === clickPos?.y) {
             dispatch(setGuiMod({
                 guiSource: sourceIndex,
-                guiTargetFunc: funcIndex,
-                guiTargetParam: paramIndex,
+                guiDstFunc: funcIndex,
+                guiDstParam: paramIndex,
             }))
         }
     }, [dispatch, sourceIndex, funcIndex, paramIndex, clickPos])
@@ -106,8 +106,8 @@ interface RowProps {
 
 const AmountsRow = ({ sourceId, sourceIndex }: RowProps) => {
 
-    const targetGroupId = useAppSelector(selectGuiTargetGroup)
-    const targetGroup = modTarget.targets[targetGroupId]
+    const dstGroupId = useAppSelector(selectGuiDstGroup)
+    const dstGroup = modDst.dsts[dstGroupId]
 
     const ref = useRef<HTMLDivElement>(null)
     const { onScrollToElement } = useContext(ScrollingSyncNodeContext)
@@ -124,16 +124,16 @@ const AmountsRow = ({ sourceId, sourceIndex }: RowProps) => {
     }, [onScrollToElement])
 
     return (
-        <div className="mod-ctrl__targets" ref={ref}>
-            {targetGroup.map((func, funcIndex) => <React.Fragment key={funcIndex}>
-                    {func.map((targetParam, paramIndex) => <AmountCell
+        <div className="mod-ctrl__dsts" ref={ref}>
+            {dstGroup.map((func, funcIndex) => <React.Fragment key={funcIndex}>
+                    {func.map((dstParam, paramIndex) => <AmountCell
                                     key={paramIndex}
                                     sourceIndex={sourceIndex}
                                     funcIndex={funcIndex}
-                                    funcCtrlIndex={modTarget.funcProps[targetGroupId][funcIndex].ctrlIndex || 0}
+                                    funcCtrlIndex={modDst.funcProps[dstGroupId][funcIndex].ctrlIndex || 0}
                                     paramIndex={paramIndex}
                                     sourceId={sourceId}
-                                    targetId={targetParam.id}
+                                    dstId={dstParam.id}
                                     onSelected={onSelected}
                         />
                     )}
