@@ -1,6 +1,6 @@
 export enum ControllerIdSrc {
     // Sources
-    ARPEGGIATOR,
+    ARP,
     PERF_PITCH_BEND,
     PERF_MOD_WHEEL,
     PERF_RIBBON_POS,
@@ -19,11 +19,10 @@ export enum ControllerIdSrc {
     LFO2,
     LFO3,
     LFO4,
-
-    LAST // Used for array indexing in C++
 }
 
-export const FIRST_INTERMEDIATE = ControllerIdSrc.LAST.valueOf()
+export const SRC_COUNT = Object.keys(ControllerIdSrc).filter(o => isNaN(o as any)).length
+export const FIRST_INTERMEDIATE = SRC_COUNT
 
 export enum ControllerIdIntermediate {
     // Intermediate, controllers that regulate the level of another source and then acts as the
@@ -38,13 +37,11 @@ export enum ControllerIdIntermediate {
     SVF_LFO_AMT,
     SVF_KBD_AMT,
 
-    LAST, // Used for array indexing in C++
-
     // TODO: Note and pitch should perhaps be part of this? But
     // Note needs to be quantized
 }
-
-export const FIRST_DST = ControllerIdIntermediate.LAST.valueOf()
+export const INT_COUNT = Object.keys(ControllerIdIntermediate).filter(o => isNaN(o as any)).length
+export const FIRST_DST = FIRST_INTERMEDIATE + INT_COUNT
 
 export enum ControllerIdDst {
     // Targets
@@ -133,11 +130,9 @@ export enum ControllerIdDst {
     FX_MIX_LEVEL_DSP2,
     FX_MIX_LEVEL_CHORUS,
     FX_MIX_LEVEL_BIT_CRUSHER,
-
-    LAST, // Used for array indexing in C++
 }
-
-export const FIRST_ENV_DST = ControllerIdDst.LAST.valueOf()
+export const DST_COUNT = Object.keys(ControllerIdDst).filter(o => isNaN(o as any)).length
+export const FIRST_ENV_DST = FIRST_DST + DST_COUNT
 
 export enum ControllerIdEnvDst {
     // LFO and ENV targets
@@ -150,19 +145,17 @@ export enum ControllerIdEnvDst {
     RELEASE2_TIME,
     DECAY2_LEVEL,
     RELEASE2_LEVEL,
-    LAST, // Used for array indexing in C++
 }
-
-export const FIRST_LFO_DST = ControllerIdEnvDst.LAST.valueOf()
+export const DST_ENV_COUNT = Object.keys(ControllerIdEnvDst).filter(o => isNaN(o as any)).length
+export const FIRST_LFO_DST = FIRST_ENV_DST + DST_ENV_COUNT
 
 export enum ControllerIdLfoDst {
     RATE = 100,
     DEPTH,
     DELAY,
-    DST_LAST, // Used for array indexing in C++
 }
-
-export const FIRST_NON_MOD = ControllerIdLfoDst.DST_LAST.valueOf()
+export const DST_LFO_COUNT = Object.keys(ControllerIdLfoDst).filter(o => isNaN(o as any)).length
+export const FIRST_NON_MOD = FIRST_LFO_DST + DST_LFO_COUNT
 
 export enum ControllerIdNonMod {
     // Non-modulatable controllers

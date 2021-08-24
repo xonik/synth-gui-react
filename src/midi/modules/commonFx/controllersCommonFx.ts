@@ -6,17 +6,17 @@ import { ControllerIdDst, ControllerIdNonMod } from '../../controllerIds'
 interface ControllersCommonFx {
     DSP1: {
         props: FuncProps
-        POT1: ControllerConfigCC,
-        POT2: ControllerConfigCC,
-        POT3: ControllerConfigCC,
+        PARAM1: ControllerConfigCC,
+        PARAM2: ControllerConfigCC,
+        PARAM3: ControllerConfigCC,
         EFFECT: ControllerConfigCC,
         SOURCE: ControllerConfigCCWithValue,
     },
     DSP2: {
         props: FuncProps
-        POT1: ControllerConfigCC,
-        POT2: ControllerConfigCC,
-        POT3: ControllerConfigCC,
+        PARAM1: ControllerConfigCC,
+        PARAM2: ControllerConfigCC,
+        PARAM3: ControllerConfigCC,
         EFFECT: ControllerConfigCC,
         SOURCE: ControllerConfigCCWithValue,
         CHAIN: ControllerConfigCCWithValue,
@@ -46,26 +46,26 @@ interface ControllersCommonFx {
 const controllersCommonFx: ControllersCommonFx = {
     DSP1: {
         props: { label: 'DSP 1' },
-        POT1: {
+        PARAM1: {
             id: ControllerIdDst.DSP1_PARAM1,
             label: 'Param 1',
             isTargetDigi: true,
             type: 'pot',
-            cc: CC.DSP1_POT1
+            cc: CC.DSP1_PARAM1
         },
-        POT2: {
+        PARAM2: {
             id: ControllerIdDst.DSP1_PARAM2,
             label: 'Param 2',
             isTargetDigi: true,
             type: 'pot',
-            cc: CC.DSP1_POT2
+            cc: CC.DSP1_PARAM2
         },
-        POT3: {
+        PARAM3: {
             id: ControllerIdDst.DSP1_PARAM3,
             label: 'Param 3',
             isTargetDigi: true,
             type: 'pot',
-            cc: CC.DSP1_POT3
+            cc: CC.DSP1_PARAM3
         },
         EFFECT: { id: ControllerIdNonMod.DSP1_EFFECT, label: 'Effect', type: 'pot', cc: CC.DSP1_EFFECT },
 
@@ -82,26 +82,26 @@ const controllersCommonFx: ControllersCommonFx = {
     },
     DSP2: {
         props: { label: 'DSP 2' },
-        POT1: {
+        PARAM1: {
             id: ControllerIdDst.DSP2_PARAM1,
             label: 'Param 1',
             isTargetDigi: true,
             type: 'pot',
-            cc: CC.DSP2_POT1
+            cc: CC.DSP2_PARAM1
         },
-        POT2: {
+        PARAM2: {
             id: ControllerIdDst.DSP2_PARAM2,
             label: 'Param 2',
             isTargetDigi: true,
             type: 'pot',
-            cc: CC.DSP2_POT2
+            cc: CC.DSP2_PARAM2
         },
-        POT3: {
+        PARAM3: {
             id: ControllerIdDst.DSP2_PARAM3,
             label: 'Param 3',
             isTargetDigi: true,
             type: 'pot',
-            cc: CC.DSP2_POT3
+            cc: CC.DSP2_PARAM3
         },
         EFFECT: { id: ControllerIdNonMod.DSP2_EFFECT, label: 'Effect', type: 'pot', cc: CC.DSP2_EFFECT },
 

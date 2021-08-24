@@ -77,11 +77,11 @@ const KeyboardControls = ({ x, y }: Props) => {
         <Header label="Transpose" x={0} y={row1} width={80}/>
         <Header label="Keyboard" x={85} y={row1} width={140}/>
         <Transpose row2={row2} />
-        <RotaryPot10 x={col8} y={row2} ledMode="single" label="Portamento" position={0.5} midiConfig={midiConstants.KEYBOARD.PORTAMENTO}/>
-        <RoundLedPushButton8 labelPosition="bottom" x={col9} y={row2} label="Hold" midiConfig={midiConstants.KEYBOARD.HOLD}/>
-        <RoundLedPushButton8 labelPosition="bottom" x={col10} y={row2} label="Chord" midiConfig={midiConstants.KEYBOARD.CHORD}/>
-        <RoundPushButton8 labelPosition="bottom" x={col11} y={row2} label="Mode" ledCount={3} ledPosition="right" ledLabels={['Solo', 'Unison', 'Poly']} midiConfig={midiConstants.KEYBOARD.MODE}/>
-        <RotaryPot10 x={col12} y={row2} ledMode="single" label="Unison detune" position={0.5} midiConfig={midiConstants.KEYBOARD.UNISON_DETUNE}/>
+        <RotaryPot10 x={col8} y={row2} ledMode="single" label="Portamento" position={0.5} midiConfig={midiConstants.KBD.PORTAMENTO}/>
+        <RoundLedPushButton8 labelPosition="bottom" x={col9} y={row2} label="Hold" midiConfig={midiConstants.KBD.HOLD}/>
+        <RoundLedPushButton8 labelPosition="bottom" x={col10} y={row2} label="Chord" midiConfig={midiConstants.KBD.CHORD}/>
+        <RoundPushButton8 labelPosition="bottom" x={col11} y={row2} label="Mode" ledCount={3} ledPosition="right" ledLabels={['Solo', 'Unison', 'Poly']} midiConfig={midiConstants.KBD.MODE}/>
+        <RotaryPot10 x={col12} y={row2} ledMode="single" label="Unison detune" position={0.5} midiConfig={midiConstants.KBD.UNISON_DETUNE}/>
     </svg>;
 };
 

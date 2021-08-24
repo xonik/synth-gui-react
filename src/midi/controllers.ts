@@ -50,9 +50,9 @@ export const controllerGroups = {
     CLK_ARP_KBD: {
         label: 'Controls',
         MASTER_CLOCK: controllersMasterClock,
-        ARPEGGIATOR: controllersArp,
+        ARP: controllersArp,
         TRANSPOSE: controllersTranspose,
-        KEYBOARD: controllersKbd,
+        KBD: controllersKbd,
     },
     MAIN_DISPLAY: {
         label: 'Main controls',
@@ -67,7 +67,7 @@ export const controllerGroups = {
     },
     VOICE: {
         label: 'Voice out',
-        POST_MIX: controllersPostMix,
+        VOICE_MIX: controllersPostMix,
         VOICE_OUT: controllersVoiceOut,
 
     },
@@ -109,15 +109,15 @@ const controllers = {
     SOURCE_MIX: controllersSrcMix,
     MODS: modsControllers,
     MASTER_CLOCK: controllersMasterClock,
-    ARPEGGIATOR: controllersArp,
+    ARP: controllersArp,
     VOICES: controllersVoices,
     MAIN_DISPLAY: mainDisplayControllers,
     TRANSPOSE: controllersTranspose,
-    KEYBOARD: controllersKbd,
+    KBD: controllersKbd,
     LPF: controllersFilters.LPF,
     FILTERS: controllersFilters.FILTERS,
     SVF: controllersFilters.SVF,
-    POST_MIX: controllersPostMix,
+    VOICE_MIX: controllersPostMix,
     VOICE_OUT: controllersVoiceOut,
     ENV: envControllers(0), // most cc values are shared so the ones for 0 are used
     DSP1: controllersCommonFx.DSP1,

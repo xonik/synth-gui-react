@@ -18,28 +18,28 @@ const controllersPostMix: ControllersPostMix = {
         label: 'LPF',
         isTargetDigi: true,
         type: 'pot',
-        cc: CC.POST_MIX_LPF
+        cc: CC.VOICE_MIX_LPF
     },
     SVF: {
         id: ControllerIdDst.VOICE_MIX_SVF,
         label: 'SVF',
         isTargetDigi: true,
         type: 'pot',
-        cc: CC.POST_MIX_SVF
+        cc: CC.VOICE_MIX_SVF
     },
     SINE1: {
         id: ControllerIdDst.VOICE_MIX_SINE1,
         label: 'Sine 1',
         isTargetDigi: true,
         type: 'pot',
-        cc: CC.POST_MIX_SINE1
+        cc: CC.VOICE_MIX_SINE1
     },
     SINE2: {
         id: ControllerIdDst.VOICE_MIX_SINE2,
         label: 'Sine 2',
         isTargetDigi: true,
         type: 'pot',
-        cc: CC.POST_MIX_SINE2
+        cc: CC.VOICE_MIX_SINE2
     },
 }
 

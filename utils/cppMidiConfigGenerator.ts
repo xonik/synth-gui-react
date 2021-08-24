@@ -7,11 +7,12 @@ import {
     ControllerIdEnvDst,
     ControllerIdIntermediate,
     ControllerIdLfoDst, ControllerIdNonMod,
-    ControllerIdSrc,
+    ControllerIdSrc, DST_COUNT, DST_ENV_COUNT,
+    DST_LFO_COUNT,
     FIRST_DST,
     FIRST_ENV_DST,
     FIRST_INTERMEDIATE,
-    FIRST_LFO_DST, FIRST_NON_MOD
+    FIRST_LFO_DST, FIRST_NON_MOD, INT_COUNT, SRC_COUNT
 } from '../src/midi/controllerIds'
 
 const fs = require('fs')
@@ -20,23 +21,23 @@ const outputRoot = '/Users/joakimtysseng/Documents/Arduino/xm8-voice-controller/
 
 const generateParamIO = (): string => {
 
-    if (FIRST_INTERMEDIATE !== ControllerIdSrc.LAST || ControllerIdIntermediate.LPF_FM_AMT.valueOf() !== ControllerIdSrc.LAST.valueOf()) {
+    if (FIRST_INTERMEDIATE !== ControllerIdIntermediate.LPF_FM_AMT.valueOf()) {
         throw new Error('paramIO: First intermediate does not match src ctrl last, did you forget to change it after adding something?')
     }
 
-    if (FIRST_DST !== ControllerIdIntermediate.LAST || ControllerIdDst.DCO1_PITCH.valueOf() !== ControllerIdIntermediate.LAST.valueOf()) {
+    if (FIRST_DST !== ControllerIdDst.DCO1_PITCH.valueOf()) {
         throw new Error('paramIO: First dest does not match intermediate last, did you forget to change it after adding something?')
     }
 
-    if (FIRST_ENV_DST !== ControllerIdDst.LAST || ControllerIdEnvDst.DELAY_TIME.valueOf() !== ControllerIdDst.LAST.valueOf()) {
+    if (FIRST_ENV_DST !== ControllerIdEnvDst.DELAY_TIME.valueOf()) {
         throw new Error('paramIO: First env dest does not match last dst, did you forget to change it after adding something?')
     }
 
-    if (FIRST_LFO_DST !== ControllerIdEnvDst.LAST || ControllerIdLfoDst.RATE.valueOf() !== ControllerIdEnvDst.LAST.valueOf()) {
+    if (FIRST_LFO_DST !== ControllerIdLfoDst.RATE.valueOf()) {
         throw new Error('paramIO: First lfo dest does not match last env dst, did you forget to change it after adding something?')
     }
 
-    if (FIRST_NON_MOD !== ControllerIdLfoDst.DST_LAST || ControllerIdNonMod.DCO1_SYNC.valueOf() !== ControllerIdLfoDst.DST_LAST.valueOf()) {
+    if (FIRST_NON_MOD !== ControllerIdNonMod.DCO1_SYNC.valueOf()) {
         throw new Error('paramIO: First non mod does not match last env dst, did you forget to change it after adding something?')
     }
 
@@ -49,37 +50,56 @@ const generateParamIO = (): string => {
 #include "lfos.h"
 
 namespace paramIO {
+  const unsigned short SRC_COUNT = ${SRC_COUNT};
+  
+  const unsigned short FIRST_ENV = ${ControllerIdSrc.ENVELOPE1};
+  const unsigned short FIRST_LFO = ${ControllerIdSrc.LFO1};
+  
+  const unsigned short FIRST_INTERMEDIATE = ${FIRST_INTERMEDIATE};
+  const unsigned short INT_COUNT = ${INT_COUNT};
+  const unsigned short LAST_INTERMEDIATE = ${FIRST_INTERMEDIATE + INT_COUNT - 1}; 
+  
+  const unsigned short FIRST_DST = ${FIRST_DST};
+  const unsigned short DST_COUNT = ${DST_COUNT};
+  const unsigned short LAST_DST = ${FIRST_DST + DST_COUNT - 1};  
+  
+  const unsigned short SRC_INT_COUNT = ${SRC_COUNT + INT_COUNT};
+  const unsigned short SRC_INT_DST_COUNT = ${SRC_COUNT + INT_COUNT + DST_COUNT};
+  
+  const unsigned short FIRST_ENV_DEST_ID = ${FIRST_ENV_DST};
+  const unsigned short DST_ENV_COUNT = ${DST_ENV_COUNT};
+  const unsigned short LAST_ENV_DEST_ID = ${FIRST_ENV_DST + DST_ENV_COUNT - 1};
+  
+  const unsigned short FIRST_LFO_DEST_ID = ${FIRST_LFO_DST};
+  const unsigned short DST_LFO_COUNT = ${DST_LFO_COUNT};
+  const unsigned short LAST_LFO_DEST_ID = ${FIRST_LFO_DST + DST_LFO_COUNT - 1};  
+    
+  const unsigned short DESTINATIONS = ${FIRST_ENV_DST - FIRST_INTERMEDIATE};
+  
+  
+  
   enum SrcCtrlPos {
     ${Object.keys(ControllerIdSrc).filter(o => isNaN(o as any)).map((key) => `SRC_${key}`).join(',\n    ')}
     
     // TODO: Note and pitch should perhaps be part of this? But
     // Note needs to be quantized    
-  }
+  };
    
-  const unsigned short FIRST_ENV = ${ControllerIdSrc.ENVELOPE1};
-  const unsigned short FIRST_LFO = ${ControllerIdSrc.LFO1};
-  const unsigned short FIRST_INTERMEDIATE = ${FIRST_INTERMEDIATE};
-  
   enum IntermediateCtrlPos {
     ${Object.keys(ControllerIdIntermediate).filter(o => isNaN(o as any)).map((key) => `INT_SRC_${key}`).join(',\n    ')}
-  }
+  };
   
   enum DstCtrlPos {
     ${Object.keys(ControllerIdDst).filter(o => isNaN(o as any)).map((key) => `DST_${key}`).join(',\n    ')}
-  }
-  
-  const unsigned short FIRST_ENV_DEST_ID = ${FIRST_ENV_DST};
+  };  
   
   enum EnvDestinations {
     ${Object.keys(ControllerIdEnvDst).filter(o => isNaN(o as any)).map((key) => `DST_ENV_${key}`).join(',\n    ')}
-  }  
+  };  
   
   enum LfoDestinations {
     ${Object.keys(ControllerIdLfoDst).filter(o => isNaN(o as any)).map((key) => `DST_LFO_${key}`).join(',\n    ')}
-  }  
-  
-  const unsigned short FIRST_LFO_DEST_ID = ${FIRST_LFO_DST};
-  const unsigned short LAST_LFO_DEST_ID = ${ControllerIdLfoDst.DST_LAST - 1};  
+  };    
   
   enum DirectDestinatons {
     DDST_ROUTE_AMOUNT,
@@ -96,8 +116,6 @@ namespace paramIO {
     DDST_OUTPUT_HEADPHONES,
     DDST_COUNT // Used for array indexing;
   };  
-  
-  const unsigned short DESTINATIONS = ${FIRST_ENV_DST - FIRST_INTERMEDIATE};
 }
 #endif
 `

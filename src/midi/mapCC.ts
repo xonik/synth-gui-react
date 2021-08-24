@@ -4,7 +4,7 @@ const mapCC = {
     MIDI_BREATH_CTRL: 2, // N/I
     BUTTONS_LEFT: 3,
     MIDI_FOOT_CTRL: 4, // N/I
-    KEYBOARD_PORTAMENTO: 5,
+    KBD_PORTAMENTO: 5,
     DATA_ENTRY_MSB:6,
     BUTTONS_CENTER: 7,
     BUTTONS_RIGHT: 8,
@@ -37,7 +37,7 @@ const mapCC = {
     MIDI_BREATH_CTRL_LSB: 34,
     DATA_ENTRY_HSB: 35, // Not a standard controller, I use this to send 16 bit controllers.
     MIDI_FOOT_CTRL_LSB: 36,
-    KEYBOARD_PORTAMENTO_LSB: 37,
+    KBD_PORTAMENTO_LSB: 37,
     DATA_ENTRY_LSB: 38,
 
     LFO_RATE: 39,
@@ -58,7 +58,7 @@ const mapCC = {
     MAIN_POT4: 54,
     MAIN_POT5: 55,
     MAIN_POT6: 56,
-    KEYBOARD_UNISON_DETUNE: 57,
+    KBD_UNISON_DETUNE: 57,
     LPF_INPUT: 58,
     LPF_DRIVE: 59,
     LPF_RESONANCE: 60,
@@ -78,10 +78,10 @@ const mapCC = {
     SVF_ENV_AMT: 77,
     SVF_LFO_AMT: 78,
     SVF_KBD_AMT: 79,
-    POST_MIX_LPF: 80,
-    POST_MIX_SVF: 81,
-    POST_MIX_SINE1: 82,
-    POST_MIX_SINE2: 83,
+    VOICE_MIX_LPF: 80,
+    VOICE_MIX_SVF: 81,
+    VOICE_MIX_SINE1: 82,
+    VOICE_MIX_SINE2: 83,
     VOICE_OUT_PAN: 84,
     VOICE_OUT_AMOUNT: 85,
     VOICE_OUT_FX1_SEND: 86,
@@ -91,19 +91,19 @@ const mapCC = {
     ENV_TOGGLE_STAGE: 90,
     ENV_SELECT_ENV: 91,
     ENV_SELECT_ENV3_ID: 92,
-    DSP1_POT1: 93,
-    DSP1_POT2: 94,
-    DSP1_POT3: 95,
+    DSP1_PARAM1: 93,
+    DSP1_PARAM2: 94,
+    DSP1_PARAM3: 95,
     DSP1_EFFECT: 96,
-    DSP2_POT1: 97,
+    DSP2_PARAM1: 97,
 
     NRPN_LSB: 98,
     NRPN_MSB: 99,
     RPN_LSB: 100, // N/I, possibly available
     RPN_MSB: 101, // N/I, possibly available
 
-    DSP2_POT2: 102,
-    DSP2_POT3: 103,
+    DSP2_PARAM2: 102,
+    DSP2_PARAM3: 103,
     DSP2_EFFECT: 104,
     CHORUS_RATE: 105,
     CHORUS_DEPTH: 106,

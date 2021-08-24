@@ -80,7 +80,7 @@ const controllersArp: ControllersArp = {
         ],
     },
     OUTPUT: {
-        id: ControllerIdSrc.ARPEGGIATOR,
+        id: ControllerIdSrc.ARP,
         label: 'Arp',
         type: 'output',
         isSourceDigi: true

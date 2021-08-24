@@ -32,12 +32,12 @@ const Arpeggiator = ({ x, y }: Props) => {
 
     return <svg x={x} y={y}>
         <Header label="Arpeggiator" x={0} y={row1} width={190}/>
-        <RoundLedPushButton8 labelPosition="bottom" x={col1} y={row2} label="On/Off" midiConfig={midiConstants.ARPEGGIATOR.ON_OFF}/>
-        <RoundLedPushButton8 labelPosition="bottom" x={col2} y={row2} label="Trigger" midiConfig={midiConstants.ARPEGGIATOR.TRIGGER}/>
-        <RotaryPot17 ledMode="single" label="Tempo" x={col3} y={row2} position={0.4} midiConfig={midiConstants.ARPEGGIATOR.TEMPO}/>
-        <RoundPushButton8 labelPosition="bottom" x={col4} y={row2} label="Sync" ledCount={3} ledPosition="right" ledLabels={['Master', 'LFO1', 'Ext']} hasOff midiConfig={midiConstants.ARPEGGIATOR.SYNC}/>
-        <RoundPushButton8 labelPosition="bottom" x={col5} y={row2} label="Range" ledCount={3} ledPosition="right" ledLabels={['1', '2', '3']} midiConfig={midiConstants.ARPEGGIATOR.RANGE}/>
-        <RoundPushButton8 labelPosition="bottom" x={col6} y={row2} label="Mode" ledCount={5} ledPosition="right" ledLabels={['Up', 'Down', 'Up/down', 'Random', 'Other']} midiConfig={midiConstants.ARPEGGIATOR.MODE}/>
+        <RoundLedPushButton8 labelPosition="bottom" x={col1} y={row2} label="On/Off" midiConfig={midiConstants.ARP.ON_OFF}/>
+        <RoundLedPushButton8 labelPosition="bottom" x={col2} y={row2} label="Trigger" midiConfig={midiConstants.ARP.TRIGGER}/>
+        <RotaryPot17 ledMode="single" label="Tempo" x={col3} y={row2} position={0.4} midiConfig={midiConstants.ARP.TEMPO}/>
+        <RoundPushButton8 labelPosition="bottom" x={col4} y={row2} label="Sync" ledCount={3} ledPosition="right" ledLabels={['Master', 'LFO1', 'Ext']} hasOff midiConfig={midiConstants.ARP.SYNC}/>
+        <RoundPushButton8 labelPosition="bottom" x={col5} y={row2} label="Range" ledCount={3} ledPosition="right" ledLabels={['1', '2', '3']} midiConfig={midiConstants.ARP.RANGE}/>
+        <RoundPushButton8 labelPosition="bottom" x={col6} y={row2} label="Mode" ledCount={5} ledPosition="right" ledLabels={['Up', 'Down', 'Up/down', 'Random', 'Other']} midiConfig={midiConstants.ARP.MODE}/>
     </svg>;
 };
 
