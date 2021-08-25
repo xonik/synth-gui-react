@@ -1,7 +1,7 @@
 import CC from '../../../midi/mapCC'
 import { BUTTONS } from '../../../midi/buttons'
 import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
-import { ControllerIdNonMod } from '../../../midi/controllerIds'
+import { ControllerIdNonMod, ControllerIdNonModPots } from '../../../midi/controllerIds'
 
 interface MainDisplayControllers {
     props: FuncProps
@@ -25,12 +25,12 @@ interface MainDisplayControllers {
 
 const mainDisplayControllers: MainDisplayControllers = {
     props: { label: 'Main controls' },
-    POT1: { id: ControllerIdNonMod.MAIN_DISP_POT1, label: 'Pot 1', type: 'pot', cc: CC.MAIN_POT1 },
-    POT2: { id: ControllerIdNonMod.MAIN_DISP_POT2, label: 'Pot 2', type: 'pot', cc: CC.MAIN_POT2 },
-    POT3: { id: ControllerIdNonMod.MAIN_DISP_POT3, label: 'Pot 3', type: 'pot', cc: CC.MAIN_POT3 },
-    POT4: { id: ControllerIdNonMod.MAIN_DISP_POT4, label: 'Pot 4', type: 'pot', cc: CC.MAIN_POT4 },
-    POT5: { id: ControllerIdNonMod.MAIN_DISP_POT5, label: 'Pot 5', type: 'pot', cc: CC.MAIN_POT5 },
-    POT6: { id: ControllerIdNonMod.MAIN_DISP_POT6, label: 'Main pot', type: 'pot', cc: CC.MAIN_POT6 },
+    POT1: { id: ControllerIdNonModPots.MAIN_DISP_POT1, label: 'Pot 1', type: 'pot', cc: CC.MAIN_POT1 },
+    POT2: { id: ControllerIdNonModPots.MAIN_DISP_POT2, label: 'Pot 2', type: 'pot', cc: CC.MAIN_POT2 },
+    POT3: { id: ControllerIdNonModPots.MAIN_DISP_POT3, label: 'Pot 3', type: 'pot', cc: CC.MAIN_POT3 },
+    POT4: { id: ControllerIdNonModPots.MAIN_DISP_POT4, label: 'Pot 4', type: 'pot', cc: CC.MAIN_POT4 },
+    POT5: { id: ControllerIdNonModPots.MAIN_DISP_POT5, label: 'Pot 5', type: 'pot', cc: CC.MAIN_POT5 },
+    POT6: { id: ControllerIdNonModPots.MAIN_DISP_POT6, label: 'Main pot', type: 'pot', cc: CC.MAIN_POT6 },
 
     GROUP_MENU: {
         id: ControllerIdNonMod.MAIN_DISP_GROUP_MENU,

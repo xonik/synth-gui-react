@@ -6,13 +6,13 @@ import {
     ControllerIdDst,
     ControllerIdEnvDst,
     ControllerIdIntermediate,
-    ControllerIdLfoDst, ControllerIdNonMod,
+    ControllerIdLfoDst, ControllerIdNonMod, ControllerIdNonModPots,
     ControllerIdSrc, DST_COUNT, DST_ENV_COUNT,
     DST_LFO_COUNT,
     FIRST_DST,
     FIRST_ENV_DST,
     FIRST_INTERMEDIATE,
-    FIRST_LFO_DST, FIRST_NON_MOD, INT_COUNT, SRC_COUNT
+    FIRST_LFO_DST, FIRST_NON_MOD, FIRST_NON_MOD_POTS, INT_COUNT, NON_MOD_POTS_COUNT, SRC_COUNT
 } from '../src/midi/controllerIds'
 
 const fs = require('fs')
@@ -35,6 +35,10 @@ const generateParamIO = (): string => {
 
     if (FIRST_LFO_DST !== ControllerIdLfoDst.RATE.valueOf()) {
         throw new Error('paramIO: First lfo dest does not match last env dst, did you forget to change it after adding something?')
+    }
+
+    if (FIRST_NON_MOD_POTS !== ControllerIdNonModPots.MOD_AMOUNT.valueOf()) {
+        throw new Error('paramIO: First non mod pots does not match last env dst, did you forget to change it after adding something?')
     }
 
     if (FIRST_NON_MOD !== ControllerIdNonMod.DCO1_SYNC.valueOf()) {
@@ -66,7 +70,11 @@ namespace paramIO {
   
   const unsigned short FIRST_LFO_DST = ${FIRST_LFO_DST};
   const unsigned short DST_LFO_COUNT = ${DST_LFO_COUNT};
-  const unsigned short LAST_LFO_DST = ${FIRST_LFO_DST + DST_LFO_COUNT - 1};     
+  const unsigned short LAST_LFO_DST = ${FIRST_LFO_DST + DST_LFO_COUNT - 1};   
+  
+  const unsigned short FIRST_NON_MOD_POTS = ${FIRST_NON_MOD_POTS};
+  const unsigned short NON_MOD_POTS_COUNT = ${NON_MOD_POTS_COUNT};
+  const unsigned short LAST_NON_MOD_POTS = ${FIRST_NON_MOD_POTS + NON_MOD_POTS_COUNT - 1};     
   
   const unsigned short SRC_INT_COUNT = ${SRC_COUNT + INT_COUNT};
   const unsigned short SRC_INT_DST_COUNT = ${SRC_COUNT + INT_COUNT + DST_COUNT};
@@ -107,20 +115,11 @@ namespace paramIO {
             .join(',\n    ')}
   };    
   
-  enum DirectDestinatons {
-    DDST_ROUTE_AMOUNT,
-    DDST_MAIN_PANEL_POT1,
-    DDST_MAIN_PANEL_POT2,
-    DDST_MAIN_PANEL_POT3,
-    DDST_MAIN_PANEL_POT4,
-    DDST_MAIN_PANEL_POT5,
-    DDST_MAIN_PANEL_POT6,
-    DDST_DSP1_EFFECT,
-    DDST_DSP2_EFFECT,
-    DDST_OUTPUT_VOLUME,
-    DDST_OUTPUT_SPREAD,
-    DDST_OUTPUT_HEADPHONES,
-    DIRECT_DST_COUNT // Used for array indexing;
+  enum NonModPotDestinations {
+    ${Object.keys(ControllerIdNonModPots)
+            .filter(o => isNaN(o as any))
+            .map((key, index) => `NMP_DST_${key}${index === 0 ? ' = ' + FIRST_NON_MOD_POTS : ''}`)
+            .join(',\n    ')}
   };  
 }
 #endif

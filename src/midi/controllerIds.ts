@@ -155,11 +155,30 @@ export enum ControllerIdLfoDst {
     DELAY,
 }
 export const DST_LFO_COUNT = Object.keys(ControllerIdLfoDst).filter(o => isNaN(o as any)).length
-export const FIRST_NON_MOD = FIRST_LFO_DST + DST_LFO_COUNT
+export const FIRST_NON_MOD_POTS = FIRST_LFO_DST + DST_LFO_COUNT
+
+
+// controllers that affect stuff that is not part of the
+// modulation matrix, such as global pots (volume etc)
+export enum ControllerIdNonModPots {
+    MOD_AMOUNT = 103,
+    MAIN_DISP_POT1,
+    MAIN_DISP_POT2,
+    MAIN_DISP_POT3,
+    MAIN_DISP_POT4,
+    MAIN_DISP_POT5,
+    MAIN_DISP_POT6,
+    OUT_VOLUME,
+    OUT_SPREAD,
+    OUT_HEADPHONES,
+}
+
+export const NON_MOD_POTS_COUNT = Object.keys(ControllerIdNonModPots).filter(o => isNaN(o as any)).length
+export const FIRST_NON_MOD = FIRST_NON_MOD_POTS + NON_MOD_POTS_COUNT
 
 export enum ControllerIdNonMod {
     // Non-modulatable controllers
-    DCO1_SYNC = 103,
+    DCO1_SYNC = 113,
     DCO1_MODE,
     DCO1_SUB_WAVE,
     DCO1_WHEEL,
@@ -201,7 +220,6 @@ export enum ControllerIdNonMod {
     LFO_SYNC,
     LFO_RESET,
     LFO_ONCE,
-    MOD_AMOUNT,
     MOD_DST,
     MOD_SRC,
     MOD_SET_SRC_ID,
@@ -223,12 +241,6 @@ export enum ControllerIdNonMod {
     VOICE_SELECTOR_6,
     VOICE_SELECTOR_7,
     VOICE_SELECTOR_8,
-    MAIN_DISP_POT1,
-    MAIN_DISP_POT2,
-    MAIN_DISP_POT3,
-    MAIN_DISP_POT4,
-    MAIN_DISP_POT5,
-    MAIN_DISP_POT6,
     MAIN_DISP_GROUP_MENU,
     MAIN_DISP_FUNC_HOME,
     MAIN_DISP_FUNC_SETTINGS,
@@ -279,8 +291,5 @@ export enum ControllerIdNonMod {
     CHORUS_MODE,
 
     FX_BIT_CRUSHER_SOURCE,
-    OUT_VOLUME,
-    OUT_SPREAD,
-    OUT_HEADPHONES,
 
 }

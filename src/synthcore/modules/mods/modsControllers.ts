@@ -1,7 +1,7 @@
 import CC from '../../../midi/mapCC'
 import { BUTTONS } from '../../../midi/buttons'
 import { ControllerConfigCC, ControllerConfigCCWithValue, ControllerConfigNRPN, FuncProps } from '../../../midi/types'
-import { ControllerIdNonMod } from '../../../midi/controllerIds'
+import { ControllerIdNonMod, ControllerIdNonModPots } from '../../../midi/controllerIds'
 import NRPN from '../../../midi/mapNRPN'
 
 interface ModsControllers {
@@ -16,15 +16,15 @@ interface ModsControllers {
 
 const modsControllers: ModsControllers = {
     props: { label: 'Routing' },
-    AMOUNT: { id: ControllerIdNonMod.MOD_AMOUNT, label: 'Amount', type: 'pot', addr: NRPN.MOD_AMOUNT },
+    AMOUNT: { id: ControllerIdNonModPots.MOD_AMOUNT, label: 'Amount', type: 'pot', addr: NRPN.MOD_AMOUNT },
 
     // from-button
     SRC: {
         id: ControllerIdNonMod.MOD_DST,
         label: 'From',
         type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
-            values: [
+        cc: BUTTONS.BUTTONS_LEFT.cc,
+        values: [
             BUTTONS.BUTTONS_LEFT.values.ROUTE_OFF,
             BUTTONS.BUTTONS_LEFT.values.ROUTE_FROM_ON,
             BUTTONS.BUTTONS_LEFT.values.ROUTE_TO_ON,
@@ -44,8 +44,8 @@ const modsControllers: ModsControllers = {
         id: ControllerIdNonMod.MOD_DST,
         label: 'To id',
         type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
-            values: [
+        cc: BUTTONS.BUTTONS_LEFT.cc,
+        values: [
             BUTTONS.BUTTONS_LEFT.values.ROUTE_OFF,
             BUTTONS.BUTTONS_LEFT.values.ROUTE_FROM_ON,
             BUTTONS.BUTTONS_LEFT.values.ROUTE_TO_ON,
