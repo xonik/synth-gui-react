@@ -3,6 +3,7 @@ import { store } from '../synthcore/store'
 import { selectMidiChannel } from '../synthcore/modules/settings/settingsReducer'
 import CC from './mapCC'
 import logger from '../utils/logger'
+import { handleMpk25 } from './mpk25translator'
 
 type MIDIMessageEvent = WebMidi.MIDIMessageEvent
 type MIDIInput = WebMidi.MIDIInput
@@ -24,8 +25,15 @@ type NRPNSubscriber = {
 const midiConfig = {
     inputIds: [
         '-213316575', // Akai MPK25 Port 1/A
+        '1211529875', // Steinberg UR22C Port 1
+        //'-762163153', // Steinberg UR22C Port 2
+
     ],
-    outputIds: ['-259958146'],
+    outputIds: [
+        '-259958146',
+        '437363294', // Steinberg UR22C Port 1
+        // '298365873', // Steinberg UR22C Port 2
+    ],
     sysexAddr: [1, 2, 3],
     channel: 0,
 }
@@ -35,7 +43,7 @@ const MIDI_CC = 0b10110000
 let midiOut: MIDIOutput | undefined
 let midiIn: MIDIInput | undefined
 
-const loopback = true
+const loopback = false
 let idPool = 0
 const ccSubscribers: { [key: number]: CCSubscriber[] } = {}
 const nrpnSubscribers: { [key: number]: NRPNSubscriber[] } = {}
@@ -146,6 +154,9 @@ export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
     const midiData = midiEvent.data
     const ccForChannel = MIDI_CC + getChannel()
     if (midiData[0] === ccForChannel) {
+        if(handleMpk25(midiData[1], midiData[2])){
+            return
+        }
         if (midiData[1] === CC.NRPN_MSB) {
             currNRPN.hiAddr = midiData[2]
         } else if(midiData[1] === CC.NRPN_LSB) {
@@ -167,6 +178,8 @@ export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
         } else {
             cc.publish(midiData[1], midiData[2])
         }
+    } else {
+        midiOut?.send(midiData)
     }
 }
 

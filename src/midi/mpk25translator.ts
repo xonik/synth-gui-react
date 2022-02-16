@@ -1,0 +1,112 @@
+import mapCC from './mapCC'
+import { cc, nrpn } from './midibus'
+import mapNRPN from './mapNRPN'
+import { StageId } from '../synthcore/modules/env/types'
+
+const getNprnStageTime = (stageId: number, midiTime: number) => {
+    return (stageId << 16) + (midiTime << 9);
+}
+
+const getNprnStageLevel = (stageId: number, midiLevel: number) => {
+    return (stageId << 16) + (midiLevel << 9);
+}
+
+export const handleMpk25 = (ccNum: number, midiValue: number): boolean => {
+    /**
+     * A:
+     * 22,23,24,25
+     * 26,27,28,29
+     * 12,13,14,15
+     *
+     * B:
+     * 30,31,32,22
+     * 34,35,36,37
+     * 16,17,18,19
+     */
+
+    // VCA ENV
+    if(ccNum === 22) {
+        // attack
+        cc.publish(mapCC.ENV_SELECT_ENV, 0)
+        nrpn.publish(mapNRPN.ENV_TIME, getNprnStageTime(StageId.ATTACK, midiValue))
+    } else if(ccNum === 23) {
+        // decay
+        cc.publish(mapCC.ENV_SELECT_ENV, 0)
+        nrpn.publish(mapNRPN.ENV_TIME, getNprnStageTime(StageId.DECAY1, midiValue))
+    } else if(ccNum === 24) {
+        // sustain
+        cc.publish(mapCC.ENV_SELECT_ENV, 0)
+        nrpn.publish(mapNRPN.ENV_LEVEL, getNprnStageLevel(StageId.SUSTAIN, midiValue))
+    } else if(ccNum === 25) {
+        // release
+        cc.publish(mapCC.ENV_SELECT_ENV, 0)
+        nrpn.publish(mapNRPN.ENV_TIME, getNprnStageTime(StageId.RELEASE2, midiValue))
+    }
+
+
+    // DCO 1
+    else if(ccNum === 26) {
+        cc.publish(mapCC.DCO1_WAVEFORM, midiValue)
+    } else if(ccNum === 27) {
+        cc.publish(mapCC.DCO1_PW, midiValue)
+    } else if(ccNum === 28) {
+        cc.publish(mapCC.DCO1_SUB1, midiValue)
+    } else if(ccNum === 29) {
+        cc.publish(mapCC.DCO1_SUB2, midiValue)
+    }
+
+    // DCO 2
+    else if(ccNum === 12) {
+        // +/- 1 note
+        // TODO: will have rounding errors
+        //int16_t bipolarNote = ((midiValue - 63) * (cvmaps::getSemitoneSpan(1)>>1)) / 64;
+        //ctrl::setParam(paramIO::DST_DCO2_DETUNE, bipolarNote);
+    } else if(ccNum === 13) {
+        // +/- 1 oct
+        // TODO: will have rounding errors
+        //int16_t bipolarNote = ((midiValue - 63) * cvmaps::getSemitoneSpan(12)) / 64;
+        //ctrl::setParam(paramIO::DST_DCO2_NOTE, bipolarNote);
+    } else if(ccNum === 14) {
+        cc.publish(mapCC.DCO2_SUB1, midiValue)
+    } else if(ccNum === 15) {
+        cc.publish(mapCC.DCO2_SUB2, midiValue)
+    }
+
+    // FILTER ENV     
+    else if(ccNum === 30) {
+        // attack
+        cc.publish(mapCC.ENV_SELECT_ENV, 1)
+        nrpn.publish(mapNRPN.ENV_TIME, getNprnStageTime(StageId.ATTACK, midiValue))
+    } else if(ccNum === 31) {
+        // decay
+        cc.publish(mapCC.ENV_SELECT_ENV, 1)
+        nrpn.publish(mapNRPN.ENV_TIME, getNprnStageTime(StageId.DECAY1, midiValue))
+    } else if(ccNum === 32) {
+        // sustain
+        cc.publish(mapCC.ENV_SELECT_ENV, 1)
+        nrpn.publish(mapNRPN.ENV_LEVEL, getNprnStageLevel(StageId.SUSTAIN, midiValue))
+    } else if(ccNum === 33) {
+        // release
+        cc.publish(mapCC.ENV_SELECT_ENV, 1)
+        nrpn.publish(mapNRPN.ENV_TIME, getNprnStageTime(StageId.RELEASE2, midiValue))
+    }
+    // FILTER / NOISE
+    else if(ccNum === 34) {
+        // filter freq
+        cc.publish(mapCC.LPF_CUTOFF, midiValue)
+    } else if(ccNum === 35) {
+        // filter resonance
+        cc.publish(mapCC.LPF_RESONANCE, midiValue)
+    } else if(ccNum === 36) {
+        cc.publish(mapCC.LEVEL_NOISE, midiValue)
+    } else if(ccNum === 37) {
+
+    } else if(ccNum === 16) {
+    } else if(ccNum === 17) {
+    } else if(ccNum === 18) {
+    } else if(ccNum === 19) {
+    } else {
+        return false;
+    }
+    return true;
+}

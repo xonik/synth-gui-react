@@ -173,6 +173,9 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
         if(midiConfig) {
             const updateValueFromMidi = (midiValue: number) => {
                 setStatePosition(midiValue / 127);
+
+                // TODO: Temporarily echoing midi. Remove and move control to reducer.
+                sendMidi(midiValue / 127);
             }
 
             const subscriberId = cc.subscribe(updateValueFromMidi, midiConfig)

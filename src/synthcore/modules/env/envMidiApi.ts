@@ -8,13 +8,6 @@ import logger from '../../../utils/logger'
 
 let currentEnvId = -1
 
-const selectEnv = (envId: number) => {
-    if (envId !== currentEnvId) {
-        cc.send(controllers.ENV.SELECT, envId)
-        currentEnvId = envId
-    }
-}
-
 const level = (() => {
     const cfg = controllers.ENV.LEVEL
 
@@ -23,12 +16,13 @@ const level = (() => {
             if (!shouldSend(source)) {
                 return
             }
-            selectEnv(envId)
+            envSelect.send(source, envId)
 
             // stageId is encoded as part of the extra available bits
-            const value = (Math.round(boundedValue * 32767) + 32767) + (stageId << 16)
-            logger.midi(`Setting level for env ${envId} stage ${stageId} to ${boundedValue}`)
-            nrpn.send(cfg, value)
+            const value = (Math.round(boundedValue * 32767) + 32767)
+            const data =  value + (stageId << 16)
+            logger.midi(`Setting level for env ${envId} stage ${stageId} to ${boundedValue} (${value})`)
+            nrpn.send(cfg, data)
         },
         receive: () => {
             nrpn.subscribe((value: number) => {
@@ -47,12 +41,13 @@ const time = (() => {
             if (!shouldSend(source)) {
                 return
             }
-            selectEnv(envId)
+            envSelect.send(source, envId)
 
             // stageId is encoded as part of the extra available bits
-            const value = Math.round(boundedValue * 65535) + (stageId << 16)
-            logger.midi(`Setting time for env ${envId} stage ${stageId} to ${boundedValue}`)
-            nrpn.send(cfg, value)
+            const value = Math.round(boundedValue * 65535)
+            const data = value  + (stageId << 16)
+            logger.midi(`Setting time for env ${envId} stage ${stageId} to ${boundedValue} (${value})`)
+            nrpn.send(cfg, data)
         },
         receive: () => {
             nrpn.subscribe((value: number) => {
@@ -72,7 +67,7 @@ const invert = (() => {
             if (!shouldSend(source)) {
                 return
             }
-            selectEnv(envId)
+            envSelect.send(source, envId)
             const invertIndex = invert ? 1 : 0
             logger.midi(`Setting invert for env ${envId} to ${invert}`)
             cc.send(cfg, cfg.values[invertIndex])
@@ -94,7 +89,7 @@ const resetOnTrigger = (() => {
             if (!shouldSend(source)) {
                 return
             }
-            selectEnv(envId)
+            envSelect.send(source, envId)
             const resetIndex = resetOnTrigger ? 1 : 0
             logger.midi(`Setting reset on trigger for env ${envId} to ${resetOnTrigger}`)
             cc.send(cfg, cfg.values[resetIndex])
@@ -116,7 +111,7 @@ const releaseMode = (() => {
             if (!shouldSend(source)) {
                 return
             }
-            selectEnv(envId)
+            envSelect.send(source, envId)
             logger.midi(`Setting release mode for env ${envId} to ${releaseMode}`)
             cc.send(cfg, cfg.values[releaseMode])
         },
@@ -137,7 +132,7 @@ const loopMode = (() => {
             if (!shouldSend(source)) {
                 return
             }
-            selectEnv(envId)
+            envSelect.send(source, envId)
             logger.midi(`Setting loop mode for env ${envId} to ${loopMode}`)
             cc.send(cfg, cfg.values[loopMode])
         },
@@ -158,7 +153,7 @@ const loopEnabled = (() => {
             if (!shouldSend(source)) {
                 return
             }
-            selectEnv(envId)
+            envSelect.send(source, envId)
             const loopEnabledIndex = enabled ? 1 : 0
             logger.midi(`Changing loop enabled for env ${envId} to ${enabled}`)
             cc.send(cfg, cfg.values[loopEnabledIndex])
@@ -180,7 +175,7 @@ const stageEnabled = (() => {
             if (!shouldSend(source)) {
                 return
             }
-            selectEnv(envId)
+            envSelect.send(source, envId)
             const enableBit = enabled ? 0b1000 : 0
             const data = stageId | enableBit
             logger.midi(`Changing enable for env ${envId} stage ${stageId} to ${enabled}`)
@@ -204,7 +199,7 @@ const curve = (() => {
             if (!shouldSend(source)) {
                 return
             }
-            selectEnv(envId)
+            envSelect.send(source, envId)
             logger.midi(`Setting curve for env ${envId} stage ${stageId} to ${curve}`)
             nrpn.send(cfg, (stageId << 7) + curve)
         },
@@ -227,7 +222,7 @@ const maxLoops = (() => {
                 return
             }
             logger.midi(`Setting max loops for ${envId} to ${maxLoops}`)
-            selectEnv(envId)
+            envSelect.send(source, envId)
             cc.send(cfg, maxLoops)
         },
         receive: () => {
@@ -238,7 +233,7 @@ const maxLoops = (() => {
     }
 })()
 
-const env3Id = (() => {
+const env3Select = (() => {
     const cfg = controllers.ENV.SELECT_ENV3_ID
 
     return {
@@ -257,6 +252,29 @@ const env3Id = (() => {
     }
 })()
 
+const envSelect = (() => {
+    const cfg = controllers.ENV.SELECT
+    
+    return {
+        send: (source: ApiSource, id: number) => {
+            if (id !== currentEnvId) {
+                currentEnvId = id
+            }
+            if (!shouldSend(source)) {
+                return
+            }
+            logger.midi(`Setting env id to ${id}`)
+            cc.send(cfg, id)
+        },
+        receive: () => {
+            cc.subscribe((id: number) => {
+                currentEnvId = id;
+                envApi.setCurrentEnv(id, ApiSource.MIDI)
+            }, cfg)
+        }
+    }
+})()
+
 const trigger = (() => {
     const cfg = controllers.ENV.TRIGGER
 
@@ -266,7 +284,7 @@ const trigger = (() => {
                 return
             }
             logger.midi(`Env trigger for ${envId}`)
-            selectEnv(envId)
+            envSelect.send(source, envId)
             cc.send(cfg, cfg.values[0])
         },
     }
@@ -280,7 +298,7 @@ const release = (() => {
             if (!shouldSend(source)) {
                 return
             }
-            selectEnv(envId)
+            envSelect.send(source, envId)
             logger.midi(`Env release for ${envId}`)
             cc.send(cfg, cfg.values[0])
         },
@@ -298,7 +316,8 @@ const initReceive = () => {
     maxLoops.receive()
     stageEnabled.receive()
     curve.receive()
-    env3Id.receive()
+    env3Select.receive()
+    envSelect.receive()
 }
 
 const envMidiApi = {
@@ -314,7 +333,7 @@ const envMidiApi = {
     setCurve: curve.send,
     trigger: trigger.send,
     release: release.send,
-    setEnv3Id: env3Id.send,
+    setEnv3Id: env3Select.send,
     initReceive,
 }
 
