@@ -1,0 +1,18 @@
+export enum OscControllerIds {
+    DCO1_NOTE,
+    DCO1_WAVEFORM,
+    DCO1_SUB1,
+    DCO1_SUB2,
+    DCO1_PW,
+    DCO2_NOTE,
+    DCO2_DETUNE,
+    DCO2_WAVEFORM,
+    DCO2_SUB1,
+    DCO2_SUB2,
+    DCO2_PW,
+    VCO_NOTE,
+    VCO_DETUNE,
+    VCO_WAVEFORM,
+    VCO_CROSSMOD,
+    VCO_PW,
+}

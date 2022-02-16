@@ -1,5 +1,9 @@
-import synthcoreEnvApi from './modules/env/envApi'
-import synthcoreMainDisplayApi from './modules/mainDisplay/mainDisplayApi'
+import envApi from './modules/env/envApi'
+import oscApi from './modules/osc/oscApi'
+import mainDisplayApi from './modules/mainDisplay/mainDisplayApi'
 
-export const envApi = synthcoreEnvApi
-export const mainDisplayApi = synthcoreMainDisplayApi
+export {
+    envApi,
+    oscApi,
+    mainDisplayApi,
+}

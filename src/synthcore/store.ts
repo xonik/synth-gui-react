@@ -5,10 +5,12 @@ import uiReducer from './modules/ui/uiReducer'
 import settingsReducer from './modules/settings/settingsReducer'
 import mainDisplayReducer from './modules/mainDisplay/mainDisplayReducer'
 import modsReducer from './modules/mods/modsReducer'
+import oscReducer from './modules/osc/oscReducer'
 
 export const store = configureStore({
     reducer: {
         envelopes: envReducer,
+        osc: oscReducer,
         mods: modsReducer,
         settings: settingsReducer,
         ui: uiReducer,

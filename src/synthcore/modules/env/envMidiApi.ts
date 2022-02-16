@@ -1,3 +1,4 @@
+// If imported directly we get a cyclic dependency. Not sure why it works now.
 import { envApi } from '../../synthcoreApi'
 import { Curve, LoopMode, ReleaseMode } from './types'
 import controllers from '../../../midi/controllers'

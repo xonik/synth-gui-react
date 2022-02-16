@@ -1,7 +1,8 @@
 export enum ControllerGroupIds {
     ENV,
     MODS,
-    MAIN_DISP
+    MAIN_DISP,
+    OSC,
 }
 
 export enum ApiSource {
