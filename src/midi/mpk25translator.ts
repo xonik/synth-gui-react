@@ -57,15 +57,9 @@ export const handleMpk25 = (ccNum: number, midiValue: number): boolean => {
 
     // DCO 2
     else if(ccNum === 12) {
-        // +/- 1 note
-        // TODO: will have rounding errors
-        //int16_t bipolarNote = ((midiValue - 63) * (cvmaps::getSemitoneSpan(1)>>1)) / 64;
-        //ctrl::setParam(paramIO::DST_DCO2_DETUNE, bipolarNote);
+        cc.publish(mapCC.DCO2_DETUNE, midiValue)
     } else if(ccNum === 13) {
-        // +/- 1 oct
-        // TODO: will have rounding errors
-        //int16_t bipolarNote = ((midiValue - 63) * cvmaps::getSemitoneSpan(12)) / 64;
-        //ctrl::setParam(paramIO::DST_DCO2_NOTE, bipolarNote);
+        cc.publish(mapCC.DCO2_NOTE, midiValue)
     } else if(ccNum === 14) {
         cc.publish(mapCC.DCO2_SUB1, midiValue)
     } else if(ccNum === 15) {
