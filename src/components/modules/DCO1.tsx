@@ -32,7 +32,7 @@ const DCO1 = ({ x, y }: Props) => {
 
   return <>
     <Header label="Oscillator 1" x={x} y={topRow - 20} width={100} align="center"/>
-    <RotaryPot32 x={x} y={y} ledMode="single" label="Waveform" position={0.8}
+    <RotaryPot32 x={x} y={y} ledMode="single" label="Waveform"
                  ctrlGroup={ctrlGroup}
                  ctrlId={OscControllerIds.DCO1_WAVEFORM}
                  storePosition={dco1.waveform}
