@@ -12,6 +12,7 @@ import fxReducer from './modules/fx/fxReducer'
 import ringModReducer from './modules/ringMod/ringModReducer'
 import noiseReducer from './modules/noise/noiseReducer'
 import masterClockReducer from './modules/masterClock/masterClockReducer'
+import arpReducer from './modules/arp/arpReducer'
 
 export const store = configureStore({
     reducer: {
@@ -27,6 +28,7 @@ export const store = configureStore({
         ringMod: ringModReducer,
         noise: noiseReducer,
         masterClock: masterClockReducer,
+        arp: arpReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()

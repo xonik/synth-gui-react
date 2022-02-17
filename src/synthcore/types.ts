@@ -9,6 +9,7 @@ export enum ControllerGroupIds {
     RING_MOD,
     NOISE,
     MASTER_CLOCK,
+    ARP,
 }
 
 export enum ApiSource {

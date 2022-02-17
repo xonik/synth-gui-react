@@ -10,6 +10,7 @@ import { fxMiddleware } from './modules/fx/fxMiddleware'
 import { ringModMiddleware } from './modules/ringMod/ringModMiddleware'
 import { noiseMiddleware } from './modules/noise/noiseMiddleware'
 import { masterClockMiddleware } from './modules/masterClock/masterClockMiddleware'
+import { arpMiddleware } from './modules/arp/arpMiddleware'
 
 export const synthcoreMiddleware: Middleware<{}, any> = storeAPI => next => action => {
     if (action.payload.ctrlGroup === ControllerGroupIds.ENV || action.type.indexOf('envelopes/') > -1) {
@@ -30,6 +31,8 @@ export const synthcoreMiddleware: Middleware<{}, any> = storeAPI => next => acti
         noiseMiddleware(action)
     } else if (action.payload.ctrlGroup === ControllerGroupIds.MASTER_CLOCK || action.type.indexOf('masterClock/') > -1) {
         masterClockMiddleware(action)
+    } else if (action.payload.ctrlGroup === ControllerGroupIds.ARP || action.type.indexOf('arp/') > -1) {
+        arpMiddleware(action)
     } else if(action.payload.ctrlGroup === ControllerGroupIds.MAIN_DISP) {
         mainDisplayMiddleware(action)
     }
