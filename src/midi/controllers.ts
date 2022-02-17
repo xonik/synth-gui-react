@@ -13,8 +13,8 @@ import mainDisplayControllers from '../synthcore/modules/mainDisplay/mainDisplay
 import controllersTranspose from './modules/transpose/controllersTranspose'
 import controllersKbd from './modules/kbd/controllersKbd'
 import controllersFilters from './modules/filters/controllersFilters'
-import controllersPostMix from './modules/postMix/controllersPostMix'
-import controllersVoiceOut from './modules/voiceOut/controllersVoiceOut'
+import controllersVoiceMix from './modules/postMix/controllersVoiceMix'
+import controllersVoiceOut from './modules/postMix/controllersVoiceOut'
 import envControllers from '../synthcore/modules/env/envControllers'
 import controllersCommonFx from './modules/commonFx/controllersCommonFx'
 import controllersOut from './modules/out/controllersOut'
@@ -67,9 +67,8 @@ export const controllerGroups = {
     },
     VOICE: {
         label: 'Voice out',
-        VOICE_MIX: controllersPostMix,
+        VOICE_MIX: controllersVoiceMix,
         VOICE_OUT: controllersVoiceOut,
-
     },
     ENV: {
         label: 'Envelopes',
@@ -117,7 +116,7 @@ const controllers = {
     LPF: controllersFilters.LPF,
     FILTERS: controllersFilters.FILTERS,
     SVF: controllersFilters.SVF,
-    VOICE_MIX: controllersPostMix,
+    VOICE_MIX: controllersVoiceMix,
     VOICE_OUT: controllersVoiceOut,
     ENV: envControllers(0), // most cc values are shared so the ones for 0 are used
     DSP1: controllersCommonFx.DSP1,

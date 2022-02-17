@@ -3,7 +3,7 @@ import { FuncProps, ControllerConfigCC } from '../../types'
 import { ControllerIdDst } from '../../controllerIds'
 
 
-interface ControllersPostMix {
+interface ControllersVoiceMix {
     props: FuncProps
     LPF: ControllerConfigCC,
     SVF: ControllerConfigCC,
@@ -11,7 +11,7 @@ interface ControllersPostMix {
     SINE2: ControllerConfigCC,
 }
 
-const controllersPostMix: ControllersPostMix = {
+const controllersVoiceMix: ControllersVoiceMix = {
     props: { label: 'Mix' },
     LPF: {
         id: ControllerIdDst.VOICE_MIX_LPF,
@@ -43,4 +43,4 @@ const controllersPostMix: ControllersPostMix = {
     },
 }
 
-export default controllersPostMix
+export default controllersVoiceMix
