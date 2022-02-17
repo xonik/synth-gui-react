@@ -11,6 +11,7 @@ export enum ControllerGroupIds {
     MASTER_CLOCK,
     ARP,
     KBD,
+    POST_MIX,
 }
 
 export enum ApiSource {

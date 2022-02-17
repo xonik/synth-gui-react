@@ -8,6 +8,7 @@ import noiseApi from './modules/noise/noiseApi'
 import masterClockApi from './modules/masterClock/masterClockApi'
 import arpApi from './modules/arp/arpApi'
 import kbdApi from './modules/kbd/kbdApi'
+import postMixApi from './modules/postMix/postMixApi'
 import mainDisplayApi from './modules/mainDisplay/mainDisplayApi'
 
 export {
@@ -21,5 +22,6 @@ export {
     masterClockApi,
     arpApi,
     kbdApi,
+    postMixApi,
     mainDisplayApi,
 }

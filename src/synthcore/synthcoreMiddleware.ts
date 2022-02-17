@@ -12,6 +12,7 @@ import { noiseMiddleware } from './modules/noise/noiseMiddleware'
 import { masterClockMiddleware } from './modules/masterClock/masterClockMiddleware'
 import { arpMiddleware } from './modules/arp/arpMiddleware'
 import { kbdMiddleware } from './modules/kbd/kbdMiddleware'
+import { postMixMiddleware } from './modules/postMix/postMixMiddleware'
 
 export const synthcoreMiddleware: Middleware<{}, any> = storeAPI => next => action => {
     if (action.payload.ctrlGroup === ControllerGroupIds.ENV || action.type.indexOf('envelopes/') > -1) {
@@ -36,6 +37,8 @@ export const synthcoreMiddleware: Middleware<{}, any> = storeAPI => next => acti
         arpMiddleware(action)
     } else if (action.payload.ctrlGroup === ControllerGroupIds.KBD || action.type.indexOf('kbd/') > -1) {
         kbdMiddleware(action)
+    } else if (action.payload.ctrlGroup === ControllerGroupIds.POST_MIX || action.type.indexOf('postMix/') > -1) {
+        postMixMiddleware(action)
     } else if(action.payload.ctrlGroup === ControllerGroupIds.MAIN_DISP) {
         mainDisplayMiddleware(action)
     }

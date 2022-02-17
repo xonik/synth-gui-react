@@ -14,6 +14,7 @@ import noiseReducer from './modules/noise/noiseReducer'
 import masterClockReducer from './modules/masterClock/masterClockReducer'
 import arpReducer from './modules/arp/arpReducer'
 import kbdReducer from './modules/kbd/kbdReducer'
+import postMixReducer from './modules/postMix/postMixReducer'
 
 export const store = configureStore({
     reducer: {
@@ -31,6 +32,7 @@ export const store = configureStore({
         masterClock: masterClockReducer,
         arp: arpReducer,
         kbd: kbdReducer,
+        postMix: postMixReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()
