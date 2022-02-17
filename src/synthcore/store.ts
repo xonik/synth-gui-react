@@ -6,11 +6,13 @@ import settingsReducer from './modules/settings/settingsReducer'
 import mainDisplayReducer from './modules/mainDisplay/mainDisplayReducer'
 import modsReducer from './modules/mods/modsReducer'
 import oscReducer from './modules/osc/oscReducer'
+import filtersReducer from './modules/filters/filtersReducer'
 
 export const store = configureStore({
     reducer: {
         envelopes: envReducer,
         osc: oscReducer,
+        filters: filtersReducer,
         mods: modsReducer,
         settings: settingsReducer,
         ui: uiReducer,

@@ -1,5 +1,3 @@
-import { ApiSource } from '../../types'
-import { dispatch, getBounded, getQuantized } from '../../utils'
 import {
     setDco1Note,
     setDco1Waveform,
@@ -42,69 +40,9 @@ import {
 } from './oscReducer'
 import { store } from '../../store'
 import oscMidiApi from './oscMidiApi'
-import { AnyAction } from '@reduxjs/toolkit'
 import controllers from '../../../midi/controllers'
-import { ControllerConfigCCWithValue } from '../../../midi/types'
+import { numericPropFuncs, togglePropFuncs } from '../common/commonApi'
 
-type NumericProperty = {
-    selector: () => number
-    action: (payload: NumericPayload) => AnyAction
-    midi: (source: ApiSource, value: number) => void
-}
-
-type TogglableProperty = {
-    config: ControllerConfigCCWithValue,
-    selector: () => number
-    action: (payload: NumericPayload) => AnyAction
-    midi: (source: ApiSource, value: number) => void
-}
-
-const numericPropFuncs = (property: NumericProperty) => {
-    const set = (value: number, source: ApiSource) => {
-        const boundedValue = getQuantized(getBounded(value))
-        const currentValue = property.selector()
-
-        if (boundedValue === currentValue) {
-            return
-        }
-
-        dispatch(property.action({ value: boundedValue }))
-        property.midi(source, boundedValue)
-    }
-
-    const increment = (inc: number, source: ApiSource) => {
-        const currentValue = property.selector()
-        set(currentValue + inc, source)
-    }
-
-    return {
-        set,
-        increment
-    }
-}
-
-const togglePropFuncs = (property: TogglableProperty) => {
-    const set = (value: number, source: ApiSource) => {
-        const currentValue = property.selector()
-        if (value === currentValue) {
-            return
-        }
-        const boundedValue = getBounded(value, 0, property.config.values.length - 1)
-
-        dispatch(property.action({ value: boundedValue }))
-        property.midi(source, boundedValue)
-    }
-
-    const toggle = (source: ApiSource) => {
-        const currentValue = property.selector()
-        set((currentValue + 1) % property.config.values.length, source)
-    }
-
-    return {
-        set,
-        toggle
-    }
-}
 
 const dco1Note = numericPropFuncs({
     selector: () => selectDco1(store.getState()).note,

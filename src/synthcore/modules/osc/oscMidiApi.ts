@@ -1,56 +1,9 @@
 import controllers from '../../../midi/controllers'
 import { ApiSource } from '../../types'
-import { shouldSend } from '../../../midi/utils'
-import logger from '../../../utils/logger'
-import { cc } from '../../../midi/midibus'
 
 // If imported directly we get a cyclic dependency. Not sure why it works now.
 import { oscApi } from '../../synthcoreApi'
-import { ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
-
-
-const numericParamSend = (
-    source: ApiSource,
-    value: number,
-    cfg: ControllerConfigCC,
-) => {
-    if (!shouldSend(source)) {
-        return
-    }
-    logger.midi(`Setting value for ${cfg.label} to ${value}`)
-    cc.send(cfg, Math.floor(127 * value))
-}
-
-const numericParamReceive = (
-    cfg: ControllerConfigCC,
-    apiSetValue: (value: number, source: ApiSource) => void
-) => {
-    cc.subscribe((value: number) => {
-        apiSetValue(value, ApiSource.MIDI)
-    }, cfg)
-}
-
-const toggleParamSend = (
-    source: ApiSource,
-    value: number,
-    cfg: ControllerConfigCCWithValue,
-) => {
-    if (!shouldSend(source)) {
-        return
-    }
-    logger.midi(`Setting value for ${cfg.label} to ${value}`)
-    cc.send(cfg, cfg.values[value])
-}
-
-const toggleParamReceive = (
-    cfg: ControllerConfigCCWithValue,
-    apiSetValue: (value: number, source: ApiSource) => void
-) => {
-    cc.subscribe((midiValue: number) => {
-        const value = cfg.values.indexOf(midiValue) || 0
-        apiSetValue(value, ApiSource.MIDI)
-    }, cfg)
-}
+import { numericParamReceive, numericParamSend, toggleParamReceive, toggleParamSend } from '../common/commonMidiApi'
 
 // DCO 1
 const dco1Note = (() => {
