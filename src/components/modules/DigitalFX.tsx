@@ -3,13 +3,17 @@ import RotaryPotWOLeds10 from '../pots/RotaryPotWOLeds10';
 import Display from '../misc/Display';
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
-import midiConstants from '../../midi/controllers'
+import { useAppSelector } from '../../synthcore/hooks'
+import { selectDsp1, selectDsp2 } from '../../synthcore/modules/commonFx/commonFxReducer'
+import { ControllerGroupIds } from '../../synthcore/types'
+import { CommonFxControllerIds } from '../../synthcore/modules/commonFx/types'
 
 interface Props {
   x: number,
   y: number
 }
 
+const ctrlGroup = ControllerGroupIds.COMMON_FX
 
 const DigitalFX = ({ x, y }: Props) => {
 
@@ -37,23 +41,70 @@ const DigitalFX = ({ x, y }: Props) => {
   const col4 = displayX + displayWidth / 2 + knobSpacing;
   const col5 = displayX + displayWidth + 15
 
-  return <>
-    <RoundPushButton8 x={col1} y={row2left} label="Source" ledCount={2} ledLabels={['FX1', 'FX1']} labelPosition="bottom" ledPosition="top" midiConfig={midiConstants.DSP1.SOURCE}/>
-    <RoundPushButton8 x={col1} y={row3left} label="Source" ledCount={2} ledLabels={['FX2', 'FX2']} labelPosition="top" ledPosition="bottom" midiConfig={midiConstants.DSP2.SOURCE}/>
+  const dsp1 = useAppSelector(selectDsp1)
+  const dsp2 = useAppSelector(selectDsp2)
 
-    <RotaryPotWOLeds10 x={col2} y={row1} midiConfig={midiConstants.DSP1.PARAM1}/>
-    <RotaryPotWOLeds10 x={col3} y={row1} midiConfig={midiConstants.DSP1.PARAM2}/>
-    <RotaryPotWOLeds10 x={col4} y={row1} midiConfig={midiConstants.DSP1.PARAM3}/>
+  return <>
+    <RoundPushButton8 x={col1} y={row2left} label="Source" ledCount={2} ledLabels={['FX1', 'FX2']} labelPosition="bottom" ledPosition="top"
+                      ctrlGroup={ctrlGroup}
+                      ctrlId={CommonFxControllerIds.DSP1_SOURCE}
+                      storeValue={dsp1.source}
+    />
+
+    <RoundPushButton8 x={col1} y={row3left} label="Source" ledCount={2} ledLabels={['FX1', 'FX2']} labelPosition="top" ledPosition="bottom"
+                      ctrlGroup={ctrlGroup}
+                      ctrlId={CommonFxControllerIds.DSP2_SOURCE}
+                      storeValue={dsp2.source}
+    />
+
+    <RotaryPotWOLeds10 x={col2} y={row1}
+                       ctrlGroup={ctrlGroup}
+                       ctrlId={CommonFxControllerIds.DSP1_PARAM1}
+    />
+
+    <RotaryPotWOLeds10 x={col3} y={row1}
+                       ctrlGroup={ctrlGroup}
+                       ctrlId={CommonFxControllerIds.DSP1_PARAM2}
+    />
+
+    <RotaryPotWOLeds10 x={col4} y={row1}
+                       ctrlGroup={ctrlGroup}
+                       ctrlId={CommonFxControllerIds.DSP1_PARAM3}
+    />
 
     <Display x={displayX} y={displayY} width={displayWidth} height={displayHeight}/>
 
-    <RotaryPotWOLeds10 x={col2} y={row4} midiConfig={midiConstants.DSP2.PARAM1}/>
-    <RotaryPotWOLeds10 x={col3} y={row4} midiConfig={midiConstants.DSP2.PARAM2}/>
-    <RotaryPotWOLeds10 x={col4} y={row4} midiConfig={midiConstants.DSP2.PARAM3}/>
+    <RotaryPotWOLeds10 x={col2} y={row4}
+                       ctrlGroup={ctrlGroup}
+                       ctrlId={CommonFxControllerIds.DSP2_PARAM1}
+    />
 
-    <RotaryPotWOLeds10 x={col5} y={row1right} label="Effect" midiConfig={midiConstants.DSP1.EFFECT}/>
-    <RoundLedPushButton8 x={col5} y={displayCenterY} label="Chain" labelPosition="bottom" midiConfig={midiConstants.DSP2.CHAIN}/>
-    <RotaryPotWOLeds10 x={col5} y={row4right} label="Effect" midiConfig={midiConstants.DSP2.EFFECT}/>
+    <RotaryPotWOLeds10 x={col3} y={row4}
+                       ctrlGroup={ctrlGroup}
+                       ctrlId={CommonFxControllerIds.DSP2_PARAM2}
+    />
+
+    <RotaryPotWOLeds10 x={col4} y={row4}
+                       ctrlGroup={ctrlGroup}
+                       ctrlId={CommonFxControllerIds.DSP2_PARAM3}
+    />
+
+    <RotaryPotWOLeds10 x={col5} y={row1right} label="Effect"
+                       ctrlGroup={ctrlGroup}
+                       ctrlId={CommonFxControllerIds.DSP1_EFFECT}
+    />
+
+    <RoundLedPushButton8 x={col5} y={displayCenterY} label="Chain" labelPosition="bottom"
+                         ctrlGroup={ctrlGroup}
+                         ctrlId={CommonFxControllerIds.DSP2_CHAIN}
+                         storeValue={dsp2.chain}
+    />
+
+    <RotaryPotWOLeds10 x={col5} y={row4right} label="Effect"
+                       ctrlGroup={ctrlGroup}
+                       ctrlId={CommonFxControllerIds.DSP2_EFFECT}
+    />
+
   </>;
 };
 

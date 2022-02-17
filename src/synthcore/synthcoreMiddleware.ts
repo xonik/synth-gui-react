@@ -13,6 +13,8 @@ import { masterClockMiddleware } from './modules/masterClock/masterClockMiddlewa
 import { arpMiddleware } from './modules/arp/arpMiddleware'
 import { kbdMiddleware } from './modules/kbd/kbdMiddleware'
 import { postMixMiddleware } from './modules/postMix/postMixMiddleware'
+import { commonFxMiddleware } from './modules/commonFx/commonFxMiddleware'
+import { outMiddleware } from './modules/out/outMiddleware'
 
 export const synthcoreMiddleware: Middleware<{}, any> = storeAPI => next => action => {
     if (action.payload.ctrlGroup === ControllerGroupIds.ENV || action.type.indexOf('envelopes/') > -1) {
@@ -39,6 +41,10 @@ export const synthcoreMiddleware: Middleware<{}, any> = storeAPI => next => acti
         kbdMiddleware(action)
     } else if (action.payload.ctrlGroup === ControllerGroupIds.POST_MIX || action.type.indexOf('postMix/') > -1) {
         postMixMiddleware(action)
+    } else if (action.payload.ctrlGroup === ControllerGroupIds.COMMON_FX || action.type.indexOf('commonFx/') > -1) {
+        commonFxMiddleware(action)
+    } else if (action.payload.ctrlGroup === ControllerGroupIds.OUT || action.type.indexOf('out/') > -1) {
+        outMiddleware(action)
     } else if(action.payload.ctrlGroup === ControllerGroupIds.MAIN_DISP) {
         mainDisplayMiddleware(action)
     }

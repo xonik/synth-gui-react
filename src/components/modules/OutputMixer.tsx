@@ -1,50 +1,100 @@
-import React from 'react';
-import RotaryPot17 from '../pots/RotaryPot17';
-import Header from '../misc/Header';
-import { PotMode } from '../pots/RotaryPotWithLedRingBase';
-import midiConstants from '../../midi/controllers'
-import { ControllerConfigCC } from '../../midi/types'
+import React from 'react'
+import RotaryPot17 from '../pots/RotaryPot17'
+import Header from '../misc/Header'
+import { PotMode } from '../pots/RotaryPotWithLedRingBase'
+import { ControllerGroupIds } from '../../synthcore/types'
+import { useAppSelector } from '../../synthcore/hooks'
+import { selectMix } from '../../synthcore/modules/commonFx/commonFxReducer'
+import { selectOut } from '../../synthcore/modules/out/outReducer'
+import { CommonFxControllerIds } from '../../synthcore/modules/commonFx/types'
+import { OutControllerIds } from '../../synthcore/modules/out/types'
 
 interface Props {
-  x: number,
-  y: number
+    x: number,
+    y: number
 }
 
 interface ChannelProps {
-  label: string,
-  potMode?: PotMode,
-  x: number,
-  y: number,
-  midiConfig: ControllerConfigCC,
+    label: string,
+    potMode?: PotMode,
+    x: number,
+    y: number,
+    ctrlGroup: number,
+    ctrlId: number,
+    storePosition: number,
 }
 
-const rowDistance = 40;
-const colDistance = 40;
+const rowDistance = 40
+const colDistance = 40
 
-const OutputMixerChannel = ({ x, y, label, potMode="normal", midiConfig }: ChannelProps) => {
-  return <>
-    <RotaryPot17 ledMode="multi" label={label} x={x} y={y} position={0.4} potMode={potMode} midiConfig={midiConfig}/>
-  </>;
-};
+const OutputMixerChannel = ({ x, y, label, potMode = 'normal', ctrlGroup, ctrlId, storePosition }: ChannelProps) => {
+    return <>
+        <RotaryPot17 ledMode="multi" label={label} x={x} y={y} position={0.4} potMode={potMode}
+                     ctrlGroup={ctrlGroup}
+                     ctrlId={ctrlId}
+                     storePosition={storePosition}
+        />
+    </>
+}
+
+const ctrlGroupFx = ControllerGroupIds.COMMON_FX
+const ctrlGroupOut = ControllerGroupIds.OUT
 
 const OutputMixer = ({ x, y }: Props) => {
-  const offsetX = 20;
-  const offsetX2 = 195;
-  const offsetY = 25;
-  return <svg x={x} y={y}>
-    <Header label="FX mix" x={0} y={ + offsetY + rowDistance * 4 - 27} width={40}/>
-    <OutputMixerChannel x={offsetX} y={offsetY} label="DSP 1" midiConfig={midiConstants.FX_MIX.LEVEL_DSP1}/>
-    <OutputMixerChannel x={offsetX + colDistance} y={offsetY} label="DSP 2" midiConfig={midiConstants.FX_MIX.LEVEL_DSP2}/>
-    <OutputMixerChannel x={offsetX + colDistance * 2} y={offsetY} label="Chorus" midiConfig={midiConstants.FX_MIX.LEVEL_CHORUS}/>
-    <OutputMixerChannel x={offsetX + colDistance * 3} y={offsetY} label="Bit crusher" midiConfig={midiConstants.FX_MIX.LEVEL_BIT_CRUSHER}/>
+    const offsetX = 20
+    const offsetX2 = 195
+    const offsetY = 25
 
-    <OutputMixerChannel x={offsetX2} y={offsetY} potMode="spread" label="Spread" midiConfig={midiConstants.OUTPUT.SPREAD}/>
-    <OutputMixerChannel x={offsetX2 + colDistance} y={offsetY} label="Volume" midiConfig={midiConstants.OUTPUT.VOLUME}/>
-    <OutputMixerChannel x={offsetX2 + colDistance} y={offsetY - 40} label="Headphones" midiConfig={midiConstants.OUTPUT.HEADPHONES}/>
+    const fxMix = useAppSelector(selectMix)
+    const out = useAppSelector(selectOut)
 
-  </svg>;
-};
+    return <svg x={x} y={y}>
+        <Header label="FX mix" x={0} y={+offsetY + rowDistance * 4 - 27} width={40}/>
+        <OutputMixerChannel x={offsetX} y={offsetY} label="DSP 1"
+                            ctrlGroup={ctrlGroupFx}
+                            ctrlId={CommonFxControllerIds.LEVEL_DSP1}
+                            storePosition={fxMix.levelDsp1}
+        />
+
+        <OutputMixerChannel x={offsetX + colDistance} y={offsetY} label="DSP 2"
+                            ctrlGroup={ctrlGroupFx}
+                            ctrlId={CommonFxControllerIds.LEVEL_DSP2}
+                            storePosition={fxMix.levelDsp2}
+        />
+
+        <OutputMixerChannel x={offsetX + colDistance * 2} y={offsetY} label="Chorus"
+                            ctrlGroup={ctrlGroupFx}
+                            ctrlId={CommonFxControllerIds.LEVEL_CHORUS}
+                            storePosition={fxMix.levelChorus}
+        />
+
+        <OutputMixerChannel x={offsetX + colDistance * 3} y={offsetY} label="Bit crusher"
+                            ctrlGroup={ctrlGroupFx}
+                            ctrlId={CommonFxControllerIds.LEVEL_BIT_CRUSHER}
+                            storePosition={fxMix.levelBitCrusher}
+        />
+
+        <OutputMixerChannel x={offsetX2} y={offsetY} potMode="spread" label="Spread"
+                            ctrlGroup={ctrlGroupOut}
+                            ctrlId={OutControllerIds.SPREAD}
+                            storePosition={out.spread}
+        />
+
+        <OutputMixerChannel x={offsetX2 + colDistance} y={offsetY} label="Volume"
+                            ctrlGroup={ctrlGroupOut}
+                            ctrlId={OutControllerIds.VOLUME}
+                            storePosition={out.volume}
+        />
+
+        <OutputMixerChannel x={offsetX2 + colDistance} y={offsetY - 40} label="Headphones"
+                            ctrlGroup={ctrlGroupOut}
+                            ctrlId={OutControllerIds.HEADPHONES}
+                            storePosition={out.headphones}
+        />
 
 
+    </svg>
+}
 
-export default OutputMixer;
+
+export default OutputMixer

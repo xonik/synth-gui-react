@@ -10,6 +10,8 @@ import noiseMidiApi from '../synthcore/modules/noise/noiseMidiApi'
 import masterClockMidiApi from '../synthcore/modules/masterClock/masterClockMidiApi'
 import arpMidiApi from '../synthcore/modules/arp/arpMidiApi'
 import kbdMidiApi from '../synthcore/modules/kbd/kbdMidiApi'
+import commonFxMidiApi from '../synthcore/modules/commonFx/commonFxMidiApi'
+import outMidiApi from '../synthcore/modules/out/outMidiApi'
 
 const initReceive = () => {
     envMidiApi.initReceive()
@@ -24,6 +26,8 @@ const initReceive = () => {
     masterClockMidiApi.initReceive()
     arpMidiApi.initReceive()
     kbdMidiApi.initReceive()
+    commonFxMidiApi.initReceive()
+    outMidiApi.initReceive()
 }
 
 const midiApi = {
@@ -40,6 +44,8 @@ const midiApi = {
     masterClock: masterClockMidiApi,
     arp: arpMidiApi,
     kbd: kbdMidiApi,
+    commonFx: commonFxMidiApi,
+    out: outMidiApi,
 }
 
 export default midiApi

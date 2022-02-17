@@ -12,6 +12,8 @@ export enum ControllerGroupIds {
     ARP,
     KBD,
     POST_MIX,
+    COMMON_FX,
+    OUT
 }
 
 export enum ApiSource {

@@ -15,6 +15,8 @@ import masterClockReducer from './modules/masterClock/masterClockReducer'
 import arpReducer from './modules/arp/arpReducer'
 import kbdReducer from './modules/kbd/kbdReducer'
 import postMixReducer from './modules/postMix/postMixReducer'
+import commonFxReducer from './modules/commonFx/commonFxReducer'
+import outReducer from './modules/out/outReducer'
 
 export const store = configureStore({
     reducer: {
@@ -33,6 +35,8 @@ export const store = configureStore({
         arp: arpReducer,
         kbd: kbdReducer,
         postMix: postMixReducer,
+        commonFx: commonFxReducer,
+        out: outReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()
