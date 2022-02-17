@@ -8,7 +8,7 @@ const getNprnStageTime = (stageId: number, midiTime: number) => {
 }
 
 const getNprnStageLevel = (stageId: number, midiLevel: number) => {
-    return (stageId << 16) + (midiLevel << 9);
+    return (stageId << 16) + Math.floor(midiLevel * 512)
 }
 
 export const handleMpk25 = (ccNum: number, midiValue: number): boolean => {
@@ -36,7 +36,9 @@ export const handleMpk25 = (ccNum: number, midiValue: number): boolean => {
     } else if(ccNum === 24) {
         // sustain
         cc.publish(mapCC.ENV_SELECT_ENV, 0)
-        nrpn.publish(mapNRPN.ENV_LEVEL, getNprnStageLevel(StageId.SUSTAIN, midiValue))
+
+        // TODO: This is a hack to make pot use full range for VCA env
+        nrpn.publish(mapNRPN.ENV_LEVEL, getNprnStageLevel(StageId.SUSTAIN, (midiValue / 2) + 64 ))
     } else if(ccNum === 25) {
         // release
         cc.publish(mapCC.ENV_SELECT_ENV, 0)

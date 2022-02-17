@@ -165,7 +165,11 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
         if(disabled) return;
 
         if(ctrlId !== undefined && ctrlGroup !== undefined) {
-            dispatch(increment({ ctrlGroup, ctrlId, value: steps * stepSize, ctrlIndex }))
+            // When panning, we cover a -1 to 1 range instead of 0 to 1.
+            // To keep the line in sync with how much the pot has been
+            // turned we have to make increments twice as big.
+            const value = potMode === 'pan' ? steps * (stepSize * 2) : steps * stepSize
+            dispatch(increment({ ctrlGroup, ctrlId, value, ctrlIndex }))
         }
     }, [disabled, ctrlGroup, ctrlId, ctrlIndex, dispatch])
 

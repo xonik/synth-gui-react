@@ -9,5 +9,9 @@ Possible race condition in midi vs panel setting of currentEnvId? We need to sep
 currently selected envelope through midi and what is selected on screen. no need to
 store current env in envMidiApi.
 
+Envs:
+- Selectable polarity?
+- Block invert on envelope 1
+- Loop counter should be actual number of times env plays.
 MPK25: env level is always full range so half the pot doesn't work when changing 
 level on a unipolar envelope, 

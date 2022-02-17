@@ -29,6 +29,11 @@ const level = (() => {
             nrpn.subscribe((value: number) => {
                 const level = value & 0xFFFF
                 const stageId = value >> 16
+
+                // NB: stage level is always in the range -32767, 32767 even if env is unipolar, meaning
+                // half the range is not used for unipolar envelopes. If value is directly mapped to a pot
+                // the pot will have no effect for the first 50% of the travel, starting at 0 straight up
+                // (for unipolar)
                 envApi.setStageLevel(currentEnvId, stageId, (level - 32767) / 32767 , ApiSource.MIDI)
             }, cfg)
         }

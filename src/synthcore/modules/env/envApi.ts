@@ -37,7 +37,6 @@ const updateReleaseLevels = (env: Envelope, value: number) => {
 
 const cannotDisableStage = (stage: StageId) => stage === StageId.ATTACK || stage === StageId.RELEASE2 || stage === StageId.SUSTAIN
 
-// requestedValue is always 0-1 while store value is -1 to 1 if bipolar
 const setStageLevel = (envId: number, stageId: StageId, requestedValue: number, source: ApiSource) => {
     const env = selectEnvelopes(store.getState()).envs[envId]
     const r1enabled = env.stages[StageId.RELEASE1].enabled
@@ -46,11 +45,12 @@ const setStageLevel = (envId: number, stageId: StageId, requestedValue: number, 
         stageId === StageId.SUSTAIN ||
         (stageId === StageId.RELEASE2 && r1enabled)
     ) {
-        const boundedValue = getQuantized(getBounded(requestedValue), 32767)
-        const value = env.bipolar ? boundedValue * 2 - 1 : boundedValue
+        const boundedValue = env.bipolar
+            ? getQuantized(getBounded(requestedValue, -1, 1), 32767)
+            : getQuantized(getBounded(requestedValue), 32767)
 
         const currentLevel = env.stages[stageId].level
-        if(value === currentLevel){
+        if(boundedValue === currentLevel){
             return
         }
 
@@ -58,13 +58,13 @@ const setStageLevel = (envId: number, stageId: StageId, requestedValue: number, 
         // r1 is enabled or not.
         if (stageId === StageId.SUSTAIN) {
             const stage2Id = r1enabled ? StageId.RELEASE1 : StageId.RELEASE2
-            dispatch(setDualLevels({ env: env.id, stage1: StageId.SUSTAIN, stage2: stage2Id, value }))
+            dispatch(setDualLevels({ env: env.id, stage1: StageId.SUSTAIN, stage2: stage2Id, value: boundedValue }))
         } else {
-            dispatch(setLevel({ env: envId, stage: stageId, value }))
+            dispatch(setLevel({ env: envId, stage: stageId, value: boundedValue }))
         }
 
         if (stageId === StageId.SUSTAIN) {
-            updateReleaseLevels(env, value)
+            updateReleaseLevels(env, boundedValue)
         }
 
         midiApi.setLevel(source, envId, stageId, boundedValue)
@@ -72,11 +72,7 @@ const setStageLevel = (envId: number, stageId: StageId, requestedValue: number, 
 }
 
 const incrementStageLevel = (envId: number, stageId: StageId, incLevel: number, source: ApiSource) => {
-    const env = selectEnvelopes(store.getState()).envs[envId]
-    let currentLevel = selectEnvelope(envId)(store.getState()).stages[stageId].level
-    if (env.bipolar) {
-        currentLevel = (currentLevel + 1) / 2
-    }
+    const currentLevel = selectEnvelope(envId)(store.getState()).stages[stageId].level
     setStageLevel(envId, stageId, currentLevel + incLevel, source)
 }
 
