@@ -8,6 +8,7 @@ import { filtersMiddleware } from './modules/filters/filtersMiddleware'
 import { srcMixMiddleware } from './modules/srcMix/srcMixMiddleware'
 import { fxMiddleware } from './modules/fx/fxMiddleware'
 import { ringModMiddleware } from './modules/ringMod/ringModMiddleware'
+import { noiseMiddleware } from './modules/noise/noiseMiddleware'
 
 export const synthcoreMiddleware: Middleware<{}, any> = storeAPI => next => action => {
     if (action.payload.ctrlGroup === ControllerGroupIds.ENV || action.type.indexOf('envelopes/') > -1) {
@@ -24,6 +25,8 @@ export const synthcoreMiddleware: Middleware<{}, any> = storeAPI => next => acti
         fxMiddleware(action)
     } else if (action.payload.ctrlGroup === ControllerGroupIds.RING_MOD || action.type.indexOf('ringMod/') > -1) {
         ringModMiddleware(action)
+    } else if (action.payload.ctrlGroup === ControllerGroupIds.NOISE || action.type.indexOf('noise/') > -1) {
+        noiseMiddleware(action)
     } else if(action.payload.ctrlGroup === ControllerGroupIds.MAIN_DISP) {
         mainDisplayMiddleware(action)
     }

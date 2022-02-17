@@ -4,6 +4,7 @@ import filtersApi from './modules/filters/filtersApi'
 import srcMixApi from './modules/srcMix/srcMixApi'
 import fxApi from './modules/fx/fxApi'
 import ringModApi from './modules/ringMod/ringModApi'
+import noiseApi from './modules/noise/noiseApi'
 import mainDisplayApi from './modules/mainDisplay/mainDisplayApi'
 
 export {
@@ -13,5 +14,6 @@ export {
     srcMixApi,
     fxApi,
     ringModApi,
+    noiseApi,
     mainDisplayApi,
 }

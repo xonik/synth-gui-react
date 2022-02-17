@@ -1,0 +1,3 @@
+export enum NoiseControllerIds {
+    COLOUR
+}
