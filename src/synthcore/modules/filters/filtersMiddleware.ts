@@ -30,6 +30,7 @@ const filtersApiMapper: FiltersApiMapperType = {
     [FiltersControllerIds.SVF_ENV_AMT]: (value: number) => filtersApi.incrementSvfEnvAmt(value, ApiSource.UI),
     [FiltersControllerIds.SVF_LFO_AMT]: (value: number) => filtersApi.incrementSvfLfoAmt(value, ApiSource.UI),
     [FiltersControllerIds.SVF_KBD_AMT]: (value: number) => filtersApi.incrementSvfKbdAmt(value, ApiSource.UI),
+    [FiltersControllerIds.SVF_SLOPE]: (value: number) => filtersApi.incrementSvfSlope(value, ApiSource.UI),
 }
 
 const filtersApiClickMapper: FiltersApiClickMapperType = {
@@ -42,7 +43,6 @@ const filtersApiClickMapper: FiltersApiClickMapperType = {
 
     [FiltersControllerIds.SVF_EXT_CV]: () => filtersApi.toggleSvfExtCv(ApiSource.UI),
     [FiltersControllerIds.SVF_WHEEL]: () => filtersApi.toggleSvfWheel(ApiSource.UI),
-    [FiltersControllerIds.SVF_SLOPE]: () => filtersApi.toggleSvfSlope(ApiSource.UI),
 }
 
 

@@ -5,7 +5,7 @@ import RotaryPotBase from '../pots/RotaryPotBase'
 import { cc } from '../../midi/midibus'
 import { ControllerConfigCC } from '../../midi/types'
 import { ControllerGroupIds } from '../../synthcore/types'
-import { click, release } from '../../synthcore/modules/ui/uiReducer'
+import { click, increment, release } from '../../synthcore/modules/ui/uiReducer'
 import { dispatch } from '../../synthcore/utils'
 import './RoundButton.scss'
 
@@ -66,6 +66,9 @@ export interface Props {
     ctrlId?: number;
     ctrlIndex?: number;
     storeValue?: number;
+
+    // Only used if rotary button
+    resolution?: number;
 }
 
 type LabelPos = {
@@ -128,7 +131,8 @@ const positionLeds = (
     ledPosition: LedPosition,
     ledMargin: number,
     ledToLedMargin: number,
-    ledTolabelMargin: number
+    ledTolabelMargin: number,
+    buttonMode: ButtonMode,
 ): LedPos[] => {
     if (ledCount === 0) {
         return []
@@ -153,11 +157,14 @@ const positionLeds = (
             }
         }
 
+        // left column should start at the bottom if we have a rotational button.
+        const directionMultiplier = buttonMode === 'push' ? 1 : -1;
+
         switch (adjustedPosition) {
             case 'left':
                 ledPositions.push({
                     x: -(buttonRadius + ledMargin + 2 + ledRadius),
-                    y: (adjustedI - (adjustedLedCount - 1) / 2) * yDist,
+                    y: directionMultiplier * (adjustedI - (adjustedLedCount - 1) / 2) * yDist,
                     labelX: -(buttonRadius + ledMargin + 2 + ledTolabelMargin + 2 * ledRadius),
                     textAnchor: 'end'
                 })
@@ -210,7 +217,7 @@ const getRenderProps = (props: Props & Config): RenderProps => {
         ledRadius,
         buttonRadius,
         labelPos: positionLabel(buttonRadius, labelPosition, labelMargin),
-        ledPos: positionLeds(buttonRadius, ledRadius, ledCount, ledPosition, ledMargin, ledToLedMargin, ledTolabelMargin),
+        ledPos: positionLeds(buttonRadius, ledRadius, ledCount, ledPosition, ledMargin, ledToLedMargin, ledTolabelMargin, props.buttonMode),
         ledLabels: props.ledLabels || [],
         buttonMode: props.buttonMode,
     }
@@ -220,7 +227,7 @@ export const RoundButtonBase = (props: Props & Config) => {
 
     const { x, y, label, midiConfig, radioButtonIndex,
         hasOff, ledCount, ledButton, onUpdate, reverse, loop = true, defaultValueIndex, onClick,
-        ctrlGroup, ctrlId, ctrlIndex, storeValue
+        ctrlGroup, ctrlId, ctrlIndex, storeValue, resolution
     } = props
 
     const [stateValue, setStateValue] = useState(defaultValueIndex || 0);
@@ -232,6 +239,12 @@ export const RoundButtonBase = (props: Props & Config) => {
     const radioButtonValueIndex = hasOff ? (radioButtonIndex || 0) + 1 : radioButtonIndex || 0;
     const hasOffValue = hasOff || (ledButton && ledCount === undefined)
     const ledOnIndex = hasOffValue ? currentValue - 1 : currentValue;
+
+    const onIncrement = useCallback((steps: number, stepSize: number) => {
+        if(ctrlId !== undefined && ctrlGroup !== undefined) {
+            dispatch(increment({ ctrlGroup, ctrlId, value: steps }))
+        }
+    }, [ctrlGroup, ctrlId])
 
     const handleOnClick = useCallback(() => {
         if(onClick) onClick();
@@ -340,7 +353,11 @@ export const RoundButtonBase = (props: Props & Config) => {
                                        onClick={handleOnClick}
                                        onRelease={handleOnRelease}
                                        className={classNames('button-cap', { 'button-cap-led': ledButton, 'button-cap-led__on': ledButton && ledOn.length > 0 && ledOn[0] })}/>
-                : <RotaryPotBase onClick={handleOnClick} knobRadius={buttonRadius}/>
+                : <RotaryPotBase
+                    onIncrement={onIncrement}
+                    knobRadius={buttonRadius}
+                    resolution={resolution}
+                />
             }
             {label && <text
               x={labelPos.x}

@@ -109,6 +109,7 @@ const StateVariableFilter = ({ x, y }: Props) => {
                                  '12dB LP', '24dB LP', '12dB BP', '24dB BP', 'LP + BP',
                                  '12dB HP', '24dB HP', 'HP + BP', 'Notch', 'Notch + LP'
                              ]}
+                             resolution={10}
                              ctrlGroup={ctrlGroup}
                              ctrlId={FiltersControllerIds.SVF_SLOPE}
                              storeValue={svf.slope}

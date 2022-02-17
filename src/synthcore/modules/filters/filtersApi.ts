@@ -35,6 +35,8 @@ import { store } from '../../store'
 import filtersMidiApi from './filtersMidiApi'
 import controllers from '../../../midi/controllers'
 import { numericPropFuncs, togglePropFuncs } from '../common/commonApi'
+import { ApiSource } from '../../types'
+import { dispatch, getBounded, getQuantized } from '../../utils'
 
 
 const lpfInput = numericPropFuncs({
@@ -163,12 +165,28 @@ const svfWheel = togglePropFuncs({
     action: setSvfWheel,
     midi: filtersMidiApi.setSvfWheel,
 })
-const svfSlope = togglePropFuncs({
-    config: controllers.SVF.SLOPE,
-    selector: () => selectSvf(store.getState()).slope,
-    action: setSvfSlope,
-    midi: filtersMidiApi.setSvfSlope,
-})
+
+const setSvfSlopeFunc = (value: number, source: ApiSource) => {
+    const boundedValue = getQuantized(getBounded(value, 0, controllers.SVF.SLOPE.values.length))
+    const currentValue = selectSvf(store.getState()).slope
+
+    if (boundedValue === currentValue) {
+        return
+    }
+
+    dispatch(setSvfSlope({ value: boundedValue }))
+    filtersMidiApi.setSvfSlope(source, boundedValue)
+}
+
+const incrementSvfSlope = (inc: number, source: ApiSource) => {
+    const currentValue = selectSvf(store.getState()).slope
+
+    // Javascript % is so fucked up - it may return negative values so we need
+    // to add a full "rotation" to guarantee that the nextValue is positive
+    const valuesPerRotation = controllers.SVF.SLOPE.values.length
+    const nextValue = (currentValue + inc + valuesPerRotation) % valuesPerRotation
+    setSvfSlopeFunc(nextValue, source)
+}
 
 const filtersApi = {
     setLpfInput: lpfInput.set,
@@ -198,7 +216,7 @@ const filtersApi = {
     setSvfKbdAmt: svfKbdAmt.set,
     setSvfExtCv: svfExtCv.set,
     setSvfWheel: svfWheel.set,
-    setSvfSlope: svfSlope.set,
+    setSvfSlope: setSvfSlopeFunc,
 
     incrementLpfInput: lpfInput.increment,
     incrementLpfDrive: lpfDrive.increment,
@@ -217,6 +235,7 @@ const filtersApi = {
     incrementSvfEnvAmt: svfEnvAmt.increment,
     incrementSvfLfoAmt: svfLfoAmt.increment,
     incrementSvfKbdAmt: svfKbdAmt.increment,
+    incrementSvfSlope: incrementSvfSlope,
 
     toggleLpfExtCv: lpfExtCv.toggle,
     toggleLpfWheel: lpfWheel.toggle,
@@ -227,7 +246,6 @@ const filtersApi = {
 
     toggleSvfExtCv: svfExtCv.toggle,
     toggleSvfWheel: svfWheel.toggle,
-    toggleSvfSlope: svfSlope.toggle,    
 }
 
 export default filtersApi
