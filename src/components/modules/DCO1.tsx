@@ -48,7 +48,9 @@ const DCO1 = ({ x, y }: Props) => {
                       ledPosition="right" ledCount={2} ledLabels={['1 -> 2', '2 -> 1']}
                       label="Sync" labelPosition="bottom"
                       hasOff
-                      midiConfig={midiConstants.DCO1.SYNC}
+                      ctrlGroup={ctrlGroup}
+                      ctrlId={OscControllerIds.DCO1_SYNC}
+                      storeValue={dco1.sync}
     />
 
     {/*<RotaryPot10 x={col4} y={topRow} ledMode="multi" label="Super saw" position={0.3} midiConfig={midiConstants.DCO1.SUPER_SAW}/>*/}
@@ -56,7 +58,9 @@ const DCO1 = ({ x, y }: Props) => {
     <RoundPushButton8 x={col4} y={y+11}
                       ledPosition="top" ledCount={3} ledLabels={['DCO', 'WT', 'PCM']}
                       label="Mode" labelPosition="bottom"
-                      midiConfig={midiConstants.DCO1.MODE}
+                      ctrlGroup={ctrlGroup}
+                      ctrlId={OscControllerIds.DCO1_MODE}
+                      storeValue={dco1.mode}
     />
 
     <RoundPushButton8 x={col1} y={bottomRow1}
@@ -85,9 +89,21 @@ const DCO1 = ({ x, y }: Props) => {
                  storePosition={dco1.note}
     />
 
-    <RoundLedPushButton8 x={col2} y={bottomRow2} label="Wheel" labelPosition="bottom" midiConfig={midiConstants.DCO1.WHEEL}/>
-    <RoundLedPushButton8 x={col3} y={bottomRow2} label="LFO" labelPosition="bottom" midiConfig={midiConstants.DCO1.LFO}/>
-    <RoundLedPushButton8 x={col4} y={bottomRow2} label="Kbd" labelPosition="bottom" midiConfig={midiConstants.DCO1.KBD}/>
+    <RoundLedPushButton8 x={col2} y={bottomRow2} label="Wheel" labelPosition="bottom"
+                         ctrlGroup={ctrlGroup}
+                         ctrlId={OscControllerIds.DCO1_WHEEL}
+                         storeValue={dco1.wheel}
+    />
+    <RoundLedPushButton8 x={col3} y={bottomRow2} label="LFO" labelPosition="bottom"
+                         ctrlGroup={ctrlGroup}
+                         ctrlId={OscControllerIds.DCO1_LFO}
+                         storeValue={dco1.lfo}
+    />
+    <RoundLedPushButton8 x={col4} y={bottomRow2} label="Kbd" labelPosition="bottom"
+                         ctrlGroup={ctrlGroup}
+                         ctrlId={OscControllerIds.DCO1_KBD}
+                         storeValue={dco1.kbd}
+    />
   </>;
 };
 

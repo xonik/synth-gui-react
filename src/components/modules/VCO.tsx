@@ -54,7 +54,9 @@ const VCO = ({ x, y }: Props) => {
                       ledPosition="right" ledCount={3} ledLabels={['Hard', 'CEM Hard', 'CEM Soft']}
                       label="Sync" labelPosition="bottom"
                       hasOff
-                      midiConfig={midiConstants.VCO.SYNC}
+                      ctrlGroup={ctrlGroup}
+                      ctrlId={OscControllerIds.VCO_SYNC}
+                      storeValue={vco.sync}
     />
 
     <RotaryPot10 x={col1} y={bottomRow1} ledMode="multi" label="Cross mod" position={0.1}
@@ -66,18 +68,41 @@ const VCO = ({ x, y }: Props) => {
     <RoundPushButton8 x={col2} y={bottomRow1}
                       ledPosition="right" ledCount={2} ledLabels={['Osc 1', 'Ext']}
                       label="Source" labelPosition="bottom"
-                      midiConfig={midiConstants.VCO.CROSS_MOD_SRC}
+                      ctrlGroup={ctrlGroup}
+                      ctrlId={OscControllerIds.VCO_CROSSMOD_SRC}
+                      storeValue={vco.crossModSrc}
     />
+
     <RotaryPot10 x={col4} y={bottomRow1} ledMode="single" label="PW" position={0.3}
                  ctrlGroup={ctrlGroup}
                  ctrlId={OscControllerIds.VCO_PW}
                  storePosition={vco.pw}
     />
 
-    <RoundLedPushButton8 x={col1} y={bottomRow2} label="Ext CV" labelPosition="bottom" midiConfig={midiConstants.VCO.EXT_CV}/>
-    <RoundLedPushButton8 x={col2} y={bottomRow2} label="Wheel" labelPosition="bottom" midiConfig={midiConstants.VCO.WHEEL}/>
-    <RoundLedPushButton8 x={col3} y={bottomRow2} label="LFO" labelPosition="bottom" midiConfig={midiConstants.VCO.LFO}/>
-    <RoundLedPushButton8 x={col4} y={bottomRow2} label="Kbd" labelPosition="bottom" midiConfig={midiConstants.VCO.KBD}/>
+    <RoundLedPushButton8 x={col1} y={bottomRow2} label="Ext CV" labelPosition="bottom"
+                         ctrlGroup={ctrlGroup}
+                         ctrlId={OscControllerIds.VCO_EXT_CV}
+                         storeValue={vco.extCv}
+    />
+
+    <RoundLedPushButton8 x={col2} y={bottomRow2} label="Wheel" labelPosition="bottom"
+                         ctrlGroup={ctrlGroup}
+                         ctrlId={OscControllerIds.VCO_WHEEL}
+                         storeValue={vco.wheel}
+    />
+
+    <RoundLedPushButton8 x={col3} y={bottomRow2} label="LFO" labelPosition="bottom"
+                         ctrlGroup={ctrlGroup}
+                         ctrlId={OscControllerIds.VCO_LFO}
+                         storeValue={vco.lfo}
+    />
+
+    <RoundLedPushButton8 x={col4} y={bottomRow2} label="Kbd" labelPosition="bottom"
+                         ctrlGroup={ctrlGroup}
+                         ctrlId={OscControllerIds.VCO_KBD}
+                         storeValue={vco.kbd}
+    />
+
   </>;
 };
 
