@@ -47,7 +47,6 @@ export const togglePropFuncs = (property: TogglableProperty) => {
         if (value === currentValue) {
             return
         }
-        console.log("toggle", property, currentValue, value)
         const boundedValue = getBounded(value, 0, property.config.values.length - 1)
 
         dispatch(property.action({ value: boundedValue }))
