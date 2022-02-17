@@ -3,16 +3,9 @@ import { ApiSource } from '../../types'
 import { PayloadAction } from '@reduxjs/toolkit'
 import oscApi from './oscApi'
 import { click, increment } from '../ui/uiReducer'
+import { ApiClickMapperType, ApiMapperType } from '../common/types'
 
-type OscApiMapperType = {
-    [key: number]: (value: number) => void
-}
-
-type OscApiClickMapperType = {
-    [key: number]: () => void
-}
-
-const oscApiMapper: OscApiMapperType = {
+const oscApiMapper: ApiMapperType = {
     [OscControllerIds.DCO1_NOTE]: (value: number) => oscApi.incrementDco1Note(value, ApiSource.UI),
     [OscControllerIds.DCO1_WAVEFORM]: (value: number) => oscApi.incrementDco1Waveform(value, ApiSource.UI),
     [OscControllerIds.DCO1_SUB1]: (value: number) => oscApi.incrementDco1Sub1Level(value, ApiSource.UI),
@@ -31,7 +24,7 @@ const oscApiMapper: OscApiMapperType = {
     [OscControllerIds.VCO_PW]: (value: number) => oscApi.incrementVcoPw(value, ApiSource.UI),
 }
 
-const oscApiClickMapper: OscApiClickMapperType = {
+const oscApiClickMapper: ApiClickMapperType = {
     [OscControllerIds.DCO1_SYNC]: () => oscApi.toggleDco1Sync(ApiSource.UI),
     [OscControllerIds.DCO1_MODE]: () => oscApi.toggleDco1Mode(ApiSource.UI),
     [OscControllerIds.DCO1_SUB_WAVE]: () => oscApi.toggleDco1SubWave(ApiSource.UI),

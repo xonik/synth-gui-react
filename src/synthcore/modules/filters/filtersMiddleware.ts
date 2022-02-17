@@ -3,16 +3,9 @@ import { click, increment } from '../ui/uiReducer'
 import { filtersApi } from '../../synthcoreApi'
 import { ApiSource } from '../../types'
 import { FiltersControllerIds } from './types'
+import { ApiClickMapperType, ApiMapperType } from '../common/types'
 
-type FiltersApiMapperType = {
-    [key: number]: (value: number) => void
-}
-
-type FiltersApiClickMapperType = {
-    [key: number]: () => void
-}
-
-const filtersApiMapper: FiltersApiMapperType = { 
+const filtersApiMapper: ApiMapperType = {
     [FiltersControllerIds.LPF_INPUT]: (value: number) => filtersApi.incrementLpfInput(value, ApiSource.UI),
     [FiltersControllerIds.LPF_DRIVE]: (value: number) => filtersApi.incrementLpfDrive(value, ApiSource.UI),
     [FiltersControllerIds.LPF_RESONANCE]: (value: number) => filtersApi.incrementLpfResonance(value, ApiSource.UI),
@@ -33,7 +26,7 @@ const filtersApiMapper: FiltersApiMapperType = {
     [FiltersControllerIds.SVF_SLOPE]: (value: number) => filtersApi.incrementSvfSlope(value, ApiSource.UI),
 }
 
-const filtersApiClickMapper: FiltersApiClickMapperType = {
+const filtersApiClickMapper: ApiClickMapperType = {
     [FiltersControllerIds.LPF_EXT_CV]: () => filtersApi.toggleLpfExtCv(ApiSource.UI),
     [FiltersControllerIds.LPF_WHEEL]: () => filtersApi.toggleLpfWheel(ApiSource.UI),
     [FiltersControllerIds.LPF_SLOPE]: () => filtersApi.toggleLpfSlope(ApiSource.UI),

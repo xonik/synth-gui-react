@@ -8,6 +8,7 @@ import modsReducer from './modules/mods/modsReducer'
 import oscReducer from './modules/osc/oscReducer'
 import filtersReducer from './modules/filters/filtersReducer'
 import srcMixReducer from './modules/srcMix/srcMixReducer'
+import fxReducer from './modules/fx/fxReducer'
 
 export const store = configureStore({
     reducer: {
@@ -19,6 +20,7 @@ export const store = configureStore({
         ui: uiReducer,
         mainDisplay: mainDisplayReducer,
         srcMix: srcMixReducer,
+        fx: fxReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()

@@ -5,6 +5,7 @@ export enum ControllerGroupIds {
     OSC,
     FILTERS,
     SRC_MIX,
+    FX,
 }
 
 export enum ApiSource {
