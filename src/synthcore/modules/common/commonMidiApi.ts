@@ -21,7 +21,7 @@ export const numericParamReceive = (
     apiSetValue: (value: number, source: ApiSource) => void
 ) => {
     cc.subscribe((value: number) => {
-        apiSetValue(value, ApiSource.MIDI)
+        apiSetValue(value / 127, ApiSource.MIDI)
     }, cfg)
 }
 
