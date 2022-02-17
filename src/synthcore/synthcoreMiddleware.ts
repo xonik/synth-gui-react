@@ -7,6 +7,7 @@ import { oscMiddleware } from './modules/osc/oscMiddleware'
 import { filtersMiddleware } from './modules/filters/filtersMiddleware'
 import { srcMixMiddleware } from './modules/srcMix/srcMixMiddleware'
 import { fxMiddleware } from './modules/fx/fxMiddleware'
+import { ringModMiddleware } from './modules/ringMod/ringModMiddleware'
 
 export const synthcoreMiddleware: Middleware<{}, any> = storeAPI => next => action => {
     if (action.payload.ctrlGroup === ControllerGroupIds.ENV || action.type.indexOf('envelopes/') > -1) {
@@ -21,6 +22,8 @@ export const synthcoreMiddleware: Middleware<{}, any> = storeAPI => next => acti
         srcMixMiddleware(action)
     } else if (action.payload.ctrlGroup === ControllerGroupIds.FX || action.type.indexOf('fx/') > -1) {
         fxMiddleware(action)
+    } else if (action.payload.ctrlGroup === ControllerGroupIds.RING_MOD || action.type.indexOf('ringMod/') > -1) {
+        ringModMiddleware(action)
     } else if(action.payload.ctrlGroup === ControllerGroupIds.MAIN_DISP) {
         mainDisplayMiddleware(action)
     }

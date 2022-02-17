@@ -9,6 +9,7 @@ import oscReducer from './modules/osc/oscReducer'
 import filtersReducer from './modules/filters/filtersReducer'
 import srcMixReducer from './modules/srcMix/srcMixReducer'
 import fxReducer from './modules/fx/fxReducer'
+import ringModReducer from './modules/ringMod/ringModReducer'
 
 export const store = configureStore({
     reducer: {
@@ -21,6 +22,7 @@ export const store = configureStore({
         mainDisplay: mainDisplayReducer,
         srcMix: srcMixReducer,
         fx: fxReducer,
+        ringMod: ringModReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()

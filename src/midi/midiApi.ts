@@ -5,6 +5,7 @@ import oscMidiApi from '../synthcore/modules/osc/oscMidiApi'
 import filtersMidiApi from '../synthcore/modules/filters/filtersMidiApi'
 import srcMixMidiApi from '../synthcore/modules/srcMix/srcMixMidiApi'
 import fxMidiApi from '../synthcore/modules/fx/fxMidiApi'
+import ringModMidiApi from '../synthcore/modules/ringMod/ringModMidiApi'
 
 const initReceive = () => {
     envMidiApi.initReceive()
@@ -14,6 +15,7 @@ const initReceive = () => {
     filtersMidiApi.initReceive()
     srcMixMidiApi.initReceive()
     fxMidiApi.initReceive()
+    ringModMidiApi.initReceive()
 }
 
 const midiApi = {
@@ -25,6 +27,7 @@ const midiApi = {
     filters: filtersMidiApi,
     srcMix: srcMixMidiApi,
     fx: fxMidiApi,
+    ringMod: ringModMidiApi,
 }
 
 export default midiApi
