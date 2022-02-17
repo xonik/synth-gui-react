@@ -10,6 +10,7 @@ export enum ControllerGroupIds {
     NOISE,
     MASTER_CLOCK,
     ARP,
+    KBD,
 }
 
 export enum ApiSource {

@@ -5,7 +5,7 @@ import oscApi from './oscApi'
 import { click, increment } from '../ui/uiReducer'
 import { ApiClickMapperType, ApiIncrementMapperType } from '../common/types'
 
-const oscApiMapper: ApiIncrementMapperType = {
+const incrementMapper: ApiIncrementMapperType = {
     [OscControllerIds.DCO1_NOTE]: (value: number) => oscApi.incrementDco1Note(value, ApiSource.UI),
     [OscControllerIds.DCO1_WAVEFORM]: (value: number) => oscApi.incrementDco1Waveform(value, ApiSource.UI),
     [OscControllerIds.DCO1_SUB1]: (value: number) => oscApi.incrementDco1Sub1Level(value, ApiSource.UI),
@@ -24,7 +24,7 @@ const oscApiMapper: ApiIncrementMapperType = {
     [OscControllerIds.VCO_PW]: (value: number) => oscApi.incrementVcoPw(value, ApiSource.UI),
 }
 
-const oscApiClickMapper: ApiClickMapperType = {
+const clickMapper: ApiClickMapperType = {
     [OscControllerIds.DCO1_SYNC]: () => oscApi.toggleDco1Sync(ApiSource.UI),
     [OscControllerIds.DCO1_MODE]: () => oscApi.toggleDco1Mode(ApiSource.UI),
     [OscControllerIds.DCO1_SUB_WAVE]: () => oscApi.toggleDco1SubWave(ApiSource.UI),
@@ -49,8 +49,8 @@ const oscApiClickMapper: ApiClickMapperType = {
 
 export const oscMiddleware = (action: PayloadAction): void => {
     if (increment.match(action)) {
-        oscApiMapper[action.payload.ctrlId](action.payload.value)
+        incrementMapper[action.payload.ctrlId](action.payload.value)
     } else if (click.match(action)) {
-        oscApiClickMapper[action.payload.ctrlId]()
+        clickMapper[action.payload.ctrlId]()
     }
 }

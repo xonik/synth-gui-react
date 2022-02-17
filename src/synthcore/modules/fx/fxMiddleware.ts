@@ -5,7 +5,7 @@ import { ApiSource } from '../../types'
 import { FxControllerIds } from './types'
 import { ApiClickMapperType, ApiIncrementMapperType } from '../common/types'
 
-const srcMixApiMapper: ApiIncrementMapperType = {
+const apiIncrementMapper: ApiIncrementMapperType = {
     [FxControllerIds.DISTORTION_DRIVE]: (value: number) => fxApi.incrementDistortionDrive(value, ApiSource.UI),
     [FxControllerIds.DISTORTION_LEVEL]: (value: number) => fxApi.incrementDistortionLevel(value, ApiSource.UI),
     [FxControllerIds.BIT_CRUSHER_BITS]: (value: number) => fxApi.incrementBitCrusherBits(value, ApiSource.UI),
@@ -13,7 +13,7 @@ const srcMixApiMapper: ApiIncrementMapperType = {
     [FxControllerIds.BIT_CRUSHER_LEVEL]: (value: number) => fxApi.incrementBitCrusherLevel(value, ApiSource.UI),
 }
 
-const srcMixApiClickMapper: ApiClickMapperType = {
+const apiClickMapper: ApiClickMapperType = {
     [FxControllerIds.DISTORTION_IN]: () => fxApi.toggleDistortionIn(ApiSource.UI),
     [FxControllerIds.DISTORTION_CLIP]: () => fxApi.toggleDistortionClip(ApiSource.UI),
     [FxControllerIds.DISTORTION_OUT]: () => fxApi.toggleDistortionOut(ApiSource.UI),
@@ -24,8 +24,8 @@ const srcMixApiClickMapper: ApiClickMapperType = {
 
 export const fxMiddleware = (action: PayloadAction): void => {
     if (increment.match(action)) {
-        srcMixApiMapper[action.payload.ctrlId](action.payload.value)
+        apiIncrementMapper[action.payload.ctrlId](action.payload.value)
     } else if (click.match(action)) {
-        srcMixApiClickMapper[action.payload.ctrlId]()
+        apiClickMapper[action.payload.ctrlId]()
     }
 }

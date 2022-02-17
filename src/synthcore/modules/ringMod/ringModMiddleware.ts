@@ -5,12 +5,12 @@ import { ApiSource } from '../../types'
 import { RingModControllerIds } from './types'
 import { ApiClickMapperType } from '../common/types'
 
-const ringModApiClickMapper: ApiClickMapperType = {
+const clickMapper: ApiClickMapperType = {
     [RingModControllerIds.SOURCE]: () => ringModApi.toggleSource(ApiSource.UI),
 }
 
 export const ringModMiddleware = (action: PayloadAction): void => {
     if (click.match(action)) {
-        ringModApiClickMapper[action.payload.ctrlId]()
+        clickMapper[action.payload.ctrlId]()
     }
 }

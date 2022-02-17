@@ -5,7 +5,7 @@ import { ApiSource } from '../../types'
 import { SrcMixControllerIds } from './types'
 import { ApiClickMapperType, ApiIncrementMapperType } from '../common/types'
 
-const srcMixApiMapper: ApiIncrementMapperType = {
+const incrementMapper: ApiIncrementMapperType = {
     [SrcMixControllerIds.LEVEL_OSC1]: (value: number) => srcMixApi.incrementLevelOsc1(value, ApiSource.UI),
     [SrcMixControllerIds.LEVEL_OSC2]: (value: number) => srcMixApi.incrementLevelOsc2(value, ApiSource.UI),
     [SrcMixControllerIds.LEVEL_OSC3]: (value: number) => srcMixApi.incrementLevelOsc3(value, ApiSource.UI),
@@ -14,7 +14,7 @@ const srcMixApiMapper: ApiIncrementMapperType = {
     [SrcMixControllerIds.LEVEL_EXT_AUDIO]: (value: number) => srcMixApi.incrementLevelExtAudio(value, ApiSource.UI),
 }
 
-const srcMixApiClickMapper: ApiClickMapperType = {
+const clickMapper: ApiClickMapperType = {
     [SrcMixControllerIds.OUT_OSC1]: () => srcMixApi.toggleOutOsc1(ApiSource.UI),
     [SrcMixControllerIds.OUT_OSC2]: () => srcMixApi.toggleOutOsc2(ApiSource.UI),
     [SrcMixControllerIds.OUT_OSC3]: () => srcMixApi.toggleOutOsc3(ApiSource.UI),
@@ -23,11 +23,10 @@ const srcMixApiClickMapper: ApiClickMapperType = {
     [SrcMixControllerIds.OUT_EXT_AUDIO]: () => srcMixApi.toggleOutExtAudio(ApiSource.UI),
 }
 
-
 export const srcMixMiddleware = (action: PayloadAction): void => {
     if (increment.match(action)) {
-        srcMixApiMapper[action.payload.ctrlId](action.payload.value)
+        incrementMapper[action.payload.ctrlId](action.payload.value)
     } else if (click.match(action)) {
-        srcMixApiClickMapper[action.payload.ctrlId]()
+        clickMapper[action.payload.ctrlId]()
     }
 }

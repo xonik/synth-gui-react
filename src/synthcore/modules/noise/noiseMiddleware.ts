@@ -5,12 +5,12 @@ import { ApiSource } from '../../types'
 import { NoiseControllerIds } from './types'
 import { ApiClickMapperType } from '../common/types'
 
-const noiseApiClickMapper: ApiClickMapperType = {
+const clickMapper: ApiClickMapperType = {
     [NoiseControllerIds.COLOUR]: () => noiseApi.toggleColour(ApiSource.UI),
 }
 
 export const noiseMiddleware = (action: PayloadAction): void => {
     if (click.match(action)) {
-        noiseApiClickMapper[action.payload.ctrlId]()
+        clickMapper[action.payload.ctrlId]()
     }
 }

@@ -5,7 +5,7 @@ import { ApiSource } from '../../types'
 import { FiltersControllerIds } from './types'
 import { ApiClickMapperType, ApiIncrementMapperType } from '../common/types'
 
-const filtersApiMapper: ApiIncrementMapperType = {
+const incrementMapper: ApiIncrementMapperType = {
     [FiltersControllerIds.LPF_INPUT]: (value: number) => filtersApi.incrementLpfInput(value, ApiSource.UI),
     [FiltersControllerIds.LPF_DRIVE]: (value: number) => filtersApi.incrementLpfDrive(value, ApiSource.UI),
     [FiltersControllerIds.LPF_RESONANCE]: (value: number) => filtersApi.incrementLpfResonance(value, ApiSource.UI),
@@ -26,7 +26,7 @@ const filtersApiMapper: ApiIncrementMapperType = {
     [FiltersControllerIds.SVF_SLOPE]: (value: number) => filtersApi.incrementSvfSlope(value, ApiSource.UI),
 }
 
-const filtersApiClickMapper: ApiClickMapperType = {
+const clickMapper: ApiClickMapperType = {
     [FiltersControllerIds.LPF_EXT_CV]: () => filtersApi.toggleLpfExtCv(ApiSource.UI),
     [FiltersControllerIds.LPF_WHEEL]: () => filtersApi.toggleLpfWheel(ApiSource.UI),
     [FiltersControllerIds.LPF_SLOPE]: () => filtersApi.toggleLpfSlope(ApiSource.UI),
@@ -41,8 +41,8 @@ const filtersApiClickMapper: ApiClickMapperType = {
 
 export const filtersMiddleware = (action: PayloadAction): void => {
     if (increment.match(action)) {
-        filtersApiMapper[action.payload.ctrlId](action.payload.value)
+        incrementMapper[action.payload.ctrlId](action.payload.value)
     } else if (click.match(action)) {
-        filtersApiClickMapper[action.payload.ctrlId]()
+        clickMapper[action.payload.ctrlId]()
     }
 }

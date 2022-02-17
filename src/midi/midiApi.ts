@@ -9,6 +9,7 @@ import ringModMidiApi from '../synthcore/modules/ringMod/ringModMidiApi'
 import noiseMidiApi from '../synthcore/modules/noise/noiseMidiApi'
 import masterClockMidiApi from '../synthcore/modules/masterClock/masterClockMidiApi'
 import arpMidiApi from '../synthcore/modules/arp/arpMidiApi'
+import kbdMidiApi from '../synthcore/modules/kbd/kbdMidiApi'
 
 const initReceive = () => {
     envMidiApi.initReceive()
@@ -22,6 +23,7 @@ const initReceive = () => {
     noiseMidiApi.initReceive()
     masterClockMidiApi.initReceive()
     arpMidiApi.initReceive()
+    kbdMidiApi.initReceive()
 }
 
 const midiApi = {
@@ -37,6 +39,7 @@ const midiApi = {
     noise: noiseMidiApi,
     masterClock: masterClockMidiApi,
     arp: arpMidiApi,
+    kbd: kbdMidiApi,
 }
 
 export default midiApi

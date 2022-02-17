@@ -40,7 +40,7 @@ export type NumericPayload = {
 }
 
 export const fxSlice = createSlice({
-    name: 'srcMix',
+    name: 'fx',
     initialState,
     reducers: {
         setDistortionDrive: (state, { payload }: PayloadAction<NumericPayload>) => {

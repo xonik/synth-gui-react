@@ -7,6 +7,7 @@ import ringModApi from './modules/ringMod/ringModApi'
 import noiseApi from './modules/noise/noiseApi'
 import masterClockApi from './modules/masterClock/masterClockApi'
 import arpApi from './modules/arp/arpApi'
+import kbdApi from './modules/kbd/kbdApi'
 import mainDisplayApi from './modules/mainDisplay/mainDisplayApi'
 
 export {
@@ -19,5 +20,6 @@ export {
     noiseApi,
     masterClockApi,
     arpApi,
+    kbdApi,
     mainDisplayApi,
 }

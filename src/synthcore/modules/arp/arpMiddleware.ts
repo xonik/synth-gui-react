@@ -5,12 +5,12 @@ import { ApiSource } from '../../types'
 import { ArpControllerIds } from './types'
 import { ApiClickMapperType, ApiIncrementMapperType } from '../common/types'
 
-const apiIncrementMapper: ApiIncrementMapperType = {
+const incrementMapper: ApiIncrementMapperType = {
     [ArpControllerIds.TEMPO]: (value: number) => arpApi.incrementTempo(value, ApiSource.UI),
     [ArpControllerIds.OUTPUT]: (value: number) => arpApi.incrementOutput(value, ApiSource.UI),
 }
 
-const apiClickMapper: ApiClickMapperType = {
+const clickMapper: ApiClickMapperType = {
     [ArpControllerIds.ON_OFF]: () => arpApi.toggleOnOff(ApiSource.UI),
     [ArpControllerIds.TRIGGER]: () => arpApi.toggleTrigger(ApiSource.UI),
     [ArpControllerIds.SYNC]: () => arpApi.toggleSync(ApiSource.UI),
@@ -21,8 +21,8 @@ const apiClickMapper: ApiClickMapperType = {
 
 export const arpMiddleware = (action: PayloadAction): void => {
     if (increment.match(action)) {
-        apiIncrementMapper[action.payload.ctrlId](action.payload.value)
+        incrementMapper[action.payload.ctrlId](action.payload.value)
     } else if (click.match(action)) {
-        apiClickMapper[action.payload.ctrlId]()
+        clickMapper[action.payload.ctrlId]()
     }
 }

@@ -5,6 +5,10 @@ import RoundPushButton8 from '../buttons/RoundPushButton8';
 import Led from '../leds/Led';
 import React, { useCallback, useState } from 'react'
 import midiConstants from '../../midi/controllers'
+import { ControllerGroupIds } from '../../synthcore/types'
+import { useAppSelector } from '../../synthcore/hooks'
+import { selectKbd } from '../../synthcore/modules/kbd/kbdReducer'
+import { KbdControllerIds } from '../../synthcore/modules/kbd/types'
 
 interface Props {
     x: number,
@@ -14,6 +18,8 @@ interface Props {
 type TransposeProps = {
     row2: number;
 }
+
+const ctrlGroup = ControllerGroupIds.KBD
 
 const Transpose = ({row2}: TransposeProps) => {
     const ledDistance = 10;
@@ -72,16 +78,42 @@ const KeyboardControls = ({ x, y }: Props) => {
     const col11 = col10 + 20;
     const col12 = col11 + 45;
 
+    const kbd = useAppSelector(selectKbd)
 
     return <svg x={x} y={y}>
         <Header label="Transpose" x={0} y={row1} width={80}/>
         <Header label="Keyboard" x={85} y={row1} width={140}/>
         <Transpose row2={row2} />
-        <RotaryPot10 x={col8} y={row2} ledMode="single" label="Portamento" position={0.5} midiConfig={midiConstants.KBD.PORTAMENTO}/>
-        <RoundLedPushButton8 labelPosition="bottom" x={col9} y={row2} label="Hold" midiConfig={midiConstants.KBD.HOLD}/>
-        <RoundLedPushButton8 labelPosition="bottom" x={col10} y={row2} label="Chord" midiConfig={midiConstants.KBD.CHORD}/>
-        <RoundPushButton8 labelPosition="bottom" x={col11} y={row2} label="Mode" ledCount={3} ledPosition="right" ledLabels={['Solo', 'Unison', 'Poly']} midiConfig={midiConstants.KBD.MODE}/>
-        <RotaryPot10 x={col12} y={row2} ledMode="single" label="Unison detune" position={0.5} midiConfig={midiConstants.KBD.UNISON_DETUNE}/>
+        <RotaryPot10 x={col8} y={row2} ledMode="single" label="Portamento" position={0.5}
+                     ctrlGroup={ctrlGroup}
+                     ctrlId={KbdControllerIds.PORTAMENTO}
+                     storePosition={kbd.portamento}
+        />
+
+        <RoundLedPushButton8 labelPosition="bottom" x={col9} y={row2} label="Hold"
+                             ctrlGroup={ctrlGroup}
+                             ctrlId={KbdControllerIds.HOLD}
+                             storeValue={kbd.hold}
+        />
+
+        <RoundLedPushButton8 labelPosition="bottom" x={col10} y={row2} label="Chord"
+                             ctrlGroup={ctrlGroup}
+                             ctrlId={KbdControllerIds.CHORD}
+                             storeValue={kbd.chord}
+        />
+
+        <RoundPushButton8 labelPosition="bottom" x={col11} y={row2} label="Mode" ledCount={3} ledPosition="right" ledLabels={['Solo', 'Unison', 'Poly']}
+                          ctrlGroup={ctrlGroup}
+                          ctrlId={KbdControllerIds.MODE}
+                          storeValue={kbd.mode}
+        />
+
+        <RotaryPot10 x={col12} y={row2} ledMode="single" label="Unison detune" position={0.5}
+                     ctrlGroup={ctrlGroup}
+                     ctrlId={KbdControllerIds.UNISON_DETUNE}
+                     storePosition={kbd.unisonDetune}
+        />
+
     </svg>;
 };
 
