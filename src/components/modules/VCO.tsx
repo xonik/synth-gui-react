@@ -4,7 +4,6 @@ import RotaryPot10 from '../pots/RotaryPot10';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
 import Header from '../misc/Header';
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
-import midiConstants from '../../midi/controllers'
 import { OscControllerIds } from '../../synthcore/modules/osc/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectVco } from '../../synthcore/modules/osc/oscReducer'

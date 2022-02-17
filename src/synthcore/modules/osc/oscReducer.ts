@@ -23,7 +23,6 @@ type OscState = {
         sub2Level: number,
         pw: number,
         subWave: number,
-        sync: number,
         mode: number,
         wheel : number,
         lfo: number,
@@ -67,7 +66,6 @@ export const initialState: OscState = {
         sub2Level: 0,
         pw: 0,
         subWave: 0,
-        sync: 0,
         mode: 0,
         wheel : 0,
         lfo: 0,
@@ -154,9 +152,6 @@ export const oscSlice = createSlice({
         setDco2SubWave: (state, { payload }: PayloadAction<NumericPayload>) => {
             state.dco2.subWave = payload.value
         },
-        setDco2Sync: (state, { payload }: PayloadAction<NumericPayload>) => {
-            state.dco2.sync = payload.value
-        },
         setDco2Mode: (state, { payload }: PayloadAction<NumericPayload>) => {
             state.dco2.mode = payload.value
         },
@@ -229,7 +224,6 @@ export const {
     setDco2Sub1Level,
     setDco2Sub2Level,
     setDco2Pw,
-    setDco2Sync,
     setDco2SubWave,
     setDco2Mode,
     setDco2Wheel,

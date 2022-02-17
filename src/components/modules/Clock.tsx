@@ -2,11 +2,9 @@ import React from 'react';
 import RotaryPot17 from '../pots/RotaryPot17';
 import Header from '../misc/Header';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
-import midiConstants from '../../midi/controllers'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectMasterClock } from '../../synthcore/modules/masterClock/masterClockReducer'
 import { ControllerGroupIds } from '../../synthcore/types'
-import { OscControllerIds } from '../../synthcore/modules/osc/types'
 import { MasterClockControllerIds } from '../../synthcore/modules/masterClock/types'
 
 interface Props {

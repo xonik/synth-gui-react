@@ -5,13 +5,13 @@ import {
     setRange,
     setMode,
     setOutput,
-    selectArp, setTrigger
+    selectArp,
+    setTrigger
 } from './arpReducer'
 import { store } from '../../store'
 import arpMidiApi from './arpMidiApi'
 import controllers from '../../../midi/controllers'
 import { numericPropFuncs, togglePropFuncs } from '../common/commonApi'
-import { ApiSource } from '../../types'
 
 const tempo = numericPropFuncs({
     selector: () => selectArp(store.getState()).tempo,

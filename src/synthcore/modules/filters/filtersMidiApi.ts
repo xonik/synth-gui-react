@@ -179,14 +179,6 @@ const svfSlope = (() => {
     }
 })()
 
-const vcoKbd = (() => {
-    const cfg = controllers.SVF.KBD_AMT
-    return {
-        send: (source: ApiSource, value: number) => numericParamSend(source, value, cfg),
-        receive: () => numericParamReceive(cfg, filtersApi.setSvfKbdAmt)
-    }
-})()
-
 const initReceive = () => {
     lpfInput.receive()
     lpfDrive.receive()
