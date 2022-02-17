@@ -6,8 +6,23 @@ import { cc, nrpn } from '../../../midi/midibus'
 import { ApiSource } from '../../types'
 import { shouldSend } from '../../../midi/utils'
 import logger from '../../../utils/logger'
+import {
+    getLinearToDBMapper,
+    getLinearToExpMapper,
+    getMapperWithFade, isZero
+} from '../../../midi/slopeCalculator'
 
 let currentEnvId = -1
+
+const envLevelMapper = getMapperWithFade(
+    getLinearToDBMapper(32767, 32767, 23, true, false),
+    32767,
+    true,
+    10,
+)
+
+// NB: Input is 0 to maxInput!
+const envTimeMapper = getLinearToExpMapper(65534, 65534, 3.5)
 
 const level = (() => {
     const cfg = controllers.ENV.LEVEL
@@ -20,7 +35,12 @@ const level = (() => {
             envSelect.send(source, envId)
 
             // stageId is encoded as part of the extra available bits
-            const value = (Math.round(boundedValue * 32767) + 32767)
+            let value = isZero(boundedValue) ? 32767 : (Math.round(boundedValue * 32767) + 32767)
+
+            // TODO: hard coded curve mapping only for VCA and VCF envs. Should configurable and placed elsewhere!
+            if(envId === 0 || envId === 1) {
+                value = Math.floor(envLevelMapper(value - 32767) + 32767)
+            }
             const data =  value + (stageId << 16)
             logger.midi(`Setting level for env ${envId} stage ${stageId} to ${boundedValue} (${value})`)
             nrpn.send(cfg, data)
@@ -34,6 +54,7 @@ const level = (() => {
                 // half the range is not used for unipolar envelopes. If value is directly mapped to a pot
                 // the pot will have no effect for the first 50% of the travel, starting at 0 straight up
                 // (for unipolar)
+                // TODO: No reverse mapping for curves here
                 envApi.setStageLevel(currentEnvId, stageId, (level - 32767) / 32767 , ApiSource.MIDI)
             }, cfg)
         }
@@ -49,8 +70,11 @@ const time = (() => {
             }
             envSelect.send(source, envId)
 
+            // TODO: This should be configurable!
+            const value = Math.floor(envTimeMapper(boundedValue * 65535))
+            console.log(`Setting time to ${value}`)
+
             // stageId is encoded as part of the extra available bits
-            const value = Math.round(boundedValue * 65535)
             const data = value  + (stageId << 16)
             logger.midi(`Setting time for env ${envId} stage ${stageId} to ${boundedValue} (${value})`)
             nrpn.send(cfg, data)

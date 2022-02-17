@@ -80,7 +80,8 @@ export const handleMpk25 = (ccNum: number, midiValue: number): boolean => {
     } else if(ccNum === 32) {
         // sustain
         cc.publish(mapCC.ENV_SELECT_ENV, 1)
-        nrpn.publish(mapNRPN.ENV_LEVEL, getNprnStageLevel(StageId.SUSTAIN, midiValue))
+        // TODO: This is a hack to make pot use full range for VCA env
+        nrpn.publish(mapNRPN.ENV_LEVEL, getNprnStageLevel(StageId.SUSTAIN, (midiValue / 2) + 64))
     } else if(ccNum === 33) {
         // release
         cc.publish(mapCC.ENV_SELECT_ENV, 1)

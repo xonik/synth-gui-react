@@ -70,7 +70,8 @@ export const getDefaultEnvelope = (id: number): Envelope => {
         maxLoops: 2,
         invert:false,
         stages,
-        bipolar: id !== 0,
+        // VCA and VCF envs are hardcoded to unipolar for now. VCF should probably be bipolar
+        bipolar: id !== 0 && id !== 1,
     }
 
     setInvert(env, false);

@@ -13,5 +13,12 @@ Envs:
 - Selectable polarity?
 - Block invert on envelope 1
 - Loop counter should be actual number of times env plays.
+- Currently, midi output env levels are curve-mapped for VCA envelope only. 
+  - Mapping should be per env-configurable
+  - Mapping should work for bipolar envelopes
+  - NB - env level modulation is linear, perhaps mapping should happen only on controller side?
+- Midi output for env times are curve mapped for all but should be configurable. 
+  - SHOULD BE ON CONTROLLER SIDE, we show the wrong time now!
+
 MPK25: env level is always full range so half the pot doesn't work when changing 
 level on a unipolar envelope, 
