@@ -2,9 +2,10 @@ import React from 'react'
 import RotaryPot17 from '../pots/RotaryPot17'
 import Header from '../misc/Header'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
-import midiConstants from '../../midi/controllers'
-import { ControllerConfigCC } from '../../midi/types'
-
+import { ControllerGroupIds } from '../../synthcore/types'
+import { useAppSelector } from '../../synthcore/hooks'
+import { selectSrcMix } from '../../synthcore/modules/srcMix/srcMixReducer'
+import { SrcMixControllerIds } from '../../synthcore/modules/srcMix/types'
 
 interface Props {
     x: number,
@@ -14,18 +15,29 @@ interface Props {
 interface ChannelProps {
     label: string,
     x: number,
-    y: number
-    potControllerConfig: ControllerConfigCC,
-    buttonControllerConfig: ControllerConfigCC,
+    y: number,
+    levelId: number, 
+    levelPos: number, 
+    outId: number, 
+    outVal: number,
 }
 
+const ctrlGroup = ControllerGroupIds.SRC_MIX
 
-const PreFilterMixerChannel = ({ x, y, label, buttonControllerConfig, potControllerConfig }: ChannelProps) => {
+const PreFilterMixerChannel = ({ x, y, label, levelId, levelPos, outId, outVal }: ChannelProps) => {
     return <>
-        <RotaryPot17 ledMode="multi" label={label} x={x} y={y} position={0.4} midiConfig={potControllerConfig}/>
-        <RoundPushButton8 x={x + 25} y={y + 3}
-                          ledPosition="top" ledCount={2} midiConfig={buttonControllerConfig}
+        <RotaryPot17 ledMode="multi" label={label} x={x} y={y} position={0.4}
+                     ctrlGroup={ctrlGroup}
+                     ctrlId={levelId}
+                     storePosition={levelPos}
         />
+
+        <RoundPushButton8 x={x + 25} y={y + 3}
+                          ledPosition="top" ledCount={2}
+                          ctrlGroup={ctrlGroup}
+                          ctrlId={outId}
+                          storeValue={outVal}
+        />    
     </>
 }
 
@@ -42,14 +54,34 @@ const PreFilterMixer = ({ x, y }: Props) => {
     const row1 = y + 2 + offsetY
     const row2 = row1 + rowDistance
 
+    const srcMix = useAppSelector(selectSrcMix)
+    
     return <>
         <Header label="Source mix" x={x} y={y} width={170}/>
-        <PreFilterMixerChannel x={col1} y={row1} label="Osc 1" buttonControllerConfig={midiConstants.SOURCE_MIX.OUT_OSC1} potControllerConfig={midiConstants.SOURCE_MIX.LEVEL_OSC1}/>
-        <PreFilterMixerChannel x={col2} y={row1} label="Osc 2" buttonControllerConfig={midiConstants.SOURCE_MIX.OUT_OSC2} potControllerConfig={midiConstants.SOURCE_MIX.LEVEL_OSC2}/>
-        <PreFilterMixerChannel x={col3} y={row1} label="Osc 3" buttonControllerConfig={midiConstants.SOURCE_MIX.OUT_OSC3} potControllerConfig={midiConstants.SOURCE_MIX.LEVEL_OSC3}/>
-        <PreFilterMixerChannel x={col1} y={row2} label="Noise" buttonControllerConfig={midiConstants.SOURCE_MIX.OUT_NOISE} potControllerConfig={midiConstants.SOURCE_MIX.LEVEL_NOISE}/>
-        <PreFilterMixerChannel x={col2} y={row2} label="Ring mod" buttonControllerConfig={midiConstants.SOURCE_MIX.OUT_RING_MOD} potControllerConfig={midiConstants.SOURCE_MIX.LEVEL_RING_MOD}/>
-        <PreFilterMixerChannel x={col3} y={row2} label="Ext audio" buttonControllerConfig={midiConstants.SOURCE_MIX.OUT_EXT_AUDIO} potControllerConfig={midiConstants.SOURCE_MIX.LEVEL_EXT_AUDIO}/>
+        <PreFilterMixerChannel x={col1} y={row1} label="Osc 1"
+                               levelId={SrcMixControllerIds.LEVEL_OSC1} levelPos={srcMix.levelOsc1}
+                               outId={SrcMixControllerIds.OUT_OSC1} outVal={srcMix.outOsc1}
+        />
+        <PreFilterMixerChannel x={col2} y={row1} label="Osc 2"
+                               levelId={SrcMixControllerIds.LEVEL_OSC2} levelPos={srcMix.levelOsc2}
+                               outId={SrcMixControllerIds.OUT_OSC2} outVal={srcMix.outOsc2}
+        />
+        <PreFilterMixerChannel x={col3} y={row1} label="Osc 3"
+                               levelId={SrcMixControllerIds.LEVEL_OSC3} levelPos={srcMix.levelOsc3}
+                               outId={SrcMixControllerIds.OUT_OSC3} outVal={srcMix.outOsc3}
+        />
+        <PreFilterMixerChannel x={col1} y={row2} label="Noise"
+                               levelId={SrcMixControllerIds.LEVEL_NOISE} levelPos={srcMix.levelNoise}
+                               outId={SrcMixControllerIds.OUT_NOISE} outVal={srcMix.outNoise}
+        />
+        <PreFilterMixerChannel x={col2} y={row2} label="Ring mod"
+                               levelId={SrcMixControllerIds.LEVEL_RING_MOD} levelPos={srcMix.levelRingMod}
+                               outId={SrcMixControllerIds.OUT_RING_MOD} outVal={srcMix.outRingMod}
+        />
+        <PreFilterMixerChannel x={col3} y={row2} label="Ext audio"
+                               levelId={SrcMixControllerIds.LEVEL_EXT_AUDIO} levelPos={srcMix.levelExtAudio}
+                               outId={SrcMixControllerIds.OUT_EXT_AUDIO} outVal={srcMix.outExtAudio}
+        />
     </>
 }
 

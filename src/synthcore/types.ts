@@ -4,6 +4,7 @@ export enum ControllerGroupIds {
     MAIN_DISP,
     OSC,
     FILTERS,
+    SRC_MIX,
 }
 
 export enum ApiSource {

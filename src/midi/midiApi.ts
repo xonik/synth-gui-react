@@ -3,6 +3,7 @@ import modsMidiApi from '../synthcore/modules/mods/modsMidiApi'
 import mainDisplayMidiApi from '../synthcore/modules/mainDisplay/mainDisplayMidiApi'
 import oscMidiApi from '../synthcore/modules/osc/oscMidiApi'
 import filtersMidiApi from '../synthcore/modules/filters/filtersMidiApi'
+import srcMixMidiApi from '../synthcore/modules/srcMix/srcMixMidiApi'
 
 const initReceive = () => {
     envMidiApi.initReceive()
@@ -10,6 +11,7 @@ const initReceive = () => {
     mainDisplayMidiApi.initReceive()
     oscMidiApi.initReceive()
     filtersMidiApi.initReceive()
+    srcMixMidiApi.initReceive()
 }
 
 const midiApi = {
@@ -18,6 +20,8 @@ const midiApi = {
     mods: modsMidiApi,
     mainDisplay: mainDisplayMidiApi,
     osc: oscMidiApi,
+    filters: filtersMidiApi,
+    srcMix: srcMixMidiApi
 }
 
 export default midiApi
