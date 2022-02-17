@@ -43,7 +43,6 @@ const MIDI_CC = 0b10110000
 let midiOut: MIDIOutput | undefined
 let midiIn: MIDIInput | undefined
 
-const loopback = false
 let idPool = 0
 const ccSubscribers: { [key: number]: CCSubscriber[] } = {}
 const nrpnSubscribers: { [key: number]: NRPNSubscriber[] } = {}
@@ -72,7 +71,7 @@ export const cc = {
             })
         }
     },
-    send: (controller: ControllerConfigCC, value: number) => {
+    send: (controller: ControllerConfigCC, value: number, loopback = false) => {
         if (loopback) {
             cc.publish(controller.cc, value)
         }
@@ -107,7 +106,7 @@ export const nrpn = {
             })
         }
     },
-    send: (controller: ControllerConfigNRPN, value: number) => {
+    send: (controller: ControllerConfigNRPN, value: number, loopback = false) => {
         if (loopback) {
             nrpn.publish(controller.addr, value)
         }

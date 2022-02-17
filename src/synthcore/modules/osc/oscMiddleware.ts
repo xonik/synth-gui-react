@@ -2,10 +2,14 @@ import { OscControllerIds } from './types'
 import { ApiSource } from '../../types'
 import { PayloadAction } from '@reduxjs/toolkit'
 import oscApi from './oscApi'
-import { increment } from '../ui/uiReducer'
+import { click, increment } from '../ui/uiReducer'
 
 type OscApiMapperType = {
     [key: number]: (value: number) => void
+}
+
+type OscApiClickMapperType = {
+    [key: number]: () => void
 }
 
 const oscApiMapper: OscApiMapperType = {
@@ -27,8 +31,33 @@ const oscApiMapper: OscApiMapperType = {
     [OscControllerIds.VCO_PW]: (value: number) => oscApi.incrementVcoPw(value, ApiSource.UI),
 }
 
+const oscApiClickMapper: OscApiClickMapperType = {
+    [OscControllerIds.DCO1_SYNC]: () => oscApi.toggleDco1Sync(ApiSource.UI),
+    [OscControllerIds.DCO1_MODE]: () => oscApi.toggleDco1Mode(ApiSource.UI),
+    [OscControllerIds.DCO1_SUB_WAVE]: () => oscApi.toggleDco1SubWave(ApiSource.UI),
+    [OscControllerIds.DCO1_WHEEL]: () => oscApi.toggleDco1Wheel(ApiSource.UI),
+    [OscControllerIds.DCO1_LFO]: () => oscApi.toggleDco1Lfo(ApiSource.UI),
+    [OscControllerIds.DCO1_KBD]: () => oscApi.toggleDco1Kbd(ApiSource.UI),
+    
+    [OscControllerIds.DCO2_MODE]: () => oscApi.toggleDco2Mode(ApiSource.UI),
+    [OscControllerIds.DCO2_SUB_WAVE]: () => oscApi.toggleDco2SubWave(ApiSource.UI),
+    [OscControllerIds.DCO2_WHEEL]: () => oscApi.toggleDco2Wheel(ApiSource.UI),
+    [OscControllerIds.DCO2_LFO]: () => oscApi.toggleDco2Lfo(ApiSource.UI),
+    [OscControllerIds.DCO2_KBD]: () => oscApi.toggleDco2Kbd(ApiSource.UI),
+
+    [OscControllerIds.VCO_SYNC]: () => oscApi.toggleVcoSync(ApiSource.UI),
+    [OscControllerIds.VCO_CROSSMOD_SRC]: () => oscApi.toggleVcoCrossModSrc(ApiSource.UI),
+    [OscControllerIds.VCO_EXT_CV]: () => oscApi.toggleVcoExtCv(ApiSource.UI),
+    [OscControllerIds.VCO_WHEEL]: () => oscApi.toggleVcoWheel(ApiSource.UI),
+    [OscControllerIds.VCO_LFO]: () => oscApi.toggleVcoLfo(ApiSource.UI),
+    [OscControllerIds.VCO_KBD]: () => oscApi.toggleVcoKbd(ApiSource.UI),    
+}
+
+
 export const oscMiddleware = (action: PayloadAction): void => {
     if (increment.match(action)) {
         oscApiMapper[action.payload.ctrlId](action.payload.value)
+    } else if (click.match(action)) {
+        oscApiClickMapper[action.payload.ctrlId]()
     }
 }

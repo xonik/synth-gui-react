@@ -1,4 +1,4 @@
-const LOG_MIDI = false;
+const LOG_MIDI = true;
 
 const midi = (...logItems: any[]) => {
     if(LOG_MIDI){

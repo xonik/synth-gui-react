@@ -62,7 +62,9 @@ const DCO1 = ({ x, y }: Props) => {
     <RoundPushButton8 x={col1} y={bottomRow1}
                       ledPosition="top" ledCount={2} ledLabels={['Sqr', 'Saw']}
                       label="Sub wave" labelPosition="bottom"
-                      midiConfig={midiConstants.DCO1.SUB_WAVE}
+                      ctrlGroup={ctrlGroup}
+                      ctrlId={OscControllerIds.DCO1_SUB_WAVE}
+                      storeValue={dco1.subWave}
     />
 
     <RotaryPot10 x={col2} y={bottomRow1} ledMode="multi" label="Sub -1" position={0.1}

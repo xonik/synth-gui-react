@@ -140,7 +140,7 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
     // themselves.
     const sendMidi = useCallback((position: number) => {
         if(midiConfig){
-            cc.send(midiConfig, Math.round(127 * position));
+            cc.send(midiConfig, Math.round(127 * position), true);
         }
     }, [midiConfig]);
 
@@ -177,9 +177,6 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
         if(midiConfig) {
             const updateValueFromMidi = (midiValue: number) => {
                 setStatePosition(midiValue / 127);
-
-                // TODO: Temporarily echoing midi. Remove and move control to reducer.
-                sendMidi(midiValue / 127);
             }
 
             const subscriberId = cc.subscribe(updateValueFromMidi, midiConfig)
