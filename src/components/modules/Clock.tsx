@@ -3,11 +3,18 @@ import RotaryPot17 from '../pots/RotaryPot17';
 import Header from '../misc/Header';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
 import midiConstants from '../../midi/controllers'
+import { useAppSelector } from '../../synthcore/hooks'
+import { selectMasterClock } from '../../synthcore/modules/masterClock/masterClockReducer'
+import { ControllerGroupIds } from '../../synthcore/types'
+import { OscControllerIds } from '../../synthcore/modules/osc/types'
+import { MasterClockControllerIds } from '../../synthcore/modules/masterClock/types'
 
 interface Props {
     x: number,
     y: number
 }
+
+const ctrlGroup = ControllerGroupIds.MASTER_CLOCK
 
 const Clock = ({ x, y }: Props) => {
 
@@ -16,10 +23,22 @@ const Clock = ({ x, y }: Props) => {
     const col1 = 10;
     const col2 = col1 + 50;
 
+    const masterClock = useAppSelector(selectMasterClock)
+    
     return <svg x={x} y={y}>
         <Header label="Master clock" x={0} y={row1} width={77}/>
-        <RoundPushButton8 labelPosition="bottom" x={col1} y={row2} label="Source" ledCount={3} ledPosition="right" ledLabels={['Master', 'Midi', 'Ext']} midiConfig={midiConstants.MASTER_CLOCK.SOURCE}/>
-        <RotaryPot17 ledMode="single" label="Rate" x={col2} y={row2} position={0.4} midiConfig={midiConstants.MASTER_CLOCK.RATE}/>
+        <RoundPushButton8 labelPosition="bottom" x={col1} y={row2} label="Source" ledCount={3} ledPosition="right" ledLabels={['Master', 'Midi', 'Ext']}
+                          ctrlGroup={ctrlGroup}
+                          ctrlId={MasterClockControllerIds.SOURCE}
+                          storeValue={masterClock.source}
+        />
+
+        <RotaryPot17 ledMode="single" label="Rate" x={col2} y={row2} position={0.4}
+                     ctrlGroup={ctrlGroup}
+                     ctrlId={MasterClockControllerIds.RATE}
+                     storePosition={masterClock.rate}
+        />
+
     </svg>;
 };
 

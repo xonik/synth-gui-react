@@ -3,9 +3,9 @@ import { click, increment } from '../ui/uiReducer'
 import { filtersApi } from '../../synthcoreApi'
 import { ApiSource } from '../../types'
 import { FiltersControllerIds } from './types'
-import { ApiClickMapperType, ApiMapperType } from '../common/types'
+import { ApiClickMapperType, ApiIncrementMapperType } from '../common/types'
 
-const filtersApiMapper: ApiMapperType = {
+const filtersApiMapper: ApiIncrementMapperType = {
     [FiltersControllerIds.LPF_INPUT]: (value: number) => filtersApi.incrementLpfInput(value, ApiSource.UI),
     [FiltersControllerIds.LPF_DRIVE]: (value: number) => filtersApi.incrementLpfDrive(value, ApiSource.UI),
     [FiltersControllerIds.LPF_RESONANCE]: (value: number) => filtersApi.incrementLpfResonance(value, ApiSource.UI),

@@ -3,9 +3,9 @@ import { click, increment } from '../ui/uiReducer'
 import { fxApi } from '../../synthcoreApi'
 import { ApiSource } from '../../types'
 import { FxControllerIds } from './types'
-import { ApiClickMapperType, ApiMapperType } from '../common/types'
+import { ApiClickMapperType, ApiIncrementMapperType } from '../common/types'
 
-const srcMixApiMapper: ApiMapperType = {
+const srcMixApiMapper: ApiIncrementMapperType = {
     [FxControllerIds.DISTORTION_DRIVE]: (value: number) => fxApi.incrementDistortionDrive(value, ApiSource.UI),
     [FxControllerIds.DISTORTION_LEVEL]: (value: number) => fxApi.incrementDistortionLevel(value, ApiSource.UI),
     [FxControllerIds.BIT_CRUSHER_BITS]: (value: number) => fxApi.incrementBitCrusherBits(value, ApiSource.UI),

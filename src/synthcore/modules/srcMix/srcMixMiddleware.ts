@@ -3,9 +3,9 @@ import { click, increment } from '../ui/uiReducer'
 import { srcMixApi } from '../../synthcoreApi'
 import { ApiSource } from '../../types'
 import { SrcMixControllerIds } from './types'
-import { ApiClickMapperType, ApiMapperType } from '../common/types'
+import { ApiClickMapperType, ApiIncrementMapperType } from '../common/types'
 
-const srcMixApiMapper: ApiMapperType = {
+const srcMixApiMapper: ApiIncrementMapperType = {
     [SrcMixControllerIds.LEVEL_OSC1]: (value: number) => srcMixApi.incrementLevelOsc1(value, ApiSource.UI),
     [SrcMixControllerIds.LEVEL_OSC2]: (value: number) => srcMixApi.incrementLevelOsc2(value, ApiSource.UI),
     [SrcMixControllerIds.LEVEL_OSC3]: (value: number) => srcMixApi.incrementLevelOsc3(value, ApiSource.UI),

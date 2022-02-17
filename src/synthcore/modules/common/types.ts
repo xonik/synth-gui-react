@@ -1,5 +1,5 @@
 
-export type ApiMapperType = {
+export type ApiIncrementMapperType = {
     [key: number]: (value: number) => void
 }
 

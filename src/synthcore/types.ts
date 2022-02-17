@@ -7,7 +7,8 @@ export enum ControllerGroupIds {
     SRC_MIX,
     FX,
     RING_MOD,
-    NOISE
+    NOISE,
+    MASTER_CLOCK,
 }
 
 export enum ApiSource {

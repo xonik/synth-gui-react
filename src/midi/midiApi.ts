@@ -7,6 +7,7 @@ import srcMixMidiApi from '../synthcore/modules/srcMix/srcMixMidiApi'
 import fxMidiApi from '../synthcore/modules/fx/fxMidiApi'
 import ringModMidiApi from '../synthcore/modules/ringMod/ringModMidiApi'
 import noiseMidiApi from '../synthcore/modules/noise/noiseMidiApi'
+import masterClockMidiApi from '../synthcore/modules/masterClock/masterClockMidiApi'
 
 const initReceive = () => {
     envMidiApi.initReceive()
@@ -18,6 +19,7 @@ const initReceive = () => {
     fxMidiApi.initReceive()
     ringModMidiApi.initReceive()
     noiseMidiApi.initReceive()
+    masterClockMidiApi.initReceive()
 }
 
 const midiApi = {
@@ -31,6 +33,7 @@ const midiApi = {
     fx: fxMidiApi,
     ringMod: ringModMidiApi,
     noise: noiseMidiApi,
+    masterClock: masterClockMidiApi,
 }
 
 export default midiApi

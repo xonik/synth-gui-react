@@ -3,9 +3,9 @@ import { ApiSource } from '../../types'
 import { PayloadAction } from '@reduxjs/toolkit'
 import oscApi from './oscApi'
 import { click, increment } from '../ui/uiReducer'
-import { ApiClickMapperType, ApiMapperType } from '../common/types'
+import { ApiClickMapperType, ApiIncrementMapperType } from '../common/types'
 
-const oscApiMapper: ApiMapperType = {
+const oscApiMapper: ApiIncrementMapperType = {
     [OscControllerIds.DCO1_NOTE]: (value: number) => oscApi.incrementDco1Note(value, ApiSource.UI),
     [OscControllerIds.DCO1_WAVEFORM]: (value: number) => oscApi.incrementDco1Waveform(value, ApiSource.UI),
     [OscControllerIds.DCO1_SUB1]: (value: number) => oscApi.incrementDco1Sub1Level(value, ApiSource.UI),

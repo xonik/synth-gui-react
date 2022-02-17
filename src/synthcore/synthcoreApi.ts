@@ -5,6 +5,7 @@ import srcMixApi from './modules/srcMix/srcMixApi'
 import fxApi from './modules/fx/fxApi'
 import ringModApi from './modules/ringMod/ringModApi'
 import noiseApi from './modules/noise/noiseApi'
+import masterClockApi from './modules/masterClock/masterClockApi'
 import mainDisplayApi from './modules/mainDisplay/mainDisplayApi'
 
 export {
@@ -15,5 +16,6 @@ export {
     fxApi,
     ringModApi,
     noiseApi,
+    masterClockApi,
     mainDisplayApi,
 }

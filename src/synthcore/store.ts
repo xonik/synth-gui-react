@@ -11,6 +11,7 @@ import srcMixReducer from './modules/srcMix/srcMixReducer'
 import fxReducer from './modules/fx/fxReducer'
 import ringModReducer from './modules/ringMod/ringModReducer'
 import noiseReducer from './modules/noise/noiseReducer'
+import masterClockReducer from './modules/masterClock/masterClockReducer'
 
 export const store = configureStore({
     reducer: {
@@ -25,6 +26,7 @@ export const store = configureStore({
         fx: fxReducer,
         ringMod: ringModReducer,
         noise: noiseReducer,
+        masterClock: masterClockReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()
