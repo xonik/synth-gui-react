@@ -6,6 +6,7 @@ const mapNRPN = {
     DCO2_PITCH: 4,
     VCO_PITCH: 5,
     MOD_AMOUNT: 6,
+    MOD_UI_AMOUNT: 7,
 }
 
 export default mapNRPN

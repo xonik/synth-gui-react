@@ -44,10 +44,11 @@ export const numericPropFuncs = (property: NumericProperty) => {
 export const togglePropFuncs = (property: TogglableProperty) => {
     const set = (value: number, source: ApiSource) => {
         const currentValue = property.selector()
+        const boundedValue = getBounded(value, 0, property.config.values.length - 1)
+
         if (value === currentValue) {
             return
         }
-        const boundedValue = getBounded(value, 0, property.config.values.length - 1)
 
         dispatch(property.action({ value: boundedValue }))
         property.midi(source, boundedValue)

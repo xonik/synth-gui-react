@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
 import { ApiSource } from '../../types'
+import { NumericPayload } from '../common/CommonReducer'
 
 type ModsState = {
     gui: {
@@ -10,6 +11,10 @@ type ModsState = {
         dstParam: number;
         lastModSelectSource: ApiSource | undefined;
     },
+    ui: {
+        amount: number,
+        routeButton: number,
+    }
     modValues: number[][][];
 }
 
@@ -20,6 +25,10 @@ export const initialState: ModsState = {
         dstFunc: 0,
         dstParam: 0,
         lastModSelectSource: undefined
+    },
+    ui: {
+        amount: 0,
+        routeButton: 0,
     },
     modValues: [],
 }
@@ -99,6 +108,13 @@ export const modsSlice = createSlice({
             state.modValues[sourceId][dstId][dstCtrlIndex] = modValue
         },
 
+        setUiRouteButton: (state, { payload }: PayloadAction<NumericPayload>) => {
+            state.ui.routeButton = payload.value;
+        },
+        setUiAmount: (state, { payload }: PayloadAction<NumericPayload>) => {
+            state.ui.amount = payload.value;
+        },
+
         // actions only consumed by api
         setGuiMod: (state, { payload }: PayloadAction<GuiSelectModPayload>) => {
         },
@@ -113,9 +129,13 @@ export const {
     setGuiMod,
     setModValue,
     setLastModSelectSource,
+
+    setUiAmount,
+    setUiRouteButton,
 } = modsSlice.actions
 
 export const selectGuiSource = (state: RootState) => state.mods.gui.source
+export const selectModsUi = (state: RootState) => state.mods.ui
 export const selectGuiDstGroup = (state: RootState) => state.mods.gui.dstGroup
 export const selectGuiDstFunc = (state: RootState) => state.mods.gui.dstFunc
 export const selectGuiDstParam = (state: RootState) => state.mods.gui.dstParam

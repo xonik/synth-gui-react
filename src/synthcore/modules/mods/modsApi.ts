@@ -8,13 +8,21 @@ import {
     setGuiDstFunc as setGuiDstFuncAction,
     setGuiDstParam as setGuiDstParamAction,
     setModValue as setModValueAction,
+
+    setUiAmount,
+    setUiRouteButton,
+
     selectGuiSource,
     selectGuiDstGroup,
     selectGuiDstFunc,
     selectGuiDstParam,
-    selectModValue
+    selectModValue,
+    selectModsUi,
 } from './modsReducer'
 import { digitalModSources, modDst } from './utils'
+import { numericPropFuncs } from '../common/commonApi'
+import modsControllers from './modsControllers'
+import modsMidiApi from './modsMidiApi'
 
 const setGuiMod = (
     guiSource: number,
@@ -130,6 +138,33 @@ const incrementGuiModValue = (inc: number, source: ApiSource) => {
     setModValue(sourceId, dstId, dstCtrlIndex, nextModValue, source)
 }
 
+const uiAmount = numericPropFuncs({
+    selector: () => selectModsUi(store.getState()).amount,
+    action: setUiAmount,
+    midi: modsMidiApi.setUiAmount,
+})
+
+const setRouteButton = (value: number, source: ApiSource) => {
+    const currentValue = selectModsUi(store.getState()).routeButton
+    const boundedValue = getBounded(value, 0, modsControllers.ROUTE_BUTTON.values.length - 1)
+
+    if (value === currentValue) {
+        return
+    }
+                     console.log('seet route to', value)
+    dispatch(setUiRouteButton({ value: boundedValue }))
+    modsMidiApi.setUiRouteButton(source, boundedValue)
+}
+
+const toggleRouteButton = (value: number, source: ApiSource) => {
+    const currentValue = selectModsUi(store.getState()).routeButton
+    if(value === currentValue) {
+        setRouteButton(0, source)
+    } else {
+        setRouteButton(value, source)
+    }
+}
+
 const modsApi = {
     setGuiMod,
     setGuiSource,
@@ -142,6 +177,13 @@ const modsApi = {
     incrementGuiDstParam,
     setModValue,
     incrementGuiModValue,
+
+    setUiAmount: uiAmount.set,
+    incrementUiAmount: uiAmount.increment,
+
+    setRouteButton,
+    toggleRouteButton,
+
 }
 
 export default modsApi

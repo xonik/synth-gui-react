@@ -7,9 +7,9 @@ import NRPN from '../../../midi/mapNRPN'
 interface ModsControllers {
     props: FuncProps
     AMOUNT: ControllerConfigNRPN
-    SRC: ControllerConfigCCWithValue
+    UI_AMOUNT: ControllerConfigNRPN
+    ROUTE_BUTTON: ControllerConfigCCWithValue
     SET_SRC_ID: ControllerConfigCC
-    DST: ControllerConfigCCWithValue
     SET_DST_ID: ControllerConfigCC
     SET_DST_INDEX: ControllerConfigCC
 }
@@ -17,11 +17,12 @@ interface ModsControllers {
 const modsControllers: ModsControllers = {
     props: { label: 'Routing' },
     AMOUNT: { id: ControllerIdNonModPots.MOD_AMOUNT, label: 'Amount', type: 'pot', addr: NRPN.MOD_AMOUNT },
+    UI_AMOUNT: { id: ControllerIdNonModPots.MOD_AMOUNT, label: 'Amount', type: 'pot', addr: NRPN.MOD_UI_AMOUNT },
 
-    // from-button
-    SRC: {
+    // from and to-buttons
+    ROUTE_BUTTON: {
         id: ControllerIdNonMod.MOD_DST,
-        label: 'From',
+        label: 'From-To',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
         values: [
@@ -37,19 +38,6 @@ const modsControllers: ModsControllers = {
         label: 'From',
         type: 'com',
         cc: CC.MOD_SRC_ID,
-    },
-
-    // to-button
-    DST: {
-        id: ControllerIdNonMod.MOD_DST,
-        label: 'To id',
-        type: 'button',
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.ROUTE_OFF,
-            BUTTONS.BUTTONS_LEFT.values.ROUTE_FROM_ON,
-            BUTTONS.BUTTONS_LEFT.values.ROUTE_TO_ON,
-        ],
     },
 
     // set destination controller id

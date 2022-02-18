@@ -52,7 +52,7 @@ const DCO1 = ({ x, y }: Props) => {
                       storeValue={dco1.sync}
     />
 
-    {/*<RotaryPot10 x={col4} y={topRow} ledMode="multi" label="Super saw" position={0.3} midiConfig={midiConstants.DCO1.SUPER_SAW}/>*/}
+    {/*<RotaryPot10 x={col4} y={topRow} ledMode="multi" label="Super saw" position={0.3}/>*/}
 
     <RoundPushButton8 x={col4} y={y+11}
                       ledPosition="top" ledCount={3} ledLabels={['DCO', 'WT', 'PCM']}

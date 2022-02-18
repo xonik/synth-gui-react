@@ -4,7 +4,6 @@ import RotaryPot10 from '../pots/RotaryPot10';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
 import Header from '../misc/Header';
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
-import midiConstants from '../../midi/controllers'
 import { OscControllerIds } from '../../synthcore/modules/osc/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectDco2 } from '../../synthcore/modules/osc/oscReducer'
@@ -37,19 +36,19 @@ const DCO2 = ({ x, y }: Props) => {
                  storePosition={dco2.waveform}
     />
 
-    <RotaryPot10 x={col1} y={topRow} ledMode="single" label="Note" position={0.5} midiConfig={midiConstants.DCO2.NOTE}
+    <RotaryPot10 x={col1} y={topRow} ledMode="single" label="Note" position={0.5}
                  ctrlGroup={ctrlGroup}
                  ctrlId={OscControllerIds.DCO2_NOTE}
                  storePosition={dco2.note}
     />
 
-    <RotaryPot10 x={col1} y={y} ledMode="single" label="Detune" position={0.5} midiConfig={midiConstants.DCO2.DETUNE}
+    <RotaryPot10 x={col1} y={y} ledMode="single" label="Detune" position={0.5}
                  ctrlGroup={ctrlGroup}
                  ctrlId={OscControllerIds.DCO2_DETUNE}
                  storePosition={dco2.detune}
     />
 
-    {/*<RotaryPot10 x={col4} y={topRow} ledMode="multi" label="Super saw" position={0.3} midiConfig={midiConstants.DCO2.SUPER_SAW}/>*/}
+    {/*<RotaryPot10 x={col4} y={topRow} ledMode="multi" label="Super saw" position={0.3}/>*/}
 
     <RoundPushButton8 x={col4} y={y+11}
                       ledPosition="top" ledCount={3} ledLabels={['DCO', 'WT', 'PCM']}
