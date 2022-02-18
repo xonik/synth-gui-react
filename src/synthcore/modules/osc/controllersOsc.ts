@@ -1,8 +1,8 @@
-import CC from '../../mapCC'
-import { BUTTONS } from '../../buttons'
-import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue, ControllerConfigNRPN } from '../../types'
-import NRPN from '../../mapNRPN'
-import { ControllerIdDst, ControllerIdNonMod } from '../../controllerIds'
+import CC from '../../../midi/mapCC'
+import { BUTTONS } from '../../../midi/buttons'
+import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue, ControllerConfigNRPN } from '../../../midi/types'
+import NRPN from '../../../midi/mapNRPN'
+import { ControllerIdDst, ControllerIdNonMod } from '../../../midi/controllerIds'
 
 interface ControllersOsc {
     DCO1: {

@@ -1,6 +1,6 @@
-import { BUTTONS } from '../../buttons'
-import { FuncProps, ControllerConfigCCWithValue } from '../../types'
-import { ControllerIdNonMod } from '../../controllerIds'
+import { BUTTONS } from '../../../midi/buttons'
+import { FuncProps, ControllerConfigCCWithValue } from '../../../midi/types'
+import { ControllerIdNonMod } from '../../../midi/controllerIds'
 
 
 interface ControllersTranspose {

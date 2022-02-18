@@ -1,7 +1,7 @@
-import CC from '../../mapCC'
-import { BUTTONS } from '../../buttons'
-import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../types'
-import { ControllerIdDst, ControllerIdIntermediate, ControllerIdNonMod } from '../../controllerIds'
+import CC from '../../../midi/mapCC'
+import { BUTTONS } from '../../../midi/buttons'
+import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
+import { ControllerIdDst, ControllerIdIntermediate, ControllerIdNonMod } from '../../../midi/controllerIds'
 
 
 

@@ -1,6 +1,6 @@
-import CC from '../../mapCC'
-import { FuncProps, ControllerConfigCC } from '../../types'
-import { ControllerIdDst } from '../../controllerIds'
+import CC from '../../../midi/mapCC'
+import { FuncProps, ControllerConfigCC } from '../../../midi/types'
+import { ControllerIdDst } from '../../../midi/controllerIds'
 
 
 interface ControllersVoiceOut {
