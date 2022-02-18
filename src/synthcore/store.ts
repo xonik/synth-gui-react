@@ -18,6 +18,7 @@ import postMixReducer from './modules/postMix/postMixReducer'
 import commonFxReducer from './modules/commonFx/commonFxReducer'
 import outReducer from './modules/out/outReducer'
 import lfoReducer from './modules/lfo/lfoReducer'
+import voicesReducer from './modules/voices/voicesReducer'
 
 export const store = configureStore({
     reducer: {
@@ -39,6 +40,7 @@ export const store = configureStore({
         postMix: postMixReducer,
         commonFx: commonFxReducer,
         out: outReducer,
+        voices: voicesReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware()

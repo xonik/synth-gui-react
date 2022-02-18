@@ -15,6 +15,7 @@ export enum ControllerGroupIds {
     COMMON_FX,
     OUT,
     LFO,
+    VOICES,
 }
 
 export enum ApiSource {

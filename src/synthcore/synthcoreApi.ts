@@ -12,6 +12,7 @@ import postMixApi from './modules/postMix/postMixApi'
 import commonFxApi from './modules/commonFx/commonFxApi'
 import outApi from './modules/out/outApi'
 import lfoApi from './modules/lfo/lfoApi'
+import voicesApi from './modules/voices/voicesApi'
 import mainDisplayApi from './modules/mainDisplay/mainDisplayApi'
 
 export {
@@ -29,5 +30,6 @@ export {
     commonFxApi,
     outApi,
     lfoApi,
+    voicesApi,
     mainDisplayApi,
 }

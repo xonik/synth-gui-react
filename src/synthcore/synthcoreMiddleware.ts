@@ -16,6 +16,7 @@ import { postMixMiddleware } from './modules/postMix/postMixMiddleware'
 import { commonFxMiddleware } from './modules/commonFx/commonFxMiddleware'
 import { outMiddleware } from './modules/out/outMiddleware'
 import { lfoMiddleware } from './modules/lfo/lfoMiddleware'
+import { voicesMiddleware } from './modules/voices/voicesMiddleware'
 
 export const synthcoreMiddleware: Middleware<{}, any> = storeAPI => next => action => {
     if (action.payload.ctrlGroup === ControllerGroupIds.ENV || action.type.indexOf('envelopes/') > -1) {
@@ -48,6 +49,8 @@ export const synthcoreMiddleware: Middleware<{}, any> = storeAPI => next => acti
         outMiddleware(action)
     } else if (action.payload.ctrlGroup === ControllerGroupIds.LFO || action.type.indexOf('lfos/') > -1) {
         lfoMiddleware(action)
+    } else if (action.payload.ctrlGroup === ControllerGroupIds.VOICES || action.type.indexOf('voices/') > -1) {
+        voicesMiddleware(action)
     } else if(action.payload.ctrlGroup === ControllerGroupIds.MAIN_DISP) {
         mainDisplayMiddleware(action)
     }
