@@ -23,7 +23,7 @@ const Ringmod = ({ x, y }: Props) => {
                       label="Sources" labelPosition="bottom"
                       ctrlGroup={ctrlGroup}
                       ctrlId={RingModControllerIds.SOURCE}
-                      storeValue={ringMod.source}
+                      value={ringMod.source}
     />
   </>;
 };

@@ -1,9 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback } from 'react'
 import classNames from 'classnames'
 import arc from '../../utils/svg/arc'
 import RotaryPotBase from './RotaryPotBase'
-import { ControllerConfigCC } from '../../midi/types'
-import { cc } from '../../midi/midibus'
 import { useAppDispatch } from '../../synthcore/hooks'
 import { increment } from '../../synthcore/modules/ui/uiReducer'
 import { ControllerGroupIds } from '../../synthcore/types'
@@ -19,10 +17,7 @@ export interface Props {
     ledMode?: LedMode
     potMode?: PotMode
     label: string
-    position?: number;
-    midiConfig?: ControllerConfigCC;
-    defaultValue?: number;
-    storePosition?: number;
+    value?: number;
     ctrlGroup?: ControllerGroupIds;
     ctrlId?: number;
     ctrlIndex?: number;
@@ -104,8 +99,8 @@ const getLedPos = (centerLed: number, ledCount: number, mode: PotMode, position:
 const RotaryPotWithLedRingBase = (props: Props & Config) => {
 
     // Position should be in the range 0-1 in all modes but pan. In pan the range is -0.5 - 0.5
-    const { x, y, ledMode = 'single', potMode = 'normal', label, midiConfig, position: defaultValue,
-        storePosition, ctrlGroup, ctrlId, ctrlIndex, disabled
+    const { x, y, ledMode = 'single', potMode = 'normal', label,
+        value, ctrlGroup, ctrlId, ctrlIndex, disabled
     } = props
 
     const localControl = ctrlGroup === undefined && ctrlId === undefined && ctrlIndex === undefined
@@ -127,39 +122,12 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
     // For objects centered around 0, use overflow: visible
     // For scaling, use viewBox on the outer svg and unitless the rest of the way
 
-    const [statePosition, setStatePosition] = useState(defaultValue || 0);
-
     // positive pointer
-    const currentPosition = storePosition !== undefined ? storePosition : statePosition
+    const currentPosition = value || 0
     const ledPosition = getLedPos(centerLed, ledCount, potMode, currentPosition)
 
     // negative pointer used for spread
     const negLedPosition = centerLed - (ledPosition - centerLed)
-
-    // TODO: Remove once all functions go through redux store. Until then, pots without connection will send and receive midi
-    // themselves.
-    const sendMidi = useCallback((position: number) => {
-        if(midiConfig){
-            cc.send(midiConfig, Math.round(127 * position), true);
-        }
-    }, [midiConfig]);
-
-    const localIncrement = useCallback((steps: number, stepSize: number) => {
-        if(disabled) return;
-
-        const newPosition = statePosition + steps * stepSize;
-        if(newPosition < 0){
-            if(statePosition > 0){
-                sendMidi(0);
-            }
-        } else if(newPosition > 1){
-            if(statePosition < 1) {
-                sendMidi(1);
-            }
-        } else if(newPosition !== statePosition){
-            sendMidi(newPosition);
-        }
-    }, [disabled, sendMidi, statePosition])
 
     const onIncrement = useCallback((steps: number, stepSize: number) => {
         if(disabled) return;
@@ -171,28 +139,14 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
             const value = potMode === 'pan' ? steps * (stepSize * 2) : steps * stepSize
             dispatch(increment({ ctrlGroup, ctrlId, value, ctrlIndex }))
         }
-    }, [disabled, ctrlGroup, ctrlId, ctrlIndex, dispatch])
-
-    useEffect(() => {
-        if(midiConfig) {
-            const updateValueFromMidi = (midiValue: number) => {
-                setStatePosition(midiValue / 127);
-            }
-
-            const subscriberId = cc.subscribe(updateValueFromMidi, midiConfig)
-            return function cleanup() {
-                cc.unsubscribe(midiConfig, subscriberId);
-            };
-        }
-    });
+    }, [disabled, ctrlId, ctrlGroup, potMode, dispatch, ctrlIndex])
 
     return (
         <svg x={x} y={y} className="pot">
             <RotaryPotBase
                 knobRadius={knobRadius}
-                onIncrement={localControl ? localIncrement : onIncrement}
+                onIncrement={onIncrement}
                 arc={ledArc}
-                defaultValue={defaultValue }
             />
             <path d={windowArc} className="pot-ring-window" strokeWidth={windowWidth}/>
             {ledAngles.map((angle, led) => {

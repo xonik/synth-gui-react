@@ -48,13 +48,13 @@ const DigitalFX = ({ x, y }: Props) => {
     <RoundPushButton8 x={col1} y={row2left} label="Source" ledCount={2} ledLabels={['FX1', 'FX2']} labelPosition="bottom" ledPosition="top"
                       ctrlGroup={ctrlGroup}
                       ctrlId={CommonFxControllerIds.DSP1_SOURCE}
-                      storeValue={dsp1.source}
+                      value={dsp1.source}
     />
 
     <RoundPushButton8 x={col1} y={row3left} label="Source" ledCount={2} ledLabels={['FX1', 'FX2']} labelPosition="top" ledPosition="bottom"
                       ctrlGroup={ctrlGroup}
                       ctrlId={CommonFxControllerIds.DSP2_SOURCE}
-                      storeValue={dsp2.source}
+                      value={dsp2.source}
     />
 
     <RotaryPotWOLeds10 x={col2} y={row1}
@@ -97,7 +97,7 @@ const DigitalFX = ({ x, y }: Props) => {
     <RoundLedPushButton8 x={col5} y={displayCenterY} label="Chain" labelPosition="bottom"
                          ctrlGroup={ctrlGroup}
                          ctrlId={CommonFxControllerIds.DSP2_CHAIN}
-                         storeValue={dsp2.chain}
+                         value={dsp2.chain}
     />
 
     <RotaryPotWOLeds10 x={col5} y={row4right} label="Effect"

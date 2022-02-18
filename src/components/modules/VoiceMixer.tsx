@@ -30,10 +30,10 @@ const ctrlGroup = ControllerGroupIds.POST_MIX
 const VoiceMixerChannel = ({ x, y, label, potMode="normal", ledMode="multi", ctrlId, storePos}: ChannelProps) => {
 
   return <>
-    <RotaryPot17 label={label} x={x} y={y} position={0.4} potMode={potMode} ledMode={ledMode}
+    <RotaryPot17 label={label} x={x} y={y} potMode={potMode} ledMode={ledMode}
                  ctrlGroup={ctrlGroup}
                  ctrlId={ctrlId}
-                 storePosition={storePos}
+                 value={storePos}
     />
 
   </>;

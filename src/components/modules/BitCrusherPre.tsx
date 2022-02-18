@@ -33,31 +33,31 @@ const BitCrusherPre = ({ x, y }: Props) => {
         <RoundPushButton8 x={col1} y={row2 + 8} ledPosition="top" ledCount={2} label="In" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrlId={FxControllerIds.BIT_CRUSHER_IN}
-                          storeValue={bitCrusher.in}
+                          value={bitCrusher.in}
         />
 
-        <RotaryPot10 ledMode="single" ledCount={12} label="Bits" x={col2} y={row2-10} position={0.7}
+        <RotaryPot10 ledMode="single" ledCount={12} label="Bits" x={col2} y={row2-10}
                      ctrlGroup={ctrlGroup}
                      ctrlId={FxControllerIds.BIT_CRUSHER_BITS}
-                     storePosition={bitCrusher.bits}
+                     value={bitCrusher.bits}
         />
 
-        <RotaryPot10 ledMode="single" label="Rate" x={col3} y={row2 + 5} position={0.4}
+        <RotaryPot10 ledMode="single" label="Rate" x={col3} y={row2 + 5}
                      ctrlGroup={ctrlGroup}
                      ctrlId={FxControllerIds.BIT_CRUSHER_RATE}
-                     storePosition={bitCrusher.rate}
+                     value={bitCrusher.rate}
         />
 
-        <RotaryPot17 ledMode="multi" label="Level" x={col4} y={row2} position={0.4}
+        <RotaryPot17 ledMode="multi" label="Level" x={col4} y={row2}
                      ctrlGroup={ctrlGroup}
                      ctrlId={FxControllerIds.BIT_CRUSHER_LEVEL}
-                     storePosition={bitCrusher.level}
+                     value={bitCrusher.level}
         />
 
         <RoundPushButton8 x={col5} y={row2 + 8} ledPosition="top" ledCount={2} label="Out" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrlId={FxControllerIds.BIT_CRUSHER_OUT}
-                          storeValue={bitCrusher.out}
+                          value={bitCrusher.out}
         />
 
     </>;

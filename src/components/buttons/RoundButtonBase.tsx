@@ -36,36 +36,19 @@ export interface Props {
     // Number of leds AROUND the button. If this is undefined but ledButton is true, the button itself is a led.
     ledCount?: number;
 
-    // What midi messages to send when clicking the button.
-    // If the midi values array is longer than the ledCount (+1 if hasOff is used), all leds will light up on the rest, making it possible
-    // to create a all-on mode.
-    midiConfig?: ControllerConfigCC;
-
     // True if the first midi value is an off state, lets us switch off all diodes
     hasOff?: boolean;
 
     // Normally, clicking a button adds one modulo the length of the value array to the value. If this is true it subtracts instead
     reverse?: boolean;
 
-    // This is true by default, meaning that modulo is used when the next value is larger than the number of values in the array.
-    // If it is set to false, the button stops sending messages when the end of the value array is reached. Useful for up/down buttons.
-    loop?: boolean;
-
     // Used if button is part of a group - "radio button"
     radioButtonIndex?: number;
-
-    // External callback to do stuff like light up external leds when a value changes.
-    onUpdate?: (valueIndex: number) => void;
-
-    onClick?: () => void;
-
-    // Default value is 0 unless this is set to another index in the midi values array. Must be less than the length of the values array.
-    defaultValueIndex?: number;
 
     ctrlGroup?: ControllerGroupIds;
     ctrlId?: number;
     ctrlIndex?: number;
-    storeValue?: number;
+    value?: number;
 
     // Only used if rotary button
     resolution?: number;
@@ -225,14 +208,12 @@ const getRenderProps = (props: Props & Config): RenderProps => {
 
 export const RoundButtonBase = (props: Props & Config) => {
 
-    const { x, y, label, midiConfig, radioButtonIndex,
-        hasOff, ledCount, ledButton, onUpdate, reverse, loop = true, defaultValueIndex, onClick,
-        ctrlGroup, ctrlId, ctrlIndex, storeValue, resolution
+    const { x, y, label, radioButtonIndex,
+        hasOff, ledCount, ledButton, reverse,
+        ctrlGroup, ctrlId, ctrlIndex, value, resolution
     } = props
 
-    const [stateValue, setStateValue] = useState(defaultValueIndex || 0);
-
-    const currentValue = storeValue !== undefined ? storeValue : stateValue;
+    const currentValue = value || 0;
 
     // off is always the first element in the midi config values list, so when a radio
     // button has an off state we need to offset our index by one.
@@ -247,48 +228,10 @@ export const RoundButtonBase = (props: Props & Config) => {
     }, [ctrlGroup, ctrlId])
 
     const handleOnClick = useCallback(() => {
-        if(onClick) onClick();
-
         if(ctrlId !== undefined && ctrlGroup !== undefined) {
             dispatch(click({ ctrlGroup, ctrlId, ctrlIndex, radioButtonIndex, reverse }))
-        } else {
-            if (midiConfig && midiConfig.values) {
-                if (radioButtonIndex !== undefined) {
-                    if (midiConfig.values.length >= radioButtonValueIndex) {
-                        if (hasOffValue && currentValue === radioButtonValueIndex) {
-                            cc.send(midiConfig, midiConfig.values[0]);
-                        } else {
-                            cc.send(midiConfig, midiConfig.values[radioButtonValueIndex]);
-                        }
-                    }
-                } else if (reverse) {
-                    const valueCandidate = (currentValue - 1);
-                    if (loop) {
-                        const newValue = (valueCandidate + midiConfig.values.length) % midiConfig.values.length;
-                        cc.send(midiConfig, midiConfig.values[newValue]);
-                    } else {
-                        if (valueCandidate >= 0) {
-                            cc.send(midiConfig, midiConfig.values[valueCandidate]);
-                        }
-                    }
-                } else {
-                    const valueCandidate = (currentValue + 1);
-                    if (loop) {
-                        const newValue = valueCandidate % midiConfig.values.length;
-                        cc.send(midiConfig, midiConfig.values[newValue]);
-                    } else {
-                        if (valueCandidate < midiConfig.values.length) {
-                            cc.send(midiConfig, midiConfig.values[valueCandidate]);
-                        }
-                    }
-                }
-            }
         }
-    }, [
-        radioButtonValueIndex, hasOffValue, midiConfig,
-        currentValue, radioButtonIndex, reverse, loop,
-        onClick, ctrlId, ctrlGroup, ctrlIndex
-    ])
+    }, [radioButtonIndex, reverse, ctrlId, ctrlGroup, ctrlIndex])
 
     const handleOnRelease = useCallback(() => {
         if(ctrlId !== undefined && ctrlGroup !== undefined) {
@@ -297,21 +240,6 @@ export const RoundButtonBase = (props: Props & Config) => {
     }, [
         ctrlId, ctrlGroup, ctrlIndex
     ])
-
-    useEffect(() => {
-        if(midiConfig && midiConfig.values) {
-            const updateValueFromMidi = (midiValue: number) => {
-                const newValue = midiConfig.values?.indexOf(midiValue) || 0;
-                setStateValue(newValue);
-                if(onUpdate) onUpdate(newValue);
-            }
-
-            const subscriberId = cc.subscribe(updateValueFromMidi, midiConfig)
-            return function cleanup() {
-                cc.unsubscribe(midiConfig, subscriberId);
-            };
-        }
-    });
 
     const ledOn: boolean[] = [];
     for(let i = 0; i< (ledCount || 1); i++){

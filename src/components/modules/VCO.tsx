@@ -30,23 +30,23 @@ const VCO = ({ x, y }: Props) => {
 
   return <>
     <Header label="Oscillator 3" x={x} y={topRow - 20} width={100} align="center"/>
-    <RotaryPot32 x={x} y={y} ledMode="single" label="Waveform" position={0.8}
+    <RotaryPot32 x={x} y={y} ledMode="single" label="Waveform"
                  ctrlGroup={ctrlGroup}
                  ctrlId={OscControllerIds.VCO_WAVEFORM}
-                 storePosition={vco.waveform}
+                 value={vco.waveform}
     />
 
 
-    <RotaryPot10 x={col1} y={topRow} ledMode="single" label="Note" position={0.5}
+    <RotaryPot10 x={col1} y={topRow} ledMode="single" label="Note"
                  ctrlGroup={ctrlGroup}
                  ctrlId={OscControllerIds.VCO_NOTE}
-                 storePosition={vco.note}
+                 value={vco.note}
     />
 
-    <RotaryPot10 x={col1} y={y} ledMode="single" label="Detune" position={0.5}
+    <RotaryPot10 x={col1} y={y} ledMode="single" label="Detune"
                  ctrlGroup={ctrlGroup}
                  ctrlId={OscControllerIds.VCO_DETUNE}
-                 storePosition={vco.detune}
+                 value={vco.detune}
     />
 
     <RoundPushButton8 x={col2} y={topRow}
@@ -55,13 +55,13 @@ const VCO = ({ x, y }: Props) => {
                       hasOff
                       ctrlGroup={ctrlGroup}
                       ctrlId={OscControllerIds.VCO_SYNC}
-                      storeValue={vco.sync}
+                      value={vco.sync}
     />
 
-    <RotaryPot10 x={col1} y={bottomRow1} ledMode="multi" label="Cross mod" position={0.1}
+    <RotaryPot10 x={col1} y={bottomRow1} ledMode="multi" label="Cross mod"
                  ctrlGroup={ctrlGroup}
                  ctrlId={OscControllerIds.VCO_CROSSMOD}
-                 storePosition={vco.crossMod}
+                 value={vco.crossMod}
     />
 
     <RoundPushButton8 x={col2} y={bottomRow1}
@@ -69,37 +69,37 @@ const VCO = ({ x, y }: Props) => {
                       label="Source" labelPosition="bottom"
                       ctrlGroup={ctrlGroup}
                       ctrlId={OscControllerIds.VCO_CROSSMOD_SRC}
-                      storeValue={vco.crossModSrc}
+                      value={vco.crossModSrc}
     />
 
-    <RotaryPot10 x={col4} y={bottomRow1} ledMode="single" label="PW" position={0.3}
+    <RotaryPot10 x={col4} y={bottomRow1} ledMode="single" label="PW"
                  ctrlGroup={ctrlGroup}
                  ctrlId={OscControllerIds.VCO_PW}
-                 storePosition={vco.pw}
+                 value={vco.pw}
     />
 
     <RoundLedPushButton8 x={col1} y={bottomRow2} label="Ext CV" labelPosition="bottom"
                          ctrlGroup={ctrlGroup}
                          ctrlId={OscControllerIds.VCO_EXT_CV}
-                         storeValue={vco.extCv}
+                         value={vco.extCv}
     />
 
     <RoundLedPushButton8 x={col2} y={bottomRow2} label="Wheel" labelPosition="bottom"
                          ctrlGroup={ctrlGroup}
                          ctrlId={OscControllerIds.VCO_WHEEL}
-                         storeValue={vco.wheel}
+                         value={vco.wheel}
     />
 
     <RoundLedPushButton8 x={col3} y={bottomRow2} label="LFO" labelPosition="bottom"
                          ctrlGroup={ctrlGroup}
                          ctrlId={OscControllerIds.VCO_LFO}
-                         storeValue={vco.lfo}
+                         value={vco.lfo}
     />
 
     <RoundLedPushButton8 x={col4} y={bottomRow2} label="Kbd" labelPosition="bottom"
                          ctrlGroup={ctrlGroup}
                          ctrlId={OscControllerIds.VCO_KBD}
-                         storeValue={vco.kbd}
+                         value={vco.kbd}
     />
 
   </>;

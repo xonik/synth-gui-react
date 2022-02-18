@@ -30,71 +30,71 @@ const LowPassFilter = ({ x, y }: Props) => {
 
     return <>
         <Header label="Low pass filter" x={x} y={topRow - 27} width={110} align="center"/>
-        <RotaryPot40 x={x} y={y} ledMode="single" label="Cutoff" position={0.8}
+        <RotaryPot40 x={x} y={y} ledMode="single" label="Cutoff"
                      ctrlGroup={ctrlGroup}
                      ctrlId={FiltersControllerIds.LPF_CUTOFF}
-                     storePosition={lpf.cutoff}
+                     value={lpf.cutoff}
         />
 
-        <RotaryPot17 x={col1} y={topRow} ledMode="multi" label="Input" position={0.5}
+        <RotaryPot17 x={col1} y={topRow} ledMode="multi" label="Input"
                      ctrlGroup={ctrlGroup}
                      ctrlId={FiltersControllerIds.LPF_INPUT}
-                     storePosition={lpf.input}
+                     value={lpf.input}
         />
 
-        <RotaryPot17 x={x} y={topRow} ledMode="multi" label="Drive" position={0.5}
+        <RotaryPot17 x={x} y={topRow} ledMode="multi" label="Drive"
                      ctrlGroup={ctrlGroup}
                      ctrlId={FiltersControllerIds.LPF_DRIVE}
-                     storePosition={lpf.drive}
+                     value={lpf.drive}
         />
 
-        <RotaryPot17 x={col4} y={topRow} ledMode="multi" label="Resonance" position={0.3}
+        <RotaryPot17 x={col4} y={topRow} ledMode="multi" label="Resonance"
                      ctrlGroup={ctrlGroup}
                      ctrlId={FiltersControllerIds.LPF_RESONANCE}
-                     storePosition={lpf.resonance}
+                     value={lpf.resonance}
         />
 
         <RoundPushButton8 x={col4} y={y + 10} ledPosition="top" ledCount={2} ledLabels={['12dB', '24dB']}
                           label="Slope" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrlId={FiltersControllerIds.LPF_SLOPE}
-                          storeValue={lpf.slope}
+                          value={lpf.slope}
         />
 
         <RoundLedPushButton8 x={col1} y={y -10} label="Ext CV" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrlId={FiltersControllerIds.LPF_EXT_CV}
-                             storeValue={lpf.extCv}
+                             value={lpf.extCv}
         />
 
         <RoundLedPushButton8 x={col1} y={y + 10} label="Wheel" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrlId={FiltersControllerIds.LPF_WHEEL}
-                             storeValue={lpf.wheel}
+                             value={lpf.wheel}
         />
 
-        <RotaryPot10 x={col1} y={bottomRow2} ledMode="multi" label="FM amt" position={0.1}
+        <RotaryPot10 x={col1} y={bottomRow2} ledMode="multi" label="FM amt"
                      ctrlGroup={ctrlGroup}
                      ctrlId={FiltersControllerIds.LPF_FM_AMT}
-                     storePosition={lpf.fmAmt}
+                     value={lpf.fmAmt}
         />
 
-        <RotaryPot10 x={col2} y={bottomRow2} ledMode="multi" label="Env amt" position={0.1}
+        <RotaryPot10 x={col2} y={bottomRow2} ledMode="multi" label="Env amt"
                      ctrlGroup={ctrlGroup}
                      ctrlId={FiltersControllerIds.LPF_ENV_AMT}
-                     storePosition={lpf.envAmt}
+                     value={lpf.envAmt}
         />
 
-        <RotaryPot10 x={col3} y={bottomRow2} ledMode="multi" label="LFO amt" position={0.1}
+        <RotaryPot10 x={col3} y={bottomRow2} ledMode="multi" label="LFO amt"
                      ctrlGroup={ctrlGroup}
                      ctrlId={FiltersControllerIds.LPF_LFO_AMT}
-                     storePosition={lpf.lfoAmt}
+                     value={lpf.lfoAmt}
         />
 
-        <RotaryPot10 x={col4} y={bottomRow2} ledMode="multi" label="Kbd amt" position={0.1}
+        <RotaryPot10 x={col4} y={bottomRow2} ledMode="multi" label="Kbd amt"
                      ctrlGroup={ctrlGroup}
                      ctrlId={FiltersControllerIds.LPF_KBD_AMT}
-                     storePosition={lpf.kbdAmt}
+                     value={lpf.kbdAmt}
         />
 
     </>;

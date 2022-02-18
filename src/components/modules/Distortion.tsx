@@ -33,31 +33,31 @@ const Distortion = ({ x, y }: Props) => {
         <RoundPushButton8 x={col1} y={row2+8} ledPosition="top" ledCount={2}  label="In" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrlId={FxControllerIds.DISTORTION_IN}
-                          storeValue={distortion.in}
+                          value={distortion.in}
         />
 
-        <RotaryPot17 ledMode="multi" label="Drive" x={col2} y={row2} position={0.4}
+        <RotaryPot17 ledMode="multi" label="Drive" x={col2} y={row2}
                      ctrlGroup={ctrlGroup}
                      ctrlId={FxControllerIds.DISTORTION_DRIVE}
-                     storePosition={distortion.drive}
+                     value={distortion.drive}
         />
 
         <RoundPushButton8 x={col3} y={row2+8} ledCount={2} ledPosition="top" ledLabels={['Soft', 'Hard']} label="Clip" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrlId={FxControllerIds.DISTORTION_CLIP}
-                          storeValue={distortion.clip}
+                          value={distortion.clip}
         />
 
-        <RotaryPot17 ledMode="multi" label="Level" x={col5} y={row2} position={0.4}
+        <RotaryPot17 ledMode="multi" label="Level" x={col5} y={row2}
                      ctrlGroup={ctrlGroup}
                      ctrlId={FxControllerIds.DISTORTION_LEVEL}
-                     storePosition={distortion.level}
+                     value={distortion.level}
         />
 
         <RoundPushButton8 x={col6} y={row2+8} ledPosition="top" ledCount={2} label="Out" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrlId={FxControllerIds.DISTORTION_OUT}
-                          storeValue={distortion.out}
+                          value={distortion.out}
         />
 
     </>;

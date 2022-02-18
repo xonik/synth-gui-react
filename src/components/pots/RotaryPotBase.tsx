@@ -6,7 +6,6 @@ interface Props {
   onClick?: () => void;
   knobRadius: number;
   onIncrement?: (steps: number, stepSize: number) => void;
-  defaultValue?: number;
   arc?: number;
   resolution?: number
 }
@@ -29,7 +28,7 @@ const distToCenter = (center: Point, pointer: Point) => {
   return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
 }
 
-const RotaryPot = ({knobRadius, onClick, defaultValue, onIncrement, arc = 360, resolution = 1000}: Props) => {
+const RotaryPot = ({knobRadius, onClick, onIncrement, arc = 360, resolution = 1000}: Props) => {
 
   const stepSize = 1 / resolution;
 

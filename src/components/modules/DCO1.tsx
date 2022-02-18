@@ -34,13 +34,13 @@ const DCO1 = ({ x, y }: Props) => {
     <RotaryPot32 x={x} y={y} ledMode="single" label="Waveform"
                  ctrlGroup={ctrlGroup}
                  ctrlId={OscControllerIds.DCO1_WAVEFORM}
-                 storePosition={dco1.waveform}
+                 value={dco1.waveform}
     />
 
-    <RotaryPot10 x={col1} y={topRow} ledMode="single" label="Note" position={0.5}
+    <RotaryPot10 x={col1} y={topRow} ledMode="single" label="Note"
                  ctrlGroup={ctrlGroup}
                  ctrlId={OscControllerIds.DCO1_NOTE}
-                 storePosition={dco1.note}
+                 value={dco1.note}
     />
 
     <RoundPushButton8 x={col2} y={topRow}
@@ -49,17 +49,17 @@ const DCO1 = ({ x, y }: Props) => {
                       hasOff
                       ctrlGroup={ctrlGroup}
                       ctrlId={OscControllerIds.DCO1_SYNC}
-                      storeValue={dco1.sync}
+                      value={dco1.sync}
     />
 
-    {/*<RotaryPot10 x={col4} y={topRow} ledMode="multi" label="Super saw" position={0.3}/>*/}
+    {/*<RotaryPot10 x={col4} y={topRow} ledMode="multi" label="Super saw"/>*/}
 
     <RoundPushButton8 x={col4} y={y+11}
                       ledPosition="top" ledCount={3} ledLabels={['DCO', 'WT', 'PCM']}
                       label="Mode" labelPosition="bottom"
                       ctrlGroup={ctrlGroup}
                       ctrlId={OscControllerIds.DCO1_MODE}
-                      storeValue={dco1.mode}
+                      value={dco1.mode}
     />
 
     <RoundPushButton8 x={col1} y={bottomRow1}
@@ -67,41 +67,41 @@ const DCO1 = ({ x, y }: Props) => {
                       label="Sub wave" labelPosition="bottom"
                       ctrlGroup={ctrlGroup}
                       ctrlId={OscControllerIds.DCO1_SUB_WAVE}
-                      storeValue={dco1.subWave}
+                      value={dco1.subWave}
     />
 
-    <RotaryPot10 x={col2} y={bottomRow1} ledMode="multi" label="Sub -1" position={0.1}
+    <RotaryPot10 x={col2} y={bottomRow1} ledMode="multi" label="Sub -1"
                  ctrlGroup={ctrlGroup}
                  ctrlId={OscControllerIds.DCO1_SUB1}
-                 storePosition={dco1.sub1Level}
+                 value={dco1.sub1Level}
     />
 
-    <RotaryPot10 x={col3} y={bottomRow1} ledMode="multi" label="Sub -2" position={0.6}
+    <RotaryPot10 x={col3} y={bottomRow1} ledMode="multi" label="Sub -2"
                  ctrlGroup={ctrlGroup}
                  ctrlId={OscControllerIds.DCO1_SUB2}
-                 storePosition={dco1.sub2Level}
+                 value={dco1.sub2Level}
     />
 
-    <RotaryPot10 x={col4} y={bottomRow1} ledMode="single" label="PW" position={0.3}
+    <RotaryPot10 x={col4} y={bottomRow1} ledMode="single" label="PW"
                  ctrlGroup={ctrlGroup}
                  ctrlId={OscControllerIds.DCO1_PW}
-                 storePosition={dco1.note}
+                 value={dco1.note}
     />
 
     <RoundLedPushButton8 x={col2} y={bottomRow2} label="Wheel" labelPosition="bottom"
                          ctrlGroup={ctrlGroup}
                          ctrlId={OscControllerIds.DCO1_WHEEL}
-                         storeValue={dco1.wheel}
+                         value={dco1.wheel}
     />
     <RoundLedPushButton8 x={col3} y={bottomRow2} label="LFO" labelPosition="bottom"
                          ctrlGroup={ctrlGroup}
                          ctrlId={OscControllerIds.DCO1_LFO}
-                         storeValue={dco1.lfo}
+                         value={dco1.lfo}
     />
     <RoundLedPushButton8 x={col4} y={bottomRow2} label="Kbd" labelPosition="bottom"
                          ctrlGroup={ctrlGroup}
                          ctrlId={OscControllerIds.DCO1_KBD}
-                         storeValue={dco1.kbd}
+                         value={dco1.kbd}
     />
   </>;
 };

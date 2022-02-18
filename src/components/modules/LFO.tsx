@@ -40,42 +40,42 @@ const LFO = ({ x, y }: Props) => {
                              ctrlGroup={ctrlGroup}
                              ctrlId={LfoControllerId.LFO_ID}
                              ctrlIndex={lfo.id}
-                             storeValue={lfo.id}
+                             value={lfo.id}
         />
 
         <RoundLedPushButton8 label="2" x={buttonCol} y={button2Row} labelPosition="right" radioButtonIndex={1}
                              ctrlGroup={ctrlGroup}
                              ctrlId={LfoControllerId.LFO_ID}
                              ctrlIndex={lfo.id}
-                             storeValue={lfo.id}
+                             value={lfo.id}
         />
 
         <RoundLedPushButton8 label="3" x={buttonCol} y={button3Row} labelPosition="right" radioButtonIndex={2}
                              ctrlGroup={ctrlGroup}
                              ctrlId={LfoControllerId.LFO_ID}
                              ctrlIndex={lfo.id}
-                             storeValue={lfo.id}
+                             value={lfo.id}
         />
 
         <RoundLedPushButton8 label="4" x={buttonCol} y={button4Row} labelPosition="right" radioButtonIndex={3}
                              ctrlGroup={ctrlGroup}
                              ctrlId={LfoControllerId.LFO_ID}
                              ctrlIndex={lfo.id}
-                             storeValue={lfo.id}
+                             value={lfo.id}
         />
 
-        <RotaryPot17 ledMode="single" label="Rate" x={firstPotCol} y={potRow1} position={0.4}
+        <RotaryPot17 ledMode="single" label="Rate" x={firstPotCol} y={potRow1}
                      ctrlGroup={ctrlGroup}
                      ctrlId={LfoControllerId.RATE}
                      ctrlIndex={lfo.id}
-                     storePosition={lfo.rate}
+                     value={lfo.rate}
         />
 
-        <RotaryPot17 ledMode="single" label="Depth" x={firstPotCol + potDistance} y={potRow1} position={0.1}
+        <RotaryPot17 ledMode="single" label="Depth" x={firstPotCol + potDistance} y={potRow1}
                      ctrlGroup={ctrlGroup}
                      ctrlId={LfoControllerId.DEPTH}
                      ctrlIndex={lfo.id}
-                     storePosition={lfo.depth}
+                     value={lfo.depth}
         />
 
         <RoundPushButton8 x={firstPotCol + potDistance + 30} y={potRow1}
@@ -85,35 +85,35 @@ const LFO = ({ x, y }: Props) => {
                           ctrlGroup={ctrlGroup}
                           ctrlId={LfoControllerId.SHAPE}
                           ctrlIndex={lfo.id}
-                          storeValue={lfo.shape}
+                          value={lfo.shape}
         />
 
-        <RotaryPot17 ledMode="single" label="Delay" x={firstPotCol} y={potRow2} position={0.4}
+        <RotaryPot17 ledMode="single" label="Delay" x={firstPotCol} y={potRow2}
                      ctrlGroup={ctrlGroup}
                      ctrlId={LfoControllerId.DELAY}
                      ctrlIndex={lfo.id}
-                     storePosition={lfo.stages[StageId.DELAY].time}
+                     value={lfo.stages[StageId.DELAY].time}
         />
 
         <RoundLedPushButton8 label="Sync" x={buttonCol2} y={potRow2} labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrlId={LfoControllerId.SYNC}
                              ctrlIndex={lfo.id}
-                             storeValue={lfo.sync}
+                             value={lfo.sync}
         />
 
         <RoundLedPushButton8 label="Reset" x={buttonCol3} y={potRow2} labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrlId={LfoControllerId.RESET}
                              ctrlIndex={lfo.id}
-                             storeValue={lfo.resetOnTrigger}
+                             value={lfo.resetOnTrigger}
         />
 
         <RoundLedPushButton8 label="Once" x={buttonCol4} y={potRow2} labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrlId={LfoControllerId.ONCE}
                              ctrlIndex={lfo.id}
-                             storeValue={lfo.once}
+                             value={lfo.once}
         />
 
     </svg>

@@ -41,37 +41,37 @@ const Arpeggiator = ({ x, y }: Props) => {
         <RoundLedPushButton8 labelPosition="bottom" x={col1} y={row2} label="On/Off"
                              ctrlGroup={ctrlGroup}
                              ctrlId={ArpControllerIds.ON_OFF}
-                             storeValue={arp.onOff}
+                             value={arp.onOff}
         />
 
         <RoundLedPushButton8 labelPosition="bottom" x={col2} y={row2} label="Trigger"
                              ctrlGroup={ctrlGroup}
                              ctrlId={ArpControllerIds.TRIGGER}
-                             storeValue={arp.trigger}
+                             value={arp.trigger}
         />
 
-        <RotaryPot17 ledMode="single" label="Tempo" x={col3} y={row2} position={0.4}
+        <RotaryPot17 ledMode="single" label="Tempo" x={col3} y={row2}
                      ctrlGroup={ctrlGroup}
                      ctrlId={ArpControllerIds.TEMPO}
-                     storePosition={arp.tempo}
+                     value={arp.tempo}
         />
 
         <RoundPushButton8 labelPosition="bottom" x={col4} y={row2} label="Sync" ledCount={3} ledPosition="right" ledLabels={['Master', 'LFO1', 'Ext']} hasOff
                           ctrlGroup={ctrlGroup}
                           ctrlId={ArpControllerIds.SYNC}
-                          storeValue={arp.sync}
+                          value={arp.sync}
         />
 
         <RoundPushButton8 labelPosition="bottom" x={col5} y={row2} label="Range" ledCount={3} ledPosition="right" ledLabels={['1', '2', '3']}
                           ctrlGroup={ctrlGroup}
                           ctrlId={ArpControllerIds.RANGE}
-                          storeValue={arp.range}
+                          value={arp.range}
         />
 
         <RoundPushButton8 labelPosition="bottom" x={col6} y={row2} label="Mode" ledCount={5} ledPosition="right" ledLabels={['Up', 'Down', 'Up/down', 'Random', 'Other']}
                           ctrlGroup={ctrlGroup}
                           ctrlId={ArpControllerIds.MODE}
-                          storeValue={arp.mode}
+                          value={arp.mode}
         />
 
     </svg>;

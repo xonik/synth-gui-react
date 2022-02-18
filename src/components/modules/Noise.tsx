@@ -23,7 +23,7 @@ const Noise = ({ x, y }: Props) => {
                       label="Colour" labelPosition="bottom"
                       ctrlGroup={ctrlGroup}
                       ctrlId={NoiseControllerIds.COLOUR}
-                      storeValue={noise.colour}
+                      value={noise.colour}
     />
   </>;
 };

@@ -26,17 +26,17 @@ const ctrlGroup = ControllerGroupIds.SRC_MIX
 
 const PreFilterMixerChannel = ({ x, y, label, levelId, levelPos, outId, outVal }: ChannelProps) => {
     return <>
-        <RotaryPot17 ledMode="multi" label={label} x={x} y={y} position={0.4}
+        <RotaryPot17 ledMode="multi" label={label} x={x} y={y}
                      ctrlGroup={ctrlGroup}
                      ctrlId={levelId}
-                     storePosition={levelPos}
+                     value={levelPos}
         />
 
         <RoundPushButton8 x={x + 25} y={y + 3}
                           ledPosition="top" ledCount={2}
                           ctrlGroup={ctrlGroup}
                           ctrlId={outId}
-                          storeValue={outVal}
+                          value={outVal}
         />    
     </>
 }
