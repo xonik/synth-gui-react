@@ -1,7 +1,11 @@
-import CC from '../../mapCC'
-import { BUTTONS } from '../../buttons'
-import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue, ControllerConfig } from '../../types'
-import { ControllerIdLfoDst, ControllerIdNonMod, ControllerIdSrc } from '../../controllerIds'
+import CC from '../../../midi/mapCC'
+import { BUTTONS } from '../../../midi/buttons'
+import { FuncProps, ControllerConfig, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
+import {
+    ControllerIdLfoDst,
+    ControllerIdNonMod,
+    ControllerIdSrc
+} from '../../../midi/controllerIds'
 
 interface ControllersLfo {
     props: FuncProps
@@ -16,7 +20,7 @@ interface ControllersLfo {
     OUTPUT: ControllerConfig
 }
 
-const controllersLfo = (ctrlIndex: number): ControllersLfo => ({
+const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
     props: {
         label: `LFO ${1 + ctrlIndex}`,
         ctrlIndex
@@ -108,4 +112,4 @@ const controllersLfo = (ctrlIndex: number): ControllersLfo => ({
     },
 })
 
-export default controllersLfo
+export default lfoControllers

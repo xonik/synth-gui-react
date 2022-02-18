@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
+import { NumericPayload } from '../common/CommonReducer'
 
 type KbdState = {
     portamento: number,
@@ -15,10 +16,6 @@ export const initialState: KbdState = {
     hold: 0,
     chord: 0,
     mode: 0,
-}
-
-export type NumericPayload = {
-    value: number;
 }
 
 export const kbdSlice = createSlice({

@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
+import { NumericPayload } from '../common/CommonReducer'
 
 type SrcMixState = {
     levelOsc1: number
@@ -29,10 +30,6 @@ export const initialState: SrcMixState = {
     outNoise: 0,
     outRingMod: 0,
     outExtAudio: 0,
-}
-
-export type NumericPayload = {
-    value: number;
 }
 
 export const srcMixSlice = createSlice({

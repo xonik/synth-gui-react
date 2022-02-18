@@ -13,7 +13,8 @@ export enum ControllerGroupIds {
     KBD,
     POST_MIX,
     COMMON_FX,
-    OUT
+    OUT,
+    LFO,
 }
 
 export enum ApiSource {

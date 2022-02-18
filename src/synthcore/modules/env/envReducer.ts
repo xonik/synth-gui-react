@@ -150,7 +150,7 @@ export const envelopesSlice = createSlice({
         deselectStage: (state, { payload }: PayloadAction<StagePayload>) => {
             state.gui.currStageId = StageId.STOPPED
         },
-        selectEnv: (state, { payload }: PayloadAction<EnvPayload>) => {
+        selectGuiEnv: (state, { payload }: PayloadAction<EnvPayload>) => {
             state.gui.currEnvId = payload.env
         },
         setEnv3Id: (state, { payload }: PayloadAction<Env3IdPayload>) => {
@@ -189,7 +189,7 @@ export const {
     setInvert,
     selectStage,
     deselectStage,
-    selectEnv,
+    selectGuiEnv,
     setEnv3Id,
     toggleStageEnabled,
     toggleInvert,

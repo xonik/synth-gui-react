@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
+import { NumericPayload } from '../common/CommonReducer'
 
 type ArpState = {
     tempo: number,
@@ -19,10 +20,6 @@ export const initialState: ArpState = {
     mode: 0,
     output: 0,
     trigger: 0,
-}
-
-export type NumericPayload = {
-    value: number;
 }
 
 export const arpSlice = createSlice({

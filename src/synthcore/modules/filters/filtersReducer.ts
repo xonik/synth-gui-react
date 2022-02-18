@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
+import { NumericPayload } from '../common/CommonReducer'
 
 type FiltersState = {
     lpf: {
@@ -65,10 +66,6 @@ export const initialState: FiltersState = {
         wheel: 0,
         slope: 0,
     }
-}
-
-export type NumericPayload = {
-    value: number;
 }
 
 export const filtersSlice = createSlice({

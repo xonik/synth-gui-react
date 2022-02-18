@@ -11,6 +11,7 @@ import kbdApi from './modules/kbd/kbdApi'
 import postMixApi from './modules/postMix/postMixApi'
 import commonFxApi from './modules/commonFx/commonFxApi'
 import outApi from './modules/out/outApi'
+import lfoApi from './modules/lfo/lfoApi'
 import mainDisplayApi from './modules/mainDisplay/mainDisplayApi'
 
 export {
@@ -27,5 +28,6 @@ export {
     postMixApi,
     commonFxApi,
     outApi,
+    lfoApi,
     mainDisplayApi,
 }

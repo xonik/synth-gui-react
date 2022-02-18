@@ -7,7 +7,7 @@ High res filter cutoff, currently only 7 bit CC?!
 
 Possible race condition in midi vs panel setting of currentEnvId? We need to separate
 currently selected envelope through midi and what is selected on screen. no need to
-store current env in envMidiApi.
+store current env in lfoMidiApi.
 
 Envs:
 - Selectable polarity?

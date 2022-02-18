@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
+import { NumericPayload } from '../common/CommonReducer'
 
 type CommonFxState = {
     dsp1: {
@@ -69,10 +70,6 @@ export const initialState: CommonFxState = {
         levelChorus: 0,
         levelBitCrusher: 0,
     }
-}
-
-export type NumericPayload = {
-    value: number;
 }
 
 export const commonFxSlice = createSlice({

@@ -17,10 +17,12 @@ import kbdReducer from './modules/kbd/kbdReducer'
 import postMixReducer from './modules/postMix/postMixReducer'
 import commonFxReducer from './modules/commonFx/commonFxReducer'
 import outReducer from './modules/out/outReducer'
+import lfoReducer from './modules/lfo/lfoReducer'
 
 export const store = configureStore({
     reducer: {
         envelopes: envReducer,
+        lfos: lfoReducer,
         osc: oscReducer,
         filters: filtersReducer,
         mods: modsReducer,

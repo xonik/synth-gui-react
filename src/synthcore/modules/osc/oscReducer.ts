@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
+import { NumericPayload } from '../common/CommonReducer'
 
 type OscState = {
     dco1: {
@@ -85,10 +86,6 @@ export const initialState: OscState = {
         lfo: 0,
         kbd: 0
     },
-}
-
-export type NumericPayload = {
-    value: number;
 }
 
 export const oscSlice = createSlice({

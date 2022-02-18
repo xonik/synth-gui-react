@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
+import { NumericPayload } from '../common/CommonReducer'
 
 type NoiseState = {
     colour: number,
@@ -7,10 +8,6 @@ type NoiseState = {
 
 export const initialState: NoiseState = {
     colour: 0,
-}
-
-export type NumericPayload = {
-    value: number;
 }
 
 export const noiseSlice = createSlice({

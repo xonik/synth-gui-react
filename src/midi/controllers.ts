@@ -3,7 +3,7 @@ import controllersOsc from './modules/osc/controllersOsc'
 import controllersNoise from './modules/noise/controllersNoise'
 import controllersRingMod from './modules/ringMod/controllersRingMod'
 import controllersFx from './modules/fx/controllersFx'
-import controllersLfo from './modules/lfo/controllersLfo'
+import controllersLfo from '../synthcore/modules/lfo/lfoControllers'
 import controllersSrcMix from './modules/srcMix/controllersSrcMix'
 import modsControllers from '../synthcore/modules/mods/modsControllers'
 import controllersMasterClock from './modules/masterClock/controllersMasterClock'
@@ -104,7 +104,7 @@ const controllers = {
     RING_MOD: controllersRingMod,
     DISTORTION: controllersFx.DISTORTION,
     BIT_CRUSHER: controllersFx.BIT_CRUSHER,
-    LFOS: controllersLfo(0), // most cc values are shared so the ones for 0 are used
+    LFO: controllersLfo(0), // most cc values are shared so the ones for 0 are used
     SOURCE_MIX: controllersSrcMix,
     MODS: modsControllers,
     MASTER_CLOCK: controllersMasterClock,

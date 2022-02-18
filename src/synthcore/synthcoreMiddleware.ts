@@ -15,6 +15,7 @@ import { kbdMiddleware } from './modules/kbd/kbdMiddleware'
 import { postMixMiddleware } from './modules/postMix/postMixMiddleware'
 import { commonFxMiddleware } from './modules/commonFx/commonFxMiddleware'
 import { outMiddleware } from './modules/out/outMiddleware'
+import { lfoMiddleware } from './modules/lfo/lfoMiddleware'
 
 export const synthcoreMiddleware: Middleware<{}, any> = storeAPI => next => action => {
     if (action.payload.ctrlGroup === ControllerGroupIds.ENV || action.type.indexOf('envelopes/') > -1) {
@@ -45,6 +46,8 @@ export const synthcoreMiddleware: Middleware<{}, any> = storeAPI => next => acti
         commonFxMiddleware(action)
     } else if (action.payload.ctrlGroup === ControllerGroupIds.OUT || action.type.indexOf('out/') > -1) {
         outMiddleware(action)
+    } else if (action.payload.ctrlGroup === ControllerGroupIds.LFO || action.type.indexOf('lfos/') > -1) {
+        lfoMiddleware(action)
     } else if(action.payload.ctrlGroup === ControllerGroupIds.MAIN_DISP) {
         mainDisplayMiddleware(action)
     }

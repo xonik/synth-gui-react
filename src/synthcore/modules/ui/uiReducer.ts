@@ -22,6 +22,7 @@ type ButtonControllerPayload = {
     ctrlGroup: ControllerGroupIds;
     ctrlId: number;
     ctrlIndex?: number;
+    radioButtonIndex?: number;
 }
 
 export const uiSlice = createSlice({

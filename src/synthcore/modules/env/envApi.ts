@@ -3,7 +3,7 @@ import {
     deselectStage,
     selectCurrEnvId,
     selectCurrStageId,
-    selectEnv,
+    selectGuiEnv,
     selectEnvelope,
     selectEnvelopes,
     selectStage,
@@ -200,7 +200,7 @@ const toggleStageSelected = (envId: number, stageId: StageId, source: ApiSource)
 const setCurrentEnv = (envId: number, source: ApiSource) => {
     const boundedEnv = getBounded(envId, 0, selectEnvelopes(store.getState()).envs.length - 1)
     if (selectCurrEnvId(store.getState()) !== boundedEnv) {
-        dispatch(selectEnv({ env: boundedEnv }))
+        dispatch(selectGuiEnv({ env: boundedEnv }))
     }
 }
 const incrementCurrentEnvelope = (increment: number, source: ApiSource) => {

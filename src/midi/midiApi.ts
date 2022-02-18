@@ -12,6 +12,7 @@ import arpMidiApi from '../synthcore/modules/arp/arpMidiApi'
 import kbdMidiApi from '../synthcore/modules/kbd/kbdMidiApi'
 import commonFxMidiApi from '../synthcore/modules/commonFx/commonFxMidiApi'
 import outMidiApi from '../synthcore/modules/out/outMidiApi'
+import lfoMidiApi from '../synthcore/modules/lfo/lfoMidiApi'
 
 const initReceive = () => {
     envMidiApi.initReceive()
@@ -28,6 +29,7 @@ const initReceive = () => {
     kbdMidiApi.initReceive()
     commonFxMidiApi.initReceive()
     outMidiApi.initReceive()
+    lfoMidiApi.initReceive()
 }
 
 const midiApi = {
@@ -46,6 +48,7 @@ const midiApi = {
     kbd: kbdMidiApi,
     commonFx: commonFxMidiApi,
     out: outMidiApi,
+    lfo: lfoMidiApi,
 }
 
 export default midiApi

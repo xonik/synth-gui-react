@@ -1,8 +1,8 @@
-import { NumericPayload } from '../osc/oscReducer'
 import { AnyAction } from '@reduxjs/toolkit'
 import { ApiSource } from '../../types'
 import { ControllerConfigCCWithValue } from '../../../midi/types'
 import { dispatch, getBounded, getQuantized } from '../../utils'
+import { NumericPayload } from './CommonReducer'
 
 type NumericProperty = {
     selector: () => number

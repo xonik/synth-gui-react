@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
+import { NumericPayload } from '../common/CommonReducer'
 
 type OutState = {
     volume: number,
@@ -11,10 +12,6 @@ export const initialState: OutState = {
     volume: 0,
     spread: 0,
     headphones: 0,
-}
-
-export type NumericPayload = {
-    value: number;
 }
 
 export const outSlice = createSlice({

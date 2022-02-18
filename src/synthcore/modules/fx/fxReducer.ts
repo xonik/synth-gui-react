@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
+import { NumericPayload } from '../common/CommonReducer'
 
 type FxState = {
     distortion: {
@@ -33,10 +34,6 @@ export const initialState: FxState = {
         in: 0,
         out: 0,
     }
-}
-
-export type NumericPayload = {
-    value: number;
 }
 
 export const fxSlice = createSlice({

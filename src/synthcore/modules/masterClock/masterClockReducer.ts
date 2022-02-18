@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
+import { NumericPayload } from '../common/CommonReducer'
 
 type MasterClockState = {
     rate: number,
@@ -9,10 +10,6 @@ type MasterClockState = {
 export const initialState: MasterClockState = {
     rate: 0,
     source: 0,
-}
-
-export type NumericPayload = {
-    value: number;
 }
 
 export const masterClockSlice = createSlice({

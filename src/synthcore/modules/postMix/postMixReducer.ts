@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
+import { NumericPayload } from '../common/CommonReducer'
 
 type PostMixState = {
     mix: {
@@ -29,10 +30,6 @@ export const initialState: PostMixState = {
         fx1: 0,
         fx2: 0,
     }    
-}
-
-export type NumericPayload = {
-    value: number;
 }
 
 export const postMixSlice = createSlice({
