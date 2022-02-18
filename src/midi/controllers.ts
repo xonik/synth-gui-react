@@ -3,7 +3,7 @@ import oscControllers from '../synthcore/modules/osc/oscControllers'
 import noiseControllers from '../synthcore/modules/noise/noiseControllers'
 import ringModControllers from '../synthcore/modules/ringMod/ringModControllers'
 import fxControllers from '../synthcore/modules/fx/fxControllers'
-import controllersLfo from '../synthcore/modules/lfo/lfoControllers'
+import lfoControllers from '../synthcore/modules/lfo/lfoControllers'
 import srcMixControllers from '../synthcore/modules/srcMix/srcMixControllers'
 import modsControllers from '../synthcore/modules/mods/modsControllers'
 import masterClockControllers from '../synthcore/modules/masterClock/masterClockControllers'
@@ -18,7 +18,7 @@ import voiceOutControllers from '../synthcore/modules/postMix/voiceOutController
 import envControllers from '../synthcore/modules/env/envControllers'
 import commonFxControllers from '../synthcore/modules/commonFx/commonFxControllers'
 import outControllers from '../synthcore/modules/out/outControllers'
-import { performanceControllers } from '../synthcore/modules/performance/performanceControllers'
+import performanceControllers from '../synthcore/modules/performance/performanceControllers'
 
 // controller functions grouped by type
 export const controllerGroups = {
@@ -37,10 +37,10 @@ export const controllerGroups = {
     },
     LFOS: {
         label: 'LFOs',
-        LFO1: controllersLfo(0),
-        LFO2: controllersLfo(1),
-        LFO3: controllersLfo(2),
-        LFO4: controllersLfo(3),
+        LFO1: lfoControllers(0),
+        LFO2: lfoControllers(1),
+        LFO3: lfoControllers(2),
+        LFO4: lfoControllers(3),
     },
     SOURCE_MIX: {
         // TODO: This one is a bit weird
@@ -104,7 +104,7 @@ const controllers = {
     RING_MOD: ringModControllers,
     DISTORTION: fxControllers.DISTORTION,
     BIT_CRUSHER: fxControllers.BIT_CRUSHER,
-    LFO: controllersLfo(0), // most cc values are shared so the ones for 0 are used
+    LFO: lfoControllers(0), // most cc values are shared so the ones for 0 are used
     SOURCE_MIX: srcMixControllers,
     MODS: modsControllers,
     MASTER_CLOCK: masterClockControllers,

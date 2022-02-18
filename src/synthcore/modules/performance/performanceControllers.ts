@@ -12,7 +12,7 @@ interface PerformanceControllers {
     KBD_AFTERTOUCH: ControllerConfig
 }
 
-export const performanceControllers: PerformanceControllers = {
+const performanceControllers: PerformanceControllers = {
     props: { label: 'Play controls' },
     PITCH_BEND: {
         id: ControllerIdSrc.PERF_PITCH_BEND,
@@ -57,3 +57,5 @@ export const performanceControllers: PerformanceControllers = {
         isSourceDigi: true,
     }
 }
+
+export default performanceControllers
