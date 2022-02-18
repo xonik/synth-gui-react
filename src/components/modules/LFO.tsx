@@ -3,11 +3,9 @@ import RotaryPot17 from '../pots/RotaryPot17'
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import Header from '../misc/Header'
-import midiConstants from '../../midi/controllers'
 import { ControllerGroupIds } from '../../synthcore/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectUiLfo } from '../../synthcore/modules/lfo/lfoReducer'
-import { OscControllerIds } from '../../synthcore/modules/osc/types'
 import { LfoControllerId, StageId } from '../../synthcore/modules/lfo/types'
 
 interface Props {

@@ -2,7 +2,6 @@ import React from 'react';
 import RotaryPot10 from '../pots/RotaryPot10';
 import Header from '../misc/Header';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
-import midiConstants from '../../midi/controllers'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectChorus } from '../../synthcore/modules/commonFx/commonFxReducer'
 import { ControllerGroupIds } from '../../synthcore/types'

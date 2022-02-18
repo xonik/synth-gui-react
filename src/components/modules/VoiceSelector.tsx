@@ -1,10 +1,8 @@
 import React from 'react';
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
-import midiConstants from '../../midi/controllers'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectVoices } from '../../synthcore/modules/voices/voicesReducer'
 import { ControllerGroupIds } from '../../synthcore/types'
-import { OscControllerIds } from '../../synthcore/modules/osc/types'
 import { VoicesControllerIds } from '../../synthcore/modules/voices/types'
 
 interface Props {

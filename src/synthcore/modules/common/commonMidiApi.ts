@@ -46,3 +46,47 @@ export const toggleParamReceive = (
         apiSetValue(value, ApiSource.MIDI)
     }, cfg)
 }
+
+export const boolParamSend = (
+    source: ApiSource,
+    on: boolean,
+    cfg: ControllerConfigCCWithValue,
+) => {
+    if (!shouldSend(source)) {
+        return
+    }
+    const index = on ? 1 : 0
+    logger.midi(`Setting value for ${cfg.label} to ${index}`)
+    cc.send(cfg, cfg.values[index])
+}
+
+export const boolParamReceive = (
+    cfg: ControllerConfigCCWithValue,
+    apiSetValue: (on: boolean, source: ApiSource) => void
+) => {
+    cc.subscribe((midiValue: number) => {
+        const value = cfg.values.indexOf(midiValue) || 0
+        const on = value === 1
+        apiSetValue(on, ApiSource.MIDI)
+    }, cfg)
+}
+
+export const buttonParamSend = (
+    source: ApiSource,
+    cfg: ControllerConfigCCWithValue,
+) => {
+    if (!shouldSend(source)) {
+        return
+    }
+    logger.midi(`Sending ${cfg.label}`)
+    cc.send(cfg, cfg.values[0])
+}
+
+export const buttonParamReceive = (
+    cfg: ControllerConfigCCWithValue,
+    apiSetValue: (source: ApiSource) => void
+) => {
+    cc.subscribe((midiValue: number) => {
+        apiSetValue(ApiSource.MIDI)
+    }, cfg)
+}

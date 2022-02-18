@@ -11,7 +11,6 @@ import RotaryPot17 from '../pots/RotaryPot17';
 import Header from '../misc/Header';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
-import midiConstants from '../../midi/controllers'
 import { ControllerGroupIds } from '../../synthcore/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectArp } from '../../synthcore/modules/arp/arpReducer'
@@ -51,7 +50,12 @@ const Arpeggiator = ({ x, y }: Props) => {
                              storeValue={arp.trigger}
         />
 
-        <RotaryPot17 ledMode="single" label="Tempo" x={col3} y={row2} position={0.4} midiConfig={midiConstants.ARP.TEMPO}/>
+        <RotaryPot17 ledMode="single" label="Tempo" x={col3} y={row2} position={0.4}
+                     ctrlGroup={ctrlGroup}
+                     ctrlId={ArpControllerIds.TEMPO}
+                     storePosition={arp.tempo}
+        />
+
         <RoundPushButton8 labelPosition="bottom" x={col4} y={row2} label="Sync" ledCount={3} ledPosition="right" ledLabels={['Master', 'LFO1', 'Ext']} hasOff
                           ctrlGroup={ctrlGroup}
                           ctrlId={ArpControllerIds.SYNC}
