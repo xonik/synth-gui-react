@@ -4,4 +4,5 @@ export enum KbdControllerIds {
     HOLD,
     CHORD,
     MODE,
+    TRANSPOSE,
 }

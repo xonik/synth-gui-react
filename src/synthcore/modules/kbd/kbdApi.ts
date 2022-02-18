@@ -5,11 +5,15 @@ import {
     setHold,
     setUnisonDetune,
     setPortamento,
+    setTranspose as setTransposeAction
 } from './kbdReducer'
 import { store } from '../../store'
 import kbdMidiApi from './kbdMidiApi'
 import controllers from '../../../midi/controllers'
 import { numericPropFuncs, togglePropFuncs } from '../common/commonApi'
+import { ApiSource } from '../../types'
+import { dispatch, getBounded } from '../../utils'
+import transposeControllers from './transposeControllers'
 
 const portamento = numericPropFuncs({
     selector: () => selectKbd(store.getState()).portamento,
@@ -41,6 +45,27 @@ const mode = togglePropFuncs({
     midi: kbdMidiApi.setMode,
 })
 
+const setTranspose = (value: number, source: ApiSource) => {
+    const currentValue = selectKbd(store.getState()).transpose
+    const boundedValue = getBounded(value, 0, transposeControllers.TRANSPOSE.values.length - 1)
+    if (boundedValue === currentValue) {
+        return
+    }
+
+    dispatch(setTransposeAction({ value: boundedValue }))
+    kbdMidiApi.setTranspose(source, boundedValue)
+}
+
+const incrementTranspose = (source: ApiSource) => {
+    const currentValue = selectKbd(store.getState()).transpose
+    setTranspose((currentValue + 1), source)
+}
+
+const decrementTranspose = (source: ApiSource) => {
+    const currentValue = selectKbd(store.getState()).transpose
+    setTranspose((currentValue - 1), source)
+}
+
 const kbdApi = {
     setPortamento: portamento.set,
     setUnisonDetune: unisonDetune.set,
@@ -54,6 +79,10 @@ const kbdApi = {
     toggleHold: hold.toggle,
     toggleChord: chord.toggle,
     toggleMode: mode.toggle,
+
+    setTranspose: mode.set,
+    incrementTranspose,
+    decrementTranspose,
 }
 
 export default kbdApi

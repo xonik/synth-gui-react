@@ -250,7 +250,7 @@ export const RoundButtonBase = (props: Props & Config) => {
         if(onClick) onClick();
 
         if(ctrlId !== undefined && ctrlGroup !== undefined) {
-            dispatch(click({ ctrlGroup, ctrlId, ctrlIndex, radioButtonIndex }))
+            dispatch(click({ ctrlGroup, ctrlId, ctrlIndex, radioButtonIndex, reverse }))
         } else {
             if (midiConfig && midiConfig.values) {
                 if (radioButtonIndex !== undefined) {

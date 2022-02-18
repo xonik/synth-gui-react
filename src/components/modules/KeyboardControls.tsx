@@ -3,8 +3,7 @@ import RotaryPot10 from '../pots/RotaryPot10';
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
 import Led from '../leds/Led';
-import React, { useCallback, useState } from 'react'
-import midiConstants from '../../midi/controllers'
+import React from 'react'
 import { ControllerGroupIds } from '../../synthcore/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectKbd } from '../../synthcore/modules/kbd/kbdReducer'
@@ -32,26 +31,29 @@ const Transpose = ({row2}: TransposeProps) => {
     const col7 = col6 + ledDistance;
 
     const defaultValueIndex = 2;
-    const [currentValue, setCurrentValue] = useState(defaultValueIndex);
-    const onClick = useCallback((value) => {
-        setCurrentValue(value);
-    }, [setCurrentValue]);
+
+    const kbd = useAppSelector(selectKbd)
 
     return <>
         <RoundPushButton8 labelPosition="bottom" x={col1} y={row2}
-                          label="Down" onUpdate={onClick} reverse loop={false}
-                          midiConfig={midiConstants.TRANSPOSE.TRANSPOSE}
+                          label="Down" reverse loop={false}
                           defaultValueIndex={defaultValueIndex}
+                          ctrlGroup={ctrlGroup}
+                          ctrlId={KbdControllerIds.TRANSPOSE}
+                          storeValue={kbd.transpose}
         />
-        <Led x={col2} y={row2} label="-2" on={currentValue === 0}/>
-        <Led x={col3} y={row2} label="-1" on={currentValue === 1}/>
-        <Led x={col4} y={row2} label="0" on={currentValue === 2}/>
-        <Led x={col5} y={row2} label="1" on={currentValue === 3}/>
-        <Led x={col6} y={row2} label="2" on={currentValue === 4}/>
+
+        <Led x={col2} y={row2} label="-2" on={kbd.transpose === 0}/>
+        <Led x={col3} y={row2} label="-1" on={kbd.transpose === 1}/>
+        <Led x={col4} y={row2} label="0" on={kbd.transpose === 2}/>
+        <Led x={col5} y={row2} label="1" on={kbd.transpose === 3}/>
+        <Led x={col6} y={row2} label="2" on={kbd.transpose === 4}/>
         <RoundPushButton8 labelPosition="bottom" x={col7} y={row2}
-                          label="Up" onUpdate={onClick} loop={false}
-                          midiConfig={midiConstants.TRANSPOSE.TRANSPOSE}
+                          label="Up" loop={false}
                           defaultValueIndex={defaultValueIndex}
+                          ctrlGroup={ctrlGroup}
+                          ctrlId={KbdControllerIds.TRANSPOSE}
+                          storeValue={kbd.transpose}
         />
     </>
 }

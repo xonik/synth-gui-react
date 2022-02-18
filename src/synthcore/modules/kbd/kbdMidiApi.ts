@@ -41,6 +41,13 @@ const mode = (() => {
         receive: () => toggleParamReceive(cfg, kbdApi.setHold)
     }
 })()
+const transpose = (() => {
+    const cfg = controllers.TRANSPOSE.TRANSPOSE
+    return {
+        send: (source: ApiSource, value: number) => toggleParamSend(source, value, cfg),
+        receive: () => toggleParamReceive(cfg, kbdApi.setTranspose)
+    }
+})()
 
 const initReceive = () => {
     portamento.receive()
@@ -48,6 +55,7 @@ const initReceive = () => {
     hold.receive()
     chord.receive()
     mode.receive()
+    transpose.receive()
 }
 
 const kbdMidiApi = {
@@ -56,6 +64,7 @@ const kbdMidiApi = {
     setHold: hold.send,
     setChord: chord.send,
     setMode: mode.send,
+    setTranspose: transpose.send,
 
     initReceive,
 }

@@ -20,6 +20,14 @@ export const kbdMiddleware = (action: PayloadAction): void => {
     if (increment.match(action)) {
         incrementMapper[action.payload.ctrlId](action.payload.value)
     } else if (click.match(action)) {
-        clickMapper[action.payload.ctrlId]()
+        if (action.payload.ctrlId === KbdControllerIds.TRANSPOSE) {
+            if (action.payload.reverse) {
+                kbdApi.decrementTranspose(ApiSource.UI)
+            } else {
+                kbdApi.incrementTranspose(ApiSource.UI)
+            }
+        } else {
+            clickMapper[action.payload.ctrlId]()
+        }
     }
 }

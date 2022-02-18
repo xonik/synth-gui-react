@@ -8,6 +8,7 @@ type KbdState = {
     hold: number,
     chord: number,
     mode: number,
+    transpose: number,
 }
 
 export const initialState: KbdState = {
@@ -16,6 +17,7 @@ export const initialState: KbdState = {
     hold: 0,
     chord: 0,
     mode: 0,
+    transpose: 2,
 }
 
 export const kbdSlice = createSlice({
@@ -37,6 +39,9 @@ export const kbdSlice = createSlice({
         setMode: (state, { payload }: PayloadAction<NumericPayload>) => {
             state.mode = payload.value
         },
+        setTranspose: (state, { payload }: PayloadAction<NumericPayload>) => {
+            state.transpose = payload.value
+        },
     }
 })
 
@@ -46,6 +51,7 @@ export const {
     setHold,
     setChord,
     setMode,
+    setTranspose,
 } = kbdSlice.actions
 
 export const selectKbd = (state: RootState) => state.kbd
