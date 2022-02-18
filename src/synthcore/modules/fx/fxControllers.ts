@@ -3,7 +3,7 @@ import { BUTTONS } from '../../../midi/buttons'
 import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
 import { ControllerIdDst, ControllerIdNonMod } from '../../../midi/controllerIds'
 
-interface ControllersFx {
+interface FxControllers {
     DISTORTION: {
         props: FuncProps
         DRIVE: ControllerConfigCC
@@ -22,7 +22,7 @@ interface ControllersFx {
     }
 }
 
-const controllersFx: ControllersFx = {
+const fxControllers: FxControllers = {
     DISTORTION: {
         props: { label: 'Distortion' },
         // Pots
@@ -123,4 +123,4 @@ const controllersFx: ControllersFx = {
     }
 }
 
-export default controllersFx
+export default fxControllers

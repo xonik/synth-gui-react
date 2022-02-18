@@ -3,7 +3,7 @@ import { BUTTONS } from '../../../midi/buttons'
 import { ControllerConfig, ControllerConfigCC, ControllerConfigCCWithValue, FuncProps } from '../../../midi/types'
 import { ControllerIdDst, ControllerIdNonMod, ControllerIdSrc } from '../../../midi/controllerIds'
 
-interface ControllersArp {
+interface ArpControllers {
     props: FuncProps
     TEMPO: ControllerConfigCC
     ON_OFF: ControllerConfigCCWithValue
@@ -14,7 +14,7 @@ interface ControllersArp {
     OUTPUT: ControllerConfig
 }
 
-const controllersArp: ControllersArp = {
+const arpControllers: ArpControllers = {
     props: { label: 'Arpeggiator', shortLabel: 'Arp' },
     TEMPO: {
         id: ControllerIdDst.ARP_TEMPO,
@@ -87,4 +87,4 @@ const controllersArp: ControllersArp = {
     }
 }
 
-export default controllersArp
+export default arpControllers

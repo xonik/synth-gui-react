@@ -3,7 +3,7 @@ import { BUTTONS } from '../../../midi/buttons'
 import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
 import { ControllerIdDst, ControllerIdNonMod } from '../../../midi/controllerIds'
 
-interface ControllersSrcMix {
+interface SrcMixControllers {
     props: FuncProps
     LEVEL_OSC1: ControllerConfigCC
     LEVEL_OSC2: ControllerConfigCC
@@ -19,7 +19,7 @@ interface ControllersSrcMix {
     OUT_EXT_AUDIO: ControllerConfigCCWithValue
 }
 
-const controllersSrcMix: ControllersSrcMix = {
+const srcMixControllers: SrcMixControllers = {
     props: {
         label: 'Source mix'
     },
@@ -133,4 +133,4 @@ const controllersSrcMix: ControllersSrcMix = {
     },
 }
 
-export default controllersSrcMix
+export default srcMixControllers

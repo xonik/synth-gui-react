@@ -1,39 +1,39 @@
 // TODO: High value bits. Mod wheels, ribbon controller
-import controllersOsc from '../synthcore/modules/osc/controllersOsc'
-import controllersNoise from '../synthcore/modules/noise/controllersNoise'
-import controllersRingMod from '../synthcore/modules/ringMod/controllersRingMod'
-import controllersFx from '../synthcore/modules/fx/controllersFx'
+import oscControllers from '../synthcore/modules/osc/oscControllers'
+import noiseControllers from '../synthcore/modules/noise/noiseControllers'
+import ringModControllers from '../synthcore/modules/ringMod/ringModControllers'
+import fxControllers from '../synthcore/modules/fx/fxControllers'
 import controllersLfo from '../synthcore/modules/lfo/lfoControllers'
-import controllersSrcMix from '../synthcore/modules/srcMix/controllersSrcMix'
+import srcMixControllers from '../synthcore/modules/srcMix/srcMixControllers'
 import modsControllers from '../synthcore/modules/mods/modsControllers'
-import controllersMasterClock from '../synthcore/modules/masterClock/controllersMasterClock'
-import controllersArp from '../synthcore/modules/arp/controllersArp'
-import controllersVoices from '../synthcore/modules/voices/controllersVoices'
+import masterClockControllers from '../synthcore/modules/masterClock/masterClockControllers'
+import arpControllers from '../synthcore/modules/arp/arpControllers'
+import voicesControllers from '../synthcore/modules/voices/voicesControllers'
 import mainDisplayControllers from '../synthcore/modules/mainDisplay/mainDisplayControllers'
-import controllersTranspose from '../synthcore/modules/transpose/controllersTranspose'
-import controllersKbd from '../synthcore/modules/kbd/controllersKbd'
-import controllersFilters from '../synthcore/modules/filters/controllersFilters'
-import controllersVoiceMix from '../synthcore/modules/postMix/controllersVoiceMix'
-import controllersVoiceOut from '../synthcore/modules/postMix/controllersVoiceOut'
+import transposeControllers from '../synthcore/modules/transpose/transposeControllers'
+import kbdControllers from '../synthcore/modules/kbd/kbdControllers'
+import filtersControllers from '../synthcore/modules/filters/filtersControllers'
+import voiceMixControllers from '../synthcore/modules/postMix/voiceMixControllers'
+import voiceOutControllers from '../synthcore/modules/postMix/voiceOutControllers'
 import envControllers from '../synthcore/modules/env/envControllers'
-import controllersCommonFx from '../synthcore/modules/commonFx/controllersCommonFx'
-import controllersOut from '../synthcore/modules/out/controllersOut'
-import { controllersPerformance } from '../synthcore/modules/performance/controllersPerformance'
+import commonFxControllers from '../synthcore/modules/commonFx/commonFxControllers'
+import outControllers from '../synthcore/modules/out/outControllers'
+import { performanceControllers } from '../synthcore/modules/performance/performanceControllers'
 
 // controller functions grouped by type
 export const controllerGroups = {
     SOUND_SOURCES: {
         label: 'Sound src',
-        DCO1: controllersOsc.DCO1,
-        DCO2: controllersOsc.DCO2,
-        VCO: controllersOsc.VCO,
-        NOISE: controllersNoise,
+        DCO1: oscControllers.DCO1,
+        DCO2: oscControllers.DCO2,
+        VCO: oscControllers.VCO,
+        NOISE: noiseControllers,
     },
     PRE_FX: {
         label: 'Pre FX',
-        RING_MOD: controllersRingMod,
-        DISTORTION: controllersFx.DISTORTION,
-        BIT_CRUSHER: controllersFx.BIT_CRUSHER,
+        RING_MOD: ringModControllers,
+        DISTORTION: fxControllers.DISTORTION,
+        BIT_CRUSHER: fxControllers.BIT_CRUSHER,
     },
     LFOS: {
         label: 'LFOs',
@@ -45,30 +45,30 @@ export const controllerGroups = {
     SOURCE_MIX: {
         // TODO: This one is a bit weird
         label: 'Source mix',
-        SOURCE_MIX: controllersSrcMix,
+        SOURCE_MIX: srcMixControllers,
     },
     CLK_ARP_KBD: {
         label: 'Controls',
-        MASTER_CLOCK: controllersMasterClock,
-        ARP: controllersArp,
-        TRANSPOSE: controllersTranspose,
-        KBD: controllersKbd,
+        MASTER_CLOCK: masterClockControllers,
+        ARP: arpControllers,
+        TRANSPOSE: transposeControllers,
+        KBD: kbdControllers,
     },
     MAIN_DISPLAY: {
         label: 'Main controls',
-        VOICES: controllersVoices,
+        VOICES: voicesControllers,
         MAIN_DISPLAY: mainDisplayControllers,
     },
     FILTER: {
         label: 'Filter',
-        LPF: controllersFilters.LPF,
-        FILTERS: controllersFilters.FILTERS,
-        SVF: controllersFilters.SVF,
+        LPF: filtersControllers.LPF,
+        FILTERS: filtersControllers.FILTERS,
+        SVF: filtersControllers.SVF,
     },
     VOICE: {
         label: 'Voice out',
-        VOICE_MIX: controllersVoiceMix,
-        VOICE_OUT: controllersVoiceOut,
+        VOICE_MIX: voiceMixControllers,
+        VOICE_OUT: voiceOutControllers,
     },
     ENV: {
         label: 'Envelopes',
@@ -80,52 +80,52 @@ export const controllerGroups = {
     },
     FX: {
         label: 'Effects',
-        DSP1: controllersCommonFx.DSP1,
-        DSP2: controllersCommonFx.DSP2,
-        CHORUS: controllersCommonFx.CHORUS,
-        FX_BIT_CRUSHER: controllersCommonFx.FX_BIT_CRUSHER,
-        FX_MIX: controllersCommonFx.FX_MIX,
+        DSP1: commonFxControllers.DSP1,
+        DSP2: commonFxControllers.DSP2,
+        CHORUS: commonFxControllers.CHORUS,
+        FX_BIT_CRUSHER: commonFxControllers.FX_BIT_CRUSHER,
+        FX_MIX: commonFxControllers.FX_MIX,
     },
     OUT: {
         label: 'Output',
-        OUTPUT: controllersOut,
+        OUTPUT: outControllers,
     },
     PERFORMANCE: {
         label: 'Performance controls',
-        PERFORMANCE: controllersPerformance
+        PERFORMANCE: performanceControllers
     }
 }
 
 const controllers = {
-    DCO1: controllersOsc.DCO1,
-    DCO2: controllersOsc.DCO2,
-    VCO: controllersOsc.VCO,
-    NOISE: controllersNoise,
-    RING_MOD: controllersRingMod,
-    DISTORTION: controllersFx.DISTORTION,
-    BIT_CRUSHER: controllersFx.BIT_CRUSHER,
+    DCO1: oscControllers.DCO1,
+    DCO2: oscControllers.DCO2,
+    VCO: oscControllers.VCO,
+    NOISE: noiseControllers,
+    RING_MOD: ringModControllers,
+    DISTORTION: fxControllers.DISTORTION,
+    BIT_CRUSHER: fxControllers.BIT_CRUSHER,
     LFO: controllersLfo(0), // most cc values are shared so the ones for 0 are used
-    SOURCE_MIX: controllersSrcMix,
+    SOURCE_MIX: srcMixControllers,
     MODS: modsControllers,
-    MASTER_CLOCK: controllersMasterClock,
-    ARP: controllersArp,
-    VOICES: controllersVoices,
+    MASTER_CLOCK: masterClockControllers,
+    ARP: arpControllers,
+    VOICES: voicesControllers,
     MAIN_DISPLAY: mainDisplayControllers,
-    TRANSPOSE: controllersTranspose,
-    KBD: controllersKbd,
-    LPF: controllersFilters.LPF,
-    FILTERS: controllersFilters.FILTERS,
-    SVF: controllersFilters.SVF,
-    VOICE_MIX: controllersVoiceMix,
-    VOICE_OUT: controllersVoiceOut,
+    TRANSPOSE: transposeControllers,
+    KBD: kbdControllers,
+    LPF: filtersControllers.LPF,
+    FILTERS: filtersControllers.FILTERS,
+    SVF: filtersControllers.SVF,
+    VOICE_MIX: voiceMixControllers,
+    VOICE_OUT: voiceOutControllers,
     ENV: envControllers(0), // most cc values are shared so the ones for 0 are used
-    DSP1: controllersCommonFx.DSP1,
-    DSP2: controllersCommonFx.DSP2,
-    CHORUS: controllersCommonFx.CHORUS,
-    FX_BIT_CRUSHER: controllersCommonFx.FX_BIT_CRUSHER,
-    FX_MIX: controllersCommonFx.FX_MIX,
-    OUTPUT: controllersOut,
-    PERFORMANCE: controllersPerformance
+    DSP1: commonFxControllers.DSP1,
+    DSP2: commonFxControllers.DSP2,
+    CHORUS: commonFxControllers.CHORUS,
+    FX_BIT_CRUSHER: commonFxControllers.FX_BIT_CRUSHER,
+    FX_MIX: commonFxControllers.FX_MIX,
+    OUTPUT: outControllers,
+    PERFORMANCE: performanceControllers
 }
 
 export default controllers

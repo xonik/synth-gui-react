@@ -5,7 +5,7 @@ import { ControllerIdDst, ControllerIdIntermediate, ControllerIdNonMod } from '.
 
 
 
-interface ControllersFilters {
+interface FiltersControllers {
     LPF: {
         props: FuncProps
         INPUT: ControllerConfigCC
@@ -41,7 +41,7 @@ interface ControllersFilters {
     }
 }
 
-const controllersFilters: ControllersFilters = {
+const filtersControllers: FiltersControllers = {
     LPF: {
         props: { label: 'Low pass filter' },
         INPUT: {
@@ -209,4 +209,4 @@ const controllersFilters: ControllersFilters = {
     }
 }
 
-export default controllersFilters
+export default filtersControllers

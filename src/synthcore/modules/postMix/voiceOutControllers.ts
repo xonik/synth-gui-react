@@ -3,7 +3,7 @@ import { FuncProps, ControllerConfigCC } from '../../../midi/types'
 import { ControllerIdDst } from '../../../midi/controllerIds'
 
 
-interface ControllersVoiceOut {
+interface VoiceOutControllers {
     props: FuncProps
     PAN: ControllerConfigCC
     AMOUNT: ControllerConfigCC
@@ -11,7 +11,7 @@ interface ControllersVoiceOut {
     FX2_SEND: ControllerConfigCC
 }
 
-const controllersVoiceOut: ControllersVoiceOut = {
+const voiceOutControllers: VoiceOutControllers = {
     props: { label: 'Voice out' },
     PAN: {
         id: ControllerIdDst.VOICE_OUT_PAN,
@@ -43,4 +43,4 @@ const controllersVoiceOut: ControllersVoiceOut = {
     },
 }
 
-export default controllersVoiceOut
+export default voiceOutControllers

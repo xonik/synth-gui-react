@@ -3,7 +3,7 @@ import { ControllerConfigCCWithValue, FuncProps } from '../../../midi/types'
 import { ControllerIdNonMod } from '../../../midi/controllerIds'
 
 
-interface ControllersVoices {
+interface VoicesControllers {
     props: FuncProps
     VOICE1: ControllerConfigCCWithValue
     VOICE2: ControllerConfigCCWithValue
@@ -15,7 +15,7 @@ interface ControllersVoices {
     VOICE8: ControllerConfigCCWithValue
 }
 
-const controllersVoices: ControllersVoices = {
+const voicesControllers: VoicesControllers = {
     props: { label: 'Voice selector' },
     VOICE1: {
         id: ControllerIdNonMod.VOICE_SELECTOR_1,
@@ -99,4 +99,4 @@ const controllersVoices: ControllersVoices = {
     },
 }
 
-export default controllersVoices
+export default voicesControllers

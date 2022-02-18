@@ -3,7 +3,7 @@ import { BUTTONS } from '../../../midi/buttons'
 import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
 import { ControllerIdDst, ControllerIdNonMod } from '../../../midi/controllerIds'
 
-interface ControllersKbd {
+interface KbdControllers {
     props: FuncProps
     PORTAMENTO: ControllerConfigCC
     UNISON_DETUNE: ControllerConfigCC
@@ -12,7 +12,7 @@ interface ControllersKbd {
     MODE: ControllerConfigCCWithValue
 }
 
-const controllersKbd: ControllersKbd = {
+const kbdControllers: KbdControllers = {
     props: { label: 'Keyboard' },
     PORTAMENTO: {
         id: ControllerIdDst.KBD_PORTAMENTO,
@@ -61,4 +61,4 @@ const controllersKbd: ControllersKbd = {
     },
 }
 
-export default controllersKbd
+export default kbdControllers

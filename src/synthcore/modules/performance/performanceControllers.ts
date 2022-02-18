@@ -1,7 +1,7 @@
 import { ControllerConfig, FuncProps } from '../../../midi/types'
 import { ControllerIdSrc } from '../../../midi/controllerIds'
 
-interface ControllersPerformance {
+interface PerformanceControllers {
     props: FuncProps
     PITCH_BEND: ControllerConfig
     MOD_WHEEL: ControllerConfig
@@ -12,7 +12,7 @@ interface ControllersPerformance {
     KBD_AFTERTOUCH: ControllerConfig
 }
 
-export const controllersPerformance: ControllersPerformance = {
+export const performanceControllers: PerformanceControllers = {
     props: { label: 'Play controls' },
     PITCH_BEND: {
         id: ControllerIdSrc.PERF_PITCH_BEND,

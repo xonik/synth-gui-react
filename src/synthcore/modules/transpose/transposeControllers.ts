@@ -3,12 +3,12 @@ import { FuncProps, ControllerConfigCCWithValue } from '../../../midi/types'
 import { ControllerIdNonMod } from '../../../midi/controllerIds'
 
 
-interface ControllersTranspose {
+interface TransposeControllers {
     props: FuncProps
     TRANSPOSE: ControllerConfigCCWithValue
 }
 
-const controllersTranspose: ControllersTranspose = {
+const transposeControllers: TransposeControllers = {
     props: { label: 'Transpose' },
     TRANSPOSE: {
         id: ControllerIdNonMod.KBD_TRANSPOSE,
@@ -25,4 +25,4 @@ const controllersTranspose: ControllersTranspose = {
     },
 }
 
-export default controllersTranspose
+export default transposeControllers

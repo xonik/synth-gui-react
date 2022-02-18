@@ -3,12 +3,12 @@ import { FuncProps, ControllerConfigCCWithValue } from '../../../midi/types'
 import { ControllerIdNonMod } from '../../../midi/controllerIds'
 
 
-interface ControllersRingMod {
+interface RingModControllers {
     props: FuncProps
     SOURCE: ControllerConfigCCWithValue
 }
 
-const controllersRingMod: ControllersRingMod = {
+const ringModControllers: RingModControllers = {
     props: { label: 'Ring modulator' },
     SOURCE: {
         id: ControllerIdNonMod.RING_MOD_SOURCE,
@@ -22,4 +22,4 @@ const controllersRingMod: ControllersRingMod = {
     }
 }
 
-export default controllersRingMod
+export default ringModControllers

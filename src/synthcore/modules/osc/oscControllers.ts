@@ -4,7 +4,7 @@ import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue, ControllerC
 import NRPN from '../../../midi/mapNRPN'
 import { ControllerIdDst, ControllerIdNonMod } from '../../../midi/controllerIds'
 
-interface ControllersOsc {
+interface OscControllers {
     DCO1: {
         props: FuncProps
         PITCH: ControllerConfigNRPN
@@ -54,7 +54,7 @@ interface ControllersOsc {
     }
 }
 
-const controllersOsc: ControllersOsc = {
+const oscControllers: OscControllers = {
     DCO1: {
         props: { label: 'Osc 1' },
         // pots
@@ -394,4 +394,4 @@ const controllersOsc: ControllersOsc = {
     }
 }
 
-export default controllersOsc
+export default oscControllers

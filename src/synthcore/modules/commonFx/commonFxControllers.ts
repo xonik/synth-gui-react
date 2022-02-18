@@ -3,7 +3,7 @@ import { BUTTONS } from '../../../midi/buttons'
 import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
 import { ControllerIdDst, ControllerIdNonMod } from '../../../midi/controllerIds'
 
-interface ControllersCommonFx {
+interface CommonFxControllers {
     DSP1: {
         props: FuncProps
         PARAM1: ControllerConfigCC,
@@ -43,7 +43,7 @@ interface ControllersCommonFx {
     }
 }
 
-const controllersCommonFx: ControllersCommonFx = {
+const commonFxControllers: CommonFxControllers = {
     DSP1: {
         props: { label: 'DSP 1' },
         PARAM1: {
@@ -228,4 +228,4 @@ const controllersCommonFx: ControllersCommonFx = {
     }
 }
 
-export default controllersCommonFx
+export default commonFxControllers

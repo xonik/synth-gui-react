@@ -3,7 +3,7 @@ import { FuncProps, ControllerConfigCC } from '../../../midi/types'
 import { ControllerIdDst } from '../../../midi/controllerIds'
 
 
-interface ControllersVoiceMix {
+interface VoiceMixControllers {
     props: FuncProps
     LPF: ControllerConfigCC,
     SVF: ControllerConfigCC,
@@ -11,7 +11,7 @@ interface ControllersVoiceMix {
     SINE2: ControllerConfigCC,
 }
 
-const controllersVoiceMix: ControllersVoiceMix = {
+const voiceMixControllers: VoiceMixControllers = {
     props: { label: 'Mix' },
     LPF: {
         id: ControllerIdDst.VOICE_MIX_LPF,
@@ -43,4 +43,4 @@ const controllersVoiceMix: ControllersVoiceMix = {
     },
 }
 
-export default controllersVoiceMix
+export default voiceMixControllers

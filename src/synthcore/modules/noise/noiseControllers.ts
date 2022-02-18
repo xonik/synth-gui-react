@@ -2,12 +2,12 @@ import { BUTTONS } from '../../../midi/buttons'
 import { FuncProps, ControllerConfigCCWithValue } from '../../../midi/types'
 import { ControllerIdNonMod } from '../../../midi/controllerIds'
 
-interface ControllersNoise {
+interface NoiseControllers {
     props: FuncProps
     COLOUR: ControllerConfigCCWithValue
 }
 
-const controllersNoise: ControllersNoise = {
+const noiseControllers: NoiseControllers = {
     props: { label: 'Noise' },
     COLOUR: {
         id: ControllerIdNonMod.NOISE_COLOUR,
@@ -22,4 +22,4 @@ const controllersNoise: ControllersNoise = {
     }
 }
 
-export default controllersNoise
+export default noiseControllers
