@@ -8,7 +8,6 @@ type ArpState = {
     sync: number,
     range: number,
     mode: number,
-    output: number,
     trigger: number,
 }
 
@@ -18,7 +17,6 @@ export const initialState: ArpState = {
     sync: 0,
     range: 0,
     mode: 0,
-    output: 0,
     trigger: 0,
 }
 
@@ -41,9 +39,6 @@ export const arpSlice = createSlice({
         setMode: (state, { payload }: PayloadAction<NumericPayload>) => {
             state.mode = payload.value
         },
-        setOutput: (state, { payload }: PayloadAction<NumericPayload>) => {
-            state.output = payload.value
-        },
         setTrigger: (state, { payload }: PayloadAction<NumericPayload>) => {
             state.trigger = payload.value
         },
@@ -56,7 +51,6 @@ export const {
     setSync,
     setRange,
     setMode,
-    setOutput,
     setTrigger,
 } = arpSlice.actions
 

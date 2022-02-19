@@ -13,15 +13,6 @@ const tempo = (() => {
     }
 })()
 
-// TODO: DENNE!
-const output = (() => {
-    const cfg = controllers.ARP.OUTPUT
-    return {
-        send: (source: ApiSource, value: number) => {},//numericParamSend(source, value, cfg),
-        receive: () => {}//numericParamReceive(cfg, arpApi.setOutput)
-    }
-})()
-
 const onOff = (() => {
     const cfg = controllers.ARP.ON_OFF
     return {
@@ -65,7 +56,6 @@ const initReceive = () => {
     sync.receive()
     range.receive()
     mode.receive()
-    output.receive()
     trigger.receive()
 }
 
@@ -75,7 +65,6 @@ const arpMidiApi = {
     setSync: sync.send,
     setRange: range.send,
     setMode: mode.send,
-    setOutput: output.send,
     setTrigger: trigger.send,
 
     initReceive,

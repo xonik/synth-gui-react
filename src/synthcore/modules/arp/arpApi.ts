@@ -4,7 +4,6 @@ import {
     setSync,
     setRange,
     setMode,
-    setOutput,
     selectArp,
     setTrigger
 } from './arpReducer'
@@ -17,11 +16,6 @@ const tempo = numericPropFuncs({
     selector: () => selectArp(store.getState()).tempo,
     action: setTempo,
     midi: arpMidiApi.setTempo,
-})
-const output = numericPropFuncs({
-    selector: () => selectArp(store.getState()).output,
-    action: setOutput,
-    midi: arpMidiApi.setOutput,
 })
 
 const onOff = togglePropFuncs({
@@ -63,11 +57,9 @@ const arpApi = {
     setSync: sync.set,
     setRange: range.set,
     setMode: mode.set,
-    setOutput: output.set,
     setTrigger: trigger.set,
 
     incrementTempo: tempo.increment,
-    incrementOutput: output.increment,
 
     toggleOnOff: onOff.toggle,
     toggleSync: sync.toggle,

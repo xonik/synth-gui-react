@@ -7,7 +7,6 @@ import { ApiClickMapperType, ApiIncrementMapperType } from '../common/types'
 
 const incrementMapper: ApiIncrementMapperType = {
     [ArpControllerIds.TEMPO]: (value: number) => arpApi.incrementTempo(value, ApiSource.UI),
-    [ArpControllerIds.OUTPUT]: (value: number) => arpApi.incrementOutput(value, ApiSource.UI),
 }
 
 const clickMapper: ApiClickMapperType = {

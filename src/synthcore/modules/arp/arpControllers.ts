@@ -79,6 +79,8 @@ const arpControllers: ArpControllers = {
             BUTTONS.BUTTONS_LEFT.values.ARP_MODE_OTHER,
         ],
     },
+
+    // Not a real controller, only used in modulation mappings when arp is a source
     OUTPUT: {
         id: ControllerIdSrc.ARP,
         label: 'Arp',
