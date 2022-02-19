@@ -4,10 +4,10 @@ import RotaryPot10 from '../pots/RotaryPot10';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
 import Header from '../misc/Header';
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
-import { OscControllerIds } from '../../synthcore/modules/osc/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectVco } from '../../synthcore/modules/osc/oscReducer'
 import { ControllerGroupIds } from '../../synthcore/types'
+import oscControllers from '../../synthcore/modules/osc/oscControllers'
 
 interface Props {
   x: number,
@@ -32,20 +32,20 @@ const VCO = ({ x, y }: Props) => {
     <Header label="Oscillator 3" x={x} y={topRow - 20} width={100} align="center"/>
     <RotaryPot32 x={x} y={y} ledMode="single" label="Waveform"
                  ctrlGroup={ctrlGroup}
-                 ctrlId={OscControllerIds.VCO_WAVEFORM}
+                 ctrlId={oscControllers.VCO.WAVEFORM.id}
                  value={vco.waveform}
     />
 
 
     <RotaryPot10 x={col1} y={topRow} ledMode="single" label="Note"
                  ctrlGroup={ctrlGroup}
-                 ctrlId={OscControllerIds.VCO_NOTE}
+                 ctrlId={oscControllers.VCO.NOTE.id}
                  value={vco.note}
     />
 
     <RotaryPot10 x={col1} y={y} ledMode="single" label="Detune"
                  ctrlGroup={ctrlGroup}
-                 ctrlId={OscControllerIds.VCO_DETUNE}
+                 ctrlId={oscControllers.VCO.DETUNE.id}
                  value={vco.detune}
     />
 
@@ -54,13 +54,13 @@ const VCO = ({ x, y }: Props) => {
                       label="Sync" labelPosition="bottom"
                       hasOff
                       ctrlGroup={ctrlGroup}
-                      ctrlId={OscControllerIds.VCO_SYNC}
+                      ctrlId={oscControllers.VCO.SYNC.id}
                       value={vco.sync}
     />
 
     <RotaryPot10 x={col1} y={bottomRow1} ledMode="multi" label="Cross mod"
                  ctrlGroup={ctrlGroup}
-                 ctrlId={OscControllerIds.VCO_CROSSMOD}
+                 ctrlId={oscControllers.VCO.CROSS_MOD.id}
                  value={vco.crossMod}
     />
 
@@ -68,37 +68,37 @@ const VCO = ({ x, y }: Props) => {
                       ledPosition="right" ledCount={2} ledLabels={['Osc 1', 'Ext']}
                       label="Source" labelPosition="bottom"
                       ctrlGroup={ctrlGroup}
-                      ctrlId={OscControllerIds.VCO_CROSSMOD_SRC}
+                      ctrlId={oscControllers.VCO.CROSS_MOD_SRC.id}
                       value={vco.crossModSrc}
     />
 
     <RotaryPot10 x={col4} y={bottomRow1} ledMode="single" label="PW"
                  ctrlGroup={ctrlGroup}
-                 ctrlId={OscControllerIds.VCO_PW}
+                 ctrlId={oscControllers.VCO.PW.id}
                  value={vco.pw}
     />
 
     <RoundLedPushButton8 x={col1} y={bottomRow2} label="Ext CV" labelPosition="bottom"
                          ctrlGroup={ctrlGroup}
-                         ctrlId={OscControllerIds.VCO_EXT_CV}
+                         ctrlId={oscControllers.VCO.EXT_CV.id}
                          value={vco.extCv}
     />
 
     <RoundLedPushButton8 x={col2} y={bottomRow2} label="Wheel" labelPosition="bottom"
                          ctrlGroup={ctrlGroup}
-                         ctrlId={OscControllerIds.VCO_WHEEL}
+                         ctrlId={oscControllers.VCO.WHEEL.id}
                          value={vco.wheel}
     />
 
     <RoundLedPushButton8 x={col3} y={bottomRow2} label="LFO" labelPosition="bottom"
                          ctrlGroup={ctrlGroup}
-                         ctrlId={OscControllerIds.VCO_LFO}
+                         ctrlId={oscControllers.VCO.LFO.id}
                          value={vco.lfo}
     />
 
     <RoundLedPushButton8 x={col4} y={bottomRow2} label="Kbd" labelPosition="bottom"
                          ctrlGroup={ctrlGroup}
-                         ctrlId={OscControllerIds.VCO_KBD}
+                         ctrlId={oscControllers.VCO.KBD.id}
                          value={vco.kbd}
     />
 

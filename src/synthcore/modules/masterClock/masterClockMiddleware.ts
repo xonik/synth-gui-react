@@ -2,15 +2,15 @@ import { PayloadAction } from '@reduxjs/toolkit'
 import { click, increment } from '../ui/uiReducer'
 import { masterClockApi } from '../../synthcoreApi'
 import { ApiSource } from '../../types'
-import { MasterClockControllerIds } from './types'
 import { ApiClickMapperType, ApiIncrementMapperType } from '../common/types'
+import masterClockControllers from './masterClockControllers'
 
 const incrementMapper: ApiIncrementMapperType = {
-    [MasterClockControllerIds.RATE]: (value: number) => masterClockApi.incrementRate(value, ApiSource.UI),
+    [masterClockControllers.RATE.id]: (value: number) => masterClockApi.incrementRate(value, ApiSource.UI),
 }
 
 const clickMapper: ApiClickMapperType = {
-    [MasterClockControllerIds.SOURCE]: () => masterClockApi.toggleSource(ApiSource.UI),
+    [masterClockControllers.SOURCE.id]: () => masterClockApi.toggleSource(ApiSource.UI),
 }
 
 

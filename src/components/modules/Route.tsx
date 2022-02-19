@@ -4,8 +4,8 @@ import Header from '../misc/Header';
 import RotaryPot17 from '../pots/RotaryPot17';
 import { ControllerGroupIds } from '../../synthcore/types'
 import { useAppSelector } from '../../synthcore/hooks'
-import { ModsControllerIds } from '../../synthcore/modules/mods/types'
 import { selectModsUi } from '../../synthcore/modules/mods/modsReducer'
+import modsControllers from '../../synthcore/modules/mods/modsControllers'
 
 interface Props {
     x: number,
@@ -22,19 +22,19 @@ const Route = ({ x, y }: Props) => {
         <Header label="Route" x={0} y={0} width={50}/>
         <RoundLedPushButton8 labelPosition="bottom" x={10} y={17.5} label="From" hasOff radioButtonIndex={0}
                              ctrlGroup={ctrlGroup}
-                             ctrlId={ModsControllerIds.ROUTE_BUTTON}
+                             ctrlId={modsControllers.ROUTE_BUTTON.id}
                              value={route.routeButton}
         />
 
         <RoundLedPushButton8 labelPosition="bottom" x={10} y={37.5} label="To" hasOff radioButtonIndex={1}
                              ctrlGroup={ctrlGroup}
-                             ctrlId={ModsControllerIds.ROUTE_BUTTON}
+                             ctrlId={modsControllers.ROUTE_BUTTON.id}
                              value={route.routeButton}
         />
 
         <RotaryPot17 ledMode="single" label="Amount" x={35} y={30}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={ModsControllerIds.AMOUNT}
+                     ctrlId={modsControllers.UI_AMOUNT.id}
                      value={route.amount}
         />
 

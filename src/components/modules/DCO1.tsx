@@ -5,9 +5,9 @@ import RoundPushButton8 from '../buttons/RoundPushButton8';
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
 import Header from '../misc/Header';
 import { ControllerGroupIds } from '../../synthcore/types'
-import { OscControllerIds } from '../../synthcore/modules/osc/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectDco1 } from '../../synthcore/modules/osc/oscReducer'
+import oscControllers from '../../synthcore/modules/osc/oscControllers'
 
 interface Props {
   x: number,
@@ -33,13 +33,13 @@ const DCO1 = ({ x, y }: Props) => {
     <Header label="Oscillator 1" x={x} y={topRow - 20} width={100} align="center"/>
     <RotaryPot32 x={x} y={y} ledMode="single" label="Waveform"
                  ctrlGroup={ctrlGroup}
-                 ctrlId={OscControllerIds.DCO1_WAVEFORM}
+                 ctrlId={oscControllers.DCO1.WAVEFORM.id}
                  value={dco1.waveform}
     />
 
     <RotaryPot10 x={col1} y={topRow} ledMode="single" label="Note"
                  ctrlGroup={ctrlGroup}
-                 ctrlId={OscControllerIds.DCO1_NOTE}
+                 ctrlId={oscControllers.DCO1.NOTE.id}
                  value={dco1.note}
     />
 
@@ -48,7 +48,7 @@ const DCO1 = ({ x, y }: Props) => {
                       label="Sync" labelPosition="bottom"
                       hasOff
                       ctrlGroup={ctrlGroup}
-                      ctrlId={OscControllerIds.DCO1_SYNC}
+                      ctrlId={oscControllers.DCO1.SYNC.id}
                       value={dco1.sync}
     />
 
@@ -58,7 +58,7 @@ const DCO1 = ({ x, y }: Props) => {
                       ledPosition="top" ledCount={3} ledLabels={['DCO', 'WT', 'PCM']}
                       label="Mode" labelPosition="bottom"
                       ctrlGroup={ctrlGroup}
-                      ctrlId={OscControllerIds.DCO1_MODE}
+                      ctrlId={oscControllers.DCO1.MODE.id}
                       value={dco1.mode}
     />
 
@@ -66,41 +66,41 @@ const DCO1 = ({ x, y }: Props) => {
                       ledPosition="top" ledCount={2} ledLabels={['Sqr', 'Saw']}
                       label="Sub wave" labelPosition="bottom"
                       ctrlGroup={ctrlGroup}
-                      ctrlId={OscControllerIds.DCO1_SUB_WAVE}
+                      ctrlId={oscControllers.DCO1.SUB_WAVE.id}
                       value={dco1.subWave}
     />
 
     <RotaryPot10 x={col2} y={bottomRow1} ledMode="multi" label="Sub -1"
                  ctrlGroup={ctrlGroup}
-                 ctrlId={OscControllerIds.DCO1_SUB1}
+                 ctrlId={oscControllers.DCO1.SUB1.id}
                  value={dco1.sub1Level}
     />
 
     <RotaryPot10 x={col3} y={bottomRow1} ledMode="multi" label="Sub -2"
                  ctrlGroup={ctrlGroup}
-                 ctrlId={OscControllerIds.DCO1_SUB2}
+                 ctrlId={oscControllers.DCO1.SUB2.id}
                  value={dco1.sub2Level}
     />
 
     <RotaryPot10 x={col4} y={bottomRow1} ledMode="single" label="PW"
                  ctrlGroup={ctrlGroup}
-                 ctrlId={OscControllerIds.DCO1_PW}
+                 ctrlId={oscControllers.DCO1.PW.id}
                  value={dco1.note}
     />
 
     <RoundLedPushButton8 x={col2} y={bottomRow2} label="Wheel" labelPosition="bottom"
                          ctrlGroup={ctrlGroup}
-                         ctrlId={OscControllerIds.DCO1_WHEEL}
+                         ctrlId={oscControllers.DCO1.WHEEL.id}
                          value={dco1.wheel}
     />
     <RoundLedPushButton8 x={col3} y={bottomRow2} label="LFO" labelPosition="bottom"
                          ctrlGroup={ctrlGroup}
-                         ctrlId={OscControllerIds.DCO1_LFO}
+                         ctrlId={oscControllers.DCO1.LFO.id}
                          value={dco1.lfo}
     />
     <RoundLedPushButton8 x={col4} y={bottomRow2} label="Kbd" labelPosition="bottom"
                          ctrlGroup={ctrlGroup}
-                         ctrlId={OscControllerIds.DCO1_KBD}
+                         ctrlId={oscControllers.DCO1.KBD.id}
                          value={dco1.kbd}
     />
   </>;

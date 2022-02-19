@@ -2,11 +2,11 @@ import { PayloadAction } from '@reduxjs/toolkit'
 import { click } from '../ui/uiReducer'
 import { noiseApi } from '../../synthcoreApi'
 import { ApiSource } from '../../types'
-import { NoiseControllerIds } from './types'
 import { ApiClickMapperType } from '../common/types'
+import noiseControllers from './noiseControllers'
 
 const clickMapper: ApiClickMapperType = {
-    [NoiseControllerIds.COLOUR]: () => noiseApi.toggleColour(ApiSource.UI),
+    [noiseControllers.COLOUR.id]: () => noiseApi.toggleColour(ApiSource.UI),
 }
 
 export const noiseMiddleware = (action: PayloadAction): void => {

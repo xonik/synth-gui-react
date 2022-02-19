@@ -7,7 +7,6 @@ import { boolParamReceive, boolParamSend, buttonParamReceive, buttonParamSend, }
 import logger from '../../../utils/logger'
 import mainDisplayControllers from './mainDisplayControllers'
 import { getBounded } from '../../utils'
-import { MainDisplayControllerIds } from './types'
 
 const currentScreen = (() => {
     const cfg = controllers.MAIN_DISPLAY.GROUP_MENU

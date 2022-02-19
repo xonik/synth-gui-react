@@ -4,17 +4,17 @@ import { setGuiMod } from './modsReducer'
 import modsApi from './modsApi'
 import { click, increment } from '../ui/uiReducer'
 import { ApiIncrementMapperType } from '../common/types'
-import { ModsControllerIds } from './types'
+import modsControllers from './modsControllers'
 
 const incrementMapper: ApiIncrementMapperType = {
-    [ModsControllerIds.AMOUNT]: (value: number) => modsApi.incrementUiAmount(value, ApiSource.UI),
+    [modsControllers.UI_AMOUNT.id]: (value: number) => modsApi.incrementUiAmount(value, ApiSource.UI),
 }
 
 export const modsMiddleware = (action: PayloadAction): void => {
     if (increment.match(action)) {
         incrementMapper[action.payload.ctrlId](action.payload.value)
     } else if (click.match(action)) {
-        if(action.payload.ctrlId === ModsControllerIds.ROUTE_BUTTON) {
+        if(action.payload.ctrlId === modsControllers.ROUTE_BUTTON.id) {
             modsApi.toggleRouteButton((action.payload.radioButtonIndex || 0) + 1, ApiSource.UI)
         }
     } else if (setGuiMod.match(action)) {

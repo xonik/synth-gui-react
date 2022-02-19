@@ -6,28 +6,28 @@ import { numericParamReceive, numericParamSend } from '../common/commonMidiApi'
 import { outApi, postMixApi } from '../../synthcoreApi'
 
 const lpfLevel = (() => {
-    const cfg = controllers.VOICE_MIX.LPF
+    const cfg = controllers.POST_MIX.LPF
     return {
         send: (source: ApiSource, value: number) => numericParamSend(source, value, cfg),
         receive: () => numericParamReceive(cfg, postMixApi.setLpfLevel)
     }
 })()
 const svfLevel = (() => {
-    const cfg = controllers.VOICE_MIX.SVF
+    const cfg = controllers.POST_MIX.SVF
     return {
         send: (source: ApiSource, value: number) => numericParamSend(source, value, cfg),
         receive: () => numericParamReceive(cfg, postMixApi.setSvfLevel)
     }
 })()
 const sine1Level = (() => {
-    const cfg = controllers.VOICE_MIX.SINE1
+    const cfg = controllers.POST_MIX.SINE1
     return {
         send: (source: ApiSource, value: number) => numericParamSend(source, value, cfg),
         receive: () => numericParamReceive(cfg, postMixApi.setSine1Level)
     }
 })()
 const sine2Level = (() => {
-    const cfg = controllers.VOICE_MIX.SINE2
+    const cfg = controllers.POST_MIX.SINE2
     return {
         send: (source: ApiSource, value: number) => numericParamSend(source, value, cfg),
         receive: () => numericParamReceive(cfg, postMixApi.setSine2Level)
@@ -35,7 +35,7 @@ const sine2Level = (() => {
 })()
 
 const pan = (() => {
-    const cfg = controllers.VOICE_OUT.PAN
+    const cfg = controllers.POST_MIX.PAN
     return {
         send: (source: ApiSource, value: number) => numericParamSend(source, value, cfg),
         receive: () => numericParamReceive(cfg, postMixApi.setPan)

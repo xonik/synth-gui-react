@@ -4,7 +4,7 @@ import Header from '../misc/Header';
 import { ControllerGroupIds } from '../../synthcore/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectNoise } from '../../synthcore/modules/noise/noiseReducer'
-import { NoiseControllerIds } from '../../synthcore/modules/noise/types'
+import noiseControllers from '../../synthcore/modules/noise/noiseControllers'
 
 interface Props {
   x: number,
@@ -22,7 +22,7 @@ const Noise = ({ x, y }: Props) => {
                       ledPosition="top" ledCount={3} ledLabels={['White', 'Pink', 'Red']}
                       label="Colour" labelPosition="bottom"
                       ctrlGroup={ctrlGroup}
-                      ctrlId={NoiseControllerIds.COLOUR}
+                      ctrlId={noiseControllers.COLOUR.id}
                       value={noise.colour}
     />
   </>;

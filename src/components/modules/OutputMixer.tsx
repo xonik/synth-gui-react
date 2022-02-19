@@ -6,8 +6,8 @@ import { ControllerGroupIds } from '../../synthcore/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectMix } from '../../synthcore/modules/commonFx/commonFxReducer'
 import { selectOut } from '../../synthcore/modules/out/outReducer'
-import { OutControllerIds } from '../../synthcore/modules/out/types'
 import commonFxControllers from '../../synthcore/modules/commonFx/commonFxControllers'
+import outControllers from '../../synthcore/modules/out/outControllers'
 
 interface Props {
     x: number,
@@ -76,19 +76,19 @@ const OutputMixer = ({ x, y }: Props) => {
 
         <OutputMixerChannel x={offsetX2} y={offsetY} potMode="spread" label="Spread"
                             ctrlGroup={ctrlGroupOut}
-                            ctrlId={OutControllerIds.SPREAD}
+                            ctrlId={outControllers.SPREAD.id}
                             value={out.spread}
         />
 
         <OutputMixerChannel x={offsetX2 + colDistance} y={offsetY} label="Volume"
                             ctrlGroup={ctrlGroupOut}
-                            ctrlId={OutControllerIds.VOLUME}
+                            ctrlId={outControllers.VOLUME.id}
                             value={out.volume}
         />
 
         <OutputMixerChannel x={offsetX2 + colDistance} y={offsetY - 40} label="Headphones"
                             ctrlGroup={ctrlGroupOut}
-                            ctrlId={OutControllerIds.HEADPHONES}
+                            ctrlId={outControllers.HEADPHONES.id}
                             value={out.headphones}
         />
 
