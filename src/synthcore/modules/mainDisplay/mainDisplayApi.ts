@@ -8,7 +8,7 @@ import mainDisplayMidiApi from './mainDisplayMidiApi'
 import { ApiSource } from '../../types'
 import logger from '../../../utils/logger'
 import mainDisplayControllers from './mainDisplayControllers'
-import { createClickMapper } from '../common/utils'
+import { createClickMapper, createIncrementMapper } from '../common/utils'
 
 type PotResolutions = {
     [key: number]: {
@@ -83,6 +83,8 @@ const click = createClickMapper([
     [mainDisplayControllers.FUNC_COMPARE, (source: ApiSource) => handleCompareClick(source)],
     [mainDisplayControllers.FUNC_ROUTE, (source: ApiSource) => handleRouteClick(source)],
 ])
+const increment = createIncrementMapper([
+])
 
 const mainDisplayApi = {
     handleMainDisplayController,
@@ -96,6 +98,7 @@ const mainDisplayApi = {
     handleCompareClick,
     handleRouteClick,
     click,
+    increment,
 }
 
 export default mainDisplayApi

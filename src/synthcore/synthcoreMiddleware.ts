@@ -3,54 +3,75 @@ import { ControllerGroupIds } from './types'
 import { envMiddleware } from './modules/env/envMiddleware'
 import { mainDisplayMiddleware } from './modules/mainDisplay/mainDisplayMiddleware'
 import { modsMiddleware } from './modules/mods/modsMiddleware'
-import { oscMiddleware } from './modules/osc/oscMiddleware'
-import { filtersMiddleware } from './modules/filters/filtersMiddleware'
-import { srcMixMiddleware } from './modules/srcMix/srcMixMiddleware'
-import { fxMiddleware } from './modules/fx/fxMiddleware'
-import { ringModMiddleware } from './modules/ringMod/ringModMiddleware'
-import { noiseMiddleware } from './modules/noise/noiseMiddleware'
-import { masterClockMiddleware } from './modules/masterClock/masterClockMiddleware'
-import { arpMiddleware } from './modules/arp/arpMiddleware'
 import { kbdMiddleware } from './modules/kbd/kbdMiddleware'
-import { postMixMiddleware } from './modules/postMix/postMixMiddleware'
-import { commonFxMiddleware } from './modules/commonFx/commonFxMiddleware'
-import { outMiddleware } from './modules/out/outMiddleware'
 import { lfoMiddleware } from './modules/lfo/lfoMiddleware'
-import { voicesMiddleware } from './modules/voices/voicesMiddleware'
+import { AnyAction } from '@reduxjs/toolkit'
+import modsApi from './modules/mods/modsApi'
+import {
+    arpApi, commonFxApi,
+    filtersApi,
+    fxApi,
+    kbdApi, mainDisplayApi,
+    masterClockApi,
+    noiseApi,
+    oscApi, outApi, postMixApi,
+    ringModApi,
+    srcMixApi, voicesApi
+} from './synthcoreApi'
+import { click, increment } from './modules/ui/uiReducer'
+
+const forApi = (action: AnyAction, ctrlGroup: number, path: string): boolean => {
+    return action.payload.ctrlGroup === ctrlGroup || action.type.indexOf(`${path}/`) > -1
+}
+
+const getApi = (action: AnyAction) => {
+    if (forApi(action, ControllerGroupIds.MODS, 'mods')) {
+        return modsApi
+    } else if (forApi(action, ControllerGroupIds.OSC, 'osc')) {
+        return oscApi
+    } else if (forApi(action, ControllerGroupIds.FILTERS, 'filters')) {
+        return filtersApi
+    } else if (forApi(action, ControllerGroupIds.SRC_MIX, 'srcMix')) {
+        return srcMixApi
+    } else if (forApi(action, ControllerGroupIds.FX, 'fx')) {
+        return fxApi
+    } else if (forApi(action, ControllerGroupIds.RING_MOD, 'ringMod')) {
+        return ringModApi
+    } else if (forApi(action, ControllerGroupIds.NOISE, 'noise')) {
+        return noiseApi
+    } else if (forApi(action, ControllerGroupIds.MASTER_CLOCK, 'masterClock')) {
+        return masterClockApi
+    } else if (forApi(action, ControllerGroupIds.ARP, 'arp')) {
+        return arpApi
+    } else if (forApi(action, ControllerGroupIds.KBD, 'kbd')) {
+        return kbdApi
+    } else if (forApi(action, ControllerGroupIds.POST_MIX, 'postMix')) {
+        return postMixApi
+    } else if (forApi(action, ControllerGroupIds.COMMON_FX, 'commonFx')) {
+        return commonFxApi
+    } else if (forApi(action, ControllerGroupIds.OUT, 'out')) {
+        return outApi
+    } else if (forApi(action, ControllerGroupIds.VOICES, 'voices')) {
+        return voicesApi
+    } else if(action.payload.ctrlGroup === ControllerGroupIds.MAIN_DISP) {
+        return mainDisplayApi
+    }
+}
 
 export const synthcoreMiddleware: Middleware<{}, any> = storeAPI => next => action => {
+    if (increment.match(action)) {
+        getApi(action)?.increment(action.payload.ctrl, action.payload.value, action.payload.source)
+    } else if (click.match(action)) {
+        getApi(action)?.click(action.payload.ctrl, action.payload.source)
+    }
     if (action.payload.ctrlGroup === ControllerGroupIds.ENV || action.type.indexOf('envelopes/') > -1) {
         envMiddleware(action)
     } else if (action.payload.ctrlGroup === ControllerGroupIds.MODS || action.type.indexOf('mods/') > -1) {
         modsMiddleware(action)
-    } else if (action.payload.ctrlGroup === ControllerGroupIds.OSC || action.type.indexOf('osc/') > -1) {
-        oscMiddleware(action)
-    } else if (action.payload.ctrlGroup === ControllerGroupIds.FILTERS || action.type.indexOf('filters/') > -1) {
-        filtersMiddleware(action)
-    } else if (action.payload.ctrlGroup === ControllerGroupIds.SRC_MIX || action.type.indexOf('srcMix/') > -1) {
-        srcMixMiddleware(action)
-    } else if (action.payload.ctrlGroup === ControllerGroupIds.FX || action.type.indexOf('fx/') > -1) {
-        fxMiddleware(action)
-    } else if (action.payload.ctrlGroup === ControllerGroupIds.RING_MOD || action.type.indexOf('ringMod/') > -1) {
-        ringModMiddleware(action)
-    } else if (action.payload.ctrlGroup === ControllerGroupIds.NOISE || action.type.indexOf('noise/') > -1) {
-        noiseMiddleware(action)
-    } else if (action.payload.ctrlGroup === ControllerGroupIds.MASTER_CLOCK || action.type.indexOf('masterClock/') > -1) {
-        masterClockMiddleware(action)
-    } else if (action.payload.ctrlGroup === ControllerGroupIds.ARP || action.type.indexOf('arp/') > -1) {
-        arpMiddleware(action)
     } else if (action.payload.ctrlGroup === ControllerGroupIds.KBD || action.type.indexOf('kbd/') > -1) {
         kbdMiddleware(action)
-    } else if (action.payload.ctrlGroup === ControllerGroupIds.POST_MIX || action.type.indexOf('postMix/') > -1) {
-        postMixMiddleware(action)
-    } else if (action.payload.ctrlGroup === ControllerGroupIds.COMMON_FX || action.type.indexOf('commonFx/') > -1) {
-        commonFxMiddleware(action)
-    } else if (action.payload.ctrlGroup === ControllerGroupIds.OUT || action.type.indexOf('out/') > -1) {
-        outMiddleware(action)
     } else if (action.payload.ctrlGroup === ControllerGroupIds.LFO || action.type.indexOf('lfos/') > -1) {
         lfoMiddleware(action)
-    } else if (action.payload.ctrlGroup === ControllerGroupIds.VOICES || action.type.indexOf('voices/') > -1) {
-        voicesMiddleware(action)
     } else if(action.payload.ctrlGroup === ControllerGroupIds.MAIN_DISP) {
         mainDisplayMiddleware(action)
     }

@@ -7,7 +7,7 @@ import { ApiSource } from '../../types'
 import { dispatch, getBounded } from '../../utils'
 import voicesControllers from './voicesControllers'
 import voicesMidiApi from './voicesMidiApi'
-import { createClickMapper } from '../common/utils'
+import { createClickMapper, createIncrementMapper } from '../common/utils'
 
 const setVoiceState = (id: number, value: number, source: ApiSource) => {
     const voices = selectVoices(store.getState())
@@ -47,10 +47,12 @@ const click = createClickMapper([
     [voicesControllers.VOICE7, (source: ApiSource) => toggleVoiceState(6, source)],
     [voicesControllers.VOICE8, (source: ApiSource) => toggleVoiceState(7, source)],
 ])
-
+const increment = createIncrementMapper([
+])
 const voicesApi = {
     setVoiceState,
     click,
+    increment,
 }
 
 export default voicesApi

@@ -7,7 +7,7 @@ import {
 import { store } from '../../store'
 import outMidiApi from './outMidiApi'
 import { numericPropFuncs } from '../common/commonApi'
-import { createIncrementMapper } from '../common/utils'
+import { createClickMapper, createIncrementMapper } from '../common/utils'
 import outControllers from './outControllers'
 import { ApiSource } from '../../types'
 
@@ -33,6 +33,8 @@ const increment = createIncrementMapper([
     [outControllers.SPREAD, (value: number, source: ApiSource) => spread.increment(value, source)],
     [outControllers.HEADPHONES, (value: number, source: ApiSource) => headphones.increment(value, source)],
 ])
+const click = createClickMapper([
+])
 
 const outApi = {
     setVolume: volume.set,
@@ -40,7 +42,7 @@ const outApi = {
     setHeadphones: headphones.set,
 
     increment,
-
+    click,
 }
 
 export default outApi

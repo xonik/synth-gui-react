@@ -13,7 +13,7 @@ import {
 import { store } from '../../store'
 import postMixMidiApi from './postMixMidiApi'
 import { numericPropFuncs } from '../common/commonApi'
-import { createIncrementMapper } from '../common/utils'
+import { createClickMapper, createIncrementMapper } from '../common/utils'
 import postMixControllers from './postMixControllers'
 import { ApiSource } from '../../types'
 
@@ -71,6 +71,8 @@ const increment = createIncrementMapper([
     [postMixControllers.FX2_SEND, (value: number, source: ApiSource) => fx2.increment(value, source)],
 ])
 
+const click = createClickMapper([
+])
 
 const postMixApi = {
     setLpfLevel: lpfLevel.set,
@@ -84,7 +86,7 @@ const postMixApi = {
     setFX2: fx2.set,
 
     increment,
-
+    click,
 }
 
 export default postMixApi
