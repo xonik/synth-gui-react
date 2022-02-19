@@ -60,9 +60,9 @@ const getApi = (action: AnyAction) => {
 
 export const synthcoreMiddleware: Middleware<{}, any> = storeAPI => next => action => {
     if (increment.match(action)) {
-        getApi(action)?.increment(action.payload.ctrl, action.payload.value, action.payload.source)
+        getApi(action)?.increment(action.payload)
     } else if (click.match(action)) {
-        getApi(action)?.click(action.payload.ctrl, action.payload.source)
+        getApi(action)?.click(action.payload)
     }
     if (action.payload.ctrlGroup === ControllerGroupIds.ENV || action.type.indexOf('envelopes/') > -1) {
         envMiddleware(action)

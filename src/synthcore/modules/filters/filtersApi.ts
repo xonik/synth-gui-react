@@ -191,36 +191,36 @@ const incrementSvfSlope = (inc: number, source: ApiSource) => {
 }
 
 const increment = createIncrementMapper([
-    [filtersControllers.LPF.INPUT, (value: number, source: ApiSource) => lpfInput.increment(value, source)],
-    [filtersControllers.LPF.DRIVE, (value: number, source: ApiSource) => lpfDrive.increment(value, source)],
-    [filtersControllers.LPF.RESONANCE, (value: number, source: ApiSource) => lpfResonance.increment(value, source)],
-    [filtersControllers.LPF.CUTOFF, (value: number, source: ApiSource) => lpfCutoff.increment(value, source)],
-    [filtersControllers.LPF.FM_AMT, (value: number, source: ApiSource) => lpfFmAmt.increment(value, source)],
-    [filtersControllers.LPF.ENV_AMT, (value: number, source: ApiSource) => lpfEnvAmt.increment(value, source)],
-    [filtersControllers.LPF.LFO_AMT, (value: number, source: ApiSource) => lpfLfoAmt.increment(value, source)],
-    [filtersControllers.LPF.KBD_AMT, (value: number, source: ApiSource) => lpfKbdAmt.increment(value, source)],
+    [filtersControllers.LPF.INPUT, ({value,  source}) => lpfInput.increment(value, source)],
+    [filtersControllers.LPF.DRIVE, ({value,  source}) => lpfDrive.increment(value, source)],
+    [filtersControllers.LPF.RESONANCE, ({value,  source}) => lpfResonance.increment(value, source)],
+    [filtersControllers.LPF.CUTOFF, ({value,  source}) => lpfCutoff.increment(value, source)],
+    [filtersControllers.LPF.FM_AMT, ({value,  source}) => lpfFmAmt.increment(value, source)],
+    [filtersControllers.LPF.ENV_AMT, ({value,  source}) => lpfEnvAmt.increment(value, source)],
+    [filtersControllers.LPF.LFO_AMT, ({value,  source}) => lpfLfoAmt.increment(value, source)],
+    [filtersControllers.LPF.KBD_AMT, ({value,  source}) => lpfKbdAmt.increment(value, source)],
 
-    [filtersControllers.SVF.INPUT, (value: number, source: ApiSource) => svfInput.increment(value, source)],
-    [filtersControllers.SVF.DRIVE, (value: number, source: ApiSource) => svfDrive.increment(value, source)],
-    [filtersControllers.SVF.RESONANCE, (value: number, source: ApiSource) => svfResonance.increment(value, source)],
-    [filtersControllers.SVF.CUTOFF, (value: number, source: ApiSource) => svfCutoff.increment(value, source)],
-    [filtersControllers.SVF.FM_AMT, (value: number, source: ApiSource) => svfFmAmt.increment(value, source)],
-    [filtersControllers.SVF.ENV_AMT, (value: number, source: ApiSource) => svfEnvAmt.increment(value, source)],
-    [filtersControllers.SVF.LFO_AMT, (value: number, source: ApiSource) => svfLfoAmt.increment(value, source)],
-    [filtersControllers.SVF.KBD_AMT, (value: number, source: ApiSource) => svfKbdAmt.increment(value, source)],
-    [filtersControllers.SVF.SLOPE, (value: number, source: ApiSource) => incrementSvfSlope(value, source)],
+    [filtersControllers.SVF.INPUT, ({value,  source}) => svfInput.increment(value, source)],
+    [filtersControllers.SVF.DRIVE, ({value,  source}) => svfDrive.increment(value, source)],
+    [filtersControllers.SVF.RESONANCE, ({value,  source}) => svfResonance.increment(value, source)],
+    [filtersControllers.SVF.CUTOFF, ({value,  source}) => svfCutoff.increment(value, source)],
+    [filtersControllers.SVF.FM_AMT, ({value,  source}) => svfFmAmt.increment(value, source)],
+    [filtersControllers.SVF.ENV_AMT, ({value,  source}) => svfEnvAmt.increment(value, source)],
+    [filtersControllers.SVF.LFO_AMT, ({value,  source}) => svfLfoAmt.increment(value, source)],
+    [filtersControllers.SVF.KBD_AMT, ({value,  source}) => svfKbdAmt.increment(value, source)],
+    [filtersControllers.SVF.SLOPE, ({value,  source}) => incrementSvfSlope(value, source)],
 ])
 
 const click = createClickMapper([
-    [filtersControllers.LPF.EXT_CV, (source: ApiSource) => lpfExtCv.toggle(source)],
-    [filtersControllers.LPF.WHEEL, (source: ApiSource) => lpfWheel.toggle(source)],
-    [filtersControllers.LPF.SLOPE, (source: ApiSource) => lpfSlope.toggle(source)],
+    [filtersControllers.LPF.EXT_CV, ({source}) => lpfExtCv.toggle(source)],
+    [filtersControllers.LPF.WHEEL, ({source}) => lpfWheel.toggle(source)],
+    [filtersControllers.LPF.SLOPE, ({source}) => lpfSlope.toggle(source)],
 
-    [filtersControllers.FILTERS.LINK_CUTOFF, (source: ApiSource) => filtersLinkCutoff.toggle(source)],
-    [filtersControllers.FILTERS.ROUTING, (source: ApiSource) => filtersRouting.toggle(source)],
+    [filtersControllers.FILTERS.LINK_CUTOFF, ({source}) => filtersLinkCutoff.toggle(source)],
+    [filtersControllers.FILTERS.ROUTING, ({source}) => filtersRouting.toggle(source)],
 
-    [filtersControllers.SVF.EXT_CV, (source: ApiSource) => svfExtCv.toggle(source)],
-    [filtersControllers.SVF.WHEEL, (source: ApiSource) => svfWheel.toggle(source)],
+    [filtersControllers.SVF.EXT_CV, ({source}) => svfExtCv.toggle(source)],
+    [filtersControllers.SVF.WHEEL, ({source}) => svfWheel.toggle(source)],
 ])
 
 const filtersApi = {

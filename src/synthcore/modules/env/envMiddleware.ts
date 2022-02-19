@@ -8,11 +8,9 @@ import envControllers from './envControllers'
 
 export const envMiddleware = (action: PayloadAction): void => {
     if (increment.match(action)) {
-        const ctrlIndex = action.payload.ctrlIndex || 0
-        envApi.increment(action.payload.ctrl, ctrlIndex, action.payload.value, action.payload.source)
+        envApi.increment(action.payload)
     } else if (click.match(action)) {
-        const ctrlIndex = action.payload.ctrlIndex || 0
-        envApi.click(action.payload.ctrl, ctrlIndex, action.payload.source)
+        envApi.click(action.payload)
     } else if (release.match(action)) {
         const ctrlIndex = action.payload.ctrlIndex || 0
         if(action.payload.ctrl === envControllers(0).TRIGGER){

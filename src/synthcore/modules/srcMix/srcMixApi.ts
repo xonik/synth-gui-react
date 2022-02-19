@@ -90,21 +90,21 @@ const outExtAudio = togglePropFuncs({
 
 
 const increment = createIncrementMapper([
-    [srcMixControllers.LEVEL_OSC1, (value: number, source: ApiSource) => levelOsc1.increment(value, source)],
-    [srcMixControllers.LEVEL_OSC2, (value: number, source: ApiSource) => levelOsc2.increment(value, source)],
-    [srcMixControllers.LEVEL_OSC3, (value: number, source: ApiSource) => levelOsc3.increment(value, source)],
-    [srcMixControllers.LEVEL_NOISE, (value: number, source: ApiSource) => levelNoise.increment(value, source)],
-    [srcMixControllers.LEVEL_RING_MOD, (value: number, source: ApiSource) => levelRingMod.increment(value, source)],
-    [srcMixControllers.LEVEL_EXT_AUDIO, (value: number, source: ApiSource) => levelExtAudio.increment(value, source)],
+    [srcMixControllers.LEVEL_OSC1, ({value, source}) => levelOsc1.increment(value, source)],
+    [srcMixControllers.LEVEL_OSC2, ({value, source}) => levelOsc2.increment(value, source)],
+    [srcMixControllers.LEVEL_OSC3, ({value, source}) => levelOsc3.increment(value, source)],
+    [srcMixControllers.LEVEL_NOISE, ({value, source}) => levelNoise.increment(value, source)],
+    [srcMixControllers.LEVEL_RING_MOD, ({value, source}) => levelRingMod.increment(value, source)],
+    [srcMixControllers.LEVEL_EXT_AUDIO, ({value, source}) => levelExtAudio.increment(value, source)],
 ])
 
 const click = createClickMapper([
-    [srcMixControllers.OUT_OSC1, (source: ApiSource) => outOsc1.toggle(source)],
-    [srcMixControllers.OUT_OSC2, (source: ApiSource) => outOsc2.toggle(source)],
-    [srcMixControllers.OUT_OSC3, (source: ApiSource) => outOsc3.toggle(source)],
-    [srcMixControllers.OUT_NOISE, (source: ApiSource) => outNoise.toggle(source)],
-    [srcMixControllers.OUT_RING_MOD, (source: ApiSource) => outRingMod.toggle(source)],
-    [srcMixControllers.OUT_EXT_AUDIO, (source: ApiSource) => outExtAudio.toggle(source)],
+    [srcMixControllers.OUT_OSC1, ({source}) => outOsc1.toggle(source)],
+    [srcMixControllers.OUT_OSC2, ({source}) => outOsc2.toggle(source)],
+    [srcMixControllers.OUT_OSC3, ({source}) => outOsc3.toggle(source)],
+    [srcMixControllers.OUT_NOISE, ({source}) => outNoise.toggle(source)],
+    [srcMixControllers.OUT_RING_MOD, ({source}) => outRingMod.toggle(source)],
+    [srcMixControllers.OUT_EXT_AUDIO, ({source}) => outExtAudio.toggle(source)],
 ])
 
 const srcMixApi = {

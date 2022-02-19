@@ -29,9 +29,9 @@ const headphones = numericPropFuncs({
 
 
 const increment = createIncrementMapper([
-    [outControllers.VOLUME, (value: number, source: ApiSource) => volume.increment(value, source)],
-    [outControllers.SPREAD, (value: number, source: ApiSource) => spread.increment(value, source)],
-    [outControllers.HEADPHONES, (value: number, source: ApiSource) => headphones.increment(value, source)],
+    [outControllers.VOLUME, ({value, source}) => volume.increment(value, source)],
+    [outControllers.SPREAD, ({value, source}) => spread.increment(value, source)],
+    [outControllers.HEADPHONES, ({value, source}) => headphones.increment(value, source)],
 ])
 const click = createClickMapper([
 ])

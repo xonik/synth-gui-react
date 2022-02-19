@@ -223,16 +223,16 @@ const toggleUiLfo = (source: ApiSource) => {
 
 
 const increment = createIndexIncrementMapper([
-    [lfoControllers(0).RATE, (ctrlIndex: number, value: number, source) => rate.increment(ctrlIndex, value, source)],
-    [lfoControllers(0).DEPTH, (ctrlIndex: number, value: number, source) => depth.increment(ctrlIndex, value, source)],
-    [lfoControllers(0).DELAY, (ctrlIndex: number, value: number, source) => incrementDelay(ctrlIndex, value, source)],
+    [lfoControllers(0).RATE, ({ctrlIndex, value,  source}) => rate.increment(ctrlIndex || 0, value, source)],
+    [lfoControllers(0).DEPTH, ({ctrlIndex, value,  source}) => depth.increment(ctrlIndex || 0, value, source)],
+    [lfoControllers(0).DELAY, ({ctrlIndex, value,  source}) => incrementDelay(ctrlIndex || 0, value, source)],
 ])
 
 const click = createIndexClickMapper([
-    [lfoControllers(0).SHAPE, (ctrlIndex: number, source) => shape.toggle(ctrlIndex, source)],
-    [lfoControllers(0).SYNC, (ctrlIndex: number, source) => sync.toggle(ctrlIndex, source)],
-    [lfoControllers(0).RESET, (ctrlIndex: number, source) => reset.toggle(ctrlIndex, source)],
-    [lfoControllers(0).ONCE, (ctrlIndex: number, source) => once.toggle(ctrlIndex, source)],
+    [lfoControllers(0).SHAPE, ({ctrlIndex,  source}) => shape.toggle(ctrlIndex || 0, source)],
+    [lfoControllers(0).SYNC, ({ctrlIndex,  source}) => sync.toggle(ctrlIndex || 0, source)],
+    [lfoControllers(0).RESET, ({ctrlIndex,  source}) => reset.toggle(ctrlIndex || 0, source)],
+    [lfoControllers(0).ONCE, ({ctrlIndex,  source}) => once.toggle(ctrlIndex || 0, source)],
 ])
 
 const lfoApi = {

@@ -11,7 +11,7 @@ export const mainDisplayMiddleware = (action: PayloadAction): void => {
         if(action.payload.ctrl === mainDisplayControllers.GROUP_MENU){
             mainDisplayApi.setCurrentScreen(action.payload.radioButtonIndex || 0, ApiSource.UI)
         } else {
-            mainDisplayApi.click(action.payload.ctrl, action.payload.source)
+            mainDisplayApi.click(action.payload)
         }
     } else if (release.match(action)) {
         if (action.payload.ctrl === mainDisplayControllers.FUNC_SHIFT) {

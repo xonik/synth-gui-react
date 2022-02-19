@@ -38,14 +38,14 @@ const toggleVoiceState = (id: number, source: ApiSource) => {
 
 
 const click = createClickMapper([
-    [voicesControllers.VOICE1, (source: ApiSource) => toggleVoiceState(0, source)],
-    [voicesControllers.VOICE2, (source: ApiSource) => toggleVoiceState(1, source)],
-    [voicesControllers.VOICE3, (source: ApiSource) => toggleVoiceState(2, source)],
-    [voicesControllers.VOICE4, (source: ApiSource) => toggleVoiceState(3, source)],
-    [voicesControllers.VOICE5, (source: ApiSource) => toggleVoiceState(4, source)],
-    [voicesControllers.VOICE6, (source: ApiSource) => toggleVoiceState(5, source)],
-    [voicesControllers.VOICE7, (source: ApiSource) => toggleVoiceState(6, source)],
-    [voicesControllers.VOICE8, (source: ApiSource) => toggleVoiceState(7, source)],
+    [voicesControllers.VOICE1, ({source}) => toggleVoiceState(0, source)],
+    [voicesControllers.VOICE2, ({source}) => toggleVoiceState(1, source)],
+    [voicesControllers.VOICE3, ({source}) => toggleVoiceState(2, source)],
+    [voicesControllers.VOICE4, ({source}) => toggleVoiceState(3, source)],
+    [voicesControllers.VOICE5, ({source}) => toggleVoiceState(4, source)],
+    [voicesControllers.VOICE6, ({source}) => toggleVoiceState(5, source)],
+    [voicesControllers.VOICE7, ({source}) => toggleVoiceState(6, source)],
+    [voicesControllers.VOICE8, ({source}) => toggleVoiceState(7, source)],
 ])
 const increment = createIncrementMapper([
 ])

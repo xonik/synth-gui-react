@@ -20,7 +20,7 @@ const colour = togglePropFuncs({
 const increment = createIncrementMapper([
 ])
 const click = createClickMapper([
-    [noiseControllers.COLOUR, (source: ApiSource) => colour.toggle(source)],
+    [noiseControllers.COLOUR, ({source}) => colour.toggle(source)],
 ])
 
 const noiseApi = {

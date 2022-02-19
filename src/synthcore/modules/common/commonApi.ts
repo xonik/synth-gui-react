@@ -1,9 +1,26 @@
 import { AnyAction } from '@reduxjs/toolkit'
-import { ApiSource } from '../../types'
-import { ControllerConfigCCWithValue } from '../../../midi/types'
+import { ApiSource, ControllerGroupIds } from '../../types'
+import { ControllerConfig, ControllerConfigCCWithValue } from '../../../midi/types'
 import { dispatch, getBounded, getQuantized } from '../../utils'
 import { NumericPayload } from './CommonReducer'
 
+
+export type NumericInputProperty = {
+    ctrlGroup: ControllerGroupIds;
+    ctrl: ControllerConfig;
+    ctrlIndex?: number;
+    value: number;
+    source: ApiSource
+}
+
+export type ButtonInputProperty = {
+    ctrlGroup: ControllerGroupIds;
+    ctrl: ControllerConfig;
+    ctrlIndex?: number;
+    radioButtonIndex?: number;
+    reverse?: boolean;
+    source: ApiSource
+}
 type NumericProperty = {
     selector: () => number
     action: (payload: NumericPayload) => AnyAction

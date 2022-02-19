@@ -10,7 +10,7 @@ import {
 import { store } from '../../store'
 import arpMidiApi from './arpMidiApi'
 import controllers from '../../../midi/controllers'
-import { numericPropFuncs, togglePropFuncs } from '../common/commonApi'
+import { ButtonInputProperty, NumericInputProperty, numericPropFuncs, togglePropFuncs } from '../common/commonApi'
 import { createClickMapper, createIncrementMapper, createSetMapper } from '../common/utils'
 import arpControllers from './arpControllers'
 import { ApiSource } from '../../types'
@@ -55,23 +55,23 @@ const trigger = togglePropFuncs({
 })
 
 const increment = createIncrementMapper([
-    [arpControllers.TEMPO,  (value: number, source) => tempo.increment(value, source)],
+    [arpControllers.TEMPO,  ({ value, source }: NumericInputProperty) => tempo.increment(value, source)],
 ])
 
 const click = createClickMapper([
-    [arpControllers.ON_OFF, (source) => onOff.toggle(source)],
-    [arpControllers.TRIGGER, (source) => trigger.toggle(source)],
-    [arpControllers.SYNC, (source) => sync.toggle(source)],
-    [arpControllers.RANGE, (source) => range.toggle(source)],
-    [arpControllers.MODE, (source) => mode.toggle(source)],
+    [arpControllers.ON_OFF, ({ source }: ButtonInputProperty) =>onOff.toggle(source)],
+    [arpControllers.TRIGGER, ({ source }: ButtonInputProperty) =>trigger.toggle(source)],
+    [arpControllers.SYNC, ({ source }: ButtonInputProperty) =>sync.toggle(source)],
+    [arpControllers.RANGE, ({ source }: ButtonInputProperty) =>range.toggle(source)],
+    [arpControllers.MODE, ({ source }: ButtonInputProperty) =>mode.toggle(source)],
 ])
 
 const set = createSetMapper([
-    [arpControllers.ON_OFF, (value: number, source) => onOff.toggle(source)],
-    [arpControllers.TRIGGER, (value: number, source) => trigger.toggle(source)],
-    [arpControllers.SYNC, (value: number, source) => sync.toggle(source)],
-    [arpControllers.RANGE, (value: number, source) => range.toggle(source)],
-    [arpControllers.MODE, (value: number, source) => mode.toggle(source)],
+    [arpControllers.ON_OFF, ({ value, source }: NumericInputProperty) => onOff.toggle(source)],
+    [arpControllers.TRIGGER, ({ value, source }: NumericInputProperty) => trigger.toggle(source)],
+    [arpControllers.SYNC, ({ value, source }: NumericInputProperty) => sync.toggle(source)],
+    [arpControllers.RANGE, ({ value, source }: NumericInputProperty) => range.toggle(source)],
+    [arpControllers.MODE, ({ value, source }: NumericInputProperty) => mode.toggle(source)],
 ])
 
 const arpApi = {

@@ -7,7 +7,7 @@ import modsControllers from './modsControllers'
 
 export const modsMiddleware = (action: PayloadAction): void => {
     if (increment.match(action)) {
-        modsApi.increment(action.payload.ctrl, action.payload.value, action.payload.source)
+        modsApi.increment(action.payload)
     } else if (click.match(action)) {
         if(action.payload.ctrl === modsControllers.ROUTE_BUTTON) {
             modsApi.toggleRouteButton((action.payload.radioButtonIndex || 0) + 1, ApiSource.UI)

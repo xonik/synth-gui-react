@@ -69,14 +69,14 @@ const decrementTranspose = (source: ApiSource) => {
 
 
 const increment = createIncrementMapper([
-    [kbdControllers.PORTAMENTO, (value: number, source: ApiSource) => portamento.increment(value, source)],
-    [kbdControllers.UNISON_DETUNE, (value: number, source: ApiSource) => unisonDetune.increment(value, source)],
+    [kbdControllers.PORTAMENTO, ({value,  source}) => portamento.increment(value, source)],
+    [kbdControllers.UNISON_DETUNE, ({value,  source}) => unisonDetune.increment(value, source)],
 ])
 
 const click = createClickMapper([
-    [kbdControllers.HOLD, (source: ApiSource) => hold.toggle(source)],
-    [kbdControllers.CHORD, (source: ApiSource) => chord.toggle(source)],
-    [kbdControllers.MODE, (source: ApiSource) => mode.toggle(source)],
+    [kbdControllers.HOLD, ({source}) => hold.toggle(source)],
+    [kbdControllers.CHORD, ({source}) => chord.toggle(source)],
+    [kbdControllers.MODE, ({source}) => mode.toggle(source)],
 ])
 
 const kbdApi = {

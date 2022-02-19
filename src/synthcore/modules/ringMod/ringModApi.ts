@@ -18,7 +18,7 @@ const source = togglePropFuncs({
 })
 
 const click = createClickMapper([
-    [ringModControllers.SOURCE, (apiSource: ApiSource) => source.toggle(apiSource)],
+    [ringModControllers.SOURCE, ({source: apiSource}) => source.toggle(apiSource)],
 ])
 const increment = createIncrementMapper([
 ])

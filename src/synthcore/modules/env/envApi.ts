@@ -52,7 +52,7 @@ const setStageLevel = (envId: number, stageId: StageId, requestedValue: number, 
             : getQuantized(getBounded(requestedValue), 32767)
 
         const currentLevel = env.stages[stageId].level
-        if(boundedValue === currentLevel){
+        if (boundedValue === currentLevel) {
             return
         }
 
@@ -270,22 +270,58 @@ const toggleEnv3Id = (source: ApiSource) => {
 }
 
 const increment = createIndexIncrementMapper([
-    [envControllers(0).DELAY_TIME, (ctrlIndex: number, value: number, source) => incrementStageTime(ctrlIndex, StageId.DELAY, value, source)],
-    [envControllers(0).ATTACK_TIME, (ctrlIndex: number, value: number, source) => incrementStageTime(ctrlIndex, StageId.ATTACK, value, source)],
-    [envControllers(0).DECAY1_TIME, (ctrlIndex: number, value: number, source) => incrementStageTime(ctrlIndex, StageId.DECAY1, value, source)],
-    [envControllers(0).DECAY2_TIME, (ctrlIndex: number, value: number, source) => incrementStageTime(ctrlIndex, StageId.DECAY2, value, source)],
-    [envControllers(0).SUSTAIN_LEVEL, (ctrlIndex: number, value: number, source) => incrementStageLevel(ctrlIndex, StageId.SUSTAIN, value, source)],
-    [envControllers(0).RELEASE1_TIME, (ctrlIndex: number, value: number, source) => incrementStageTime(ctrlIndex, StageId.RELEASE1, value, source)],
-    [envControllers(0).RELEASE2_TIME, (ctrlIndex: number, value: number, source) => incrementStageTime(ctrlIndex, StageId.RELEASE2, value, source)],
-    [envControllers(0).DECAY2_LEVEL, (ctrlIndex: number, value: number, source) => incrementStageLevel(ctrlIndex, StageId.DECAY2, value, source)],
-    [envControllers(0).RELEASE2_LEVEL, (ctrlIndex: number, value: number, source) => incrementStageLevel(ctrlIndex, StageId.RELEASE2, value, source)],
+    [envControllers(0).DELAY_TIME, ({
+                                        ctrlIndex,
+                                        value,
+                                        source
+                                    }) => incrementStageTime(ctrlIndex || 0, StageId.DELAY, value, source)],
+    [envControllers(0).ATTACK_TIME, ({
+                                         ctrlIndex,
+                                         value,
+                                         source
+                                     }) => incrementStageTime(ctrlIndex || 0, StageId.ATTACK, value, source)],
+    [envControllers(0).DECAY1_TIME, ({
+                                         ctrlIndex,
+                                         value,
+                                         source
+                                     }) => incrementStageTime(ctrlIndex || 0, StageId.DECAY1, value, source)],
+    [envControllers(0).DECAY2_TIME, ({
+                                         ctrlIndex,
+                                         value,
+                                         source
+                                     }) => incrementStageTime(ctrlIndex || 0, StageId.DECAY2, value, source)],
+    [envControllers(0).SUSTAIN_LEVEL, ({
+                                           ctrlIndex,
+                                           value,
+                                           source
+                                       }) => incrementStageLevel(ctrlIndex || 0, StageId.SUSTAIN, value, source)],
+    [envControllers(0).RELEASE1_TIME, ({
+                                           ctrlIndex,
+                                           value,
+                                           source
+                                       }) => incrementStageTime(ctrlIndex || 0, StageId.RELEASE1, value, source)],
+    [envControllers(0).RELEASE2_TIME, ({
+                                           ctrlIndex,
+                                           value,
+                                           source
+                                       }) => incrementStageTime(ctrlIndex || 0, StageId.RELEASE2, value, source)],
+    [envControllers(0).DECAY2_LEVEL, ({
+                                          ctrlIndex,
+                                          value,
+                                          source
+                                      }) => incrementStageLevel(ctrlIndex || 0, StageId.DECAY2, value, source)],
+    [envControllers(0).RELEASE2_LEVEL, ({
+                                            ctrlIndex,
+                                            value,
+                                            source
+                                        }) => incrementStageLevel(ctrlIndex || 0, StageId.RELEASE2, value, source)],
 ])
 
 const click = createIndexClickMapper([
-    [envControllers(0).SELECT_ENV3_ID, (ctrlIndex: number, source) => toggleEnv3Id(source)],
-    [envControllers(0).LOOP, (ctrlIndex: number, source) => toggleLoopEnabled(ctrlIndex, source)],
-    [envControllers(0).TRIGGER, (ctrlIndex: number, source) => trigger(ctrlIndex, source)],
-    [envControllers(0).INVERT, (ctrlIndex: number, source) => toggleInvert(ctrlIndex, source)],
+    [envControllers(0).SELECT_ENV3_ID, ({ ctrlIndex, source }) => toggleEnv3Id(source)],
+    [envControllers(0).LOOP, ({ ctrlIndex, source }) => toggleLoopEnabled(ctrlIndex || 0, source)],
+    [envControllers(0).TRIGGER, ({ ctrlIndex, source }) => trigger(ctrlIndex || 0, source)],
+    [envControllers(0).INVERT, ({ ctrlIndex, source }) => toggleInvert(ctrlIndex || 0, source)],
 ])
 
 const envApi = {
@@ -317,7 +353,7 @@ const envApi = {
     trigger,
     release,
     setEnv3Id,
-    
+
     increment,
     click
 }

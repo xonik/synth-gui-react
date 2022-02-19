@@ -25,16 +25,16 @@ const source = togglePropFuncs({
 
 
 const increment = createIncrementMapper([
-    [masterClockControllers.RATE, (value: number, source: ApiSource) => rate.increment(value, source)],
+    [masterClockControllers.RATE, ({value,  source}) => rate.increment(value, source)],
 ])
 
 const click = createClickMapper([
-    [masterClockControllers.SOURCE, (apiSource: ApiSource) => source.toggle(apiSource)],
+    [masterClockControllers.SOURCE, ({source: apiSource}) => source.toggle(apiSource)],
 ])
 
 const set = createSetMapper([
-    [masterClockControllers.RATE, (value: number, source: ApiSource) => rate.set(value, source)],
-    [masterClockControllers.SOURCE, (value: number, apiSource: ApiSource) => source.set(value, apiSource)],
+    [masterClockControllers.RATE, ({value,  source}) => rate.set(value, source)],
+    [masterClockControllers.SOURCE, ({value, source : apiSource}) => source.set(value, apiSource)],
 ])
 
 const masterClockApi = {

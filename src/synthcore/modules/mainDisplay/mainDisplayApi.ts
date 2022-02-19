@@ -74,14 +74,14 @@ const setCurrentScreen = (id: number, source: ApiSource) => {
 }
 
 const click = createClickMapper([
-    [mainDisplayControllers.FUNC_HOME, (source: ApiSource) => handleHomeClick(source)],
-    [mainDisplayControllers.FUNC_SETTINGS, (source: ApiSource) => handleSettingsClick(source)],
-    [mainDisplayControllers.FUNC_SHIFT, (source: ApiSource) => handleShift(true, source)],
-    [mainDisplayControllers.FUNC_PERFORM, (source: ApiSource) => handlePerformClick(source)],
-    [mainDisplayControllers.FUNC_LOAD, (source: ApiSource) => handleLoadClick(source)],
-    [mainDisplayControllers.FUNC_SAVE, (source: ApiSource) => handleSaveClick(source)],
-    [mainDisplayControllers.FUNC_COMPARE, (source: ApiSource) => handleCompareClick(source)],
-    [mainDisplayControllers.FUNC_ROUTE, (source: ApiSource) => handleRouteClick(source)],
+    [mainDisplayControllers.FUNC_HOME, ({source}) => handleHomeClick(source)],
+    [mainDisplayControllers.FUNC_SETTINGS, ({source}) => handleSettingsClick(source)],
+    [mainDisplayControllers.FUNC_SHIFT, ({source}) => handleShift(true, source)],
+    [mainDisplayControllers.FUNC_PERFORM, ({source}) => handlePerformClick(source)],
+    [mainDisplayControllers.FUNC_LOAD, ({source}) => handleLoadClick(source)],
+    [mainDisplayControllers.FUNC_SAVE, ({source}) => handleSaveClick(source)],
+    [mainDisplayControllers.FUNC_COMPARE, ({source}) => handleCompareClick(source)],
+    [mainDisplayControllers.FUNC_ROUTE, ({source}) => handleRouteClick(source)],
 ])
 const increment = createIncrementMapper([
 ])

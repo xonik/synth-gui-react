@@ -61,14 +61,14 @@ const fx2 = numericPropFuncs({
 
 
 const increment = createIncrementMapper([
-    [postMixControllers.LPF, (value: number, source: ApiSource) => lpfLevel.increment(value, source)],
-    [postMixControllers.SVF, (value: number, source: ApiSource) => svfLevel.increment(value, source)],
-    [postMixControllers.SINE1, (value: number, source: ApiSource) => sine1Level.increment(value, source)],
-    [postMixControllers.SINE2, (value: number, source: ApiSource) => sine2Level.increment(value, source)],
-    [postMixControllers.PAN, (value: number, source: ApiSource) => pan.increment(value, source)],
-    [postMixControllers.AMOUNT, (value: number, source: ApiSource) => amt.increment(value, source)],
-    [postMixControllers.FX1_SEND, (value: number, source: ApiSource) => fx1.increment(value, source)],
-    [postMixControllers.FX2_SEND, (value: number, source: ApiSource) => fx2.increment(value, source)],
+    [postMixControllers.LPF, ({value, source}) => lpfLevel.increment(value, source)],
+    [postMixControllers.SVF, ({value, source}) => svfLevel.increment(value, source)],
+    [postMixControllers.SINE1, ({value, source}) => sine1Level.increment(value, source)],
+    [postMixControllers.SINE2, ({value, source}) => sine2Level.increment(value, source)],
+    [postMixControllers.PAN, ({value, source}) => pan.increment(value, source)],
+    [postMixControllers.AMOUNT, ({value, source}) => amt.increment(value, source)],
+    [postMixControllers.FX1_SEND, ({value, source}) => fx1.increment(value, source)],
+    [postMixControllers.FX2_SEND, ({value, source}) => fx2.increment(value, source)],
 ])
 
 const click = createClickMapper([

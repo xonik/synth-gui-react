@@ -7,14 +7,12 @@ import lfoControllers from './lfoControllers'
 
 export const lfoMiddleware = (action: PayloadAction): void => {
     if (increment.match(action)) {
-        const ctrlIndex = action.payload.ctrlIndex || 0
-        lfoApi.increment(action.payload.ctrl, ctrlIndex, action.payload.value, action.payload.source)
+        lfoApi.increment(action.payload)
     } else if (click.match(action)) {
-        const ctrlIndex = action.payload.ctrlIndex || 0
         if(action.payload.ctrl === lfoControllers(0).LFO) {
             lfoApi.setUiLfo(action.payload.radioButtonIndex || 0, ApiSource.UI)
         } else {
-            lfoApi.click(action.payload.ctrl, ctrlIndex, action.payload.source)
+            lfoApi.click(action.payload)
         }
     } else if (toggleStageEnabled.match(action)) {
         lfoApi.toggleStageEnabled(action.payload.lfo, action.payload.stage, ApiSource.GUI)

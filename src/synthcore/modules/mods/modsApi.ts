@@ -152,7 +152,6 @@ const setRouteButton = (value: number, source: ApiSource) => {
     if (value === currentValue) {
         return
     }
-                     console.log('seet route to', value)
     dispatch(setUiRouteButton({ value: boundedValue }))
     modsMidiApi.setUiRouteButton(source, boundedValue)
 }
@@ -167,7 +166,7 @@ const toggleRouteButton = (value: number, source: ApiSource) => {
 }
 
 const increment = createIncrementMapper([
-    [modsControllers.UI_AMOUNT, (value: number, source: ApiSource) => uiAmount.increment(value, source)],
+    [modsControllers.UI_AMOUNT, ({value,  source}) => uiAmount.increment(value, source)],
 ])
 const click = createClickMapper([
 ])
