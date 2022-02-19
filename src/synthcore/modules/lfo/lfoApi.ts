@@ -33,14 +33,12 @@ import lfoControllers from './lfoControllers'
 type LfoNumericProperty = {
     selector: (id: number) => number
     action: (payload: NumericLfoPayload) => AnyAction
-    midi: (source: ApiSource, id: number, value: number) => void
 }
 
 type LfoTogglableProperty = {
     config: ControllerConfigCCWithValue,
     selector: (id: number) => number
     action: (payload: NumericLfoPayload) => AnyAction
-    midi: (source: ApiSource, id: number, value: number) => void
 }
 
 export const lfoNumericPropFuncs = (property: LfoNumericProperty) => {
@@ -54,7 +52,6 @@ export const lfoNumericPropFuncs = (property: LfoNumericProperty) => {
         }
 
         dispatch(property.action({ lfo: id, value: boundedValue }))
-        property.midi(source, id, boundedValue)
     }
 
     const increment = (id: number, inc: number, source: ApiSource) => {
@@ -77,7 +74,6 @@ export const lfoTogglePropFuncs = (property: LfoTogglableProperty) => {
         const boundedValue = getBounded(value, 0, property.config.values.length - 1)
 
         dispatch(property.action({ lfo: id, value: boundedValue }))
-        property.midi(source, id, boundedValue)
     }
 
     const toggle = (id: number, source: ApiSource) => {
@@ -157,12 +153,10 @@ const incrementStageCurve = (lfoId: number, stageId: StageId, increment: number,
 const rate = lfoNumericPropFuncs({
     selector: (id: number) => selectLfo(id)(store.getState()).rate,
     action: setRate,
-    midi: () => {},
 })
 const depth = lfoNumericPropFuncs({
     selector: (id: number) => selectLfo(id)(store.getState()).depth,
     action: setDepth,
-    midi: () => {},
 })
 
 const incrementDelay = (id: number, inc: number, source: ApiSource) => {
@@ -174,25 +168,21 @@ const shape = lfoTogglePropFuncs({
     config: controllers.LFO.SHAPE,
     selector: (id: number) => selectLfo(id)(store.getState()).shape,
     action: setShape,
-    midi: () => {},
 })
 const sync = lfoTogglePropFuncs({
     config: controllers.LFO.SYNC,
     selector: (id: number) => selectLfo(id)(store.getState()).sync,
     action: setSync,
-    midi: () => {},
 })
 const reset = lfoTogglePropFuncs({
     config: controllers.LFO.RESET,
     selector: (id: number) => selectLfo(id)(store.getState()).resetOnTrigger,
     action: setReset,
-    midi: () => {},
 })
 const once = lfoTogglePropFuncs({
     config: controllers.LFO.ONCE,
     selector: (id: number) => selectLfo(id)(store.getState()).once,
     action: setOnce,
-    midi: () => {},
 })
 
 

@@ -1,12 +1,12 @@
 import { AnyAction } from '@reduxjs/toolkit'
 import { ApiSource, ControllerGroupIds } from '../../types'
-import { ControllerConfig, ControllerConfigCCWithValue } from '../../../midi/types'
+import { ControllerConfig, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
 import { dispatch, getBounded, getQuantized } from '../../utils'
 import { NumericPayload } from './CommonReducer'
 
 
 export type NumericInputProperty = {
-    ctrlGroup: ControllerGroupIds;
+    ctrlGroup?: ControllerGroupIds;
     ctrl: ControllerConfig;
     ctrlIndex?: number;
     value: number;
@@ -14,7 +14,7 @@ export type NumericInputProperty = {
 }
 
 export type ButtonInputProperty = {
-    ctrlGroup: ControllerGroupIds;
+    ctrlGroup?: ControllerGroupIds;
     ctrl: ControllerConfig;
     ctrlIndex?: number;
     radioButtonIndex?: number;
@@ -24,14 +24,12 @@ export type ButtonInputProperty = {
 type NumericProperty = {
     selector: () => number
     action: (payload: NumericPayload) => AnyAction
-    midi: (source: ApiSource, value: number) => void
 }
 
 type TogglableProperty = {
     config: ControllerConfigCCWithValue,
     selector: () => number
     action: (payload: NumericPayload) => AnyAction
-    midi: (source: ApiSource, value: number) => void
 }
 
 export const numericPropFuncs = (property: NumericProperty) => {
@@ -44,7 +42,6 @@ export const numericPropFuncs = (property: NumericProperty) => {
         }
 
         dispatch(property.action({ value: boundedValue }))
-        property.midi(source, boundedValue)
     }
 
     const increment = (inc: number, source: ApiSource) => {
@@ -68,7 +65,6 @@ export const togglePropFuncs = (property: TogglableProperty) => {
         }
 
         dispatch(property.action({ value: boundedValue }))
-        property.midi(source, boundedValue)
     }
 
     const toggle = (source: ApiSource) => {

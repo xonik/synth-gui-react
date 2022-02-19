@@ -1,8 +1,9 @@
 import { ApiSource } from '../../types'
-import { ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
+import { ControllerConfig, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
 import { shouldSend } from '../../../midi/utils'
 import logger from '../../../utils/logger'
 import { cc } from '../../../midi/midibus'
+import { NumericInputProperty } from './commonApi'
 
 export const numericParamSend = (
     source: ApiSource,
@@ -35,6 +36,39 @@ export const toggleParamSend = (
     }
     logger.midi(`Setting value for ${cfg.label} to ${value}`)
     cc.send(cfg, cfg.values[value])
+}
+
+export const paramSend = (
+    source: ApiSource,
+    value: number,
+    cfg: ControllerConfig | ControllerConfigCC | ControllerConfigCCWithValue,
+) => {
+    if (!shouldSend(source)) {
+        return
+    }
+    if(cfg.hasOwnProperty('cc')){
+        if(cfg.values) {
+            logger.midi(`Setting value for ${cfg.label} to ${value}`)
+            cc.send(cfg as ControllerConfigCCWithValue, cfg.values[value])
+        } else {
+            logger.midi(`Setting value for ${cfg.label} to ${value}`)
+            cc.send(cfg as ControllerConfigCC, Math.floor(127 * value))
+        }
+    }
+}
+
+export const paramReceive = (
+    ctrl: ControllerConfig | ControllerConfigCC | ControllerConfigCCWithValue,
+    apiSetValue: (input: NumericInputProperty) => void
+) => {
+    cc.subscribe((midiValue: number) => {
+        if(ctrl.values){
+            const value = ctrl.values.indexOf(midiValue) || 0
+            apiSetValue({ctrl, value, source: ApiSource.MIDI})
+        } else {
+            apiSetValue({ctrl, value: midiValue / 127, source: ApiSource.MIDI})
+        }
+    }, ctrl as ControllerConfigCC)
 }
 
 export const toggleParamReceive = (

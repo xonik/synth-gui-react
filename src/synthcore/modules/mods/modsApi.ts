@@ -142,7 +142,6 @@ const incrementGuiModValue = (inc: number, source: ApiSource) => {
 const uiAmount = numericPropFuncs({
     selector: () => selectModsUi(store.getState()).amount,
     action: setUiAmount,
-    midi: modsMidiApi.setUiAmount,
 })
 
 const setRouteButton = (value: number, source: ApiSource) => {

@@ -20,43 +20,35 @@ import { ApiSource } from '../../types'
 const lpfLevel = numericPropFuncs({
     selector: () => selectPostMixMix(store.getState()).lpfLevel,
     action: setLpfLevel,
-    midi: postMixMidiApi.setLpfLevel,
 })
 const svfLevel = numericPropFuncs({
     selector: () => selectPostMixMix(store.getState()).svfLevel,
     action: setSvfLevel,
-    midi: postMixMidiApi.setSvfLevel,
 })
 const sine1Level = numericPropFuncs({
     selector: () => selectPostMixMix(store.getState()).sine1Level,
     action: setSine1Level,
-    midi: postMixMidiApi.setSine1Level,
 })
 const sine2Level = numericPropFuncs({
     selector: () => selectPostMixMix(store.getState()).sine2Level,
     action: setSine2Level,
-    midi: postMixMidiApi.setSine2Level,
 })
 
 const pan = numericPropFuncs({
     selector: () => selectPostMixOut(store.getState()).pan,
     action: setPan,
-    midi: postMixMidiApi.setPan,
 })
 const amt = numericPropFuncs({
     selector: () => selectPostMixOut(store.getState()).amt,
     action: setAmt,
-    midi: postMixMidiApi.setAmt,
 })
 const fx1 = numericPropFuncs({
     selector: () => selectPostMixOut(store.getState()).fx1,
     action: setFX1,
-    midi: postMixMidiApi.setFX1,
 })
 const fx2 = numericPropFuncs({
     selector: () => selectPostMixOut(store.getState()).fx2,
     action: setFX2,
-    midi: postMixMidiApi.setFX2,
 })
 
 

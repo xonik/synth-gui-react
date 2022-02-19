@@ -14,7 +14,6 @@ const source = togglePropFuncs({
     config: controllers.RING_MOD.SOURCE,
     selector: () => selectRingMod(store.getState()).source,
     action: setSource,
-    midi: ringModMidiApi.setSource,
 })
 
 const click = createClickMapper([

@@ -19,31 +19,26 @@ import { createClickMapper, createIncrementMapper } from '../common/utils'
 const portamento = numericPropFuncs({
     selector: () => selectKbd(store.getState()).portamento,
     action: setPortamento,
-    midi: kbdMidiApi.setPortamento,
 })
 const unisonDetune = numericPropFuncs({
     selector: () => selectKbd(store.getState()).unisonDetune,
     action: setUnisonDetune,
-    midi: kbdMidiApi.setUnisonDetune,
 })
 
 const hold = togglePropFuncs({
     config: controllers.KBD.HOLD,
     selector: () => selectKbd(store.getState()).hold,
     action: setHold,
-    midi: kbdMidiApi.setHold,
 })
 const chord = togglePropFuncs({
     config: controllers.KBD.CHORD,
     selector: () => selectKbd(store.getState()).chord,
     action: setChord,
-    midi: kbdMidiApi.setChord,
 })
 const mode = togglePropFuncs({
     config: controllers.KBD.MODE,
     selector: () => selectKbd(store.getState()).mode,
     action: setMode,
-    midi: kbdMidiApi.setMode,
 })
 
 const setTranspose = (value: number, source: ApiSource) => {

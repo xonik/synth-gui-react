@@ -48,186 +48,153 @@ import { ApiSource } from '../../types'
 const dco1Note = numericPropFuncs({
     selector: () => selectDco1(store.getState()).note,
     action: setDco1Note,
-    midi: oscMidiApi.setDco1Note,
 })
 const dco1Sub1Level = numericPropFuncs({
     selector: () => selectDco1(store.getState()).sub1Level,
     action: setDco1Sub1Level,
-    midi: oscMidiApi.setDco1Sub1Level,
 })
 const dco1Sub2Level = numericPropFuncs({
     selector: () => selectDco1(store.getState()).sub2Level,
     action: setDco1Sub2Level,
-    midi: oscMidiApi.setDco1Sub2Level,
 })
 const dco1Pw = numericPropFuncs({
     selector: () => selectDco1(store.getState()).pw,
     action: setDco1Pw,
-    midi: oscMidiApi.setDco1Pw,
 })
 const dco1Waveform = numericPropFuncs({
     selector: () => selectDco1(store.getState()).waveform,
     action: setDco1Waveform,
-    midi: oscMidiApi.setDco1Waveform,
 })
 const dco1Sync = togglePropFuncs({
     config: controllers.DCO1.SYNC,
     selector: () => selectDco1(store.getState()).sync,
     action: setDco1Sync,
-    midi: oscMidiApi.setDco1Sync,
 })
 const dco1Mode = togglePropFuncs({
     config: controllers.DCO1.MODE,
     selector: () => selectDco1(store.getState()).mode,
     action: setDco1Mode,
-    midi: oscMidiApi.setDco1Mode,
 })
 const dco1SubWave = togglePropFuncs({
     config: controllers.DCO1.SUB_WAVE,
     selector: () => selectDco1(store.getState()).subWave,
     action: setDco1SubWave,
-    midi: oscMidiApi.setDco1SubWave,
 })
 const dco1Wheel = togglePropFuncs({
     config: controllers.DCO1.WHEEL,
     selector: () => selectDco1(store.getState()).wheel,
     action: setDco1Wheel,
-    midi: oscMidiApi.setDco1Wheel,
 })
 const dco1Lfo = togglePropFuncs({
     config: controllers.DCO1.LFO,
     selector: () => selectDco1(store.getState()).lfo,
     action: setDco1Lfo,
-    midi: oscMidiApi.setDco1Lfo,
 })
 const dco1Kbd = togglePropFuncs({
     config: controllers.DCO1.KBD,
     selector: () => selectDco1(store.getState()).kbd,
     action: setDco1Kbd,
-    midi: oscMidiApi.setDco1Kbd,
 })
 
 const dco2Note = numericPropFuncs({
     selector: () => selectDco2(store.getState()).note,
     action: setDco2Note,
-    midi: oscMidiApi.setDco2Note,
 })
 const dco2Detune = numericPropFuncs({
     selector: () => selectDco2(store.getState()).detune,
     action: setDco2Detune,
-    midi: oscMidiApi.setDco2Detune,
 })
 const dco2Waveform = numericPropFuncs({
     selector: () => selectDco2(store.getState()).waveform,
     action: setDco2Waveform,
-    midi: oscMidiApi.setDco2Waveform,
 })
 const dco2Sub1Level = numericPropFuncs({
     selector: () => selectDco2(store.getState()).sub1Level,
     action: setDco2Sub1Level,
-    midi: oscMidiApi.setDco2Sub1Level,
 })
 const dco2Sub2Level = numericPropFuncs({
     selector: () => selectDco2(store.getState()).sub2Level,
     action: setDco2Sub2Level,
-    midi: oscMidiApi.setDco2Sub2Level,
 })
 const dco2Pw = numericPropFuncs({
     selector: () => selectDco2(store.getState()).pw,
     action: setDco2Pw,
-    midi: oscMidiApi.setDco2Pw,
 })
 const dco2Mode = togglePropFuncs({
     config: controllers.DCO2.MODE,
     selector: () => selectDco2(store.getState()).mode,
     action: setDco2Mode,
-    midi: oscMidiApi.setDco2Mode,
 })
 const dco2SubWave = togglePropFuncs({
     config: controllers.DCO2.SUB_WAVE,
     selector: () => selectDco2(store.getState()).subWave,
     action: setDco2SubWave,
-    midi: oscMidiApi.setDco2SubWave,
 })
 const dco2Wheel = togglePropFuncs({
     config: controllers.DCO2.WHEEL,
     selector: () => selectDco2(store.getState()).wheel,
     action: setDco2Wheel,
-    midi: oscMidiApi.setDco2Wheel,
 })
 const dco2Lfo = togglePropFuncs({
     config: controllers.DCO2.LFO,
     selector: () => selectDco2(store.getState()).lfo,
     action: setDco2Lfo,
-    midi: oscMidiApi.setDco2Lfo,
 })
 const dco2Kbd = togglePropFuncs({
     config: controllers.DCO2.KBD,
     selector: () => selectDco2(store.getState()).kbd,
     action: setDco2Kbd,
-    midi: oscMidiApi.setDco2Kbd,
 })
 
 const vcoNote = numericPropFuncs({
     selector: () => selectVco(store.getState()).note,
     action: setVcoNote,
-    midi: oscMidiApi.setVcoNote,
 })
 const vcoDetune = numericPropFuncs({
     selector: () => selectVco(store.getState()).detune,
     action: setVcoDetune,
-    midi: oscMidiApi.setVcoDetune,
 })
 const vcoWaveform = numericPropFuncs({
     selector: () => selectVco(store.getState()).waveform,
     action: setVcoWaveform,
-    midi: oscMidiApi.setVcoWaveform,
 })
 const vcoCrossMod = numericPropFuncs({
     selector: () => selectVco(store.getState()).crossMod,
     action: setVcoCrossMod,
-    midi: oscMidiApi.setVcoCrossMod,
 })
 const vcoPw = numericPropFuncs({
     selector: () => selectVco(store.getState()).pw,
     action: setVcoPw,
-    midi: oscMidiApi.setVcoPw,
 })
 const vcoSync = togglePropFuncs({
     config: controllers.VCO.SYNC,
     selector: () => selectVco(store.getState()).sync,
     action: setVcoSync,
-    midi: oscMidiApi.setVcoSync,
 })
 const vcoCrossModSrc = togglePropFuncs({
     config: controllers.VCO.CROSS_MOD_SRC,
     selector: () => selectVco(store.getState()).crossModSrc,
     action: setVcoCrossModSrc,
-    midi: oscMidiApi.setVcoCrossModSrc,
 })
 const vcoExtCv = togglePropFuncs({
     config: controllers.VCO.EXT_CV,
     selector: () => selectVco(store.getState()).extCv,
     action: setVcoExtCv,
-    midi: oscMidiApi.setVcoExtCv,
 })
 const vcoWheel = togglePropFuncs({
     config: controllers.VCO.WHEEL,
     selector: () => selectVco(store.getState()).wheel,
     action: setVcoWheel,
-    midi: oscMidiApi.setVcoWheel,
 })
 const vcoLfo = togglePropFuncs({
     config: controllers.VCO.LFO,
     selector: () => selectVco(store.getState()).lfo,
     action: setVcoLfo,
-    midi: oscMidiApi.setVcoLfo,
 })
 const vcoKbd = togglePropFuncs({
     config: controllers.VCO.KBD,
     selector: () => selectVco(store.getState()).kbd,
     action: setVcoKbd,
-    midi: oscMidiApi.setVcoKbd,
 })
 
 const increment = createIncrementMapper([

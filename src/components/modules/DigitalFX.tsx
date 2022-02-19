@@ -3,8 +3,6 @@ import RotaryPotWOLeds10 from '../pots/RotaryPotWOLeds10';
 import Display from '../misc/Display';
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
-import { useAppSelector } from '../../synthcore/hooks'
-import { selectDsp1, selectDsp2 } from '../../synthcore/modules/commonFx/commonFxReducer'
 import { ControllerGroupIds } from '../../synthcore/types'
 import commonFxControllers from '../../synthcore/modules/commonFx/commonFxControllers'
 
@@ -41,20 +39,15 @@ const DigitalFX = ({ x, y }: Props) => {
   const col4 = displayX + displayWidth / 2 + knobSpacing;
   const col5 = displayX + displayWidth + 15
 
-  const dsp1 = useAppSelector(selectDsp1)
-  const dsp2 = useAppSelector(selectDsp2)
-
   return <>
     <RoundPushButton8 x={col1} y={row2left} label="Source" ledCount={2} ledLabels={['FX1', 'FX2']} labelPosition="bottom" ledPosition="top"
                       ctrlGroup={ctrlGroup}
                       ctrl={commonFxControllers.DSP1.SOURCE}
-                      value={dsp1.source}
     />
 
     <RoundPushButton8 x={col1} y={row3left} label="Source" ledCount={2} ledLabels={['FX1', 'FX2']} labelPosition="top" ledPosition="bottom"
                       ctrlGroup={ctrlGroup}
                       ctrl={commonFxControllers.DSP2.SOURCE}
-                      value={dsp2.source}
     />
 
     <RotaryPotWOLeds10 x={col2} y={row1}
@@ -97,7 +90,6 @@ const DigitalFX = ({ x, y }: Props) => {
     <RoundLedPushButton8 x={col5} y={displayCenterY} label="Chain" labelPosition="bottom"
                          ctrlGroup={ctrlGroup}
                          ctrl={commonFxControllers.DSP2.CHAIN}
-                         value={dsp2.chain}
     />
 
     <RotaryPotWOLeds10 x={col5} y={row4right} label="Effect"

@@ -1,5 +1,13 @@
 import { ControllerConfig } from '../../../midi/types'
 import { ButtonInputProperty, NumericInputProperty } from './commonApi'
+import { paramReceive, paramSend } from './commonMidiApi'
+import { dispatch, getBounded, getQuantized } from '../../utils'
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
+import { NumericControllerPayload } from './CommonReducer'
+import { RootState, store } from '../../store'
+import { ControllerGroupIds } from '../../types'
+import { selectCommonFxController } from '../commonFx/commonFxReducer'
+import { selectOutController } from '../out/outReducer'
 
 export type ApiIncrementMapperType = {
     [key: number]: (value: number) => void
@@ -25,12 +33,63 @@ export const createIndexClickMapper = (map: IndexClickMapperEntry[]) => (input: 
     })?.[1](input)
 }
 
+// Create a mapper that receives a controller and selects the correct set function.
+// Also sends midi
 type MapperEntry = [ControllerConfig, (input: NumericInputProperty) => void]
-export const createSetMapper = (map: MapperEntry[]) => (input: NumericInputProperty) => {
-    // search for a ctrl and call the corresponding function
-    map.find(([key]) => {
-        return key === input.ctrl
-    })?.[1](input)
+export const createSetMapper = (map: MapperEntry[]) => {
+
+    const set =  (input: NumericInputProperty) => {
+        // search for a ctrl and call the corresponding function
+        map.find(([key]) => {
+            return key === input.ctrl
+        })?.[1](input)
+
+        // send over midi
+        paramSend(input.source, input.value, input.ctrl)
+    }
+
+    // receive midi
+    map.forEach(([input]) => paramReceive(input, set))
+
+    return set
+}
+
+export const createSetterFuncs = (
+    controllers: ControllerConfig[],
+    action: ActionCreatorWithPayload<NumericControllerPayload, string>,
+    selector: (ctrlId: number) => (state: RootState) => number) => {
+
+    const set = (input: NumericInputProperty) => {
+        const boundedValue = getQuantized(getBounded(input.value))
+        const currentValue = selector(input.ctrl.id)(store.getState())
+
+        if (boundedValue === currentValue) {
+            return
+        }
+
+        dispatch(action({ ctrlId: input.ctrl.id, value: boundedValue }))
+
+        // send over midi
+        paramSend(input.source, boundedValue, input.ctrl)
+    }
+    const toggle = (input: ButtonInputProperty) => {
+        const currentValue = selector(input.ctrl.id)(store.getState())
+        set({...input, value: (currentValue + 1) % (input.ctrl.values?.length || 1)})
+    }
+
+    const increment = (input: NumericInputProperty) => {
+        const currentValue = selector(input.ctrl.id)(store.getState())
+        set({...input, value: currentValue + input.value})
+    }
+
+    // receive midi
+    controllers.forEach((ctrl) => paramReceive(ctrl, set))
+
+    return {
+        set,
+        toggle,
+        increment,
+    }
 }
 
 export const createIncrementMapper = (map: MapperEntry[]) => (input: NumericInputProperty) => {

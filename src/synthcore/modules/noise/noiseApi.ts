@@ -14,7 +14,6 @@ const colour = togglePropFuncs({
     config: controllers.NOISE.COLOUR,
     selector: () => selectNoise(store.getState()).colour,
     action: setColour,
-    midi: noiseMidiApi.setColour,
 })
 
 const increment = createIncrementMapper([

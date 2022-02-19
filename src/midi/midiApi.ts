@@ -8,10 +8,7 @@ import fxMidiApi from '../synthcore/modules/fx/fxMidiApi'
 import ringModMidiApi from '../synthcore/modules/ringMod/ringModMidiApi'
 import noiseMidiApi from '../synthcore/modules/noise/noiseMidiApi'
 import masterClockMidiApi from '../synthcore/modules/masterClock/masterClockMidiApi'
-import arpMidiApi from '../synthcore/modules/arp/arpMidiApi'
 import kbdMidiApi from '../synthcore/modules/kbd/kbdMidiApi'
-import commonFxMidiApi from '../synthcore/modules/commonFx/commonFxMidiApi'
-import outMidiApi from '../synthcore/modules/out/outMidiApi'
 import lfoMidiApi from '../synthcore/modules/lfo/lfoMidiApi'
 import voicesMidiApi from '../synthcore/modules/voices/voicesMidiApi'
 
@@ -26,10 +23,7 @@ const initReceive = () => {
     ringModMidiApi.initReceive()
     noiseMidiApi.initReceive()
     masterClockMidiApi.initReceive()
-    arpMidiApi.initReceive()
     kbdMidiApi.initReceive()
-    commonFxMidiApi.initReceive()
-    outMidiApi.initReceive()
     lfoMidiApi.initReceive()
     voicesMidiApi.initReceive()
 }
@@ -46,10 +40,7 @@ const midiApi = {
     ringMod: ringModMidiApi,
     noise: noiseMidiApi,
     masterClock: masterClockMidiApi,
-    arp: arpMidiApi,
     kbd: kbdMidiApi,
-    commonFx: commonFxMidiApi,
-    out: outMidiApi,
     lfo: lfoMidiApi,
 }
 

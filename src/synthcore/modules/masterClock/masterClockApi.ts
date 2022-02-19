@@ -14,13 +14,11 @@ import { ApiSource } from '../../types'
 const rate = numericPropFuncs({
     selector: () => selectMasterClock(store.getState()).rate,
     action: setRate,
-    midi: masterClockMidiApi.setRate,
 })
 const source = togglePropFuncs({
     config: controllers.MASTER_CLOCK.SOURCE,
     selector: () => selectMasterClock(store.getState()).source,
     action: setSource,
-    midi: masterClockMidiApi.setSource,
 })
 
 

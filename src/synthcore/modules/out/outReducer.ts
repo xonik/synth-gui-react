@@ -1,41 +1,29 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
-import { NumericPayload } from '../common/CommonReducer'
+import { NumericControllerPayload } from '../common/CommonReducer'
 
 type OutState = {
-    volume: number,
-    spread: number,
-    headphones: number,
+    controllers: {[key: number]: number}
 }
 
 export const initialState: OutState = {
-    volume: 0,
-    spread: 0,
-    headphones: 0,
+    controllers: {}
 }
 
 export const outSlice = createSlice({
     name: 'out',
     initialState,
     reducers: {
-        setVolume: (state, { payload }: PayloadAction<NumericPayload>) => {
-            state.volume = payload.value
-        },
-        setSpread: (state, { payload }: PayloadAction<NumericPayload>) => {
-            state.spread = payload.value
-        },
-        setHeadphones: (state, { payload }: PayloadAction<NumericPayload>) => {
-            state.headphones = payload.value
+        setController:  (state, { payload }: PayloadAction<NumericControllerPayload>) => {
+            state.controllers[payload.ctrlId] = payload.value
         },
     }
 })
 
 export const {
-    setVolume,
-    setSpread,
-    setHeadphones,
+    setController,
 } = outSlice.actions
 
-export const selectOut = (state: RootState) => state.out
+export const selectOutController = (ctrlId: number) => (state: RootState) => state.out.controllers[ctrlId] || 0
 
 export default outSlice.reducer
