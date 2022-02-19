@@ -7,6 +7,7 @@ import { mainDisplayEnvApi, mainDisplayEnvPotResolutions } from '../env/envMainD
 import mainDisplayMidiApi from './mainDisplayMidiApi'
 import { ApiSource } from '../../types'
 import logger from '../../../utils/logger'
+import mainDisplayControllers from './mainDisplayControllers'
 
 type PotResolutions = {
     [key: number]: {
@@ -19,7 +20,7 @@ const potResolution: PotResolutions = {
     [MainDisplayScreenId.MOD]: mainDisplayModsPotResolutions
 }
 
-export const getPotResolution = (ctrlId: MainDisplayControllerIds, currScreen: number) => {
+export const getPotResolution = (ctrlId: number, currScreen: number) => {
     const screenPots = potResolution[currScreen]
     if (screenPots?.[ctrlId]) {
         return screenPots[ctrlId]
@@ -61,7 +62,7 @@ const handleMainDisplayController = (ctrlId: MainDisplayControllerIds, value: nu
         mainDisplayEnvApi.handleMainDisplayController(ctrlId, value)
     }
 
-    if(ctrlId >= MainDisplayControllerIds.POT1 && ctrlId <= MainDisplayControllerIds.POT6){
+    if(ctrlId >= mainDisplayControllers.POT1.id && ctrlId <= mainDisplayControllers.POT6.id){
         mainDisplayMidiApi.pot(source, ctrlId, value)
     }
 }

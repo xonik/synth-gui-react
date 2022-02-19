@@ -2,19 +2,19 @@ import { PayloadAction } from '@reduxjs/toolkit'
 import { click, increment } from '../ui/uiReducer'
 import { arpApi } from '../../synthcoreApi'
 import { ApiSource } from '../../types'
-import { ArpControllerIds } from './types'
 import { ApiClickMapperType, ApiIncrementMapperType } from '../common/types'
+import arpControllers from './arpControllers'
 
 const incrementMapper: ApiIncrementMapperType = {
-    [ArpControllerIds.TEMPO]: (value: number) => arpApi.incrementTempo(value, ApiSource.UI),
+    [arpControllers.TEMPO.id]: (value: number) => arpApi.incrementTempo(value, ApiSource.UI),
 }
 
 const clickMapper: ApiClickMapperType = {
-    [ArpControllerIds.ON_OFF]: () => arpApi.toggleOnOff(ApiSource.UI),
-    [ArpControllerIds.TRIGGER]: () => arpApi.toggleTrigger(ApiSource.UI),
-    [ArpControllerIds.SYNC]: () => arpApi.toggleSync(ApiSource.UI),
-    [ArpControllerIds.RANGE]: () => arpApi.toggleRange(ApiSource.UI),
-    [ArpControllerIds.MODE]: () => arpApi.toggleMode(ApiSource.UI),
+    [arpControllers.ON_OFF.id]: () => arpApi.toggleOnOff(ApiSource.UI),
+    [arpControllers.TRIGGER.id]: () => arpApi.toggleTrigger(ApiSource.UI),
+    [arpControllers.SYNC.id]: () => arpApi.toggleSync(ApiSource.UI),
+    [arpControllers.RANGE.id]: () => arpApi.toggleRange(ApiSource.UI),
+    [arpControllers.MODE.id]: () => arpApi.toggleMode(ApiSource.UI),
 }
 
 

@@ -8,7 +8,7 @@ import Header from '../misc/Header';
 import { ControllerGroupIds } from '../../synthcore/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectLpf } from '../../synthcore/modules/filters/filtersReducer'
-import { FiltersControllerIds } from '../../synthcore/modules/filters/types'
+import filtersControllers from '../../synthcore/modules/filters/filtersControllers'
 
 interface Props {
     x: number,
@@ -32,68 +32,68 @@ const LowPassFilter = ({ x, y }: Props) => {
         <Header label="Low pass filter" x={x} y={topRow - 27} width={110} align="center"/>
         <RotaryPot40 x={x} y={y} ledMode="single" label="Cutoff"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={FiltersControllerIds.LPF_CUTOFF}
+                     ctrlId={filtersControllers.LPF.CUTOFF.id}
                      value={lpf.cutoff}
         />
 
         <RotaryPot17 x={col1} y={topRow} ledMode="multi" label="Input"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={FiltersControllerIds.LPF_INPUT}
+                     ctrlId={filtersControllers.LPF.INPUT.id}
                      value={lpf.input}
         />
 
         <RotaryPot17 x={x} y={topRow} ledMode="multi" label="Drive"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={FiltersControllerIds.LPF_DRIVE}
+                     ctrlId={filtersControllers.LPF.DRIVE.id}
                      value={lpf.drive}
         />
 
         <RotaryPot17 x={col4} y={topRow} ledMode="multi" label="Resonance"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={FiltersControllerIds.LPF_RESONANCE}
+                     ctrlId={filtersControllers.LPF.RESONANCE.id}
                      value={lpf.resonance}
         />
 
         <RoundPushButton8 x={col4} y={y + 10} ledPosition="top" ledCount={2} ledLabels={['12dB', '24dB']}
                           label="Slope" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
-                          ctrlId={FiltersControllerIds.LPF_SLOPE}
+                          ctrlId={filtersControllers.LPF.SLOPE.id}
                           value={lpf.slope}
         />
 
         <RoundLedPushButton8 x={col1} y={y -10} label="Ext CV" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
-                             ctrlId={FiltersControllerIds.LPF_EXT_CV}
+                             ctrlId={filtersControllers.LPF.EXT_CV.id}
                              value={lpf.extCv}
         />
 
         <RoundLedPushButton8 x={col1} y={y + 10} label="Wheel" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
-                             ctrlId={FiltersControllerIds.LPF_WHEEL}
+                             ctrlId={filtersControllers.LPF.WHEEL.id}
                              value={lpf.wheel}
         />
 
         <RotaryPot10 x={col1} y={bottomRow2} ledMode="multi" label="FM amt"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={FiltersControllerIds.LPF_FM_AMT}
+                     ctrlId={filtersControllers.LPF.FM_AMT.id}
                      value={lpf.fmAmt}
         />
 
         <RotaryPot10 x={col2} y={bottomRow2} ledMode="multi" label="Env amt"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={FiltersControllerIds.LPF_ENV_AMT}
+                     ctrlId={filtersControllers.LPF.ENV_AMT.id}
                      value={lpf.envAmt}
         />
 
         <RotaryPot10 x={col3} y={bottomRow2} ledMode="multi" label="LFO amt"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={FiltersControllerIds.LPF_LFO_AMT}
+                     ctrlId={filtersControllers.LPF.LFO_AMT.id}
                      value={lpf.lfoAmt}
         />
 
         <RotaryPot10 x={col4} y={bottomRow2} ledMode="multi" label="Kbd amt"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={FiltersControllerIds.LPF_KBD_AMT}
+                     ctrlId={filtersControllers.LPF.KBD_AMT.id}
                      value={lpf.kbdAmt}
         />
 

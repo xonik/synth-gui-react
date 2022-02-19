@@ -10,6 +10,7 @@ interface KbdControllers {
     HOLD: ControllerConfigCCWithValue
     CHORD: ControllerConfigCCWithValue
     MODE: ControllerConfigCCWithValue
+    TRANSPOSE: ControllerConfigCCWithValue
 }
 
 const kbdControllers: KbdControllers = {
@@ -57,6 +58,19 @@ const kbdControllers: KbdControllers = {
             BUTTONS.BUTTONS_CENTER.values.KBD_MODE_SOLO,
             BUTTONS.BUTTONS_CENTER.values.KBD_MODE_UNISON,
             BUTTONS.BUTTONS_CENTER.values.KBD_MODE_POLY,
+        ],
+    },
+    TRANSPOSE: {
+        id: ControllerIdNonMod.KBD_TRANSPOSE,
+        label: 'Up/down',
+        type: 'button',
+        cc: BUTTONS.BUTTONS_CENTER.cc,
+        values: [
+            BUTTONS.BUTTONS_CENTER.values.TRANSPOSE_NEG_2,
+            BUTTONS.BUTTONS_CENTER.values.TRANSPOSE_NEG_1,
+            BUTTONS.BUTTONS_CENTER.values.TRANSPOSE_0,
+            BUTTONS.BUTTONS_CENTER.values.TRANSPOSE_POS_1,
+            BUTTONS.BUTTONS_CENTER.values.TRANSPOSE_POS_2,
         ],
     },
 }

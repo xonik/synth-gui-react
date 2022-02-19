@@ -5,7 +5,7 @@ import RoundPushButton8 from '../buttons/RoundPushButton8';
 import { ControllerGroupIds } from '../../synthcore/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectBitCrusher } from '../../synthcore/modules/commonFx/commonFxReducer'
-import { CommonFxControllerIds } from '../../synthcore/modules/commonFx/types'
+import commonFxControllers from '../../synthcore/modules/commonFx/commonFxControllers'
 
 interface Props {
     x: number,
@@ -29,19 +29,19 @@ const BitCrusher = ({ x, y }: Props) => {
         <Header label="Bit crusher" x={25} y={row1} width={50}/>
         <RoundPushButton8 x={col1} y={row3} ledCount={2} ledPosition="top" ledLabels={['FX1', 'FX2']}
                           ctrlGroup={ctrlGroup}
-                          ctrlId={CommonFxControllerIds.BIT_CRUSHER_SOURCE}
+                          ctrlId={commonFxControllers.FX_BIT_CRUSHER.SOURCE.id}
                           value={bitCrusher.source}
         />
 
         <RotaryPot10 ledMode="single" label="Bits" x={col2} y={row2}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={CommonFxControllerIds.BIT_CRUSHER_BITS}
+                     ctrlId={commonFxControllers.FX_BIT_CRUSHER.BITS.id}
                      value={bitCrusher.bits}
         />
 
         <RotaryPot10 ledMode="single" label="Rate" x={col3} y={row2}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={CommonFxControllerIds.BIT_CRUSHER_RATE}
+                     ctrlId={commonFxControllers.FX_BIT_CRUSHER.RATE.id}
                      value={bitCrusher.rate}
         />
 

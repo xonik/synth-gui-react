@@ -2,23 +2,23 @@ import { PayloadAction } from '@reduxjs/toolkit'
 import { click, increment } from '../ui/uiReducer'
 import { fxApi } from '../../synthcoreApi'
 import { ApiSource } from '../../types'
-import { FxControllerIds } from './types'
 import { ApiClickMapperType, ApiIncrementMapperType } from '../common/types'
+import fxControllers from './fxControllers'
 
 const apiIncrementMapper: ApiIncrementMapperType = {
-    [FxControllerIds.DISTORTION_DRIVE]: (value: number) => fxApi.incrementDistortionDrive(value, ApiSource.UI),
-    [FxControllerIds.DISTORTION_LEVEL]: (value: number) => fxApi.incrementDistortionLevel(value, ApiSource.UI),
-    [FxControllerIds.BIT_CRUSHER_BITS]: (value: number) => fxApi.incrementBitCrusherBits(value, ApiSource.UI),
-    [FxControllerIds.BIT_CRUSHER_RATE]: (value: number) => fxApi.incrementBitCrusherRate(value, ApiSource.UI),
-    [FxControllerIds.BIT_CRUSHER_LEVEL]: (value: number) => fxApi.incrementBitCrusherLevel(value, ApiSource.UI),
+    [fxControllers.DISTORTION.DRIVE.id]: (value: number) => fxApi.incrementDistortionDrive(value, ApiSource.UI),
+    [fxControllers.DISTORTION.LEVEL.id]: (value: number) => fxApi.incrementDistortionLevel(value, ApiSource.UI),
+    [fxControllers.BIT_CRUSHER.BITS.id]: (value: number) => fxApi.incrementBitCrusherBits(value, ApiSource.UI),
+    [fxControllers.BIT_CRUSHER.RATE.id]: (value: number) => fxApi.incrementBitCrusherRate(value, ApiSource.UI),
+    [fxControllers.BIT_CRUSHER.LEVEL.id]: (value: number) => fxApi.incrementBitCrusherLevel(value, ApiSource.UI),
 }
 
 const apiClickMapper: ApiClickMapperType = {
-    [FxControllerIds.DISTORTION_IN]: () => fxApi.toggleDistortionIn(ApiSource.UI),
-    [FxControllerIds.DISTORTION_CLIP]: () => fxApi.toggleDistortionClip(ApiSource.UI),
-    [FxControllerIds.DISTORTION_OUT]: () => fxApi.toggleDistortionOut(ApiSource.UI),
-    [FxControllerIds.BIT_CRUSHER_IN]: () => fxApi.toggleBitCrusherIn(ApiSource.UI),
-    [FxControllerIds.BIT_CRUSHER_OUT]: () => fxApi.toggleBitCrusherOut(ApiSource.UI),
+    [fxControllers.DISTORTION.IN.id]: () => fxApi.toggleDistortionIn(ApiSource.UI),
+    [fxControllers.DISTORTION.CLIP.id]: () => fxApi.toggleDistortionClip(ApiSource.UI),
+    [fxControllers.DISTORTION.OUT.id]: () => fxApi.toggleDistortionOut(ApiSource.UI),
+    [fxControllers.BIT_CRUSHER.IN.id]: () => fxApi.toggleBitCrusherIn(ApiSource.UI),
+    [fxControllers.BIT_CRUSHER.OUT.id]: () => fxApi.toggleBitCrusherOut(ApiSource.UI),
 }
 
 

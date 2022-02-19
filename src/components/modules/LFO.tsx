@@ -6,7 +6,8 @@ import Header from '../misc/Header'
 import { ControllerGroupIds } from '../../synthcore/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectUiLfo } from '../../synthcore/modules/lfo/lfoReducer'
-import { LfoControllerId, StageId } from '../../synthcore/modules/lfo/types'
+import { StageId } from '../../synthcore/modules/lfo/types'
+import lfoControllers from '../../synthcore/modules/lfo/lfoControllers'
 
 interface Props {
     x: number,
@@ -38,42 +39,42 @@ const LFO = ({ x, y }: Props) => {
         <Header align="left" label="LFOs" x={0} y={0} width={145}/>
         <RoundLedPushButton8 label="1" x={buttonCol} y={button1Row} labelPosition="right" radioButtonIndex={0}
                              ctrlGroup={ctrlGroup}
-                             ctrlId={LfoControllerId.LFO_ID}
+                             ctrlId={lfoControllers(0).LFO.id}
                              ctrlIndex={lfo.id}
                              value={lfo.id}
         />
 
         <RoundLedPushButton8 label="2" x={buttonCol} y={button2Row} labelPosition="right" radioButtonIndex={1}
                              ctrlGroup={ctrlGroup}
-                             ctrlId={LfoControllerId.LFO_ID}
+                             ctrlId={lfoControllers(0).LFO.id}
                              ctrlIndex={lfo.id}
                              value={lfo.id}
         />
 
         <RoundLedPushButton8 label="3" x={buttonCol} y={button3Row} labelPosition="right" radioButtonIndex={2}
                              ctrlGroup={ctrlGroup}
-                             ctrlId={LfoControllerId.LFO_ID}
+                             ctrlId={lfoControllers(0).LFO.id}
                              ctrlIndex={lfo.id}
                              value={lfo.id}
         />
 
         <RoundLedPushButton8 label="4" x={buttonCol} y={button4Row} labelPosition="right" radioButtonIndex={3}
                              ctrlGroup={ctrlGroup}
-                             ctrlId={LfoControllerId.LFO_ID}
+                             ctrlId={lfoControllers(0).LFO.id}
                              ctrlIndex={lfo.id}
                              value={lfo.id}
         />
 
         <RotaryPot17 ledMode="single" label="Rate" x={firstPotCol} y={potRow1}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={LfoControllerId.RATE}
+                     ctrlId={lfoControllers(0).RATE.id}
                      ctrlIndex={lfo.id}
                      value={lfo.rate}
         />
 
         <RotaryPot17 ledMode="single" label="Depth" x={firstPotCol + potDistance} y={potRow1}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={LfoControllerId.DEPTH}
+                     ctrlId={lfoControllers(0).DEPTH.id}
                      ctrlIndex={lfo.id}
                      value={lfo.depth}
         />
@@ -83,35 +84,35 @@ const LFO = ({ x, y }: Props) => {
                           ledPosition="right" ledCount={5}
                           ledLabels={['Saw', 'Tri', 'Sqr', 'Sin', 'S & H',]}
                           ctrlGroup={ctrlGroup}
-                          ctrlId={LfoControllerId.SHAPE}
+                          ctrlId={lfoControllers(0).SHAPE.id}
                           ctrlIndex={lfo.id}
                           value={lfo.shape}
         />
 
         <RotaryPot17 ledMode="single" label="Delay" x={firstPotCol} y={potRow2}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={LfoControllerId.DELAY}
+                     ctrlId={lfoControllers(0).DELAY.id}
                      ctrlIndex={lfo.id}
                      value={lfo.stages[StageId.DELAY].time}
         />
 
         <RoundLedPushButton8 label="Sync" x={buttonCol2} y={potRow2} labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
-                             ctrlId={LfoControllerId.SYNC}
+                             ctrlId={lfoControllers(0).SYNC.id}
                              ctrlIndex={lfo.id}
                              value={lfo.sync}
         />
 
         <RoundLedPushButton8 label="Reset" x={buttonCol3} y={potRow2} labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
-                             ctrlId={LfoControllerId.RESET}
+                             ctrlId={lfoControllers(0).RESET.id}
                              ctrlIndex={lfo.id}
                              value={lfo.resetOnTrigger}
         />
 
         <RoundLedPushButton8 label="Once" x={buttonCol4} y={potRow2} labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
-                             ctrlId={LfoControllerId.ONCE}
+                             ctrlId={lfoControllers(0).ONCE.id}
                              ctrlIndex={lfo.id}
                              value={lfo.once}
         />

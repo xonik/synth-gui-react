@@ -13,7 +13,7 @@ import controllers from '../../../midi/controllers'
 import { numericPropFuncs, togglePropFuncs } from '../common/commonApi'
 import { ApiSource } from '../../types'
 import { dispatch, getBounded } from '../../utils'
-import transposeControllers from './transposeControllers'
+import kbdControllers from './kbdControllers'
 
 const portamento = numericPropFuncs({
     selector: () => selectKbd(store.getState()).portamento,
@@ -47,7 +47,7 @@ const mode = togglePropFuncs({
 
 const setTranspose = (value: number, source: ApiSource) => {
     const currentValue = selectKbd(store.getState()).transpose
-    const boundedValue = getBounded(value, 0, transposeControllers.TRANSPOSE.values.length - 1)
+    const boundedValue = getBounded(value, 0, kbdControllers.TRANSPOSE.values.length - 1)
     if (boundedValue === currentValue) {
         return
     }

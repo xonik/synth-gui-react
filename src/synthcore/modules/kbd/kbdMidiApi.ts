@@ -42,7 +42,7 @@ const mode = (() => {
     }
 })()
 const transpose = (() => {
-    const cfg = controllers.TRANSPOSE.TRANSPOSE
+    const cfg = controllers.KBD.TRANSPOSE
     return {
         send: (source: ApiSource, value: number) => toggleParamSend(source, value, cfg),
         receive: () => toggleParamReceive(cfg, kbdApi.setTranspose)

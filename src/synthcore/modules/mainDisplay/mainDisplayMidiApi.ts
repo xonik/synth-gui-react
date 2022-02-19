@@ -119,7 +119,7 @@ const pot = (() => {
             potCfgs.forEach((cfg, index) => {
                 cc.subscribe((midiValue: number) => {
                     const value = (midiValue - 64) / 1000;
-                    mainDisplayApi.handleMainDisplayController(MainDisplayControllerIds.POT1 + index, midiValue, ApiSource.MIDI)
+                    mainDisplayApi.handleMainDisplayController(mainDisplayControllers.POT1.id + index, midiValue, ApiSource.MIDI)
                 }, cfg)
             })
         }

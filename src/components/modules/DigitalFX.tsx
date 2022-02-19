@@ -6,7 +6,7 @@ import RoundPushButton8 from '../buttons/RoundPushButton8';
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectDsp1, selectDsp2 } from '../../synthcore/modules/commonFx/commonFxReducer'
 import { ControllerGroupIds } from '../../synthcore/types'
-import { CommonFxControllerIds } from '../../synthcore/modules/commonFx/types'
+import commonFxControllers from '../../synthcore/modules/commonFx/commonFxControllers'
 
 interface Props {
   x: number,
@@ -47,62 +47,62 @@ const DigitalFX = ({ x, y }: Props) => {
   return <>
     <RoundPushButton8 x={col1} y={row2left} label="Source" ledCount={2} ledLabels={['FX1', 'FX2']} labelPosition="bottom" ledPosition="top"
                       ctrlGroup={ctrlGroup}
-                      ctrlId={CommonFxControllerIds.DSP1_SOURCE}
+                      ctrlId={commonFxControllers.DSP1.SOURCE.id}
                       value={dsp1.source}
     />
 
     <RoundPushButton8 x={col1} y={row3left} label="Source" ledCount={2} ledLabels={['FX1', 'FX2']} labelPosition="top" ledPosition="bottom"
                       ctrlGroup={ctrlGroup}
-                      ctrlId={CommonFxControllerIds.DSP2_SOURCE}
+                      ctrlId={commonFxControllers.DSP2.SOURCE.id}
                       value={dsp2.source}
     />
 
     <RotaryPotWOLeds10 x={col2} y={row1}
                        ctrlGroup={ctrlGroup}
-                       ctrlId={CommonFxControllerIds.DSP1_PARAM1}
+                       ctrlId={commonFxControllers.DSP1.PARAM1.id}
     />
 
     <RotaryPotWOLeds10 x={col3} y={row1}
                        ctrlGroup={ctrlGroup}
-                       ctrlId={CommonFxControllerIds.DSP1_PARAM2}
+                       ctrlId={commonFxControllers.DSP1.PARAM2.id}
     />
 
     <RotaryPotWOLeds10 x={col4} y={row1}
                        ctrlGroup={ctrlGroup}
-                       ctrlId={CommonFxControllerIds.DSP1_PARAM3}
+                       ctrlId={commonFxControllers.DSP1.PARAM3.id}
     />
 
     <Display x={displayX} y={displayY} width={displayWidth} height={displayHeight}/>
 
     <RotaryPotWOLeds10 x={col2} y={row4}
                        ctrlGroup={ctrlGroup}
-                       ctrlId={CommonFxControllerIds.DSP2_PARAM1}
+                       ctrlId={commonFxControllers.DSP2.PARAM1.id}
     />
 
     <RotaryPotWOLeds10 x={col3} y={row4}
                        ctrlGroup={ctrlGroup}
-                       ctrlId={CommonFxControllerIds.DSP2_PARAM2}
+                       ctrlId={commonFxControllers.DSP2.PARAM2.id}
     />
 
     <RotaryPotWOLeds10 x={col4} y={row4}
                        ctrlGroup={ctrlGroup}
-                       ctrlId={CommonFxControllerIds.DSP2_PARAM3}
+                       ctrlId={commonFxControllers.DSP2.PARAM3.id}
     />
 
     <RotaryPotWOLeds10 x={col5} y={row1right} label="Effect"
                        ctrlGroup={ctrlGroup}
-                       ctrlId={CommonFxControllerIds.DSP1_EFFECT}
+                       ctrlId={commonFxControllers.DSP1.EFFECT.id}
     />
 
     <RoundLedPushButton8 x={col5} y={displayCenterY} label="Chain" labelPosition="bottom"
                          ctrlGroup={ctrlGroup}
-                         ctrlId={CommonFxControllerIds.DSP2_CHAIN}
+                         ctrlId={commonFxControllers.DSP2.CHAIN.id}
                          value={dsp2.chain}
     />
 
     <RotaryPotWOLeds10 x={col5} y={row4right} label="Effect"
                        ctrlGroup={ctrlGroup}
-                       ctrlId={CommonFxControllerIds.DSP2_EFFECT}
+                       ctrlId={commonFxControllers.DSP2.EFFECT.id}
     />
 
   </>;

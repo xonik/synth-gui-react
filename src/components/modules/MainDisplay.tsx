@@ -9,6 +9,7 @@ import { getPotResolution } from '../../synthcore/modules/mainDisplay/mainDispla
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectCurrScreen } from '../../synthcore/modules/mainDisplay/mainDisplayReducer'
 import './MainDisplay.scss'
+import mainDisplayControllers from '../../synthcore/modules/mainDisplay/mainDisplayControllers'
 
 interface Props {
     x: number,
@@ -46,110 +47,116 @@ const MainDisplay = React.forwardRef<SVGRectElement, Props>(({ x, y }, displayRe
                           label="LFOs"
                           labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
-                          ctrlId={MainDisplayControllerIds.MENU_LFO}
+                          radioButtonIndex={0}
+                          ctrlId={mainDisplayControllers.GROUP_MENU.id}
         />
         <RoundPushButton8 x={displayCenter - 1.5 * buttonSpacing} y={buttonRow}
                           label="Osc"
                           labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
-                          ctrlId={MainDisplayControllerIds.MENU_OSC}
+                          radioButtonIndex={1}
+                          ctrlId={mainDisplayControllers.GROUP_MENU.id}
         />
         <RoundPushButton8 x={displayCenter - 0.5 * buttonSpacing} y={buttonRow}
                           label="Filters"
                           labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
-                          ctrlId={MainDisplayControllerIds.MENU_FILTER}
+                          radioButtonIndex={2}
+                          ctrlId={mainDisplayControllers.GROUP_MENU.id}
         />
         <RoundPushButton8 x={displayCenter + 0.5 * buttonSpacing} y={buttonRow}
                           label="Envelopes"
                           labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
-                          ctrlId={MainDisplayControllerIds.MENU_ENVELOPE}
+                          radioButtonIndex={3}
+                          ctrlId={mainDisplayControllers.GROUP_MENU.id}
         />
         <RoundPushButton8 x={displayCenter + 1.5 * buttonSpacing} y={buttonRow}
                           label="Mods"
                           labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
-                          ctrlId={MainDisplayControllerIds.MENU_MOD}
+                          radioButtonIndex={4}
+                          ctrlId={mainDisplayControllers.GROUP_MENU.id}
         />
         <RoundPushButton8 x={displayCenter + 2.5 * buttonSpacing} y={buttonRow}
                           label="FX"
                           labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
-                          ctrlId={MainDisplayControllerIds.MENU_FX}
+                          radioButtonIndex={5}
+                          ctrlId={mainDisplayControllers.GROUP_MENU.id}
         />
         <Display x={x} y={y} width={displayWidth} height={displayHeight} ref={displayRef}/>
 
         <RotaryPotWOLeds17 x={displayCenter - 2 * potSpacing} y={potRow}
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
-                           ctrlId={MainDisplayControllerIds.POT1}
-                           resolution={getPotResolution(MainDisplayControllerIds.POT1, currScreen)}
+                           ctrlId={mainDisplayControllers.POT1.id}
+                           resolution={getPotResolution(mainDisplayControllers.POT1.id, currScreen)}
         />
         <RotaryPotWOLeds17 x={displayCenter - 1 * potSpacing} y={potRow}
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
-                           ctrlId={MainDisplayControllerIds.POT2}
-                           resolution={getPotResolution(MainDisplayControllerIds.POT2, currScreen)}
+                           ctrlId={mainDisplayControllers.POT2.id}
+                           resolution={getPotResolution(mainDisplayControllers.POT2.id, currScreen)}
         />
         <RotaryPotWOLeds17 x={displayCenter} y={potRow}
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
-                           ctrlId={MainDisplayControllerIds.POT3}
-                           resolution={getPotResolution(MainDisplayControllerIds.POT3, currScreen)}
+                           ctrlId={mainDisplayControllers.POT3.id}
+                           resolution={getPotResolution(mainDisplayControllers.POT3.id, currScreen)}
         />
         <RotaryPotWOLeds17 x={displayCenter + 1 * potSpacing} y={potRow}
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
-                           ctrlId={MainDisplayControllerIds.POT4}
-                           resolution={getPotResolution(MainDisplayControllerIds.POT4, currScreen)}
+                           ctrlId={mainDisplayControllers.POT4.id}
+                           resolution={getPotResolution(mainDisplayControllers.POT4.id, currScreen)}
         />
         <RotaryPotWOLeds17 x={displayCenter + 2 * potSpacing} y={potRow}
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
-                           ctrlId={MainDisplayControllerIds.POT5}
-                           resolution={getPotResolution(MainDisplayControllerIds.POT5, currScreen)}
+                           ctrlId={mainDisplayControllers.POT5.id}
+                           resolution={getPotResolution(mainDisplayControllers.POT5.id, currScreen)}
         />
         <RotaryPotWOLeds32 x={displayCenter} y={masterPotRow}
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
-                           ctrlId={MainDisplayControllerIds.POT6}
-                           resolution={getPotResolution(MainDisplayControllerIds.POT6, currScreen)}
+                           ctrlId={mainDisplayControllers.POT6.id}
+                           resolution={getPotResolution(mainDisplayControllers.POT6.id, currScreen)}
         />
 
         <RoundPushButton8 x={displayCenter - 2.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Home" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
-                          ctrlId={MainDisplayControllerIds.FUNC_HOME}
+                          ctrlId={mainDisplayControllers.FUNC_HOME.id}
         />
 
         <RoundPushButton8 x={displayCenter - 1.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Settings" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
-                          ctrlId={MainDisplayControllerIds.FUNC_SETTINGS}
+                          ctrlId={mainDisplayControllers.FUNC_SETTINGS.id}
         />
 
         <RoundPushButton8 x={displayCenter + 1.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Load" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
-                          ctrlId={MainDisplayControllerIds.FUNC_LOAD}
+                          ctrlId={mainDisplayControllers.FUNC_LOAD.id}
         />
 
         <RoundPushButton8 x={displayCenter + 2.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Save" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
-                          ctrlId={MainDisplayControllerIds.FUNC_SAVE}
+                          ctrlId={mainDisplayControllers.FUNC_SAVE.id}
         />
 
 
         <RoundPushButton8 x={displayCenter - 2.5 * buttonSpacing} y={ctrlSwitchesRow2} label="Shift" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
-                          ctrlId={MainDisplayControllerIds.FUNC_SHIFT}
+                          ctrlId={mainDisplayControllers.FUNC_SHIFT.id}
         />
 
         <RoundPushButton8 x={displayCenter - 1.5 * buttonSpacing} y={ctrlSwitchesRow2} label="Perform" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
-                          ctrlId={MainDisplayControllerIds.FUNC_PERFORM}
+                          ctrlId={mainDisplayControllers.FUNC_PERFORM.id}
         />
 
         <RoundPushButton8 x={displayCenter + 1.5 * buttonSpacing} y={ctrlSwitchesRow2} label="Compare" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
-                          ctrlId={MainDisplayControllerIds.FUNC_COMPARE}
+                          ctrlId={mainDisplayControllers.FUNC_COMPARE.id}
         />
 
         <RoundPushButton8 x={displayCenter + 2.5 * buttonSpacing} y={ctrlSwitchesRow2} label="Route" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
-                          ctrlId={MainDisplayControllerIds.FUNC_ROUTE}
+                          ctrlId={mainDisplayControllers.FUNC_ROUTE.id}
         />
 
     </>

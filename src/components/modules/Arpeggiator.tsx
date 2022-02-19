@@ -14,7 +14,7 @@ import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
 import { ControllerGroupIds } from '../../synthcore/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectArp } from '../../synthcore/modules/arp/arpReducer'
-import { ArpControllerIds } from '../../synthcore/modules/arp/types'
+import arpControllers from '../../synthcore/modules/arp/arpControllers'
 
 interface Props {
     x: number,
@@ -40,37 +40,37 @@ const Arpeggiator = ({ x, y }: Props) => {
         <Header label="Arpeggiator" x={0} y={row1} width={190}/>
         <RoundLedPushButton8 labelPosition="bottom" x={col1} y={row2} label="On/Off"
                              ctrlGroup={ctrlGroup}
-                             ctrlId={ArpControllerIds.ON_OFF}
+                             ctrlId={arpControllers.ON_OFF.id}
                              value={arp.onOff}
         />
 
         <RoundLedPushButton8 labelPosition="bottom" x={col2} y={row2} label="Trigger"
                              ctrlGroup={ctrlGroup}
-                             ctrlId={ArpControllerIds.TRIGGER}
+                             ctrlId={arpControllers.TRIGGER.id}
                              value={arp.trigger}
         />
 
         <RotaryPot17 ledMode="single" label="Tempo" x={col3} y={row2}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={ArpControllerIds.TEMPO}
+                     ctrlId={arpControllers.TEMPO.id}
                      value={arp.tempo}
         />
 
         <RoundPushButton8 labelPosition="bottom" x={col4} y={row2} label="Sync" ledCount={3} ledPosition="right" ledLabels={['Master', 'LFO1', 'Ext']} hasOff
                           ctrlGroup={ctrlGroup}
-                          ctrlId={ArpControllerIds.SYNC}
+                          ctrlId={arpControllers.SYNC.id}
                           value={arp.sync}
         />
 
         <RoundPushButton8 labelPosition="bottom" x={col5} y={row2} label="Range" ledCount={3} ledPosition="right" ledLabels={['1', '2', '3']}
                           ctrlGroup={ctrlGroup}
-                          ctrlId={ArpControllerIds.RANGE}
+                          ctrlId={arpControllers.RANGE.id}
                           value={arp.range}
         />
 
         <RoundPushButton8 labelPosition="bottom" x={col6} y={row2} label="Mode" ledCount={5} ledPosition="right" ledLabels={['Up', 'Down', 'Up/down', 'Random', 'Other']}
                           ctrlGroup={ctrlGroup}
-                          ctrlId={ArpControllerIds.MODE}
+                          ctrlId={arpControllers.MODE.id}
                           value={arp.mode}
         />
 

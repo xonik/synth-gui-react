@@ -7,7 +7,7 @@ import React from 'react'
 import { ControllerGroupIds } from '../../synthcore/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectKbd } from '../../synthcore/modules/kbd/kbdReducer'
-import { KbdControllerIds } from '../../synthcore/modules/kbd/types'
+import kbdControllers from '../../synthcore/modules/kbd/kbdControllers'
 
 interface Props {
     x: number,
@@ -36,7 +36,7 @@ const Transpose = ({row2}: TransposeProps) => {
         <RoundPushButton8 labelPosition="bottom" x={col1} y={row2}
                           label="Down" reverse
                           ctrlGroup={ctrlGroup}
-                          ctrlId={KbdControllerIds.TRANSPOSE}
+                          ctrlId={kbdControllers.TRANSPOSE.id}
                           value={kbd.transpose}
         />
 
@@ -48,7 +48,7 @@ const Transpose = ({row2}: TransposeProps) => {
         <RoundPushButton8 labelPosition="bottom" x={col7} y={row2}
                           label="Up"
                           ctrlGroup={ctrlGroup}
-                          ctrlId={KbdControllerIds.TRANSPOSE}
+                          ctrlId={kbdControllers.TRANSPOSE.id}
                           value={kbd.transpose}
         />
     </>
@@ -84,31 +84,31 @@ const KeyboardControls = ({ x, y }: Props) => {
         <Transpose row2={row2} />
         <RotaryPot10 x={col8} y={row2} ledMode="single" label="Portamento"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={KbdControllerIds.PORTAMENTO}
+                     ctrlId={kbdControllers.PORTAMENTO.id}
                      value={kbd.portamento}
         />
 
         <RoundLedPushButton8 labelPosition="bottom" x={col9} y={row2} label="Hold"
                              ctrlGroup={ctrlGroup}
-                             ctrlId={KbdControllerIds.HOLD}
+                             ctrlId={kbdControllers.HOLD.id}
                              value={kbd.hold}
         />
 
         <RoundLedPushButton8 labelPosition="bottom" x={col10} y={row2} label="Chord"
                              ctrlGroup={ctrlGroup}
-                             ctrlId={KbdControllerIds.CHORD}
+                             ctrlId={kbdControllers.CHORD.id}
                              value={kbd.chord}
         />
 
         <RoundPushButton8 labelPosition="bottom" x={col11} y={row2} label="Mode" ledCount={3} ledPosition="right" ledLabels={['Solo', 'Unison', 'Poly']}
                           ctrlGroup={ctrlGroup}
-                          ctrlId={KbdControllerIds.MODE}
+                          ctrlId={kbdControllers.MODE.id}
                           value={kbd.mode}
         />
 
         <RotaryPot10 x={col12} y={row2} ledMode="single" label="Unison detune"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={KbdControllerIds.UNISON_DETUNE}
+                     ctrlId={kbdControllers.UNISON_DETUNE.id}
                      value={kbd.unisonDetune}
         />
 

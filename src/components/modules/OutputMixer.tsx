@@ -6,8 +6,8 @@ import { ControllerGroupIds } from '../../synthcore/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectMix } from '../../synthcore/modules/commonFx/commonFxReducer'
 import { selectOut } from '../../synthcore/modules/out/outReducer'
-import { CommonFxControllerIds } from '../../synthcore/modules/commonFx/types'
 import { OutControllerIds } from '../../synthcore/modules/out/types'
+import commonFxControllers from '../../synthcore/modules/commonFx/commonFxControllers'
 
 interface Props {
     x: number,
@@ -52,25 +52,25 @@ const OutputMixer = ({ x, y }: Props) => {
         <Header label="FX mix" x={0} y={+offsetY + rowDistance * 4 - 27} width={40}/>
         <OutputMixerChannel x={offsetX} y={offsetY} label="DSP 1"
                             ctrlGroup={ctrlGroupFx}
-                            ctrlId={CommonFxControllerIds.LEVEL_DSP1}
+                            ctrlId={commonFxControllers.FX_MIX.LEVEL_DSP1.id}
                             value={fxMix.levelDsp1}
         />
 
         <OutputMixerChannel x={offsetX + colDistance} y={offsetY} label="DSP 2"
                             ctrlGroup={ctrlGroupFx}
-                            ctrlId={CommonFxControllerIds.LEVEL_DSP2}
+                            ctrlId={commonFxControllers.FX_MIX.LEVEL_DSP2.id}
                             value={fxMix.levelDsp2}
         />
 
         <OutputMixerChannel x={offsetX + colDistance * 2} y={offsetY} label="Chorus"
                             ctrlGroup={ctrlGroupFx}
-                            ctrlId={CommonFxControllerIds.LEVEL_CHORUS}
+                            ctrlId={commonFxControllers.FX_MIX.LEVEL_CHORUS.id}
                             value={fxMix.levelChorus}
         />
 
         <OutputMixerChannel x={offsetX + colDistance * 3} y={offsetY} label="Bit crusher"
                             ctrlGroup={ctrlGroupFx}
-                            ctrlId={CommonFxControllerIds.LEVEL_BIT_CRUSHER}
+                            ctrlId={commonFxControllers.FX_MIX.LEVEL_BIT_CRUSHER.id}
                             value={fxMix.levelBitCrusher}
         />
 

@@ -10,7 +10,6 @@ import masterClockControllers from '../synthcore/modules/masterClock/masterClock
 import arpControllers from '../synthcore/modules/arp/arpControllers'
 import voicesControllers from '../synthcore/modules/voices/voicesControllers'
 import mainDisplayControllers from '../synthcore/modules/mainDisplay/mainDisplayControllers'
-import transposeControllers from '../synthcore/modules/kbd/transposeControllers'
 import kbdControllers from '../synthcore/modules/kbd/kbdControllers'
 import filtersControllers from '../synthcore/modules/filters/filtersControllers'
 import voiceMixControllers from '../synthcore/modules/postMix/voiceMixControllers'
@@ -51,7 +50,6 @@ export const controllerGroups = {
         label: 'Controls',
         MASTER_CLOCK: masterClockControllers,
         ARP: arpControllers,
-        TRANSPOSE: transposeControllers,
         KBD: kbdControllers,
     },
     MAIN_DISPLAY: {
@@ -111,7 +109,6 @@ const controllers = {
     ARP: arpControllers,
     VOICES: voicesControllers,
     MAIN_DISPLAY: mainDisplayControllers,
-    TRANSPOSE: transposeControllers,
     KBD: kbdControllers,
     LPF: filtersControllers.LPF,
     FILTERS: filtersControllers.FILTERS,

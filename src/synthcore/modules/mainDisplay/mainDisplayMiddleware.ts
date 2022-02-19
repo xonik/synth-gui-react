@@ -1,29 +1,22 @@
 import { PayloadAction } from '@reduxjs/toolkit'
 import { click, increment, release } from '../ui/uiReducer'
-import { envApi, mainDisplayApi } from '../../synthcoreApi'
-import { MainDisplayControllerIds, MainDisplayScreenId } from './types'
+import { mainDisplayApi } from '../../synthcoreApi'
 import { ApiSource } from '../../types'
-import { EnvControllerId } from '../env/types'
+import mainDisplayControllers from './mainDisplayControllers'
 
 type MainDisplayApiMapperType = {
     [key: number]: (ctrlIndex: number, value: number) => void
 }
 
 const clickMapper: MainDisplayApiMapperType = {
-    [MainDisplayControllerIds.MENU_LFO]: () => mainDisplayApi.setCurrentScreen(MainDisplayScreenId.LFO, ApiSource.UI),
-    [MainDisplayControllerIds.MENU_OSC]: () => mainDisplayApi.setCurrentScreen(MainDisplayScreenId.OSC, ApiSource.UI),
-    [MainDisplayControllerIds.MENU_FILTER]: () => mainDisplayApi.setCurrentScreen(MainDisplayScreenId.FILTER, ApiSource.UI),
-    [MainDisplayControllerIds.MENU_ENVELOPE]: () => mainDisplayApi.setCurrentScreen(MainDisplayScreenId.ENV, ApiSource.UI),
-    [MainDisplayControllerIds.MENU_MOD]: () => mainDisplayApi.setCurrentScreen(MainDisplayScreenId.MOD, ApiSource.UI),
-    [MainDisplayControllerIds.MENU_FX]: () => mainDisplayApi.setCurrentScreen(MainDisplayScreenId.FX, ApiSource.UI),
-    [MainDisplayControllerIds.FUNC_HOME]: () => mainDisplayApi.handleHomeClick(ApiSource.UI),
-    [MainDisplayControllerIds.FUNC_SETTINGS]: () => mainDisplayApi.handleSettingsClick(ApiSource.UI),
-    [MainDisplayControllerIds.FUNC_SHIFT]: () => mainDisplayApi.handleShift(true, ApiSource.UI),
-    [MainDisplayControllerIds.FUNC_PERFORM]: () => mainDisplayApi.handlePerformClick(ApiSource.UI),
-    [MainDisplayControllerIds.FUNC_LOAD]: () => mainDisplayApi.handleLoadClick(ApiSource.UI),
-    [MainDisplayControllerIds.FUNC_SAVE]: () => mainDisplayApi.handleSaveClick(ApiSource.UI),
-    [MainDisplayControllerIds.FUNC_COMPARE]: () => mainDisplayApi.handleCompareClick(ApiSource.UI),
-    [MainDisplayControllerIds.FUNC_ROUTE]: () => mainDisplayApi.handleRouteClick(ApiSource.UI),
+    [mainDisplayControllers.FUNC_HOME.id]: () => mainDisplayApi.handleHomeClick(ApiSource.UI),
+    [mainDisplayControllers.FUNC_SETTINGS.id]: () => mainDisplayApi.handleSettingsClick(ApiSource.UI),
+    [mainDisplayControllers.FUNC_SHIFT.id]: () => mainDisplayApi.handleShift(true, ApiSource.UI),
+    [mainDisplayControllers.FUNC_PERFORM.id]: () => mainDisplayApi.handlePerformClick(ApiSource.UI),
+    [mainDisplayControllers.FUNC_LOAD.id]: () => mainDisplayApi.handleLoadClick(ApiSource.UI),
+    [mainDisplayControllers.FUNC_SAVE.id]: () => mainDisplayApi.handleSaveClick(ApiSource.UI),
+    [mainDisplayControllers.FUNC_COMPARE.id]: () => mainDisplayApi.handleCompareClick(ApiSource.UI),
+    [mainDisplayControllers.FUNC_ROUTE.id]: () => mainDisplayApi.handleRouteClick(ApiSource.UI),
 }
 
 
@@ -31,9 +24,13 @@ export const mainDisplayMiddleware = (action: PayloadAction): void => {
     if (increment.match(action)) {
         mainDisplayApi.handleMainDisplayController(action.payload.ctrlId, action.payload.value, ApiSource.UI)
     } else if (click.match(action)) {
-        clickMapper[action.payload.ctrlId](0, 0)
+        if(action.payload.ctrlId === mainDisplayControllers.GROUP_MENU.id){
+            mainDisplayApi.setCurrentScreen(action.payload.radioButtonIndex || 0, ApiSource.UI)
+        } else {
+            clickMapper[action.payload.ctrlId](0, 0)
+        }
     } else if (release.match(action)) {
-        if (action.payload.ctrlId === MainDisplayControllerIds.FUNC_SHIFT) {
+        if (action.payload.ctrlId === mainDisplayControllers.FUNC_SHIFT.id) {
             mainDisplayApi.handleShift(false, ApiSource.UI)
         }
     }

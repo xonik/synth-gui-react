@@ -2,8 +2,8 @@ import { click, increment } from '../ui/uiReducer'
 import { lfoApi } from '../../synthcoreApi'
 import { toggleStageEnabled, toggleStageSelected } from './lfoReducer'
 import { ApiSource } from '../../types'
-import { LfoControllerId } from './types'
 import { PayloadAction } from '@reduxjs/toolkit'
+import lfoControllers from './lfoControllers'
 
 type LfoIncrementMapperType = {
     [key: number]: (ctrlIndex: number, value: number) => void
@@ -14,16 +14,16 @@ type LfoClickMapperType = {
 }
 
 const lfoIncrementMapper: LfoIncrementMapperType = {
-    [LfoControllerId.RATE]: (ctrlIndex: number, value: number) => lfoApi.incrementRate(ctrlIndex, value, ApiSource.UI),
-    [LfoControllerId.DEPTH]: (ctrlIndex: number, value: number) => lfoApi.incrementDepth(ctrlIndex, value, ApiSource.UI),
-    [LfoControllerId.DELAY]: (ctrlIndex: number, value: number) => lfoApi.incrementDelay(ctrlIndex, value, ApiSource.UI),
+    [lfoControllers(0).RATE.id]: (ctrlIndex: number, value: number) => lfoApi.incrementRate(ctrlIndex, value, ApiSource.UI),
+    [lfoControllers(0).DEPTH.id]: (ctrlIndex: number, value: number) => lfoApi.incrementDepth(ctrlIndex, value, ApiSource.UI),
+    [lfoControllers(0).DELAY.id]: (ctrlIndex: number, value: number) => lfoApi.incrementDelay(ctrlIndex, value, ApiSource.UI),
 }
 
 const lfoClickMapper: LfoClickMapperType = {
-    [LfoControllerId.SHAPE]: (ctrlIndex: number) => lfoApi.toggleShape(ctrlIndex, ApiSource.UI),
-    [LfoControllerId.SYNC]: (ctrlIndex: number) => lfoApi.toggleSync(ctrlIndex, ApiSource.UI),
-    [LfoControllerId.RESET]: (ctrlIndex: number) => lfoApi.toggleReset(ctrlIndex, ApiSource.UI),
-    [LfoControllerId.ONCE]: (ctrlIndex: number) => lfoApi.toggleOnce(ctrlIndex, ApiSource.UI),
+    [lfoControllers(0).SHAPE.id]: (ctrlIndex: number) => lfoApi.toggleShape(ctrlIndex, ApiSource.UI),
+    [lfoControllers(0).SYNC.id]: (ctrlIndex: number) => lfoApi.toggleSync(ctrlIndex, ApiSource.UI),
+    [lfoControllers(0).RESET.id]: (ctrlIndex: number) => lfoApi.toggleReset(ctrlIndex, ApiSource.UI),
+    [lfoControllers(0).ONCE.id]: (ctrlIndex: number) => lfoApi.toggleOnce(ctrlIndex, ApiSource.UI),
 }
 
 export const lfoMiddleware = (action: PayloadAction): void => {
@@ -32,7 +32,7 @@ export const lfoMiddleware = (action: PayloadAction): void => {
         lfoIncrementMapper[action.payload.ctrlId](ctrlIndex, action.payload.value)
     } else if (click.match(action)) {
         const ctrlIndex = action.payload.ctrlIndex || 0
-        if(action.payload.ctrlId === LfoControllerId.LFO_ID) {
+        if(action.payload.ctrlId === lfoControllers(0).LFO.id) {
             lfoApi.setUiLfo(action.payload.radioButtonIndex || 0, ApiSource.UI)
         } else {
             lfoClickMapper[action.payload.ctrlId](ctrlIndex)
