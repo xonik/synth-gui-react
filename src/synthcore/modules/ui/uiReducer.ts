@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ControllerGroupIds } from '../../types'
+import { ControllerConfig } from '../../../midi/types'
 
 type UiState = {
     controller: {
@@ -13,14 +14,14 @@ const initialState: UiState = {
 
 type NumericControllerPayload = {
     ctrlGroup: ControllerGroupIds;
-    ctrlId: number;
+    ctrl: ControllerConfig;
     ctrlIndex?: number;
     value: number;
 }
 
 type ButtonControllerPayload = {
     ctrlGroup: ControllerGroupIds;
-    ctrlId: number;
+    ctrl: ControllerConfig;
     ctrlIndex?: number;
     radioButtonIndex?: number;
     reverse?: boolean;

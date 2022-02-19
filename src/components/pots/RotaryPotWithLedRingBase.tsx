@@ -6,6 +6,7 @@ import { useAppDispatch } from '../../synthcore/hooks'
 import { increment } from '../../synthcore/modules/ui/uiReducer'
 import { ControllerGroupIds } from '../../synthcore/types'
 import './RotaryPot.scss'
+import { ControllerConfig } from '../../midi/types'
 
 export type LedMode = 'single' | 'multi';
 export type PotMode = 'normal' | 'pan' | 'spread';
@@ -18,8 +19,8 @@ export interface Props {
     potMode?: PotMode
     label: string
     value?: number;
-    ctrlGroup?: ControllerGroupIds;
-    ctrlId?: number;
+    ctrlGroup: ControllerGroupIds;
+    ctrl: ControllerConfig;
     ctrlIndex?: number;
     disabled?: boolean;
 }
@@ -100,10 +101,8 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
 
     // Position should be in the range 0-1 in all modes but pan. In pan the range is -0.5 - 0.5
     const { x, y, ledMode = 'single', potMode = 'normal', label,
-        value, ctrlGroup, ctrlId, ctrlIndex, disabled
+        value, ctrlGroup, ctrl, ctrlIndex, disabled
     } = props
-
-    const localControl = ctrlGroup === undefined && ctrlId === undefined && ctrlIndex === undefined
 
     const dispatch = useAppDispatch()
 
@@ -132,14 +131,12 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
     const onIncrement = useCallback((steps: number, stepSize: number) => {
         if(disabled) return;
 
-        if(ctrlId !== undefined && ctrlGroup !== undefined) {
-            // When panning, we cover a -1 to 1 range instead of 0 to 1.
-            // To keep the line in sync with how much the pot has been
-            // turned we have to make increments twice as big.
-            const value = potMode === 'pan' ? steps * (stepSize * 2) : steps * stepSize
-            dispatch(increment({ ctrlGroup, ctrlId, value, ctrlIndex }))
-        }
-    }, [disabled, ctrlId, ctrlGroup, potMode, dispatch, ctrlIndex])
+        // When panning, we cover a -1 to 1 range instead of 0 to 1.
+        // To keep the line in sync with how much the pot has been
+        // turned we have to make increments twice as big.
+        const value = potMode === 'pan' ? steps * (stepSize * 2) : steps * stepSize
+        dispatch(increment({ ctrlGroup, ctrl, value, ctrlIndex }))
+    }, [disabled, ctrl, ctrlGroup, potMode, dispatch, ctrlIndex])
 
     return (
         <svg x={x} y={y} className="pot">

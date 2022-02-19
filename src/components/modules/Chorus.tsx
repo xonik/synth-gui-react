@@ -30,25 +30,25 @@ const Chorus = ({ x, y }: Props) => {
         <Header label="Chorus" x={25} y={row1} width={50}/>
         <RoundPushButton8 x={col1} y={row3} ledCount={2} ledPosition="top" ledLabels={['FX1', 'FX2']}
                           ctrlGroup={ctrlGroup}
-                          ctrlId={commonFxControllers.CHORUS.SOURCE.id}
+                          ctrl={commonFxControllers.CHORUS.SOURCE}
                           value={chorus.source}
         />
 
         <RotaryPot10 ledMode="single" label="Rate" x={col2} y={row2}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={commonFxControllers.CHORUS.RATE.id}
+                     ctrl={commonFxControllers.CHORUS.RATE}
                      value={chorus.rate}
         />
 
         <RotaryPot10 ledMode="single" label="Depth" x={col3} y={row2}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={commonFxControllers.CHORUS.DEPTH.id}
+                     ctrl={commonFxControllers.CHORUS.DEPTH}
                      value={chorus.depth}
         />
 
         <RoundPushButton8 x={col4} y={row3} ledCount={2} ledPosition="top" ledLabels={['Chorus', 'Vibrato']}
                           ctrlGroup={ctrlGroup}
-                          ctrlId={commonFxControllers.CHORUS.MODE.id}
+                          ctrl={commonFxControllers.CHORUS.MODE}
                           value={chorus.mode}
         />
 

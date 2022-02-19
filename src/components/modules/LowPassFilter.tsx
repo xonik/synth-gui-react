@@ -32,68 +32,68 @@ const LowPassFilter = ({ x, y }: Props) => {
         <Header label="Low pass filter" x={x} y={topRow - 27} width={110} align="center"/>
         <RotaryPot40 x={x} y={y} ledMode="single" label="Cutoff"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={filtersControllers.LPF.CUTOFF.id}
+                     ctrl={filtersControllers.LPF.CUTOFF}
                      value={lpf.cutoff}
         />
 
         <RotaryPot17 x={col1} y={topRow} ledMode="multi" label="Input"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={filtersControllers.LPF.INPUT.id}
+                     ctrl={filtersControllers.LPF.INPUT}
                      value={lpf.input}
         />
 
         <RotaryPot17 x={x} y={topRow} ledMode="multi" label="Drive"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={filtersControllers.LPF.DRIVE.id}
+                     ctrl={filtersControllers.LPF.DRIVE}
                      value={lpf.drive}
         />
 
         <RotaryPot17 x={col4} y={topRow} ledMode="multi" label="Resonance"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={filtersControllers.LPF.RESONANCE.id}
+                     ctrl={filtersControllers.LPF.RESONANCE}
                      value={lpf.resonance}
         />
 
         <RoundPushButton8 x={col4} y={y + 10} ledPosition="top" ledCount={2} ledLabels={['12dB', '24dB']}
                           label="Slope" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
-                          ctrlId={filtersControllers.LPF.SLOPE.id}
+                          ctrl={filtersControllers.LPF.SLOPE}
                           value={lpf.slope}
         />
 
         <RoundLedPushButton8 x={col1} y={y -10} label="Ext CV" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
-                             ctrlId={filtersControllers.LPF.EXT_CV.id}
+                             ctrl={filtersControllers.LPF.EXT_CV}
                              value={lpf.extCv}
         />
 
         <RoundLedPushButton8 x={col1} y={y + 10} label="Wheel" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
-                             ctrlId={filtersControllers.LPF.WHEEL.id}
+                             ctrl={filtersControllers.LPF.WHEEL}
                              value={lpf.wheel}
         />
 
         <RotaryPot10 x={col1} y={bottomRow2} ledMode="multi" label="FM amt"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={filtersControllers.LPF.FM_AMT.id}
+                     ctrl={filtersControllers.LPF.FM_AMT}
                      value={lpf.fmAmt}
         />
 
         <RotaryPot10 x={col2} y={bottomRow2} ledMode="multi" label="Env amt"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={filtersControllers.LPF.ENV_AMT.id}
+                     ctrl={filtersControllers.LPF.ENV_AMT}
                      value={lpf.envAmt}
         />
 
         <RotaryPot10 x={col3} y={bottomRow2} ledMode="multi" label="LFO amt"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={filtersControllers.LPF.LFO_AMT.id}
+                     ctrl={filtersControllers.LPF.LFO_AMT}
                      value={lpf.lfoAmt}
         />
 
         <RotaryPot10 x={col4} y={bottomRow2} ledMode="multi" label="Kbd amt"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={filtersControllers.LPF.KBD_AMT.id}
+                     ctrl={filtersControllers.LPF.KBD_AMT}
                      value={lpf.kbdAmt}
         />
 

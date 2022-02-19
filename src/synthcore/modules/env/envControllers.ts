@@ -4,7 +4,7 @@ import { BUTTONS } from '../../../midi/buttons'
 import { FuncProps, ControllerConfig, ControllerConfigCC, ControllerConfigCCWithValue, ControllerConfigNRPN } from '../../../midi/types'
 import { ControllerIdEnvDst, ControllerIdNonMod, ControllerIdSrc } from '../../../midi/controllerIds'
 
-interface MidiCtrlEnv {
+interface EnvControllers {
     props: FuncProps
     DELAY_TIME: ControllerConfig,
     ATTACK_TIME: ControllerConfig,
@@ -32,7 +32,7 @@ interface MidiCtrlEnv {
     OUTPUT: ControllerConfig
 }
 
-const envControllers = (ctrlIndex: number): MidiCtrlEnv => ({
+const envControllers = (ctrlIndex: number): EnvControllers => ({
     props: { label: `Env ${1 + ctrlIndex}`, ctrlIndex },
     DELAY_TIME: { id: ControllerIdEnvDst.DELAY_TIME, label: 'Delay time', shortLabel: 'Delay', isDstDigi: true, type: 'pot' },
     ATTACK_TIME: { id: ControllerIdEnvDst.ATTACK_TIME, label: 'Attack time', shortLabel: 'Attack', isDstDigi: true, type: 'pot' },

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import DCO1 from './modules/DCO1'
 import DCO2 from './modules/DCO2'
 import VCO from './modules/VCO'
-import PreFilterMixer from './modules/PreFilterMixer'
+import SourceMixer from './modules/SourceMixer'
 import PostMix from './modules/PostMix'
 import Noise from './modules/Noise'
 import Ringmod from './modules/Ringmod'
@@ -119,7 +119,7 @@ const MainPanel = () => {
                 <BitCrusherPre x={fxCol + 135} y={fxRow}/>
 
                 <LFO x={lfoCol} y={lfo1Row}/>
-                <PreFilterMixer x={sourceMixCol} y={sourceMixRow}/>
+                <SourceMixer x={sourceMixCol} y={sourceMixRow}/>
 
                 <Route x={routeCol} y={clockRow}/>
                 <Clock x={clockCol} y={clockRow}/>

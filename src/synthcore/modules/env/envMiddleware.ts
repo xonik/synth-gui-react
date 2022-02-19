@@ -3,39 +3,42 @@ import { envApi } from '../../synthcoreApi'
 import { StageId } from './types'
 import { toggleInvert, toggleLoopEnabled, toggleLoopMode, toggleReleaseMode, toggleRetrigger, toggleStageEnabled, toggleStageSelected } from './envReducer'
 import { ApiSource } from '../../types'
-import { EnvControllerId } from './types'
 import { PayloadAction } from '@reduxjs/toolkit'
+import envControllers from './envControllers'
+import {
+    createIndexClickMapper,
+    createIndexIncrementMapper
+} from '../common/utils'
 
-type EnvApiMapperType = {
-    [key: number]: (ctrlIndex: number, value: number) => void
-}
+const incrementMapper = createIndexIncrementMapper([
+    [envControllers(0).DELAY_TIME, (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.DELAY, value, ApiSource.UI)],
+    [envControllers(0).ATTACK_TIME, (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.ATTACK, value, ApiSource.UI)],
+    [envControllers(0).DECAY1_TIME, (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.DECAY1, value, ApiSource.UI)],
+    [envControllers(0).DECAY2_TIME, (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.DECAY2, value, ApiSource.UI)],
+    [envControllers(0).SUSTAIN_LEVEL, (ctrlIndex: number, value: number) => envApi.incrementStageLevel(ctrlIndex, StageId.SUSTAIN, value, ApiSource.UI)],
+    [envControllers(0).RELEASE1_TIME, (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.RELEASE1, value, ApiSource.UI)],
+    [envControllers(0).RELEASE2_TIME, (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.RELEASE2, value, ApiSource.UI)],
+    [envControllers(0).DECAY2_LEVEL, (ctrlIndex: number, value: number) => envApi.incrementStageLevel(ctrlIndex, StageId.DECAY2, value, ApiSource.UI)],
+    [envControllers(0).RELEASE2_LEVEL, (ctrlIndex: number, value: number) => envApi.incrementStageLevel(ctrlIndex, StageId.RELEASE2, value, ApiSource.UI)],
+])
 
-const envApiMapper: EnvApiMapperType = {
-    [EnvControllerId.ENV_DELAY]: (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.DELAY, value, ApiSource.UI),
-    [EnvControllerId.ENV_ATTACK]: (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.ATTACK, value, ApiSource.UI),
-    [EnvControllerId.ENV_DECAY1]: (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.DECAY1, value, ApiSource.UI),
-    [EnvControllerId.ENV_DECAY2]: (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.DECAY2, value, ApiSource.UI),
-    [EnvControllerId.ENV_SUSTAIN]: (ctrlIndex: number, value: number) => envApi.incrementStageLevel(ctrlIndex, StageId.SUSTAIN, value, ApiSource.UI),
-    [EnvControllerId.ENV_RELEASE1]: (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.RELEASE1, value, ApiSource.UI),
-    [EnvControllerId.ENV_RELEASE2]: (ctrlIndex: number, value: number) => envApi.incrementStageTime(ctrlIndex, StageId.RELEASE2, value, ApiSource.UI),
-    [EnvControllerId.ENV_D2_LEVEL]: (ctrlIndex: number, value: number) => envApi.incrementStageLevel(ctrlIndex, StageId.DECAY2, value, ApiSource.UI),
-    [EnvControllerId.ENV_R2_LEVEL]: (ctrlIndex: number, value: number) => envApi.incrementStageLevel(ctrlIndex, StageId.RELEASE2, value, ApiSource.UI),
-    [EnvControllerId.ENV_SELECT_ENV3ID]: () => envApi.toggleEnv3Id(ApiSource.UI),
-    [EnvControllerId.ENV_LOOP]: (ctrlIndex: number) => envApi.toggleLoopEnabled(ctrlIndex, ApiSource.UI),
-    [EnvControllerId.ENV_TRIGGER]: (ctrlIndex: number) => envApi.trigger(ctrlIndex, ApiSource.UI),
-    [EnvControllerId.ENV_INVERT]: (ctrlIndex: number) => envApi.toggleInvert(ctrlIndex, ApiSource.UI)
-}
+const clickMapper = createIndexClickMapper([
+    [envControllers(0).SELECT_ENV3_ID, (ctrlIndex: number) => envApi.toggleEnv3Id(ApiSource.UI)],
+    [envControllers(0).LOOP, (ctrlIndex: number) => envApi.toggleLoopEnabled(ctrlIndex, ApiSource.UI)],
+    [envControllers(0).TRIGGER, (ctrlIndex: number) => envApi.trigger(ctrlIndex, ApiSource.UI)],
+    [envControllers(0).INVERT, (ctrlIndex: number) => envApi.toggleInvert(ctrlIndex, ApiSource.UI)],
+])
 
 export const envMiddleware = (action: PayloadAction): void => {
     if (increment.match(action)) {
         const ctrlIndex = action.payload.ctrlIndex || 0
-        envApiMapper[action.payload.ctrlId](ctrlIndex, action.payload.value)
+        incrementMapper(action.payload.ctrl, ctrlIndex, action.payload.value)
     } else if (click.match(action)) {
         const ctrlIndex = action.payload.ctrlIndex || 0
-        envApiMapper[action.payload.ctrlId](ctrlIndex, 0)
+        clickMapper(action.payload.ctrl, ctrlIndex)
     } else if (release.match(action)) {
         const ctrlIndex = action.payload.ctrlIndex || 0
-        if(action.payload.ctrlId === EnvControllerId.ENV_TRIGGER){
+        if(action.payload.ctrl === envControllers(0).TRIGGER){
             envApi.release(ctrlIndex, ApiSource.UI)
         }
     } else if (toggleStageEnabled.match(action)) {

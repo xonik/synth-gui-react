@@ -36,7 +36,7 @@ const Transpose = ({row2}: TransposeProps) => {
         <RoundPushButton8 labelPosition="bottom" x={col1} y={row2}
                           label="Down" reverse
                           ctrlGroup={ctrlGroup}
-                          ctrlId={kbdControllers.TRANSPOSE.id}
+                          ctrl={kbdControllers.TRANSPOSE}
                           value={kbd.transpose}
         />
 
@@ -48,7 +48,7 @@ const Transpose = ({row2}: TransposeProps) => {
         <RoundPushButton8 labelPosition="bottom" x={col7} y={row2}
                           label="Up"
                           ctrlGroup={ctrlGroup}
-                          ctrlId={kbdControllers.TRANSPOSE.id}
+                          ctrl={kbdControllers.TRANSPOSE}
                           value={kbd.transpose}
         />
     </>
@@ -84,31 +84,31 @@ const KeyboardControls = ({ x, y }: Props) => {
         <Transpose row2={row2} />
         <RotaryPot10 x={col8} y={row2} ledMode="single" label="Portamento"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={kbdControllers.PORTAMENTO.id}
+                     ctrl={kbdControllers.PORTAMENTO}
                      value={kbd.portamento}
         />
 
         <RoundLedPushButton8 labelPosition="bottom" x={col9} y={row2} label="Hold"
                              ctrlGroup={ctrlGroup}
-                             ctrlId={kbdControllers.HOLD.id}
+                             ctrl={kbdControllers.HOLD}
                              value={kbd.hold}
         />
 
         <RoundLedPushButton8 labelPosition="bottom" x={col10} y={row2} label="Chord"
                              ctrlGroup={ctrlGroup}
-                             ctrlId={kbdControllers.CHORD.id}
+                             ctrl={kbdControllers.CHORD}
                              value={kbd.chord}
         />
 
         <RoundPushButton8 labelPosition="bottom" x={col11} y={row2} label="Mode" ledCount={3} ledPosition="right" ledLabels={['Solo', 'Unison', 'Poly']}
                           ctrlGroup={ctrlGroup}
-                          ctrlId={kbdControllers.MODE.id}
+                          ctrl={kbdControllers.MODE}
                           value={kbd.mode}
         />
 
         <RotaryPot10 x={col12} y={row2} ledMode="single" label="Unison detune"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={kbdControllers.UNISON_DETUNE.id}
+                     ctrl={kbdControllers.UNISON_DETUNE}
                      value={kbd.unisonDetune}
         />
 

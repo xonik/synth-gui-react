@@ -22,19 +22,19 @@ const Route = ({ x, y }: Props) => {
         <Header label="Route" x={0} y={0} width={50}/>
         <RoundLedPushButton8 labelPosition="bottom" x={10} y={17.5} label="From" hasOff radioButtonIndex={0}
                              ctrlGroup={ctrlGroup}
-                             ctrlId={modsControllers.ROUTE_BUTTON.id}
+                             ctrl={modsControllers.ROUTE_BUTTON}
                              value={route.routeButton}
         />
 
         <RoundLedPushButton8 labelPosition="bottom" x={10} y={37.5} label="To" hasOff radioButtonIndex={1}
                              ctrlGroup={ctrlGroup}
-                             ctrlId={modsControllers.ROUTE_BUTTON.id}
+                             ctrl={modsControllers.ROUTE_BUTTON}
                              value={route.routeButton}
         />
 
         <RotaryPot17 ledMode="single" label="Amount" x={35} y={30}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={modsControllers.UI_AMOUNT.id}
+                     ctrl={modsControllers.UI_AMOUNT}
                      value={route.amount}
         />
 

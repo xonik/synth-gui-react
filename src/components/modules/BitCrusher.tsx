@@ -29,19 +29,19 @@ const BitCrusher = ({ x, y }: Props) => {
         <Header label="Bit crusher" x={25} y={row1} width={50}/>
         <RoundPushButton8 x={col1} y={row3} ledCount={2} ledPosition="top" ledLabels={['FX1', 'FX2']}
                           ctrlGroup={ctrlGroup}
-                          ctrlId={commonFxControllers.FX_BIT_CRUSHER.SOURCE.id}
+                          ctrl={commonFxControllers.FX_BIT_CRUSHER.SOURCE}
                           value={bitCrusher.source}
         />
 
         <RotaryPot10 ledMode="single" label="Bits" x={col2} y={row2}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={commonFxControllers.FX_BIT_CRUSHER.BITS.id}
+                     ctrl={commonFxControllers.FX_BIT_CRUSHER.BITS}
                      value={bitCrusher.bits}
         />
 
         <RotaryPot10 ledMode="single" label="Rate" x={col3} y={row2}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={commonFxControllers.FX_BIT_CRUSHER.RATE.id}
+                     ctrl={commonFxControllers.FX_BIT_CRUSHER.RATE}
                      value={bitCrusher.rate}
         />
 

@@ -27,13 +27,13 @@ const Clock = ({ x, y }: Props) => {
         <Header label="Master clock" x={0} y={row1} width={77}/>
         <RoundPushButton8 labelPosition="bottom" x={col1} y={row2} label="Source" ledCount={3} ledPosition="right" ledLabels={['Master', 'Midi', 'Ext']}
                           ctrlGroup={ctrlGroup}
-                          ctrlId={masterClockControllers.SOURCE.id}
+                          ctrl={masterClockControllers.SOURCE}
                           value={masterClock.source}
         />
 
         <RotaryPot17 ledMode="single" label="Rate" x={col2} y={row2}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={masterClockControllers.RATE.id}
+                     ctrl={masterClockControllers.RATE}
                      value={masterClock.rate}
         />
 

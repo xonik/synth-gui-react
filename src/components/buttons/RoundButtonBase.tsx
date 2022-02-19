@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback } from 'react'
 import classNames from 'classnames'
 import RoundPushButtonBase from './RoundPushButtonBase'
 import RotaryPotBase from '../pots/RotaryPotBase'
-import { cc } from '../../midi/midibus'
-import { ControllerConfigCC } from '../../midi/types'
+import { ControllerConfig } from '../../midi/types'
 import { ControllerGroupIds } from '../../synthcore/types'
 import { click, increment, release } from '../../synthcore/modules/ui/uiReducer'
 import { dispatch } from '../../synthcore/utils'
@@ -45,8 +44,8 @@ export interface Props {
     // Used if button is part of a group - "radio button"
     radioButtonIndex?: number;
 
-    ctrlGroup?: ControllerGroupIds;
-    ctrlId?: number;
+    ctrlGroup: ControllerGroupIds;
+    ctrl: ControllerConfig;
     ctrlIndex?: number;
     value?: number;
 
@@ -141,7 +140,7 @@ const positionLeds = (
         }
 
         // left column should start at the bottom if we have a rotational button.
-        const directionMultiplier = buttonMode === 'push' ? 1 : -1;
+        const directionMultiplier = buttonMode === 'push' ? 1 : -1
 
         switch (adjustedPosition) {
             case 'left':
@@ -208,58 +207,51 @@ const getRenderProps = (props: Props & Config): RenderProps => {
 
 export const RoundButtonBase = (props: Props & Config) => {
 
-    const { x, y, label, radioButtonIndex,
+    const {
+        x, y, label, radioButtonIndex,
         hasOff, ledCount, ledButton, reverse,
-        ctrlGroup, ctrlId, ctrlIndex, value, resolution
+        ctrlGroup, ctrl, ctrlIndex, value, resolution
     } = props
 
-    const currentValue = value || 0;
+    const currentValue = value || 0
 
     // off is always the first element in the midi config values list, so when a radio
     // button has an off state we need to offset our index by one.
-    const radioButtonValueIndex = hasOff ? (radioButtonIndex || 0) + 1 : radioButtonIndex || 0;
+    const radioButtonValueIndex = hasOff ? (radioButtonIndex || 0) + 1 : radioButtonIndex || 0
     const hasOffValue = hasOff || (ledButton && ledCount === undefined)
-    const ledOnIndex = hasOffValue ? currentValue - 1 : currentValue;
+    const ledOnIndex = hasOffValue ? currentValue - 1 : currentValue
 
     const onIncrement = useCallback((steps: number, stepSize: number) => {
-        if(ctrlId !== undefined && ctrlGroup !== undefined) {
-            dispatch(increment({ ctrlGroup, ctrlId, value: steps }))
-        }
-    }, [ctrlGroup, ctrlId])
+        dispatch(increment({ ctrlGroup, ctrl, value: steps }))
+    }, [ctrlGroup, ctrl])
 
     const handleOnClick = useCallback(() => {
-        if(ctrlId !== undefined && ctrlGroup !== undefined) {
-            dispatch(click({ ctrlGroup, ctrlId, ctrlIndex, radioButtonIndex, reverse }))
-        }
-    }, [radioButtonIndex, reverse, ctrlId, ctrlGroup, ctrlIndex])
+        dispatch(click({ ctrlGroup, ctrl, ctrlIndex, radioButtonIndex, reverse }))
+    }, [radioButtonIndex, reverse, ctrl, ctrlGroup, ctrlIndex])
 
     const handleOnRelease = useCallback(() => {
-        if(ctrlId !== undefined && ctrlGroup !== undefined) {
-            dispatch(release({ ctrlGroup, ctrlId, ctrlIndex }))
-        }
-    }, [
-        ctrlId, ctrlGroup, ctrlIndex
-    ])
+        dispatch(release({ ctrlGroup, ctrl, ctrlIndex }))
+    }, [ctrl, ctrlGroup, ctrlIndex])
 
-    const ledOn: boolean[] = [];
-    for(let i = 0; i< (ledCount || 1); i++){
-        ledOn[i] = false;
+    const ledOn: boolean[] = []
+    for (let i = 0; i < (ledCount || 1); i++) {
+        ledOn[i] = false
     }
 
-    if(radioButtonIndex !== undefined){
-        if(currentValue === radioButtonValueIndex) {
-          ledOn[0] = true;
+    if (radioButtonIndex !== undefined) {
+        if (currentValue === radioButtonValueIndex) {
+            ledOn[0] = true
         }
     } else {
-        if(ledOnIndex < ledOn.length ) {
+        if (ledOnIndex < ledOn.length) {
             // ledOnIndex -1 means all leds are off
-            if(ledOnIndex > -1){
-                ledOn[ledOnIndex] = true;
+            if (ledOnIndex > -1) {
+                ledOn[ledOnIndex] = true
             }
         } else {
             // light up all leds if there are more options than leds (minus off)
-            for(let i = 0; i< (ledCount || 1); i++){
-                ledOn[i] = true;
+            for (let i = 0; i < (ledCount || 1); i++) {
+                ledOn[i] = true
             }
         }
     }
@@ -272,7 +264,7 @@ export const RoundButtonBase = (props: Props & Config) => {
         labelPos,
         ledPos,
         ledLabels,
-    } = getRenderProps(props);
+    } = getRenderProps(props)
 
     return (
         <svg x={x} y={y} className="button">
@@ -280,7 +272,10 @@ export const RoundButtonBase = (props: Props & Config) => {
                 ? <RoundPushButtonBase buttonRadius={buttonRadius}
                                        onClick={handleOnClick}
                                        onRelease={handleOnRelease}
-                                       className={classNames('button-cap', { 'button-cap-led': ledButton, 'button-cap-led__on': ledButton && ledOn.length > 0 && ledOn[0] })}/>
+                                       className={classNames('button-cap', {
+                                           'button-cap-led': ledButton,
+                                           'button-cap-led__on': ledButton && ledOn.length > 0 && ledOn[0]
+                                       })}/>
                 : <RotaryPotBase
                     onIncrement={onIncrement}
                     knobRadius={buttonRadius}
@@ -288,22 +283,22 @@ export const RoundButtonBase = (props: Props & Config) => {
                 />
             }
             {label && <text
-              x={labelPos.x}
-              y={labelPos.y}
-              className="button-label"
-              textAnchor={labelPos.textAnchor}
-              alignmentBaseline="middle"
+                x={labelPos.x}
+                y={labelPos.y}
+                className="button-label"
+                textAnchor={labelPos.textAnchor}
+                alignmentBaseline="middle"
             >{label}</text>}
             {ledPos.map((position, index) => <React.Fragment key={index}>
                 <circle
                     cx={position.x} cy={position.y} r={ledRadius} stroke="black" fill="red"
                     className={classNames('button-led', { 'button-led__on': ledOn.length > index && ledOn[index] })}/>
                 {ledLabels[index] && <text
-                  x={position.labelX}
-                  y={position.y}
-                  className="button-led-label"
-                  textAnchor={position.textAnchor}
-                  alignmentBaseline="middle"
+                    x={position.labelX}
+                    y={position.y}
+                    className="button-led-label"
+                    textAnchor={position.textAnchor}
+                    alignmentBaseline="middle"
                 >{ledLabels[index]}</text>}
             </React.Fragment>)}
         </svg>

@@ -51,7 +51,7 @@ const StateVariableFilter = ({ x, y }: Props) => {
         <RoundLedPushButton8 x={col2} y={topRow -42}
                           label="Link cutoff" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
-                             ctrlId={filtersControllers.FILTERS.LINK_CUTOFF.id}
+                             ctrl={filtersControllers.FILTERS.LINK_CUTOFF}
                              value={filters.linkCutoff}
         />
 
@@ -60,44 +60,44 @@ const StateVariableFilter = ({ x, y }: Props) => {
                           ledCount={2}
                           ledLabels={['Series', 'Parallel']} label="Routing" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
-                          ctrlId={filtersControllers.FILTERS.ROUTING.id}
+                          ctrl={filtersControllers.FILTERS.ROUTING}
                           value={filters.routing}
         />
 
         <Header label="State variable filter" x={x} y={topRow - 27} width={110} align="center"/>
         <RotaryPot40 x={x} y={y} ledMode="single" label="Cutoff"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={filtersControllers.SVF.CUTOFF.id}
+                     ctrl={filtersControllers.SVF.CUTOFF}
                      value={svf.cutoff}
         />
 
         <RotaryPot17 x={col1} y={topRow} ledMode="multi" label="Input"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={filtersControllers.SVF.INPUT.id}
+                     ctrl={filtersControllers.SVF.INPUT}
                      value={svf.input}
         />
 
         <RotaryPot17 x={x} y={topRow} ledMode="multi" label="Drive"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={filtersControllers.SVF.DRIVE.id}
+                     ctrl={filtersControllers.SVF.DRIVE}
                      value={svf.drive}
         />
 
         <RotaryPot17 x={col4} y={topRow} ledMode="multi" label="Resonance"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={filtersControllers.SVF.RESONANCE.id}
+                     ctrl={filtersControllers.SVF.RESONANCE}
                      value={svf.resonance}
         />
 
         <RoundLedPushButton8 x={col1} y={y -10} label="Ext CV" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
-                             ctrlId={filtersControllers.SVF.EXT_CV.id}
+                             ctrl={filtersControllers.SVF.EXT_CV}
                              value={svf.extCv}
         />
 
         <RoundLedPushButton8 x={col1} y={y + 10} label="Wheel" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
-                             ctrlId={filtersControllers.SVF.WHEEL.id}
+                             ctrl={filtersControllers.SVF.WHEEL}
                              value={svf.wheel}
         />
 
@@ -111,31 +111,31 @@ const StateVariableFilter = ({ x, y }: Props) => {
                              ]}
                              resolution={10}
                              ctrlGroup={ctrlGroup}
-                             ctrlId={filtersControllers.SVF.SLOPE.id}
+                             ctrl={filtersControllers.SVF.SLOPE}
                              value={svf.slope}
         />
 
         <RotaryPot10 x={col1} y={bottomRow2} ledMode="multi" label="FM amt"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={filtersControllers.SVF.FM_AMT.id}
+                     ctrl={filtersControllers.SVF.FM_AMT}
                      value={svf.fmAmt}
         />
 
         <RotaryPot10 x={col2} y={bottomRow2} ledMode="multi" label="Env amt"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={filtersControllers.SVF.ENV_AMT.id}
+                     ctrl={filtersControllers.SVF.ENV_AMT}
                      value={svf.envAmt}
         />
 
         <RotaryPot10 x={col3} y={bottomRow2} ledMode="multi" label="LFO amt"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={filtersControllers.SVF.LFO_AMT.id}
+                     ctrl={filtersControllers.SVF.LFO_AMT}
                      value={svf.lfoAmt}
         />
 
         <RotaryPot10 x={col4} y={bottomRow2} ledMode="multi" label="Kbd amt"
                      ctrlGroup={ctrlGroup}
-                     ctrlId={filtersControllers.SVF.KBD_AMT.id}
+                     ctrl={filtersControllers.SVF.KBD_AMT}
                      value={svf.kbdAmt}
         />
 

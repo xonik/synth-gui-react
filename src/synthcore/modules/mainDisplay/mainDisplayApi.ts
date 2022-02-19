@@ -1,4 +1,4 @@
-import { MainDisplayControllerIds, MainDisplayScreenId } from './types'
+import { MainDisplayScreenId } from './types'
 import { store } from '../../store'
 import { selectCurrScreen, setCurrentScreen as setCurrentScreenAction, setShiftOn } from './mainDisplayReducer'
 import { dispatch } from '../../utils'
@@ -54,7 +54,7 @@ const handleRouteClick = (source: ApiSource) => {
     mainDisplayMidiApi.routeClick(source)
 }
 
-const handleMainDisplayController = (ctrlId: MainDisplayControllerIds, value: number, source: ApiSource) => {
+const handleMainDisplayController = (ctrlId: number, value: number, source: ApiSource) => {
     const currScreenId = selectCurrScreen(store.getState())
     if (currScreenId === MainDisplayScreenId.MOD) {
         mainDisplayModsApi.handleMainDisplayController(ctrlId, value)

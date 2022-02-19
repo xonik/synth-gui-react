@@ -22,7 +22,7 @@ const Noise = ({ x, y }: Props) => {
                       ledPosition="top" ledCount={3} ledLabels={['White', 'Pink', 'Red']}
                       label="Colour" labelPosition="bottom"
                       ctrlGroup={ctrlGroup}
-                      ctrlId={noiseControllers.COLOUR.id}
+                      ctrl={noiseControllers.COLOUR}
                       value={noise.colour}
     />
   </>;

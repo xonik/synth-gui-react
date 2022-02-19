@@ -8,6 +8,7 @@ import { selectMix } from '../../synthcore/modules/commonFx/commonFxReducer'
 import { selectOut } from '../../synthcore/modules/out/outReducer'
 import commonFxControllers from '../../synthcore/modules/commonFx/commonFxControllers'
 import outControllers from '../../synthcore/modules/out/outControllers'
+import { ControllerConfig } from '../../midi/types'
 
 interface Props {
     x: number,
@@ -20,18 +21,18 @@ interface ChannelProps {
     x: number,
     y: number,
     ctrlGroup: number,
-    ctrlId: number,
+    ctrl: ControllerConfig,
     value: number,
 }
 
 const rowDistance = 40
 const colDistance = 40
 
-const OutputMixerChannel = ({ x, y, label, potMode = 'normal', ctrlGroup, ctrlId, value }: ChannelProps) => {
+const OutputMixerChannel = ({ x, y, label, potMode = 'normal', ctrlGroup, ctrl, value }: ChannelProps) => {
     return <>
         <RotaryPot17 ledMode="multi" label={label} x={x} y={y} potMode={potMode}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={ctrlId}
+                     ctrl={ctrl}
                      value={value}
         />
     </>
@@ -52,43 +53,43 @@ const OutputMixer = ({ x, y }: Props) => {
         <Header label="FX mix" x={0} y={+offsetY + rowDistance * 4 - 27} width={40}/>
         <OutputMixerChannel x={offsetX} y={offsetY} label="DSP 1"
                             ctrlGroup={ctrlGroupFx}
-                            ctrlId={commonFxControllers.FX_MIX.LEVEL_DSP1.id}
+                            ctrl={commonFxControllers.FX_MIX.LEVEL_DSP1}
                             value={fxMix.levelDsp1}
         />
 
         <OutputMixerChannel x={offsetX + colDistance} y={offsetY} label="DSP 2"
                             ctrlGroup={ctrlGroupFx}
-                            ctrlId={commonFxControllers.FX_MIX.LEVEL_DSP2.id}
+                            ctrl={commonFxControllers.FX_MIX.LEVEL_DSP2}
                             value={fxMix.levelDsp2}
         />
 
         <OutputMixerChannel x={offsetX + colDistance * 2} y={offsetY} label="Chorus"
                             ctrlGroup={ctrlGroupFx}
-                            ctrlId={commonFxControllers.FX_MIX.LEVEL_CHORUS.id}
+                            ctrl={commonFxControllers.FX_MIX.LEVEL_CHORUS}
                             value={fxMix.levelChorus}
         />
 
         <OutputMixerChannel x={offsetX + colDistance * 3} y={offsetY} label="Bit crusher"
                             ctrlGroup={ctrlGroupFx}
-                            ctrlId={commonFxControllers.FX_MIX.LEVEL_BIT_CRUSHER.id}
+                            ctrl={commonFxControllers.FX_MIX.LEVEL_BIT_CRUSHER}
                             value={fxMix.levelBitCrusher}
         />
 
         <OutputMixerChannel x={offsetX2} y={offsetY} potMode="spread" label="Spread"
                             ctrlGroup={ctrlGroupOut}
-                            ctrlId={outControllers.SPREAD.id}
+                            ctrl={outControllers.SPREAD}
                             value={out.spread}
         />
 
         <OutputMixerChannel x={offsetX2 + colDistance} y={offsetY} label="Volume"
                             ctrlGroup={ctrlGroupOut}
-                            ctrlId={outControllers.VOLUME.id}
+                            ctrl={outControllers.VOLUME}
                             value={out.volume}
         />
 
         <OutputMixerChannel x={offsetX2 + colDistance} y={offsetY - 40} label="Headphones"
                             ctrlGroup={ctrlGroupOut}
-                            ctrlId={outControllers.HEADPHONES.id}
+                            ctrl={outControllers.HEADPHONES}
                             value={out.headphones}
         />
 

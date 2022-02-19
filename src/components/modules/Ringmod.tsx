@@ -4,7 +4,7 @@ import Header from '../misc/Header';
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectRingMod } from '../../synthcore/modules/ringMod/ringModReducer'
 import { ControllerGroupIds } from '../../synthcore/types'
-import { RingModControllerIds } from '../../synthcore/modules/ringMod/types'
+import ringModControllers from '../../synthcore/modules/ringMod/ringModControllers'
 
 interface Props {
   x: number,
@@ -22,7 +22,7 @@ const Ringmod = ({ x, y }: Props) => {
                       ledPosition="top"  ledCount={2} ledLabels={['1->2', 'Ext->2']}
                       label="Sources" labelPosition="bottom"
                       ctrlGroup={ctrlGroup}
-                      ctrlId={RingModControllerIds.SOURCE}
+                      ctrl={ringModControllers.SOURCE}
                       value={ringMod.source}
     />
   </>;

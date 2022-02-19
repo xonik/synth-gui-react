@@ -7,8 +7,8 @@ import Header from '../misc/Header'
 import { selectEnv3Id, selectEnvelope } from '../../synthcore/modules/env/envReducer'
 import { StageId } from '../../synthcore/modules/env/types'
 import { useAppSelector } from '../../synthcore/hooks'
-import { EnvControllerId } from '../../synthcore/modules/env/types'
 import { ControllerGroupIds } from '../../synthcore/types'
+import envControllers from '../../synthcore/modules/env/envControllers'
 
 interface Props {
     x: number,
@@ -43,27 +43,27 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
         <Header align="left" label={label} x={x} y={y} width={255}/>
         <RotaryPot17 ledMode="single" label="Attack" x={firstPotX} y={potY}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={EnvControllerId.ENV_ATTACK}
+                     ctrl={envControllers(0).ATTACK_TIME}
                      ctrlIndex={envId}
                      value={timeA}
         />
         <RotaryPot17 ledMode="single" label="Decay 1" x={firstPotX + potDistance} y={potY}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={EnvControllerId.ENV_DECAY1}
+                     ctrl={envControllers(0).DECAY1_TIME}
                      ctrlIndex={envId}
                      value={timeD1}
                      disabled={!env.stages[StageId.DECAY1].enabled}
         />
         <RotaryPot17 ledMode="single" label="Decay 2" x={firstPotX + potDistance * 2} y={potY}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={EnvControllerId.ENV_DECAY2}
+                     ctrl={envControllers(0).DECAY2_TIME}
                      ctrlIndex={envId}
                      value={timeD2}
                      disabled={!env.stages[StageId.DECAY2].enabled}
         />
         <RotaryPot17 ledMode="multi" label="Sustain" x={firstPotX + potDistance * 3} y={potY}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={EnvControllerId.ENV_SUSTAIN}
+                     ctrl={envControllers(0).SUSTAIN_LEVEL}
                      ctrlIndex={envId}
                      potMode={env.bipolar ? 'pan' : 'normal'}
                      value={env.bipolar ? (levelS + 1) / 2 : levelS}
@@ -71,7 +71,7 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
         />
         <RotaryPot17 ledMode="single" label="Release 1" x={firstPotX + potDistance * 4} y={potY}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={EnvControllerId.ENV_RELEASE1}
+                     ctrl={envControllers(0).RELEASE1_TIME}
                      ctrlIndex={envId}
                      value={timeR1}
                      disabled={!env.stages[StageId.RELEASE1].enabled}
@@ -79,7 +79,7 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
         />
         <RotaryPot17 ledMode="single" label="Release 2" x={firstPotX + potDistance * 5} y={potY}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={EnvControllerId.ENV_RELEASE2}
+                     ctrl={envControllers(0).RELEASE2_TIME}
                      ctrlIndex={envId}
                      value={timeR2}
         />
@@ -90,20 +90,20 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
           ledLabels={['3', '4', '5']}
           label="Env sel" x={firstPotX - potDistance * 0.5} y={topRowY} labelPosition="bottom"
           ctrlGroup={ctrlGroup}
-          ctrlId={EnvControllerId.ENV_SELECT_ENV3ID}
+          ctrl={envControllers(0).SELECT_ENV3_ID}
           ctrlIndex={envId}
           value={env3Id -2}
         />}
         <RotaryPot10 ledMode="single" label="Delay" x={firstPotX + potDistance * 0.5} y={topRowY}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={EnvControllerId.ENV_DELAY}
+                     ctrl={envControllers(0).DELAY_TIME}
                      ctrlIndex={envId}
                      value={timeDly}
                      disabled={!env.stages[StageId.DELAY].enabled}
         />
         <RotaryPot10 ledMode="multi" label="D2 Level" x={firstPotX + potDistance * 1.5} y={topRowY}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={EnvControllerId.ENV_D2_LEVEL}
+                     ctrl={envControllers(0).DECAY2_LEVEL}
                      ctrlIndex={envId}
                      potMode={env.bipolar ? 'pan' : 'normal'}
                      value={env.bipolar ? (levelD2 + 1) / 2 : levelD2}
@@ -113,26 +113,26 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
             label="Invert" x={firstPotX + potDistance * 2.5} y={topRowY}
             labelPosition="bottom"
             ctrlGroup={ctrlGroup}
-            ctrlId={EnvControllerId.ENV_INVERT}
+            ctrl={envControllers(0).INVERT}
             ctrlIndex={envId}
             value={env.invert ? 1 : 0}
         />
         <RoundLedPushButton8 label="Loop" x={firstPotX + potDistance * 3.5} y={topRowY} labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
-                             ctrlId={EnvControllerId.ENV_LOOP}
+                             ctrl={envControllers(0).LOOP}
                              ctrlIndex={envId}
                              value={env.loopEnabled ? 1 : 0}
         />
         <RotaryPot10 ledMode="multi" label="R2 Level" x={firstPotX + potDistance * 4.5} y={topRowY}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={EnvControllerId.ENV_R2_LEVEL}
+                     ctrl={envControllers(0).RELEASE2_LEVEL}
                      ctrlIndex={envId}
                      potMode={env.bipolar ? 'pan' : 'normal'}
                      value={env.bipolar ? (levelR2 + 1) / 2 : levelR2}
         />
         <RoundPushButton8 label="Trigger" x={firstPotX + potDistance * 5.5} y={topRowY} labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
-                          ctrlId={EnvControllerId.ENV_TRIGGER}
+                          ctrl={envControllers(0).TRIGGER}
                           ctrlIndex={envId}
         />
     </>

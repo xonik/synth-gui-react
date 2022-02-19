@@ -32,31 +32,31 @@ const BitCrusherPre = ({ x, y }: Props) => {
         <Header label="Bit crusher" x={x} y={row1} width={110}/>
         <RoundPushButton8 x={col1} y={row2 + 8} ledPosition="top" ledCount={2} label="In" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
-                          ctrlId={fxControllers.BIT_CRUSHER.IN.id}
+                          ctrl={fxControllers.BIT_CRUSHER.IN}
                           value={bitCrusher.in}
         />
 
         <RotaryPot10 ledMode="single" ledCount={12} label="Bits" x={col2} y={row2-10}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={fxControllers.BIT_CRUSHER.BITS.id}
+                     ctrl={fxControllers.BIT_CRUSHER.BITS}
                      value={bitCrusher.bits}
         />
 
         <RotaryPot10 ledMode="single" label="Rate" x={col3} y={row2 + 5}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={fxControllers.BIT_CRUSHER.RATE.id}
+                     ctrl={fxControllers.BIT_CRUSHER.RATE}
                      value={bitCrusher.rate}
         />
 
         <RotaryPot17 ledMode="multi" label="Level" x={col4} y={row2}
                      ctrlGroup={ctrlGroup}
-                     ctrlId={fxControllers.BIT_CRUSHER.LEVEL.id}
+                     ctrl={fxControllers.BIT_CRUSHER.LEVEL}
                      value={bitCrusher.level}
         />
 
         <RoundPushButton8 x={col5} y={row2 + 8} ledPosition="top" ledCount={2} label="Out" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
-                          ctrlId={fxControllers.BIT_CRUSHER.OUT.id}
+                          ctrl={fxControllers.BIT_CRUSHER.OUT}
                           value={bitCrusher.out}
         />
 
