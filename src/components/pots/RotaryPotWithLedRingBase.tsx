@@ -4,7 +4,7 @@ import arc from '../../utils/svg/arc'
 import RotaryPotBase from './RotaryPotBase'
 import { useAppDispatch } from '../../synthcore/hooks'
 import { increment } from '../../synthcore/modules/ui/uiReducer'
-import { ControllerGroupIds } from '../../synthcore/types'
+import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 import './RotaryPot.scss'
 import { ControllerConfig } from '../../midi/types'
 
@@ -135,7 +135,7 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
         // To keep the line in sync with how much the pot has been
         // turned we have to make increments twice as big.
         const value = potMode === 'pan' ? steps * (stepSize * 2) : steps * stepSize
-        dispatch(increment({ ctrlGroup, ctrl, value, ctrlIndex }))
+        dispatch(increment({ ctrlGroup, ctrl, value, ctrlIndex, source: ApiSource.UI }))
     }, [disabled, ctrl, ctrlGroup, potMode, dispatch, ctrlIndex])
 
     return (

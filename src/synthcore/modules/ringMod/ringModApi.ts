@@ -6,6 +6,9 @@ import { store } from '../../store'
 import ringModMidiApi from './ringModMidiApi'
 import controllers from '../../../midi/controllers'
 import { togglePropFuncs } from '../common/commonApi'
+import { createClickMapper } from '../common/utils'
+import ringModControllers from './ringModControllers'
+import { ApiSource } from '../../types'
 
 const source = togglePropFuncs({
     config: controllers.RING_MOD.SOURCE,
@@ -14,9 +17,13 @@ const source = togglePropFuncs({
     midi: ringModMidiApi.setSource,
 })
 
+const click = createClickMapper([
+    [ringModControllers.SOURCE, (apiSource: ApiSource) => source.toggle(apiSource)],
+])
+
 const ringModApi = {
     setSource: source.set,
-    toggleSource: source.toggle,
+    click,
 }
 
 export default ringModApi

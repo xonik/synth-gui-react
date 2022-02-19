@@ -23,6 +23,7 @@ import { digitalModSources, modDst } from './utils'
 import { numericPropFuncs } from '../common/commonApi'
 import modsControllers from './modsControllers'
 import modsMidiApi from './modsMidiApi'
+import { createIncrementMapper } from '../common/utils'
 
 const setGuiMod = (
     guiSource: number,
@@ -165,6 +166,10 @@ const toggleRouteButton = (value: number, source: ApiSource) => {
     }
 }
 
+const increment = createIncrementMapper([
+    [modsControllers.UI_AMOUNT, (value: number, source: ApiSource) => uiAmount.increment(value, source)],
+])
+
 const modsApi = {
     setGuiMod,
     setGuiSource,
@@ -179,11 +184,12 @@ const modsApi = {
     incrementGuiModValue,
 
     setUiAmount: uiAmount.set,
-    incrementUiAmount: uiAmount.increment,
+
 
     setRouteButton,
     toggleRouteButton,
 
+    increment,
 }
 
 export default modsApi

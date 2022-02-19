@@ -40,6 +40,9 @@ import { store } from '../../store'
 import oscMidiApi from './oscMidiApi'
 import controllers from '../../../midi/controllers'
 import { numericPropFuncs, togglePropFuncs } from '../common/commonApi'
+import { createClickMapper, createIncrementMapper } from '../common/utils'
+import oscControllers from './oscControllers'
+import { ApiSource } from '../../types'
 
 
 const dco1Note = numericPropFuncs({
@@ -227,6 +230,47 @@ const vcoKbd = togglePropFuncs({
     midi: oscMidiApi.setVcoKbd,
 })
 
+const increment = createIncrementMapper([
+    [oscControllers.DCO1.NOTE, (value: number, source: ApiSource) => dco1Note.increment(value, source)],
+    [oscControllers.DCO1.WAVEFORM, (value: number, source: ApiSource) => dco1Waveform.increment(value, source)],
+    [oscControllers.DCO1.SUB1, (value: number, source: ApiSource) => dco1Sub1Level.increment(value, source)],
+    [oscControllers.DCO1.SUB2, (value: number, source: ApiSource) => dco1Sub2Level.increment(value, source)],
+    [oscControllers.DCO1.PW, (value: number, source: ApiSource) => dco1Pw.increment(value, source)],
+    [oscControllers.DCO2.NOTE, (value: number, source: ApiSource) => dco2Note.increment(value, source)],
+    [oscControllers.DCO2.DETUNE, (value: number, source: ApiSource) => dco2Detune.increment(value, source)],
+    [oscControllers.DCO2.WAVEFORM, (value: number, source: ApiSource) => dco2Waveform.increment(value, source)],
+    [oscControllers.DCO2.SUB1, (value: number, source: ApiSource) => dco2Sub1Level.increment(value, source)],
+    [oscControllers.DCO2.SUB2, (value: number, source: ApiSource) => dco2Sub2Level.increment(value, source)],
+    [oscControllers.DCO2.PW, (value: number, source: ApiSource) => dco2Pw.increment(value, source)],
+    [oscControllers.VCO.NOTE, (value: number, source: ApiSource) => vcoNote.increment(value, source)],
+    [oscControllers.VCO.DETUNE, (value: number, source: ApiSource) => vcoDetune.increment(value, source)],
+    [oscControllers.VCO.WAVEFORM, (value: number, source: ApiSource) => vcoWaveform.increment(value, source)],
+    [oscControllers.VCO.CROSS_MOD, (value: number, source: ApiSource) => vcoCrossMod.increment(value, source)],
+    [oscControllers.VCO.PW, (value: number, source: ApiSource) => vcoPw.increment(value, source)],
+])
+
+const click = createClickMapper([
+    [oscControllers.DCO1.SYNC, (source: ApiSource) => dco1Sync.toggle(source)],
+    [oscControllers.DCO1.MODE, (source: ApiSource) => dco1Mode.toggle(source)],
+    [oscControllers.DCO1.SUB_WAVE, (source: ApiSource) => dco1SubWave.toggle(source)],
+    [oscControllers.DCO1.WHEEL, (source: ApiSource) => dco1Wheel.toggle(source)],
+    [oscControllers.DCO1.LFO, (source: ApiSource) => dco1Lfo.toggle(source)],
+    [oscControllers.DCO1.KBD, (source: ApiSource) => dco1Kbd.toggle(source)],
+
+    [oscControllers.DCO2.MODE, (source: ApiSource) => dco2Mode.toggle(source)],
+    [oscControllers.DCO2.SUB_WAVE, (source: ApiSource) => dco2SubWave.toggle(source)],
+    [oscControllers.DCO2.WHEEL, (source: ApiSource) => dco2Wheel.toggle(source)],
+    [oscControllers.DCO2.LFO, (source: ApiSource) => dco2Lfo.toggle(source)],
+    [oscControllers.DCO2.KBD, (source: ApiSource) => dco2Kbd.toggle(source)],
+
+    [oscControllers.VCO.SYNC, (source: ApiSource) => vcoSync.toggle(source)],
+    [oscControllers.VCO.CROSS_MOD_SRC, (source: ApiSource) => vcoCrossModSrc.toggle(source)],
+    [oscControllers.VCO.EXT_CV, (source: ApiSource) => vcoExtCv.toggle(source)],
+    [oscControllers.VCO.WHEEL, (source: ApiSource) => vcoWheel.toggle(source)],
+    [oscControllers.VCO.LFO, (source: ApiSource) => vcoLfo.toggle(source)],
+    [oscControllers.VCO.KBD, (source: ApiSource) => vcoKbd.toggle(source)],
+])
+
 const oscApi = {
     setDco1Note: dco1Note.set,
     setDco1Waveform: dco1Waveform.set,
@@ -264,42 +308,8 @@ const oscApi = {
     setVcoLfo: vcoLfo.set,
     setVcoKbd: vcoKbd.set,
 
-    incrementDco1Note: dco1Note.increment,
-    incrementDco1Waveform: dco1Waveform.increment,
-    incrementDco1Sub1Level: dco1Sub1Level.increment,
-    incrementDco1Sub2Level: dco1Sub2Level.increment,
-    incrementDco1Pw: dco1Pw.increment,
-    incrementDco2Note: dco2Note.increment,
-    incrementDco2Detune: dco2Detune.increment,
-    incrementDco2Waveform: dco2Waveform.increment,
-    incrementDco2Sub1Level: dco2Sub1Level.increment,
-    incrementDco2Sub2Level: dco2Sub2Level.increment,
-    incrementDco2Pw: dco2Pw.increment,
-    incrementVcoNote: vcoNote.increment,
-    incrementVcoDetune: vcoDetune.increment,
-    incrementVcoWaveform: vcoWaveform.increment,
-    incrementVcoCrossMod: vcoCrossMod.increment,
-    incrementVcoPw: vcoPw.increment,
-
-    toggleDco1Sync: dco1Sync.toggle,
-    toggleDco1Mode: dco1Mode.toggle,
-    toggleDco1SubWave: dco1SubWave.toggle,
-    toggleDco1Wheel: dco1Wheel.toggle,
-    toggleDco1Lfo: dco1Lfo.toggle,
-    toggleDco1Kbd: dco1Kbd.toggle,
-
-    toggleDco2Mode: dco2Mode.toggle,
-    toggleDco2SubWave: dco2SubWave.toggle,
-    toggleDco2Wheel: dco2Wheel.toggle,
-    toggleDco2Lfo: dco2Lfo.toggle,
-    toggleDco2Kbd: dco2Kbd.toggle,
-
-    toggleVcoSync: vcoSync.toggle,
-    toggleVcoCrossModSrc: vcoCrossModSrc.toggle,
-    toggleVcoExtCv: vcoExtCv.toggle,
-    toggleVcoWheel: vcoWheel.toggle,
-    toggleVcoLfo: vcoLfo.toggle,
-    toggleVcoKbd: vcoKbd.toggle,    
+    increment,
+    click,
 }
 
 export default oscApi

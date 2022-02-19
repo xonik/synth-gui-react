@@ -13,6 +13,9 @@ import {
 import { store } from '../../store'
 import postMixMidiApi from './postMixMidiApi'
 import { numericPropFuncs } from '../common/commonApi'
+import { createIncrementMapper } from '../common/utils'
+import postMixControllers from './postMixControllers'
+import { ApiSource } from '../../types'
 
 const lpfLevel = numericPropFuncs({
     selector: () => selectPostMixMix(store.getState()).lpfLevel,
@@ -56,6 +59,19 @@ const fx2 = numericPropFuncs({
     midi: postMixMidiApi.setFX2,
 })
 
+
+const increment = createIncrementMapper([
+    [postMixControllers.LPF, (value: number, source: ApiSource) => lpfLevel.increment(value, source)],
+    [postMixControllers.SVF, (value: number, source: ApiSource) => svfLevel.increment(value, source)],
+    [postMixControllers.SINE1, (value: number, source: ApiSource) => sine1Level.increment(value, source)],
+    [postMixControllers.SINE2, (value: number, source: ApiSource) => sine2Level.increment(value, source)],
+    [postMixControllers.PAN, (value: number, source: ApiSource) => pan.increment(value, source)],
+    [postMixControllers.AMOUNT, (value: number, source: ApiSource) => amt.increment(value, source)],
+    [postMixControllers.FX1_SEND, (value: number, source: ApiSource) => fx1.increment(value, source)],
+    [postMixControllers.FX2_SEND, (value: number, source: ApiSource) => fx2.increment(value, source)],
+])
+
+
 const postMixApi = {
     setLpfLevel: lpfLevel.set,
     setSvfLevel: svfLevel.set,
@@ -67,15 +83,7 @@ const postMixApi = {
     setFX1: fx1.set,
     setFX2: fx2.set,
 
-    incrementLpfLevel: lpfLevel.increment,
-    incrementSvfLevel: svfLevel.increment,
-    incrementSine1Level: sine1Level.increment,
-    incrementSine2Level: sine2Level.increment,
-
-    incrementPan: pan.increment,
-    incrementAmt: amt.increment,
-    incrementFX1: fx1.increment,
-    incrementFX2: fx2.increment,
+    increment,
 
 }
 

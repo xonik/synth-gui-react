@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ControllerGroupIds } from '../../types'
+import { ApiSource, ControllerGroupIds } from '../../types'
 import { ControllerConfig } from '../../../midi/types'
 
 type UiState = {
@@ -17,6 +17,7 @@ type NumericControllerPayload = {
     ctrl: ControllerConfig;
     ctrlIndex?: number;
     value: number;
+    source: ApiSource
 }
 
 type ButtonControllerPayload = {
@@ -25,19 +26,20 @@ type ButtonControllerPayload = {
     ctrlIndex?: number;
     radioButtonIndex?: number;
     reverse?: boolean;
+    source: ApiSource
 }
 
 export const uiSlice = createSlice({
     name: 'ui',
     initialState,
     reducers: {
-        increment: (state, {payload}: PayloadAction<NumericControllerPayload>) => {
+        increment: (state, { payload }: PayloadAction<NumericControllerPayload>) => {
             //Not doing anything yet, just needed to create the action.
         },
-        click: (state, {payload}: PayloadAction<ButtonControllerPayload>) => {
+        click: (state, { payload }: PayloadAction<ButtonControllerPayload>) => {
             //Not doing anything yet, just needed to create the action.
         },
-        release: (state, {payload}: PayloadAction<ButtonControllerPayload>) => {
+        release: (state, { payload }: PayloadAction<ButtonControllerPayload>) => {
             //Not doing anything yet, just needed to create the action.
         },
     }
@@ -47,6 +49,6 @@ export const {
     increment,
     click,
     release,
-} = uiSlice.actions;
+} = uiSlice.actions
 
-export default uiSlice.reducer;
+export default uiSlice.reducer

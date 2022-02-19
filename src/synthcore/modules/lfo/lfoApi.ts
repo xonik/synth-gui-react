@@ -27,6 +27,8 @@ import { dispatch, getBounded, getQuantized } from '../../utils'
 import controllers from '../../../midi/controllers'
 import { AnyAction } from '@reduxjs/toolkit'
 import { ControllerConfigCCWithValue } from '../../../midi/types'
+import { createIndexClickMapper, createIndexIncrementMapper } from '../common/utils'
+import lfoControllers from './lfoControllers'
 
 type LfoNumericProperty = {
     selector: (id: number) => number
@@ -219,33 +221,43 @@ const toggleUiLfo = (source: ApiSource) => {
     setUiLfo(nextId, source)
 }
 
+
+const increment = createIndexIncrementMapper([
+    [lfoControllers(0).RATE, (ctrlIndex: number, value: number, source) => rate.increment(ctrlIndex, value, source)],
+    [lfoControllers(0).DEPTH, (ctrlIndex: number, value: number, source) => depth.increment(ctrlIndex, value, source)],
+    [lfoControllers(0).DELAY, (ctrlIndex: number, value: number, source) => incrementDelay(ctrlIndex, value, source)],
+])
+
+const click = createIndexClickMapper([
+    [lfoControllers(0).SHAPE, (ctrlIndex: number, source) => shape.toggle(ctrlIndex, source)],
+    [lfoControllers(0).SYNC, (ctrlIndex: number, source) => sync.toggle(ctrlIndex, source)],
+    [lfoControllers(0).RESET, (ctrlIndex: number, source) => reset.toggle(ctrlIndex, source)],
+    [lfoControllers(0).ONCE, (ctrlIndex: number, source) => once.toggle(ctrlIndex, source)],
+])
+
 const lfoApi = {
     setStageTime,
-    incrementStageTime,
     setStageEnabled,
-    toggleStageEnabled,
-    toggleStageSelected,
     setStageCurve,
-    incrementStageCurve,
-
-    incrementRate: rate.increment,
-    incrementDepth: depth.increment,
-    incrementDelay,
 
     setShape: shape.set,
     setSync: sync.set,
     setReset: reset.set,
     setOnce: once.set,
-    
-    toggleShape: shape.toggle,
-    toggleSync: sync.toggle,
-    toggleReset: reset.toggle,
-    toggleOnce: once.toggle,
-    
+
+    toggleStageEnabled,
+    toggleStageSelected,
+
+    incrementStageTime,
+    incrementStageCurve,
+
     setGuiLfo,
     incrementGuiLfo,
     setUiLfo,
     toggleUiLfo,
+    
+    increment,
+    click,
 }
 
 export default lfoApi

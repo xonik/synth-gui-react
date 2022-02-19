@@ -16,6 +16,9 @@ import { store } from '../../store'
 import fxMidiApi from './fxMidiApi'
 import controllers from '../../../midi/controllers'
 import { numericPropFuncs, togglePropFuncs } from '../common/commonApi'
+import { createClickMapper, createIncrementMapper } from '../common/utils'
+import fxControllers from './fxControllers'
+import { ApiSource } from '../../types'
 
 const distortionDrive = numericPropFuncs({
     selector: () => selectDistortion(store.getState()).drive,
@@ -74,6 +77,24 @@ const bitCrusherOut = togglePropFuncs({
     midi: fxMidiApi.setBitCrusherOut,
 })
 
+
+const increment = createIncrementMapper([
+    [fxControllers.DISTORTION.DRIVE, (value: number, source: ApiSource) => distortionDrive.increment(value, source)],
+    [fxControllers.DISTORTION.LEVEL, (value: number, source: ApiSource) => distortionLevel.increment(value, source)],
+    [fxControllers.BIT_CRUSHER.BITS, (value: number, source: ApiSource) => bitCrusherBits.increment(value, source)],
+    [fxControllers.BIT_CRUSHER.RATE, (value: number, source: ApiSource) => bitCrusherRate.increment(value, source)],
+    [fxControllers.BIT_CRUSHER.LEVEL, (value: number, source: ApiSource) => bitCrusherLevel.increment(value, source)],
+])
+
+const click = createClickMapper([
+    [fxControllers.DISTORTION.IN, (source: ApiSource) => distortionIn.toggle(source)],
+    [fxControllers.DISTORTION.CLIP, (source: ApiSource) => distortionClip.toggle(source)],
+    [fxControllers.DISTORTION.OUT, (source: ApiSource) => distortionOut.toggle(source)],
+    [fxControllers.BIT_CRUSHER.IN, (source: ApiSource) => bitCrusherIn.toggle(source)],
+    [fxControllers.BIT_CRUSHER.OUT, (source: ApiSource) => bitCrusherOut.toggle(source)],
+])
+
+
 const fxApi = {
     setDistortionDrive: distortionDrive.set,
     setDistortionLevel: distortionLevel.set,
@@ -87,17 +108,8 @@ const fxApi = {
     setBitCrusherIn: bitCrusherIn.set,
     setBitCrusherOut: bitCrusherOut.set,
 
-    incrementDistortionDrive: distortionDrive.increment,
-    incrementDistortionLevel: distortionLevel.increment,
-    incrementBitCrusherBits: bitCrusherBits.increment,
-    incrementBitCrusherRate: bitCrusherRate.increment,
-    incrementBitCrusherLevel: bitCrusherLevel.increment,
-
-    toggleDistortionIn: distortionIn.toggle,
-    toggleDistortionClip: distortionClip.toggle,
-    toggleDistortionOut: distortionOut.toggle,
-    toggleBitCrusherIn: bitCrusherIn.toggle,
-    toggleBitCrusherOut: bitCrusherOut.toggle,
+    increment,
+    click,
 }
 
 export default fxApi

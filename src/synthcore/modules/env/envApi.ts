@@ -26,6 +26,8 @@ import midiApi from './envMidiApi'
 import { curveFuncs } from '../../../components/curves/curveCalculator'
 import { ApiSource } from '../../types'
 import { dispatch, getBounded, getQuantized } from '../../utils'
+import { createIndexClickMapper, createIndexIncrementMapper } from '../common/utils'
+import envControllers from './envControllers'
 
 const updateReleaseLevels = (env: Envelope, value: number) => {
     if (env.stages[StageId.RELEASE1].enabled) {
@@ -267,34 +269,57 @@ const toggleEnv3Id = (source: ApiSource) => {
     setEnv3Id(nextEnv3Id, source)
 }
 
+const increment = createIndexIncrementMapper([
+    [envControllers(0).DELAY_TIME, (ctrlIndex: number, value: number, source) => incrementStageTime(ctrlIndex, StageId.DELAY, value, source)],
+    [envControllers(0).ATTACK_TIME, (ctrlIndex: number, value: number, source) => incrementStageTime(ctrlIndex, StageId.ATTACK, value, source)],
+    [envControllers(0).DECAY1_TIME, (ctrlIndex: number, value: number, source) => incrementStageTime(ctrlIndex, StageId.DECAY1, value, source)],
+    [envControllers(0).DECAY2_TIME, (ctrlIndex: number, value: number, source) => incrementStageTime(ctrlIndex, StageId.DECAY2, value, source)],
+    [envControllers(0).SUSTAIN_LEVEL, (ctrlIndex: number, value: number, source) => incrementStageLevel(ctrlIndex, StageId.SUSTAIN, value, source)],
+    [envControllers(0).RELEASE1_TIME, (ctrlIndex: number, value: number, source) => incrementStageTime(ctrlIndex, StageId.RELEASE1, value, source)],
+    [envControllers(0).RELEASE2_TIME, (ctrlIndex: number, value: number, source) => incrementStageTime(ctrlIndex, StageId.RELEASE2, value, source)],
+    [envControllers(0).DECAY2_LEVEL, (ctrlIndex: number, value: number, source) => incrementStageLevel(ctrlIndex, StageId.DECAY2, value, source)],
+    [envControllers(0).RELEASE2_LEVEL, (ctrlIndex: number, value: number, source) => incrementStageLevel(ctrlIndex, StageId.RELEASE2, value, source)],
+])
+
+const click = createIndexClickMapper([
+    [envControllers(0).SELECT_ENV3_ID, (ctrlIndex: number, source) => toggleEnv3Id(source)],
+    [envControllers(0).LOOP, (ctrlIndex: number, source) => toggleLoopEnabled(ctrlIndex, source)],
+    [envControllers(0).TRIGGER, (ctrlIndex: number, source) => trigger(ctrlIndex, source)],
+    [envControllers(0).INVERT, (ctrlIndex: number, source) => toggleInvert(ctrlIndex, source)],
+])
+
 const envApi = {
     setStageLevel,
-    incrementStageLevel,
     setStageTime,
-    incrementStageTime,
     setStageEnabled,
-    toggleStageEnabled,
     setInvert,
-    toggleInvert,
     setRetrigger,
-    toggleRetrigger,
     setReleaseMode,
-    toggleReleaseMode,
     setLoopMode,
-    toggleLoopMode,
+    setCurrentEnv,
+    setStageCurve,
+    setMaxLoops,
     setLoopEnabled,
+
+    incrementCurrentEnvelope,
+    incrementStageTime,
+    incrementStageLevel,
+    incrementStageCurve,
+    incrementMaxLoops,
+
+    toggleStageEnabled,
+    toggleInvert,
+    toggleLoopMode,
+    toggleRetrigger,
+    toggleReleaseMode,
     toggleLoopEnabled,
     toggleStageSelected,
-    setCurrentEnv,
-    incrementCurrentEnvelope,
-    setStageCurve,
-    incrementStageCurve,
-    setMaxLoops,
-    incrementMaxLoops,
     trigger,
     release,
     setEnv3Id,
-    toggleEnv3Id,
+    
+    increment,
+    click
 }
 
 export default envApi

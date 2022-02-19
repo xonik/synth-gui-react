@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import RoundPushButtonBase from './RoundPushButtonBase'
 import RotaryPotBase from '../pots/RotaryPotBase'
 import { ControllerConfig } from '../../midi/types'
-import { ControllerGroupIds } from '../../synthcore/types'
+import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 import { click, increment, release } from '../../synthcore/modules/ui/uiReducer'
 import { dispatch } from '../../synthcore/utils'
 import './RoundButton.scss'
@@ -222,15 +222,15 @@ export const RoundButtonBase = (props: Props & Config) => {
     const ledOnIndex = hasOffValue ? currentValue - 1 : currentValue
 
     const onIncrement = useCallback((steps: number, stepSize: number) => {
-        dispatch(increment({ ctrlGroup, ctrl, value: steps }))
+        dispatch(increment({ ctrlGroup, ctrl, value: steps, source: ApiSource.UI }))
     }, [ctrlGroup, ctrl])
 
     const handleOnClick = useCallback(() => {
-        dispatch(click({ ctrlGroup, ctrl, ctrlIndex, radioButtonIndex, reverse }))
+        dispatch(click({ ctrlGroup, ctrl, ctrlIndex, radioButtonIndex, reverse, source: ApiSource.UI }))
     }, [radioButtonIndex, reverse, ctrl, ctrlGroup, ctrlIndex])
 
     const handleOnRelease = useCallback(() => {
-        dispatch(release({ ctrlGroup, ctrl, ctrlIndex }))
+        dispatch(release({ ctrlGroup, ctrl, ctrlIndex, source: ApiSource.UI }))
     }, [ctrl, ctrlGroup, ctrlIndex])
 
     const ledOn: boolean[] = []

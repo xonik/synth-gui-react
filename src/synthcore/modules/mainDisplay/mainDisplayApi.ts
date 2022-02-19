@@ -8,6 +8,7 @@ import mainDisplayMidiApi from './mainDisplayMidiApi'
 import { ApiSource } from '../../types'
 import logger from '../../../utils/logger'
 import mainDisplayControllers from './mainDisplayControllers'
+import { createClickMapper } from '../common/utils'
 
 type PotResolutions = {
     [key: number]: {
@@ -72,6 +73,17 @@ const setCurrentScreen = (id: number, source: ApiSource) => {
     mainDisplayMidiApi.setCurrentScreen(source, id)
 }
 
+const click = createClickMapper([
+    [mainDisplayControllers.FUNC_HOME, (source: ApiSource) => handleHomeClick(source)],
+    [mainDisplayControllers.FUNC_SETTINGS, (source: ApiSource) => handleSettingsClick(source)],
+    [mainDisplayControllers.FUNC_SHIFT, (source: ApiSource) => handleShift(true, source)],
+    [mainDisplayControllers.FUNC_PERFORM, (source: ApiSource) => handlePerformClick(source)],
+    [mainDisplayControllers.FUNC_LOAD, (source: ApiSource) => handleLoadClick(source)],
+    [mainDisplayControllers.FUNC_SAVE, (source: ApiSource) => handleSaveClick(source)],
+    [mainDisplayControllers.FUNC_COMPARE, (source: ApiSource) => handleCompareClick(source)],
+    [mainDisplayControllers.FUNC_ROUTE, (source: ApiSource) => handleRouteClick(source)],
+])
+
 const mainDisplayApi = {
     handleMainDisplayController,
     setCurrentScreen,
@@ -83,6 +95,7 @@ const mainDisplayApi = {
     handleSaveClick,
     handleCompareClick,
     handleRouteClick,
+    click,
 }
 
 export default mainDisplayApi

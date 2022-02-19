@@ -14,6 +14,7 @@ import { numericPropFuncs, togglePropFuncs } from '../common/commonApi'
 import { ApiSource } from '../../types'
 import { dispatch, getBounded } from '../../utils'
 import kbdControllers from './kbdControllers'
+import { createClickMapper, createIncrementMapper } from '../common/utils'
 
 const portamento = numericPropFuncs({
     selector: () => selectKbd(store.getState()).portamento,
@@ -66,6 +67,18 @@ const decrementTranspose = (source: ApiSource) => {
     setTranspose((currentValue - 1), source)
 }
 
+
+const increment = createIncrementMapper([
+    [kbdControllers.PORTAMENTO, (value: number, source: ApiSource) => portamento.increment(value, source)],
+    [kbdControllers.UNISON_DETUNE, (value: number, source: ApiSource) => unisonDetune.increment(value, source)],
+])
+
+const click = createClickMapper([
+    [kbdControllers.HOLD, (source: ApiSource) => hold.toggle(source)],
+    [kbdControllers.CHORD, (source: ApiSource) => chord.toggle(source)],
+    [kbdControllers.MODE, (source: ApiSource) => mode.toggle(source)],
+])
+
 const kbdApi = {
     setPortamento: portamento.set,
     setUnisonDetune: unisonDetune.set,
@@ -73,12 +86,8 @@ const kbdApi = {
     setChord: chord.set,
     setMode: mode.set,
 
-    incrementPortamento: portamento.increment,
-    incrementUnisonDetune: unisonDetune.increment,
-
-    toggleHold: hold.toggle,
-    toggleChord: chord.toggle,
-    toggleMode: mode.toggle,
+    click,
+    increment,
 
     setTranspose: mode.set,
     incrementTranspose,

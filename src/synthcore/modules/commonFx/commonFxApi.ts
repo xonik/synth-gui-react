@@ -35,6 +35,10 @@ import { store } from '../../store'
 import commonFxMidiApi from './commonFxMidiApi'
 import controllers from '../../../midi/controllers'
 import { numericPropFuncs, togglePropFuncs } from '../common/commonApi'
+import { createClickMapper, createIncrementMapper, createSetMapper } from '../common/utils'
+import arpControllers from '../arp/arpControllers'
+import commonFxControllers from './commonFxControllers'
+import { ApiSource } from '../../types'
 
 const dsp1Param1 = numericPropFuncs({
     selector: () => selectDsp1(store.getState()).param1,
@@ -158,6 +162,38 @@ const bitCrusherSource = togglePropFuncs({
     midi: commonFxMidiApi.setBitCrusherSource,
 })
 
+const increment = createIncrementMapper([
+    [commonFxControllers.DSP1.PARAM1, (value: number) => dsp1Param1.increment(value, ApiSource.UI)],
+    [commonFxControllers.DSP1.PARAM2, (value: number) => dsp1Param2.increment(value, ApiSource.UI)],
+    [commonFxControllers.DSP1.PARAM3, (value: number) => dsp1Param3.increment(value, ApiSource.UI)],
+    [commonFxControllers.DSP1.EFFECT, (value: number) => dsp1Effect.increment(value, ApiSource.UI)],
+
+    [commonFxControllers.DSP2.PARAM1, (value: number) => dsp2Param1.increment(value, ApiSource.UI)],
+    [commonFxControllers.DSP2.PARAM2, (value: number) => dsp2Param2.increment(value, ApiSource.UI)],
+    [commonFxControllers.DSP2.PARAM3, (value: number) => dsp2Param3.increment(value, ApiSource.UI)],
+    [commonFxControllers.DSP2.EFFECT, (value: number) => dsp2Effect.increment(value, ApiSource.UI)],
+
+    [commonFxControllers.CHORUS.RATE, (value: number) => chorusRate.increment(value, ApiSource.UI)],
+    [commonFxControllers.CHORUS.DEPTH, (value: number) => chorusDepth.increment(value, ApiSource.UI)],
+
+    [commonFxControllers.FX_BIT_CRUSHER.BITS, (value: number) => bitCrusherBits.increment(value, ApiSource.UI)],
+    [commonFxControllers.FX_BIT_CRUSHER.RATE, (value: number) => bitCrusherRate.increment(value, ApiSource.UI)],
+
+    [commonFxControllers.FX_MIX.LEVEL_DSP1, (value: number) => levelDsp1.increment(value, ApiSource.UI)],
+    [commonFxControllers.FX_MIX.LEVEL_DSP2, (value: number) => levelDsp2.increment(value, ApiSource.UI)],
+    [commonFxControllers.FX_MIX.LEVEL_CHORUS, (value: number) => levelChorus.increment(value, ApiSource.UI)],
+    [commonFxControllers.FX_MIX.LEVEL_BIT_CRUSHER, (value: number) => levelBitCrusher.increment(value, ApiSource.UI)],    
+])
+
+const click = createClickMapper([
+    [commonFxControllers.DSP1.SOURCE, (source: ApiSource) => dsp1Source.toggle(source)],
+    [commonFxControllers.DSP2.SOURCE, (source: ApiSource) => dsp2Source.toggle(source)],
+    [commonFxControllers.DSP2.CHAIN, (source: ApiSource) => dsp2Chain.toggle(source)],
+    [commonFxControllers.CHORUS.SOURCE, (source: ApiSource) => chorusSource.toggle(source)],
+    [commonFxControllers.CHORUS.MODE, (source: ApiSource) => chorusMode.toggle(source)],
+    [commonFxControllers.FX_BIT_CRUSHER.SOURCE, (source: ApiSource) => bitCrusherSource.toggle(source)],
+])
+
 const commonFxApi = {
     setDsp1Param1: dsp1Param1.set,
     setDsp1Param2: dsp1Param2.set,
@@ -186,33 +222,8 @@ const commonFxApi = {
     setLevelChorus: levelChorus.set,
     setLevelBitCrusher: levelBitCrusher.set,
     
-    incrementDsp1Param1: dsp1Param1.increment,
-    incrementDsp1Param2: dsp1Param2.increment,
-    incrementDsp1Param3: dsp1Param3.increment,
-    incrementDsp1Effect: dsp1Effect.increment,
-
-    incrementDsp2Param1: dsp2Param1.increment,
-    incrementDsp2Param2: dsp2Param2.increment,
-    incrementDsp2Param3: dsp2Param3.increment,
-    incrementDsp2Effect: dsp2Effect.increment,
-
-    incrementChorusRate: chorusRate.increment,
-    incrementChorusDepth: chorusDepth.increment,
-
-    incrementBitCrusherBits: bitCrusherBits.increment,
-    incrementBitCrusherRate: bitCrusherRate.increment,
-
-    incrementLevelDsp1: levelDsp1.increment,
-    incrementLevelDsp2: levelDsp2.increment,
-    incrementLevelChorus: levelChorus.increment,
-    incrementLevelBitCrusher: levelBitCrusher.increment,
-
-    toggleDsp1Source: dsp1Source.toggle,
-    toggleDsp2Source: dsp2Source.toggle,
-    toggleDsp2Chain: dsp2Chain.toggle,
-    toggleChorusSource: chorusSource.toggle,
-    toggleChorusMode: chorusMode.toggle,
-    toggleBitCrusherSource: bitCrusherSource.toggle,
+    increment,
+    click,
 }
 
 export default commonFxApi

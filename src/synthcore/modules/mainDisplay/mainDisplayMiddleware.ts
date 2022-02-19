@@ -3,19 +3,6 @@ import { click, increment, release } from '../ui/uiReducer'
 import { mainDisplayApi } from '../../synthcoreApi'
 import { ApiSource } from '../../types'
 import mainDisplayControllers from './mainDisplayControllers'
-import { createClickMapper } from '../common/utils'
-
-const clickMapper = createClickMapper([
-    [mainDisplayControllers.FUNC_HOME, () => mainDisplayApi.handleHomeClick(ApiSource.UI)],
-    [mainDisplayControllers.FUNC_SETTINGS, () => mainDisplayApi.handleSettingsClick(ApiSource.UI)],
-    [mainDisplayControllers.FUNC_SHIFT, () => mainDisplayApi.handleShift(true, ApiSource.UI)],
-    [mainDisplayControllers.FUNC_PERFORM, () => mainDisplayApi.handlePerformClick(ApiSource.UI)],
-    [mainDisplayControllers.FUNC_LOAD, () => mainDisplayApi.handleLoadClick(ApiSource.UI)],
-    [mainDisplayControllers.FUNC_SAVE, () => mainDisplayApi.handleSaveClick(ApiSource.UI)],
-    [mainDisplayControllers.FUNC_COMPARE, () => mainDisplayApi.handleCompareClick(ApiSource.UI)],
-    [mainDisplayControllers.FUNC_ROUTE, () => mainDisplayApi.handleRouteClick(ApiSource.UI)],
-])
-
 
 export const mainDisplayMiddleware = (action: PayloadAction): void => {
     if (increment.match(action)) {
@@ -24,7 +11,7 @@ export const mainDisplayMiddleware = (action: PayloadAction): void => {
         if(action.payload.ctrl === mainDisplayControllers.GROUP_MENU){
             mainDisplayApi.setCurrentScreen(action.payload.radioButtonIndex || 0, ApiSource.UI)
         } else {
-            clickMapper(action.payload.ctrl)
+            mainDisplayApi.click(action.payload.ctrl, action.payload.source)
         }
     } else if (release.match(action)) {
         if (action.payload.ctrl === mainDisplayControllers.FUNC_SHIFT) {

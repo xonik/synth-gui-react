@@ -7,6 +7,9 @@ import {
 import { store } from '../../store'
 import outMidiApi from './outMidiApi'
 import { numericPropFuncs } from '../common/commonApi'
+import { createIncrementMapper } from '../common/utils'
+import outControllers from './outControllers'
+import { ApiSource } from '../../types'
 
 const volume = numericPropFuncs({
     selector: () => selectOut(store.getState()).volume,
@@ -24,14 +27,19 @@ const headphones = numericPropFuncs({
     midi: outMidiApi.setHeadphones,
 })
 
+
+const increment = createIncrementMapper([
+    [outControllers.VOLUME, (value: number, source: ApiSource) => volume.increment(value, source)],
+    [outControllers.SPREAD, (value: number, source: ApiSource) => spread.increment(value, source)],
+    [outControllers.HEADPHONES, (value: number, source: ApiSource) => headphones.increment(value, source)],
+])
+
 const outApi = {
     setVolume: volume.set,
     setSpread: spread.set,
     setHeadphones: headphones.set,
 
-    incrementVolume: volume.increment,
-    incrementSpread: spread.increment,
-    incrementHeadphones: headphones.increment,
+    increment,
 
 }
 

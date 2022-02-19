@@ -16,6 +16,9 @@ import { store } from '../../store'
 import srcMixMidiApi from './srcMixMidiApi'
 import controllers from '../../../midi/controllers'
 import { numericPropFuncs, togglePropFuncs } from '../common/commonApi'
+import { createClickMapper, createIncrementMapper } from '../common/utils'
+import srcMixControllers from './srcMixControllers'
+import { ApiSource } from '../../types'
 
 const levelOsc1 = numericPropFuncs({
     selector: () => selectSrcMix(store.getState()).levelOsc1,
@@ -85,6 +88,25 @@ const outExtAudio = togglePropFuncs({
     midi: srcMixMidiApi.setOutExtAudio,
 })
 
+
+const increment = createIncrementMapper([
+    [srcMixControllers.LEVEL_OSC1, (value: number, source: ApiSource) => levelOsc1.increment(value, source)],
+    [srcMixControllers.LEVEL_OSC2, (value: number, source: ApiSource) => levelOsc2.increment(value, source)],
+    [srcMixControllers.LEVEL_OSC3, (value: number, source: ApiSource) => levelOsc3.increment(value, source)],
+    [srcMixControllers.LEVEL_NOISE, (value: number, source: ApiSource) => levelNoise.increment(value, source)],
+    [srcMixControllers.LEVEL_RING_MOD, (value: number, source: ApiSource) => levelRingMod.increment(value, source)],
+    [srcMixControllers.LEVEL_EXT_AUDIO, (value: number, source: ApiSource) => levelExtAudio.increment(value, source)],
+])
+
+const click = createClickMapper([
+    [srcMixControllers.OUT_OSC1, (source: ApiSource) => outOsc1.toggle(source)],
+    [srcMixControllers.OUT_OSC2, (source: ApiSource) => outOsc2.toggle(source)],
+    [srcMixControllers.OUT_OSC3, (source: ApiSource) => outOsc3.toggle(source)],
+    [srcMixControllers.OUT_NOISE, (source: ApiSource) => outNoise.toggle(source)],
+    [srcMixControllers.OUT_RING_MOD, (source: ApiSource) => outRingMod.toggle(source)],
+    [srcMixControllers.OUT_EXT_AUDIO, (source: ApiSource) => outExtAudio.toggle(source)],
+])
+
 const srcMixApi = {
     setLevelOsc1: levelOsc1.set,
     setLevelOsc2: levelOsc2.set,
@@ -100,19 +122,8 @@ const srcMixApi = {
     setOutRingMod: outRingMod.set,
     setOutExtAudio: outExtAudio.set,
 
-    incrementLevelOsc1: levelOsc1.increment,
-    incrementLevelOsc2: levelOsc2.increment,
-    incrementLevelOsc3: levelOsc3.increment,
-    incrementLevelNoise: levelNoise.increment,
-    incrementLevelRingMod: levelRingMod.increment,
-    incrementLevelExtAudio: levelExtAudio.increment,
-    
-    toggleOutOsc1: outOsc1.toggle,
-    toggleOutOsc2: outOsc2.toggle,
-    toggleOutOsc3: outOsc3.toggle,
-    toggleOutNoise: outNoise.toggle,
-    toggleOutRingMod: outRingMod.toggle,
-    toggleOutExtAudio: outExtAudio.toggle,
+    increment,
+    click,
 }
 
 export default srcMixApi
