@@ -15,13 +15,13 @@ import masterClockReducer from './modules/masterClock/masterClockReducer'
 import arpReducer from './modules/arp/arpReducer'
 import kbdReducer from './modules/kbd/kbdReducer'
 import postMixReducer from './modules/postMix/postMixReducer'
-import commonFxReducer from './modules/commonFx/commonFxReducer'
-import outReducer from './modules/out/outReducer'
 import lfoReducer from './modules/lfo/lfoReducer'
 import voicesReducer from './modules/voices/voicesReducer'
+import controllersReducer from './modules/controllers/controllersReducer'
 
 export const store = configureStore({
     reducer: {
+        controllers: controllersReducer,
         envelopes: envReducer,
         lfos: lfoReducer,
         osc: oscReducer,
@@ -38,8 +38,6 @@ export const store = configureStore({
         arp: arpReducer,
         kbd: kbdReducer,
         postMix: postMixReducer,
-        commonFx: commonFxReducer,
-        out: outReducer,
         voices: voicesReducer,
     },
     middleware: (getDefaultMiddleware) =>

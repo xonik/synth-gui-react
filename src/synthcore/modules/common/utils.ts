@@ -5,9 +5,6 @@ import { dispatch, getBounded, getQuantized } from '../../utils'
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
 import { NumericControllerPayload } from './CommonReducer'
 import { RootState, store } from '../../store'
-import { ControllerGroupIds } from '../../types'
-import { selectCommonFxController } from '../commonFx/commonFxReducer'
-import { selectOutController } from '../out/outReducer'
 
 export type ApiIncrementMapperType = {
     [key: number]: (value: number) => void

@@ -1,6 +1,6 @@
 import outControllers from './outControllers'
-import { selectOutController, setController } from './outReducer'
 import { createSetterFuncs } from '../common/utils'
+import { selectController, setController } from '../controllers/controllersReducer'
 
 const { set, toggle, increment } = createSetterFuncs(
     [
@@ -9,7 +9,7 @@ const { set, toggle, increment } = createSetterFuncs(
         outControllers.HEADPHONES,
     ],
     setController,
-    selectOutController,
+    selectController,
 )
 
 const outApi = {

@@ -1,9 +1,6 @@
-import {
-    selectCommonFxController,
-    setController,
-} from './commonFxReducer'
 import { createSetterFuncs } from '../common/utils'
 import commonFxControllers from './commonFxControllers'
+import { selectController, setController } from '../controllers/controllersReducer'
 
 const { set, toggle, increment } = createSetterFuncs(
     [
@@ -36,7 +33,7 @@ const { set, toggle, increment } = createSetterFuncs(
         commonFxControllers.FX_BIT_CRUSHER.SOURCE,
     ],
     setController,
-    selectCommonFxController,
+    selectController,
 )
 
 

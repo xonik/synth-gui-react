@@ -7,8 +7,8 @@ import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 import { click, increment, release } from '../../synthcore/modules/ui/uiReducer'
 import { dispatch } from '../../synthcore/utils'
 import { useAppSelector } from '../../synthcore/hooks'
+import { selectController } from '../../synthcore/modules/controllers/controllersReducer'
 import './RoundButton.scss'
-import { getControllerSelector } from '../../synthcore/modules/common/commonSelectors'
 
 type LedPosition = 'left' | 'right' | 'sides' | 'top' | 'bottom' | undefined;
 type LabelPosition = 'left' | 'right' | 'top' | 'bottom' | undefined;
@@ -215,8 +215,7 @@ export const RoundButtonBase = (props: Props & Config) => {
         ctrlGroup, ctrl, ctrlIndex, value, resolution
     } = props
 
-    const controllerSelector = getControllerSelector(ctrlGroup)
-    const storeValue = useAppSelector(controllerSelector(ctrl.id))
+    const storeValue = useAppSelector(selectController(ctrl.id))
     const currentValue = value || storeValue
 
     // off is always the first element in the midi config values list, so when a radio

@@ -2,16 +2,16 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
 import { NumericControllerPayload } from '../common/CommonReducer'
 
-type CommonFxState = {
+type ControllersState = {
     controllers: {[key: number]: number}
 }
 
-export const initialState: CommonFxState = {
+export const initialState: ControllersState = {
     controllers: {}
 }
 
-export const commonFxSlice = createSlice({
-    name: 'commonFx',
+export const controllersSlice = createSlice({
+    name: 'controllers',
     initialState,
     reducers: {
         setController:  (state, { payload }: PayloadAction<NumericControllerPayload>) => {
@@ -21,9 +21,9 @@ export const commonFxSlice = createSlice({
 })
 
 export const {
-    setController
-} = commonFxSlice.actions
+    setController,
+} = controllersSlice.actions
 
-export const selectCommonFxController = (ctrlId: number) => (state: RootState) => state.commonFx.controllers[ctrlId] || 0
+export const selectController = (ctrlId: number) => (state: RootState) => state.controllers.controllers[ctrlId] || 0
 
-export default commonFxSlice.reducer
+export default controllersSlice.reducer
