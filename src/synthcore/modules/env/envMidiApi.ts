@@ -72,7 +72,6 @@ const time = (() => {
 
             // TODO: This should be configurable!
             const value = Math.floor(envTimeMapper(boundedValue * 65535))
-            console.log(`Setting time to ${value}`)
 
             // stageId is encoded as part of the extra available bits
             const data = value  + (stageId << 16)
@@ -89,113 +88,6 @@ const time = (() => {
     }
 })()
 
-const invert = (() => {
-    const cfg = controllers.ENV.INVERT
-
-    return {
-        send: (source: ApiSource, envId: number, invert: boolean) => {
-            if (!shouldSend(source)) {
-                return
-            }
-            envSelect.send(source, envId)
-            const invertIndex = invert ? 1 : 0
-            logger.midi(`Setting invert for env ${envId} to ${invert}`)
-            cc.send(cfg, cfg.values[invertIndex])
-        },
-        receive: () => {
-            cc.subscribe((value: number) => {
-                const invert = value === cfg.values[1]
-                envApi.setInvert(currentEnvId, invert, ApiSource.MIDI)
-            }, cfg)
-        }
-    }
-})()
-
-const resetOnTrigger = (() => {
-    const cfg = controllers.ENV.RESET_ON_TRIGGER
-
-    return {
-        send: (source: ApiSource, envId: number, resetOnTrigger: boolean) => {
-            if (!shouldSend(source)) {
-                return
-            }
-            envSelect.send(source, envId)
-            const resetIndex = resetOnTrigger ? 1 : 0
-            logger.midi(`Setting reset on trigger for env ${envId} to ${resetOnTrigger}`)
-            cc.send(cfg, cfg.values[resetIndex])
-        },
-        receive: () => {
-            cc.subscribe((value: number) => {
-                const reset = value === cfg.values[1]
-                envApi.setRetrigger(currentEnvId, reset, ApiSource.MIDI)
-            }, cfg)
-        }
-    }
-})()
-
-const releaseMode = (() => {
-    const cfg = controllers.ENV.RELEASE_MODE
-
-    return {
-        send: (source: ApiSource, envId: number, releaseMode: ReleaseMode) => {
-            if (!shouldSend(source)) {
-                return
-            }
-            envSelect.send(source, envId)
-            logger.midi(`Setting release mode for env ${envId} to ${releaseMode}`)
-            cc.send(cfg, cfg.values[releaseMode])
-        },
-        receive: () => {
-            cc.subscribe((value: number) => {
-                const releaseMode = cfg.values.indexOf(value) || 0
-                envApi.setReleaseMode(currentEnvId, releaseMode, ApiSource.MIDI)
-            }, cfg)
-        }
-    }
-})()
-
-const loopMode = (() => {
-    const cfg = controllers.ENV.LOOP_MODE
-
-    return {
-        send: (source: ApiSource, envId: number, loopMode: LoopMode) => {
-            if (!shouldSend(source)) {
-                return
-            }
-            envSelect.send(source, envId)
-            logger.midi(`Setting loop mode for env ${envId} to ${loopMode}`)
-            cc.send(cfg, cfg.values[loopMode])
-        },
-        receive: () => {
-            cc.subscribe((value: number) => {
-                const loopMode = cfg.values.indexOf(value) || 0
-                envApi.setLoopMode(currentEnvId, loopMode, ApiSource.MIDI)
-            }, cfg)
-        }
-    }
-})()
-
-const loopEnabled = (() => {
-    const cfg = controllers.ENV.LOOP
-
-    return {
-        send: (source: ApiSource, envId: number, enabled: boolean) => {
-            if (!shouldSend(source)) {
-                return
-            }
-            envSelect.send(source, envId)
-            const loopEnabledIndex = enabled ? 1 : 0
-            logger.midi(`Changing loop enabled for env ${envId} to ${enabled}`)
-            cc.send(cfg, cfg.values[loopEnabledIndex])
-        },
-        receive: () => {
-            cc.subscribe((value: number) => {
-                const enabled = value === cfg.values[1]
-                envApi.setLoopEnabled(currentEnvId, enabled, ApiSource.MIDI)
-            }, cfg)
-        }
-    }
-})()
 
 const stageEnabled = (() => {
     const cfg = controllers.ENV.TOGGLE_STAGE
@@ -338,11 +230,6 @@ const release = (() => {
 const initReceive = () => {
     level.receive()
     time.receive()
-    invert.receive()
-    resetOnTrigger.receive()
-    releaseMode.receive()
-    loopMode.receive()
-    loopEnabled.receive()
     maxLoops.receive()
     stageEnabled.receive()
     curve.receive()
@@ -353,12 +240,7 @@ const initReceive = () => {
 const envMidiApi = {
     setLevel: level.send,
     setTime: time.send,
-    setInvert: invert.send,
     setStageEnabled: stageEnabled.send,
-    setResetOnTrigger: resetOnTrigger.send,
-    setReleaseMode: releaseMode.send,
-    setLoopMode: loopMode.send,
-    setLoopEnabled: loopEnabled.send,
     setMaxLoops: maxLoops.send,
     setCurve: curve.send,
     trigger: trigger.send,

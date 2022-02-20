@@ -18,7 +18,7 @@ type IndexIncMapperEntry = [ControllerConfig, (input: NumericInputProperty) => v
 export const createIndexIncrementMapper = (map: IndexIncMapperEntry[]) => (input: NumericInputProperty) => {
     // search for a ctrl and call the corresponding function
     map.find(([key]) => {
-        return key === input.ctrl
+        return key.id === input.ctrl.id
     })?.[1](input)
 }
 
@@ -26,7 +26,7 @@ type IndexClickMapperEntry = [ControllerConfig, (input: ButtonInputProperty) => 
 export const createIndexClickMapper = (map: IndexClickMapperEntry[]) => (input: ButtonInputProperty) => {
     // search for a ctrl and call the corresponding function
     map.find(([key]) => {
-        return key === input.ctrl
+        return key.id === input.ctrl.id
     })?.[1](input)
 }
 
@@ -38,7 +38,7 @@ export const createSetMapper = (map: MapperEntry[]) => {
     const set =  (input: NumericInputProperty) => {
         // search for a ctrl and call the corresponding function
         map.find(([key]) => {
-            return key === input.ctrl
+            return key.id === input.ctrl.id
         })?.[1](input)
 
         // send over midi
@@ -83,6 +83,8 @@ export const createSetterFuncs = (
         const currentValue = selector(input.ctrl.id, input.ctrlIndex || 0)(store.getState())
         const values = input.ctrl.values?.length || 1;
 
+        console.log("togg", { currentValue, values, input})
+
         // Radio buttons
         if(input.radioButtonIndex !== undefined) {
             if(currentValue === input.radioButtonIndex) {
@@ -99,7 +101,7 @@ export const createSetterFuncs = (
                 set({...input, value: (currentValue - 1) % values})
             }
         } else {
-            if(currentValue < values-1 || input.loop) {
+            if(currentValue < values - 1 || input.loop) {
                 set({...input, value: (currentValue + 1) % values})
             }
         }
@@ -128,7 +130,7 @@ export const createSetterFuncs = (
 export const createIncrementMapper = (map: MapperEntry[]) => (input: NumericInputProperty) => {
     // search for a ctrl and call the corresponding function
     map.find(([key]) => {
-        return key === input.ctrl
+        return key.id === input.ctrl.id
     })?.[1](input)
 }
 
@@ -136,6 +138,6 @@ type ClickMapperEntry = [ControllerConfig, (input: ButtonInputProperty) => void]
 export const createClickMapper = (map: ClickMapperEntry[]) => (input: ButtonInputProperty) => {
     // search for a ctrl and call the corresponding function
     map.find(([key]) => {
-        return key === input.ctrl
+        return key.id === input.ctrl.id
     })?.[1](input)
 }

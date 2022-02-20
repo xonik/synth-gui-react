@@ -33,9 +33,9 @@ export const loopModeNames = {
 }
 
 export const releaseModeNames = {
-    [ReleaseMode.NORMAL]: 'Normal release',
-    [ReleaseMode.FREE_RUN]: 'Free running',
-    [ReleaseMode.SKIP_R1]: 'Skip R1',
+    [ReleaseMode.NORMAL.valueOf()]: 'Normal release',
+    [ReleaseMode.FREE_RUN.valueOf()]: 'Free running',
+    [ReleaseMode.SKIP_R1.valueOf()]: 'Skip R1',
 }
 
 export const curveNames = {

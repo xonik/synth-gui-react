@@ -4,7 +4,9 @@
 import { createSlice, Draft, PayloadAction } from '@reduxjs/toolkit'
 import { Envelope, LoopMode, ReleaseMode, Stage, StageId } from './types'
 import { getDefaultEnvelope } from './envUtils'
-import { RootState } from '../../store'
+import { RootState, store } from '../../store'
+import { NumericControllerPayload } from '../common/CommonReducer'
+import envControllers from './envControllers'
 
 type EnvelopesState = {
     envs: Envelope[];
@@ -62,22 +64,6 @@ type CurvePayload = StagePayload & {
     curve: number;
 }
 
-type ReleaseModePayload = EnvPayload & {
-    releaseMode: ReleaseMode;
-}
-
-type ResetOnTriggerPayload = EnvPayload & {
-    resetOnTrigger: boolean;
-}
-
-type LoopModePayload = EnvPayload & {
-    loopMode: LoopMode;
-}
-
-type LoopEnabledPayload = EnvPayload & {
-    enabled: boolean;
-}
-
 type SetInvertPayload = EnvPayload & {
     invert: boolean;
 }
@@ -116,34 +102,14 @@ export const envelopesSlice = createSlice({
             getStage(state, payload).curve = payload.curve
         },
 
-        setReleaseMode: (state, { payload }: PayloadAction<ReleaseModePayload>) => {
-            getEnv(state, payload).releaseMode = payload.releaseMode
-        },
-        setResetOnTrigger: (state, { payload }: PayloadAction<ResetOnTriggerPayload>) => {
-            getEnv(state, payload).resetOnTrigger = payload.resetOnTrigger
-        },
-        setLoopMode: (state, { payload }: PayloadAction<LoopModePayload>) => {
-            getEnv(state, payload).loopMode = payload.loopMode
-        },
-        setLoopEnabled: (state, { payload }: PayloadAction<LoopEnabledPayload>) => {
-            getEnv(state, payload).loopEnabled = payload.enabled
-        },
         setMaxLoops: (state, { payload }: PayloadAction<NumericEnvPayload>) => {
-            getEnv(state, payload).maxLoops = payload.value
+            getEnv(state, payload).controllers[envControllers(0).MAX_LOOPS.id] = payload.value
         },
+
         setStageEnabled: (state, { payload }: PayloadAction<EnabledStagePayload>) => {
             getStage(state, payload).enabled = payload.enabled
         },
-        setInvert: (state, { payload }: PayloadAction<SetInvertPayload>) => {
-            const env = getEnv(state, payload)
-            env.invert = payload.invert
-            const resetLevel = payload.invert ? 1 : 0
 
-            env.stages[StageId.DELAY].level = resetLevel
-            env.stages[StageId.ATTACK].level = resetLevel
-            env.stages[StageId.DECAY1].level = payload.invert ? 0 : 1
-            env.stages[StageId.STOPPED].level = resetLevel
-        },
         selectStage: (state, { payload }: PayloadAction<StagePayload>) => {
             state.gui.currStageId = payload.stage
         },
@@ -157,18 +123,22 @@ export const envelopesSlice = createSlice({
             state.ui.env3Id = payload.id
         },
 
+        setEnvController:  (state, { payload }: PayloadAction<NumericControllerPayload>) => {
+            const env = state.envs[payload.ctrlIndex || 0]
+
+            // TODO: Not very nice to have this here!
+            if(payload.ctrlId === envControllers(0).INVERT.id) {
+                const resetLevel = payload.value ? 1 : 0
+                env.stages[StageId.DELAY].level = resetLevel
+                env.stages[StageId.ATTACK].level = resetLevel
+                env.stages[StageId.DECAY1].level = payload.value ? 0 : 1
+                env.stages[StageId.STOPPED].level = resetLevel
+            }
+            env.controllers[payload.ctrlId] = payload.value
+        },
+
         // actions only consumed by api
         toggleStageEnabled: (state, { payload }: PayloadAction<StagePayload>) => {
-        },
-        toggleInvert: (state, { payload }: PayloadAction<EnvPayload>) => {
-        },
-        toggleRetrigger: (state, { payload }: PayloadAction<EnvPayload>) => {
-        },
-        toggleReleaseMode: (state, { payload }: PayloadAction<EnvPayload>) => {
-        },
-        toggleLoopMode: (state, { payload }: PayloadAction<EnvPayload>) => {
-        },
-        toggleLoopEnabled: (state, { payload }: PayloadAction<EnvPayload>) => {
         },
         toggleStageSelected: (state, { payload }: PayloadAction<StagePayload>) => {
         },
@@ -180,23 +150,18 @@ export const {
     setDualLevels,
     setTime,
     setCurve,
-    setReleaseMode,
-    setResetOnTrigger,
-    setLoopMode,
-    setLoopEnabled,
+
     setMaxLoops,
+
     setStageEnabled,
-    setInvert,
     selectStage,
     deselectStage,
     selectGuiEnv,
     setEnv3Id,
+
+    setEnvController,
+
     toggleStageEnabled,
-    toggleInvert,
-    toggleRetrigger,
-    toggleReleaseMode,
-    toggleLoopMode,
-    toggleLoopEnabled,
     toggleStageSelected,
 } = envelopesSlice.actions
 
@@ -204,13 +169,11 @@ export const selectEnvelopes = (state: RootState) => state.envelopes
 export const selectEnvelope = (envId: number) => (state: RootState) => state.envelopes.envs[envId]
 export const selectLevel = (envId: number, stageId: StageId) => (state: RootState) => state.envelopes.envs[envId].stages[stageId].level
 export const selectTime = (envId: number, stageId: StageId) => (state: RootState) => state.envelopes.envs[envId].stages[stageId].time
-export const selectInvert = (envId: number) => (state: RootState) => state.envelopes.envs[envId].invert
-export const selectRetrigger = (envId: number) => (state: RootState) => state.envelopes.envs[envId].resetOnTrigger
-export const selectReleaseMode = (envId: number) => (state: RootState) => state.envelopes.envs[envId].releaseMode
-export const selectLoopMode = (envId: number) => (state: RootState) => state.envelopes.envs[envId].loopMode
-export const selectLoopEnabled = (envId: number) => (state: RootState) => state.envelopes.envs[envId].loopEnabled
+
 export const selectCurrStageId = (state: RootState) => state.envelopes.gui.currStageId
 export const selectCurrEnvId = (state: RootState) => state.envelopes.gui.currEnvId
 export const selectEnv3Id = (state: RootState) => state.envelopes.ui.env3Id
+
+export const selectEnvController = (ctrlId: number, ctrlIndex: number) => (state: RootState): number => state.envelopes.envs[ctrlIndex].controllers[ctrlId] || 0
 
 export default envelopesSlice.reducer

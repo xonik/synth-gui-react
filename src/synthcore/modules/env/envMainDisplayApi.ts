@@ -5,6 +5,7 @@ import { ApiSource } from '../../types'
 import { LoopMode, StageId } from './types'
 import { step } from '../../utils'
 import mainDisplayControllers from '../mainDisplay/mainDisplayControllers'
+import envControllers from './envControllers'
 
 export const mainDisplayEnvPotResolutions = {
     [mainDisplayControllers.POT1.id]: 8,
@@ -38,7 +39,7 @@ export const mainDisplayEnvApi = {
             }
         } else if (ctrlId === mainDisplayControllers.POT5.id) {
             const env = selectEnvelope(envId)(store.getState())
-            if (env.loopMode !== LoopMode.COUNTED) {
+            if (env.controllers[envControllers(0).LOOP_MODE.id] !== LoopMode.COUNTED) {
                 return
             }
             envApi.incrementMaxLoops(envId, step(increment), ApiSource.UI)

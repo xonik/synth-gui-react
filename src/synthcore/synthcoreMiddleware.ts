@@ -8,7 +8,7 @@ import { AnyAction } from '@reduxjs/toolkit'
 import modsApi from './modules/mods/modsApi'
 import {
     arpApi,
-    commonFxApi,
+    commonFxApi, envApi,
     filtersApi,
     fxApi,
     kbdApi, lfoApi,
@@ -31,6 +31,8 @@ const forApi = (action: AnyAction, ctrlGroup: number, path: string): boolean => 
 const getApi = (action: AnyAction) => {
     if (forApi(action, ControllerGroupIds.MODS, 'mods')) {
         return modsApi
+    } else if (forApi(action, ControllerGroupIds.ENV, 'envelopes')) {
+        return envApi
     } else if (forApi(action, ControllerGroupIds.OSC, 'osc')) {
         return oscApi
     } else if (forApi(action, ControllerGroupIds.LFO, 'lfos')) {

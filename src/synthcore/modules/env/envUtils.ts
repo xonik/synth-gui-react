@@ -62,19 +62,20 @@ export const getDefaultEnvelope = (id: number): Envelope => {
 
     const env = {
         id,
+        controllers: {},
+        /*
         resetOnTrigger: false,
         resetLevel: 0,
         releaseMode: ReleaseMode.NORMAL,
         loopMode: LoopMode.GATED,
         loopEnabled: false,
         maxLoops: 2,
-        invert:false,
+        invert:false,*/
         stages,
         // VCA and VCF envs are hardcoded to unipolar for now. VCF should probably be bipolar
         bipolar: id !== 0 && id !== 1,
     }
 
-    setInvert(env, false);
     updateReleaseLevels(env);
     return env;
 }
@@ -89,6 +90,7 @@ const updateReleaseLevels =  (env: Envelope) => {
 }
 
 // TODO: Duplicated in reducer, fix!
+/*
 const setInvert = (env: Envelope, invert: boolean) => {
     env.invert = invert;
     const resetLevel = invert ? 1 : 0;
@@ -97,5 +99,5 @@ const setInvert = (env: Envelope, invert: boolean) => {
     env.stages[StageId.ATTACK].level = resetLevel;
     env.stages[StageId.DECAY1].level = invert ? 0 : 1;
     env.stages[StageId.STOPPED].level = resetLevel;
-}
+}*/
 

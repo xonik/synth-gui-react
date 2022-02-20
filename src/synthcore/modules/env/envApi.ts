@@ -1,4 +1,4 @@
-import { Envelope, LoopMode, ReleaseMode, StageId } from './types'
+import { Envelope, StageId } from './types'
 import {
     deselectStage,
     selectCurrEnvId,
@@ -9,25 +9,22 @@ import {
     selectStage,
     setCurve,
     setDualLevels,
-    setInvert as setInvertAction,
-    setLevel,
-    setLoopMode as setLoopModeAction,
-    setLoopEnabled as setLoopEnabledAction,
     setMaxLoops as setMaxLoopsAction,
-    setReleaseMode as setReleaseModeAction,
-    setResetOnTrigger,
-    setStageEnabled as setStageEnabledAction,
+    setLevel,
     setTime,
+    setStageEnabled as setStageEnabledAction,
     setEnv3Id as setEnv3IdAction,
-    selectEnv3Id,
+    selectEnv3Id, setEnvController, selectEnvController,
 } from '../env/envReducer'
 import { store } from '../../store'
 import midiApi from './envMidiApi'
 import { curveFuncs } from '../../../components/curves/curveCalculator'
 import { ApiSource } from '../../types'
 import { dispatch, getBounded, getQuantized } from '../../utils'
-import { createIndexClickMapper, createIndexIncrementMapper } from '../common/utils'
+import { createIndexClickMapper, createIndexIncrementMapper, createSetterFuncs } from '../common/utils'
 import envControllers from './envControllers'
+import { selectLfoController, setLfoController } from '../lfo/lfoReducer'
+import { ButtonInputProperty, NumericInputProperty } from '../common/commonApi'
 
 const updateReleaseLevels = (env: Envelope, value: number) => {
     if (env.stages[StageId.RELEASE1].enabled) {
@@ -88,7 +85,6 @@ const setStageTime = (envId: number, stageId: StageId, requestedValue: number, s
     dispatch(setTime({ env: envId, stage: stageId, value: boundedValue }))
     midiApi.setTime(source, envId, stageId, boundedValue)
 }
-
 const incrementStageTime = (envId: number, stageId: StageId, incTime: number, source: ApiSource) => {
     const currentTime = selectEnvelope(envId)(store.getState()).stages[stageId].time
     setStageTime(envId, stageId, currentTime + incTime, source)
@@ -121,93 +117,8 @@ const toggleStageEnabled = (envId: number, stageId: StageId, source: ApiSource) 
     const enabled = !stage.enabled
     setStageEnabled(envId, stageId, enabled, source)
 }
-const setInvert = (envId: number, invert: boolean, source: ApiSource) => {
-    const env = selectEnvelopes(store.getState()).envs[envId]
-    if (env.invert === invert) {
-        return
-    }
 
-    dispatch(setInvertAction({ env: envId, invert }))
-    midiApi.setInvert(source, envId, invert)
-}
-const toggleInvert = (envId: number, source: ApiSource) => {
-    const env = selectEnvelopes(store.getState()).envs[envId]
-    const invert = !env.invert
-    setInvert(envId, invert, source)
-}
-const setRetrigger = (envId: number, resetOnTrigger: boolean, source: ApiSource) => {
-    const env = selectEnvelopes(store.getState()).envs[envId]
-    if (env.resetOnTrigger === resetOnTrigger) {
-        return
-    }
 
-    dispatch(setResetOnTrigger({ env: envId, resetOnTrigger }))
-    midiApi.setResetOnTrigger(source, envId, resetOnTrigger)
-}
-const toggleRetrigger = (envId: number, source: ApiSource) => {
-    const env = selectEnvelopes(store.getState()).envs[envId]
-    const resetOnTrigger = !env.resetOnTrigger
-    setRetrigger(envId, resetOnTrigger, source)
-}
-const setReleaseMode = (envId: number, releaseMode: ReleaseMode, source: ApiSource) => {
-    const env = selectEnvelopes(store.getState()).envs[envId]
-    if (env.releaseMode === releaseMode) {
-        return
-    }
-
-    dispatch(setReleaseModeAction({ env: envId, releaseMode }))
-    midiApi.setReleaseMode(source, envId, releaseMode)
-}
-const toggleReleaseMode = (envId: number, source: ApiSource) => {
-    const env = selectEnvelopes(store.getState()).envs[envId]
-    const releaseMode = (env.releaseMode + 1) % 3
-    setReleaseMode(envId, releaseMode, source)
-}
-const setLoopMode = (envId: number, loopMode: LoopMode, source: ApiSource) => {
-    const env = selectEnvelopes(store.getState()).envs[envId]
-    if (env.loopMode === loopMode) {
-        return
-    }
-
-    dispatch(setLoopModeAction({ env: envId, loopMode }))
-    midiApi.setLoopMode(source, envId, loopMode)
-}
-const toggleLoopMode = (envId: number, source: ApiSource) => {
-    const env = selectEnvelopes(store.getState()).envs[envId]
-    const loopMode = (env.loopMode + 1) % 3
-    setLoopMode(envId, loopMode, source)
-}
-const setLoopEnabled = (envId: number, enabled: boolean, source: ApiSource) => {
-    const env = selectEnvelopes(store.getState()).envs[envId]
-    if (env.loopEnabled === enabled) {
-        return
-    }
-
-    dispatch(setLoopEnabledAction({ env: envId, enabled }))
-    midiApi.setLoopEnabled(source, envId, enabled)
-}
-const toggleLoopEnabled = (envId: number, source: ApiSource) => {
-    const env = selectEnvelopes(store.getState()).envs[envId]
-    const loopEnabled = !env.loopEnabled
-    setLoopEnabled(envId, loopEnabled, source)
-}
-const toggleStageSelected = (envId: number, stageId: StageId, source: ApiSource) => {
-    const currStageId = selectCurrStageId(store.getState())
-    if (currStageId === stageId) {
-        dispatch(deselectStage({ env: -1, stage: stageId }))
-    } else {
-        dispatch(selectStage({ env: -1, stage: stageId }))
-    }
-}
-const setCurrentEnv = (envId: number, source: ApiSource) => {
-    const boundedEnv = getBounded(envId, 0, selectEnvelopes(store.getState()).envs.length - 1)
-    if (selectCurrEnvId(store.getState()) !== boundedEnv) {
-        dispatch(selectGuiEnv({ env: boundedEnv }))
-    }
-}
-const incrementCurrentEnvelope = (increment: number, source: ApiSource) => {
-    setCurrentEnv(selectCurrEnvId(store.getState()) + increment, source)
-}
 const setStageCurve = (envId: number, stageId: StageId, curve: number, source: ApiSource) => {
     const stage = selectEnvelope(envId)(store.getState()).stages[stageId]
     const boundedCurve = getBounded(curve, 0, curveFuncs.length - 1)
@@ -231,8 +142,28 @@ const incrementStageCurve = (envId: number, stageId: StageId, increment: number,
     })
     setStageCurve(envId, stageId, stage.curve + increment, source)
 }
+
+const setCurrentEnv = (envId: number, source: ApiSource) => {
+    const boundedEnv = getBounded(envId, 0, selectEnvelopes(store.getState()).envs.length - 1)
+    if (selectCurrEnvId(store.getState()) !== boundedEnv) {
+        dispatch(selectGuiEnv({ env: boundedEnv }))
+    }
+}
+const incrementCurrentEnvelope = (increment: number, source: ApiSource) => {
+    setCurrentEnv(selectCurrEnvId(store.getState()) + increment, source)
+}
+
+const toggleStageSelected = (envId: number, stageId: StageId, source: ApiSource) => {
+    const currStageId = selectCurrStageId(store.getState())
+    if (currStageId === stageId) {
+        dispatch(deselectStage({ env: -1, stage: stageId }))
+    } else {
+        dispatch(selectStage({ env: -1, stage: stageId }))
+    }
+}
+
 const setMaxLoops = (envId: number, maxLoops: number, source: ApiSource) => {
-    const currMaxLoops = selectEnvelope(envId)(store.getState()).maxLoops
+    const currMaxLoops = selectEnvelope(envId)(store.getState()).controllers[envControllers(0).MAX_LOOPS.id]
     const boundedMaxLoops = getBounded(maxLoops, 2, 128)
     if (boundedMaxLoops === currMaxLoops) {
         return
@@ -242,7 +173,7 @@ const setMaxLoops = (envId: number, maxLoops: number, source: ApiSource) => {
     midiApi.setMaxLoops(source, envId, boundedMaxLoops)
 }
 const incrementMaxLoops = (envId: number, increment: number, source: ApiSource) => {
-    const currMaxLoops = selectEnvelope(envId)(store.getState()).maxLoops
+    const currMaxLoops = selectEnvelope(envId)(store.getState()).controllers[envControllers(0).MAX_LOOPS.id]
     setMaxLoops(envId, currMaxLoops + increment, source)
 }
 const trigger = (envId: number, source: ApiSource) => {
@@ -268,6 +199,12 @@ const toggleEnv3Id = (source: ApiSource) => {
     }
     setEnv3Id(nextEnv3Id, source)
 }
+
+const toggle = createIndexClickMapper([
+    [envControllers(0).SELECT_ENV3_ID, ({
+                                            source
+                                        }) => toggleEnv3Id(source)],
+])
 
 const increment = createIndexIncrementMapper([
     [envControllers(0).DELAY_TIME, ({
@@ -317,45 +254,57 @@ const increment = createIndexIncrementMapper([
                                         }) => incrementStageLevel(ctrlIndex || 0, StageId.RELEASE2, value, source)],
 ])
 
-const toggle = createIndexClickMapper([
-    [envControllers(0).SELECT_ENV3_ID, ({ ctrlIndex, source }) => toggleEnv3Id(source)],
-    [envControllers(0).LOOP, ({ ctrlIndex, source }) => toggleLoopEnabled(ctrlIndex || 0, source)],
-    [envControllers(0).TRIGGER, ({ ctrlIndex, source }) => trigger(ctrlIndex || 0, source)],
-    [envControllers(0).INVERT, ({ ctrlIndex, source }) => toggleInvert(ctrlIndex || 0, source)],
-])
+const { increment: commonInc, toggle: commonToggle, set } = createSetterFuncs([
+        envControllers(0).LOOP,
+        envControllers(0).TRIGGER,
+        envControllers(0).INVERT,
+        envControllers(0).RESET_ON_TRIGGER,
+        envControllers(0).RELEASE_MODE,
+        envControllers(0).LOOP_MODE,
+    ],
+    setEnvController,
+    selectEnvController,
+)
+
+const incAll = (input: NumericInputProperty) => {
+    increment(input)
+    commonInc(input)
+}
+
+const toggleAll = (input: ButtonInputProperty) => {
+    toggle(input)
+    commonToggle(input)
+}
 
 const envApi = {
+    // stage stuff
     setStageLevel,
     setStageTime,
     setStageEnabled,
-    setInvert,
-    setRetrigger,
-    setReleaseMode,
-    setLoopMode,
-    setCurrentEnv,
     setStageCurve,
-    setMaxLoops,
-    setLoopEnabled,
 
-    incrementCurrentEnvelope,
     incrementStageTime,
     incrementStageLevel,
     incrementStageCurve,
-    incrementMaxLoops,
 
     toggleStageEnabled,
-    toggleInvert,
-    toggleLoopMode,
-    toggleRetrigger,
-    toggleReleaseMode,
-    toggleLoopEnabled,
     toggleStageSelected,
+
+    setCurrentEnv,
+    incrementCurrentEnvelope,
+
+    setMaxLoops,
+    incrementMaxLoops,
+
+    setEnv3Id,
+    toggleEnv3Id,
+
     trigger,
     release,
-    setEnv3Id,
 
-    increment,
-    toggle
+    increment: incAll,
+    toggle: toggleAll,
+    set
 }
 
 export default envApi

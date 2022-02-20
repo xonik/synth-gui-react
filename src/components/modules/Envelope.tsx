@@ -4,7 +4,7 @@ import RotaryPot10 from '../pots/RotaryPot10'
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import Header from '../misc/Header'
-import { selectEnv3Id, selectEnvelope } from '../../synthcore/modules/env/envReducer'
+import { selectEnv3Id, selectEnvController, selectEnvelope } from '../../synthcore/modules/env/envReducer'
 import { StageId } from '../../synthcore/modules/env/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { ControllerGroupIds } from '../../synthcore/types'
@@ -115,13 +115,11 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
             ctrlGroup={ctrlGroup}
             ctrl={envControllers(0).INVERT}
             ctrlIndex={envId}
-            value={env.invert ? 1 : 0}
         />
         <RoundLedPushButton8 label="Loop" x={firstPotX + potDistance * 3.5} y={topRowY} labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={envControllers(0).LOOP}
                              ctrlIndex={envId}
-                             value={env.loopEnabled ? 1 : 0}
         />
         <RotaryPot10 ledMode="multi" label="R2 Level" x={firstPotX + potDistance * 4.5} y={topRowY}
                      ctrlGroup={ctrlGroup}
