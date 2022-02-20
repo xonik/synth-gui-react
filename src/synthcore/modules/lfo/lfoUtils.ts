@@ -34,12 +34,7 @@ export const getDefaultLfo = (id: number): Lfo => {
 
     return {
         id,
-        rate: 0,
-        depth: 0,
-        shape: 0,
-        sync: 0,
-        once: 0,
-        resetOnTrigger: 0,
+        controllers: {},
         stages,
     }
 }

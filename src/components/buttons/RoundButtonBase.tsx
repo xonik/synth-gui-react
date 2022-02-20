@@ -9,6 +9,7 @@ import { dispatch } from '../../synthcore/utils'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectController } from '../../synthcore/modules/controllers/controllersReducer'
 import './RoundButton.scss'
+import { getControllerSelector } from '../../synthcore/modules/common/controllerSelectors'
 
 type LedPosition = 'left' | 'right' | 'sides' | 'top' | 'bottom' | undefined;
 type LabelPosition = 'left' | 'right' | 'top' | 'bottom' | undefined;
@@ -218,7 +219,7 @@ export const RoundButtonBase = (props: Props & Config) => {
         ctrlGroup, ctrl, ctrlIndex, value, resolution
     } = props
 
-    const storeValue = useAppSelector(selectController(ctrl.id))
+    const storeValue = useAppSelector(getControllerSelector(ctrlGroup)(ctrl.id, ctrlIndex || 0))
     const currentValue = value || storeValue
 
     // off is always the first element in the midi config values list, so when a radio
@@ -235,11 +236,11 @@ export const RoundButtonBase = (props: Props & Config) => {
                 dispatch(click({ ctrlGroup, ctrl, loop, reverse, source: ApiSource.UI }))
             }
         }
-    }, [ctrlGroup, ctrl, reverse])
+    }, [ctrlGroup, ctrl, loop, reverse])
 
     const handleOnClick = useCallback(() => {
         dispatch(click({ ctrlGroup, ctrl, ctrlIndex, radioButtonIndex, reverse, loop, source: ApiSource.UI }))
-    }, [radioButtonIndex, reverse, ctrl, ctrlGroup, ctrlIndex])
+    }, [ctrlGroup, ctrl, ctrlIndex, radioButtonIndex, reverse, loop])
 
     const handleOnRelease = useCallback(() => {
         dispatch(release({ ctrlGroup, ctrl, ctrlIndex, source: ApiSource.UI }))

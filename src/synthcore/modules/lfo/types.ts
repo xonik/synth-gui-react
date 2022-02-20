@@ -25,13 +25,8 @@ export type Stage = {
 
 export type Lfo = {
     id: number;
-    rate: number;
-    depth: number;
-    shape: number
-    sync: number;
-    once: number;
-    resetOnTrigger: number;
-    stages: Stage[];
+    controllers: {[key: number]: number}
+    stages: Stage[]
 
     /*
     resetLevel: number;

@@ -1,5 +1,6 @@
 export type NumericControllerPayload = {
     ctrlId: number,
+    ctrlIndex?: number,
     value: number;
 }
 

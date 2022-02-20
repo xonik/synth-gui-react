@@ -5,10 +5,11 @@ import { createSlice, Draft, PayloadAction } from '@reduxjs/toolkit'
 import { Lfo, Stage, StageId } from './types'
 import { getDefaultLfo } from './lfoUtils'
 import { RootState } from '../../store'
-import { NumericPayload } from '../common/CommonReducer'
+import { NumericControllerPayload, NumericPayload } from '../common/CommonReducer'
 
 type LfosState = {
-    lfos: Lfo[];
+
+    lfos: Lfo[]
     gui: {
         lfoId: number;
         stageId: StageId;
@@ -70,10 +71,6 @@ const getStage = (state: Draft<any>, payload: StagePayload): Draft<Stage> => {
     return state.lfos[payload.lfo].stages[payload.stage]
 }
 
-const getLfo = (state: Draft<any>, payload: StagePayload | LfoPayload | NumericLfoPayload): Draft<Lfo> => {
-    return state.lfos[payload.lfo]
-}
-
 export const lfosSlice = createSlice({
     name: 'lfos',
     initialState,
@@ -96,25 +93,6 @@ export const lfosSlice = createSlice({
             getStage(state, payload).enabled = payload.enabled
         },
 
-        setRate: (state, { payload }: PayloadAction<NumericLfoPayload>) => {
-            getLfo(state, payload).rate = payload.value
-        },
-        setDepth: (state, { payload }: PayloadAction<NumericLfoPayload>) => {
-            getLfo(state, payload).depth = payload.value
-        },
-        setShape: (state, { payload }: PayloadAction<NumericLfoPayload>) => {
-            getLfo(state, payload).shape = payload.value
-        },
-        setSync: (state, { payload }: PayloadAction<NumericLfoPayload>) => {
-            getLfo(state, payload).sync = payload.value
-        },
-        setReset: (state, { payload }: PayloadAction<NumericLfoPayload>) => {
-            getLfo(state, payload).resetOnTrigger = payload.value
-        },
-        setOnce: (state, { payload }: PayloadAction<NumericLfoPayload>) => {
-            getLfo(state, payload).once = payload.value
-        },
-
         setGuiStage: (state, { payload }: PayloadAction<StagePayload>) => {
             state.gui.stageId = payload.stage
         },
@@ -126,6 +104,10 @@ export const lfosSlice = createSlice({
         },
         setUiLfo: (state, { payload }: PayloadAction<NumericPayload>) => {
             state.ui.lfoId = payload.value
+        },
+
+        setLfoController:  (state, { payload }: PayloadAction<NumericControllerPayload>) => {
+            state.lfos[payload.ctrlIndex || 0].controllers[payload.ctrlId] = payload.value
         },
 
         // actions only consumed by api
@@ -143,17 +125,12 @@ export const {
     setCurve,
     setStageEnabled,
 
-    setRate,
-    setDepth,
-    setShape,
-    setSync,
-    setReset,
-    setOnce,
-
     setGuiStage,
     unsetGuiStage,
     setGuiLfo,
     setUiLfo,
+
+    setLfoController,
 
     toggleStageEnabled,
     toggleStageSelected,
@@ -164,10 +141,10 @@ export const selectLfos = (state: RootState) => state.lfos
 export const selectLfo = (lfoId: number) => (state: RootState) => state.lfos.lfos[lfoId]
 export const selectLevel = (lfoId: number, stageId: StageId) => (state: RootState) => state.lfos.lfos[lfoId].stages[stageId].level
 export const selectTime = (lfoId: number, stageId: StageId) => (state: RootState) => state.lfos.lfos[lfoId].stages[stageId].time
-export const selectRetrigger = (lfoId: number) => (state: RootState) => state.lfos.lfos[lfoId].resetOnTrigger
 export const selectGuiStageId = (state: RootState) => state.lfos.gui.stageId
 export const selectGuiLfoId = (state: RootState) => state.lfos.gui.lfoId
 export const selectUiLfoId = (state: RootState) => state.lfos.ui.lfoId
 export const selectUiLfo = (state: RootState) => state.lfos.lfos[state.lfos.ui.lfoId]
+export const selectLfoController = (ctrlId: number, ctrlIndex: number) => (state: RootState) => state.lfos.lfos[ctrlIndex].controllers[ctrlId] || 0
 
 export default lfosSlice.reducer

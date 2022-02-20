@@ -1,6 +1,6 @@
 import { AnyAction } from '@reduxjs/toolkit'
 import { ApiSource, ControllerGroupIds } from '../../types'
-import { ControllerConfig, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
+import { ControllerConfig, ControllerConfigCCWithValue } from '../../../midi/types'
 import { dispatch, getBounded, getQuantized } from '../../utils'
 import { NumericPayload } from './CommonReducer'
 

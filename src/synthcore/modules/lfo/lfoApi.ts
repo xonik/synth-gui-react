@@ -3,19 +3,13 @@ import {
     NumericLfoPayload,
     selectGuiLfoId,
     selectGuiStageId,
-    selectLfo,
+    selectLfo, selectLfoController,
     selectLfos,
     selectUiLfoId,
     setCurve,
-    setDepth,
     setGuiLfo as setGuiLfoAction,
-    setGuiStage,
-    setOnce,
-    setRate,
-    setReset,
-    setShape,
+    setGuiStage, setLfoController,
     setStageEnabled as setStageEnabledAction,
-    setSync,
     setTime,
     setUiLfo as setUiLfoAction,
     unsetGuiStage,
@@ -24,10 +18,9 @@ import { store } from '../../store'
 import { curveFuncs } from '../../../components/curves/curveCalculator'
 import { ApiSource } from '../../types'
 import { dispatch, getBounded, getQuantized } from '../../utils'
-import controllers from '../../../midi/controllers'
 import { AnyAction } from '@reduxjs/toolkit'
 import { ControllerConfigCCWithValue } from '../../../midi/types'
-import { createIndexClickMapper, createIndexIncrementMapper } from '../common/utils'
+import { createSetterFuncs } from '../common/utils'
 import lfoControllers from './lfoControllers'
 
 type LfoNumericProperty = {
@@ -44,7 +37,7 @@ type LfoTogglableProperty = {
 export const lfoNumericPropFuncs = (property: LfoNumericProperty) => {
     const set = (id: number, value: number, source: ApiSource) => {
         //const boundedValue = getQuantized(getBounded(value))
-        const boundedValue = value; //getQuantized(getBounded(value))
+        const boundedValue = value //getQuantized(getBounded(value))
         const currentValue = property.selector(id)
 
         if (boundedValue === currentValue) {
@@ -148,44 +141,6 @@ const incrementStageCurve = (lfoId: number, stageId: StageId, increment: number,
     setStageCurve(lfoId, stageId, stage.curve + increment, source)
 }
 
-
-
-const rate = lfoNumericPropFuncs({
-    selector: (id: number) => selectLfo(id)(store.getState()).rate,
-    action: setRate,
-})
-const depth = lfoNumericPropFuncs({
-    selector: (id: number) => selectLfo(id)(store.getState()).depth,
-    action: setDepth,
-})
-
-const incrementDelay = (id: number, inc: number, source: ApiSource) => {
-    const currentValue = selectLfo(id)(store.getState()).stages[StageId.DELAY].time
-    setStageTime(id, StageId.DELAY, currentValue + inc, source)
-}
-
-const shape = lfoTogglePropFuncs({
-    config: controllers.LFO.SHAPE,
-    selector: (id: number) => selectLfo(id)(store.getState()).shape,
-    action: setShape,
-})
-const sync = lfoTogglePropFuncs({
-    config: controllers.LFO.SYNC,
-    selector: (id: number) => selectLfo(id)(store.getState()).sync,
-    action: setSync,
-})
-const reset = lfoTogglePropFuncs({
-    config: controllers.LFO.RESET,
-    selector: (id: number) => selectLfo(id)(store.getState()).resetOnTrigger,
-    action: setReset,
-})
-const once = lfoTogglePropFuncs({
-    config: controllers.LFO.ONCE,
-    selector: (id: number) => selectLfo(id)(store.getState()).once,
-    action: setOnce,
-})
-
-
 const setGuiLfo = (lfoId: number, source: ApiSource) => {
     const boundedLfo = getBounded(lfoId, 0, selectLfos(store.getState()).lfos.length - 1)
     if (selectGuiLfoId(store.getState()) !== boundedLfo) {
@@ -211,29 +166,23 @@ const toggleUiLfo = (source: ApiSource) => {
     setUiLfo(nextId, source)
 }
 
-
-const increment = createIndexIncrementMapper([
-    [lfoControllers(0).RATE, ({ctrlIndex, value,  source}) => rate.increment(ctrlIndex || 0, value, source)],
-    [lfoControllers(0).DEPTH, ({ctrlIndex, value,  source}) => depth.increment(ctrlIndex || 0, value, source)],
-    [lfoControllers(0).DELAY, ({ctrlIndex, value,  source}) => incrementDelay(ctrlIndex || 0, value, source)],
-])
-
-const toggle = createIndexClickMapper([
-    [lfoControllers(0).SHAPE, ({ctrlIndex,  source}) => shape.toggle(ctrlIndex || 0, source)],
-    [lfoControllers(0).SYNC, ({ctrlIndex,  source}) => sync.toggle(ctrlIndex || 0, source)],
-    [lfoControllers(0).RESET, ({ctrlIndex,  source}) => reset.toggle(ctrlIndex || 0, source)],
-    [lfoControllers(0).ONCE, ({ctrlIndex,  source}) => once.toggle(ctrlIndex || 0, source)],
-])
+const setterFuncs = createSetterFuncs([
+        lfoControllers(0).RATE,
+        lfoControllers(0).DEPTH,
+        lfoControllers(0).DELAY,
+        lfoControllers(0).SHAPE,
+        lfoControllers(0).SYNC,
+        lfoControllers(0).RESET,
+        lfoControllers(0).ONCE,
+    ],
+    setLfoController,
+    selectLfoController,
+)
 
 const lfoApi = {
     setStageTime,
     setStageEnabled,
     setStageCurve,
-
-    setShape: shape.set,
-    setSync: sync.set,
-    setReset: reset.set,
-    setOnce: once.set,
 
     toggleStageEnabled,
     toggleStageSelected,
@@ -245,9 +194,8 @@ const lfoApi = {
     incrementGuiLfo,
     setUiLfo,
     toggleUiLfo,
-    
-    increment,
-    toggle,
+
+    ...setterFuncs,
 }
 
 export default lfoApi

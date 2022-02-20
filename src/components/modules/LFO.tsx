@@ -69,14 +69,12 @@ const LFO = ({ x, y }: Props) => {
                      ctrlGroup={ctrlGroup}
                      ctrl={lfoControllers(0).RATE}
                      ctrlIndex={lfo.id}
-                     value={lfo.rate}
         />
 
         <RotaryPot17 ledMode="single" label="Depth" x={firstPotCol + potDistance} y={potRow1}
                      ctrlGroup={ctrlGroup}
                      ctrl={lfoControllers(0).DEPTH}
                      ctrlIndex={lfo.id}
-                     value={lfo.depth}
         />
 
         <RoundPushButton8 x={firstPotCol + potDistance + 30} y={potRow1}
@@ -86,7 +84,6 @@ const LFO = ({ x, y }: Props) => {
                           ctrlGroup={ctrlGroup}
                           ctrl={lfoControllers(0).SHAPE}
                           ctrlIndex={lfo.id}
-                          value={lfo.shape}
         />
 
         <RotaryPot17 ledMode="single" label="Delay" x={firstPotCol} y={potRow2}
@@ -100,21 +97,18 @@ const LFO = ({ x, y }: Props) => {
                              ctrlGroup={ctrlGroup}
                              ctrl={lfoControllers(0).SYNC}
                              ctrlIndex={lfo.id}
-                             value={lfo.sync}
         />
 
         <RoundLedPushButton8 label="Reset" x={buttonCol3} y={potRow2} labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={lfoControllers(0).RESET}
                              ctrlIndex={lfo.id}
-                             value={lfo.resetOnTrigger}
         />
 
         <RoundLedPushButton8 label="Once" x={buttonCol4} y={potRow2} labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={lfoControllers(0).ONCE}
                              ctrlIndex={lfo.id}
-                             value={lfo.once}
         />
 
     </svg>

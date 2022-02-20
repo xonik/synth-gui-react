@@ -4,6 +4,7 @@ import kbdControllers from './kbdControllers'
 
 const setterFuncs = createSetterFuncs(
     [
+        kbdControllers.TRANSPOSE,
         kbdControllers.PORTAMENTO,
         kbdControllers.UNISON_DETUNE,
         kbdControllers.HOLD,

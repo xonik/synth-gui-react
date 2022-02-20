@@ -11,7 +11,7 @@ import {
     commonFxApi,
     filtersApi,
     fxApi,
-    kbdApi,
+    kbdApi, lfoApi,
     mainDisplayApi,
     masterClockApi,
     noiseApi,
@@ -33,6 +33,8 @@ const getApi = (action: AnyAction) => {
         return modsApi
     } else if (forApi(action, ControllerGroupIds.OSC, 'osc')) {
         return oscApi
+    } else if (forApi(action, ControllerGroupIds.LFO, 'lfos')) {
+        return lfoApi
     } else if (forApi(action, ControllerGroupIds.FILTERS, 'filters')) {
         return filtersApi
     } else if (forApi(action, ControllerGroupIds.SRC_MIX, 'srcMix')) {
