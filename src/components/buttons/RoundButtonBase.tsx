@@ -43,6 +43,9 @@ export interface Props {
     // Normally, clicking a button adds one modulo the length of the value array to the value. If this is true it subtracts instead
     reverse?: boolean;
 
+    // Loop - normally true, means that if we're clicking through a group and have reached the end, we will wrap around and start at the beginning
+    loop?: boolean;
+
     // Used if button is part of a group - "radio button"
     radioButtonIndex?: number;
 
@@ -211,7 +214,7 @@ export const RoundButtonBase = (props: Props & Config) => {
 
     const {
         x, y, label, radioButtonIndex,
-        hasOff, ledCount, ledButton, reverse,
+        hasOff, ledCount, ledButton, reverse, loop = true,
         ctrlGroup, ctrl, ctrlIndex, value, resolution
     } = props
 
@@ -224,12 +227,18 @@ export const RoundButtonBase = (props: Props & Config) => {
     const hasOffValue = hasOff || (ledButton && ledCount === undefined)
     const ledOnIndex = hasOffValue ? currentValue - 1 : currentValue
 
-    const onIncrement = useCallback((steps: number, stepSize: number) => {
-        dispatch(increment({ ctrlGroup, ctrl, value: steps, source: ApiSource.UI }))
-    }, [ctrlGroup, ctrl])
+    const onIncrement = useCallback((steps: number) => {
+        for(let i=0; i<Math.abs(steps); i++){
+            if(steps > 0){
+                dispatch(click({ ctrlGroup, ctrl, loop, source: ApiSource.UI }))
+            } else {
+                dispatch(click({ ctrlGroup, ctrl, loop, reverse, source: ApiSource.UI }))
+            }
+        }
+    }, [ctrlGroup, ctrl, reverse])
 
     const handleOnClick = useCallback(() => {
-        dispatch(click({ ctrlGroup, ctrl, ctrlIndex, radioButtonIndex, reverse, source: ApiSource.UI }))
+        dispatch(click({ ctrlGroup, ctrl, ctrlIndex, radioButtonIndex, reverse, loop, source: ApiSource.UI }))
     }, [radioButtonIndex, reverse, ctrl, ctrlGroup, ctrlIndex])
 
     const handleOnRelease = useCallback(() => {

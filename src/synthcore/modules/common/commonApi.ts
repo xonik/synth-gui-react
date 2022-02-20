@@ -19,6 +19,7 @@ export type ButtonInputProperty = {
     ctrlIndex?: number;
     radioButtonIndex?: number;
     reverse?: boolean;
+    loop?: boolean;
     source: ApiSource
 }
 type NumericProperty = {

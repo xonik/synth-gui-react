@@ -35,6 +35,7 @@ const Transpose = ({ row2 }: TransposeProps) => {
     return <>
         <RoundPushButton8 labelPosition="bottom" x={col1} y={row2}
                           label="Down" reverse
+                          loop={false}
                           ctrlGroup={ctrlGroup}
                           ctrl={kbdControllers.TRANSPOSE}
         />
@@ -46,6 +47,7 @@ const Transpose = ({ row2 }: TransposeProps) => {
         <Led x={col6} y={row2} label="2" on={transpose === 4}/>
         <RoundPushButton8 labelPosition="bottom" x={col7} y={row2}
                           label="Up"
+                          loop={false}
                           ctrlGroup={ctrlGroup}
                           ctrl={kbdControllers.TRANSPOSE}
         />

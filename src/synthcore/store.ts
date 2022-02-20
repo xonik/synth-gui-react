@@ -5,7 +5,6 @@ import uiReducer from './modules/ui/uiReducer'
 import settingsReducer from './modules/settings/settingsReducer'
 import mainDisplayReducer from './modules/mainDisplay/mainDisplayReducer'
 import modsReducer from './modules/mods/modsReducer'
-import filtersReducer from './modules/filters/filtersReducer'
 import lfoReducer from './modules/lfo/lfoReducer'
 import voicesReducer from './modules/voices/voicesReducer'
 import controllersReducer from './modules/controllers/controllersReducer'
@@ -15,7 +14,6 @@ export const store = configureStore({
         controllers: controllersReducer,
         envelopes: envReducer,
         lfos: lfoReducer,
-        filters: filtersReducer,
         mods: modsReducer,
         settings: settingsReducer,
         ui: uiReducer,

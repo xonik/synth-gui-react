@@ -57,7 +57,8 @@ export const createSetterFuncs = (
     selector: (ctrlId: number) => (state: RootState) => number) => {
 
     const set = (input: NumericInputProperty) => {
-        const boundedValue = getQuantized(getBounded(input.value))
+        const upperBound = input.ctrl.values? input.ctrl.values.length : 1
+        const boundedValue = getQuantized(getBounded(input.value, 0, upperBound))
         const currentValue = selector(input.ctrl.id)(store.getState())
 
         if (boundedValue === currentValue) {
@@ -71,10 +72,15 @@ export const createSetterFuncs = (
     }
     const toggle = (input: ButtonInputProperty) => {
         const currentValue = selector(input.ctrl.id)(store.getState())
+        const values = input.ctrl.values?.length || 1;
         if(input.reverse){
-            set({...input, value: (currentValue - 1) % (input.ctrl.values?.length || 1)})
+            if(currentValue > 0 || input.loop) {
+                set({...input, value: (currentValue - 1) % values})
+            }
         } else {
-            set({...input, value: (currentValue + 1) % (input.ctrl.values?.length || 1)})
+            if(currentValue < values-1 || input.loop) {
+                set({...input, value: (currentValue + 1) % values})
+            }
         }
     }
 
