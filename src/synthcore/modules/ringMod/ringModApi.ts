@@ -1,31 +1,18 @@
-import {
-    setSource,
-    selectRingMod,
-} from './ringModReducer'
-import { store } from '../../store'
-import ringModMidiApi from './ringModMidiApi'
-import controllers from '../../../midi/controllers'
-import { togglePropFuncs } from '../common/commonApi'
-import { createClickMapper, createIncrementMapper } from '../common/utils'
+import { createSetterFuncs } from '../common/utils'
+import { selectController, setController } from '../controllers/controllersReducer'
 import ringModControllers from './ringModControllers'
-import { ApiSource } from '../../types'
 
-const source = togglePropFuncs({
-    config: controllers.RING_MOD.SOURCE,
-    selector: () => selectRingMod(store.getState()).source,
-    action: setSource,
-})
+const setterFuncs = createSetterFuncs(
+    [
+        ringModControllers.SOURCE,
+    ],
+    setController,
+    selectController,
+)
 
-const click = createClickMapper([
-    [ringModControllers.SOURCE, ({source: apiSource}) => source.toggle(apiSource)],
-])
-const increment = createIncrementMapper([
-])
 
-const ringModApi = {
-    setSource: source.set,
-    click,
-    increment
+const api = {
+    ...setterFuncs,
 }
 
-export default ringModApi
+export default api

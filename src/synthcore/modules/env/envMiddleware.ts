@@ -10,7 +10,7 @@ export const envMiddleware = (action: PayloadAction): void => {
     if (increment.match(action)) {
         envApi.increment(action.payload)
     } else if (click.match(action)) {
-        envApi.click(action.payload)
+        envApi.toggle(action.payload)
     } else if (release.match(action)) {
         const ctrlIndex = action.payload.ctrlIndex || 0
         if(action.payload.ctrl === envControllers(0).TRIGGER){

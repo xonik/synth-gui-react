@@ -3,20 +3,24 @@ import { ControllerGroupIds } from './types'
 import { envMiddleware } from './modules/env/envMiddleware'
 import { mainDisplayMiddleware } from './modules/mainDisplay/mainDisplayMiddleware'
 import { modsMiddleware } from './modules/mods/modsMiddleware'
-import { kbdMiddleware } from './modules/kbd/kbdMiddleware'
 import { lfoMiddleware } from './modules/lfo/lfoMiddleware'
 import { AnyAction } from '@reduxjs/toolkit'
 import modsApi from './modules/mods/modsApi'
 import {
-    arpApi, commonFxApi,
+    arpApi,
+    commonFxApi,
     filtersApi,
     fxApi,
-    kbdApi, mainDisplayApi,
+    kbdApi,
+    mainDisplayApi,
     masterClockApi,
     noiseApi,
-    oscApi, outApi, postMixApi,
+    oscApi,
+    outApi,
+    postMixApi,
     ringModApi,
-    srcMixApi, voicesApi
+    srcMixApi,
+    voicesApi
 } from './synthcoreApi'
 import { click, increment } from './modules/ui/uiReducer'
 
@@ -53,7 +57,7 @@ const getApi = (action: AnyAction) => {
         return outApi
     } else if (forApi(action, ControllerGroupIds.VOICES, 'voices')) {
         return voicesApi
-    } else if(action.payload.ctrlGroup === ControllerGroupIds.MAIN_DISP) {
+    } else if (action.payload.ctrlGroup === ControllerGroupIds.MAIN_DISP) {
         return mainDisplayApi
     }
 }
@@ -62,17 +66,15 @@ export const synthcoreMiddleware: Middleware<{}, any> = storeAPI => next => acti
     if (increment.match(action)) {
         getApi(action)?.increment(action.payload)
     } else if (click.match(action)) {
-        getApi(action)?.click(action.payload)
+        getApi(action)?.toggle(action.payload)
     }
     if (action.payload.ctrlGroup === ControllerGroupIds.ENV || action.type.indexOf('envelopes/') > -1) {
         envMiddleware(action)
     } else if (action.payload.ctrlGroup === ControllerGroupIds.MODS || action.type.indexOf('mods/') > -1) {
         modsMiddleware(action)
-    } else if (action.payload.ctrlGroup === ControllerGroupIds.KBD || action.type.indexOf('kbd/') > -1) {
-        kbdMiddleware(action)
     } else if (action.payload.ctrlGroup === ControllerGroupIds.LFO || action.type.indexOf('lfos/') > -1) {
         lfoMiddleware(action)
-    } else if(action.payload.ctrlGroup === ControllerGroupIds.MAIN_DISP) {
+    } else if (action.payload.ctrlGroup === ControllerGroupIds.MAIN_DISP) {
         mainDisplayMiddleware(action)
     }
     return next(action)

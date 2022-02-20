@@ -3,7 +3,6 @@ import RotaryPot17 from '../pots/RotaryPot17';
 import Header from '../misc/Header';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
 import { useAppSelector } from '../../synthcore/hooks'
-import { selectMasterClock } from '../../synthcore/modules/masterClock/masterClockReducer'
 import { ControllerGroupIds } from '../../synthcore/types'
 import masterClockControllers from '../../synthcore/modules/masterClock/masterClockControllers'
 
@@ -21,20 +20,16 @@ const Clock = ({ x, y }: Props) => {
     const col1 = 10;
     const col2 = col1 + 50;
 
-    const masterClock = useAppSelector(selectMasterClock)
-    
     return <svg x={x} y={y}>
         <Header label="Master clock" x={0} y={row1} width={77}/>
         <RoundPushButton8 labelPosition="bottom" x={col1} y={row2} label="Source" ledCount={3} ledPosition="right" ledLabels={['Master', 'Midi', 'Ext']}
                           ctrlGroup={ctrlGroup}
                           ctrl={masterClockControllers.SOURCE}
-                          value={masterClock.source}
         />
 
         <RotaryPot17 ledMode="single" label="Rate" x={col2} y={row2}
                      ctrlGroup={ctrlGroup}
                      ctrl={masterClockControllers.RATE}
-                     value={masterClock.rate}
         />
 
     </svg>;

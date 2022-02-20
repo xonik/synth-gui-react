@@ -71,7 +71,11 @@ export const createSetterFuncs = (
     }
     const toggle = (input: ButtonInputProperty) => {
         const currentValue = selector(input.ctrl.id)(store.getState())
-        set({...input, value: (currentValue + 1) % (input.ctrl.values?.length || 1)})
+        if(input.reverse){
+            set({...input, value: (currentValue - 1) % (input.ctrl.values?.length || 1)})
+        } else {
+            set({...input, value: (currentValue + 1) % (input.ctrl.values?.length || 1)})
+        }
     }
 
     const increment = (input: NumericInputProperty) => {

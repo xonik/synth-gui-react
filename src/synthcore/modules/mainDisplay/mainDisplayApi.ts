@@ -6,7 +6,6 @@ import { mainDisplayModsApi, mainDisplayModsPotResolutions } from '../mods/modsM
 import { mainDisplayEnvApi, mainDisplayEnvPotResolutions } from '../env/envMainDisplayApi'
 import mainDisplayMidiApi from './mainDisplayMidiApi'
 import { ApiSource } from '../../types'
-import logger from '../../../utils/logger'
 import mainDisplayControllers from './mainDisplayControllers'
 import { createClickMapper, createIncrementMapper } from '../common/utils'
 
@@ -73,7 +72,7 @@ const setCurrentScreen = (id: number, source: ApiSource) => {
     mainDisplayMidiApi.setCurrentScreen(source, id)
 }
 
-const click = createClickMapper([
+const toggle = createClickMapper([
     [mainDisplayControllers.FUNC_HOME, ({source}) => handleHomeClick(source)],
     [mainDisplayControllers.FUNC_SETTINGS, ({source}) => handleSettingsClick(source)],
     [mainDisplayControllers.FUNC_SHIFT, ({source}) => handleShift(true, source)],
@@ -97,7 +96,7 @@ const mainDisplayApi = {
     handleSaveClick,
     handleCompareClick,
     handleRouteClick,
-    click,
+    toggle,
     increment,
 }
 

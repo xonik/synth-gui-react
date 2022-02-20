@@ -188,7 +188,7 @@ const increment = createIncrementMapper([
     [filtersControllers.SVF.SLOPE, ({value,  source}) => incrementSvfSlope(value, source)],
 ])
 
-const click = createClickMapper([
+const toggle = createClickMapper([
     [filtersControllers.LPF.EXT_CV, ({source}) => lpfExtCv.toggle(source)],
     [filtersControllers.LPF.WHEEL, ({source}) => lpfWheel.toggle(source)],
     [filtersControllers.LPF.SLOPE, ({source}) => lpfSlope.toggle(source)],
@@ -231,7 +231,7 @@ const filtersApi = {
     setSvfSlope: setSvfSlopeFunc,
 
     increment,
-    click,
+    toggle,
 }
 
 export default filtersApi

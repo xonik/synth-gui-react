@@ -37,7 +37,7 @@ const toggleVoiceState = (id: number, source: ApiSource) => {
 }
 
 
-const click = createClickMapper([
+const toggle = createClickMapper([
     [voicesControllers.VOICE1, ({source}) => toggleVoiceState(0, source)],
     [voicesControllers.VOICE2, ({source}) => toggleVoiceState(1, source)],
     [voicesControllers.VOICE3, ({source}) => toggleVoiceState(2, source)],
@@ -51,7 +51,7 @@ const increment = createIncrementMapper([
 ])
 const voicesApi = {
     setVoiceState,
-    click,
+    toggle,
     increment,
 }
 

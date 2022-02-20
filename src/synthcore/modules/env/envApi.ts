@@ -317,7 +317,7 @@ const increment = createIndexIncrementMapper([
                                         }) => incrementStageLevel(ctrlIndex || 0, StageId.RELEASE2, value, source)],
 ])
 
-const click = createIndexClickMapper([
+const toggle = createIndexClickMapper([
     [envControllers(0).SELECT_ENV3_ID, ({ ctrlIndex, source }) => toggleEnv3Id(source)],
     [envControllers(0).LOOP, ({ ctrlIndex, source }) => toggleLoopEnabled(ctrlIndex || 0, source)],
     [envControllers(0).TRIGGER, ({ ctrlIndex, source }) => trigger(ctrlIndex || 0, source)],
@@ -355,7 +355,7 @@ const envApi = {
     setEnv3Id,
 
     increment,
-    click
+    toggle
 }
 
 export default envApi

@@ -15,7 +15,7 @@ const { set, toggle, increment } = createSetterFuncs(
 const outApi = {
     set,
     increment,
-    click: toggle,
+    toggle,
 }
 
 export default outApi

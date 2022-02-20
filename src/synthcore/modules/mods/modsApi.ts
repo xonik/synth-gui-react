@@ -167,7 +167,7 @@ const toggleRouteButton = (value: number, source: ApiSource) => {
 const increment = createIncrementMapper([
     [modsControllers.UI_AMOUNT, ({value,  source}) => uiAmount.increment(value, source)],
 ])
-const click = createClickMapper([
+const toggle = createClickMapper([
 ])
 
 const modsApi = {
@@ -190,7 +190,7 @@ const modsApi = {
     toggleRouteButton,
 
     increment,
-    click,
+    toggle,
 }
 
 export default modsApi

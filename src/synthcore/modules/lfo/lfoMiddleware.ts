@@ -12,7 +12,7 @@ export const lfoMiddleware = (action: PayloadAction): void => {
         if(action.payload.ctrl === lfoControllers(0).LFO) {
             lfoApi.setUiLfo(action.payload.radioButtonIndex || 0, ApiSource.UI)
         } else {
-            lfoApi.click(action.payload)
+            lfoApi.toggle(action.payload)
         }
     } else if (toggleStageEnabled.match(action)) {
         lfoApi.toggleStageEnabled(action.payload.lfo, action.payload.stage, ApiSource.GUI)

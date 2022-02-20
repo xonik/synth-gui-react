@@ -218,7 +218,7 @@ const increment = createIndexIncrementMapper([
     [lfoControllers(0).DELAY, ({ctrlIndex, value,  source}) => incrementDelay(ctrlIndex || 0, value, source)],
 ])
 
-const click = createIndexClickMapper([
+const toggle = createIndexClickMapper([
     [lfoControllers(0).SHAPE, ({ctrlIndex,  source}) => shape.toggle(ctrlIndex || 0, source)],
     [lfoControllers(0).SYNC, ({ctrlIndex,  source}) => sync.toggle(ctrlIndex || 0, source)],
     [lfoControllers(0).RESET, ({ctrlIndex,  source}) => reset.toggle(ctrlIndex || 0, source)],
@@ -247,7 +247,7 @@ const lfoApi = {
     toggleUiLfo,
     
     increment,
-    click,
+    toggle,
 }
 
 export default lfoApi

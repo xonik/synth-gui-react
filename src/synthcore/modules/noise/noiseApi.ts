@@ -1,31 +1,18 @@
-import {
-    setColour,
-    selectNoise,
-} from './noiseReducer'
-import { store } from '../../store'
-import noiseMidiApi from './noiseMidiApi'
-import controllers from '../../../midi/controllers'
-import { togglePropFuncs } from '../common/commonApi'
-import { createClickMapper, createIncrementMapper } from '../common/utils'
+import { createSetterFuncs } from '../common/utils'
+import { selectController, setController } from '../controllers/controllersReducer'
 import noiseControllers from './noiseControllers'
-import { ApiSource } from '../../types'
 
-const colour = togglePropFuncs({
-    config: controllers.NOISE.COLOUR,
-    selector: () => selectNoise(store.getState()).colour,
-    action: setColour,
-})
+const setterFuncs = createSetterFuncs(
+    [
+        noiseControllers.COLOUR,
+    ],
+    setController,
+    selectController,
+)
 
-const increment = createIncrementMapper([
-])
-const click = createClickMapper([
-    [noiseControllers.COLOUR, ({source}) => colour.toggle(source)],
-])
 
-const noiseApi = {
-    setColour: colour.set,
-    click,
-    increment
+const api = {
+    ...setterFuncs,
 }
 
-export default noiseApi
+export default api

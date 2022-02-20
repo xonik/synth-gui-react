@@ -36,11 +36,10 @@ const { set, toggle, increment } = createSetterFuncs(
     selectController,
 )
 
-
-const commonFxApi = {
+const api = {
     set,
     increment,
-    click: toggle,
+    toggle,
 }
 
-export default commonFxApi
+export default api
