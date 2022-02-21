@@ -51,6 +51,7 @@ const postMixControllers: PostMixControllers = {
         label: 'Pan',
         isDstDigi: true,
         type: 'pot',
+        bipolar: true,
         cc: CC.POST_MIX_PAN
     },
     AMOUNT: {

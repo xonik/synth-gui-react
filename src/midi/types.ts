@@ -10,7 +10,10 @@ export interface ControllerConfig {
     readonly isSourceDigi?: boolean,
     readonly isDstDigi?: boolean,
     readonly type: ControllerType
+
+    // TODO: Only for ControllerConfigCC but here because TS complains!
     readonly values?: number[]
+    readonly bipolar?: boolean
 }
 
 export interface ControllerConfigCC extends ControllerConfig {
@@ -23,6 +26,7 @@ export interface ControllerConfigCCWithValue extends ControllerConfigCC {
 
 export interface ControllerConfigNRPN extends ControllerConfig {
     readonly addr: number
+    readonly bipolar?: boolean
 }
 
 export interface FuncProps {

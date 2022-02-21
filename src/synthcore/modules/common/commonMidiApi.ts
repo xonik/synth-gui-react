@@ -51,8 +51,14 @@ export const paramSend = (
             logger.midi(`Setting value for ${cfg.label} to ${value}`)
             cc.send(cfg as ControllerConfigCCWithValue, cfg.values[value])
         } else {
-            logger.midi(`Setting value for ${cfg.label} to ${value}`)
-            cc.send(cfg as ControllerConfigCC, Math.floor(127 * value))
+
+            const midiValue = cfg.bipolar
+                ? Math.floor(63 * value + 64)
+                : Math.floor(127 * value)
+            if(cfg.bipolar)
+
+            logger.midi(`Setting value for ${cfg.label} to ${value} (${midiValue})`)
+            cc.send(cfg as ControllerConfigCC, midiValue)
         }
     }
 }

@@ -16,8 +16,8 @@ interface ModsControllers {
 
 const modsControllers: ModsControllers = {
     props: { label: 'Routing' },
-    AMOUNT: { id: ControllerIdNonModPots.MOD_AMOUNT, label: 'Amount', type: 'pot', addr: NRPN.MOD_AMOUNT },
-    UI_AMOUNT: { id: ControllerIdNonModPots.MOD_AMOUNT, label: 'Amount', type: 'pot', addr: NRPN.MOD_UI_AMOUNT },
+    AMOUNT: { id: ControllerIdNonModPots.MOD_AMOUNT, label: 'Amount', type: 'pot', addr: NRPN.MOD_AMOUNT, bipolar: true },
+    UI_AMOUNT: { id: ControllerIdNonModPots.MOD_AMOUNT, label: 'Amount', type: 'pot', addr: NRPN.MOD_UI_AMOUNT, bipolar: true },
 
     // from and to-buttons
     ROUTE_BUTTON: {

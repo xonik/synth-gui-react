@@ -233,10 +233,10 @@ export const RoundButtonBase = (props: Props & Config) => {
             if(steps > 0){
                 dispatch(click({ ctrlGroup, ctrl, loop, source: ApiSource.UI }))
             } else {
-                dispatch(click({ ctrlGroup, ctrl, loop, reverse, source: ApiSource.UI }))
+                dispatch(click({ ctrlGroup, ctrl, loop, reverse: true, source: ApiSource.UI }))
             }
         }
-    }, [ctrlGroup, ctrl, loop, reverse])
+    }, [ctrlGroup, ctrl, loop])
 
     const handleOnClick = useCallback(() => {
         dispatch(click({ ctrlGroup, ctrl, ctrlIndex, radioButtonIndex, reverse, loop, source: ApiSource.UI }))

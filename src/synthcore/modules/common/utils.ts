@@ -61,8 +61,9 @@ export const createSetterFuncs = (
         if(!controllers.find((cont) => cont.id === input.ctrl.id)){
             return
         }
+        const lowerBound = input.ctrl.bipolar === true ? -1 : 0
         const upperBound = input.ctrl.values? input.ctrl.values.length : 1
-        const boundedValue = getQuantized(getBounded(input.value, 0, upperBound))
+        const boundedValue = getQuantized(getBounded(input.value, lowerBound, upperBound))
         const currentValue = selector(input.ctrl.id, input.ctrlIndex || 0)(store.getState())
 
         if (boundedValue === currentValue) {
@@ -83,8 +84,6 @@ export const createSetterFuncs = (
         const currentValue = selector(input.ctrl.id, input.ctrlIndex || 0)(store.getState())
         const values = input.ctrl.values?.length || 1;
 
-        console.log("togg", { currentValue, values, input})
-
         // Radio buttons
         if(input.radioButtonIndex !== undefined) {
             if(currentValue === input.radioButtonIndex) {
@@ -98,7 +97,7 @@ export const createSetterFuncs = (
         // Normal buttons
         if(input.reverse){
             if(currentValue > 0 || input.loop) {
-                set({...input, value: (currentValue - 1) % values})
+                set({...input, value: (currentValue - 1 + values) % values})
             }
         } else {
             if(currentValue < values - 1 || input.loop) {

@@ -6,9 +6,8 @@ import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import { increment } from '../../synthcore/modules/ui/uiReducer'
 import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 import { ControllerConfig } from '../../midi/types'
-import './RotaryPot.scss'
-import { selectController } from '../../synthcore/modules/controllers/controllersReducer'
 import { getControllerSelector } from '../../synthcore/modules/common/controllerSelectors'
+import './RotaryPot.scss'
 
 export type LedMode = 'single' | 'multi';
 export type PotMode = 'normal' | 'pan' | 'spread';
@@ -85,9 +84,7 @@ const getLedPos = (centerLed: number, ledCount: number, mode: PotMode, position:
         case 'pan': {
             // Done this way so that edge case for rounding is the same on both sides of center
             // Pan is sentered when position is 0.5.
-            const panAmount = Math.round(Math.abs(2 * (position - 0.5) * centerLed))
-            const sign = position >= 0.5 ? 1 : -1
-            return centerLed + (panAmount * sign)
+            return centerLed + Math.round(centerLed * position)
         }
         case 'spread': {
             // Done this way so that edge case for rounding is the same on both sides of center

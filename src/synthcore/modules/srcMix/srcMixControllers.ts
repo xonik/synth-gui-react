@@ -121,7 +121,7 @@ const srcMixControllers: SrcMixControllers = {
         ],
     },
     OUT_EXT_AUDIO: {
-        id: ControllerIdNonMod.SRC_MIX_OUT_RING_MOD,
+        id: ControllerIdNonMod.SRC_MIX_OUT_EXT_AUDIO,
         label: 'Ext. audio dst',
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
