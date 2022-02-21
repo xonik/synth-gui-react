@@ -42,7 +42,7 @@ export const createSetMapper = (map: MapperEntry[]) => {
         })?.[1](input)
 
         // send over midi
-        paramSend(input.source, input.value, input.ctrl)
+        paramSend(input.source, input.ctrl, input.value)
     }
 
     // receive midi
@@ -70,10 +70,14 @@ export const createSetterFuncs = (
             return
         }
 
+        // Not always present, and may only be sent for nrpn messages. Represents stage etc, the top
+        // 5 bits left over when 16 bits have been used for value.
+        const boundedValueIndex = getBounded(input.valueIndex || 0, 0, 31)
+
         dispatch(action({ ctrlIndex: input.ctrlIndex, ctrlId: input.ctrl.id, value: boundedValue }))
 
         // send over midi
-        paramSend(input.source, boundedValue, input.ctrl)
+        paramSend(input.source, input.ctrl, boundedValue, boundedValueIndex)
     }
     const toggle = (input: ButtonInputProperty) => {
         // Not for this reducer!

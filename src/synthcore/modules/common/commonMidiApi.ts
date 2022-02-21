@@ -1,8 +1,13 @@
 import { ApiSource } from '../../types'
-import { ControllerConfig, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
+import {
+    ControllerConfig,
+    ControllerConfigCC,
+    ControllerConfigCCWithValue,
+    ControllerConfigNRPN
+} from '../../../midi/types'
 import { shouldSend } from '../../../midi/utils'
 import logger from '../../../utils/logger'
-import { cc } from '../../../midi/midibus'
+import { cc, nrpn } from '../../../midi/midibus'
 import { NumericInputProperty } from './commonApi'
 
 export const numericParamSend = (
@@ -40,14 +45,15 @@ export const toggleParamSend = (
 
 export const paramSend = (
     source: ApiSource,
-    value: number,
     cfg: ControllerConfig | ControllerConfigCC | ControllerConfigCCWithValue,
+    value: number,
+    valueIndex?: number,
 ) => {
     if (!shouldSend(source)) {
         return
     }
-    if(cfg.hasOwnProperty('cc')){
-        if(cfg.values) {
+    if (cfg.hasOwnProperty('cc')) {
+        if (cfg.values) {
             logger.midi(`Setting value for ${cfg.label} to ${value}`)
             cc.send(cfg as ControllerConfigCCWithValue, cfg.values[value])
         } else {
@@ -55,11 +61,23 @@ export const paramSend = (
             const midiValue = cfg.bipolar
                 ? Math.floor(63 * value + 64)
                 : Math.floor(127 * value)
-            if(cfg.bipolar)
+            if (cfg.bipolar)
 
-            logger.midi(`Setting value for ${cfg.label} to ${value} (${midiValue})`)
+                logger.midi(`Setting value for ${cfg.label} to ${value} (${midiValue})`)
             cc.send(cfg as ControllerConfigCC, midiValue)
         }
+    } else if (cfg.hasOwnProperty('addr')) {
+        let midiValue = cfg.bipolar
+            ? Math.floor(32767 * value + 32767)
+            : Math.floor(65535 * value)
+
+        // more than 5 bits will make send fail!
+        if(valueIndex && valueIndex >= 0 && valueIndex < 32){
+            midiValue += (valueIndex << 16)
+        }
+
+        logger.midi(`Setting value for ${cfg.label} to ${value} (${midiValue})`)
+        nrpn.send(cfg as ControllerConfigNRPN, midiValue)
     }
 }
 
@@ -67,14 +85,26 @@ export const paramReceive = (
     ctrl: ControllerConfig | ControllerConfigCC | ControllerConfigCCWithValue,
     apiSetValue: (input: NumericInputProperty) => void
 ) => {
-    cc.subscribe((midiValue: number) => {
-        if(ctrl.values){
-            const value = ctrl.values.indexOf(midiValue) || 0
-            apiSetValue({ctrl, value, source: ApiSource.MIDI})
-        } else {
-            apiSetValue({ctrl, value: midiValue / 127, source: ApiSource.MIDI})
-        }
-    }, ctrl as ControllerConfigCC)
+    if (ctrl.hasOwnProperty('cc')) {
+        cc.subscribe((midiValue: number) => {
+            if (ctrl.values) {
+                const value = ctrl.values.indexOf(midiValue) || 0
+                apiSetValue({ ctrl, value, source: ApiSource.MIDI })
+            } else {
+                const value = ctrl.bipolar ? (midiValue - 64) / 127 : midiValue / 127
+                apiSetValue({ ctrl, value, source: ApiSource.MIDI })
+            }
+        }, ctrl as ControllerConfigCC)
+    } else if (ctrl.hasOwnProperty('addr')) {
+        nrpn.subscribe((rawMidiValue: number) => {
+
+            const midiValue = rawMidiValue & 0xFFFF
+            const valueIndex = rawMidiValue >> 16
+
+            const value = ctrl.bipolar ? (midiValue - 32767) / 32767 : midiValue / 65535
+            apiSetValue({ ctrl, value, valueIndex, source: ApiSource.MIDI })
+        }, ctrl as ControllerConfigNRPN)
+    }
 }
 
 export const toggleParamReceive = (

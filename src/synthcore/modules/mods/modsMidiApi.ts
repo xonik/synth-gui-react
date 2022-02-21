@@ -4,7 +4,7 @@ import { shouldSend } from '../../../midi/utils'
 import modsApi from './modsApi'
 import { ApiSource } from '../../types'
 import logger from '../../../utils/logger'
-import { numericParamReceive, numericParamSend, toggleParamReceive, toggleParamSend } from '../common/commonMidiApi'
+import { toggleParamReceive, toggleParamSend } from '../common/commonMidiApi'
 
 let currentSourceId = 0;
 let currentDstId = 0;
@@ -70,7 +70,7 @@ const dst = (() => {
             if(ctrlIndex !== currentDstIndex) {
                 currentDstIndex = ctrlIndex
                 // We don't send index when it is zero, as almost all controllers have
-                // and index of zero. Instead, we reset it when receiving a dstId.
+                // an index of zero. Instead, we reset it when receiving a dstId.
                 if (ctrlIndex !== 0) {
                     logger.midi(`Setting modulation destination ctrl index to ${ctrlIndex}`)
                     cc.send(indexCfg, ctrlIndex)

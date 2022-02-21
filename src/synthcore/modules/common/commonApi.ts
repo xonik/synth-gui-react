@@ -10,6 +10,8 @@ export type NumericInputProperty = {
     ctrl: ControllerConfig;
     ctrlIndex?: number;
     value: number;
+    // May be used for stages etc. Can only be sent with nrpn and must be in range 0-31
+    valueIndex?: number;
     source: ApiSource
 }
 
