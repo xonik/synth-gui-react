@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import { selectStages } from '../../synthcore/modules/env/envReducer'
 import './StageActivator.scss'
 import { click } from '../../synthcore/modules/ui/uiReducer'
-import envControllers from '../../synthcore/modules/env/envControllers'
+import { envCtrls } from '../../synthcore/modules/env/envControllers'
 import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 
 interface Props {
@@ -29,7 +29,7 @@ const StageActivator = ({ envId }: Props) => {
                 key={stage.id}
                 active={stage.enabled === 1}
                 onClick={() => dispatch(click({
-                    ctrl: envControllers(0).TOGGLE_STAGE,
+                    ctrl: envCtrls.TOGGLE_STAGE,
                     ctrlGroup: ControllerGroupIds.ENV,
                     ctrlIndex: envId,
                     valueIndex: stage.id,

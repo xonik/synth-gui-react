@@ -16,7 +16,7 @@ import { curveFuncs } from '../../../components/curves/curveCalculator'
 import { ApiSource } from '../../types'
 import { dispatch, getBounded, getQuantized } from '../../utils'
 import { createSetterFuncs } from '../common/utils'
-import envControllers from './envControllers'
+import { envCtrls } from './envControllers'
 import { ButtonInputProperty, NumericInputProperty } from '../common/commonApi'
 import { paramReceive, paramSend } from '../common/commonMidiApi'
 import { getLinearToDBMapper, getLinearToExpMapper, getMapperWithFade } from '../../../midi/slopeCalculator'
@@ -36,11 +36,11 @@ const envTimeMapper = getLinearToExpMapper(65534, 65534, 3.5)
 
 const updateReleaseLevels = (envId: number, value: number) => {
     const action = {
-        ctrl: envControllers(0).LEVEL,
+        ctrl: envCtrls.LEVEL,
         ctrlIndex: envId,
         value
     }
-    const release1Enabled = selectEnvController(envControllers(0).TOGGLE_STAGE, envId, StageId.RELEASE1)(store.getState())
+    const release1Enabled = selectEnvController(envCtrls.TOGGLE_STAGE, envId, StageId.RELEASE1)(store.getState())
     if (release1Enabled === 1) {
         dispatch(setEnvController({...action, valueIndex: StageId.RELEASE1 }))
     } else {
@@ -52,7 +52,7 @@ const cannotDisableStage = (stage: StageId) => stage === StageId.ATTACK || stage
 
 const selectEnv = (envId: number, source: ApiSource) => {
     // TODO: Only send if not just sent
-    paramSend(source, envControllers(0).SELECT, envId)
+    paramSend(source, envCtrls.SELECT, envId)
 }
 
 const stageLevel = (() => {
@@ -62,7 +62,7 @@ const stageLevel = (() => {
         // TODO: Remove this
         const env = selectEnvelopes(store.getState()).envs[envId]
         const r1enabled = selectEnvController(
-            envControllers(0).TOGGLE_STAGE,
+            envCtrls.TOGGLE_STAGE,
             envId,
             StageId.RELEASE1)(store.getState())
 
@@ -99,7 +99,7 @@ const stageLevel = (() => {
                 boundedValue = Math.floor(envLevelMapper(boundedValue - 32767) + 32767)
             }*/
             selectEnv(envId, source)
-            paramSend(source, envControllers(0).LEVEL, boundedValue, stageId)
+            paramSend(source, envCtrls.LEVEL, boundedValue, stageId)
         }
     }
 
@@ -109,7 +109,7 @@ const stageLevel = (() => {
         set({...input, value: currentLevel + inc})
     }
 
-    paramReceive(envControllers(0).LEVEL, set)
+    paramReceive(envCtrls.LEVEL, set)
 
     return {
         set,
@@ -135,7 +135,7 @@ const stageTime = (() => {
         //boundedValue = Math.floor(envTimeMapper(boundedValue * 65535))
 
         selectEnv(envId, source)
-        paramSend(source, envControllers(0).TIME, boundedValue, stageId)
+        paramSend(source, envCtrls.TIME, boundedValue, stageId)
     }
 
     const increment = (input: NumericInputProperty) => {
@@ -168,7 +168,7 @@ const stageEnabled = (() => {
         dispatch(setEnvController(input))
 
         if (stageId === StageId.RELEASE1) {
-            const sustainLevel = selectEnvController(envControllers(0).LEVEL, envId, StageId.SUSTAIN)(store.getState())
+            const sustainLevel = selectEnvController(envCtrls.LEVEL, envId, StageId.SUSTAIN)(store.getState())
             if (enabled) {
                 dispatch(setEnvController({ ...input, valueIndex: StageId.RELEASE1, value: sustainLevel }))
             } else {
@@ -229,7 +229,7 @@ const maxLoops = (() => {
     const set = (input: NumericInputProperty) => {
         const { ctrlIndex: envId = 0, value } = input
         const currMaxLoops = selectEnvController(
-            envControllers(0).MAX_LOOPS,
+            envCtrls.MAX_LOOPS,
             envId)(store.getState())
 
         const boundedMaxLoops = getBounded(value, 2, 128)
@@ -245,13 +245,13 @@ const maxLoops = (() => {
         const { ctrlIndex: envId = 0, value: inc } = input
 
         const currMaxLoops = selectEnvController(
-            envControllers(0).MAX_LOOPS,
+            envCtrls.MAX_LOOPS,
             envId)(store.getState())
 
         set({...input, value: currMaxLoops + inc})
     }
     
-    paramReceive(envControllers(0).MAX_LOOPS, set)
+    paramReceive(envCtrls.MAX_LOOPS, set)
 
     return {
         set,
@@ -281,7 +281,7 @@ const env3Id = (() => {
         }
         set({...input, value: nextEnv3Id})
     }
-    paramReceive(envControllers(0).SELECT_ENV3_ID, set)
+    paramReceive(envCtrls.SELECT_ENV3_ID, set)
 
     return {
         set,
@@ -321,24 +321,24 @@ const toggleStageSelected = (envId: number, stageId: StageId, source: ApiSource)
 }
 
 const { increment: commonInc, toggle: commonToggle, set: commonSet } = createSetterFuncs([
-        envControllers(0).LOOP,
-        envControllers(0).TRIGGER,
-        envControllers(0).INVERT,
-        envControllers(0).RESET_ON_TRIGGER,
-        envControllers(0).RELEASE_MODE,
-        envControllers(0).LOOP_MODE,
+        envCtrls.LOOP,
+        envCtrls.TRIGGER,
+        envCtrls.INVERT,
+        envCtrls.RESET_ON_TRIGGER,
+        envCtrls.RELEASE_MODE,
+        envCtrls.LOOP_MODE,
     ],
     setEnvController,
     selectEnvController,
 )
 
 const customSetterFuncs = {
-    [envControllers(0).LEVEL.id]: stageLevel,
-    [envControllers(0).TIME.id]: stageTime,
-    [envControllers(0).TOGGLE_STAGE.id]: stageEnabled,
-    [envControllers(0).CURVE.id]: stageCurve,
-    [envControllers(0).MAX_LOOPS.id]: maxLoops,
-    [envControllers(0).SELECT_ENV3_ID.id]: env3Id,
+    [envCtrls.LEVEL.id]: stageLevel,
+    [envCtrls.TIME.id]: stageTime,
+    [envCtrls.TOGGLE_STAGE.id]: stageEnabled,
+    [envCtrls.CURVE.id]: stageCurve,
+    [envCtrls.MAX_LOOPS.id]: maxLoops,
+    [envCtrls.SELECT_ENV3_ID.id]: env3Id,
 }
 
 const increment = (input: NumericInputProperty) => {

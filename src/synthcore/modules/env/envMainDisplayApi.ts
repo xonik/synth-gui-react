@@ -1,11 +1,11 @@
-import { selectCurrEnvId, selectCurrStageId, selectEnvController, selectEnvelope } from './envReducer'
+import { selectCurrEnvId, selectCurrStageId, selectEnvController } from './envReducer'
 import { store } from '../../store'
 import { envApi } from '../../synthcoreApi'
 import { ApiSource } from '../../types'
 import { LoopMode, StageId } from './types'
 import { step } from '../../utils'
 import mainDisplayControllers from '../mainDisplay/mainDisplayControllers'
-import envControllers from './envControllers'
+import { envCtrls } from './envControllers'
 
 export const mainDisplayEnvPotResolutions = {
     [mainDisplayControllers.POT1.id]: 8,
@@ -26,7 +26,7 @@ export const mainDisplayEnvApi = {
             const stageId = selectCurrStageId(store.getState())
             if (stageId !== StageId.STOPPED) {
                 envApi.increment({
-                    ctrl: envControllers(0).TIME,
+                    ctrl: envCtrls.TIME,
                     ctrlIndex: envId,
                     valueIndex: stageId,
                     value: increment,
@@ -36,7 +36,7 @@ export const mainDisplayEnvApi = {
             const stageId = selectCurrStageId(store.getState())
             if (stageId !== StageId.STOPPED) {
                 envApi.increment({
-                    ctrl: envControllers(0).LEVEL,
+                    ctrl: envCtrls.LEVEL,
                     ctrlIndex: envId,
                     valueIndex: stageId,
                     value: increment,
@@ -46,19 +46,19 @@ export const mainDisplayEnvApi = {
             const stageId = selectCurrStageId(store.getState())
             if (stageId !== StageId.STOPPED) {
                 envApi.increment({
-                    ctrl: envControllers(0).CURVE,
+                    ctrl: envCtrls.CURVE,
                     ctrlIndex: envId,
                     valueIndex: stageId,
                     value: increment,
                     source: ApiSource.UI})
             }
         } else if (ctrlId === mainDisplayControllers.POT5.id) {
-            const loopMode = selectEnvController(envControllers(0).LOOP_MODE, envId)(store.getState())
+            const loopMode = selectEnvController(envCtrls.LOOP_MODE, envId)(store.getState())
             if (loopMode !== LoopMode.COUNTED) {
                 return
             }
             envApi.increment({
-                ctrl: envControllers(0).MAX_LOOPS,
+                ctrl: envCtrls.MAX_LOOPS,
                 ctrlIndex: envId,
                 value: step(increment),
                 source: ApiSource.UI})

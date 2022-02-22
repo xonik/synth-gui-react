@@ -9,9 +9,9 @@ import {
 } from '../../synthcore/modules/env/envReducer'
 import { curveNames, loopModeNames, releaseModeNames } from './utils'
 import './EnvOptions.scss'
-import envControllers from '../../synthcore/modules/env/envControllers'
 import { click } from '../../synthcore/modules/ui/uiReducer'
 import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
+import { envCtrls } from '../../synthcore/modules/env/envControllers'
 
 interface Props {
     envId: number
@@ -32,21 +32,21 @@ const EnvOptions = ({ envId }: Props) => {
     }
 
     const dispatch = useAppDispatch()
-    const releaseMode = useAppSelector(selectEnvController(envControllers(0).RELEASE_MODE, envId))
-    const loopMode = useAppSelector(selectEnvController(envControllers(0).LOOP_MODE, envId))
-    const loopEnabled = useAppSelector(selectEnvController(envControllers(0).LOOP, envId))
-    const maxLoops = useAppSelector(selectEnvController(envControllers(0).MAX_LOOPS, envId))
-    const invert = useAppSelector(selectEnvController(envControllers(0).INVERT, envId))
-    const retrigger = useAppSelector(selectEnvController(envControllers(0).RESET_ON_TRIGGER, envId))
+    const releaseMode = useAppSelector(selectEnvController(envCtrls.RELEASE_MODE, envId))
+    const loopMode = useAppSelector(selectEnvController(envCtrls.LOOP_MODE, envId))
+    const loopEnabled = useAppSelector(selectEnvController(envCtrls.LOOP, envId))
+    const maxLoops = useAppSelector(selectEnvController(envCtrls.MAX_LOOPS, envId))
+    const invert = useAppSelector(selectEnvController(envCtrls.INVERT, envId))
+    const retrigger = useAppSelector(selectEnvController(envCtrls.RESET_ON_TRIGGER, envId))
     const currStageId = useAppSelector(selectCurrStageId)
     const curve = useAppSelector(selectStageById(envId, currStageId)).curve
 
 
-    const clickInvert = click({ ...action, ctrl: envControllers(0).INVERT })
-    const clickRetrigger = click({ ...action, ctrl: envControllers(0).RESET_ON_TRIGGER })
-    const clickReleaseMode = click({ ...action, ctrl: envControllers(0).RELEASE_MODE })
-    const clickLoopMode = click({ ...action, ctrl: envControllers(0).LOOP_MODE })
-    const clickLoopEnabled = click({ ...action, ctrl: envControllers(0).LOOP })
+    const clickInvert = click({ ...action, ctrl: envCtrls.INVERT })
+    const clickRetrigger = click({ ...action, ctrl: envCtrls.RESET_ON_TRIGGER })
+    const clickReleaseMode = click({ ...action, ctrl: envCtrls.RELEASE_MODE })
+    const clickLoopMode = click({ ...action, ctrl: envCtrls.LOOP_MODE })
+    const clickLoopEnabled = click({ ...action, ctrl: envCtrls.LOOP })
 
     const hasCurve = currStageId !== StageId.STOPPED && currStageId !== StageId.DELAY && currStageId !== StageId.SUSTAIN
     const curveLabel = hasCurve ? curveNames[curve] : '-'

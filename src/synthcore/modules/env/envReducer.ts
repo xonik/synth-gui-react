@@ -6,7 +6,7 @@ import { Curve, Envelope, Stage, StageId, STAGES } from './types'
 import { getDefaultEnvelope } from './envUtils'
 import { RootState } from '../../store'
 import { NumericControllerPayload } from '../common/CommonReducer'
-import envControllers from './envControllers'
+import envControllers, { envCtrls } from './envControllers'
 import { ControllerConfig } from '../../../midi/types'
 import { useAppSelector } from '../../hooks'
 
@@ -68,7 +68,7 @@ const setValueIndexedController = (state: Draft<EnvelopesState>, payload: Numeri
 
 const setLevel = (state: Draft<EnvelopesState>, payload: NumericControllerPayload, stageId: StageId, value: number) => setValueIndexedController(state, {
     ...payload,
-    ctrl: envControllers(0).LEVEL,
+    ctrl: envCtrls.LEVEL,
     valueIndex: stageId,
     value
 })
@@ -98,7 +98,7 @@ export const envelopesSlice = createSlice({
             }
 
             // TODO: Not very nice to have this here!
-            if (payload.ctrl.id === envControllers(0).INVERT.id) {
+            if (payload.ctrl.id === envCtrls.INVERT.id) {
                 const resetLevel = payload.value ? 1 : 0
                 setLevel(state, payload, StageId.DELAY, resetLevel)
                 setLevel(state, payload, StageId.ATTACK, resetLevel)
@@ -130,30 +130,35 @@ export const selectEnvelope = (envId: number) => (state: RootState) => state.env
 export const selectCurrStageId = (state: RootState) => state.envelopes.gui.currStageId
 export const selectCurrEnvId = (state: RootState) => state.envelopes.gui.currEnvId
 
+const getValueIndexedController = (ctrl: ControllerConfig, ctrlIndex: number, valueIndex: number, state: RootState) => {
+    const ctrlValue = state.envelopes.valueIndexedControllers[ctrlIndex]
+    if (ctrlValue === undefined || ctrlValue[ctrl.id] === undefined) {
+        return 0
+    } else {
+        return ctrlValue[ctrl.id][valueIndex]
+    }
+}
+
 export const selectEnvController = (ctrl: ControllerConfig, ctrlIndex: number, valueIndex?: number) => (state: RootState): number => {
     if (valueIndex === undefined) {
         const ctrlValue = state.envelopes.controllers[ctrlIndex]
+        if(ctrlValue === undefined) {
+            return 0
+        }
         return ctrlValue[ctrl.id] || 0
     } else {
-        const ctrlValue = state.envelopes.valueIndexedControllers[ctrlIndex]
-        if (ctrlValue === undefined || ctrlValue[ctrl.id] === undefined) {
-            return 0
-        } else {
-            return ctrlValue[ctrl.id][valueIndex]
-        }
+        return getValueIndexedController(ctrl, ctrlIndex, valueIndex, state)
     }
 }
 
 export const selectStageById = (envId: number, stageId: number) => (state: RootState): Stage => {
 
-    const stageCtrls = state.envelopes.valueIndexedControllers[envId]
-
     return{
         id: stageId,
-        enabled: stageCtrls[envControllers(0).TOGGLE_STAGE.id][stageId],
-        curve: stageCtrls[envControllers(0).CURVE.id][stageId],
-        level: stageCtrls[envControllers(0).LEVEL.id][stageId],
-        time: stageCtrls[envControllers(0).TIME.id][stageId],
+        enabled: getValueIndexedController(envCtrls.TOGGLE_STAGE, envId, stageId, state),
+        curve: getValueIndexedController(envCtrls.CURVE, envId, stageId, state),
+        level: getValueIndexedController(envCtrls.LEVEL, envId, stageId, state),
+        time: getValueIndexedController(envCtrls.TIME, envId, stageId, state),
     }
 }
 
@@ -163,10 +168,6 @@ export const selectStages = (envId: number) => (state: RootState): Stage[] => {
         stages.push(selectStageById(envId, i)(state))
     }
     return stages
-}
-
-export const selectBipolar = (envId: number) => (state: RootState): boolean => {
-    return state.envelopes.controllers[envId][envControllers(0).BIPOLAR.id] === 1
 }
 
 export default envelopesSlice.reducer

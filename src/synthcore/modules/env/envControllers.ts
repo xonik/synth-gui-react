@@ -141,4 +141,7 @@ const envControllers = (ctrlIndex: number): EnvControllers => ({
     },
 })
 
+// TODO: Make this select from controllers.ts
+export const envCtrls = envControllers(0)
+
 export default envControllers

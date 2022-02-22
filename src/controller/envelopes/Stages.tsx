@@ -2,14 +2,15 @@ import React, { useCallback } from 'react'
 import { StageId, Stage } from '../../synthcore/modules/env/types'
 import StageBlock from './StageBlock'
 import {
-    selectBipolar,
     selectCurrStageId,
+    selectEnvController,
     selectStages,
     toggleStageSelected,
 } from '../../synthcore/modules/env/envReducer'
 import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import classNames from 'classnames'
 import './Stages.scss'
+import { envCtrls } from '../../synthcore/modules/env/envControllers'
 
 interface Props {
     envId: number
@@ -29,7 +30,7 @@ const getNextEnabled = (stages: Stage[], currentId: StageId) => {
 const Stages = ({ envId }: Props) => {
 
     const stages = useAppSelector(selectStages(envId))
-    const bipolar = useAppSelector(selectBipolar(envId))
+    const bipolar = useAppSelector(selectEnvController(envCtrls.BIPOLAR, envId))
     const dispatch = useAppDispatch();
     const select = useAppSelector;
     const enabledStages = stages.filter((stage) => stage.enabled)
@@ -88,7 +89,7 @@ const Stages = ({ envId }: Props) => {
                         height={1}
                         stage={stage}
                         nextStage={nextStage}
-                        isBipolar={bipolar}
+                        isBipolar={bipolar === 1}
                     />
                 </React.Fragment>
                 if (enabled) {
