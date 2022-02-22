@@ -34,6 +34,7 @@ interface EnvControllers {
 
 const envControllers = (ctrlIndex: number): EnvControllers => ({
     props: { label: `Env ${1 + ctrlIndex}`, ctrlIndex },
+    // TODO: What do these do???
     DELAY_TIME: { id: ControllerIdEnvDst.DELAY_TIME, label: 'Delay time', shortLabel: 'Delay', isDstDigi: true, type: 'pot' },
     ATTACK_TIME: { id: ControllerIdEnvDst.ATTACK_TIME, label: 'Attack time', shortLabel: 'Attack', isDstDigi: true, type: 'pot' },
     DECAY1_TIME: { id: ControllerIdEnvDst.DECAY1_TIME, label: 'Decay 1 time', shortLabel: 'Decay 1', isDstDigi: true, type: 'pot' },
@@ -44,7 +45,7 @@ const envControllers = (ctrlIndex: number): EnvControllers => ({
     DECAY2_LEVEL: { id: ControllerIdEnvDst.DECAY2_LEVEL, label: 'Decay 2 level', shortLabel: 'D2 level', isDstDigi: true, type: 'pot' },
     RELEASE2_LEVEL: { id: ControllerIdEnvDst.RELEASE2_LEVEL, label: 'Release 2 level', shortLabel: 'R2 level', isDstDigi: true, type: 'pot' },
     CURVE: { id: ControllerIdNonMod.ENV_CURVE, label: 'Curve', type: 'pot', addr: NRPN.ENV_CURVE },
-    LEVEL: { id: ControllerIdNonMod.ENV_LEVEL, label: 'Level', type: 'pot', addr: NRPN.ENV_LEVEL },
+    LEVEL: { id: ControllerIdNonMod.ENV_LEVEL, label: 'Level', type: 'pot', addr: NRPN.ENV_LEVEL, bipolar: true },
     TIME: { id: ControllerIdNonMod.ENV_TIME, label: 'Time', type: 'pot', addr: NRPN.ENV_TIME },
     MAX_LOOPS: { id: ControllerIdNonMod.ENV_MAX_LOOPS, label: 'Max loops', type: 'pot', cc: CC.ENV_MAX_LOOPS },
     TOGGLE_STAGE: { id: ControllerIdNonMod.ENV_TOGGLE_STAGE, label: 'Stage on/off', type: 'pot', cc: CC.ENV_TOGGLE_STAGE }, // 4 bit stage, 7 bit on/off

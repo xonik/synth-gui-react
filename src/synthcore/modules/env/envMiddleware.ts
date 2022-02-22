@@ -11,8 +11,6 @@ export const envMiddleware = (action: PayloadAction): void => {
         if(action.payload.ctrl === envControllers(0).TRIGGER){
             envApi.release(ctrlIndex, ApiSource.UI)
         }
-    } else if (toggleStageEnabled.match(action)) {
-        envApi.toggleStageEnabled(action.payload.env, action.payload.stage, ApiSource.GUI)
     } else if (toggleStageSelected.match(action)) {
         envApi.toggleStageSelected(action.payload.env, action.payload.stage, ApiSource.GUI)
     }

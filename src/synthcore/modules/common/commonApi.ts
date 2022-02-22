@@ -19,6 +19,7 @@ export type ButtonInputProperty = {
     ctrlGroup?: ControllerGroupIds;
     ctrl: ControllerConfig;
     ctrlIndex?: number;
+    valueIndex?: number;
     radioButtonIndex?: number;
     reverse?: boolean;
     loop?: boolean;

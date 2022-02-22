@@ -30,7 +30,7 @@ const Transpose = ({ row2 }: TransposeProps) => {
     const col6 = col5 + ledDistance
     const col7 = col6 + ledDistance
 
-    const transpose = useAppSelector(selectController(kbdControllers.TRANSPOSE.id))
+    const transpose = useAppSelector(selectController(kbdControllers.TRANSPOSE))
 
     return <>
         <RoundPushButton8 labelPosition="bottom" x={col1} y={row2}

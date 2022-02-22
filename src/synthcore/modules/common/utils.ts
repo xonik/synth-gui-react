@@ -54,7 +54,7 @@ export const createSetMapper = (map: MapperEntry[]) => {
 export const createSetterFuncs = (
     controllers: ControllerConfig[],
     action: ActionCreatorWithPayload<NumericControllerPayload, string>,
-    selector: (ctrlId: number, ctrlIndex: number) => (state: RootState) => number) => {
+    selector: (ctrl: ControllerConfig, ctrlIndex: number) => (state: RootState) => number) => {
 
     const set = (input: NumericInputProperty) => {
         // Not for this reducer!
@@ -64,7 +64,7 @@ export const createSetterFuncs = (
         const lowerBound = input.ctrl.bipolar === true ? -1 : 0
         const upperBound = input.ctrl.values? input.ctrl.values.length : 1
         const boundedValue = getQuantized(getBounded(input.value, lowerBound, upperBound))
-        const currentValue = selector(input.ctrl.id, input.ctrlIndex || 0)(store.getState())
+        const currentValue = selector(input.ctrl, input.ctrlIndex || 0)(store.getState())
 
         if (boundedValue === currentValue) {
             return
@@ -74,7 +74,7 @@ export const createSetterFuncs = (
         // 5 bits left over when 16 bits have been used for value.
         const boundedValueIndex = getBounded(input.valueIndex || 0, 0, 31)
 
-        dispatch(action({ ctrlIndex: input.ctrlIndex, ctrlId: input.ctrl.id, value: boundedValue }))
+        dispatch(action({ ctrlIndex: input.ctrlIndex, ctrl: input.ctrl, value: boundedValue }))
 
         // send over midi
         paramSend(input.source, input.ctrl, boundedValue, boundedValueIndex)
@@ -85,7 +85,7 @@ export const createSetterFuncs = (
             return
         }
 
-        const currentValue = selector(input.ctrl.id, input.ctrlIndex || 0)(store.getState())
+        const currentValue = selector(input.ctrl, input.ctrlIndex || 0)(store.getState())
         const values = input.ctrl.values?.length || 1;
 
         // Radio buttons
@@ -116,7 +116,7 @@ export const createSetterFuncs = (
             return
         }
 
-        const currentValue = selector(input.ctrl.id, input.ctrlIndex || 0)(store.getState())
+        const currentValue = selector(input.ctrl, input.ctrlIndex || 0)(store.getState())
         set({...input, value: currentValue + input.value})
     }
 

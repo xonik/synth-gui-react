@@ -2,11 +2,12 @@
 // separate reducer for stage
 
 import { createSlice, Draft, PayloadAction } from '@reduxjs/toolkit'
-import { Envelope, LoopMode, ReleaseMode, Stage, StageId } from './types'
+import { Envelope, Stage, StageId } from './types'
 import { getDefaultEnvelope } from './envUtils'
-import { RootState, store } from '../../store'
+import { RootState } from '../../store'
 import { NumericControllerPayload } from '../common/CommonReducer'
 import envControllers from './envControllers'
+import { ControllerConfig } from '../../../midi/types'
 
 type EnvelopesState = {
     envs: Envelope[];
@@ -49,10 +50,6 @@ type NumericStagePayload = StagePayload & {
     value: number;
 }
 
-type NumericEnvPayload = EnvPayload & {
-    value: number;
-}
-
 type DualStageLevelPayload = {
     env: number;
     stage1: StageId;
@@ -64,12 +61,8 @@ type CurvePayload = StagePayload & {
     curve: number;
 }
 
-type SetInvertPayload = EnvPayload & {
-    invert: boolean;
-}
-
 type EnabledStagePayload = StagePayload & {
-    enabled: boolean;
+    enabled: number;
 }
 
 type Env3IdPayload = {
@@ -78,10 +71,6 @@ type Env3IdPayload = {
 
 const getStage = (state: Draft<any>, payload: StagePayload): Draft<Stage> => {
     return state.envs[payload.env].stages[payload.stage]
-}
-
-const getEnv = (state: Draft<any>, payload: StagePayload | EnvPayload): Draft<Envelope> => {
-    return state.envs[payload.env]
 }
 
 export const envelopesSlice = createSlice({
@@ -100,10 +89,6 @@ export const envelopesSlice = createSlice({
         },
         setCurve: (state, { payload }: PayloadAction<CurvePayload>) => {
             getStage(state, payload).curve = payload.curve
-        },
-
-        setMaxLoops: (state, { payload }: PayloadAction<NumericEnvPayload>) => {
-            getEnv(state, payload).controllers[envControllers(0).MAX_LOOPS.id] = payload.value
         },
 
         setStageEnabled: (state, { payload }: PayloadAction<EnabledStagePayload>) => {
@@ -127,14 +112,14 @@ export const envelopesSlice = createSlice({
             const env = state.envs[payload.ctrlIndex || 0]
 
             // TODO: Not very nice to have this here!
-            if(payload.ctrlId === envControllers(0).INVERT.id) {
+            if(payload.ctrl.id === envControllers(0).INVERT.id) {
                 const resetLevel = payload.value ? 1 : 0
                 env.stages[StageId.DELAY].level = resetLevel
                 env.stages[StageId.ATTACK].level = resetLevel
                 env.stages[StageId.DECAY1].level = payload.value ? 0 : 1
                 env.stages[StageId.STOPPED].level = resetLevel
             }
-            env.controllers[payload.ctrlId] = payload.value
+            env.controllers[payload.ctrl.id] = payload.value
         },
 
         // actions only consumed by api
@@ -150,8 +135,6 @@ export const {
     setDualLevels,
     setTime,
     setCurve,
-
-    setMaxLoops,
 
     setStageEnabled,
     selectStage,
@@ -174,6 +157,6 @@ export const selectCurrStageId = (state: RootState) => state.envelopes.gui.currS
 export const selectCurrEnvId = (state: RootState) => state.envelopes.gui.currEnvId
 export const selectEnv3Id = (state: RootState) => state.envelopes.ui.env3Id
 
-export const selectEnvController = (ctrlId: number, ctrlIndex: number) => (state: RootState): number => state.envelopes.envs[ctrlIndex].controllers[ctrlId] || 0
+export const selectEnvController = (ctrl: ControllerConfig, ctrlIndex: number) => (state: RootState): number => state.envelopes.envs[ctrlIndex].controllers[ctrl.id] || 0
 
 export default envelopesSlice.reducer

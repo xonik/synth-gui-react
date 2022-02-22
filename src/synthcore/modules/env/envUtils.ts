@@ -1,60 +1,60 @@
-import { Curve, Envelope, LoopMode, ReleaseMode, Stage, StageId } from './types'
+import { Curve, Envelope, Stage, StageId } from './types'
 
 export const getDefaultEnvelope = (id: number): Envelope => {
 
     const stages: Stage[] = [];
     stages.push({
         id: StageId.DELAY,
-        enabled: false,
+        enabled: 0,
         curve: Curve.LIN,
         level: 0,
         time: 0,
     })
     stages.push({
         id: StageId.ATTACK,
-        enabled: true,
+        enabled: 1,
         curve: Curve.LOG1,
         level: 0,
         time: 0.001,
     })
     stages.push({
         id: StageId.DECAY1,
-        enabled: true,
+        enabled: 1,
         curve: Curve.LOG1,
         level: 1,
         time: 0.5,
     })
     stages.push({
         id: StageId.DECAY2,
-        enabled: false,
+        enabled: 0,
         curve: Curve.LIN,
         level: 0.5,
         time: 0.001,
     })
     stages.push({
         id: StageId.SUSTAIN,
-        enabled: true,
+        enabled: 1,
         curve: Curve.LIN,
         level: 0.5,
         time: 0,
     })
     stages.push({
         id: StageId.RELEASE1,
-        enabled: false,
+        enabled: 0,
         curve: Curve.LOG1,
         level: 0.5,
         time: 0.001,
     })
     stages.push({
         id: StageId.RELEASE2,
-        enabled: true,
+        enabled: 1,
         curve: Curve.LOG1,
         level: 0.25,
         time: 0.003,
     })
     stages.push({
         id: StageId.STOPPED,
-        enabled: true,
+        enabled: 1,
         curve: Curve.LIN,
         level: 0,
         time: 0,
