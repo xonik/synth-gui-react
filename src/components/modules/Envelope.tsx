@@ -4,7 +4,7 @@ import RotaryPot10 from '../pots/RotaryPot10'
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import Header from '../misc/Header'
-import { selectEnvController, selectEnvelope } from '../../synthcore/modules/env/envReducer'
+import { selectEnvController } from '../../synthcore/modules/env/envReducer'
 import { StageId } from '../../synthcore/modules/env/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { ControllerGroupIds } from '../../synthcore/types'
@@ -27,7 +27,7 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
     const potY = y + 45
     const potDistance = 40
 
-    const env = useAppSelector(selectEnvelope(envId))
+    const bipolar = useAppSelector(selectEnvController(envCtrls.BIPOLAR, envId))
     const env3Id = useAppSelector(selectController(envCtrls.SELECT_ENV3_ID))
 
     const delayDisabled = useAppSelector(selectEnvController(envCtrls.TOGGLE_STAGE, envId, StageId.DELAY))  === 0
@@ -62,11 +62,11 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
                      ctrlGroup={ctrlGroup}
                      ctrl={envCtrls.LEVEL}
                      ctrlIndex={envId}
-                     potMode={env.bipolar ? 'pan' : 'normal'}
+                     potMode={bipolar ? 'pan' : 'normal'}
                      valueIndex={StageId.SUSTAIN}
                      disabled={sustainDisabled}
         />
-        {/*value={env.bipolar ? (levelS + 1) / 2 : levelS}*/}
+        {/*value={bipolar ? (levelS + 1) / 2 : levelS}*/}
         <RotaryPot17 ledMode="single" label="Release 1" x={firstPotX + potDistance * 4} y={potY}
                      ctrlGroup={ctrlGroup}
                      ctrl={envCtrls.TIME}
@@ -103,11 +103,11 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
                      ctrlGroup={ctrlGroup}
                      ctrl={envCtrls.LEVEL}
                      ctrlIndex={envId}
-                     potMode={env.bipolar ? 'pan' : 'normal'}
+                     potMode={bipolar ? 'pan' : 'normal'}
                      valueIndex={StageId.DECAY2}
                      disabled={decay2Disabled}
         />
-        {/*value={env.bipolar ? (levelD2 + 1) / 2 : levelD2}*/}
+        {/*value={bipolar ? (levelD2 + 1) / 2 : levelD2}*/}
         <RoundLedPushButton8
             label="Invert" x={firstPotX + potDistance * 2.5} y={topRowY}
             labelPosition="bottom"
@@ -124,11 +124,11 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
                      ctrlGroup={ctrlGroup}
                      ctrl={envCtrls.RELEASE2_LEVEL}
                      ctrlIndex={envId}
-                     potMode={env.bipolar ? 'pan' : 'normal'}
+                     potMode={bipolar ? 'pan' : 'normal'}
                      valueIndex={StageId.RELEASE2}
         />
 
-        {/*value={env.bipolar ? (levelR2 + 1) / 2 : levelR2}*/}
+        {/*value={bipolar ? (levelR2 + 1) / 2 : levelR2}*/}
 
         <RoundPushButton8 label="Trigger" x={firstPotX + potDistance * 5.5} y={topRowY} labelPosition="bottom"
                           ctrlGroup={ctrlGroup}

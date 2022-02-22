@@ -1,5 +1,5 @@
 import React from 'react'
-import { Envelope, Stage, StageId } from '../../synthcore/modules/env/types'
+import { Stage, StageId } from '../../synthcore/modules/env/types'
 import './StageParams.scss'
 import classNames from 'classnames'
 import { useAppSelector } from '../../synthcore/hooks'

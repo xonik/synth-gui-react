@@ -1,11 +1,9 @@
-import { StageId } from './types'
+import { NUMBER_OF_ENVELOPES, StageId } from './types'
 import {
     deselectStage,
     selectCurrEnvId,
     selectCurrStageId,
     selectGuiEnv,
-    selectEnvelope,
-    selectEnvelopes,
     selectStage,
     setEnvController,
     selectEnvController,
@@ -21,8 +19,6 @@ import { ButtonInputProperty, NumericInputProperty } from '../common/commonApi'
 import { paramReceive, paramSend } from '../common/commonMidiApi'
 import { getLinearToDBMapper, getLinearToExpMapper, getMapperWithFade } from '../../../midi/slopeCalculator'
 import { selectController, setController } from '../controllers/controllersReducer'
-
-const NUMBER_OF_ENVELOPES = 5
 
 const envLevelMapper = getMapperWithFade(
     getLinearToDBMapper(32767, 32767, 23, true, false),
@@ -59,8 +55,6 @@ const stageLevel = (() => {
     const set = (input: NumericInputProperty) => {
         const { ctrlIndex: envId = 0, value, valueIndex: stageId = 0, source, ctrl } = input
 
-        // TODO: Remove this
-        const env = selectEnvelopes(store.getState()).envs[envId]
         const r1enabled = selectEnvController(
             envCtrls.TOGGLE_STAGE,
             envId,
@@ -71,7 +65,8 @@ const stageLevel = (() => {
             stageId === StageId.SUSTAIN ||
             (stageId === StageId.RELEASE2 && r1enabled)
         ) {
-            let boundedValue = env.bipolar
+            const bipolar = selectEnvController(envCtrls.BIPOLAR, envId)(store.getState()) === 1
+            let boundedValue = bipolar
                 ? getQuantized(getBounded(value, -1, 1), 32767)
                 : getQuantized(getBounded(value), 32767)
 
@@ -104,8 +99,8 @@ const stageLevel = (() => {
     }
 
     const increment = (input: NumericInputProperty) => {
-        const { ctrlIndex: envId = 0, valueIndex: stageId = 0, value: inc } = input
-        const currentLevel = selectEnvelope(envId)(store.getState()).stages[stageId].level
+        const { ctrlIndex: envId = 0, valueIndex: stageId = 0, value: inc, ctrl } = input
+        const currentLevel = selectEnvController(ctrl, envId, stageId)(store.getState())
         set({...input, value: currentLevel + inc})
     }
 
@@ -160,9 +155,7 @@ const stageEnabled = (() => {
             return
         }
 
-
         const currentEnabled = selectEnvController(ctrl, envId, stageId)(store.getState())
-        console.log('enable', input, currentEnabled)
         if (currentEnabled === enabled) {
             return
         }
@@ -201,10 +194,10 @@ const stageEnabled = (() => {
 
 const stageCurve = (() => {
     const set = (input: NumericInputProperty) => {
-        const { ctrlIndex: envId = 0, value: curve, valueIndex: stageId = 0 } = input
-        const stage = selectEnvelope(envId)(store.getState()).stages[stageId]
+        const { ctrlIndex: envId = 0, value: curve, valueIndex: stageId = 0, ctrl } = input
+        const currentCurve = selectEnvController(ctrl, envId, stageId)(store.getState())
         const boundedCurve = getBounded(curve, 0, curveFuncs.length - 1)
-        if (stage.curve === boundedCurve) {
+        if (currentCurve === boundedCurve) {
             return
         }
 
@@ -212,9 +205,9 @@ const stageCurve = (() => {
         midiApi.curve.send({...input, value: boundedCurve})
     }
     const increment = (input: NumericInputProperty) => {
-        const { ctrlIndex: envId = 0, valueIndex: stageId = 0, value: inc } = input
-        const curve = selectEnvelope(envId)(store.getState()).stages[stageId].curve
-        set({ ...input, value: curve + inc })
+        const { ctrlIndex: envId = 0, valueIndex: stageId = 0, value: inc, ctrl } = input
+        const currentCurve = selectEnvController(ctrl, envId, stageId)(store.getState())
+        set({ ...input, value: currentCurve + inc })
     }
 
     midiApi.curve.receive(set)
@@ -305,7 +298,7 @@ const release = (envId: number, source: ApiSource) => {
 
 // GUI STUFF
 const setCurrentEnv = (envId: number, source: ApiSource) => {
-    const boundedEnv = getBounded(envId, 0, selectEnvelopes(store.getState()).envs.length - 1)
+    const boundedEnv = getBounded(envId, 0, NUMBER_OF_ENVELOPES - 1)
     if (selectCurrEnvId(store.getState()) !== boundedEnv) {
         dispatch(selectGuiEnv({ env: boundedEnv }))
     }

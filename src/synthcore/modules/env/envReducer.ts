@@ -1,17 +1,11 @@
-// createSlice
-// separate reducer for stage
-
 import { createSlice, Draft, PayloadAction } from '@reduxjs/toolkit'
-import { Curve, Envelope, Stage, StageId, STAGES } from './types'
-import { getDefaultEnvelope } from './envUtils'
+import { Stage, StageId, STAGES } from './types'
 import { RootState } from '../../store'
 import { NumericControllerPayload } from '../common/CommonReducer'
-import envControllers, { envCtrls } from './envControllers'
+import { envCtrls } from './envControllers'
 import { ControllerConfig } from '../../../midi/types'
-import { useAppSelector } from '../../hooks'
 
 type EnvelopesState = {
-    envs: Envelope[];
     gui: {
         currEnvId: number;
         currStageId: StageId;
@@ -32,13 +26,6 @@ type EnvelopesState = {
 }
 
 export const initialState: EnvelopesState = {
-    envs: [
-        getDefaultEnvelope(0),
-        getDefaultEnvelope(1),
-        getDefaultEnvelope(2),
-        getDefaultEnvelope(3),
-        getDefaultEnvelope(4),
-    ],
     gui: {
         currEnvId: 0,
         currStageId: StageId.STOPPED,
@@ -152,9 +139,6 @@ export const {
 
     toggleStageSelected,
 } = envelopesSlice.actions
-
-export const selectEnvelopes = (state: RootState) => state.envelopes
-export const selectEnvelope = (envId: number) => (state: RootState) => state.envelopes.envs[envId]
 
 export const selectCurrStageId = (state: RootState) => state.envelopes.gui.currStageId
 export const selectCurrEnvId = (state: RootState) => state.envelopes.gui.currEnvId

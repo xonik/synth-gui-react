@@ -1,4 +1,4 @@
-import { Curve, Envelope, Stage, StageId } from './types'
+import { Envelope, Stage } from './types'
 
 export const getDefaultEnvelope = (id: number): Envelope => {
 
