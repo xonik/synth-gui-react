@@ -6,6 +6,7 @@ import { Lfo, Stage, StageId } from './types'
 import { getDefaultLfo } from './lfoUtils'
 import { RootState } from '../../store'
 import { NumericControllerPayload, NumericPayload } from '../common/CommonReducer'
+import { ControllerConfig } from '../../../midi/types'
 
 type LfosState = {
 
@@ -107,7 +108,7 @@ export const lfosSlice = createSlice({
         },
 
         setLfoController:  (state, { payload }: PayloadAction<NumericControllerPayload>) => {
-            state.lfos[payload.ctrlIndex || 0].controllers[payload.ctrlId] = payload.value
+            state.lfos[payload.ctrlIndex || 0].controllers[payload.ctrl.id] = payload.value
         },
 
         // actions only consumed by api
@@ -145,6 +146,6 @@ export const selectGuiStageId = (state: RootState) => state.lfos.gui.stageId
 export const selectGuiLfoId = (state: RootState) => state.lfos.gui.lfoId
 export const selectUiLfoId = (state: RootState) => state.lfos.ui.lfoId
 export const selectUiLfo = (state: RootState) => state.lfos.lfos[state.lfos.ui.lfoId]
-export const selectLfoController = (ctrlId: number, ctrlIndex: number) => (state: RootState) => state.lfos.lfos[ctrlIndex].controllers[ctrlId] || 0
+export const selectLfoController = (ctrl: ControllerConfig, ctrlIndex: number, valueIndex?: number) => (state: RootState) => state.lfos.lfos[ctrlIndex].controllers[ctrl.id] || 0
 
 export default lfosSlice.reducer

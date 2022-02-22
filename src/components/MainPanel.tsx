@@ -24,8 +24,10 @@ import KeyboardControls from './modules/KeyboardControls'
 import VoiceSelector from './modules/VoiceSelector'
 import Controller from '../controller/Controller'
 import { useAppSelector } from '../synthcore/hooks'
-import { selectEnv3Id } from '../synthcore/modules/env/envReducer'
 import './MainPanel.scss'
+import { selectEnvController } from '../synthcore/modules/env/envReducer'
+import envControllers from '../synthcore/modules/env/envControllers'
+import { selectController } from '../synthcore/modules/controllers/controllersReducer'
 
 /**
  * TODO:
@@ -38,7 +40,7 @@ import './MainPanel.scss'
  */
 const MainPanel = () => {
 
-    const env3Id = useAppSelector(selectEnv3Id)
+    const env3Id = useAppSelector(selectController(envControllers(0).SELECT_ENV3_ID))
     //const panelHeight = 350;
     //const panelWidth = 1050;
 

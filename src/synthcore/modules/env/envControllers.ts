@@ -29,12 +29,13 @@ interface EnvControllers {
     RESET_ON_TRIGGER: ControllerConfigCCWithValue
     RELEASE_MODE: ControllerConfigCCWithValue
     LOOP_MODE: ControllerConfigCCWithValue
+    BIPOLAR: ControllerConfigCCWithValue
     OUTPUT: ControllerConfig
 }
 
 const envControllers = (ctrlIndex: number): EnvControllers => ({
     props: { label: `Env ${1 + ctrlIndex}`, ctrlIndex },
-    // TODO: What do these do???
+    // TODO: What do these do??? Looks like its modulation targets.
     DELAY_TIME: { id: ControllerIdEnvDst.DELAY_TIME, label: 'Delay time', shortLabel: 'Delay', isDstDigi: true, type: 'pot' },
     ATTACK_TIME: { id: ControllerIdEnvDst.ATTACK_TIME, label: 'Attack time', shortLabel: 'Attack', isDstDigi: true, type: 'pot' },
     DECAY1_TIME: { id: ControllerIdEnvDst.DECAY1_TIME, label: 'Decay 1 time', shortLabel: 'Decay 1', isDstDigi: true, type: 'pot' },
@@ -119,6 +120,16 @@ const envControllers = (ctrlIndex: number): EnvControllers => ({
             BUTTONS.BUTTONS_RIGHT.values.ENV_LOOP_MODE_GATED,
             BUTTONS.BUTTONS_RIGHT.values.ENV_LOOP_MODE_COUNTED,
             BUTTONS.BUTTONS_RIGHT.values.ENV_LOOP_MODE_INFINITE,
+        ],
+    },
+    BIPOLAR: {
+        id: ControllerIdNonMod.ENV_BIPOLAR,
+        label: 'Bipolar',
+        type: 'button',
+        cc: BUTTONS.BUTTONS_RIGHT.cc,
+        values: [
+            BUTTONS.BUTTONS_RIGHT.values.ENV_BIPOLAR_OFF,
+            BUTTONS.BUTTONS_RIGHT.values.ENV_BIPOLAR_ON,
         ],
     },
     OUTPUT: {

@@ -1,7 +1,7 @@
 import React from 'react'
 import Stages from './Stages'
 import { useAppSelector } from '../../synthcore/hooks'
-import { selectCurrEnvId, selectEnvelope } from '../../synthcore/modules/env/envReducer'
+import { selectCurrEnvId } from '../../synthcore/modules/env/envReducer'
 import StageActivator from './StageActivator'
 import EnvOptions from './EnvOptions'
 import StageParams from './StageParams'
@@ -12,20 +12,19 @@ import './EnvelopeControl.scss'
 const EnvelopeControl = () => {
 
     const envId = useAppSelector(selectCurrEnvId)
-    const env = useAppSelector(selectEnvelope(envId))
 
     return <div className="env-ctrl">
-        <EnvOptions env={env}/>
+        <EnvOptions envId={envId}/>
         <div className="env-ctrl-stages">
-            <StageNames env={env}/>
+            <StageNames envId={envId}/>
             <div className="env-ctrl-graph">
                 <svg viewBox={`0 0 1 1`} preserveAspectRatio="none" className="env-ctrl-graph-svg">
-                    <Stages env={env}/>
+                    <Stages envId={envId}/>
                 </svg>
             </div>
-            <StageParams env={env}/>
+            <StageParams envId={envId}/>
         </div>
-        <StageActivator env={env}/>
+        <StageActivator envId={envId}/>
 
     </div>
 }

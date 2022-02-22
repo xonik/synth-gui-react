@@ -1,4 +1,4 @@
-import { Envelope, StageId } from './types'
+import { StageId } from './types'
 import {
     deselectStage,
     selectCurrEnvId,
@@ -7,14 +7,9 @@ import {
     selectEnvelope,
     selectEnvelopes,
     selectStage,
-    setCurve,
-    setDualLevels,
-    setLevel,
-    setTime,
-    setStageEnabled as setStageEnabledAction,
-    setEnv3Id as setEnv3IdAction,
-    selectEnv3Id, setEnvController, selectEnvController,
-} from '../env/envReducer'
+    setEnvController,
+    selectEnvController,
+} from './envReducer'
 import { store } from '../../store'
 import midiApi from './envMidiApi'
 import { curveFuncs } from '../../../components/curves/curveCalculator'
@@ -25,6 +20,9 @@ import envControllers from './envControllers'
 import { ButtonInputProperty, NumericInputProperty } from '../common/commonApi'
 import { paramReceive, paramSend } from '../common/commonMidiApi'
 import { getLinearToDBMapper, getLinearToExpMapper, getMapperWithFade } from '../../../midi/slopeCalculator'
+import { selectController, setController } from '../controllers/controllersReducer'
+
+const NUMBER_OF_ENVELOPES = 5
 
 const envLevelMapper = getMapperWithFade(
     getLinearToDBMapper(32767, 32767, 23, true, false),
@@ -36,11 +34,17 @@ const envLevelMapper = getMapperWithFade(
 // NB: Input is 0 to maxInput!
 const envTimeMapper = getLinearToExpMapper(65534, 65534, 3.5)
 
-const updateReleaseLevels = (env: Envelope, value: number) => {
-    if (env.stages[StageId.RELEASE1].enabled) {
-        dispatch(setLevel({ env: env.id, stage: StageId.RELEASE1, value }))
+const updateReleaseLevels = (envId: number, value: number) => {
+    const action = {
+        ctrl: envControllers(0).LEVEL,
+        ctrlIndex: envId,
+        value
+    }
+    const release1Enabled = selectEnvController(envControllers(0).TOGGLE_STAGE, envId, StageId.RELEASE1)(store.getState())
+    if (release1Enabled === 1) {
+        dispatch(setEnvController({...action, valueIndex: StageId.RELEASE1 }))
     } else {
-        dispatch(setLevel({ env: env.id, stage: StageId.RELEASE2, value }))
+        dispatch(setEnvController({...action, valueIndex: StageId.RELEASE2 }))
     }
 }
 
@@ -52,9 +56,16 @@ const selectEnv = (envId: number, source: ApiSource) => {
 }
 
 const stageLevel = (() => {
-    const set = ({ctrlIndex: envId = 0, value, valueIndex: stageId = 0, source}: NumericInputProperty) => {
+    const set = (input: NumericInputProperty) => {
+        const { ctrlIndex: envId = 0, value, valueIndex: stageId = 0, source, ctrl } = input
+
+        // TODO: Remove this
         const env = selectEnvelopes(store.getState()).envs[envId]
-        const r1enabled = env.stages[StageId.RELEASE1].enabled
+        const r1enabled = selectEnvController(
+            envControllers(0).TOGGLE_STAGE,
+            envId,
+            StageId.RELEASE1)(store.getState())
+
         if (
             stageId === StageId.DECAY2 ||
             stageId === StageId.SUSTAIN ||
@@ -64,7 +75,7 @@ const stageLevel = (() => {
                 ? getQuantized(getBounded(value, -1, 1), 32767)
                 : getQuantized(getBounded(value), 32767)
 
-            const currentLevel = env.stages[stageId].level
+            const currentLevel = selectEnvController(ctrl, envId, stageId)(store.getState())
             if (boundedValue === currentLevel) {
                 return
             }
@@ -73,19 +84,20 @@ const stageLevel = (() => {
             // r1 is enabled or not.
             if (stageId === StageId.SUSTAIN) {
                 const stage2Id = r1enabled ? StageId.RELEASE1 : StageId.RELEASE2
-                dispatch(setDualLevels({ env: env.id, stage1: StageId.SUSTAIN, stage2: stage2Id, value: boundedValue }))
+                dispatch(setEnvController({...input, valueIndex: StageId.SUSTAIN, value: boundedValue }))
+                dispatch(setEnvController({...input, valueIndex: stage2Id, value: boundedValue }))
             } else {
-                dispatch(setLevel({ env: envId, stage: stageId, value: boundedValue }))
+                dispatch(setEnvController({...input, value: boundedValue }))
             }
 
             if (stageId === StageId.SUSTAIN) {
-                updateReleaseLevels(env, boundedValue)
+                updateReleaseLevels(envId, boundedValue)
             }
 
             // TODO: hard coded curve mapping only for VCA and VCF envs. Should configurable and placed elsewhere!
-            if(envId === 0 || envId === 1) {
+            /*if(envId === 0 || envId === 1) {
                 boundedValue = Math.floor(envLevelMapper(boundedValue - 32767) + 32767)
-            }
+            }*/
             selectEnv(envId, source)
             paramSend(source, envControllers(0).LEVEL, boundedValue, stageId)
         }
@@ -102,73 +114,76 @@ const stageLevel = (() => {
     return {
         set,
         increment,
-        click: (input: ButtonInputProperty) => {}
+        toggle: (input: ButtonInputProperty) => {}
     }
 })()
 
 const stageTime = (() => {
-    const set = ({ ctrlIndex: envId = 0, value, valueIndex: stageId = 0, source }: NumericInputProperty) => {
+    const set = (input: NumericInputProperty) => {
+        const { ctrlIndex: envId = 0, value, valueIndex: stageId = 0, source, ctrl } = input
+
         let boundedValue = getQuantized(getBounded(value))
-        const currentTime = selectEnvelope(envId)(store.getState()).stages[stageId].time
+        const currentTime = selectEnvController(ctrl, envId, stageId)(store.getState())
 
         if (boundedValue === currentTime) {
             return
         }
 
-        dispatch(setTime({ env: envId, stage: stageId, value: boundedValue }))
+        dispatch(setEnvController({ ...input, value: boundedValue }))
 
         // TODO: This should be configurable!
-        boundedValue = Math.floor(envTimeMapper(boundedValue * 65535))
+        //boundedValue = Math.floor(envTimeMapper(boundedValue * 65535))
 
         selectEnv(envId, source)
         paramSend(source, envControllers(0).TIME, boundedValue, stageId)
     }
 
     const increment = (input: NumericInputProperty) => {
-        const { ctrlIndex: envId = 0, valueIndex: stageId = 0, value: inc } = input
+        const { ctrlIndex: envId = 0, valueIndex: stageId = 0, value: inc, ctrl } = input
 
-        const currentTime = selectEnvelope(envId)(store.getState()).stages[stageId].time
+        const currentTime = selectEnvController(ctrl, envId, stageId)(store.getState())
         set({ ...input, value: currentTime + inc })
     }
 
     return {
         set,
         increment,
-        click: (input: ButtonInputProperty) => {
+        toggle: (input: ButtonInputProperty) => {
         }
     }
 })()
 
 const stageEnabled = (() => {
     const set = (input: NumericInputProperty) => {
-        const { ctrlIndex: envId = 0, value: enabled, valueIndex: stageId = 0 } = input
+        const { ctrlIndex: envId = 0, value: enabled, valueIndex: stageId = 0, ctrl } = input
         if (cannotDisableStage(stageId)) {
             return
         }
 
-        const env = selectEnvelopes(store.getState()).envs[envId]
-        if (env.stages[stageId].enabled === enabled) {
+        const currentEnabled = selectEnvController(ctrl, envId, stageId)(store.getState())
+        if (currentEnabled === enabled) {
             return
         }
 
-        dispatch(setStageEnabledAction({ env: envId, stage: stageId, enabled }))
+        dispatch(setEnvController(input))
 
         if (stageId === StageId.RELEASE1) {
+            const sustainLevel = selectEnvController(envControllers(0).LEVEL, envId, StageId.SUSTAIN)(store.getState())
             if (enabled) {
-                dispatch(setLevel({ env: envId, stage: StageId.RELEASE1, value: env.stages[StageId.SUSTAIN].level }))
+                dispatch(setEnvController({ ...input, valueIndex: StageId.RELEASE1, value: sustainLevel }))
             } else {
-                dispatch(setLevel({ env: envId, stage: StageId.RELEASE2, value: env.stages[StageId.SUSTAIN].level }))
+                dispatch(setEnvController({ ...input, valueIndex: StageId.RELEASE2, value: sustainLevel }))
             }
         }
 
         midiApi.stageEnabled.send(input)
     }
-    const click = (input: ButtonInputProperty) => {
-        const { ctrlIndex: envId = 0, valueIndex: stageId = 0 } = input        
 
-        const env = selectEnvelopes(store.getState()).envs[envId]
-        const stage = env.stages[stageId]
-        const enabled = (stage.enabled + 1) % 2
+    const toggle = (input: ButtonInputProperty) => {
+        const { ctrlIndex: envId = 0, valueIndex: stageId = 0, ctrl } = input
+
+        const currentEnabled = selectEnvController(ctrl, envId, stageId)(store.getState())
+        const enabled = (currentEnabled + 1) % 2
         set({ ...input, value: enabled })
     }
 
@@ -176,7 +191,7 @@ const stageEnabled = (() => {
 
     return {
         set,
-        click,
+        toggle,
         increment: (input: NumericInputProperty) => {
         }
     }
@@ -191,7 +206,7 @@ const stageCurve = (() => {
             return
         }
 
-        dispatch(setCurve({ env: envId, stage: stageId, curve: boundedCurve }))
+        dispatch(setEnvController({...input, value: boundedCurve }))
         midiApi.curve.send({...input, value: boundedCurve})
     }
     const increment = (input: NumericInputProperty) => {
@@ -205,7 +220,7 @@ const stageCurve = (() => {
     return {
         set,
         increment,
-        click: (input: ButtonInputProperty) => {
+        toggle: (input: ButtonInputProperty) => {
         }
     }
 })()
@@ -213,7 +228,10 @@ const stageCurve = (() => {
 const maxLoops = (() => {
     const set = (input: NumericInputProperty) => {
         const { ctrlIndex: envId = 0, value } = input
-        const currMaxLoops = selectEnvelope(envId)(store.getState()).controllers[envControllers(0).MAX_LOOPS.id]
+        const currMaxLoops = selectEnvController(
+            envControllers(0).MAX_LOOPS,
+            envId)(store.getState())
+
         const boundedMaxLoops = getBounded(value, 2, 128)
         if (boundedMaxLoops === currMaxLoops) {
             return
@@ -226,7 +244,10 @@ const maxLoops = (() => {
     const increment = (input: NumericInputProperty) => {
         const { ctrlIndex: envId = 0, value: inc } = input
 
-        const currMaxLoops = selectEnvelope(envId)(store.getState()).controllers[envControllers(0).MAX_LOOPS.id]
+        const currMaxLoops = selectEnvController(
+            envControllers(0).MAX_LOOPS,
+            envId)(store.getState())
+
         set({...input, value: currMaxLoops + inc})
     }
     
@@ -235,7 +256,7 @@ const maxLoops = (() => {
     return {
         set,
         increment,
-        click: (input: ButtonInputProperty) => {
+        toggle: (input: ButtonInputProperty) => {
         }
     }
 })()
@@ -244,19 +265,18 @@ const env3Id = (() => {
     const set = (input: NumericInputProperty) => {
         const { value: id, source, ctrl } = input
 
-        const envelopes = selectEnvelopes(store.getState()).envs.length
-        const currentEnv3Id = selectEnv3Id(store.getState())
-        if (id !== currentEnv3Id && id < envelopes && id > 1) {
-            dispatch(setEnv3IdAction({ id }))
+        const currentEnv3Id = selectController(ctrl)(store.getState())
+        if (id !== currentEnv3Id && id < NUMBER_OF_ENVELOPES && id > 1) {
+            dispatch(setController(input))
             paramSend(source, ctrl, id )
         }
     }
     
-    const click = (input: ButtonInputProperty) => {
-        const envelopes = selectEnvelopes(store.getState()).envs.length
-        const currEnv3Id = selectEnv3Id(store.getState())
-        let nextEnv3Id = (currEnv3Id + 1)
-        if (nextEnv3Id > envelopes - 1) {
+    const toggle = (input: ButtonInputProperty) => {
+
+        const currentEnv3Id = selectController(input.ctrl)(store.getState())
+        let nextEnv3Id = (currentEnv3Id + 1)
+        if (nextEnv3Id > NUMBER_OF_ENVELOPES - 1) {
             nextEnv3Id = 2
         }
         set({...input, value: nextEnv3Id})
@@ -265,7 +285,7 @@ const env3Id = (() => {
 
     return {
         set,
-        click,
+        toggle,
         increment: (input: NumericInputProperty) => {
         }
     }
@@ -300,7 +320,7 @@ const toggleStageSelected = (envId: number, stageId: StageId, source: ApiSource)
     }
 }
 
-const { increment: commonInc, toggle: commonClick, set: commonSet } = createSetterFuncs([
+const { increment: commonInc, toggle: commonToggle, set: commonSet } = createSetterFuncs([
         envControllers(0).LOOP,
         envControllers(0).TRIGGER,
         envControllers(0).INVERT,
@@ -326,9 +346,9 @@ const increment = (input: NumericInputProperty) => {
     commonInc(input)
 }
 
-const click = (input: ButtonInputProperty) => {
-    customSetterFuncs[input.ctrl.id]?.click(input)
-    commonClick(input)
+const toggle = (input: ButtonInputProperty) => {
+    customSetterFuncs[input.ctrl.id]?.toggle(input)
+    commonToggle(input)
 }
 
 const set = (input: NumericInputProperty) => {
@@ -347,7 +367,7 @@ const envApi = {
     release,
 
     increment,
-    click,
+    toggle,
     set,
 }
 

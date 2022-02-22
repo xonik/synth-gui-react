@@ -2,12 +2,13 @@
 // separate reducer for stage
 
 import { createSlice, Draft, PayloadAction } from '@reduxjs/toolkit'
-import { Envelope, Stage, StageId } from './types'
+import { Curve, Envelope, Stage, StageId, STAGES } from './types'
 import { getDefaultEnvelope } from './envUtils'
 import { RootState } from '../../store'
 import { NumericControllerPayload } from '../common/CommonReducer'
 import envControllers from './envControllers'
 import { ControllerConfig } from '../../../midi/types'
+import { useAppSelector } from '../../hooks'
 
 type EnvelopesState = {
     envs: Envelope[];
@@ -15,9 +16,19 @@ type EnvelopesState = {
         currEnvId: number;
         currStageId: StageId;
     }
-    ui: {
-        env3Id: number;
-    }
+
+    // controllers that have one instance per ctrlIndex
+    // e.g. controllers[envId][loopMode]
+    controllers: {
+        [ctrlId: number]: number
+    }[]
+
+    // controllers that have more than one instance per ctrlIndex, e.g.
+    // stages for an envelope, e.g. valueIndexedControllers[envId][time][stageId]
+    // These are accessed as valueIndexedControllers[ctrlIndex][ctrl.id][valueIndex]
+    valueIndexedControllers: {
+        [ctrlId: number]: { [valueIndex: number]: number }
+    }[]
 }
 
 export const initialState: EnvelopesState = {
@@ -32,9 +43,8 @@ export const initialState: EnvelopesState = {
         currEnvId: 0,
         currStageId: StageId.STOPPED,
     },
-    ui: {
-        env3Id: 2
-    }
+    controllers: [],
+    valueIndexedControllers: [],
 }
 
 type StagePayload = {
@@ -46,55 +56,27 @@ type EnvPayload = {
     env: number;
 }
 
-type NumericStagePayload = StagePayload & {
-    value: number;
+const setValueIndexedController = (state: Draft<EnvelopesState>, payload: NumericControllerPayload) => {
+    const { ctrlIndex = 0, ctrl, valueIndex = 0, value } = payload
+    const indexedCtrls = state.valueIndexedControllers[ctrlIndex]
+    if (indexedCtrls[ctrl.id] === undefined) {
+        indexedCtrls[ctrl.id] = { [valueIndex]: value }
+    } else {
+        indexedCtrls[ctrl.id][valueIndex] = value
+    }
 }
 
-type DualStageLevelPayload = {
-    env: number;
-    stage1: StageId;
-    stage2: StageId;
-    value: number;
-}
-
-type CurvePayload = StagePayload & {
-    curve: number;
-}
-
-type EnabledStagePayload = StagePayload & {
-    enabled: number;
-}
-
-type Env3IdPayload = {
-    id: number;
-}
-
-const getStage = (state: Draft<any>, payload: StagePayload): Draft<Stage> => {
-    return state.envs[payload.env].stages[payload.stage]
-}
+const setLevel = (state: Draft<EnvelopesState>, payload: NumericControllerPayload, stageId: StageId, value: number) => setValueIndexedController(state, {
+    ...payload,
+    ctrl: envControllers(0).LEVEL,
+    valueIndex: stageId,
+    value
+})
 
 export const envelopesSlice = createSlice({
     name: 'envelopes',
     initialState,
     reducers: {
-        setLevel: (state, { payload }: PayloadAction<NumericStagePayload>) => {
-            getStage(state, payload).level = payload.value
-        },
-        setDualLevels: (state, { payload }: PayloadAction<DualStageLevelPayload>) => {
-            state.envs[payload.env].stages[payload.stage1].level = payload.value
-            state.envs[payload.env].stages[payload.stage2].level = payload.value
-        },
-        setTime: (state, { payload }: PayloadAction<NumericStagePayload>) => {
-            getStage(state, payload).time = payload.value
-        },
-        setCurve: (state, { payload }: PayloadAction<CurvePayload>) => {
-            getStage(state, payload).curve = payload.curve
-        },
-
-        setStageEnabled: (state, { payload }: PayloadAction<EnabledStagePayload>) => {
-            getStage(state, payload).enabled = payload.enabled
-        },
-
         selectStage: (state, { payload }: PayloadAction<StagePayload>) => {
             state.gui.currStageId = payload.stage
         },
@@ -104,59 +86,87 @@ export const envelopesSlice = createSlice({
         selectGuiEnv: (state, { payload }: PayloadAction<EnvPayload>) => {
             state.gui.currEnvId = payload.env
         },
-        setEnv3Id: (state, { payload }: PayloadAction<Env3IdPayload>) => {
-            state.ui.env3Id = payload.id
-        },
 
-        setEnvController:  (state, { payload }: PayloadAction<NumericControllerPayload>) => {
-            const env = state.envs[payload.ctrlIndex || 0]
+        setEnvController: (state, { payload }: PayloadAction<NumericControllerPayload>) => {
+
+            if (payload.valueIndex === undefined) {
+                const { ctrlIndex = 0, ctrl, value } = payload
+                const ctrls = state.controllers[ctrlIndex]
+                ctrls[ctrl.id] = value
+            } else {
+                setValueIndexedController(state, payload)
+            }
 
             // TODO: Not very nice to have this here!
-            if(payload.ctrl.id === envControllers(0).INVERT.id) {
+            if (payload.ctrl.id === envControllers(0).INVERT.id) {
                 const resetLevel = payload.value ? 1 : 0
-                env.stages[StageId.DELAY].level = resetLevel
-                env.stages[StageId.ATTACK].level = resetLevel
-                env.stages[StageId.DECAY1].level = payload.value ? 0 : 1
-                env.stages[StageId.STOPPED].level = resetLevel
+                setLevel(state, payload, StageId.DELAY, resetLevel)
+                setLevel(state, payload, StageId.ATTACK, resetLevel)
+                setLevel(state, payload, StageId.DECAY1, payload.value ? 0 : 1)
+                setLevel(state, payload, StageId.STOPPED, resetLevel)
             }
-            env.controllers[payload.ctrl.id] = payload.value
         },
 
         // actions only consumed by api
-        toggleStageEnabled: (state, { payload }: PayloadAction<StagePayload>) => {
-        },
         toggleStageSelected: (state, { payload }: PayloadAction<StagePayload>) => {
         },
     }
 })
 
 export const {
-    setLevel,
-    setDualLevels,
-    setTime,
-    setCurve,
-
-    setStageEnabled,
     selectStage,
     deselectStage,
+
     selectGuiEnv,
-    setEnv3Id,
 
     setEnvController,
 
-    toggleStageEnabled,
     toggleStageSelected,
 } = envelopesSlice.actions
 
 export const selectEnvelopes = (state: RootState) => state.envelopes
 export const selectEnvelope = (envId: number) => (state: RootState) => state.envelopes.envs[envId]
-export const selectLevel = (envId: number, stageId: StageId) => (state: RootState) => state.envelopes.envs[envId].stages[stageId].level
-export const selectTime = (envId: number, stageId: StageId) => (state: RootState) => state.envelopes.envs[envId].stages[stageId].time
 
 export const selectCurrStageId = (state: RootState) => state.envelopes.gui.currStageId
 export const selectCurrEnvId = (state: RootState) => state.envelopes.gui.currEnvId
-export const selectEnv3Id = (state: RootState) => state.envelopes.ui.env3Id
 
-export const selectEnvController = (ctrl: ControllerConfig, ctrlIndex: number) => (state: RootState): number => state.envelopes.envs[ctrlIndex].controllers[ctrl.id] || 0
+export const selectEnvController = (ctrl: ControllerConfig, ctrlIndex: number, valueIndex?: number) => (state: RootState): number => {
+    if (valueIndex === undefined) {
+        const ctrlValue = state.envelopes.controllers[ctrlIndex]
+        return ctrlValue[ctrl.id] || 0
+    } else {
+        const ctrlValue = state.envelopes.valueIndexedControllers[ctrlIndex]
+        if (ctrlValue === undefined || ctrlValue[ctrl.id] === undefined) {
+            return 0
+        } else {
+            return ctrlValue[ctrl.id][valueIndex]
+        }
+    }
+}
+
+export const selectStageById = (envId: number, stageId: number) => (state: RootState): Stage => {
+
+    const stageCtrls = state.envelopes.valueIndexedControllers[envId]
+
+    return{
+        id: stageId,
+        enabled: stageCtrls[envControllers(0).TOGGLE_STAGE.id][stageId],
+        curve: stageCtrls[envControllers(0).CURVE.id][stageId],
+        level: stageCtrls[envControllers(0).LEVEL.id][stageId],
+        time: stageCtrls[envControllers(0).TIME.id][stageId],
+    }
+}
+
+export const selectStages = (envId: number) => (state: RootState): Stage[] => {
+    const stages: Stage[] = [];
+    for(let i = 0; i<STAGES; i++){
+        stages.push(selectStageById(envId, i)(state))
+    }
+    return stages
+}
+
+export const selectBipolar = (envId: number) => (state: RootState): boolean => {
+    return state.envelopes.controllers[envId][envControllers(0).BIPOLAR.id] === 1
+}
 
 export default envelopesSlice.reducer

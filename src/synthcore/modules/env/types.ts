@@ -9,6 +9,12 @@ export enum StageId {
     STOPPED,
 }
 
+function enumKeys<O extends object, K extends keyof O = keyof O>(obj: O): K[] {
+    return Object.keys(obj).filter(k => Number.isNaN(+k)) as K[];
+}
+
+export const STAGES = Object.keys(StageId).length / 2
+
 export enum ReleaseMode {
     NORMAL,
     SKIP_R1,
@@ -41,7 +47,6 @@ export type Stage = {
 
 export type Envelope = {
     id: number;
-    controllers: {[key: number]: number}
     /*
     resetOnTrigger: boolean;
     resetLevel: number;

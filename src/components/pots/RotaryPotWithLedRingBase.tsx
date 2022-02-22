@@ -20,6 +20,7 @@ export interface Props {
     potMode?: PotMode
     label: string
     value?: number;
+    valueIndex?: number;
     ctrlGroup: ControllerGroupIds;
     ctrl: ControllerConfig;
     ctrlIndex?: number;
@@ -100,7 +101,7 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
 
     // Position should be in the range 0-1 in all modes but pan. In pan the range is -0.5 - 0.5
     const { x, y, ledMode = 'single', potMode = 'normal', label,
-        value, ctrlGroup, ctrl, ctrlIndex, disabled
+        value, valueIndex, ctrlGroup, ctrl, ctrlIndex, disabled
     } = props
 
     const dispatch = useAppDispatch()
@@ -121,7 +122,7 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
     // For scaling, use viewBox on the outer svg and unitless the rest of the way
 
     // positive pointer
-    const storeValue = useAppSelector(getControllerSelector(ctrlGroup)(ctrl.id, ctrlIndex || 0))
+    const storeValue = useAppSelector(getControllerSelector(ctrlGroup)(ctrl, ctrlIndex || 0, valueIndex))
     const currentValue = value || storeValue
 
     const ledPosition = getLedPos(centerLed, ledCount, potMode, currentValue)
@@ -136,8 +137,8 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
         // To keep the line in sync with how much the pot has been
         // turned we have to make increments twice as big.
         const value = potMode === 'pan' ? steps * (stepSize * 2) : steps * stepSize
-        dispatch(increment({ ctrlGroup, ctrl, value, ctrlIndex, source: ApiSource.UI }))
-    }, [disabled, ctrl, ctrlGroup, potMode, dispatch, ctrlIndex])
+        dispatch(increment({ ctrlGroup, ctrl, value, valueIndex, ctrlIndex, source: ApiSource.UI }))
+    }, [disabled, potMode, dispatch, ctrlGroup, ctrl, valueIndex, ctrlIndex])
 
     return (
         <svg x={x} y={y} className="pot">

@@ -3,6 +3,7 @@ import { Curve, Envelope, Stage, StageId } from './types'
 export const getDefaultEnvelope = (id: number): Envelope => {
 
     const stages: Stage[] = [];
+    /*
     stages.push({
         id: StageId.DELAY,
         enabled: 0,
@@ -58,7 +59,7 @@ export const getDefaultEnvelope = (id: number): Envelope => {
         curve: Curve.LIN,
         level: 0,
         time: 0,
-    })
+    })*/
 
     const env = {
         id,
@@ -76,11 +77,12 @@ export const getDefaultEnvelope = (id: number): Envelope => {
         bipolar: id !== 0 && id !== 1,
     }
 
-    updateReleaseLevels(env);
+//    updateReleaseLevels(env);
     return env;
 }
 
 // TODO: Duplicated in reducer, fix!
+/*
 const updateReleaseLevels =  (env: Envelope) => {
     if(env.stages[StageId.RELEASE1].enabled) {
         env.stages[StageId.RELEASE1].level = env.stages[StageId.SUSTAIN].level;
@@ -88,6 +90,7 @@ const updateReleaseLevels =  (env: Envelope) => {
         env.stages[StageId.RELEASE2].level = env.stages[StageId.SUSTAIN].level;
     }
 }
+ */
 
 // TODO: Duplicated in reducer, fix!
 /*

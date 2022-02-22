@@ -17,6 +17,7 @@ type NumericControllerPayload = {
     ctrl: ControllerConfig;
     ctrlIndex?: number;
     value: number;
+    valueIndex?: number;
     source: ApiSource
 }
 
@@ -24,6 +25,7 @@ type ButtonControllerPayload = {
     ctrlGroup: ControllerGroupIds;
     ctrl: ControllerConfig;
     ctrlIndex?: number;
+    valueIndex?: number;
     radioButtonIndex?: number;
     reverse?: boolean;
     loop?: boolean;

@@ -1,9 +1,10 @@
 import { ControllerConfig } from '../../../midi/types'
 
 export type NumericControllerPayload = {
-    ctrl: ControllerConfig,
-    ctrlIndex?: number,
-    value: number;
+    ctrl: ControllerConfig
+    ctrlIndex?: number
+    value: number
+    valueIndex?: number
 }
 
 export type NumericPayload = {

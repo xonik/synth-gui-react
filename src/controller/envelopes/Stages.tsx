@@ -1,13 +1,18 @@
 import React, { useCallback } from 'react'
-import { StageId, Envelope, Stage } from '../../synthcore/modules/env/types'
+import { StageId, Stage } from '../../synthcore/modules/env/types'
 import StageBlock from './StageBlock'
-import { selectCurrStageId, toggleStageSelected } from '../../synthcore/modules/env/envReducer'
+import {
+    selectBipolar,
+    selectCurrStageId,
+    selectStages,
+    toggleStageSelected,
+} from '../../synthcore/modules/env/envReducer'
 import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import classNames from 'classnames'
 import './Stages.scss'
 
 interface Props {
-    env: Envelope
+    envId: number
 }
 
 const getNextEnabled = (stages: Stage[], currentId: StageId) => {
@@ -21,28 +26,30 @@ const getNextEnabled = (stages: Stage[], currentId: StageId) => {
 }
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
-const Stages = ({ env }: Props) => {
+const Stages = ({ envId }: Props) => {
 
+    const stages = useAppSelector(selectStages(envId))
+    const bipolar = useAppSelector(selectBipolar(envId))
     const dispatch = useAppDispatch();
     const select = useAppSelector;
-    const stages = env.stages
     const enabledStages = stages.filter((stage) => stage.enabled)
     const stageCount = enabledStages.length - 1 // -1 because stopped is hidden.
     const stageWidth = 1 / stageCount
-    const graphCenter = env.bipolar ? 1 / 2 : 1
+    const graphCenter = bipolar ? 1 / 2 : 1
 
     let startX = 0
 
     const currStageId = select(selectCurrStageId);
 
     const onSvgClicked = useCallback((stageId: number) => {
-        dispatch(toggleStageSelected({env: env.id, stage: stageId}))
-    }, [env, dispatch])
+        dispatch(toggleStageSelected({env: envId, stage: stageId}))
+    }, [envId, dispatch])
+
 
 
     return <svg x={0} y={0}>
         {
-            env.bipolar && <line
+            bipolar && <line
               x1={0} y1={graphCenter}
               x2={1} y2={graphCenter}
               className={'stages-center-line'}
@@ -81,7 +88,7 @@ const Stages = ({ env }: Props) => {
                         height={1}
                         stage={stage}
                         nextStage={nextStage}
-                        isBipolar={env.bipolar}
+                        isBipolar={bipolar}
                     />
                 </React.Fragment>
                 if (enabled) {

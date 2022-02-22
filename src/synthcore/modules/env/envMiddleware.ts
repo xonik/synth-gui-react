@@ -1,6 +1,6 @@
 import { release } from '../ui/uiReducer'
 import { envApi } from '../../synthcoreApi'
-import { toggleStageEnabled, toggleStageSelected } from './envReducer'
+import { toggleStageSelected } from './envReducer'
 import { ApiSource } from '../../types'
 import { PayloadAction } from '@reduxjs/toolkit'
 import envControllers from './envControllers'

@@ -280,6 +280,7 @@ export enum ControllerIdNonMod {
     ENV_RESET_ON_TRIGGER,
     ENV_RELEASE_MODE,
     ENV_LOOP_MODE,
+    ENV_BIPOLAR,
 
     DSP1_EFFECT,
     DSP1_SOURCE,

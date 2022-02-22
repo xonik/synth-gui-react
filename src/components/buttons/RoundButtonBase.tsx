@@ -54,6 +54,7 @@ export interface Props {
     ctrl: ControllerConfig;
     ctrlIndex?: number;
     value?: number;
+    valueIndex?: number;
 
     // Only used if rotary button
     resolution?: number;
@@ -216,10 +217,10 @@ export const RoundButtonBase = (props: Props & Config) => {
     const {
         x, y, label, radioButtonIndex,
         hasOff, ledCount, ledButton, reverse, loop = true,
-        ctrlGroup, ctrl, ctrlIndex, value, resolution
+        ctrlGroup, ctrl, ctrlIndex, value, valueIndex, resolution
     } = props
 
-    const storeValue = useAppSelector(getControllerSelector(ctrlGroup)(ctrl.id, ctrlIndex || 0))
+    const storeValue = useAppSelector(getControllerSelector(ctrlGroup)(ctrl, ctrlIndex || 0))
     const currentValue = value || storeValue
 
     // off is always the first element in the midi config values list, so when a radio
@@ -231,9 +232,9 @@ export const RoundButtonBase = (props: Props & Config) => {
     const onIncrement = useCallback((steps: number) => {
         for(let i=0; i<Math.abs(steps); i++){
             if(steps > 0){
-                dispatch(click({ ctrlGroup, ctrl, loop, source: ApiSource.UI }))
+                dispatch(click({ ctrlGroup, ctrl, loop, valueIndex, source: ApiSource.UI }))
             } else {
-                dispatch(click({ ctrlGroup, ctrl, loop, reverse: true, source: ApiSource.UI }))
+                dispatch(click({ ctrlGroup, ctrl, loop, valueIndex, reverse: true, source: ApiSource.UI }))
             }
         }
     }, [ctrlGroup, ctrl, loop])

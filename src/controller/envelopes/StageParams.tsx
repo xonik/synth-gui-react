@@ -2,10 +2,12 @@ import React from 'react'
 import { Envelope, Stage, StageId } from '../../synthcore/modules/env/types'
 import './StageParams.scss'
 import classNames from 'classnames'
+import { useAppSelector } from '../../synthcore/hooks'
+import { selectStages } from '../../synthcore/modules/env/envReducer'
 
 interface Props {
     className?: string
-    env: Envelope
+    envId: number
 }
 
 const formatTime = (time: number) => {
@@ -23,9 +25,12 @@ const formatTime = (time: number) => {
 const formatLevel = (stage: Stage) => Math.round(stage.level * 1000) / 10
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
-const StageParams = ({ env, className }: Props) => {
+const StageParams = ({ envId, className }: Props) => {
+
+    const stages = useAppSelector(selectStages(envId))
+
     return <div className={classNames('stage-params', className)}>
-        {env.stages.filter((stage) => stage.enabled && stage.id !== StageId.STOPPED).map((stage) => {
+        {stages.filter((stage) => stage.enabled && stage.id !== StageId.STOPPED).map((stage) => {
             const {id} = stage
             const levelHidden = id !== StageId.DECAY2 && id !== StageId.SUSTAIN && id !== StageId.RELEASE2;
             const timeHidden = id === StageId.SUSTAIN;

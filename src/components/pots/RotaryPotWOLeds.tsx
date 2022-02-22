@@ -13,6 +13,7 @@ export interface Props {
     ctrlGroup: ControllerGroupIds;
     ctrl: ControllerConfig
     ctrlIndex?: number
+    valueIndex?: number
     resolution?: number
 }
 
@@ -21,13 +22,13 @@ interface Config {
 }
 
 const RotaryPotWOLeds = (props: Props & Config) => {
-    const { x, y, label, knobRadius, ctrlGroup, ctrl, ctrlIndex, resolution } = props
+    const { x, y, label, knobRadius, ctrlGroup, ctrl, ctrlIndex, valueIndex, resolution } = props
     const labelY = knobRadius + 5
 
     const dispatch = useAppDispatch()
 
     const onIncrement = useCallback((steps: number, stepSize: number) => {
-        dispatch(increment({ ctrlGroup, ctrl, value: steps * stepSize, ctrlIndex, source: ApiSource.UI }))
+        dispatch(increment({ ctrlGroup, ctrl, value: steps * stepSize, valueIndex, ctrlIndex, source: ApiSource.UI }))
     }, [ctrl, ctrlGroup, ctrlIndex, dispatch])
 
     return <svg x={x} y={y} className="pot">

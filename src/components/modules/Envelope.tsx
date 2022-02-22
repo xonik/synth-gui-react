@@ -4,11 +4,12 @@ import RotaryPot10 from '../pots/RotaryPot10'
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import Header from '../misc/Header'
-import { selectEnv3Id, selectEnvController, selectEnvelope } from '../../synthcore/modules/env/envReducer'
+import { selectEnvController, selectEnvelope } from '../../synthcore/modules/env/envReducer'
 import { StageId } from '../../synthcore/modules/env/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { ControllerGroupIds } from '../../synthcore/types'
 import envControllers from '../../synthcore/modules/env/envControllers'
+import { selectController } from '../../synthcore/modules/controllers/controllersReducer'
 
 interface Props {
     x: number,
@@ -27,61 +28,58 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
     const potDistance = 40
 
     const env = useAppSelector(selectEnvelope(envId))
-    const env3Id = useAppSelector(selectEnv3Id)
+    const env3Id = useAppSelector(selectController(envControllers(0).SELECT_ENV3_ID))
 
-    const levelS = env.stages[StageId.SUSTAIN].level
-    const levelD2 = env.stages[StageId.DECAY2].level
-    const levelR2 = env.stages[StageId.RELEASE2].level
-    const timeDly = env.stages[StageId.DELAY].time
-    const timeA = env.stages[StageId.ATTACK].time
-    const timeD1 = env.stages[StageId.DECAY1].time
-    const timeD2 = env.stages[StageId.DECAY2].time
-    const timeR1 = env.stages[StageId.RELEASE1].time
-    const timeR2 = env.stages[StageId.RELEASE2].time
+    const delayDisabled = useAppSelector(selectEnvController(envControllers(0).TOGGLE_STAGE, envId, StageId.DELAY))  === 0
+    const decay1Disabled = useAppSelector(selectEnvController(envControllers(0).TOGGLE_STAGE, envId, StageId.DECAY1))  === 0
+    const decay2Disabled = useAppSelector(selectEnvController(envControllers(0).TOGGLE_STAGE, envId, StageId.DECAY2))  === 0
+    const sustainDisabled = useAppSelector(selectEnvController(envControllers(0).TOGGLE_STAGE, envId, StageId.SUSTAIN))  === 0
+    const release1Disabled = useAppSelector(selectEnvController(envControllers(0).TOGGLE_STAGE, envId, StageId.RELEASE1))  === 0
 
     return <>
         <Header align="left" label={label} x={x} y={y} width={255}/>
         <RotaryPot17 ledMode="single" label="Attack" x={firstPotX} y={potY}
                      ctrlGroup={ctrlGroup}
-                     ctrl={envControllers(0).ATTACK_TIME}
+                     ctrl={envControllers(0).TIME}
                      ctrlIndex={envId}
-                     value={timeA}
+                     valueIndex={StageId.ATTACK}
         />
         <RotaryPot17 ledMode="single" label="Decay 1" x={firstPotX + potDistance} y={potY}
                      ctrlGroup={ctrlGroup}
-                     ctrl={envControllers(0).DECAY1_TIME}
+                     ctrl={envControllers(0).TIME}
                      ctrlIndex={envId}
-                     value={timeD1}
-                     disabled={!env.stages[StageId.DECAY1].enabled}
+                     valueIndex={StageId.DECAY1}
+                     disabled={decay1Disabled}
         />
         <RotaryPot17 ledMode="single" label="Decay 2" x={firstPotX + potDistance * 2} y={potY}
                      ctrlGroup={ctrlGroup}
-                     ctrl={envControllers(0).DECAY2_TIME}
+                     ctrl={envControllers(0).TIME}
                      ctrlIndex={envId}
-                     value={timeD2}
-                     disabled={!env.stages[StageId.DECAY2].enabled}
+                     valueIndex={StageId.DECAY2}
+                     disabled={decay2Disabled}
         />
         <RotaryPot17 ledMode="multi" label="Sustain" x={firstPotX + potDistance * 3} y={potY}
                      ctrlGroup={ctrlGroup}
-                     ctrl={envControllers(0).SUSTAIN_LEVEL}
+                     ctrl={envControllers(0).LEVEL}
                      ctrlIndex={envId}
                      potMode={env.bipolar ? 'pan' : 'normal'}
-                     value={env.bipolar ? (levelS + 1) / 2 : levelS}
-                     disabled={!env.stages[StageId.SUSTAIN].enabled}
+                     valueIndex={StageId.SUSTAIN}
+                     disabled={sustainDisabled}
         />
+        {/*value={env.bipolar ? (levelS + 1) / 2 : levelS}*/}
         <RotaryPot17 ledMode="single" label="Release 1" x={firstPotX + potDistance * 4} y={potY}
                      ctrlGroup={ctrlGroup}
-                     ctrl={envControllers(0).RELEASE1_TIME}
+                     ctrl={envControllers(0).TIME}
                      ctrlIndex={envId}
-                     value={timeR1}
-                     disabled={!env.stages[StageId.RELEASE1].enabled}
+                     valueIndex={StageId.RELEASE1}
+                     disabled={release1Disabled}
 
         />
         <RotaryPot17 ledMode="single" label="Release 2" x={firstPotX + potDistance * 5} y={potY}
                      ctrlGroup={ctrlGroup}
-                     ctrl={envControllers(0).RELEASE2_TIME}
+                     ctrl={envControllers(0).TIME}
                      ctrlIndex={envId}
-                     value={timeR2}
+                     valueIndex={StageId.RELEASE2}
         />
 
         {showSelect && <RoundPushButton8
@@ -96,19 +94,20 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
         />}
         <RotaryPot10 ledMode="single" label="Delay" x={firstPotX + potDistance * 0.5} y={topRowY}
                      ctrlGroup={ctrlGroup}
-                     ctrl={envControllers(0).DELAY_TIME}
+                     ctrl={envControllers(0).TIME}
                      ctrlIndex={envId}
-                     value={timeDly}
-                     disabled={!env.stages[StageId.DELAY].enabled}
+                     valueIndex={StageId.DELAY}
+                     disabled={delayDisabled}
         />
         <RotaryPot10 ledMode="multi" label="D2 Level" x={firstPotX + potDistance * 1.5} y={topRowY}
                      ctrlGroup={ctrlGroup}
-                     ctrl={envControllers(0).DECAY2_LEVEL}
+                     ctrl={envControllers(0).LEVEL}
                      ctrlIndex={envId}
                      potMode={env.bipolar ? 'pan' : 'normal'}
-                     value={env.bipolar ? (levelD2 + 1) / 2 : levelD2}
-                     disabled={!env.stages[StageId.DECAY2].enabled}
+                     valueIndex={StageId.DECAY2}
+                     disabled={decay2Disabled}
         />
+        {/*value={env.bipolar ? (levelD2 + 1) / 2 : levelD2}*/}
         <RoundLedPushButton8
             label="Invert" x={firstPotX + potDistance * 2.5} y={topRowY}
             labelPosition="bottom"
@@ -126,8 +125,11 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
                      ctrl={envControllers(0).RELEASE2_LEVEL}
                      ctrlIndex={envId}
                      potMode={env.bipolar ? 'pan' : 'normal'}
-                     value={env.bipolar ? (levelR2 + 1) / 2 : levelR2}
+                     valueIndex={StageId.RELEASE2}
         />
+
+        {/*value={env.bipolar ? (levelR2 + 1) / 2 : levelR2}*/}
+
         <RoundPushButton8 label="Trigger" x={firstPotX + potDistance * 5.5} y={topRowY} labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={envControllers(0).TRIGGER}
