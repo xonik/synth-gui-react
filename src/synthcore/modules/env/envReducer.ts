@@ -56,15 +56,46 @@ type EnvPayload = {
     env: number;
 }
 
+
+const setController = (state: Draft<EnvelopesState>, payload: NumericControllerPayload) => {
+    const { ctrlIndex = 0, ctrl, value } = payload
+    if(state.controllers[ctrlIndex] === undefined) {
+        state.controllers[ctrlIndex] = []
+    }
+    state.controllers[ctrlIndex][ctrl.id] = value
+}
+
+
+const getController = (state: RootState, ctrl: ControllerConfig, ctrlIndex: number) => {
+    const ctrlValue = state.envelopes.controllers[ctrlIndex]
+    if(ctrlValue === undefined) {
+        return 0
+    }
+    return ctrlValue[ctrl.id] || 0
+}
+
 const setValueIndexedController = (state: Draft<EnvelopesState>, payload: NumericControllerPayload) => {
     const { ctrlIndex = 0, ctrl, valueIndex = 0, value } = payload
+    if(state.valueIndexedControllers[ctrlIndex] === undefined){
+        state.valueIndexedControllers[ctrlIndex] = []
+    }
     const indexedCtrls = state.valueIndexedControllers[ctrlIndex]
     if (indexedCtrls[ctrl.id] === undefined) {
-        indexedCtrls[ctrl.id] = { [valueIndex]: value }
+        state.valueIndexedControllers[ctrlIndex][ctrl.id] = { [valueIndex]: value }
     } else {
-        indexedCtrls[ctrl.id][valueIndex] = value
+        state.valueIndexedControllers[ctrlIndex][ctrl.id][valueIndex] = value
     }
 }
+
+const getValueIndexedController = (state: RootState, ctrl: ControllerConfig, ctrlIndex: number, valueIndex: number) => {
+    const ctrlValue = state.envelopes.valueIndexedControllers[ctrlIndex]
+    if (ctrlValue === undefined || ctrlValue[ctrl.id] === undefined) {
+        return 0
+    } else {
+        return state.envelopes.valueIndexedControllers[ctrlIndex][ctrl.id][valueIndex] || 0
+    }
+}
+
 
 const setLevel = (state: Draft<EnvelopesState>, payload: NumericControllerPayload, stageId: StageId, value: number) => setValueIndexedController(state, {
     ...payload,
@@ -90,9 +121,7 @@ export const envelopesSlice = createSlice({
         setEnvController: (state, { payload }: PayloadAction<NumericControllerPayload>) => {
 
             if (payload.valueIndex === undefined) {
-                const { ctrlIndex = 0, ctrl, value } = payload
-                const ctrls = state.controllers[ctrlIndex]
-                ctrls[ctrl.id] = value
+                setController(state, payload)
             } else {
                 setValueIndexedController(state, payload)
             }
@@ -130,24 +159,11 @@ export const selectEnvelope = (envId: number) => (state: RootState) => state.env
 export const selectCurrStageId = (state: RootState) => state.envelopes.gui.currStageId
 export const selectCurrEnvId = (state: RootState) => state.envelopes.gui.currEnvId
 
-const getValueIndexedController = (ctrl: ControllerConfig, ctrlIndex: number, valueIndex: number, state: RootState) => {
-    const ctrlValue = state.envelopes.valueIndexedControllers[ctrlIndex]
-    if (ctrlValue === undefined || ctrlValue[ctrl.id] === undefined) {
-        return 0
-    } else {
-        return ctrlValue[ctrl.id][valueIndex]
-    }
-}
-
 export const selectEnvController = (ctrl: ControllerConfig, ctrlIndex: number, valueIndex?: number) => (state: RootState): number => {
     if (valueIndex === undefined) {
-        const ctrlValue = state.envelopes.controllers[ctrlIndex]
-        if(ctrlValue === undefined) {
-            return 0
-        }
-        return ctrlValue[ctrl.id] || 0
+        return getController(state, ctrl, ctrlIndex)
     } else {
-        return getValueIndexedController(ctrl, ctrlIndex, valueIndex, state)
+        return getValueIndexedController(state, ctrl, ctrlIndex, valueIndex)
     }
 }
 
@@ -155,10 +171,10 @@ export const selectStageById = (envId: number, stageId: number) => (state: RootS
 
     return{
         id: stageId,
-        enabled: getValueIndexedController(envCtrls.TOGGLE_STAGE, envId, stageId, state),
-        curve: getValueIndexedController(envCtrls.CURVE, envId, stageId, state),
-        level: getValueIndexedController(envCtrls.LEVEL, envId, stageId, state),
-        time: getValueIndexedController(envCtrls.TIME, envId, stageId, state),
+        enabled: getValueIndexedController(state, envCtrls.TOGGLE_STAGE, envId, stageId),
+        curve: getValueIndexedController(state, envCtrls.CURVE, envId, stageId),
+        level: getValueIndexedController(state, envCtrls.LEVEL, envId, stageId),
+        time: getValueIndexedController(state, envCtrls.TIME, envId, stageId),
     }
 }
 

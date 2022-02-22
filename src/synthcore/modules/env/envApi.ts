@@ -160,7 +160,9 @@ const stageEnabled = (() => {
             return
         }
 
+
         const currentEnabled = selectEnvController(ctrl, envId, stageId)(store.getState())
+        console.log('enable', input, currentEnabled)
         if (currentEnabled === enabled) {
             return
         }
@@ -232,13 +234,14 @@ const maxLoops = (() => {
             envCtrls.MAX_LOOPS,
             envId)(store.getState())
 
-        const boundedMaxLoops = getBounded(value, 2, 128)
+        const boundedMaxLoops = getBounded(value, 1, 127)
         if (boundedMaxLoops === currMaxLoops) {
             return
         }
 
+        console.log("sending loops", boundedMaxLoops, boundedMaxLoops / 127)
         dispatch(setEnvController({ ...input, value: boundedMaxLoops }))
-        paramSend(input.source, input.ctrl, boundedMaxLoops)
+        paramSend(input.source, input.ctrl, boundedMaxLoops / 127)
     }
 
     const increment = (input: NumericInputProperty) => {
