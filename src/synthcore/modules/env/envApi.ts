@@ -14,19 +14,22 @@ import { dispatch, getBounded, getQuantized } from '../../utils'
 import { createSetterFuncs } from '../common/utils'
 import { envCtrls } from './envControllers'
 import { paramReceive, paramSend } from '../common/commonMidiApi'
-import { getLinearToDBMapper, getLinearToExpMapper, getMapperWithFade } from '../../../midi/slopeCalculator'
+import { getLinearToDBMapper, getLinearToExpMapper, getMapperWithFade, inverse } from '../../../midi/slopeCalculator'
 import { selectController, setController } from '../controllers/controllersReducer'
 import { ButtonInputProperty, NumericInputProperty } from '../common/types'
 
+// Env level in range 0 to 65534.
 const envLevelMapper = getMapperWithFade(
-    getLinearToDBMapper(32767, 32767, 23, true, false),
+    getLinearToDBMapper(65534, 65534, 23, true, false),
     32767,
     true,
     10,
 )
+const invEnvLevelMapper = inverse(envLevelMapper, 0, 65534)
 
 // NB: Input is 0 to maxInput!
 const envTimeMapper = getLinearToExpMapper(65534, 65534, 3.5)
+const invEnvTimeMapper = inverse(envTimeMapper, 0, 65534)
 
 const updateReleaseLevels = (envId: number, value: number) => {
     const action = {
@@ -87,9 +90,9 @@ const stageLevel = (() => {
                 updateReleaseLevels(envId, boundedValue)
             }
 
-            // TODO: hard coded curve mapping only for VCA and VCF envs. Should configurable and placed elsewhere!
+            // TODO: hard coded curve mapping only for VCA and VCF envs. Should be  and placed elsewhere!
             /*if(envId === 0 || envId === 1) {
-                boundedValue = Math.floor(envLevelMapper(boundedValue - 32767) + 32767)
+                boundedValue = Math.floor(envLevelMapper(boundedValue * 32767) + 32767)
             }*/
             selectEnv(envId, source)
             paramSend(source, envCtrls.LEVEL, boundedValue, stageId)

@@ -11,7 +11,8 @@
 ### Filter
 High res filter cutoff, currently only 7 bit CC?!
 
-
+### Hi-precision pots
+- increment 1/10 when shift is pressed for fine tuning.
 
 ## Things to fix
 ### Routing
@@ -22,8 +23,9 @@ High res filter cutoff, currently only 7 bit CC?!
 - Possible race condition in midi vs panel setting of currentEnvId? We need to separate
 currently selected envelope through midi and what is selected on screen. no need to
 store current env in lfoMidiApi.
+- Swap env 1 and 2 in UI, let env 1 be amp
 - Selectable polarity?
-- Block invert on envelope 1
+- Block invert on amp envelope 
 - Loop counter should be actual number of times env plays.
 - Currently, midi output env levels are curve-mapped for VCA envelope only. 
   - Mapping should be per env-configurable

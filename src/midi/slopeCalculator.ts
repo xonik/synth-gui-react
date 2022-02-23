@@ -105,3 +105,31 @@ export const getLinearToExpBipolarMapper = (maxInput: number, outputMin: number,
         return outputMin + adjustedRange * (a * Math.pow(10.0, steepness * (input / maxInput)) - a);
     }
 }
+
+// A binary search way of finding the inverse of a function
+export const inverse = (mapper: (input: number) => number, minInput: number, maxInput: number) => {
+    const search = (x: number, start: number, end: number): number => {
+
+        // Base Condition
+        if (start > end) return end
+
+        // Find the middle index
+        let mid = Math.floor((start + end) / 2)
+
+        // Compare mid with given key x
+        console.log(`Comparing ${mapper(mid)} to ${x}`)
+        if (mapper(mid) === x) return mid
+
+        if (mapper(mid) > x) {
+            // If element at mid is greater than x,
+            // search in the left half of mid
+            return search(x, start, mid - 1)
+        } else {
+            // If element at mid is smaller than x,
+            // search in the right half of mid
+            return search(x, mid + 1, end)
+        }
+    }
+
+    return (x: number) => search(x, minInput, maxInput)
+}
