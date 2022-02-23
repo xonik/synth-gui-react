@@ -221,7 +221,7 @@ export const RoundButtonBase = (props: Props & Config) => {
     } = props
 
     const storeValue = useAppSelector(getControllerSelector(ctrlGroup)(ctrl, ctrlIndex || 0))
-    const currentValue = value || storeValue
+    const currentValue = value !== undefined ? value :  storeValue
 
     // off is always the first element in the midi config values list, so when a radio
     // button has an off state we need to offset our index by one.

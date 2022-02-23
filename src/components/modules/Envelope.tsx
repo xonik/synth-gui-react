@@ -28,7 +28,7 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
     const potDistance = 40
 
     const bipolar = useAppSelector(selectEnvController(envCtrls.BIPOLAR, envId))
-    const env3Id = useAppSelector(selectController(envCtrls.SELECT_ENV3_ID))
+    const env3Id = useAppSelector(selectEnvController(envCtrls.SELECT_ENV3_ID, 0))
 
     const delayDisabled = useAppSelector(selectEnvController(envCtrls.TOGGLE_STAGE, envId, StageId.DELAY))  === 0
     const decay1Disabled = useAppSelector(selectEnvController(envCtrls.TOGGLE_STAGE, envId, StageId.DECAY1))  === 0
@@ -89,7 +89,7 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
           label="Env sel" x={firstPotX - potDistance * 0.5} y={topRowY} labelPosition="bottom"
           ctrlGroup={ctrlGroup}
           ctrl={envCtrls.SELECT_ENV3_ID}
-          ctrlIndex={envId}
+          ctrlIndex={0}
           value={env3Id -2}
         />}
         <RotaryPot10 ledMode="single" label="Delay" x={firstPotX + potDistance * 0.5} y={topRowY}
@@ -122,10 +122,11 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
         />
         <RotaryPot10 ledMode="multi" label="R2 Level" x={firstPotX + potDistance * 4.5} y={topRowY}
                      ctrlGroup={ctrlGroup}
-                     ctrl={envCtrls.RELEASE2_LEVEL}
+                     ctrl={envCtrls.LEVEL}
                      ctrlIndex={envId}
                      potMode={bipolar ? 'pan' : 'normal'}
                      valueIndex={StageId.RELEASE2}
+                     disabled={release1Disabled}
         />
 
         {/*value={bipolar ? (levelR2 + 1) / 2 : levelR2}*/}

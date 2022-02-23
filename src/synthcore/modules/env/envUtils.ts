@@ -2,6 +2,7 @@ import { Curve, Envelope, LoopMode, ReleaseMode, Stage, StageId } from './types'
 import { envCtrls } from './envControllers'
 import { Controllers, ValueIndexedControllers } from '../controllers/types'
 import { mergeValueIndexedControllers } from '../controllers/controllersUtils'
+import { ControllerConfig } from '../../../midi/types'
 
 const getStageState = (envId: number, stage: Stage): ValueIndexedControllers => {
     const {id: stageId,enabled,curve,level, time} = stage
@@ -21,6 +22,14 @@ const getStageState = (envId: number, stage: Stage): ValueIndexedControllers => 
             [stageId]: time
         },
     }
+    return controllers
+}
+
+export const getDefaultController = (ctrl: ControllerConfig, value: number): Controllers => {
+    const controllers = {0: {
+        [ctrl.id]: value
+    }}
+
     return controllers
 }
 

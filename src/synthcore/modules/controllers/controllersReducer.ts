@@ -3,6 +3,9 @@ import { RootState } from '../../store'
 import { NumericControllerPayload } from '../common/CommonReducer'
 import { ControllerConfig } from '../../../midi/types'
 import { Controllers } from './types'
+import { getDefaultController } from '../env/envUtils'
+import { envCtrls } from '../env/envControllers'
+import { mergeControllers } from './controllersUtils'
 
 type ControllersState = {
     controllers: Controllers
@@ -18,7 +21,7 @@ export const controllersSlice = createSlice({
     name: 'controllers',
     initialState,
     reducers: {
-        setController:  (state, { payload }: PayloadAction<NumericControllerPayload>) => {
+        setController: (state, { payload }: PayloadAction<NumericControllerPayload>) => {
             state.controllers[0][payload.ctrl.id] = payload.value
         },
     }

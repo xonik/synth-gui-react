@@ -6,7 +6,7 @@ import { envCtrls } from './envControllers'
 import { ControllerConfig } from '../../../midi/types'
 import { Controllers, ValueIndexedControllers } from '../controllers/types'
 import { mergeControllers, mergeValueIndexedControllers } from '../controllers/controllersUtils'
-import { getDefaultEnv, getDefaultStages } from './envUtils'
+import { getDefaultController, getDefaultEnv, getDefaultStages } from './envUtils'
 
 type EnvelopesState = {
     gui: {
@@ -44,6 +44,7 @@ export const initialState: EnvelopesState = {
         getDefaultEnv(2),
         getDefaultEnv(3),
         getDefaultEnv(4),
+        getDefaultController(envCtrls.SELECT_ENV3_ID, 2),
     ]),
     valueIndexedControllers: mergeValueIndexedControllers(
         [

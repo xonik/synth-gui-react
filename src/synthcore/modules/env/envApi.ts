@@ -19,6 +19,7 @@ import { ButtonInputProperty, NumericInputProperty } from '../common/commonApi'
 import { paramReceive, paramSend } from '../common/commonMidiApi'
 import { getLinearToDBMapper, getLinearToExpMapper, getMapperWithFade } from '../../../midi/slopeCalculator'
 import { selectController, setController } from '../controllers/controllersReducer'
+import Controller from '../../../controller/Controller'
 
 const envLevelMapper = getMapperWithFade(
     getLinearToDBMapper(32767, 32767, 23, true, false),
@@ -263,16 +264,15 @@ const env3Id = (() => {
     const set = (input: NumericInputProperty) => {
         const { value: id, source, ctrl } = input
 
-        const currentEnv3Id = selectController(ctrl)(store.getState())
+        const currentEnv3Id = selectEnvController(input.ctrl, 0)(store.getState())
         if (id !== currentEnv3Id && id < NUMBER_OF_ENVELOPES && id > 1) {
-            dispatch(setController(input))
-            paramSend(source, ctrl, id )
+            dispatch(setEnvController(input))
+            paramSend(source, ctrl, id / 127 )
         }
     }
     
     const toggle = (input: ButtonInputProperty) => {
-
-        const currentEnv3Id = selectController(input.ctrl)(store.getState())
+        const currentEnv3Id = selectEnvController(input.ctrl, 0)(store.getState())
         let nextEnv3Id = (currentEnv3Id + 1)
         if (nextEnv3Id > NUMBER_OF_ENVELOPES - 1) {
             nextEnv3Id = 2

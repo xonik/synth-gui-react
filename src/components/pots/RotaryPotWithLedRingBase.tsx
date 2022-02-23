@@ -123,7 +123,7 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
 
     // positive pointer
     const storeValue = useAppSelector(getControllerSelector(ctrlGroup)(ctrl, ctrlIndex || 0, valueIndex))
-    const currentValue = value || storeValue
+    const currentValue = value !== undefined ? value :  storeValue
 
     const ledPosition = getLedPos(centerLed, ledCount, potMode, currentValue)
 

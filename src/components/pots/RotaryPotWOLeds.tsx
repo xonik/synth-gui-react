@@ -29,7 +29,7 @@ const RotaryPotWOLeds = (props: Props & Config) => {
 
     const onIncrement = useCallback((steps: number, stepSize: number) => {
         dispatch(increment({ ctrlGroup, ctrl, value: steps * stepSize, valueIndex, ctrlIndex, source: ApiSource.UI }))
-    }, [ctrl, ctrlGroup, ctrlIndex, dispatch])
+    }, [ctrl, ctrlGroup, ctrlIndex, dispatch, valueIndex])
 
     return <svg x={x} y={y} className="pot">
         <RotaryPotBase
