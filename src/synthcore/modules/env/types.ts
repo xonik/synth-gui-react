@@ -48,17 +48,13 @@ export type Stage = {
 
 export type Envelope = {
     id: number;
-    /*
     resetOnTrigger: boolean;
-    resetLevel: number;
     releaseMode: ReleaseMode;
     loopMode: LoopMode;
     loopEnabled: boolean;
     maxLoops: number;
     invert: boolean;
-    */
     bipolar: boolean;
-    stages: Stage[];
 }
 
 

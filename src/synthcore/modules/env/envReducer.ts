@@ -4,6 +4,9 @@ import { RootState } from '../../store'
 import { NumericControllerPayload } from '../common/CommonReducer'
 import { envCtrls } from './envControllers'
 import { ControllerConfig } from '../../../midi/types'
+import { Controllers, ValueIndexedControllers } from '../controllers/types'
+import { mergeControllers, mergeValueIndexedControllers } from '../controllers/controllersUtils'
+import { getDefaultEnv, getDefaultStages } from './envUtils'
 
 type EnvelopesState = {
     gui: {
@@ -13,25 +16,44 @@ type EnvelopesState = {
 
     // controllers that have one instance per ctrlIndex
     // e.g. controllers[envId][loopMode]
-    controllers: {
-        [ctrlId: number]: number
-    }[]
+    controllers: Controllers
 
     // controllers that have more than one instance per ctrlIndex, e.g.
     // stages for an envelope, e.g. valueIndexedControllers[envId][time][stageId]
     // These are accessed as valueIndexedControllers[ctrlIndex][ctrl.id][valueIndex]
-    valueIndexedControllers: {
-        [ctrlId: number]: { [valueIndex: number]: number }
-    }[]
+    valueIndexedControllers: ValueIndexedControllers
 }
+
+const conts = mergeControllers([
+    getDefaultEnv(0),
+    getDefaultEnv(1),
+    getDefaultEnv(2),
+    getDefaultEnv(3),
+    getDefaultEnv(4),
+])
+console.log('cnts', conts)
 
 export const initialState: EnvelopesState = {
     gui: {
         currEnvId: 0,
         currStageId: StageId.STOPPED,
     },
-    controllers: [],
-    valueIndexedControllers: [],
+    controllers: mergeControllers([
+        getDefaultEnv(0),
+        getDefaultEnv(1),
+        getDefaultEnv(2),
+        getDefaultEnv(3),
+        getDefaultEnv(4),
+    ]),
+    valueIndexedControllers: mergeValueIndexedControllers(
+        [
+            getDefaultStages(0),
+            getDefaultStages(1),
+            getDefaultStages(2),
+            getDefaultStages(3),
+            getDefaultStages(4),
+        ]
+    ),
 }
 
 type StagePayload = {
@@ -51,7 +73,6 @@ const setController = (state: Draft<EnvelopesState>, payload: NumericControllerP
     }
     state.controllers[ctrlIndex][ctrl.id] = value
 }
-
 
 const getController = (state: RootState, ctrl: ControllerConfig, ctrlIndex: number) => {
     const ctrlValue = state.envelopes.controllers[ctrlIndex]
@@ -128,6 +149,8 @@ export const envelopesSlice = createSlice({
         },
     }
 })
+
+console.log(initialState)
 
 export const {
     selectStage,
