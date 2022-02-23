@@ -40,7 +40,6 @@ import { selectController } from '../synthcore/modules/controllers/controllersRe
 const MainPanel = () => {
 
     const env3Id = useAppSelector(selectController(envCtrls.SELECT_ENV3_ID))
-    console.log("ENV!!!", env3Id)
     //const panelHeight = 350;
     //const panelWidth = 1050;
 

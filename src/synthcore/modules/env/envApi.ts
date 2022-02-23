@@ -36,9 +36,9 @@ const updateReleaseLevels = (envId: number, value: number) => {
     }
     const release1Enabled = selectController(envCtrls.TOGGLE_STAGE, envId, StageId.RELEASE1)(store.getState())
     if (release1Enabled === 1) {
-        dispatch(setController({...action, valueIndex: StageId.RELEASE1 }))
+        dispatch(setController({ ...action, valueIndex: StageId.RELEASE1 }))
     } else {
-        dispatch(setController({...action, valueIndex: StageId.RELEASE2 }))
+        dispatch(setController({ ...action, valueIndex: StageId.RELEASE2 }))
     }
 }
 
@@ -77,10 +77,10 @@ const stageLevel = (() => {
             // r1 is enabled or not.
             if (stageId === StageId.SUSTAIN) {
                 const stage2Id = r1enabled ? StageId.RELEASE1 : StageId.RELEASE2
-                dispatch(setController({...input, valueIndex: StageId.SUSTAIN, value: boundedValue }))
-                dispatch(setController({...input, valueIndex: stage2Id, value: boundedValue }))
+                dispatch(setController({ ...input, valueIndex: StageId.SUSTAIN, value: boundedValue }))
+                dispatch(setController({ ...input, valueIndex: stage2Id, value: boundedValue }))
             } else {
-                dispatch(setController({...input, value: boundedValue }))
+                dispatch(setController({ ...input, value: boundedValue }))
             }
 
             if (stageId === StageId.SUSTAIN) {
@@ -99,7 +99,7 @@ const stageLevel = (() => {
     const increment = (input: NumericInputProperty) => {
         const { ctrlIndex: envId = 0, valueIndex: stageId = 0, value: inc, ctrl } = input
         const currentLevel = selectController(ctrl, envId, stageId)(store.getState())
-        set({...input, value: currentLevel + inc})
+        set({ ...input, value: currentLevel + inc })
     }
 
     paramReceive(envCtrls.LEVEL, set)
@@ -107,7 +107,8 @@ const stageLevel = (() => {
     return {
         set,
         increment,
-        toggle: (input: ButtonInputProperty) => {}
+        toggle: (input: ButtonInputProperty) => {
+        }
     }
 })()
 
@@ -202,8 +203,8 @@ const stageCurve = (() => {
             return
         }
 
-        dispatch(setController({...input, value: boundedCurve }))
-        midiApi.curve.send({...input, value: boundedCurve})
+        dispatch(setController({ ...input, value: boundedCurve }))
+        midiApi.curve.send({ ...input, value: boundedCurve })
     }
     const increment = (input: NumericInputProperty) => {
         const { ctrlIndex: envId = 0, valueIndex: stageId = 0, value: inc, ctrl } = input
@@ -233,9 +234,8 @@ const maxLoops = (() => {
             return
         }
 
-        console.log("sending loops", boundedMaxLoops, boundedMaxLoops / 127)
         dispatch(setController({ ...input, value: boundedMaxLoops }))
-        paramSend(input.source, input.ctrl, boundedMaxLoops / 127)
+        paramSend(input.source, input.ctrl, boundedMaxLoops, undefined, (value: number) => value)
     }
 
     const increment = (input: NumericInputProperty) => {
@@ -244,10 +244,10 @@ const maxLoops = (() => {
             envCtrls.MAX_LOOPS,
             envId)(store.getState())
 
-        set({...input, value: currMaxLoops + inc})
+        set({ ...input, value: currMaxLoops + inc })
     }
-    
-    paramReceive(envCtrls.MAX_LOOPS, set)
+
+    paramReceive(envCtrls.MAX_LOOPS, set, (midiValue: number) => ({ value: midiValue }))
 
     return {
         set,
@@ -264,19 +264,19 @@ const env3Id = (() => {
         const currentEnv3Id = selectController(input.ctrl, 0)(store.getState())
         if (id !== currentEnv3Id && id < NUMBER_OF_ENVELOPES && id > 1) {
             dispatch(setController(input))
-            paramSend(source, ctrl, id / 127 )
+            paramSend(source, ctrl, id, undefined, (value: number) => value)
         }
     }
-    
+
     const toggle = (input: ButtonInputProperty) => {
         const currentEnv3Id = selectController(input.ctrl, 0)(store.getState())
         let nextEnv3Id = (currentEnv3Id + 1)
         if (nextEnv3Id > NUMBER_OF_ENVELOPES - 1) {
             nextEnv3Id = 2
         }
-        set({...input, value: nextEnv3Id})
+        set({ ...input, value: nextEnv3Id })
     }
-    paramReceive(envCtrls.SELECT_ENV3_ID, set)
+    paramReceive(envCtrls.SELECT_ENV3_ID, set, (midiValue: number) => ({ value: midiValue }))
 
     return {
         set,
