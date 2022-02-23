@@ -32,7 +32,7 @@ const Route = ({ x, y }: Props) => {
                              value={route.routeButton}
         />
 
-        <RotaryPot17 ledMode="single" label="Amount" x={35} y={30}
+        <RotaryPot17 ledMode="single" potMode="pan" label="Amount" x={35} y={30}
                      ctrlGroup={ctrlGroup}
                      ctrl={modsControllers.UI_AMOUNT}
                      value={route.amount}

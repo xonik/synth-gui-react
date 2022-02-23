@@ -97,34 +97,12 @@ const uiRouteButton = (() => {
         receive: () => toggleParamReceive(cfg, modsApi.setRouteButton)
     }
 })()
-const uiAmount = (() => {
-    const cfg = controllers.MODS.AMOUNT
-
-    return {
-        send: (source: ApiSource, value: number) => {
-            if (!shouldSend(source)) {
-                return
-            }
-
-            // stageId is encoded as part of the extra available bits
-            const rounded = Math.round(value * 32767) + 32767
-            logger.midi(`Setting ui modulation amount to ${value}`)
-            nrpn.send(cfg, rounded)
-        },
-        receive: () => {
-            nrpn.subscribe((value: number) => {
-                modsApi.setUiAmount( (value - 32767) / 32767, ApiSource.MIDI)
-            }, cfg)
-        }
-    }
-})()
 
 const initReceive = () => {
     amount.receive()
     source.receive()
     dst.receive()
     uiRouteButton.receive()
-    uiAmount.receive()
 }
 
 const modsMidiApi = {
@@ -132,7 +110,6 @@ const modsMidiApi = {
     setSourceId: source.send,
     setDstId: dst.send,
     setUiRouteButton: uiRouteButton.send,
-    setUiAmount: uiAmount.send,
     initReceive,
 }
 

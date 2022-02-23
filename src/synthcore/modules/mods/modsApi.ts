@@ -20,10 +20,10 @@ import {
     selectModsUi,
 } from './modsReducer'
 import { digitalModSources, modDst } from './utils'
-import { numericPropFuncs } from '../common/commonApi'
+import { ButtonInputProperty, NumericInputProperty } from '../common/commonApi'
 import modsControllers from './modsControllers'
 import modsMidiApi from './modsMidiApi'
-import { createClickMapper, createIncrementMapper } from '../common/utils'
+import { paramReceive, paramSend } from '../common/commonMidiApi'
 
 const setGuiMod = (
     guiSource: number,
@@ -139,11 +139,6 @@ const incrementGuiModValue = (inc: number, source: ApiSource) => {
     setModValue(sourceId, dstId, dstCtrlIndex, nextModValue, source)
 }
 
-const uiAmount = numericPropFuncs({
-    selector: () => selectModsUi(store.getState()).amount,
-    action: setUiAmount,
-})
-
 const setRouteButton = (value: number, source: ApiSource) => {
     const currentValue = selectModsUi(store.getState()).routeButton
     const boundedValue = getBounded(value, 0, modsControllers.ROUTE_BUTTON.values.length - 1)
@@ -164,11 +159,46 @@ const toggleRouteButton = (value: number, source: ApiSource) => {
     }
 }
 
-const increment = createIncrementMapper([
-    [modsControllers.UI_AMOUNT, ({value,  source}) => uiAmount.increment(value, source)],
-])
-const toggle = createClickMapper([
-])
+export const uiAmount = (() => {
+    const set = (input: NumericInputProperty) => {
+        const boundedValue = getQuantized(getBounded(input.value, -1, 1))
+        const currentValue = selectModsUi(store.getState()).amount
+
+        if (boundedValue === currentValue) {
+            return
+        }
+
+        dispatch(setUiAmount({...input, value: boundedValue}))
+
+        // send over midi
+        paramSend(input.source, input.ctrl, boundedValue)
+    }
+
+    const increment = (input: NumericInputProperty) => {
+        const currentValue = selectModsUi(store.getState()).amount
+        set({...input, value: currentValue + input.value / 2})
+    }
+
+    paramReceive(modsControllers.UI_AMOUNT, set)
+
+    return {
+        set,
+        increment,
+        toggle: (input: ButtonInputProperty) => {}
+    }
+})()
+
+const customSetterFuncs = {
+    [modsControllers.UI_AMOUNT.id]: uiAmount,
+}
+
+const increment = (input: NumericInputProperty) => {
+    customSetterFuncs[input.ctrl.id]?.increment(input)
+}
+
+const toggle = (input: ButtonInputProperty) => {
+    customSetterFuncs[input.ctrl.id]?.toggle(input)
+}
 
 const modsApi = {
     setGuiMod,
@@ -182,9 +212,6 @@ const modsApi = {
     incrementGuiDstParam,
     setModValue,
     incrementGuiModValue,
-
-    setUiAmount: uiAmount.set,
-
 
     setRouteButton,
     toggleRouteButton,
