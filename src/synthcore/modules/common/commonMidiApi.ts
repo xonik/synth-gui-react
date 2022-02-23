@@ -8,7 +8,7 @@ import {
 import { shouldSend } from '../../../midi/utils'
 import logger from '../../../utils/logger'
 import { cc, nrpn } from '../../../midi/midibus'
-import { NumericInputProperty } from './commonApi'
+import { NumericInputProperty } from './types'
 
 export const toggleParamSend = (
     source: ApiSource,

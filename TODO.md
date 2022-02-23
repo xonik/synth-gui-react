@@ -1,15 +1,27 @@
-Things to implement in GUI
+## Things to implement in GUI
+### Env
 - Velocity on/off per envelope
 - Velocity curve selection, midi/keyboard
 - Env time and level curve selection, midi/keyboard, per env, ink min/max time
 
+### Routing
+- When from/to pressed, intercept increment/click and use to select source/dest instead.
+- Flash sources/destinations when from/to pressed. Black out rest.
+
+### Filter
 High res filter cutoff, currently only 7 bit CC?!
 
-Possible race condition in midi vs panel setting of currentEnvId? We need to separate
+
+
+## Things to fix
+### Routing
+- No need to send UI amount or even have a UI amount. Instead implement logic for setting matix entry
+  - Or we could keep amount but set it to selected source. Makes it easier to keep virtual and real panels in sync
+  - 
+### Envs
+- Possible race condition in midi vs panel setting of currentEnvId? We need to separate
 currently selected envelope through midi and what is selected on screen. no need to
 store current env in lfoMidiApi.
-
-Envs:
 - Selectable polarity?
 - Block invert on envelope 1
 - Loop counter should be actual number of times env plays.
@@ -19,6 +31,3 @@ Envs:
   - NB - env level modulation is linear, perhaps mapping should happen only on controller side?
 - Midi output for env times are curve mapped for all but should be configurable. 
   - SHOULD BE ON CONTROLLER SIDE, we show the wrong time now!
-
-MPK25: env level is always full range so half the pot doesn't work when changing 
-level on a unipolar envelope, 

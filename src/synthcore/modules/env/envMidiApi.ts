@@ -5,7 +5,7 @@ import { cc, nrpn } from '../../../midi/midibus'
 import { ApiSource } from '../../types'
 import { shouldSend } from '../../../midi/utils'
 import logger from '../../../utils/logger'
-import { NumericInputProperty } from '../common/commonApi'
+import { NumericInputProperty } from '../common/types'
 
 let currentEnvId = -1
 

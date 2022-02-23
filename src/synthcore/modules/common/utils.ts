@@ -1,10 +1,9 @@
 import { ControllerConfig } from '../../../midi/types'
-import { ButtonInputProperty, NumericInputProperty } from './commonApi'
 import { paramReceive, paramSend } from './commonMidiApi'
 import { dispatch, getBounded, getQuantized } from '../../utils'
 import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
-import { NumericControllerPayload } from './CommonReducer'
 import { RootState, store } from '../../store'
+import { ButtonInputProperty, NumericControllerPayload, NumericInputProperty } from './types'
 
 export type ApiIncrementMapperType = {
     [key: number]: (value: number) => void

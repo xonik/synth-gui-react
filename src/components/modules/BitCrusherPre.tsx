@@ -4,7 +4,6 @@ import RotaryPot17 from '../pots/RotaryPot17';
 import Header from '../misc/Header';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
 import { ControllerGroupIds } from '../../synthcore/types'
-import { useAppSelector } from '../../synthcore/hooks'
 import fxControllers from '../../synthcore/modules/fx/fxControllers'
 
 interface Props {

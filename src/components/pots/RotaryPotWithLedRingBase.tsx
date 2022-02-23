@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import { increment } from '../../synthcore/modules/ui/uiReducer'
 import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 import { ControllerConfig } from '../../midi/types'
-import { getControllerSelector } from '../../synthcore/modules/common/controllerSelectors'
+import { getControllerSelector } from '../../synthcore/modules/controllers/controllersSelectors'
 import './RotaryPot.scss'
 
 export type LedMode = 'single' | 'multi';

@@ -2,7 +2,6 @@ import React from 'react';
 import RotaryPot17 from '../pots/RotaryPot17';
 import Header from '../misc/Header';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
-import { useAppSelector } from '../../synthcore/hooks'
 import { ControllerGroupIds } from '../../synthcore/types'
 import masterClockControllers from '../../synthcore/modules/masterClock/masterClockControllers'
 

@@ -12,7 +12,6 @@ import Header from '../misc/Header';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
 import { ControllerGroupIds } from '../../synthcore/types'
-import { useAppSelector } from '../../synthcore/hooks'
 import arpControllers from '../../synthcore/modules/arp/arpControllers'
 
 interface Props {

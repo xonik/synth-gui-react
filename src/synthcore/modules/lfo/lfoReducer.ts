@@ -5,8 +5,8 @@ import { createSlice, Draft, PayloadAction } from '@reduxjs/toolkit'
 import { Lfo, Stage, StageId } from './types'
 import { getDefaultLfo } from './lfoUtils'
 import { RootState } from '../../store'
-import { NumericControllerPayload, NumericPayload } from '../common/CommonReducer'
 import { ControllerConfig } from '../../../midi/types'
+import { NumericControllerPayload, NumericPayload } from '../common/types'
 
 type LfosState = {
 

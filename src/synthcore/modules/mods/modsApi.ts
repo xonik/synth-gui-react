@@ -20,10 +20,10 @@ import {
     selectModsUi,
 } from './modsReducer'
 import { digitalModSources, modDst } from './utils'
-import { ButtonInputProperty, NumericInputProperty } from '../common/commonApi'
 import modsControllers from './modsControllers'
 import modsMidiApi from './modsMidiApi'
 import { paramReceive, paramSend } from '../common/commonMidiApi'
+import { ButtonInputProperty, NumericInputProperty } from '../common/types'
 
 const setGuiMod = (
     guiSource: number,

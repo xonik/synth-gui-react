@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
 import { ApiSource } from '../../types'
-import { NumericPayload } from '../common/CommonReducer'
+import { NumericPayload } from '../common/types'
 
 type ModsState = {
     gui: {

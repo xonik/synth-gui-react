@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { MainDisplayScreenId } from './types'
 import { RootState } from '../../store'
-import { BooleanPayload } from '../common/CommonReducer'
+import { BooleanPayload } from '../common/types'
 
 type MainDisplayState = {
     currentScreen: MainDisplayScreenId

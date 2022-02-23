@@ -4,12 +4,11 @@ import RoundPushButtonBase from './RoundPushButtonBase'
 import RotaryPotBase from '../pots/RotaryPotBase'
 import { ControllerConfig } from '../../midi/types'
 import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
-import { click, increment, release } from '../../synthcore/modules/ui/uiReducer'
+import { click, release } from '../../synthcore/modules/ui/uiReducer'
 import { dispatch } from '../../synthcore/utils'
 import { useAppSelector } from '../../synthcore/hooks'
-import { selectController } from '../../synthcore/modules/controllers/controllersReducer'
+import { getControllerSelector } from '../../synthcore/modules/controllers/controllersSelectors'
 import './RoundButton.scss'
-import { getControllerSelector } from '../../synthcore/modules/common/controllerSelectors'
 
 type LedPosition = 'left' | 'right' | 'sides' | 'top' | 'bottom' | undefined;
 type LabelPosition = 'left' | 'right' | 'top' | 'bottom' | undefined;
@@ -237,7 +236,7 @@ export const RoundButtonBase = (props: Props & Config) => {
                 dispatch(click({ ctrlGroup, ctrl, loop, valueIndex, reverse: true, source: ApiSource.UI }))
             }
         }
-    }, [ctrlGroup, ctrl, loop])
+    }, [ctrlGroup, ctrl, loop, valueIndex])
 
     const handleOnClick = useCallback(() => {
         dispatch(click({ ctrlGroup, ctrl, ctrlIndex, radioButtonIndex, reverse, loop, source: ApiSource.UI }))

@@ -1,12 +1,12 @@
 import { createSlice, Draft, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
-import { NumericControllerPayload } from '../common/CommonReducer'
 import { ControllerConfig } from '../../../midi/types'
 import { Controllers, ValueIndexedControllers } from './types'
 import { getDefaultController, getDefaultEnv, getDefaultStages } from '../env/envUtils'
 import { envCtrls } from '../env/envControllers'
 import { mergeControllers, mergeValueIndexedControllers } from './controllersUtils'
 import { Stage, StageId, STAGES } from '../env/types'
+import { NumericControllerPayload } from '../common/types'
 
 type ControllersState = {
 

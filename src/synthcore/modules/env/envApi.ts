@@ -13,10 +13,10 @@ import { ApiSource } from '../../types'
 import { dispatch, getBounded, getQuantized } from '../../utils'
 import { createSetterFuncs } from '../common/utils'
 import { envCtrls } from './envControllers'
-import { ButtonInputProperty, NumericInputProperty } from '../common/commonApi'
 import { paramReceive, paramSend } from '../common/commonMidiApi'
 import { getLinearToDBMapper, getLinearToExpMapper, getMapperWithFade } from '../../../midi/slopeCalculator'
 import { selectController, setController } from '../controllers/controllersReducer'
+import { ButtonInputProperty, NumericInputProperty } from '../common/types'
 
 const envLevelMapper = getMapperWithFade(
     getLinearToDBMapper(32767, 32767, 23, true, false),
