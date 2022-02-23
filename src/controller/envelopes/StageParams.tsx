@@ -3,7 +3,7 @@ import { Stage, StageId } from '../../synthcore/modules/env/types'
 import './StageParams.scss'
 import classNames from 'classnames'
 import { useAppSelector } from '../../synthcore/hooks'
-import { selectStages } from '../../synthcore/modules/env/envReducer'
+import { selectStages } from '../../synthcore/modules/controllers/controllersReducer'
 
 interface Props {
     className?: string

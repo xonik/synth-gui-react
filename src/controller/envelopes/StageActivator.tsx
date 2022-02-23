@@ -3,11 +3,11 @@ import { StageId } from '../../synthcore/modules/env/types'
 import Button from '../Button'
 import { stageNames } from './utils'
 import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
-import { selectStages } from '../../synthcore/modules/env/envReducer'
 import './StageActivator.scss'
 import { click } from '../../synthcore/modules/ui/uiReducer'
 import { envCtrls } from '../../synthcore/modules/env/envControllers'
 import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
+import { selectStages } from '../../synthcore/modules/controllers/controllersReducer'
 
 interface Props {
     envId: number

@@ -1,4 +1,4 @@
-import { selectCurrEnvId, selectCurrStageId, selectEnvController } from './envReducer'
+import { selectCurrEnvId, selectCurrStageId } from './envReducer'
 import { store } from '../../store'
 import { envApi } from '../../synthcoreApi'
 import { ApiSource } from '../../types'
@@ -6,6 +6,7 @@ import { LoopMode, StageId } from './types'
 import { step } from '../../utils'
 import mainDisplayControllers from '../mainDisplay/mainDisplayControllers'
 import { envCtrls } from './envControllers'
+import { selectController } from '../controllers/controllersReducer'
 
 export const mainDisplayEnvPotResolutions = {
     [mainDisplayControllers.POT1.id]: 8, // Envelope
@@ -53,7 +54,7 @@ export const mainDisplayEnvApi = {
                     source: ApiSource.UI})
             }
         } else if (ctrlId === mainDisplayControllers.POT5.id) {
-            const loopMode = selectEnvController(envCtrls.LOOP_MODE, envId)(store.getState())
+            const loopMode = selectController(envCtrls.LOOP_MODE, envId)(store.getState())
             if (loopMode !== LoopMode.COUNTED) {
                 return
             }

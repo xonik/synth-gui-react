@@ -4,7 +4,6 @@ import RotaryPot10 from '../pots/RotaryPot10'
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import Header from '../misc/Header'
-import { selectEnvController } from '../../synthcore/modules/env/envReducer'
 import { StageId } from '../../synthcore/modules/env/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { ControllerGroupIds } from '../../synthcore/types'
@@ -27,14 +26,14 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
     const potY = y + 45
     const potDistance = 40
 
-    const bipolar = useAppSelector(selectEnvController(envCtrls.BIPOLAR, envId))
-    const env3Id = useAppSelector(selectEnvController(envCtrls.SELECT_ENV3_ID, 0))
+    const bipolar = useAppSelector(selectController(envCtrls.BIPOLAR, envId))
+    const env3Id = useAppSelector(selectController(envCtrls.SELECT_ENV3_ID, 0))
 
-    const delayDisabled = useAppSelector(selectEnvController(envCtrls.TOGGLE_STAGE, envId, StageId.DELAY))  === 0
-    const decay1Disabled = useAppSelector(selectEnvController(envCtrls.TOGGLE_STAGE, envId, StageId.DECAY1))  === 0
-    const decay2Disabled = useAppSelector(selectEnvController(envCtrls.TOGGLE_STAGE, envId, StageId.DECAY2))  === 0
-    const sustainDisabled = useAppSelector(selectEnvController(envCtrls.TOGGLE_STAGE, envId, StageId.SUSTAIN))  === 0
-    const release1Disabled = useAppSelector(selectEnvController(envCtrls.TOGGLE_STAGE, envId, StageId.RELEASE1))  === 0
+    const delayDisabled = useAppSelector(selectController(envCtrls.TOGGLE_STAGE, envId, StageId.DELAY))  === 0
+    const decay1Disabled = useAppSelector(selectController(envCtrls.TOGGLE_STAGE, envId, StageId.DECAY1))  === 0
+    const decay2Disabled = useAppSelector(selectController(envCtrls.TOGGLE_STAGE, envId, StageId.DECAY2))  === 0
+    const sustainDisabled = useAppSelector(selectController(envCtrls.TOGGLE_STAGE, envId, StageId.SUSTAIN))  === 0
+    const release1Disabled = useAppSelector(selectController(envCtrls.TOGGLE_STAGE, envId, StageId.RELEASE1))  === 0
 
     return <>
         <Header align="left" label={label} x={x} y={y} width={255}/>

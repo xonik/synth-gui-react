@@ -26,7 +26,7 @@ import Controller from '../controller/Controller'
 import { useAppSelector } from '../synthcore/hooks'
 import { envCtrls } from '../synthcore/modules/env/envControllers'
 import './MainPanel.scss'
-import { selectEnvController } from '../synthcore/modules/env/envReducer'
+import { selectController } from '../synthcore/modules/controllers/controllersReducer'
 
 /**
  * TODO:
@@ -39,7 +39,7 @@ import { selectEnvController } from '../synthcore/modules/env/envReducer'
  */
 const MainPanel = () => {
 
-    const env3Id = useAppSelector(selectEnvController(envCtrls.SELECT_ENV3_ID, 0))
+    const env3Id = useAppSelector(selectController(envCtrls.SELECT_ENV3_ID))
     console.log("ENV!!!", env3Id)
     //const panelHeight = 350;
     //const panelWidth = 1050;

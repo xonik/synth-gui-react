@@ -3,14 +3,13 @@ import { StageId, Stage } from '../../synthcore/modules/env/types'
 import StageBlock from './StageBlock'
 import {
     selectCurrStageId,
-    selectEnvController,
-    selectStages,
     toggleStageSelected,
 } from '../../synthcore/modules/env/envReducer'
 import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import classNames from 'classnames'
 import './Stages.scss'
 import { envCtrls } from '../../synthcore/modules/env/envControllers'
+import { selectController, selectStages } from '../../synthcore/modules/controllers/controllersReducer'
 
 interface Props {
     envId: number
@@ -30,7 +29,7 @@ const getNextEnabled = (stages: Stage[], currentId: StageId) => {
 const Stages = ({ envId }: Props) => {
 
     const stages = useAppSelector(selectStages(envId))
-    const bipolar = useAppSelector(selectEnvController(envCtrls.BIPOLAR, envId))
+    const bipolar = useAppSelector(selectController(envCtrls.BIPOLAR, envId))
     const dispatch = useAppDispatch();
     const select = useAppSelector;
     const enabledStages = stages.filter((stage) => stage.enabled)

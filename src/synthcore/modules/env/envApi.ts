@@ -5,8 +5,6 @@ import {
     selectCurrStageId,
     selectGuiEnv,
     selectStage,
-    setEnvController,
-    selectEnvController,
 } from './envReducer'
 import { store } from '../../store'
 import midiApi from './envMidiApi'
@@ -19,7 +17,6 @@ import { ButtonInputProperty, NumericInputProperty } from '../common/commonApi'
 import { paramReceive, paramSend } from '../common/commonMidiApi'
 import { getLinearToDBMapper, getLinearToExpMapper, getMapperWithFade } from '../../../midi/slopeCalculator'
 import { selectController, setController } from '../controllers/controllersReducer'
-import Controller from '../../../controller/Controller'
 
 const envLevelMapper = getMapperWithFade(
     getLinearToDBMapper(32767, 32767, 23, true, false),
@@ -37,11 +34,11 @@ const updateReleaseLevels = (envId: number, value: number) => {
         ctrlIndex: envId,
         value
     }
-    const release1Enabled = selectEnvController(envCtrls.TOGGLE_STAGE, envId, StageId.RELEASE1)(store.getState())
+    const release1Enabled = selectController(envCtrls.TOGGLE_STAGE, envId, StageId.RELEASE1)(store.getState())
     if (release1Enabled === 1) {
-        dispatch(setEnvController({...action, valueIndex: StageId.RELEASE1 }))
+        dispatch(setController({...action, valueIndex: StageId.RELEASE1 }))
     } else {
-        dispatch(setEnvController({...action, valueIndex: StageId.RELEASE2 }))
+        dispatch(setController({...action, valueIndex: StageId.RELEASE2 }))
     }
 }
 
@@ -56,7 +53,7 @@ const stageLevel = (() => {
     const set = (input: NumericInputProperty) => {
         const { ctrlIndex: envId = 0, value, valueIndex: stageId = 0, source, ctrl } = input
 
-        const r1enabled = selectEnvController(
+        const r1enabled = selectController(
             envCtrls.TOGGLE_STAGE,
             envId,
             StageId.RELEASE1)(store.getState())
@@ -66,12 +63,12 @@ const stageLevel = (() => {
             stageId === StageId.SUSTAIN ||
             (stageId === StageId.RELEASE2 && r1enabled)
         ) {
-            const bipolar = selectEnvController(envCtrls.BIPOLAR, envId)(store.getState()) === 1
+            const bipolar = selectController(envCtrls.BIPOLAR, envId)(store.getState()) === 1
             let boundedValue = bipolar
                 ? getQuantized(getBounded(value, -1, 1), 32767)
                 : getQuantized(getBounded(value), 32767)
 
-            const currentLevel = selectEnvController(ctrl, envId, stageId)(store.getState())
+            const currentLevel = selectController(ctrl, envId, stageId)(store.getState())
             if (boundedValue === currentLevel) {
                 return
             }
@@ -80,10 +77,10 @@ const stageLevel = (() => {
             // r1 is enabled or not.
             if (stageId === StageId.SUSTAIN) {
                 const stage2Id = r1enabled ? StageId.RELEASE1 : StageId.RELEASE2
-                dispatch(setEnvController({...input, valueIndex: StageId.SUSTAIN, value: boundedValue }))
-                dispatch(setEnvController({...input, valueIndex: stage2Id, value: boundedValue }))
+                dispatch(setController({...input, valueIndex: StageId.SUSTAIN, value: boundedValue }))
+                dispatch(setController({...input, valueIndex: stage2Id, value: boundedValue }))
             } else {
-                dispatch(setEnvController({...input, value: boundedValue }))
+                dispatch(setController({...input, value: boundedValue }))
             }
 
             if (stageId === StageId.SUSTAIN) {
@@ -101,7 +98,7 @@ const stageLevel = (() => {
 
     const increment = (input: NumericInputProperty) => {
         const { ctrlIndex: envId = 0, valueIndex: stageId = 0, value: inc, ctrl } = input
-        const currentLevel = selectEnvController(ctrl, envId, stageId)(store.getState())
+        const currentLevel = selectController(ctrl, envId, stageId)(store.getState())
         set({...input, value: currentLevel + inc})
     }
 
@@ -119,13 +116,13 @@ const stageTime = (() => {
         const { ctrlIndex: envId = 0, value, valueIndex: stageId = 0, source, ctrl } = input
 
         let boundedValue = getQuantized(getBounded(value))
-        const currentTime = selectEnvController(ctrl, envId, stageId)(store.getState())
+        const currentTime = selectController(ctrl, envId, stageId)(store.getState())
 
         if (boundedValue === currentTime) {
             return
         }
 
-        dispatch(setEnvController({ ...input, value: boundedValue }))
+        dispatch(setController({ ...input, value: boundedValue }))
 
         // TODO: This should be configurable!
         //boundedValue = Math.floor(envTimeMapper(boundedValue * 65535))
@@ -137,7 +134,7 @@ const stageTime = (() => {
     const increment = (input: NumericInputProperty) => {
         const { ctrlIndex: envId = 0, valueIndex: stageId = 0, value: inc, ctrl } = input
 
-        const currentTime = selectEnvController(ctrl, envId, stageId)(store.getState())
+        const currentTime = selectController(ctrl, envId, stageId)(store.getState())
         set({ ...input, value: currentTime + inc })
     }
 
@@ -156,22 +153,22 @@ const stageEnabled = (() => {
             return
         }
 
-        const currentEnabled = selectEnvController(ctrl, envId, stageId)(store.getState())
+        const currentEnabled = selectController(ctrl, envId, stageId)(store.getState())
         if (currentEnabled === enabled) {
             return
         }
 
-        dispatch(setEnvController(input))
+        dispatch(setController(input))
 
         if (stageId === StageId.RELEASE1) {
-            const sustainLevel = selectEnvController(envCtrls.LEVEL, envId, StageId.SUSTAIN)(store.getState())
+            const sustainLevel = selectController(envCtrls.LEVEL, envId, StageId.SUSTAIN)(store.getState())
             const levelAction = {
                 ctrl: envCtrls.LEVEL, value: sustainLevel
             }
             if (enabled) {
-                dispatch(setEnvController({ ...levelAction, valueIndex: StageId.RELEASE1 }))
+                dispatch(setController({ ...levelAction, valueIndex: StageId.RELEASE1 }))
             } else {
-                dispatch(setEnvController({ ...levelAction, valueIndex: StageId.RELEASE2 }))
+                dispatch(setController({ ...levelAction, valueIndex: StageId.RELEASE2 }))
             }
         }
 
@@ -181,7 +178,7 @@ const stageEnabled = (() => {
     const toggle = (input: ButtonInputProperty) => {
         const { ctrlIndex: envId = 0, valueIndex: stageId = 0, ctrl } = input
 
-        const currentEnabled = selectEnvController(ctrl, envId, stageId)(store.getState())
+        const currentEnabled = selectController(ctrl, envId, stageId)(store.getState())
         const enabled = (currentEnabled + 1) % 2
         set({ ...input, value: enabled })
     }
@@ -199,18 +196,18 @@ const stageEnabled = (() => {
 const stageCurve = (() => {
     const set = (input: NumericInputProperty) => {
         const { ctrlIndex: envId = 0, value: curve, valueIndex: stageId = 0, ctrl } = input
-        const currentCurve = selectEnvController(ctrl, envId, stageId)(store.getState())
+        const currentCurve = selectController(ctrl, envId, stageId)(store.getState())
         const boundedCurve = getBounded(curve, 0, curveFuncs.length - 1)
         if (currentCurve === boundedCurve) {
             return
         }
 
-        dispatch(setEnvController({...input, value: boundedCurve }))
+        dispatch(setController({...input, value: boundedCurve }))
         midiApi.curve.send({...input, value: boundedCurve})
     }
     const increment = (input: NumericInputProperty) => {
         const { ctrlIndex: envId = 0, valueIndex: stageId = 0, value: inc, ctrl } = input
-        const currentCurve = selectEnvController(ctrl, envId, stageId)(store.getState())
+        const currentCurve = selectController(ctrl, envId, stageId)(store.getState())
         set({ ...input, value: currentCurve + inc })
     }
 
@@ -227,7 +224,7 @@ const stageCurve = (() => {
 const maxLoops = (() => {
     const set = (input: NumericInputProperty) => {
         const { ctrlIndex: envId = 0, value } = input
-        const currMaxLoops = selectEnvController(
+        const currMaxLoops = selectController(
             envCtrls.MAX_LOOPS,
             envId)(store.getState())
 
@@ -237,13 +234,13 @@ const maxLoops = (() => {
         }
 
         console.log("sending loops", boundedMaxLoops, boundedMaxLoops / 127)
-        dispatch(setEnvController({ ...input, value: boundedMaxLoops }))
+        dispatch(setController({ ...input, value: boundedMaxLoops }))
         paramSend(input.source, input.ctrl, boundedMaxLoops / 127)
     }
 
     const increment = (input: NumericInputProperty) => {
         const { ctrlIndex: envId = 0, value: inc } = input
-        const currMaxLoops = selectEnvController(
+        const currMaxLoops = selectController(
             envCtrls.MAX_LOOPS,
             envId)(store.getState())
 
@@ -264,15 +261,15 @@ const env3Id = (() => {
     const set = (input: NumericInputProperty) => {
         const { value: id, source, ctrl } = input
 
-        const currentEnv3Id = selectEnvController(input.ctrl, 0)(store.getState())
+        const currentEnv3Id = selectController(input.ctrl, 0)(store.getState())
         if (id !== currentEnv3Id && id < NUMBER_OF_ENVELOPES && id > 1) {
-            dispatch(setEnvController(input))
+            dispatch(setController(input))
             paramSend(source, ctrl, id / 127 )
         }
     }
     
     const toggle = (input: ButtonInputProperty) => {
-        const currentEnv3Id = selectEnvController(input.ctrl, 0)(store.getState())
+        const currentEnv3Id = selectController(input.ctrl, 0)(store.getState())
         let nextEnv3Id = (currentEnv3Id + 1)
         if (nextEnv3Id > NUMBER_OF_ENVELOPES - 1) {
             nextEnv3Id = 2
@@ -326,8 +323,8 @@ const { increment: commonInc, toggle: commonToggle, set: commonSet } = createSet
         envCtrls.RELEASE_MODE,
         envCtrls.LOOP_MODE,
     ],
-    setEnvController,
-    selectEnvController,
+    setController,
+    selectController,
 )
 
 const customSetterFuncs = {

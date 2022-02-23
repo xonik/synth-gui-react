@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { stageNames } from './utils'
 import './StageNames.scss'
 import { useAppSelector } from '../../synthcore/hooks'
-import { selectStages } from '../../synthcore/modules/env/envReducer'
+import { selectStages } from '../../synthcore/modules/controllers/controllersReducer'
 
 interface Props {
     className?: string

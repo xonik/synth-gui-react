@@ -4,14 +4,13 @@ import Button from '../Button'
 import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import {
     selectCurrStageId,
-    selectEnvController,
-    selectStageById,
 } from '../../synthcore/modules/env/envReducer'
 import { curveNames, loopModeNames, releaseModeNames } from './utils'
 import './EnvOptions.scss'
 import { click } from '../../synthcore/modules/ui/uiReducer'
 import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 import { envCtrls } from '../../synthcore/modules/env/envControllers'
+import { selectController, selectStageById } from '../../synthcore/modules/controllers/controllersReducer'
 
 interface Props {
     envId: number
@@ -32,12 +31,12 @@ const EnvOptions = ({ envId }: Props) => {
     }
 
     const dispatch = useAppDispatch()
-    const releaseMode = useAppSelector(selectEnvController(envCtrls.RELEASE_MODE, envId))
-    const loopMode = useAppSelector(selectEnvController(envCtrls.LOOP_MODE, envId))
-    const loopEnabled = useAppSelector(selectEnvController(envCtrls.LOOP, envId))
-    const maxLoops = useAppSelector(selectEnvController(envCtrls.MAX_LOOPS, envId))
-    const invert = useAppSelector(selectEnvController(envCtrls.INVERT, envId))
-    const retrigger = useAppSelector(selectEnvController(envCtrls.RESET_ON_TRIGGER, envId))
+    const releaseMode = useAppSelector(selectController(envCtrls.RELEASE_MODE, envId))
+    const loopMode = useAppSelector(selectController(envCtrls.LOOP_MODE, envId))
+    const loopEnabled = useAppSelector(selectController(envCtrls.LOOP, envId))
+    const maxLoops = useAppSelector(selectController(envCtrls.MAX_LOOPS, envId))
+    const invert = useAppSelector(selectController(envCtrls.INVERT, envId))
+    const retrigger = useAppSelector(selectController(envCtrls.RESET_ON_TRIGGER, envId))
     const currStageId = useAppSelector(selectCurrStageId)
     const curve = useAppSelector(selectStageById(envId, currStageId)).curve
 
