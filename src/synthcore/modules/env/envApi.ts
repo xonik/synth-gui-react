@@ -49,7 +49,7 @@ const cannotDisableStage = (stage: StageId) => stage === StageId.ATTACK || stage
 
 const selectEnv = (envId: number, source: ApiSource) => {
     // TODO: Only send if not just sent
-    paramSend(source, envCtrls.SELECT, envId)
+    paramSend(source, envCtrls.SELECT, envId / 127)
 }
 
 const stageLevel = (() => {

@@ -66,7 +66,6 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
                      valueIndex={StageId.SUSTAIN}
                      disabled={sustainDisabled}
         />
-        {/*value={bipolar ? (levelS + 1) / 2 : levelS}*/}
         <RotaryPot17 ledMode="single" label="Release 1" x={firstPotX + potDistance * 4} y={potY}
                      ctrlGroup={ctrlGroup}
                      ctrl={envCtrls.TIME}
@@ -107,7 +106,6 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
                      valueIndex={StageId.DECAY2}
                      disabled={decay2Disabled}
         />
-        {/*value={bipolar ? (levelD2 + 1) / 2 : levelD2}*/}
         <RoundLedPushButton8
             label="Invert" x={firstPotX + potDistance * 2.5} y={topRowY}
             labelPosition="bottom"
@@ -128,9 +126,6 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
                      valueIndex={StageId.RELEASE2}
                      disabled={release1Disabled}
         />
-
-        {/*value={bipolar ? (levelR2 + 1) / 2 : levelR2}*/}
-
         <RoundPushButton8 label="Trigger" x={firstPotX + potDistance * 5.5} y={topRowY} labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={envCtrls.TRIGGER}
