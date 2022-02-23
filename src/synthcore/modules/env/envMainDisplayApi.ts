@@ -8,11 +8,11 @@ import mainDisplayControllers from '../mainDisplay/mainDisplayControllers'
 import { envCtrls } from './envControllers'
 
 export const mainDisplayEnvPotResolutions = {
-    [mainDisplayControllers.POT1.id]: 8,
-    [mainDisplayControllers.POT2.id]: 1000,
-    [mainDisplayControllers.POT3.id]: 1000,
-    [mainDisplayControllers.POT4.id]: 8,
-    [mainDisplayControllers.POT5.id]: 32,
+    [mainDisplayControllers.POT1.id]: 8, // Envelope
+    [mainDisplayControllers.POT2.id]: 1000, // Time
+    [mainDisplayControllers.POT3.id]: 1000, // Level
+    [mainDisplayControllers.POT4.id]: 8, // Curve
+    [mainDisplayControllers.POT5.id]: 32, // Loops
     [mainDisplayControllers.POT6.id]: 1000,
 }
 
@@ -49,7 +49,7 @@ export const mainDisplayEnvApi = {
                     ctrl: envCtrls.CURVE,
                     ctrlIndex: envId,
                     valueIndex: stageId,
-                    value: increment,
+                    value: step(increment),
                     source: ApiSource.UI})
             }
         } else if (ctrlId === mainDisplayControllers.POT5.id) {

@@ -164,10 +164,13 @@ const stageEnabled = (() => {
 
         if (stageId === StageId.RELEASE1) {
             const sustainLevel = selectEnvController(envCtrls.LEVEL, envId, StageId.SUSTAIN)(store.getState())
+            const levelAction = {
+                ctrl: envCtrls.LEVEL, value: sustainLevel
+            }
             if (enabled) {
-                dispatch(setEnvController({ ...input, valueIndex: StageId.RELEASE1, value: sustainLevel }))
+                dispatch(setEnvController({ ...levelAction, valueIndex: StageId.RELEASE1 }))
             } else {
-                dispatch(setEnvController({ ...input, valueIndex: StageId.RELEASE2, value: sustainLevel }))
+                dispatch(setEnvController({ ...levelAction, valueIndex: StageId.RELEASE2 }))
             }
         }
 
@@ -239,7 +242,6 @@ const maxLoops = (() => {
 
     const increment = (input: NumericInputProperty) => {
         const { ctrlIndex: envId = 0, value: inc } = input
-
         const currMaxLoops = selectEnvController(
             envCtrls.MAX_LOOPS,
             envId)(store.getState())
