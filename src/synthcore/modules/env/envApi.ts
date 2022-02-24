@@ -279,6 +279,48 @@ const maxLoops = (() => {
     }
 })()
 
+const invert = (() => {
+    const set = (input: NumericInputProperty) => {
+        const { ctrlIndex: envId = 0, value } = input
+        const currInvert = selectController(
+            input.ctrl,
+            envId)(store.getState())
+
+        const boundedInvert = getBounded(value, 0, input.ctrl.values?.length || 1)
+        if (boundedInvert === currInvert) {
+            return
+        }
+
+        dispatch(setController({ ...input, value: boundedInvert }))
+        paramSend(input.source, input.ctrl, boundedInvert, undefined, (value: number) => value)
+
+        const resetLevel = boundedInvert ? 1 : 0
+        dispatch(setController({ ctrl: envCtrls.LEVEL, ctrlIndex: envId, valueIndex: StageId.DELAY, value: resetLevel }))
+        dispatch(setController({ ctrl: envCtrls.LEVEL, ctrlIndex: envId, valueIndex: StageId.ATTACK, value: resetLevel }))
+        dispatch(setController({ ctrl: envCtrls.LEVEL, ctrlIndex: envId, valueIndex: StageId.DECAY1, value: value ? 0 : 1 }))
+        dispatch(setController({ ctrl: envCtrls.LEVEL, ctrlIndex: envId, valueIndex: StageId.STOPPED, value: resetLevel }))
+
+    }
+
+    const toggle = (input: ButtonInputProperty) => {
+        const { ctrlIndex: envId = 0, ctrl } = input
+
+        const currentEnabled = selectController(ctrl, envId)(store.getState())
+        const enabled = (currentEnabled + 1) % (input.ctrl.values?.length || 1)
+        set({ ...input, value: enabled })
+    }
+
+    paramReceive(envCtrls.INVERT, set)
+
+    return {
+        set,
+        increment: (input: NumericInputProperty) => {
+
+        },
+        toggle,
+    }
+})()
+
 // This version sends the current envelope without updating state and is
 // intended for communications FROM the GUI to the synth or another gui.
 const selectEnv = (envId: number, source: ApiSource) => {
@@ -377,10 +419,12 @@ const toggleStageSelected = (envId: number, stageId: StageId, source: ApiSource)
     }
 }
 
+const updateLevelsOnInvert = ({ctrlIndex}: ButtonInputProperty) => {
+}
+
 const { increment: commonInc, toggle: commonToggle, set: commonSet } = createSetterFuncs([
         envCtrls.LOOP,
         envCtrls.TRIGGER,
-        envCtrls.INVERT,
         envCtrls.RESET_ON_TRIGGER,
         envCtrls.RELEASE_MODE,
         envCtrls.LOOP_MODE,
@@ -396,6 +440,7 @@ const customSetterFuncs = {
     [envCtrls.TIME.id]: stageTime,
     [envCtrls.TOGGLE_STAGE.id]: stageEnabled,
     [envCtrls.CURVE.id]: stageCurve,
+    [envCtrls.INVERT.id]: invert,
     [envCtrls.MAX_LOOPS.id]: maxLoops,
     [envCtrls.SELECT.id]: midiEnvSelect,
     [envCtrls.SELECT_ENV3_ID.id]: env3Id,
@@ -429,6 +474,7 @@ const envApi = {
     increment,
     toggle,
     set,
+    updateLevelsOnInvert,
 }
 
 export default envApi

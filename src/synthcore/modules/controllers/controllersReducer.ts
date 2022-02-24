@@ -139,39 +139,18 @@ export const controllersSlice = createSlice({
     initialState,
     reducers: {
         setController: (state, { payload }: PayloadAction<NumericControllerPayload>) => {
-
             if (payload.valueIndex === undefined) {
                 setControllerState(state, payload)
             } else {
                 setValueIndexedControllerState(state, payload)
             }
-
-            // TODO: Not very nice to have this here!
-            if (payload.ctrl.id === envCtrls.INVERT.id) {
-                const resetLevel = payload.value ? 1 : 0
-                setLevel(state, payload, StageId.DELAY, resetLevel)
-                setLevel(state, payload, StageId.ATTACK, resetLevel)
-                setLevel(state, payload, StageId.DECAY1, payload.value ? 0 : 1)
-                setLevel(state, payload, StageId.STOPPED, resetLevel)
-            }
         },
         setUiController: (state, { payload }: PayloadAction<NumericControllerPayload>) => {
-
             if (payload.valueIndex === undefined) {
                 setUiControllerState(state, payload)
             } else {
                 setUiValueIndexedControllerState(state, payload)
             }
-
-            // TODO: Not very nice to have this here!
-            /*
-            if (payload.ctrl.id === envCtrls.INVERT.id) {
-                const resetLevel = payload.value ? 1 : 0
-                setLevel(state, payload, StageId.DELAY, resetLevel)
-                setLevel(state, payload, StageId.ATTACK, resetLevel)
-                setLevel(state, payload, StageId.DECAY1, payload.value ? 0 : 1)
-                setLevel(state, payload, StageId.STOPPED, resetLevel)
-            }*/
         },
     }
 })
