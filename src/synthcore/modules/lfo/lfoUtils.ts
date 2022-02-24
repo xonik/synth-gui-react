@@ -1,40 +1,128 @@
 import { Curve, Lfo, Stage, StageId } from './types'
+import { Controllers, ValueIndexedControllers } from '../controllers/types'
+import { mergeValueIndexedControllers } from '../controllers/controllersUtils'
+import { envCtrls } from '../env/envControllers'
+import { lfoCtrls } from './lfoControllers'
 
-export const getDefaultLfo = (id: number): Lfo => {
+const getStageState = (envId: number, stage: Stage): ValueIndexedControllers => {
+    // const { id: stageId, enabled, curve, level, time } = stage
 
-    const stages: Stage[] = [];
-    stages.push({
+    const controllers: ValueIndexedControllers = {}
+    controllers[envId] = {
+        /*
+        [lfoCtrls.TOGGLE_STAGE.id]: {
+            [stageId]: enabled
+        },
+        [lfoCtrls.CURVE.id]: {
+            [stageId]: curve
+        },
+        [lfoCtrls.LEVEL.id]: {
+            [stageId]: level
+        },
+        [lfoCtrls.TIME.id]: {
+            [stageId]: time
+        },        
+         */
+    }
+    return controllers
+}
+
+const getUiStageState = (envId: number, stage: Stage): ValueIndexedControllers => {
+    // const { id: stageId, level, time } = stage
+
+    const controllers: ValueIndexedControllers = {}
+    controllers[envId] = {
+        /*
+        [lfoCtrls.LEVEL.id]: {
+            [stageId]: levelResponseMapper.input(level)
+        },
+        [lfoCtrls.TIME.id]: {
+            [stageId]: timeResponseMapper.input(time)
+        },
+         */
+    }
+    return controllers
+}
+
+const getLfoState = (lfo: Lfo) => {
+    const {
+        /*
+        resetOnTrigger,
+        releaseMode,
+        loopMode,
+        loopEnabled,
+        maxLoops,
+        invert,
+        bipolar,*/
+    } = lfo
+    const lfoControllers: Controllers = {}
+    lfoControllers[lfo.id] = {
+        /*
+        [lfoCtrls.RESET_ON_TRIGGER.id]: resetOnTrigger ? 1 : 0,
+        [lfoCtrls.RELEASE_MODE.id]: releaseMode,
+        [lfoCtrls.LOOP_MODE.id]: loopMode,
+        [lfoCtrls.LOOP.id]: loopEnabled ? 1 : 0,
+        [lfoCtrls.MAX_LOOPS.id]: maxLoops,
+        [lfoCtrls.INVERT.id]: invert ? 1 : 0,
+        [lfoCtrls.BIPOLAR.id]: bipolar ? 1 : 0,
+         */
+    }
+    return lfoControllers
+}
+
+export const getDefaultLfo = (lfoId: number): Controllers => {
+
+    return getLfoState({
+        id: lfoId,
+        /*
+        resetOnTrigger: false,
+        releaseMode: ReleaseMode.NORMAL,
+        loopMode: LoopMode.GATED,
+        loopEnabled: false,
+        maxLoops: 2,
+        invert: false,
+        // VCA and VCF envs are hardcoded to unipolar for now. VCF should probably be bipolar
+        bipolar: lfoId !== 0 && lfoId !== 1,*/
+    })
+}
+
+const defaultStageConfigs: Stage[] = [
+    {
         id: StageId.DELAY,
-        enabled: false,
+        enabled: 0,
         curve: Curve.LIN,
         level: 0,
         time: 0,
-    })
-    stages.push({
+    },
+    {
         id: StageId.ATTACK,
-        enabled: true,
+        enabled: 1,
         curve: Curve.LOG1,
         level: 0,
         time: 0.001,
-    })
-    stages.push({
+    },
+    {
         id: StageId.DECAY,
-        enabled: true,
+        enabled: 1,
         curve: Curve.LOG1,
         level: 1,
         time: 0.5,
-    })
-    stages.push({
+    },
+    {
         id: StageId.STOPPED,
-        enabled: true,
+        enabled: 1,
         curve: Curve.LIN,
         level: 0,
         time: 0,
-    })
-
-    return {
-        id,
-        controllers: {},
-        stages,
     }
+]
+
+export const getDefaultLfoStages = (lfoId: number): ValueIndexedControllers => {
+    const stages: ValueIndexedControllers[] = defaultStageConfigs.map(conf => getStageState(lfoId, conf))
+    return mergeValueIndexedControllers(stages)
+}
+
+export const getDefaultUiLfoStages = (lfoId: number): ValueIndexedControllers => {
+    const stages: ValueIndexedControllers[] = defaultStageConfigs.map(conf => getUiStageState(lfoId, conf))
+    return mergeValueIndexedControllers(stages)
 }

@@ -419,9 +419,6 @@ const toggleStageSelected = (envId: number, stageId: StageId, source: ApiSource)
     }
 }
 
-const updateLevelsOnInvert = ({ctrlIndex}: ButtonInputProperty) => {
-}
-
 const { increment: commonInc, toggle: commonToggle, set: commonSet } = createSetterFuncs([
         envCtrls.LOOP,
         envCtrls.TRIGGER,
@@ -474,7 +471,6 @@ const envApi = {
     increment,
     toggle,
     set,
-    updateLevelsOnInvert,
 }
 
 export default envApi

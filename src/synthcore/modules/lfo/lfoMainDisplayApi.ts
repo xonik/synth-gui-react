@@ -24,7 +24,7 @@ export const mainDisplayLfoApi = {
         } else if (ctrlId === mainDisplayControllers.POT2.id) {
             const stageId = selectGuiStageId(store.getState())
             if (stageId !== StageId.STOPPED) {
-                lfoApi.incrementStageTime(lfoId, stageId, increment, ApiSource.UI)
+                //lfoApi.incrementStageTime(lfoId, stageId, increment, ApiSource.UI)
             }
         } else if (ctrlId === mainDisplayControllers.POT3.id) {
             const stageId = selectGuiStageId(store.getState())
@@ -34,7 +34,7 @@ export const mainDisplayLfoApi = {
         } else if (ctrlId === mainDisplayControllers.POT4.id) {
             const stageId = selectGuiStageId(store.getState())
             if (stageId !== StageId.STOPPED) {
-                lfoApi.incrementStageCurve(lfoId, stageId, step(increment), ApiSource.UI)
+                //lfoApi.incrementStageCurve(lfoId, stageId, step(increment), ApiSource.UI)
             }
         } else if (ctrlId === mainDisplayControllers.POT5.id) {
         } else if (ctrlId === mainDisplayControllers.POT6.id) {

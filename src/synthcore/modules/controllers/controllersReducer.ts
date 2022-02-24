@@ -2,11 +2,12 @@ import { createSlice, Draft, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
 import { ControllerConfig } from '../../../midi/types'
 import { Controllers, ValueIndexedControllers } from './types'
-import { getDefaultController, getDefaultEnv, getDefaultStages, getDefaultUiStages } from '../env/envUtils'
+import { getDefaultController, getDefaultEnv, getDefaultEnvStages, getDefaultEnvUiStages } from '../env/envUtils'
 import { envCtrls } from '../env/envControllers'
 import { mergeControllers, mergeValueIndexedControllers } from './controllersUtils'
 import { Stage, StageId, STAGES } from '../env/types'
 import { NumericControllerPayload } from '../common/types'
+import { getDefaultLfo, getDefaultLfoStages, getDefaultUiLfoStages } from '../lfo/lfoUtils'
 
 type ControllersState = {
 
@@ -29,25 +30,39 @@ export const initialState: ControllersState = {
         getDefaultEnv(2),
         getDefaultEnv(3),
         getDefaultEnv(4),
+        getDefaultLfo(0),
+        getDefaultLfo(1),
+        getDefaultLfo(2),
+        getDefaultLfo(3),
         getDefaultController(envCtrls.SELECT_ENV3_ID, 2),
     ]),
     uiControllers: {},
     valueIndexedControllers: mergeValueIndexedControllers(
         [
-            getDefaultStages(0),
-            getDefaultStages(1),
-            getDefaultStages(2),
-            getDefaultStages(3),
-            getDefaultStages(4),
+            getDefaultEnvStages(0),
+            getDefaultEnvStages(1),
+            getDefaultEnvStages(2),
+            getDefaultEnvStages(3),
+            getDefaultEnvStages(4),
+
+            getDefaultLfoStages(0),
+            getDefaultLfoStages(1),
+            getDefaultLfoStages(2),
+            getDefaultLfoStages(3),
         ]
     ),
     uiValueIndexedControllers: mergeValueIndexedControllers(
         [
-            getDefaultUiStages(0),
-            getDefaultUiStages(1),
-            getDefaultUiStages(2),
-            getDefaultUiStages(3),
-            getDefaultUiStages(4),
+            getDefaultEnvUiStages(0),
+            getDefaultEnvUiStages(1),
+            getDefaultEnvUiStages(2),
+            getDefaultEnvUiStages(3),
+            getDefaultEnvUiStages(4),
+
+            getDefaultUiLfoStages(0),
+            getDefaultUiLfoStages(1),
+            getDefaultUiLfoStages(2),
+            getDefaultUiLfoStages(3),
         ]
     ),
 }

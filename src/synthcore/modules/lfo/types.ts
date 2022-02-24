@@ -5,6 +5,9 @@ export enum StageId {
     STOPPED,
 }
 
+export const NUMBER_OF_LFOS = 4
+export const STAGES = Object.keys(StageId).length / 2
+
 export enum Curve {
     EXP1,
     EXP2,
@@ -15,9 +18,10 @@ export enum Curve {
     LOG3,
 }
 
+
 export type Stage = {
     id: StageId;
-    enabled: boolean;
+    enabled: number;
     curve: Curve;
     level: number; //-1 to 1
     time: number; // 0 to 1
@@ -25,8 +29,6 @@ export type Stage = {
 
 export type Lfo = {
     id: number;
-    controllers: {[key: number]: number}
-    stages: Stage[]
 
     /*
     resetLevel: number;

@@ -5,9 +5,9 @@ import RoundPushButton8 from '../buttons/RoundPushButton8'
 import Header from '../misc/Header'
 import { ControllerGroupIds } from '../../synthcore/types'
 import { useAppSelector } from '../../synthcore/hooks'
-import { selectUiLfo } from '../../synthcore/modules/lfo/lfoReducer'
 import { StageId } from '../../synthcore/modules/lfo/types'
-import lfoControllers from '../../synthcore/modules/lfo/lfoControllers'
+import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
+import { selectUiLfoId } from '../../synthcore/modules/lfo/lfoReducer'
 
 interface Props {
     x: number,
@@ -33,48 +33,48 @@ const LFO = ({ x, y }: Props) => {
     const button3Row = button2Row + buttonRowSpacing
     const button4Row = button3Row + buttonRowSpacing
 
-    const lfo = useAppSelector(selectUiLfo)
+    const lfoId = useAppSelector(selectUiLfoId)
 
     return <svg x={x} y={y}>
         <Header align="left" label="LFOs" x={0} y={0} width={145}/>
         <RoundLedPushButton8 label="1" x={buttonCol} y={button1Row} labelPosition="right" radioButtonIndex={0}
                              ctrlGroup={ctrlGroup}
-                             ctrl={lfoControllers(0).LFO}
-                             ctrlIndex={lfo.id}
-                             value={lfo.id}
+                             ctrl={lfoCtrls.LFO}
+                             ctrlIndex={lfoId}
+                             value={lfoId}
         />
 
         <RoundLedPushButton8 label="2" x={buttonCol} y={button2Row} labelPosition="right" radioButtonIndex={1}
                              ctrlGroup={ctrlGroup}
-                             ctrl={lfoControllers(0).LFO}
-                             ctrlIndex={lfo.id}
-                             value={lfo.id}
+                             ctrl={lfoCtrls.LFO}
+                             ctrlIndex={lfoId}
+                             value={lfoId}
         />
 
         <RoundLedPushButton8 label="3" x={buttonCol} y={button3Row} labelPosition="right" radioButtonIndex={2}
                              ctrlGroup={ctrlGroup}
-                             ctrl={lfoControllers(0).LFO}
-                             ctrlIndex={lfo.id}
-                             value={lfo.id}
+                             ctrl={lfoCtrls.LFO}
+                             ctrlIndex={lfoId}
+                             value={lfoId}
         />
 
         <RoundLedPushButton8 label="4" x={buttonCol} y={button4Row} labelPosition="right" radioButtonIndex={3}
                              ctrlGroup={ctrlGroup}
-                             ctrl={lfoControllers(0).LFO}
-                             ctrlIndex={lfo.id}
-                             value={lfo.id}
+                             ctrl={lfoCtrls.LFO}
+                             ctrlIndex={lfoId}
+                             value={lfoId}
         />
 
         <RotaryPot17 ledMode="single" label="Rate" x={firstPotCol} y={potRow1}
                      ctrlGroup={ctrlGroup}
-                     ctrl={lfoControllers(0).RATE}
-                     ctrlIndex={lfo.id}
+                     ctrl={lfoCtrls.RATE}
+                     ctrlIndex={lfoId}
         />
 
         <RotaryPot17 ledMode="single" label="Depth" x={firstPotCol + potDistance} y={potRow1}
                      ctrlGroup={ctrlGroup}
-                     ctrl={lfoControllers(0).DEPTH}
-                     ctrlIndex={lfo.id}
+                     ctrl={lfoCtrls.DEPTH}
+                     ctrlIndex={lfoId}
         />
 
         <RoundPushButton8 x={firstPotCol + potDistance + 30} y={potRow1}
@@ -82,33 +82,32 @@ const LFO = ({ x, y }: Props) => {
                           ledPosition="right" ledCount={5}
                           ledLabels={['Saw', 'Tri', 'Sqr', 'Sin', 'S & H',]}
                           ctrlGroup={ctrlGroup}
-                          ctrl={lfoControllers(0).SHAPE}
-                          ctrlIndex={lfo.id}
+                          ctrl={lfoCtrls.SHAPE}
+                          ctrlIndex={lfoId}
         />
 
         <RotaryPot17 ledMode="single" label="Delay" x={firstPotCol} y={potRow2}
                      ctrlGroup={ctrlGroup}
-                     ctrl={lfoControllers(0).DELAY}
-                     ctrlIndex={lfo.id}
-                     value={lfo.stages[StageId.DELAY].time}
+                     ctrl={lfoCtrls.DELAY}
+                     ctrlIndex={lfoId}
         />
 
         <RoundLedPushButton8 label="Sync" x={buttonCol2} y={potRow2} labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
-                             ctrl={lfoControllers(0).SYNC}
-                             ctrlIndex={lfo.id}
+                             ctrl={lfoCtrls.SYNC}
+                             ctrlIndex={lfoId}
         />
 
         <RoundLedPushButton8 label="Reset" x={buttonCol3} y={potRow2} labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
-                             ctrl={lfoControllers(0).RESET}
-                             ctrlIndex={lfo.id}
+                             ctrl={lfoCtrls.RESET}
+                             ctrlIndex={lfoId}
         />
 
         <RoundLedPushButton8 label="Once" x={buttonCol4} y={potRow2} labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
-                             ctrl={lfoControllers(0).ONCE}
-                             ctrlIndex={lfo.id}
+                             ctrl={lfoCtrls.ONCE}
+                             ctrlIndex={lfoId}
         />
 
     </svg>

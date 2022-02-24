@@ -112,4 +112,7 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
     },
 })
 
+// TODO: Make this select from controllers.ts
+export const lfoCtrls = lfoControllers(0)
+
 export default lfoControllers

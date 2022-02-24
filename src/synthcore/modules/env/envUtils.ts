@@ -43,13 +43,6 @@ const getUiStageState = (envId: number, stage: Stage): ValueIndexedControllers =
     return controllers
 }
 
-const getStageShadowState = (envId: number, stage: Stage) => {
-    // TODO: Map stage values to correct values here
-    return {
-        ...stage
-    }
-}
-
 export const getDefaultController = (ctrl: ControllerConfig, value: number): Controllers => {
     return {
         0: {
@@ -155,7 +148,7 @@ const defaultStageConfigs: Stage[] = [
     }
 ]
 
-export const getDefaultStages = (envId: number): ValueIndexedControllers => {
+export const getDefaultEnvStages = (envId: number): ValueIndexedControllers => {
     const stages: ValueIndexedControllers[] = defaultStageConfigs.map(conf => getStageState(envId, conf))
     const controllers = mergeValueIndexedControllers(stages)
 
@@ -170,7 +163,7 @@ export const getDefaultStages = (envId: number): ValueIndexedControllers => {
     return controllers
 }
 
-export const getDefaultUiStages = (envId: number): ValueIndexedControllers => {
+export const getDefaultEnvUiStages = (envId: number): ValueIndexedControllers => {
     const stages: ValueIndexedControllers[] = defaultStageConfigs.map(conf => getUiStageState(envId, conf))
     const controllers = mergeValueIndexedControllers(stages)
 
@@ -183,8 +176,4 @@ export const getDefaultUiStages = (envId: number): ValueIndexedControllers => {
     }
 
     return controllers
-}
-
-export const getDefaultShadowStages = (envId: number): Stage[] => {
-    return defaultStageConfigs.map((stage) => getStageShadowState(envId, stage))
 }
