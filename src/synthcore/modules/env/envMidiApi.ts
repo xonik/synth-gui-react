@@ -7,7 +7,9 @@ import { shouldSend } from '../../../midi/utils'
 import logger from '../../../utils/logger'
 import { NumericInputProperty } from '../common/types'
 
-let currentEnvId = -1
+let currentReceivedEnvId = -1
+let currentSentEnvId = -1
+let lastSentEnvIdTimestamp = 0
 
 const stageEnabled = (() => {
     const cfg = controllers.ENV.TOGGLE_STAGE
@@ -27,7 +29,7 @@ const stageEnabled = (() => {
             cc.subscribe((value: number) => {
                 const stageId = value & 0b111
                 const enabled = (value & 0b1000) > 0 ? 1 : 0
-                set({ctrl: cfg, ctrlIndex: currentEnvId, valueIndex: stageId, value: enabled, source: ApiSource.MIDI})
+                set({ctrl: cfg, ctrlIndex: currentReceivedEnvId, valueIndex: stageId, value: enabled, source: ApiSource.MIDI})
             }, cfg)
         }
     }
@@ -49,7 +51,7 @@ const curve = (() => {
             nrpn.subscribe((value: number) => {
                 const stageId = (value >> 7)
                 const curve = value & 0b01111111
-                set({ctrl: cfg, ctrlIndex: currentEnvId, valueIndex: stageId, value: curve, source: ApiSource.MIDI})
+                set({ctrl: cfg, ctrlIndex: currentReceivedEnvId, valueIndex: stageId, value: curve, source: ApiSource.MIDI})
             }, cfg)
         }
     }
@@ -60,18 +62,21 @@ const envSelect = (() => {
     
     return {
         send: (source: ApiSource, id: number) => {
-            if (id !== currentEnvId) {
-                currentEnvId = id
-            }
             if (!shouldSend(source)) {
                 return
             }
-            logger.midi(`Setting env id to ${id}`)
-            cc.send(cfg, id)
+
+            // Resend env every five seconds just to make synth restarts smoother
+            if (id !== currentSentEnvId || Date.now() - lastSentEnvIdTimestamp > 5000) {
+                currentSentEnvId = id
+                lastSentEnvIdTimestamp = Date.now()
+                logger.midi(`Setting env id to ${id}`)
+                cc.send(cfg, id)
+            }
         },
         receive: () => {
             cc.subscribe((id: number) => {
-                currentEnvId = id;
+                currentReceivedEnvId = id;
                 envApi.setCurrentEnv(id, ApiSource.MIDI)
             }, cfg)
         }
