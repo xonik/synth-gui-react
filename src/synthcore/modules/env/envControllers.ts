@@ -12,7 +12,7 @@ import { ControllerIdEnvDst, ControllerIdNonMod, ControllerIdSrc } from '../../.
 import { getLinearToDBMapper, getLinearToExpMapper, getMapperWithFade, inverse } from '../../../midi/slopeCalculator'
 
 
-const levelMapper = (() => {
+const levelResponseMapper = (() => {
     // Env level in range 0 to 1.
     const unscaledOutput = getMapperWithFade(
         getLinearToDBMapper(1, 1, 23, true, false),
@@ -43,16 +43,11 @@ const levelMapper = (() => {
     return { input, output }
 })()
 
-const timeMapper = (() => {
-    const output = (x: number) => {
-        return getLinearToExpMapper(65534, 65534, 3.5)(x * 65534) / 65534
-    }
-    const input = (x: number) => {
-        return inverse(output, 65534)(x * 65534) / 65534
-    }
+const timeResponseMapper = (() => {
+    const output = getLinearToExpMapper(1, 1, 3.5)
+    const input = inverse(output, 65534)
     return { input, output }
 })()
-
 
 interface EnvControllers {
     props: FuncProps
@@ -156,14 +151,14 @@ const envControllers = (ctrlIndex: number): EnvControllers => ({
         type: 'pot',
         addr: NRPN.ENV_LEVEL,
         bipolar: true,
-        uiResponse: levelMapper,
+        uiResponse: levelResponseMapper,
     },
     TIME: {
         id: ControllerIdNonMod.ENV_TIME,
         label: 'Time',
         type: 'pot',
         addr: NRPN.ENV_TIME,
-        uiResponse: timeMapper,
+        uiResponse: timeResponseMapper,
     },
     MAX_LOOPS: { id: ControllerIdNonMod.ENV_MAX_LOOPS, label: 'Max loops', type: 'pot', cc: CC.ENV_MAX_LOOPS },
     TOGGLE_STAGE: {
