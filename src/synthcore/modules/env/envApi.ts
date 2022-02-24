@@ -425,12 +425,7 @@ const { increment: commonInc, toggle: commonToggle, set: commonSet } = createSet
         envCtrls.RESET_ON_TRIGGER,
         envCtrls.RELEASE_MODE,
         envCtrls.LOOP_MODE,
-    ],
-    setController,
-    selectController,
-    setUiController,
-    selectUiController,
-)
+    ])
 
 const customSetterFuncs = {
     [envCtrls.LEVEL.id]: stageLevel,

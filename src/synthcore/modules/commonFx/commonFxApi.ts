@@ -1,6 +1,5 @@
 import { createSetterFuncs } from '../common/utils'
 import commonFxControllers from './commonFxControllers'
-import { selectController, selectUiController, setController, setUiController } from '../controllers/controllersReducer'
 
 const { set, toggle, increment } = createSetterFuncs(
     [
@@ -31,12 +30,7 @@ const { set, toggle, increment } = createSetterFuncs(
         commonFxControllers.CHORUS.SOURCE,
         commonFxControllers.CHORUS.MODE,
         commonFxControllers.FX_BIT_CRUSHER.SOURCE,
-    ],
-    setController,
-    selectController,
-    setUiController,
-    selectUiController,
-)
+    ])
 
 const api = {
     set,

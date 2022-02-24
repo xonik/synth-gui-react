@@ -15,7 +15,6 @@ import { dispatch, getBounded } from '../../utils'
 import { AnyAction } from '@reduxjs/toolkit'
 import { createSetterFuncs } from '../common/utils'
 import { lfoCtrls } from './lfoControllers'
-import { selectController, selectUiController, setController, setUiController } from '../controllers/controllersReducer'
 
 type LfoNumericProperty = {
     selector: (id: number) => number
@@ -87,12 +86,7 @@ const setterFuncs = createSetterFuncs([
         lfoCtrls.SYNC,
         lfoCtrls.RESET,
         lfoCtrls.ONCE,
-    ],
-    setController,
-    selectController,
-    setUiController,
-    selectUiController,
-)
+    ])
 
 const lfoApi = {
     toggleStageSelected,

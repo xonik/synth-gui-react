@@ -142,13 +142,6 @@ const getUiValueIndexedController = (state: RootState, ctrl: ControllerConfig, c
     }
 }
 
-const setLevel = (state: Draft<ControllersState>, payload: NumericControllerPayload, stageId: StageId, value: number) => setValueIndexedControllerState(state, {
-    ...payload,
-    ctrl: envCtrls.LEVEL,
-    valueIndex: stageId,
-    value
-})
-
 export const controllersSlice = createSlice({
     name: 'controllers',
     initialState,

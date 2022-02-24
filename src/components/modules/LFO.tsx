@@ -5,7 +5,6 @@ import RoundPushButton8 from '../buttons/RoundPushButton8'
 import Header from '../misc/Header'
 import { ControllerGroupIds } from '../../synthcore/types'
 import { useAppSelector } from '../../synthcore/hooks'
-import { StageId } from '../../synthcore/modules/lfo/types'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { selectUiLfoId } from '../../synthcore/modules/lfo/lfoReducer'
 

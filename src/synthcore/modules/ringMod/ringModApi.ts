@@ -5,12 +5,7 @@ import ringModControllers from './ringModControllers'
 const setterFuncs = createSetterFuncs(
     [
         ringModControllers.SOURCE,
-    ],
-    setController,
-    selectController,
-    setUiController,
-    selectUiController,
-)
+    ])
 
 
 const api = {

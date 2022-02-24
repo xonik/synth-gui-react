@@ -1,6 +1,5 @@
 import { createSetterFuncs } from '../common/utils'
 import fxControllers from './fxControllers'
-import { selectController, selectUiController, setController, setUiController } from '../controllers/controllersReducer'
 
 const setterFuncs = createSetterFuncs(
     [
@@ -14,12 +13,7 @@ const setterFuncs = createSetterFuncs(
         fxControllers.BIT_CRUSHER.RATE,
         fxControllers.BIT_CRUSHER.LEVEL,
         fxControllers.BIT_CRUSHER.OUT,
-    ],
-    setController,
-    selectController,
-    setUiController,
-    selectUiController,
-)
+    ])
 
 const api = {
     ...setterFuncs,

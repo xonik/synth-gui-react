@@ -1,5 +1,4 @@
 import { createSetterFuncs } from '../common/utils'
-import { selectController, selectUiController, setController, setUiController } from '../controllers/controllersReducer'
 import oscControllers from './oscControllers'
 
 const setterFuncs = createSetterFuncs(
@@ -39,12 +38,7 @@ const setterFuncs = createSetterFuncs(
         oscControllers.VCO.WHEEL,
         oscControllers.VCO.LFO,
         oscControllers.VCO.KBD,
-    ],
-    setController,
-    selectController,
-    setUiController,
-    selectUiController,
-)
+    ])
 
 const api = {
     ...setterFuncs,

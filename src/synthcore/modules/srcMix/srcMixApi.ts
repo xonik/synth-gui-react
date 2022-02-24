@@ -1,5 +1,4 @@
 import { createSetterFuncs } from '../common/utils'
-import { selectController, selectUiController, setController, setUiController } from '../controllers/controllersReducer'
 import srcMixControllers from './srcMixControllers'
 
 const setterFuncs = createSetterFuncs(
@@ -17,12 +16,7 @@ const setterFuncs = createSetterFuncs(
         srcMixControllers.OUT_NOISE,
         srcMixControllers.OUT_RING_MOD,
         srcMixControllers.OUT_EXT_AUDIO,
-    ],
-    setController,
-    selectController,
-    setUiController,
-    selectUiController,
-)
+    ])
 
 
 const api = {

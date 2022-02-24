@@ -1,5 +1,4 @@
 import { createSetterFuncs } from '../common/utils'
-import { selectController, selectUiController, setController, setUiController } from '../controllers/controllersReducer'
 import filtersControllers from './filtersControllers'
 
 const setterFuncs = createSetterFuncs(
@@ -30,12 +29,7 @@ const setterFuncs = createSetterFuncs(
         filtersControllers.SVF.EXT_CV,
         filtersControllers.SVF.WHEEL,
         filtersControllers.SVF.SLOPE,
-    ],
-    setController,
-    selectController,
-    setUiController,
-    selectUiController,
-)
+    ])
 
 const filtersApi = {
     ...setterFuncs,

@@ -1,6 +1,5 @@
 import { createSetterFuncs } from '../common/utils'
 import arpControllers from './arpControllers'
-import { selectController, selectUiController, setController, setUiController } from '../controllers/controllersReducer'
 
 const { set, toggle, increment } = createSetterFuncs(
     [
@@ -11,12 +10,7 @@ const { set, toggle, increment } = createSetterFuncs(
         arpControllers.RANGE,
         arpControllers.MODE,
         arpControllers.TRIGGER,
-    ],
-    setController,
-    selectController,
-    setUiController,
-    selectUiController,
-)
+    ])
 
 const api = {
     toggle,

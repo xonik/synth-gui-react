@@ -1,10 +1,9 @@
 import { ControllerConfig } from '../../../midi/types'
 import { paramReceive, paramSend } from './commonMidiApi'
 import { dispatch, getBounded, getQuantized } from '../../utils'
-import { ActionCreatorWithPayload } from '@reduxjs/toolkit'
-import { RootState, store } from '../../store'
-import { ButtonInputProperty, NumericControllerPayload, NumericInputProperty } from './types'
-import { setUiController } from '../controllers/controllersReducer'
+import { store } from '../../store'
+import { ButtonInputProperty, NumericInputProperty } from './types'
+import { selectController, selectUiController, setController, setUiController } from '../controllers/controllersReducer'
 
 export type ApiIncrementMapperType = {
     [key: number]: (value: number) => void
@@ -58,15 +57,8 @@ const getBoundedController = (ctrl: ControllerConfig, value: number) => {
 }
 
 export const createSetterFuncs = (
-    controllers: ControllerConfig[],
-    action: ActionCreatorWithPayload<NumericControllerPayload, string>,
-    selector: (ctrl: ControllerConfig, ctrlIndex: number) => (state: RootState) => number,
-
-    // used if we want a different response on the pot than what is output to the synth
-    uiAction: ActionCreatorWithPayload<NumericControllerPayload, string>,
-    uiSelector: (ctrl: ControllerConfig, ctrlIndex: number) => (state: RootState) => number
+    controllers: ControllerConfig[]
 ) => {
-
     const set = (input: NumericInputProperty) => {
 
         const { ctrl, ctrlIndex, valueIndex, value } = input
@@ -77,7 +69,7 @@ export const createSetterFuncs = (
         }
 
         const boundedValue = getBoundedController(ctrl, value)
-        const currentValue = selector(ctrl, ctrlIndex || 0)(store.getState())
+        const currentValue = selectController(ctrl, ctrlIndex || 0)(store.getState())
 
         if (boundedValue === currentValue) {
             return
@@ -87,7 +79,7 @@ export const createSetterFuncs = (
         // 5 bits left over when 16 bits have been used for value.
         const boundedValueIndex = getBounded(valueIndex || 0, 0, 31)
 
-        dispatch(action({ ctrlIndex, ctrl, value: boundedValue }))
+        dispatch(setController({ ctrlIndex, ctrl, value: boundedValue }))
 
         // send over midi
         paramSend(input.source, ctrl, boundedValue, boundedValueIndex)
@@ -98,7 +90,7 @@ export const createSetterFuncs = (
             return
         }
 
-        const currentValue = selector(input.ctrl, input.ctrlIndex || 0)(store.getState())
+        const currentValue = selectController(input.ctrl, input.ctrlIndex || 0)(store.getState())
         const values = input.ctrl.values?.length || 1;
 
         // Radio buttons
@@ -130,14 +122,14 @@ export const createSetterFuncs = (
         }
 
         const { value: inc, ctrl } = input
-        if(ctrl.uiResponse && uiSelector){
-            let currentValue = uiSelector(input.ctrl, input.ctrlIndex || 0)(store.getState())
+        if(ctrl.uiResponse && selectUiController){
+            let currentValue = selectUiController(input.ctrl, input.ctrlIndex || 0)(store.getState())
             let boundedValue = getBoundedController(ctrl,currentValue + inc)
-            dispatch(uiAction({ ...input, value: boundedValue }))
+            dispatch(setUiController({ ...input, value: boundedValue }))
             const updatedValue = ctrl.uiResponse.output(boundedValue)
             set({...input, value: updatedValue})
         } else {
-            let currentValue = selector(input.ctrl, input.ctrlIndex || 0)(store.getState())
+            let currentValue = selectController(input.ctrl, input.ctrlIndex || 0)(store.getState())
             set({...input, value: currentValue + inc})
         }
     }

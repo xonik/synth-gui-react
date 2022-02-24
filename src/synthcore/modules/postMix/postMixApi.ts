@@ -1,5 +1,4 @@
 import { createSetterFuncs } from '../common/utils'
-import { selectController, selectUiController, setController, setUiController } from '../controllers/controllersReducer'
 import postMixControllers from './postMixControllers'
 
 const setterFuncs = createSetterFuncs(
@@ -12,12 +11,7 @@ const setterFuncs = createSetterFuncs(
         postMixControllers.AMOUNT,
         postMixControllers.FX1_SEND,
         postMixControllers.FX2_SEND,
-    ],
-    setController,
-    selectController,
-    setUiController,
-    selectUiController,
-)
+    ])
 
 const api = {
     ...setterFuncs,

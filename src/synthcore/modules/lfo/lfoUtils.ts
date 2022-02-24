@@ -1,8 +1,6 @@
 import { Curve, Lfo, Stage, StageId } from './types'
 import { Controllers, ValueIndexedControllers } from '../controllers/types'
 import { mergeValueIndexedControllers } from '../controllers/controllersUtils'
-import { envCtrls } from '../env/envControllers'
-import { lfoCtrls } from './lfoControllers'
 
 const getStageState = (envId: number, stage: Stage): ValueIndexedControllers => {
     // const { id: stageId, enabled, curve, level, time } = stage
