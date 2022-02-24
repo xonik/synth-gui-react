@@ -3,6 +3,9 @@ import { envCtrls } from './envControllers'
 import { Controllers, ValueIndexedControllers } from '../controllers/types'
 import { mergeValueIndexedControllers } from '../controllers/controllersUtils'
 import { ControllerConfig } from '../../../midi/types'
+import { levelResponseMapper, timeResponseMapper } from './envResponseMappers'
+
+
 
 const getStageState = (envId: number, stage: Stage): ValueIndexedControllers => {
     const { id: stageId, enabled, curve, level, time } = stage
@@ -20,6 +23,21 @@ const getStageState = (envId: number, stage: Stage): ValueIndexedControllers => 
         },
         [envCtrls.TIME.id]: {
             [stageId]: time
+        },
+    }
+    return controllers
+}
+
+const getUiStageState = (envId: number, stage: Stage): ValueIndexedControllers => {
+    const { id: stageId, level, time } = stage
+
+    const controllers: ValueIndexedControllers = {}
+    controllers[envId] = {
+        [envCtrls.LEVEL.id]: {
+            [stageId]: levelResponseMapper.input(level)
+        },
+        [envCtrls.TIME.id]: {
+            [stageId]: timeResponseMapper.input(time)
         },
     }
     return controllers
@@ -143,7 +161,22 @@ export const getDefaultStages = (envId: number): ValueIndexedControllers => {
 
     // TODO: Duplicated in reducer, fix!
     // Update release levels
-    if (controllers[envId][envCtrls.TOGGLE_STAGE.id][StageId.RELEASE1]) {
+    if (defaultStageConfigs[StageId.RELEASE1].enabled) {
+        controllers[envId][envCtrls.LEVEL.id][StageId.RELEASE1] = controllers[envId][envCtrls.LEVEL.id][StageId.SUSTAIN]
+    } else {
+        controllers[envId][envCtrls.LEVEL.id][StageId.RELEASE2] = controllers[envId][envCtrls.LEVEL.id][StageId.SUSTAIN]
+    }
+
+    return controllers
+}
+
+export const getDefaultUiStages = (envId: number): ValueIndexedControllers => {
+    const stages: ValueIndexedControllers[] = defaultStageConfigs.map(conf => getUiStageState(envId, conf))
+    const controllers = mergeValueIndexedControllers(stages)
+
+    // TODO: Duplicated in reducer, fix!
+    // Update release levels
+    if (defaultStageConfigs[StageId.RELEASE1].enabled) {
         controllers[envId][envCtrls.LEVEL.id][StageId.RELEASE1] = controllers[envId][envCtrls.LEVEL.id][StageId.SUSTAIN]
     } else {
         controllers[envId][envCtrls.LEVEL.id][StageId.RELEASE2] = controllers[envId][envCtrls.LEVEL.id][StageId.SUSTAIN]

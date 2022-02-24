@@ -2,7 +2,7 @@ import { createSlice, Draft, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
 import { ControllerConfig } from '../../../midi/types'
 import { Controllers, ValueIndexedControllers } from './types'
-import { getDefaultController, getDefaultEnv, getDefaultStages } from '../env/envUtils'
+import { getDefaultController, getDefaultEnv, getDefaultStages, getDefaultUiStages } from '../env/envUtils'
 import { envCtrls } from '../env/envControllers'
 import { mergeControllers, mergeValueIndexedControllers } from './controllersUtils'
 import { Stage, StageId, STAGES } from '../env/types'
@@ -41,7 +41,15 @@ export const initialState: ControllersState = {
             getDefaultStages(4),
         ]
     ),
-    uiValueIndexedControllers: {}
+    uiValueIndexedControllers: mergeValueIndexedControllers(
+        [
+            getDefaultUiStages(0),
+            getDefaultUiStages(1),
+            getDefaultUiStages(2),
+            getDefaultUiStages(3),
+            getDefaultUiStages(4),
+        ]
+    ),
 }
 
 const setControllerState = (state: Draft<ControllersState>, payload: NumericControllerPayload) => {

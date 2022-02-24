@@ -45,8 +45,6 @@ const stageLevel = (() => {
     const set = (input: NumericInputProperty) => {
         const { ctrlIndex: envId = 0, value, valueIndex: stageId = 0, source, ctrl } = input
 
-        console.log(`Set valie tp ${value}`)
-
         const r1enabled = selectController(
             envCtrls.TOGGLE_STAGE,
             envId,
