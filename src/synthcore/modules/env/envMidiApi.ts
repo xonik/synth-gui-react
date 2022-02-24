@@ -1,5 +1,4 @@
 // If imported directly we get a cyclic dependency. Not sure why it works now.
-import { envApi } from '../../synthcoreApi'
 import controllers from '../../../midi/controllers'
 import { cc, nrpn } from '../../../midi/midibus'
 import { ApiSource } from '../../types'
@@ -61,25 +60,19 @@ const envSelect = (() => {
     const cfg = controllers.ENV.SELECT
     
     return {
-        send: (source: ApiSource, id: number) => {
+        send: (source: ApiSource, envId: number) => {
             if (!shouldSend(source)) {
                 return
             }
 
-            // Resend env every five seconds just to make synth restarts smoother
-            if (id !== currentSentEnvId || Date.now() - lastSentEnvIdTimestamp > 5000) {
-                currentSentEnvId = id
+            // Resend env if more than five seconds since last try, makes synth restarts smoother
+            if (envId !== currentSentEnvId || Date.now() - lastSentEnvIdTimestamp > 5000) {
+                currentSentEnvId = envId
                 lastSentEnvIdTimestamp = Date.now()
-                logger.midi(`Setting env id to ${id}`)
-                cc.send(cfg, id)
+                logger.midi(`Setting env id to ${envId}`)
+                cc.send(cfg, envId)
             }
         },
-        receive: () => {
-            cc.subscribe((id: number) => {
-                currentReceivedEnvId = id;
-                envApi.setCurrentEnv(id, ApiSource.MIDI)
-            }, cfg)
-        }
     }
 })()
 
@@ -113,16 +106,12 @@ const release = (() => {
     }
 })()
 
-const initReceive = () => {
-    envSelect.receive()
-}
-
 const envMidiApi = {
     stageEnabled,
     curve,
     trigger,
     release,
-    initReceive,
+    envSelect,
 }
 
 export default envMidiApi

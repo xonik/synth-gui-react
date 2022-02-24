@@ -1,35 +1,46 @@
 import CC from '../../../midi/mapCC'
 import NRPN from '../../../midi/mapNRPN'
 import { BUTTONS } from '../../../midi/buttons'
-import { FuncProps, ControllerConfig, ControllerConfigCC, ControllerConfigCCWithValue, ControllerConfigNRPN } from '../../../midi/types'
+import {
+    FuncProps,
+    ControllerConfig,
+    ControllerConfigCC,
+    ControllerConfigCCWithValue,
+    ControllerConfigNRPN
+} from '../../../midi/types'
 import { ControllerIdEnvDst, ControllerIdNonMod, ControllerIdSrc } from '../../../midi/controllerIds'
 import { getLinearToDBMapper, getLinearToExpMapper, getMapperWithFade, inverse } from '../../../midi/slopeCalculator'
 
 
-
 const levelMapper = (() => {
-    // Env level in range 0 to 65534.
-
+    // Env level in range 0 to 1.
     const unscaledOutput = getMapperWithFade(
-        getLinearToDBMapper(65534, 65534, 23, true, false),
-        32767,
+        getLinearToDBMapper(1, 1, 23, true, false),
+        1,
         true,
-        10,
+        10 / 65534, // When converting to midi, the 10 first (of 65534) entries will be a fade
     )
 
-    // input is -1 to 1
-    const output = (x: number) => {
-        const adjIn = x * 32767 + 32767
-        const out = unscaledOutput(adjIn)
-        return (out - 32767) / 32767
+    // input is 0 to 1, or -1 to 1 for bipolar
+    const output = (x: number, bipolar: boolean = false) => {
+        if (bipolar) {
+            const out = unscaledOutput(0.5 * x + 0.5)
+            return 2 * (out - 0.5)
+        } else {
+            return unscaledOutput(x)
+        }
     }
-    const input = (x: number) => {
-        const adjIn = x * 32767 + 32767
-        const out = inverse(unscaledOutput, 0, 65534)(adjIn)
-        return (out - 32767) / 32767
+    const input = (x: number, bipolar: boolean = false) => {
+        if (bipolar) {
+            const adjIn = x * 0.5 + 0.5
+            const out = inverse(unscaledOutput, 65534)(adjIn)
+            return 2 * (out - 0.5)
+        } else {
+            return inverse(unscaledOutput, 65534)(x)
+        }
     }
 
-    return {input, output}
+    return { input, output }
 })()
 
 const timeMapper = (() => {
@@ -37,9 +48,9 @@ const timeMapper = (() => {
         return getLinearToExpMapper(65534, 65534, 3.5)(x * 65534) / 65534
     }
     const input = (x: number) => {
-        return inverse(output, 0, 65534)(x * 65534) / 65534
+        return inverse(output, 65534)(x * 65534) / 65534
     }
-    return {input, output}
+    return { input, output }
 })()
 
 
@@ -75,15 +86,69 @@ interface EnvControllers {
 const envControllers = (ctrlIndex: number): EnvControllers => ({
     props: { label: `Env ${1 + ctrlIndex}`, ctrlIndex },
     // TODO: What do these do??? Looks like its modulation targets.
-    DELAY_TIME: { id: ControllerIdEnvDst.DELAY_TIME, label: 'Delay time', shortLabel: 'Delay', isDstDigi: true, type: 'pot' },
-    ATTACK_TIME: { id: ControllerIdEnvDst.ATTACK_TIME, label: 'Attack time', shortLabel: 'Attack', isDstDigi: true, type: 'pot' },
-    DECAY1_TIME: { id: ControllerIdEnvDst.DECAY1_TIME, label: 'Decay 1 time', shortLabel: 'Decay 1', isDstDigi: true, type: 'pot' },
-    DECAY2_TIME: { id: ControllerIdEnvDst.DECAY2_TIME, label: 'Decay 2 time', shortLabel: 'Decay 2', isDstDigi: true, type: 'pot' },
-    SUSTAIN_LEVEL: { id: ControllerIdEnvDst.SUSTAIN_LEVEL, label: 'Sustain level', shortLabel: 'Sustain', isDstDigi: true, type: 'pot' },
-    RELEASE1_TIME: { id: ControllerIdEnvDst.RELEASE1_TIME, label: 'Release 1 time', shortLabel: 'Release 1', isDstDigi: true, type: 'pot' },
-    RELEASE2_TIME: { id: ControllerIdEnvDst.RELEASE2_TIME, label: 'Release 2 time', shortLabel: 'Release 2', isDstDigi: true, type: 'pot' },
-    DECAY2_LEVEL: { id: ControllerIdEnvDst.DECAY2_LEVEL, label: 'Decay 2 level', shortLabel: 'D2 level', isDstDigi: true, type: 'pot' },
-    RELEASE2_LEVEL: { id: ControllerIdEnvDst.RELEASE2_LEVEL, label: 'Release 2 level', shortLabel: 'R2 level', isDstDigi: true, type: 'pot' },
+    DELAY_TIME: {
+        id: ControllerIdEnvDst.DELAY_TIME,
+        label: 'Delay time',
+        shortLabel: 'Delay',
+        isDstDigi: true,
+        type: 'pot'
+    },
+    ATTACK_TIME: {
+        id: ControllerIdEnvDst.ATTACK_TIME,
+        label: 'Attack time',
+        shortLabel: 'Attack',
+        isDstDigi: true,
+        type: 'pot'
+    },
+    DECAY1_TIME: {
+        id: ControllerIdEnvDst.DECAY1_TIME,
+        label: 'Decay 1 time',
+        shortLabel: 'Decay 1',
+        isDstDigi: true,
+        type: 'pot'
+    },
+    DECAY2_TIME: {
+        id: ControllerIdEnvDst.DECAY2_TIME,
+        label: 'Decay 2 time',
+        shortLabel: 'Decay 2',
+        isDstDigi: true,
+        type: 'pot'
+    },
+    SUSTAIN_LEVEL: {
+        id: ControllerIdEnvDst.SUSTAIN_LEVEL,
+        label: 'Sustain level',
+        shortLabel: 'Sustain',
+        isDstDigi: true,
+        type: 'pot'
+    },
+    RELEASE1_TIME: {
+        id: ControllerIdEnvDst.RELEASE1_TIME,
+        label: 'Release 1 time',
+        shortLabel: 'Release 1',
+        isDstDigi: true,
+        type: 'pot'
+    },
+    RELEASE2_TIME: {
+        id: ControllerIdEnvDst.RELEASE2_TIME,
+        label: 'Release 2 time',
+        shortLabel: 'Release 2',
+        isDstDigi: true,
+        type: 'pot'
+    },
+    DECAY2_LEVEL: {
+        id: ControllerIdEnvDst.DECAY2_LEVEL,
+        label: 'Decay 2 level',
+        shortLabel: 'D2 level',
+        isDstDigi: true,
+        type: 'pot'
+    },
+    RELEASE2_LEVEL: {
+        id: ControllerIdEnvDst.RELEASE2_LEVEL,
+        label: 'Release 2 level',
+        shortLabel: 'R2 level',
+        isDstDigi: true,
+        type: 'pot'
+    },
     CURVE: { id: ControllerIdNonMod.ENV_CURVE, label: 'Curve', type: 'pot', addr: NRPN.ENV_CURVE },
     LEVEL: {
         id: ControllerIdNonMod.ENV_LEVEL,
@@ -101,9 +166,19 @@ const envControllers = (ctrlIndex: number): EnvControllers => ({
         uiResponse: timeMapper,
     },
     MAX_LOOPS: { id: ControllerIdNonMod.ENV_MAX_LOOPS, label: 'Max loops', type: 'pot', cc: CC.ENV_MAX_LOOPS },
-    TOGGLE_STAGE: { id: ControllerIdNonMod.ENV_TOGGLE_STAGE, label: 'Stage on/off', type: 'pot', cc: CC.ENV_TOGGLE_STAGE }, // 4 bit stage, 7 bit on/off
+    TOGGLE_STAGE: {
+        id: ControllerIdNonMod.ENV_TOGGLE_STAGE,
+        label: 'Stage on/off',
+        type: 'pot',
+        cc: CC.ENV_TOGGLE_STAGE
+    }, // 4 bit stage, 7 bit on/off
     SELECT: { id: ControllerIdNonMod.ENV_SELECT, label: 'Select env', type: 'pot', cc: CC.ENV_SELECT_ENV },
-    SELECT_ENV3_ID: { id: ControllerIdNonMod.ENV_SELECT_ENV3_ID, label: 'Select env 3', type: 'pot', cc: CC.ENV_SELECT_ENV3_ID },
+    SELECT_ENV3_ID: {
+        id: ControllerIdNonMod.ENV_SELECT_ENV3_ID,
+        label: 'Select env 3',
+        type: 'pot',
+        cc: CC.ENV_SELECT_ENV3_ID
+    },
     TRIGGER: {
         id: ControllerIdNonMod.ENV_TRIGGER,
         label: 'Trigger',

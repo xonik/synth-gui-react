@@ -69,8 +69,6 @@ const nrpnMapper = {
             ? Math.floor(32767 * value + 32767)
             : Math.floor(65535 * value)
 
-        console.log(`${value} = ${midiValue}`)
-
         // more than 5 bits will make send fail!
         if (valueIndex && valueIndex >= 0 && valueIndex < 32) {
             midiValue += (valueIndex << 16)
