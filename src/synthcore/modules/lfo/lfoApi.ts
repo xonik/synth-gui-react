@@ -1,7 +1,6 @@
 import { NUMBER_OF_LFOS, StageId } from './types'
 import {
     deselectStage,
-    NumericLfoPayload,
     selectGuiLfoId,
     selectGuiStageId,
     selectStage,
@@ -12,38 +11,8 @@ import {
 import { store } from '../../store'
 import { ApiSource } from '../../types'
 import { dispatch, getBounded } from '../../utils'
-import { AnyAction } from '@reduxjs/toolkit'
 import { createSetterFuncs } from '../common/utils'
 import { lfoCtrls } from './lfoControllers'
-
-type LfoNumericProperty = {
-    selector: (id: number) => number
-    action: (payload: NumericLfoPayload) => AnyAction
-}
-
-export const lfoNumericPropFuncs = (property: LfoNumericProperty) => {
-    const set = (id: number, value: number, source: ApiSource) => {
-        //const boundedValue = getQuantized(getBounded(value))
-        const boundedValue = value //getQuantized(getBounded(value))
-        const currentValue = property.selector(id)
-
-        if (boundedValue === currentValue) {
-            return
-        }
-
-        dispatch(property.action({ lfo: id, value: boundedValue }))
-    }
-
-    const increment = (id: number, inc: number, source: ApiSource) => {
-        const currentValue = property.selector(id)
-        set(id, currentValue + inc, source)
-    }
-
-    return {
-        set,
-        increment
-    }
-}
 
 const toggleStageSelected = (lfoId: number, stageId: StageId, source: ApiSource) => {
     const currStageId = selectGuiStageId(store.getState())

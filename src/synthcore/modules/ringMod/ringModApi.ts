@@ -1,5 +1,4 @@
 import { createSetterFuncs } from '../common/utils'
-import { selectController, selectUiController, setController, setUiController } from '../controllers/controllersReducer'
 import ringModControllers from './ringModControllers'
 
 const setterFuncs = createSetterFuncs(

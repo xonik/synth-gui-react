@@ -33,10 +33,6 @@ type LfoPayload = {
     lfo: number;
 }
 
-export type NumericLfoPayload = LfoPayload & {
-    value: number;
-}
-
 export const lfosSlice = createSlice({
     name: 'lfos',
     initialState,

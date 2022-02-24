@@ -5,7 +5,7 @@ import { Controllers, ValueIndexedControllers } from './types'
 import { getDefaultController, getDefaultEnv, getDefaultEnvStages, getDefaultEnvUiStages } from '../env/envUtils'
 import { envCtrls } from '../env/envControllers'
 import { mergeControllers, mergeValueIndexedControllers } from './controllersUtils'
-import { Stage, StageId, STAGES } from '../env/types'
+import { Stage, STAGES } from '../env/types'
 import { NumericControllerPayload } from '../common/types'
 import { getDefaultLfo, getDefaultLfoStages, getDefaultUiLfoStages } from '../lfo/lfoUtils'
 
@@ -30,11 +30,13 @@ export const initialState: ControllersState = {
         getDefaultEnv(2),
         getDefaultEnv(3),
         getDefaultEnv(4),
+        getDefaultController(envCtrls.SELECT_ENV3_ID, 2),
+
         getDefaultLfo(0),
         getDefaultLfo(1),
         getDefaultLfo(2),
         getDefaultLfo(3),
-        getDefaultController(envCtrls.SELECT_ENV3_ID, 2),
+
     ]),
     uiControllers: {},
     valueIndexedControllers: mergeValueIndexedControllers(
