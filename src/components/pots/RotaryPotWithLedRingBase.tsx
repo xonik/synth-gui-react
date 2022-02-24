@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import { increment } from '../../synthcore/modules/ui/uiReducer'
 import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 import { ControllerConfig } from '../../midi/types'
-import { getControllerSelector } from '../../synthcore/modules/controllers/controllersSelectors'
+import { selectUiController } from '../../synthcore/modules/controllers/controllersReducer'
 import './RotaryPot.scss'
 
 export type LedMode = 'single' | 'multi';
@@ -122,7 +122,7 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
     // For scaling, use viewBox on the outer svg and unitless the rest of the way
 
     // positive pointer
-    const storeValue = useAppSelector(getControllerSelector(ctrlGroup)(ctrl, ctrlIndex || 0, valueIndex))
+    const storeValue = useAppSelector(selectUiController(ctrl, ctrlIndex || 0, valueIndex))
     const currentValue = value !== undefined ? value :  storeValue
 
     const ledPosition = getLedPos(centerLed, ledCount, potMode, currentValue)
