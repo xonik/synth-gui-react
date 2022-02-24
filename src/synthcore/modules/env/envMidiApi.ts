@@ -56,6 +56,7 @@ const curve = (() => {
     }
 })()
 
+// A separate select that may be called without setting state
 const envSelect = (() => {
     const cfg = controllers.ENV.SELECT
     
