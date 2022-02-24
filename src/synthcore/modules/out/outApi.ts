@@ -1,6 +1,6 @@
 import outControllers from './outControllers'
 import { createSetterFuncs } from '../common/utils'
-import { selectController, setController } from '../controllers/controllersReducer'
+import { selectController, selectUiController, setController, setUiController } from '../controllers/controllersReducer'
 
 const { set, toggle, increment } = createSetterFuncs(
     [
@@ -10,6 +10,8 @@ const { set, toggle, increment } = createSetterFuncs(
     ],
     setController,
     selectController,
+    setUiController,
+    selectUiController,
 )
 
 const outApi = {

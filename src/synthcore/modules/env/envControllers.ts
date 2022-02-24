@@ -3,6 +3,45 @@ import NRPN from '../../../midi/mapNRPN'
 import { BUTTONS } from '../../../midi/buttons'
 import { FuncProps, ControllerConfig, ControllerConfigCC, ControllerConfigCCWithValue, ControllerConfigNRPN } from '../../../midi/types'
 import { ControllerIdEnvDst, ControllerIdNonMod, ControllerIdSrc } from '../../../midi/controllerIds'
+import { getLinearToDBMapper, getLinearToExpMapper, getMapperWithFade, inverse } from '../../../midi/slopeCalculator'
+
+
+
+const levelMapper = (() => {
+    // Env level in range 0 to 65534.
+
+    const unscaledOutput = getMapperWithFade(
+        getLinearToDBMapper(65534, 65534, 23, true, false),
+        32767,
+        true,
+        10,
+    )
+
+    // input is -1 to 1
+    const output = (x: number) => {
+        const adjIn = x * 32767 + 32767
+        const out = unscaledOutput(adjIn)
+        return (out - 32767) / 32767
+    }
+    const input = (x: number) => {
+        const adjIn = x * 32767 + 32767
+        const out = inverse(unscaledOutput, 0, 65534)(adjIn)
+        return (out - 32767) / 32767
+    }
+
+    return {input, output}
+})()
+
+const timeMapper = (() => {
+    const output = (x: number) => {
+        return getLinearToExpMapper(65534, 65534, 3.5)(x * 65534) / 65534
+    }
+    const input = (x: number) => {
+        return inverse(output, 0, 65534)(x * 65534) / 65534
+    }
+    return {input, output}
+})()
+
 
 interface EnvControllers {
     props: FuncProps
@@ -46,8 +85,21 @@ const envControllers = (ctrlIndex: number): EnvControllers => ({
     DECAY2_LEVEL: { id: ControllerIdEnvDst.DECAY2_LEVEL, label: 'Decay 2 level', shortLabel: 'D2 level', isDstDigi: true, type: 'pot' },
     RELEASE2_LEVEL: { id: ControllerIdEnvDst.RELEASE2_LEVEL, label: 'Release 2 level', shortLabel: 'R2 level', isDstDigi: true, type: 'pot' },
     CURVE: { id: ControllerIdNonMod.ENV_CURVE, label: 'Curve', type: 'pot', addr: NRPN.ENV_CURVE },
-    LEVEL: { id: ControllerIdNonMod.ENV_LEVEL, label: 'Level', type: 'pot', addr: NRPN.ENV_LEVEL, bipolar: true },
-    TIME: { id: ControllerIdNonMod.ENV_TIME, label: 'Time', type: 'pot', addr: NRPN.ENV_TIME },
+    LEVEL: {
+        id: ControllerIdNonMod.ENV_LEVEL,
+        label: 'Level',
+        type: 'pot',
+        addr: NRPN.ENV_LEVEL,
+        bipolar: true,
+        uiResponse: levelMapper,
+    },
+    TIME: {
+        id: ControllerIdNonMod.ENV_TIME,
+        label: 'Time',
+        type: 'pot',
+        addr: NRPN.ENV_TIME,
+        uiResponse: timeMapper,
+    },
     MAX_LOOPS: { id: ControllerIdNonMod.ENV_MAX_LOOPS, label: 'Max loops', type: 'pot', cc: CC.ENV_MAX_LOOPS },
     TOGGLE_STAGE: { id: ControllerIdNonMod.ENV_TOGGLE_STAGE, label: 'Stage on/off', type: 'pot', cc: CC.ENV_TOGGLE_STAGE }, // 4 bit stage, 7 bit on/off
     SELECT: { id: ControllerIdNonMod.ENV_SELECT, label: 'Select env', type: 'pot', cc: CC.ENV_SELECT_ENV },

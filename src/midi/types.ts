@@ -11,6 +11,9 @@ export interface ControllerConfig {
     readonly isDstDigi?: boolean,
     readonly type: ControllerType
 
+    // Funcs to use if pots should behave differently from stored/midi value
+    readonly uiResponse?: { output: (val: number) => number, input: (val: number) => number}
+
     // TODO: Only for ControllerConfigCC but here because TS complains!
     readonly values?: number[]
     readonly bipolar?: boolean

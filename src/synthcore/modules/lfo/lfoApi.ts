@@ -22,6 +22,7 @@ import { AnyAction } from '@reduxjs/toolkit'
 import { ControllerConfigCCWithValue } from '../../../midi/types'
 import { createSetterFuncs } from '../common/utils'
 import lfoControllers from './lfoControllers'
+import { selectUiController, setUiController } from '../controllers/controllersReducer'
 
 type LfoNumericProperty = {
     selector: (id: number) => number
@@ -177,6 +178,8 @@ const setterFuncs = createSetterFuncs([
     ],
     setLfoController,
     selectLfoController,
+    setUiController,
+    selectUiController,
 )
 
 const lfoApi = {

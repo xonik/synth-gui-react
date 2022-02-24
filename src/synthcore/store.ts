@@ -21,7 +21,12 @@ export const store = configureStore({
         voices: voicesReducer,
     },
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware()
+        getDefaultMiddleware({
+            serializableCheck: {
+                // Ignore these field paths in all actions
+                ignoredActionPaths: ['payload.ctrl.uiResponse'],
+            },
+        })
             .concat(
                 synthcoreMiddleware,
             )

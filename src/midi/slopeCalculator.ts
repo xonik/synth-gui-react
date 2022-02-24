@@ -117,7 +117,7 @@ export const inverse = (mapper: (input: number) => number, minInput: number, max
         let mid = Math.floor((start + end) / 2)
 
         // Compare mid with given key x
-        console.log(`Comparing ${mapper(mid)} to ${x}`)
+        console.log(`Comparing ${mapper(mid)} to ${x} (s: ${start}, m: ${mid}, e: ${end}`)
         if (mapper(mid) === x) return mid
 
         if (mapper(mid) > x) {

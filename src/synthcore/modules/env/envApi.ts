@@ -14,22 +14,8 @@ import { dispatch, getBounded, getQuantized } from '../../utils'
 import { createSetterFuncs } from '../common/utils'
 import { envCtrls } from './envControllers'
 import { paramReceive, paramSend } from '../common/commonMidiApi'
-import { getLinearToDBMapper, getLinearToExpMapper, getMapperWithFade, inverse } from '../../../midi/slopeCalculator'
-import { selectController, setController } from '../controllers/controllersReducer'
+import { selectController, selectUiController, setController, setUiController } from '../controllers/controllersReducer'
 import { ButtonInputProperty, NumericInputProperty } from '../common/types'
-
-// Env level in range 0 to 65534.
-const envLevelMapper = getMapperWithFade(
-    getLinearToDBMapper(65534, 65534, 23, true, false),
-    32767,
-    true,
-    10,
-)
-const invEnvLevelMapper = inverse(envLevelMapper, 0, 65534)
-
-// NB: Input is 0 to maxInput!
-const envTimeMapper = getLinearToExpMapper(65534, 65534, 3.5)
-const invEnvTimeMapper = inverse(envTimeMapper, 0, 65534)
 
 const updateReleaseLevels = (envId: number, value: number) => {
     const action = {
@@ -101,11 +87,32 @@ const stageLevel = (() => {
 
     const increment = (input: NumericInputProperty) => {
         const { ctrlIndex: envId = 0, valueIndex: stageId = 0, value: inc, ctrl } = input
-        const currentLevel = selectController(ctrl, envId, stageId)(store.getState())
-        set({ ...input, value: currentLevel + inc })
+
+        if(ctrl.uiResponse){
+            const currentLevel = selectUiController(ctrl, envId, stageId)(store.getState())
+            const bipolar = selectController(envCtrls.BIPOLAR, envId)(store.getState()) === 1
+            let boundedValue = bipolar
+                ? getQuantized(getBounded(currentLevel + inc, -1, 1), 32767)
+                : getQuantized(getBounded(currentLevel + inc), 32767)
+
+            dispatch(setUiController({ ...input, value: boundedValue }))
+            const updatedLevel = ctrl.uiResponse.output(boundedValue)
+            set({...input, value: updatedLevel})
+        } else {
+            const currentTime = selectController(ctrl, envId, stageId)(store.getState())
+            set({...input, value: currentTime + inc})
+        }
+
     }
 
-    paramReceive(envCtrls.LEVEL, set)
+    const setWithUiUpdate = (input: NumericInputProperty) => {
+        set(input)
+        const updatedLevel = input.ctrl.uiResponse?.input(input.value) || 0
+        let boundedValue = getQuantized(getBounded(updatedLevel))
+        dispatch(setUiController({ ...input, value: boundedValue }))
+    }
+
+    paramReceive(envCtrls.LEVEL, setWithUiUpdate)
 
     return {
         set,
@@ -135,12 +142,28 @@ const stageTime = (() => {
         paramSend(source, envCtrls.TIME, boundedValue, stageId)
     }
 
+    const setWithUiUpdate = (input: NumericInputProperty) => {
+        set(input)
+        const updatedTime = input.ctrl.uiResponse?.input(input.value) || 0
+        let boundedValue = getQuantized(getBounded(updatedTime))
+        dispatch(setUiController({ ...input, value: boundedValue }))
+    }
+
     const increment = (input: NumericInputProperty) => {
         const { ctrlIndex: envId = 0, valueIndex: stageId = 0, value: inc, ctrl } = input
-
-        const currentTime = selectController(ctrl, envId, stageId)(store.getState())
-        set({ ...input, value: currentTime + inc })
+        if(ctrl.uiResponse){
+            const currentTime = selectUiController(ctrl, envId, stageId)(store.getState())
+            let boundedValue = getQuantized(getBounded(currentTime + inc))
+            dispatch(setUiController({ ...input, value: boundedValue }))
+            const updatedTime = ctrl.uiResponse.output(boundedValue)
+            set({...input, value: updatedTime})
+        } else {
+            const currentTime = selectController(ctrl, envId, stageId)(store.getState())
+            set({...input, value: currentTime + inc})
+        }
     }
+
+    paramReceive(envCtrls.TIME, setWithUiUpdate)
 
     return {
         set,
@@ -328,6 +351,8 @@ const { increment: commonInc, toggle: commonToggle, set: commonSet } = createSet
     ],
     setController,
     selectController,
+    setUiController,
+    selectUiController,
 )
 
 const customSetterFuncs = {

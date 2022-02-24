@@ -1,5 +1,5 @@
 import masterClockControllers from './masterClockControllers'
-import { selectController, setController } from '../controllers/controllersReducer'
+import { selectController, selectUiController, setController, setUiController } from '../controllers/controllersReducer'
 import { createSetterFuncs } from '../common/utils'
 
 const setterFuncs = createSetterFuncs(
@@ -9,6 +9,8 @@ const setterFuncs = createSetterFuncs(
     ],
     setController,
     selectController,
+    setUiController,
+    selectUiController,
 )
 
 
