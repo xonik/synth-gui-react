@@ -184,12 +184,14 @@ export enum ControllerIdNonMod {
     DCO1_WHEEL,
     DCO1_LFO,
     DCO1_KBD,
+    DCO1_SAW_INV,
 
     DCO2_MODE,
     DCO2_SUB_WAVE,
     DCO2_WHEEL,
     DCO2_LFO,
     DCO2_KBD,
+    DCO2_SAW_INV,
 
     VCO_SYNC,
     VCO_CROSS_MOD_SRC,
@@ -264,6 +266,7 @@ export enum ControllerIdNonMod {
 
     SVF_EXT_CV,
     SVF_WHEEL,
+    SVF_INVERT,
     SVF_SLOPE,
 
     ENV_CURVE,

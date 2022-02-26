@@ -38,6 +38,7 @@ interface FiltersControllers {
         EXT_CV: ControllerConfigCCWithValue
         WHEEL: ControllerConfigCCWithValue
         SLOPE: ControllerConfigCCWithValue
+        INVERT: ControllerConfigCCWithValue
     }
 }
 
@@ -186,6 +187,16 @@ const filtersControllers: FiltersControllers = {
             values: [
                 BUTTONS.BUTTONS_RIGHT.values.SVF_WHEEL_OFF,
                 BUTTONS.BUTTONS_RIGHT.values.SVF_WHEEL_ON,
+            ],
+        },
+        INVERT: {
+            id: ControllerIdNonMod.SVF_INVERT,
+            label: 'Wheel',
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.SVF_INVERT_OFF,
+                BUTTONS.BUTTONS_RIGHT.values.SVF_INVERT_ON,
             ],
         },
         SLOPE: {

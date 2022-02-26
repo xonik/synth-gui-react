@@ -14,6 +14,7 @@ const setterFuncs = createSetterFuncs(
         oscControllers.DCO1.WHEEL,
         oscControllers.DCO1.LFO,
         oscControllers.DCO1.KBD,
+        oscControllers.DCO1.SAW_INV,
 
         oscControllers.DCO2.NOTE,
         oscControllers.DCO2.DETUNE,
@@ -26,6 +27,7 @@ const setterFuncs = createSetterFuncs(
         oscControllers.DCO2.WHEEL,
         oscControllers.DCO2.LFO,
         oscControllers.DCO2.KBD,
+        oscControllers.DCO2.SAW_INV,
 
         oscControllers.VCO.NOTE,
         oscControllers.VCO.DETUNE,

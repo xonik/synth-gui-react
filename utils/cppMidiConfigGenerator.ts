@@ -17,7 +17,7 @@ import {
 
 const fs = require('fs')
 
-const outputRoot = '/Users/joakimtysseng/Documents/Arduino/xm8-voice-controller/xm8-voice-controller/'
+const outputRoot = '/Users/joakim/git/xonik/xm8-voice-controller/xm8-voice-controller/'
 
 const generateParamIO = (): string => {
 

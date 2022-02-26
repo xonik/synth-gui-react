@@ -20,6 +20,7 @@ interface OscControllers {
         WHEEL: ControllerConfigCCWithValue
         LFO: ControllerConfigCCWithValue
         KBD: ControllerConfigCCWithValue
+        SAW_INV: ControllerConfigCCWithValue
     },
     DCO2: {
         props: FuncProps
@@ -36,6 +37,7 @@ interface OscControllers {
         WHEEL: ControllerConfigCCWithValue
         LFO: ControllerConfigCCWithValue
         KBD: ControllerConfigCCWithValue
+        SAW_INV: ControllerConfigCCWithValue
     },
     VCO: {
         props: FuncProps
@@ -170,6 +172,16 @@ const oscControllers: OscControllers = {
                 BUTTONS.BUTTONS_LEFT.values.OSC1_KBD_ON,
             ],
         },
+        SAW_INV: {
+            id: ControllerIdNonMod.DCO1_SAW_INV,
+            label: 'Saw invert',
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC1_SAW_INV_OFF,
+                BUTTONS.BUTTONS_LEFT.values.OSC1_SAW_INV_ON,
+            ],
+        },
     },
     DCO2: {
         props: { label: 'Osc 2' },
@@ -280,6 +292,16 @@ const oscControllers: OscControllers = {
             values: [
                 BUTTONS.BUTTONS_LEFT.values.OSC2_KBD_OFF,
                 BUTTONS.BUTTONS_LEFT.values.OSC2_KBD_ON,
+            ],
+        },
+        SAW_INV: {
+            id: ControllerIdNonMod.DCO2_SAW_INV,
+            label: 'Saw invert',
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC2_SAW_INV_OFF,
+                BUTTONS.BUTTONS_LEFT.values.OSC2_SAW_INV_ON,
             ],
         },
     },

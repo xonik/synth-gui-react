@@ -13,6 +13,8 @@ export enum buttonRightMidiValues {
     SVF_EXT_CV_OFF,
     SVF_WHEEL_ON,
     SVF_WHEEL_OFF,
+    SVF_INVERT_OFF,
+    SVF_INVERT_ON,
     SVF_SLOPE_12DB_LP,
     SVF_SLOPE_24DB_LP,
     SVF_SLOPE_12DB_BP,
