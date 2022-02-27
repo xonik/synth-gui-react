@@ -12,7 +12,12 @@ import {
     FIRST_DST,
     FIRST_ENV_DST,
     FIRST_INTERMEDIATE,
-    FIRST_LFO_DST, FIRST_NON_MOD, FIRST_NON_MOD_POTS, INT_COUNT, NON_MOD_POTS_COUNT, SRC_COUNT
+    FIRST_LFO_DST,
+    FIRST_NON_MOD,
+    FIRST_NON_MOD_POTS,
+    INT_COUNT, NON_MOD_COUNT,
+    NON_MOD_POTS_COUNT,
+    SRC_COUNT
 } from '../src/midi/controllerIds'
 
 const fs = require('fs')
@@ -76,6 +81,10 @@ namespace paramIO {
   const unsigned short NON_MOD_POTS_COUNT = ${NON_MOD_POTS_COUNT};
   const unsigned short LAST_NON_MOD_POTS = ${FIRST_NON_MOD_POTS + NON_MOD_POTS_COUNT - 1};     
   
+  const unsigned short FIRST_NON_MOD = ${FIRST_NON_MOD};
+  const unsigned short NON_MOD_COUNT = ${NON_MOD_COUNT};
+  const unsigned short LAST_NON_MOD = ${FIRST_NON_MOD + NON_MOD_COUNT - 1};     
+  
   const unsigned short SRC_INT_COUNT = ${SRC_COUNT + INT_COUNT};
   const unsigned short SRC_INT_DST_COUNT = ${SRC_COUNT + INT_COUNT + DST_COUNT};
   const unsigned short INT_DST_COUNT = ${INT_COUNT + DST_COUNT};  
@@ -118,7 +127,14 @@ namespace paramIO {
   enum NonModPotDestinations {
     ${Object.keys(ControllerIdNonModPots)
             .filter(o => isNaN(o as any))
-            .map((key, index) => `NMP_DST_${key}${index === 0 ? ' = ' + FIRST_NON_MOD_POTS : ''}`)
+            .map((key, index) => `DST_NMP_${key}${index === 0 ? ' = ' + FIRST_NON_MOD_POTS : ''}`)
+            .join(',\n    ')}
+  };    
+  
+  enum NonModDestinations {
+    ${Object.keys(ControllerIdNonMod)
+            .filter(o => isNaN(o as any))
+            .map((key, index) => `DST_NM_${key}${index === 0 ? ' = ' + FIRST_NON_MOD : ''}`)
             .join(',\n    ')}
   };  
 }

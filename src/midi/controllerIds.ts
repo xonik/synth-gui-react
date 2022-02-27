@@ -295,5 +295,6 @@ export enum ControllerIdNonMod {
     CHORUS_MODE,
 
     FX_BIT_CRUSHER_SOURCE,
-
 }
+
+export const NON_MOD_COUNT = Object.keys(ControllerIdNonMod).filter(o => isNaN(o as any)).length
