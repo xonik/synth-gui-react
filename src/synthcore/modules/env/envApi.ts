@@ -293,6 +293,7 @@ const invert = (() => {
 
         dispatch(setController({ ...input, value: boundedInvert }))
         paramSend(input.source, input.ctrl, boundedInvert, undefined, (value: number) => value)
+        paramSend(input.source, envCtrls.INVERT, boundedInvert);
 
         const resetLevel = boundedInvert ? 1 : 0
         dispatch(setController({ ctrl: envCtrls.LEVEL, ctrlIndex: envId, valueIndex: StageId.DELAY, value: resetLevel }))

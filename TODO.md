@@ -10,6 +10,8 @@
 
 ### Filter
 High res filter cutoff, currently only 7 bit CC?!
+- Limit max env modulation?
+- Display env amt as semitones/octaves
 
 ### Hi-precision pots
 - increment 1/10 when shift is pressed for fine tuning.
