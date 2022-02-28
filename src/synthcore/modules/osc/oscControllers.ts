@@ -317,7 +317,7 @@ const oscControllers: OscControllers = {
             ],
         },
         PRE_FILTER_SINE: {
-            id: ControllerIdNonMod.DCO1_PRE_FILTER_SINE,
+            id: ControllerIdNonMod.DCO2_PRE_FILTER_SINE,
             label: 'Saw invert',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
