@@ -9,7 +9,8 @@ import {
     ControllerConfigNRPN
 } from '../../../midi/types'
 import { ControllerIdEnvDst, ControllerIdNonMod, ControllerIdSrc } from '../../../midi/controllerIds'
-import { levelResponseMapper, timeResponseMapper } from './envResponseMappers'
+import { timeResponseMapper } from './envResponseMappers'
+import { levelResponseMapper } from '../common/responseMappers'
 
 interface EnvControllers {
     props: FuncProps

@@ -2,6 +2,7 @@ import CC from '../../../midi/mapCC'
 import { BUTTONS } from '../../../midi/buttons'
 import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
 import { ControllerIdDst, ControllerIdNonMod } from '../../../midi/controllerIds'
+import { levelResponseMapper } from '../common/responseMappers'
 
 interface SrcMixControllers {
     props: FuncProps
@@ -28,42 +29,48 @@ const srcMixControllers: SrcMixControllers = {
         label: 'Osc 1',
         isDstDigi: true,
         type: 'pot',
-        cc: CC.LEVEL_OSC1
+        cc: CC.LEVEL_OSC1,
+        uiResponse: levelResponseMapper,
     },
     LEVEL_OSC2: {
         id: ControllerIdDst.SOURCE_MIX_LEVEL_OSC2,
         label: 'Osc 2',
         isDstDigi: true,
         type: 'pot',
-        cc: CC.LEVEL_OSC2
+        cc: CC.LEVEL_OSC2,
+        uiResponse: levelResponseMapper,
     },
     LEVEL_OSC3: {
         id: ControllerIdDst.SOURCE_MIX_LEVEL_OSC3,
         label: 'Osc 3',
         isDstDigi: true,
         type: 'pot',
-        cc: CC.LEVEL_OSC3
+        cc: CC.LEVEL_OSC3,
+        uiResponse: levelResponseMapper,
     },
     LEVEL_NOISE: {
         id: ControllerIdDst.SOURCE_MIX_LEVEL_NOISE,
         label: 'Noise',
         isDstDigi: true,
         type: 'pot',
-        cc: CC.LEVEL_NOISE
+        cc: CC.LEVEL_NOISE,
+        uiResponse: levelResponseMapper,
     },
     LEVEL_RING_MOD: {
         id: ControllerIdDst.SOURCE_MIX_LEVEL_RING_MOD,
         label: 'Ring mod',
         isDstDigi: true,
         type: 'pot',
-        cc: CC.LEVEL_RING_MOD
+        cc: CC.LEVEL_RING_MOD,
+        uiResponse: levelResponseMapper,
     },
     LEVEL_EXT_AUDIO: {
         id: ControllerIdDst.SOURCE_MIX_LEVEL_EXT_AUDIO,
         label: 'Ext. audio',
         isDstDigi: true,
         type: 'pot',
-        cc: CC.LEVEL_EXT_AUDIO
+        cc: CC.LEVEL_EXT_AUDIO,
+        uiResponse: levelResponseMapper,
     },
     OUT_OSC1: {
         id: ControllerIdNonMod.SRC_MIX_OUT_OSC1,

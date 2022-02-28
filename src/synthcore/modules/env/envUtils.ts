@@ -3,7 +3,8 @@ import { envCtrls } from './envControllers'
 import { Controllers, ValueIndexedControllers } from '../controllers/types'
 import { mergeValueIndexedControllers } from '../controllers/controllersUtils'
 import { ControllerConfig } from '../../../midi/types'
-import { levelResponseMapper, timeResponseMapper } from './envResponseMappers'
+import { timeResponseMapper } from './envResponseMappers'
+import { levelResponseMapper } from '../common/responseMappers'
 
 
 
