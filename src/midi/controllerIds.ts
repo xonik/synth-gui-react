@@ -185,6 +185,7 @@ export enum ControllerIdNonMod {
     DCO1_LFO,
     DCO1_KBD,
     DCO1_SAW_INV,
+    DCO1_PRE_FILTER_SINE,
 
     DCO2_MODE,
     DCO2_SUB_WAVE,
@@ -192,6 +193,7 @@ export enum ControllerIdNonMod {
     DCO2_LFO,
     DCO2_KBD,
     DCO2_SAW_INV,
+    DCO2_PRE_FILTER_SINE,
 
     VCO_SYNC,
     VCO_CROSS_MOD_SRC,

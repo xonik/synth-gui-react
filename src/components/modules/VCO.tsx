@@ -37,7 +37,7 @@ const VCO = ({ x, y }: Props) => {
                      ctrl={oscControllers.VCO.NOTE}
         />
 
-        <RotaryPot10 x={col1} y={y} ledMode="single" label="Detune"
+        <RotaryPot10 x={col4} y={topRow} ledMode="single" label="Detune"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.VCO.DETUNE}
         />

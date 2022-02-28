@@ -15,6 +15,8 @@ export enum buttonLeftMidiValues {
     OSC1_KBD_ON,
     OSC1_SAW_INV_OFF,
     OSC1_SAW_INV_ON,
+    OSC1_PRE_FILTER_SINE_OFF,
+    OSC1_PRE_FILTER_SINE_ON,
 
     OSC2_MODE_DCO,
     OSC2_MODE_WT,
@@ -29,6 +31,8 @@ export enum buttonLeftMidiValues {
     OSC2_KBD_ON,
     OSC2_SAW_INV_OFF,
     OSC2_SAW_INV_ON,
+    OSC2_PRE_FILTER_SINE_OFF,
+    OSC2_PRE_FILTER_SINE_ON,
 
     OSC3_SYNC_OFF,
     OSC3_SYNC_HARD,

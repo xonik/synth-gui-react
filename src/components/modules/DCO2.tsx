@@ -36,15 +36,20 @@ const DCO2 = ({ x, y }: Props) => {
                      ctrl={oscControllers.DCO2.NOTE}
         />
 
-        <RotaryPot10 x={col1} y={y} ledMode="single" label="Detune"
+        <RotaryPot10 x={col4} y={topRow} ledMode="single" label="Detune"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.DCO2.DETUNE}
         />
 
         {/*<RotaryPot10 x={col4} y={topRow} ledMode="multi" label="Super saw"/>*/}
-        <RoundLedPushButton8 x={col4} y={topRow} label="Saw inv" labelPosition="bottom"
+        <RoundLedPushButton8 x={col1} y={y-10} label="Saw inv" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
-                             ctrl={oscControllers.DCO2.SAW_INV}
+                             ctrl={oscControllers.DCO1.SAW_INV}
+        />
+
+        <RoundLedPushButton8 x={col1} y={y+7.5} label="Sine" labelPosition="bottom"
+                             ctrlGroup={ctrlGroup}
+                             ctrl={oscControllers.DCO1.SAW_INV}
         />
 
         <RoundPushButton8 x={col4} y={y + 11}

@@ -21,6 +21,7 @@ interface OscControllers {
         LFO: ControllerConfigCCWithValue
         KBD: ControllerConfigCCWithValue
         SAW_INV: ControllerConfigCCWithValue
+        PRE_FILTER_SINE: ControllerConfigCCWithValue
     },
     DCO2: {
         props: FuncProps
@@ -38,6 +39,7 @@ interface OscControllers {
         LFO: ControllerConfigCCWithValue
         KBD: ControllerConfigCCWithValue
         SAW_INV: ControllerConfigCCWithValue
+        PRE_FILTER_SINE: ControllerConfigCCWithValue
     },
     VCO: {
         props: FuncProps
@@ -182,6 +184,16 @@ const oscControllers: OscControllers = {
                 BUTTONS.BUTTONS_LEFT.values.OSC1_SAW_INV_ON,
             ],
         },
+        PRE_FILTER_SINE: {
+            id: ControllerIdNonMod.DCO1_PRE_FILTER_SINE,
+            label: 'Saw invert',
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC1_PRE_FILTER_SINE_OFF,
+                BUTTONS.BUTTONS_LEFT.values.OSC1_PRE_FILTER_SINE_ON,
+            ],
+        },
     },
     DCO2: {
         props: { label: 'Osc 2' },
@@ -302,6 +314,16 @@ const oscControllers: OscControllers = {
             values: [
                 BUTTONS.BUTTONS_LEFT.values.OSC2_SAW_INV_OFF,
                 BUTTONS.BUTTONS_LEFT.values.OSC2_SAW_INV_ON,
+            ],
+        },
+        PRE_FILTER_SINE: {
+            id: ControllerIdNonMod.DCO1_PRE_FILTER_SINE,
+            label: 'Saw invert',
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC2_PRE_FILTER_SINE_OFF,
+                BUTTONS.BUTTONS_LEFT.values.OSC2_PRE_FILTER_SINE_ON,
             ],
         },
     },
