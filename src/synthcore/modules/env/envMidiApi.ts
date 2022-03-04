@@ -5,56 +5,12 @@ import { ApiSource } from '../../types'
 import { shouldSend } from '../../../midi/utils'
 import logger from '../../../utils/logger'
 import { NumericInputProperty } from '../common/types'
+import { ControllerConfig, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
+import { paramReceive, paramSend } from '../common/commonMidiApi'
 
 let currentReceivedEnvId = -1
 let currentSentEnvId = -1
 let lastSentEnvIdTimestamp = 0
-
-const stageEnabled = (() => {
-    const cfg = controllers.ENV.TOGGLE_STAGE
-
-    return {
-        send: ({ ctrlIndex: envId = 0, value: enabled, valueIndex: stageId = 0, source }: NumericInputProperty) => {
-            if (!shouldSend(source)) {
-                return
-            }
-            envSelect.send(source, envId)
-            const enableBit = enabled ? 0b1000 : 0
-            const data = stageId | enableBit
-            logger.midi(`Changing enable for env ${envId} stage ${stageId} to ${enabled}`)
-            cc.send(cfg, data)
-        },
-        receive: (set: (input: NumericInputProperty) => void) => {
-            cc.subscribe((value: number) => {
-                const stageId = value & 0b111
-                const enabled = (value & 0b1000) > 0 ? 1 : 0
-                set({ctrl: cfg, ctrlIndex: currentReceivedEnvId, valueIndex: stageId, value: enabled, source: ApiSource.MIDI})
-            }, cfg)
-        }
-    }
-})()
-
-const curve = (() => {
-    const cfg = controllers.ENV.CURVE
-
-    return {
-        send: ({ ctrlIndex: envId = 0, value: curve, valueIndex: stageId = 0, source }: NumericInputProperty) => {
-            if (!shouldSend(source)) {
-                return
-            }
-            envSelect.send(source, envId)
-            logger.midi(`Setting curve for env ${envId} stage ${stageId} to ${curve}`)
-            nrpn.send(cfg, (stageId << 7) + curve)
-        },
-        receive: (set: (input: NumericInputProperty) => void) => {
-            nrpn.subscribe((value: number) => {
-                const stageId = (value >> 7)
-                const curve = value & 0b01111111
-                set({ctrl: cfg, ctrlIndex: currentReceivedEnvId, valueIndex: stageId, value: curve, source: ApiSource.MIDI})
-            }, cfg)
-        }
-    }
-})()
 
 // A separate select that may be called without setting state
 const envSelect = (() => {
@@ -74,6 +30,12 @@ const envSelect = (() => {
                 cc.send(cfg, envId)
             }
         },
+        receive: () => {
+            cc.subscribe((value: number) => {
+                currentReceivedEnvId = value
+            }, cfg)
+
+        }
     }
 })()
 
@@ -107,12 +69,36 @@ const release = (() => {
     }
 })()
 
+export const envParamSend = (
+    source: ApiSource,
+    cfg: ControllerConfig | ControllerConfigCC | ControllerConfigCCWithValue,
+    envId: number,
+    value: number,
+    valueIndex?: number,
+    outputMapper?: (value: number, ctrl: ControllerConfig, valueIndex?: number) => number
+) => {
+    envSelect.send(source, envId)
+    paramSend(source, cfg, value, valueIndex, outputMapper)
+}
+
+export const envParamReceive = (
+    ctrl: ControllerConfig | ControllerConfigCC | ControllerConfigCCWithValue,
+    apiSetValue: (input: NumericInputProperty) => void,
+    inputMapper?: (midiValue: number, ctrl: ControllerConfig) => ({ value: number, valueIndex?: number }),
+) => {
+    paramReceive(ctrl, (input) => {
+        apiSetValue({...input, ctrlIndex: currentReceivedEnvId})
+    }, inputMapper)
+}
+
+const initReceive = () => {
+    envSelect.receive()
+}
 const envMidiApi = {
-    stageEnabled,
-    curve,
     trigger,
     release,
     envSelect,
+    initReceive,
 }
 
 export default envMidiApi

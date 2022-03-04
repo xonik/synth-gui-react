@@ -59,7 +59,7 @@ const nrpnMapper = {
         const valuePart = midiValue & 0xFFFF
         const valueIndex = midiValue >> 16
 
-        const value = ctrl.bipolar ? (midiValue - 32767) / 32767 : valuePart / 65535
+        const value = ctrl.bipolar ? (valuePart - 32767) / 32767 : valuePart / 65535
         return {
             value, valueIndex
         }

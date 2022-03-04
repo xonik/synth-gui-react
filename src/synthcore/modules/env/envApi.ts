@@ -7,7 +7,7 @@ import {
     selectStage,
 } from './envReducer'
 import { store } from '../../store'
-import midiApi from './envMidiApi'
+import midiApi, { envParamReceive, envParamSend } from './envMidiApi'
 import { curveFuncs } from '../../../components/curves/curveCalculator'
 import { ApiSource } from '../../types'
 import { dispatch, getBounded, getQuantized } from '../../utils'
@@ -16,6 +16,8 @@ import { envCtrls } from './envControllers'
 import { paramReceive, paramSend } from '../common/commonMidiApi'
 import { selectController, selectUiController, setController, setUiController } from '../controllers/controllersReducer'
 import { ButtonInputProperty, NumericInputProperty } from '../common/types'
+import { ControllerConfig } from '../../../midi/types'
+import logger from '../../../utils/logger'
 
 const updateReleaseLevels = (envId: number, value: number) => {
     const action = {
@@ -77,7 +79,7 @@ const stageLevel = (() => {
             }
 
             selectEnv(envId, source)
-            paramSend(source, envCtrls.LEVEL, boundedValue, stageId)
+            envParamSend(source, envCtrls.LEVEL, envId, boundedValue, stageId)
         }
     }
 
@@ -108,7 +110,7 @@ const stageLevel = (() => {
         dispatch(setUiController({ ...input, value: boundedValue }))
     }
 
-    paramReceive(envCtrls.LEVEL, setWithUiUpdate)
+    envParamReceive(envCtrls.LEVEL, setWithUiUpdate)
 
     return {
         set,
@@ -135,7 +137,7 @@ const stageTime = (() => {
         dispatch(setController({ ...input, value: boundedValue }))
 
         selectEnv(envId, source)
-        paramSend(source, envCtrls.TIME, boundedValue, stageId)
+        envParamSend(source, envCtrls.TIME, envId, boundedValue, stageId)
     }
 
     const setWithUiUpdate = (input: NumericInputProperty) => {
@@ -159,7 +161,7 @@ const stageTime = (() => {
         }
     }
 
-    paramReceive(envCtrls.TIME, setWithUiUpdate)
+    envParamReceive(envCtrls.TIME, setWithUiUpdate)
 
     return {
         set,
@@ -170,8 +172,23 @@ const stageTime = (() => {
 })()
 
 const stageEnabled = (() => {
+
+    const stageEnabledOutputMapper = (enabled: number, cfg: ControllerConfig, stageId: number = 0) => {
+        const enableBit = enabled ? 0b1000 : 0
+        const data = stageId | enableBit
+        logger.midi(`Changing enable for stage ${stageId} to ${enabled}`)
+        return data
+    }
+
+    const stageEnabledInputMapper = (value: number, ctrl: ControllerConfig) => {
+        const stageId = value & 0b111
+        const enabled = (value & 0b1000) > 0 ? 1 : 0
+        return {valueIndex: stageId, value: enabled}
+    }
+
     const set = (input: NumericInputProperty) => {
         const { ctrlIndex: envId = 0, value: enabled, valueIndex: stageId = 0, ctrl } = input
+
         if (cannotDisableStage(stageId)) {
             return
         }
@@ -186,7 +203,8 @@ const stageEnabled = (() => {
         if (stageId === StageId.RELEASE1) {
             const sustainLevel = selectController(envCtrls.LEVEL, envId, StageId.SUSTAIN)(store.getState())
             const levelAction = {
-                ctrl: envCtrls.LEVEL, value: sustainLevel
+                ctrl: envCtrls.LEVEL, value: sustainLevel,
+                ctrlIndex: envId,
             }
             if (enabled) {
                 dispatch(setController({ ...levelAction, valueIndex: StageId.RELEASE1 }))
@@ -195,7 +213,7 @@ const stageEnabled = (() => {
             }
         }
 
-        midiApi.stageEnabled.send(input)
+        envParamSend(input.source, input.ctrl, envId, enabled, stageId, stageEnabledOutputMapper)
     }
 
     const toggle = (input: ButtonInputProperty) => {
@@ -206,7 +224,7 @@ const stageEnabled = (() => {
         set({ ...input, value: enabled })
     }
 
-    midiApi.stageEnabled.receive(set)
+    envParamReceive(envCtrls.TOGGLE_STAGE, set, stageEnabledInputMapper)
 
     return {
         set,
@@ -217,8 +235,19 @@ const stageEnabled = (() => {
 })()
 
 const stageCurve = (() => {
+    const curveOutputMapper = (curve: number, cfg: ControllerConfig, stageId: number = 0) => {
+        logger.midi(`Setting curve for stage ${stageId} to ${curve}`)
+        return (stageId << 7) + curve
+    }
+    const curveInputMapper = (value: number, ctrl: ControllerConfig) => {
+        const stageId = (value >> 7)
+        const curve = value & 0b01111111
+        return {value: curve, valueIndex: stageId}
+    }
+
     const set = (input: NumericInputProperty) => {
         const { ctrlIndex: envId = 0, value: curve, valueIndex: stageId = 0, ctrl } = input
+
         const currentCurve = selectController(ctrl, envId, stageId)(store.getState())
         const boundedCurve = getBounded(curve, 0, curveFuncs.length - 1)
         if (currentCurve === boundedCurve) {
@@ -226,7 +255,7 @@ const stageCurve = (() => {
         }
 
         dispatch(setController({ ...input, value: boundedCurve }))
-        midiApi.curve.send({ ...input, value: boundedCurve })
+        envParamSend(input.source, input.ctrl, envId, curve, stageId, curveOutputMapper)
     }
     const increment = (input: NumericInputProperty) => {
         const { ctrlIndex: envId = 0, valueIndex: stageId = 0, value: inc, ctrl } = input
@@ -234,7 +263,7 @@ const stageCurve = (() => {
         set({ ...input, value: currentCurve + inc })
     }
 
-    midiApi.curve.receive(set)
+    envParamReceive(envCtrls.CURVE, set, curveInputMapper)
 
     return {
         set,
@@ -257,7 +286,7 @@ const maxLoops = (() => {
         }
 
         dispatch(setController({ ...input, value: boundedMaxLoops }))
-        paramSend(input.source, input.ctrl, boundedMaxLoops, undefined, (value: number) => value)
+        envParamSend(input.source, input.ctrl, envId, boundedMaxLoops, undefined, (value: number) => value)
     }
 
     const increment = (input: NumericInputProperty) => {
@@ -269,7 +298,7 @@ const maxLoops = (() => {
         set({ ...input, value: currMaxLoops + inc })
     }
 
-    paramReceive(envCtrls.MAX_LOOPS, set, (midiValue: number) => ({ value: midiValue }))
+    envParamReceive(envCtrls.MAX_LOOPS, set, (midiValue: number) => ({ value: midiValue }))
 
     return {
         set,
@@ -292,8 +321,7 @@ const invert = (() => {
         }
 
         dispatch(setController({ ...input, value: boundedInvert }))
-        paramSend(input.source, input.ctrl, boundedInvert, undefined, (value: number) => value)
-        paramSend(input.source, envCtrls.INVERT, boundedInvert);
+        envParamSend(input.source, input.ctrl, envId, boundedInvert, undefined, (value: number) => value)
 
         const resetLevel = boundedInvert ? 1 : 0
         dispatch(setController({ ctrl: envCtrls.LEVEL, ctrlIndex: envId, valueIndex: StageId.DELAY, value: resetLevel }))
@@ -311,7 +339,7 @@ const invert = (() => {
         set({ ...input, value: enabled })
     }
 
-    paramReceive(envCtrls.INVERT, set)
+    envParamReceive(envCtrls.INVERT, set)
 
     return {
         set,
@@ -327,40 +355,6 @@ const invert = (() => {
 const selectEnv = (envId: number, source: ApiSource) => {
     midiApi.envSelect.send(source, envId)
 }
-
-// This version receives/sends the current envelope and updates state, and is
-// intended for communications FROM the synth to the GUI.
-const midiEnvSelect = (() => {
-
-    let lastSentEnvIdTimestamp = 0
-
-    const set = (input: NumericInputProperty) => {
-        const { ctrlIndex: envId = 0, value } = input
-        const midiEnvId = selectController(
-            envCtrls.SELECT,
-            envId)(store.getState())
-
-        const boundedEnvId = getBounded(value, 0, NUMBER_OF_ENVELOPES)
-
-        // Resend env if more than five seconds since last try, makes synth restarts smoother
-        if (boundedEnvId === midiEnvId && Date.now() - lastSentEnvIdTimestamp < 5000) {
-            return
-        }
-
-        dispatch(setController({ ...input, value: boundedEnvId }))
-        paramSend(input.source, input.ctrl, boundedEnvId, undefined, (value: number) => value)
-    }
-
-    paramReceive(envCtrls.SELECT, set, (midiValue: number) => ({ value: midiValue }))
-
-    return {
-        set,
-        increment: (input: NumericInputProperty) => {
-        },
-        toggle: (input: ButtonInputProperty) => {
-        }
-    }
-})()
 
 const env3Id = (() => {
     const set = (input: NumericInputProperty) => {
@@ -435,7 +429,6 @@ const customSetterFuncs = {
     [envCtrls.CURVE.id]: stageCurve,
     [envCtrls.INVERT.id]: invert,
     [envCtrls.MAX_LOOPS.id]: maxLoops,
-    [envCtrls.SELECT.id]: midiEnvSelect,
     [envCtrls.SELECT_ENV3_ID.id]: env3Id,
 }
 
