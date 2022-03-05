@@ -168,10 +168,11 @@ export const uiAmount = (() => {
             return
         }
 
-        dispatch(setUiAmount({...input, value: boundedValue}))
+        const boundedInput = {...input, value: boundedValue}
+        dispatch(setUiAmount(boundedInput))
 
         // send over midi
-        paramSend(input.source, input.ctrl, boundedValue)
+        paramSend(boundedInput)
     }
 
     const increment = (input: NumericInputProperty) => {

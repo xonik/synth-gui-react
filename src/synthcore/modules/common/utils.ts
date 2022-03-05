@@ -3,7 +3,7 @@ import { paramReceive, paramSend } from './commonMidiApi'
 import { dispatch, getBounded, getQuantized } from '../../utils'
 import { store } from '../../store'
 import { ButtonInputProperty, NumericInputProperty } from './types'
-import { selectController, selectUiController, setController, setUiController } from '../controllers/controllersReducer'
+import { selectController, selectUiController, setController } from '../controllers/controllersReducer'
 
 export type ApiIncrementMapperType = {
     [key: number]: (value: number) => void
@@ -41,7 +41,7 @@ export const createSetMapper = (map: MapperEntry[]) => {
         })?.[1](input)
 
         // send over midi
-        paramSend(input.source, input.ctrl, input.value)
+        paramSend(input)
     }
 
     // receive midi
@@ -59,7 +59,7 @@ const getBoundedController = (ctrl: ControllerConfig, value: number) => {
 export const createSetterFuncs = (
     controllers: ControllerConfig[]
 ) => {
-    const set = (input: NumericInputProperty) => {
+    const set = (input: NumericInputProperty, uiValue?: number) => {
 
         const { ctrl, ctrlIndex, valueIndex, value } = input
 
@@ -78,11 +78,12 @@ export const createSetterFuncs = (
         // Not always present, and may only be sent for nrpn messages. Represents stage etc, the top
         // 5 bits left over when 16 bits have been used for value.
         const boundedValueIndex = getBounded(valueIndex || 0, 0, 31)
+        const boundedInput = {...input, value: boundedValue, valueIndex: boundedValueIndex}
 
-        dispatch(setController({ ctrlIndex, ctrl, value: boundedValue }))
+        dispatch(setController(boundedInput))
 
         // send over midi
-        paramSend(input.source, ctrl, boundedValue, boundedValueIndex)
+        paramSend(boundedInput)
     }
     const toggle = (input: ButtonInputProperty) => {
         // Not for this reducer!
@@ -124,10 +125,9 @@ export const createSetterFuncs = (
         const { value: inc, ctrl } = input
         if(ctrl.uiResponse && selectUiController){
             let currentValue = selectUiController(input.ctrl, input.ctrlIndex || 0)(store.getState())
-            let boundedValue = getBoundedController(ctrl,currentValue + inc)
-            dispatch(setUiController({ ...input, value: boundedValue }))
-            const updatedValue = ctrl.uiResponse.output(boundedValue)
-            set({...input, value: updatedValue})
+            let uiValue = getBoundedController(ctrl,currentValue + inc)
+            const updatedValue = ctrl.uiResponse.output(uiValue)
+            set({...input, value: updatedValue}, uiValue)
         } else {
             let currentValue = selectController(input.ctrl, input.ctrlIndex || 0)(store.getState())
             set({...input, value: currentValue + inc})
@@ -135,10 +135,9 @@ export const createSetterFuncs = (
     }
 
     const setWithUiUpdate = (input: NumericInputProperty) => {
-        set(input)
         const updatedValue = input.ctrl.uiResponse?.input(input.value) || 0
-        const boundedValue = getBoundedController(input.ctrl, updatedValue)
-        dispatch(setUiController({ ...input, value: boundedValue }))
+        const uiValue = getBoundedController(input.ctrl, updatedValue)
+        set(input, uiValue)
     }
 
     // receive midi

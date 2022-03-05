@@ -14,6 +14,7 @@ export type NumericInputProperty = {
 
     // May be used for stages etc. Can only be sent with nrpn and must be in range 0-31
     valueIndex?: number;
+
     source: ApiSource
 }
 export type ButtonInputProperty = {
@@ -39,7 +40,9 @@ export type NumericControllerPayload = {
     ctrlIndex?: number
     value: number
     valueIndex?: number
+    uiValue?: number
 }
+
 export type NumericPayload = {
     value: number;
 }

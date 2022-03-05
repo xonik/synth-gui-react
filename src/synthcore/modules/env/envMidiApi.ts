@@ -70,15 +70,11 @@ const release = (() => {
 })()
 
 export const envParamSend = (
-    source: ApiSource,
-    cfg: ControllerConfig | ControllerConfigCC | ControllerConfigCCWithValue,
-    envId: number,
-    value: number,
-    valueIndex?: number,
+    input: NumericInputProperty,
     outputMapper?: (value: number, ctrl: ControllerConfig, valueIndex?: number) => number
 ) => {
-    envSelect.send(source, envId)
-    paramSend(source, cfg, value, valueIndex, outputMapper)
+    envSelect.send(input.source, input.ctrlIndex || 0)
+    paramSend(input, outputMapper)
 }
 
 export const envParamReceive = (

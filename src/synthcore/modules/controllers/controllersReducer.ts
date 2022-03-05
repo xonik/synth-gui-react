@@ -77,26 +77,31 @@ export const controllersSlice = createSlice({
     name: 'controllers',
     initialState,
     reducers: {
-        setController: (state, { payload }: PayloadAction<NumericControllerPayload>) => {
-            if (payload.valueIndex === undefined) {
-                controllerState.set(state, payload)
-            } else {
-                valueIndexedControllerState.set(state, payload)
-            }
-        },
-        setUiController: (state, { payload }: PayloadAction<NumericControllerPayload>) => {
-            if (payload.valueIndex === undefined) {
-                uiControllerState.set(state, payload)
-            } else {
-                uiValueIndexedControllerState.set(state, payload)
-            }
+        // Multiple payloads may be sent as one chunk so that only one update
+        // is triggered
+        setController: (state, { payload }: PayloadAction<NumericControllerPayload | NumericControllerPayload[]>) => {
+
+            const payloads = Array.isArray(payload) ? payload : [payload]
+
+            payloads.forEach((aPayload) => {
+                if (aPayload.valueIndex === undefined) {
+                    controllerState.set(state, aPayload)
+                    if(aPayload.uiValue !== undefined) {
+                        uiControllerState.set(state, aPayload, aPayload.uiValue)
+                    }
+                } else {
+                    valueIndexedControllerState.set(state, aPayload)
+                    if(aPayload.uiValue !== undefined) {
+                        uiValueIndexedControllerState.set(state, aPayload, aPayload.uiValue)
+                    }
+                }
+            })
         },
     }
 })
 
 export const {
     setController,
-    setUiController,
 } = controllersSlice.actions
 
 const controllerState = {
@@ -117,8 +122,8 @@ const controllerState = {
 }
 
 const uiControllerState = {
-    set: (state: Draft<ControllersState>, payload: NumericControllerPayload) => {
-        const { ctrlIndex = 0, ctrl, value } = payload
+    set: (state: Draft<ControllersState>, payload: NumericControllerPayload, value: number) => {
+        const { ctrlIndex = 0, ctrl } = payload
         if (state.uiControllers[ctrlIndex] === undefined) {
             state.uiControllers[ctrlIndex] = []
         }
@@ -157,8 +162,8 @@ const valueIndexedControllerState = {
 }
 
 const uiValueIndexedControllerState = {
-    set: (state: Draft<ControllersState>, payload: NumericControllerPayload) => {
-        const { ctrlIndex = 0, ctrl, valueIndex = 0, value } = payload
+    set: (state: Draft<ControllersState>, payload: NumericControllerPayload, value: number) => {
+        const { ctrlIndex = 0, ctrl, valueIndex = 0 } = payload
         if (state.uiValueIndexedControllers[ctrlIndex] === undefined) {
             state.uiValueIndexedControllers[ctrlIndex] = []
         }

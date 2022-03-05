@@ -78,30 +78,35 @@ const nrpnMapper = {
 }
 
 export const paramSend = (
-    source: ApiSource,
-    cfg: ControllerConfig | ControllerConfigCC | ControllerConfigCCWithValue,
-    value: number,
-    valueIndex?: number,
+    input: NumericInputProperty,
     outputMapper?: (value: number, ctrl: ControllerConfig, valueIndex?: number) => number
 ) => {
+
+    const {
+        source,
+        ctrl,
+        value,
+        valueIndex,
+    } = input
+
     if (!shouldSend(source)) {
         return
     }
 
-    if (cfg.hasOwnProperty('cc')) {
-        if (cfg.values) {
-            logger.midi(`Setting value for ${cfg.label} to ${value}`)
-            const midiValue = (outputMapper || ccWithValueMapper.output)(value, cfg)
-            cc.send(cfg as ControllerConfigCCWithValue, midiValue)
+    if (ctrl.hasOwnProperty('cc')) {
+        if (ctrl.values) {
+            logger.midi(`Setting value for ${ctrl.label} to ${value}`)
+            const midiValue = (outputMapper || ccWithValueMapper.output)(value, ctrl)
+            cc.send(ctrl as ControllerConfigCCWithValue, midiValue)
         } else {
-            const midiValue = (outputMapper || ccMapper.output)(value, cfg)
-            logger.midi(`Setting value for ${cfg.label} to ${value} (${midiValue})`)
-            cc.send(cfg as ControllerConfigCC, midiValue)
+            const midiValue = (outputMapper || ccMapper.output)(value, ctrl)
+            logger.midi(`Setting value for ${ctrl.label} to ${value} (${midiValue})`)
+            cc.send(ctrl as ControllerConfigCC, midiValue)
         }
-    } else if (cfg.hasOwnProperty('addr')) {
-        const midiValue = (outputMapper || nrpnMapper.output)(value, cfg, valueIndex)
-        logger.midi(`Setting value for ${cfg.label} to ${value} (${midiValue})`)
-        nrpn.send(cfg as ControllerConfigNRPN, midiValue)
+    } else if (ctrl.hasOwnProperty('addr')) {
+        const midiValue = (outputMapper || nrpnMapper.output)(value, ctrl, valueIndex)
+        logger.midi(`Setting value for ${ctrl.label} to ${value} (${midiValue})`)
+        nrpn.send(ctrl as ControllerConfigNRPN, midiValue)
     }
 }
 
