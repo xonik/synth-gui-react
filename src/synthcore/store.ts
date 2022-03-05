@@ -24,7 +24,11 @@ export const store = configureStore({
         getDefaultMiddleware({
             serializableCheck: {
                 // Ignore these field paths in all actions
-                ignoredActionPaths: ['payload.ctrl.uiResponse'],
+                ignoredActionPaths: [
+                    'payload.ctrl.uiResponse',
+                    'payload.0.ctrl.uiResponse',
+                    'payload.1.ctrl.uiResponse',
+                ],
             },
         })
             .concat(
