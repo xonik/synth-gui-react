@@ -20,8 +20,7 @@ import {
     setController,
 } from '../controllers/controllersReducer'
 import { ButtonInputProperty, NumericInputProperty } from '../common/types'
-import { ControllerConfig } from '../../../midi/types'
-import logger from '../../../utils/logger'
+import envMidiApi from './envMidiApi'
 
 const cannotDisableStage = (stage: StageId) => stage === StageId.ATTACK || stage === StageId.RELEASE2 || stage === StageId.SUSTAIN
 
@@ -157,19 +156,6 @@ const stageTime = (() => {
 
 const stageEnabled = (() => {
 
-    const stageEnabledOutputMapper = (enabled: number, cfg: ControllerConfig, stageId: number = 0) => {
-        const enableBit = enabled ? 0b1000 : 0
-        const data = stageId | enableBit
-        logger.midi(`Changing enable for stage ${stageId} to ${enabled}`)
-        return data
-    }
-
-    const stageEnabledInputMapper = (value: number, ctrl: ControllerConfig) => {
-        const stageId = value & 0b111
-        const enabled = (value & 0b1000) > 0 ? 1 : 0
-        return {valueIndex: stageId, value: enabled}
-    }
-
     const set = (input: NumericInputProperty) => {
         const { ctrlIndex: envId = 0, value: enabled, valueIndex: stageId = 0, ctrl } = input
 
@@ -197,7 +183,7 @@ const stageEnabled = (() => {
             }
         }
 
-        envParamSend(input, stageEnabledOutputMapper)
+        envMidiApi.stageEnabled.send(input)
     }
 
     const toggle = (input: ButtonInputProperty) => {
@@ -208,7 +194,7 @@ const stageEnabled = (() => {
         set({ ...input, value: enabled })
     }
 
-    envParamReceive(envCtrls.TOGGLE_STAGE, set, stageEnabledInputMapper)
+    envMidiApi.stageEnabled.receive(set)
 
     return {
         set,
@@ -219,16 +205,6 @@ const stageEnabled = (() => {
 })()
 
 const stageCurve = (() => {
-    const curveOutputMapper = (curve: number, cfg: ControllerConfig, stageId: number = 0) => {
-        logger.midi(`Setting curve for stage ${stageId} to ${curve}`)
-        return (stageId << 7) + curve
-    }
-    const curveInputMapper = (value: number, ctrl: ControllerConfig) => {
-        const stageId = (value >> 7)
-        const curve = value & 0b01111111
-        return {value: curve, valueIndex: stageId}
-    }
-
     const set = (input: NumericInputProperty) => {
         const { ctrlIndex: envId = 0, value: curve, valueIndex: stageId = 0, ctrl } = input
 
@@ -240,15 +216,16 @@ const stageCurve = (() => {
 
         const boundedInput = { ...input, value: boundedCurve }
         dispatch(setController(boundedInput))
-        envParamSend(boundedInput, curveOutputMapper)
+        envMidiApi.curve.send(boundedInput)
     }
+
     const increment = (input: NumericInputProperty) => {
         const { ctrlIndex: envId = 0, valueIndex: stageId = 0, value: inc, ctrl } = input
         const currentCurve = selectController(ctrl, envId, stageId)(store.getState())
         set({ ...input, value: currentCurve + inc })
     }
 
-    envParamReceive(envCtrls.CURVE, set, curveInputMapper)
+    envMidiApi.curve.receive(set)
 
     return {
         set,

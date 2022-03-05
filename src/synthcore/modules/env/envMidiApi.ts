@@ -1,12 +1,13 @@
 // If imported directly we get a cyclic dependency. Not sure why it works now.
 import controllers from '../../../midi/controllers'
-import { cc, nrpn } from '../../../midi/midibus'
+import { cc } from '../../../midi/midibus'
 import { ApiSource } from '../../types'
 import { shouldSend } from '../../../midi/utils'
 import logger from '../../../utils/logger'
 import { NumericInputProperty } from '../common/types'
 import { ControllerConfig, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
 import { paramReceive, paramSend } from '../common/commonMidiApi'
+import { envCtrls } from './envControllers'
 
 let currentReceivedEnvId = -1
 let currentSentEnvId = -1
@@ -69,6 +70,44 @@ const release = (() => {
     }
 })()
 
+const curve = (() => {
+    const curveOutputMapper = (curve: number, cfg: ControllerConfig, stageId: number = 0) => {
+        logger.midi(`Setting curve for stage ${stageId} to ${curve}`)
+        return (stageId << 7) + curve
+    }
+    const curveInputMapper = (value: number, ctrl: ControllerConfig) => {
+        const stageId = (value >> 7)
+        const curve = value & 0b01111111
+        return {value: curve, valueIndex: stageId}
+    }
+
+    return {
+        send: (input: NumericInputProperty) => envParamSend(input, curveOutputMapper),
+        receive: (set: (input: NumericInputProperty) => void) => envParamReceive(envCtrls.CURVE, set, curveInputMapper)
+    }
+})()
+
+const stageEnabled = (() => {
+
+    const stageEnabledOutputMapper = (enabled: number, cfg: ControllerConfig, stageId: number = 0) => {
+        const enableBit = enabled ? 0b1000 : 0
+        const data = stageId | enableBit
+        logger.midi(`Changing enable for stage ${stageId} to ${enabled}`)
+        return data
+    }
+
+    const stageEnabledInputMapper = (value: number, ctrl: ControllerConfig) => {
+        const stageId = value & 0b111
+        const enabled = (value & 0b1000) > 0 ? 1 : 0
+        return { valueIndex: stageId, value: enabled }
+    }
+
+    return {
+        send: (input: NumericInputProperty) => envParamSend(input, stageEnabledOutputMapper),
+        receive: (set: (input: NumericInputProperty) => void) => envParamReceive(envCtrls.TOGGLE_STAGE, set, stageEnabledInputMapper)
+    }
+})()
+
 export const envParamSend = (
     input: NumericInputProperty,
     outputMapper?: (value: number, ctrl: ControllerConfig, valueIndex?: number) => number
@@ -93,7 +132,8 @@ const initReceive = () => {
 const envMidiApi = {
     trigger,
     release,
-    envSelect,
+    curve,
+    stageEnabled,
     initReceive,
 }
 
