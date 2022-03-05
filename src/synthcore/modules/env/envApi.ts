@@ -23,20 +23,6 @@ import { ButtonInputProperty, NumericInputProperty } from '../common/types'
 import { ControllerConfig } from '../../../midi/types'
 import logger from '../../../utils/logger'
 
-const updateReleaseLevels = (envId: number, value: number) => {
-    const action = {
-        ctrl: envCtrls.LEVEL,
-        ctrlIndex: envId,
-        value
-    }
-    const release1Enabled = selectController(envCtrls.TOGGLE_STAGE, envId, StageId.RELEASE1)(store.getState())
-    if (release1Enabled === 1) {
-        dispatch(setController({ ...action, valueIndex: StageId.RELEASE1 }))
-    } else {
-        dispatch(setController({ ...action, valueIndex: StageId.RELEASE2 }))
-    }
-}
-
 const cannotDisableStage = (stage: StageId) => stage === StageId.ATTACK || stage === StageId.RELEASE2 || stage === StageId.SUSTAIN
 
 const stageLevel = (() => {
@@ -78,10 +64,6 @@ const stageLevel = (() => {
                 ]))
             } else {
                 dispatch(setController({ ...input, value: boundedValue, uiValue }))
-            }
-
-            if (stageId === StageId.SUSTAIN) {
-                updateReleaseLevels(envId, boundedValue)
             }
 
             envParamSend({...input, value: boundedValue})
