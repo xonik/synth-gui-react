@@ -1,17 +1,17 @@
 import { Curve, Envelope, LoopMode, ReleaseMode, Stage, StageId } from './types'
 import { envCtrls } from './envControllers'
-import { Controllers, ValueIndexedControllers } from '../controllers/types'
-import { mergeValueIndexedControllers } from '../controllers/controllersUtils'
+import { Controllers } from '../controllers/types'
+import { mergeControllers } from '../controllers/controllersUtils'
 import { ControllerConfig } from '../../../midi/types'
 import { timeResponseMapper } from './envResponseMappers'
 import { levelResponseMapper } from '../common/responseMappers'
 
 
 
-const getStageState = (envId: number, stage: Stage): ValueIndexedControllers => {
+const getStageState = (envId: number, stage: Stage): Controllers => {
     const { id: stageId, enabled, curve, level, time } = stage
 
-    const controllers: ValueIndexedControllers = {}
+    const controllers: Controllers = {}
     controllers[envId] = {
         [envCtrls.TOGGLE_STAGE.id]: {
             [stageId]: enabled
@@ -29,10 +29,10 @@ const getStageState = (envId: number, stage: Stage): ValueIndexedControllers => 
     return controllers
 }
 
-const getUiStageState = (envId: number, stage: Stage): ValueIndexedControllers => {
+const getUiStageState = (envId: number, stage: Stage): Controllers => {
     const { id: stageId, level, time } = stage
 
-    const controllers: ValueIndexedControllers = {}
+    const controllers: Controllers = {}
     controllers[envId] = {
         [envCtrls.LEVEL.id]: {
             [stageId]: levelResponseMapper.input(level)
@@ -47,12 +47,12 @@ const getUiStageState = (envId: number, stage: Stage): ValueIndexedControllers =
 export const getDefaultController = (ctrl: ControllerConfig, value: number): Controllers => {
     return {
         0: {
-            [ctrl.id]: value
+            [ctrl.id]: [value]
         }
     }
 }
 
-const getEnvState = (env: Envelope) => {
+const getEnvState = (env: Envelope): Controllers => {
     const {
         resetOnTrigger,
         releaseMode,
@@ -64,13 +64,13 @@ const getEnvState = (env: Envelope) => {
     } = env
     const envControllers: Controllers = {}
     envControllers[env.id] = {
-        [envCtrls.RESET_ON_TRIGGER.id]: resetOnTrigger ? 1 : 0,
-        [envCtrls.RELEASE_MODE.id]: releaseMode,
-        [envCtrls.LOOP_MODE.id]: loopMode,
-        [envCtrls.LOOP.id]: loopEnabled ? 1 : 0,
-        [envCtrls.MAX_LOOPS.id]: maxLoops,
-        [envCtrls.INVERT.id]: invert ? 1 : 0,
-        [envCtrls.BIPOLAR.id]: bipolar ? 1 : 0,
+        [envCtrls.RESET_ON_TRIGGER.id]: [resetOnTrigger ? 1 : 0],
+        [envCtrls.RELEASE_MODE.id]: [releaseMode],
+        [envCtrls.LOOP_MODE.id]: [loopMode],
+        [envCtrls.LOOP.id]: [loopEnabled ? 1 : 0],
+        [envCtrls.MAX_LOOPS.id]: [maxLoops],
+        [envCtrls.INVERT.id]: [invert ? 1 : 0],
+        [envCtrls.BIPOLAR.id]: [bipolar ? 1 : 0],
     }
     return envControllers
 }
@@ -149,9 +149,9 @@ const defaultStageConfigs: Stage[] = [
     }
 ]
 
-export const getDefaultEnvStages = (envId: number): ValueIndexedControllers => {
-    const stages: ValueIndexedControllers[] = defaultStageConfigs.map(conf => getStageState(envId, conf))
-    const controllers = mergeValueIndexedControllers(stages)
+export const getDefaultEnvStages = (envId: number): Controllers => {
+    const stages: Controllers[] = defaultStageConfigs.map(conf => getStageState(envId, conf))
+    const controllers = mergeControllers(stages)
 
     // TODO: Duplicated in reducer, fix!
     // Update release levels
@@ -164,9 +164,9 @@ export const getDefaultEnvStages = (envId: number): ValueIndexedControllers => {
     return controllers
 }
 
-export const getDefaultEnvUiStages = (envId: number): ValueIndexedControllers => {
-    const stages: ValueIndexedControllers[] = defaultStageConfigs.map(conf => getUiStageState(envId, conf))
-    const controllers = mergeValueIndexedControllers(stages)
+export const getDefaultEnvUiStages = (envId: number): Controllers => {
+    const stages: Controllers[] = defaultStageConfigs.map(conf => getUiStageState(envId, conf))
+    const controllers = mergeControllers(stages)
 
     // TODO: Duplicated in reducer, fix!
     // Update release levels

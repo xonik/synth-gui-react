@@ -1,11 +1,11 @@
 import { Curve, Lfo, Stage, StageId } from './types'
-import { Controllers, ValueIndexedControllers } from '../controllers/types'
-import { mergeValueIndexedControllers } from '../controllers/controllersUtils'
+import { Controllers } from '../controllers/types'
+import { mergeControllers } from '../controllers/controllersUtils'
 
-const getStageState = (envId: number, stage: Stage): ValueIndexedControllers => {
+const getStageState = (envId: number, stage: Stage): Controllers => {
     // const { id: stageId, enabled, curve, level, time } = stage
 
-    const controllers: ValueIndexedControllers = {}
+    const controllers: Controllers = {}
     controllers[envId] = {
         /*
         [lfoCtrls.TOGGLE_STAGE.id]: {
@@ -25,10 +25,10 @@ const getStageState = (envId: number, stage: Stage): ValueIndexedControllers => 
     return controllers
 }
 
-const getUiStageState = (envId: number, stage: Stage): ValueIndexedControllers => {
+const getUiStageState = (envId: number, stage: Stage): Controllers => {
     // const { id: stageId, level, time } = stage
 
-    const controllers: ValueIndexedControllers = {}
+    const controllers: Controllers = {}
     controllers[envId] = {
         /*
         [lfoCtrls.LEVEL.id]: {
@@ -115,12 +115,12 @@ const defaultStageConfigs: Stage[] = [
     }
 ]
 
-export const getDefaultLfoStages = (lfoId: number): ValueIndexedControllers => {
-    const stages: ValueIndexedControllers[] = defaultStageConfigs.map(conf => getStageState(lfoId, conf))
-    return mergeValueIndexedControllers(stages)
+export const getDefaultLfoStages = (lfoId: number): Controllers => {
+    const stages: Controllers[] = defaultStageConfigs.map(conf => getStageState(lfoId, conf))
+    return mergeControllers(stages)
 }
 
-export const getDefaultUiLfoStages = (lfoId: number): ValueIndexedControllers => {
-    const stages: ValueIndexedControllers[] = defaultStageConfigs.map(conf => getUiStageState(lfoId, conf))
-    return mergeValueIndexedControllers(stages)
+export const getDefaultUiLfoStages = (lfoId: number): Controllers => {
+    const stages: Controllers[] = defaultStageConfigs.map(conf => getUiStageState(lfoId, conf))
+    return mergeControllers(stages)
 }

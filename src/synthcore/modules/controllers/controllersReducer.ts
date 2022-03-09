@@ -1,10 +1,10 @@
 import { createSlice, Draft, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
 import { ControllerConfig } from '../../../midi/types'
-import { Controllers, ValueIndexedControllers } from './types'
+import { Controllers } from './types'
 import { getDefaultController, getDefaultEnv, getDefaultEnvStages, getDefaultEnvUiStages } from '../env/envUtils'
 import { envCtrls } from '../env/envControllers'
-import { mergeControllers, mergeValueIndexedControllers } from './controllersUtils'
+import { mergeControllers } from './controllersUtils'
 import { Stage, STAGES } from '../env/types'
 import { NumericControllerPayload } from '../common/types'
 import { getDefaultLfo, getDefaultLfoStages, getDefaultUiLfoStages } from '../lfo/lfoUtils'
@@ -15,16 +15,19 @@ type ControllersState = {
     // potmeter differs from the value in controllers. This is used for level/time on envelopes for example,
     // to give better sensitivity in lower parts of the scale.
 
-    // controllers that have one instance per ctrlIndex
-    // e.g. controllers[envId][loopMode]
+    // Controllers are structured as a three dimensional array:
+    // - First index is the ctrlIndex, e.g. envId
+    // - Second is the ctrlId, e.g. level
+    // - Third is the valueIndex, if there are multiple instances of a value for a ctrlIndex, e.g. attack
+    //
+    // controllers[envId][level][attack]
+    //
+    // controllers with only one ctrlIndex, for example ring mod level, will end up
+    // as ctrlIndex 0 even if no ctrlIndex is supplied in the action or selector.
+    //
+    // Similarly, controllers with only one valueIndex will get valueIndex 0.
     controllers: Controllers
     uiControllers: Controllers
-
-    // controllers that have more than one instance per ctrlIndex, e.g.
-    // stages for an envelope, e.g. valueIndexedControllers[envId][time][stageId]
-    // These are accessed as valueIndexedControllers[ctrlIndex][ctrl.id][valueIndex]
-    valueIndexedControllers: ValueIndexedControllers
-    uiValueIndexedControllers: ValueIndexedControllers
 }
 
 export const initialState: ControllersState = {
@@ -41,23 +44,18 @@ export const initialState: ControllersState = {
         getDefaultLfo(2),
         getDefaultLfo(3),
 
-    ]),
-    uiControllers: {},
-    valueIndexedControllers: mergeValueIndexedControllers(
-        [
-            getDefaultEnvStages(0),
-            getDefaultEnvStages(1),
-            getDefaultEnvStages(2),
-            getDefaultEnvStages(3),
-            getDefaultEnvStages(4),
+        getDefaultEnvStages(0),
+        getDefaultEnvStages(1),
+        getDefaultEnvStages(2),
+        getDefaultEnvStages(3),
+        getDefaultEnvStages(4),
 
-            getDefaultLfoStages(0),
-            getDefaultLfoStages(1),
-            getDefaultLfoStages(2),
-            getDefaultLfoStages(3),
-        ]
-    ),
-    uiValueIndexedControllers: mergeValueIndexedControllers(
+        getDefaultLfoStages(0),
+        getDefaultLfoStages(1),
+        getDefaultLfoStages(2),
+        getDefaultLfoStages(3),
+    ]),
+    uiControllers: mergeControllers(
         [
             getDefaultEnvUiStages(0),
             getDefaultEnvUiStages(1),
@@ -84,16 +82,9 @@ export const controllersSlice = createSlice({
             const payloads = Array.isArray(payload) ? payload : [payload]
 
             payloads.forEach((aPayload) => {
-                if (aPayload.valueIndex === undefined) {
-                    controllerState.set(state, aPayload)
-                    if(aPayload.uiValue !== undefined) {
-                        uiControllerState.set(state, aPayload, aPayload.uiValue)
-                    }
-                } else {
-                    valueIndexedControllerState.set(state, aPayload)
-                    if(aPayload.uiValue !== undefined) {
-                        uiValueIndexedControllerState.set(state, aPayload, aPayload.uiValue)
-                    }
+                controllerState.set(state, aPayload)
+                if(aPayload.uiValue !== undefined) {
+                    uiControllerState.set(state, aPayload, aPayload.uiValue)
                 }
             })
         },
@@ -104,107 +95,62 @@ export const {
     setController,
 } = controllersSlice.actions
 
+
 const controllerState = {
     set: (state: Draft<ControllersState>, payload: NumericControllerPayload) => {
-        const { ctrlIndex = 0, ctrl, value } = payload
+        const { ctrlIndex = 0, ctrl, valueIndex = 0, value } = payload
         if (state.controllers[ctrlIndex] === undefined) {
             state.controllers[ctrlIndex] = []
         }
-        state.controllers[ctrlIndex][ctrl.id] = value
-    },
-    get: (state: RootState, ctrl: ControllerConfig, ctrlIndex: number) => {
-        const ctrlValue = state.controllers.controllers[ctrlIndex]
-        if (ctrlValue === undefined) {
-            return 0
+        const indexedCtrls = state.controllers[ctrlIndex]
+        if (indexedCtrls[ctrl.id] === undefined) {
+            state.controllers[ctrlIndex][ctrl.id] = { [valueIndex]: value }
+        } else {
+            state.controllers[ctrlIndex][ctrl.id][valueIndex] = value
         }
-        return ctrlValue[ctrl.id] || 0
+    },
+    get: (state: RootState, ctrl: ControllerConfig, ctrlIndex: number, valueIndex: number) => {
+        const ctrlValue = state.controllers.controllers[ctrlIndex]
+        if (ctrlValue === undefined || ctrlValue[ctrl.id] === undefined) {
+            return 0
+        } else {
+            return state.controllers.controllers[ctrlIndex][ctrl.id][valueIndex] || 0
+        }
     }
 }
 
 const uiControllerState = {
     set: (state: Draft<ControllersState>, payload: NumericControllerPayload, value: number) => {
-        const { ctrlIndex = 0, ctrl } = payload
+        const { ctrlIndex = 0, ctrl, valueIndex = 0 } = payload
         if (state.uiControllers[ctrlIndex] === undefined) {
             state.uiControllers[ctrlIndex] = []
         }
-        state.uiControllers[ctrlIndex][ctrl.id] = value
+        const indexedCtrls = state.uiControllers[ctrlIndex]
+        if (indexedCtrls[ctrl.id] === undefined) {
+            state.uiControllers[ctrlIndex][ctrl.id] = { [valueIndex]: value }
+        } else {
+            state.uiControllers[ctrlIndex][ctrl.id][valueIndex] = value
+        }
     },
-    get: (state: RootState, ctrl: ControllerConfig, ctrlIndex: number) => {
+    get: (state: RootState, ctrl: ControllerConfig, ctrlIndex: number, valueIndex: number) => {
         const ctrlValue = state.controllers.uiControllers[ctrlIndex]
-        if (ctrlValue === undefined) {
-            return 0
-        }
-        return ctrlValue[ctrl.id] || 0
-    }
-}
-
-const valueIndexedControllerState = {
-    set: (state: Draft<ControllersState>, payload: NumericControllerPayload) => {
-        const { ctrlIndex = 0, ctrl, valueIndex = 0, value } = payload
-        if (state.valueIndexedControllers[ctrlIndex] === undefined) {
-            state.valueIndexedControllers[ctrlIndex] = []
-        }
-        const indexedCtrls = state.valueIndexedControllers[ctrlIndex]
-        if (indexedCtrls[ctrl.id] === undefined) {
-            state.valueIndexedControllers[ctrlIndex][ctrl.id] = { [valueIndex]: value }
-        } else {
-            state.valueIndexedControllers[ctrlIndex][ctrl.id][valueIndex] = value
-        }
-    },
-    get: (state: RootState, ctrl: ControllerConfig, ctrlIndex: number, valueIndex: number) => {
-        const ctrlValue = state.controllers.valueIndexedControllers[ctrlIndex]
         if (ctrlValue === undefined || ctrlValue[ctrl.id] === undefined) {
             return 0
         } else {
-            return state.controllers.valueIndexedControllers[ctrlIndex][ctrl.id][valueIndex] || 0
+            return state.controllers.uiControllers[ctrlIndex][ctrl.id][valueIndex] || 0
         }
     }
 }
 
-const uiValueIndexedControllerState = {
-    set: (state: Draft<ControllersState>, payload: NumericControllerPayload, value: number) => {
-        const { ctrlIndex = 0, ctrl, valueIndex = 0 } = payload
-        if (state.uiValueIndexedControllers[ctrlIndex] === undefined) {
-            state.uiValueIndexedControllers[ctrlIndex] = []
-        }
-        const indexedCtrls = state.uiValueIndexedControllers[ctrlIndex]
-        if (indexedCtrls[ctrl.id] === undefined) {
-            state.uiValueIndexedControllers[ctrlIndex][ctrl.id] = { [valueIndex]: value }
-        } else {
-            state.uiValueIndexedControllers[ctrlIndex][ctrl.id][valueIndex] = value
-        }
-    },
-    get: (state: RootState, ctrl: ControllerConfig, ctrlIndex: number, valueIndex: number) => {
-        const ctrlValue = state.controllers.uiValueIndexedControllers[ctrlIndex]
-        if (ctrlValue === undefined || ctrlValue[ctrl.id] === undefined) {
-            return 0
-        } else {
-            return state.controllers.uiValueIndexedControllers[ctrlIndex][ctrl.id][valueIndex] || 0
-        }
-    }
+export const selectController = (ctrl: ControllerConfig, ctrlIndex: number = 0, valueIndex: number = 0) => (state: RootState): number => {
+    return controllerState.get(state, ctrl, ctrlIndex, valueIndex)
 }
 
-export const selectController = (ctrl: ControllerConfig, ctrlIndex: number = 0, valueIndex?: number) => (state: RootState): number => {
-    if (valueIndex === undefined) {
-        return controllerState.get(state, ctrl, ctrlIndex)
+export const selectUiController = (ctrl: ControllerConfig, ctrlIndex: number = 0, valueIndex: number = 0) => (state: RootState): number => {
+    if (ctrl.uiResponse) {
+        return uiControllerState.get(state, ctrl, ctrlIndex, valueIndex)
     } else {
-        return valueIndexedControllerState.get(state, ctrl, ctrlIndex, valueIndex)
-    }
-}
-
-export const selectUiController = (ctrl: ControllerConfig, ctrlIndex: number = 0, valueIndex?: number) => (state: RootState): number => {
-    if (valueIndex === undefined) {
-        if (ctrl.uiResponse) {
-            return uiControllerState.get(state, ctrl, ctrlIndex)
-        } else {
-            return controllerState.get(state, ctrl, ctrlIndex)
-        }
-    } else {
-        if (ctrl.uiResponse) {
-            return uiValueIndexedControllerState.get(state, ctrl, ctrlIndex, valueIndex)
-        } else {
-            return valueIndexedControllerState.get(state, ctrl, ctrlIndex, valueIndex)
-        }
+        return controllerState.get(state, ctrl, ctrlIndex, valueIndex)
     }
 }
 
@@ -212,10 +158,10 @@ export const selectStageById = (envId: number, stageId: number) => (state: RootS
 
     return {
         id: stageId,
-        enabled: valueIndexedControllerState.get(state, envCtrls.TOGGLE_STAGE, envId, stageId),
-        curve: valueIndexedControllerState.get(state, envCtrls.CURVE, envId, stageId),
-        level: valueIndexedControllerState.get(state, envCtrls.LEVEL, envId, stageId),
-        time: valueIndexedControllerState.get(state, envCtrls.TIME, envId, stageId),
+        enabled: controllerState.get(state, envCtrls.TOGGLE_STAGE, envId, stageId),
+        curve: controllerState.get(state, envCtrls.CURVE, envId, stageId),
+        level: controllerState.get(state, envCtrls.LEVEL, envId, stageId),
+        time: controllerState.get(state, envCtrls.TIME, envId, stageId),
     }
 }
 
