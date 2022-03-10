@@ -1,4 +1,4 @@
-import { ControllerConfigCC, ControllerConfigNRPN } from './types'
+import { ControllerConfigCC, ControllerConfigNRPN, MidiGroup } from './types'
 import { store } from '../synthcore/store'
 import { selectMidiChannel } from '../synthcore/modules/settings/settingsReducer'
 import CC from './mapCC'
@@ -9,6 +9,8 @@ type MIDIMessageEvent = WebMidi.MIDIMessageEvent
 type MIDIInput = WebMidi.MIDIInput
 type MIDIOutput = WebMidi.MIDIOutput
 type MIDIAccess = WebMidi.MIDIAccess
+
+export let lastSentMidiGroup: MidiGroup | undefined;
 
 type CCSubscriber = {
     id: number;
@@ -72,6 +74,7 @@ export const cc = {
         }
     },
     send: (controller: ControllerConfigCC, value: number, loopback = false) => {
+        lastSentMidiGroup = controller.midiGroup
         if (loopback) {
             cc.publish(controller.cc, value)
         }
@@ -107,6 +110,7 @@ export const nrpn = {
         }
     },
     send: (controller: ControllerConfigNRPN, value: number, loopback = false) => {
+        lastSentMidiGroup = controller.midiGroup
         if (loopback) {
             nrpn.publish(controller.addr, value)
         }

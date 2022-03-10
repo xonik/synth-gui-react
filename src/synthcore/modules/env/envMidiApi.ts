@@ -1,11 +1,11 @@
 // If imported directly we get a cyclic dependency. Not sure why it works now.
 import controllers from '../../../midi/controllers'
-import { cc } from '../../../midi/midibus'
+import { cc, lastSentMidiGroup } from '../../../midi/midibus'
 import { ApiSource } from '../../types'
 import { shouldSend } from '../../../midi/utils'
 import logger from '../../../utils/logger'
 import { NumericInputProperty } from '../common/types'
-import { ControllerConfig, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
+import { ControllerConfig, ControllerConfigCC, ControllerConfigCCWithValue, MidiGroup } from '../../../midi/types'
 import { paramReceive, paramSend } from '../common/commonMidiApi'
 import { envCtrls } from './envControllers'
 
@@ -16,15 +16,21 @@ let lastSentEnvIdTimestamp = 0
 // A separate select that may be called without setting state
 const envSelect = (() => {
     const cfg = controllers.ENV.SELECT
-    
+
     return {
         send: (source: ApiSource, envId: number) => {
             if (!shouldSend(source)) {
                 return
             }
 
-            // Resend env if more than five seconds since last try, makes synth restarts smoother
-            if (envId !== currentSentEnvId || Date.now() - lastSentEnvIdTimestamp > 5000) {
+            // Resend env if other controller has been sent in the meantime and more than ten seconds has passed since
+            // last envId send. This makes synth restarts smoother while still keeping id sends to a minimum.
+            // PS: After restarting the synth/controller you have to send a different controller than env
+            if (
+                envId !== currentSentEnvId ||
+                (lastSentMidiGroup !== MidiGroup.ENV && Date.now() - lastSentEnvIdTimestamp > 10000) ||
+                (Date.now() - lastSentEnvIdTimestamp > 30000) // resend every 30 sec even if nothing has changed, just in case.
+            ) {
                 currentSentEnvId = envId
                 lastSentEnvIdTimestamp = Date.now()
                 logger.midi(`Setting env id to ${envId}`)
@@ -78,7 +84,7 @@ const curve = (() => {
     const curveInputMapper = (value: number, ctrl: ControllerConfig) => {
         const stageId = (value >> 7)
         const curve = value & 0b01111111
-        return {value: curve, valueIndex: stageId}
+        return { value: curve, valueIndex: stageId }
     }
 
     return {
@@ -122,7 +128,7 @@ export const envParamReceive = (
     inputMapper?: (midiValue: number, ctrl: ControllerConfig) => ({ value: number, valueIndex?: number }),
 ) => {
     paramReceive(ctrl, (input) => {
-        apiSetValue({...input, ctrlIndex: currentReceivedEnvId})
+        apiSetValue({ ...input, ctrlIndex: currentReceivedEnvId })
     }, inputMapper)
 }
 

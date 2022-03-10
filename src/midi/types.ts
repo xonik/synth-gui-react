@@ -1,5 +1,10 @@
 import { ControllerIdDst, ControllerIdEnvDst, ControllerIdIntermediate, ControllerIdLfoDst, ControllerIdNonMod, ControllerIdNonModPots, ControllerIdSrc } from './controllerIds'
 
+export enum MidiGroup {
+    ENV,
+    LFO,
+}
+
 export interface ControllerConfig {
     // ID is uniquely identifying a controller TYPE, but some controllers may be repeated
     // as params on multiple functions LFOs and Envs - params on these have the same
@@ -17,6 +22,10 @@ export interface ControllerConfig {
     // TODO: Only for ControllerConfigCC but here because TS complains!
     readonly values?: number[]
     readonly bipolar?: boolean
+
+    // used for special functions that may require a ctrlIndex to be sent before the actual controller, such as
+    // envelope values.
+    readonly midiGroup?: MidiGroup
 }
 
 export interface ControllerConfigCC extends ControllerConfig {

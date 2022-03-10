@@ -3,7 +3,7 @@ import {
     ControllerConfig,
     ControllerConfigCC,
     ControllerConfigCCWithValue,
-    ControllerConfigNRPN
+    ControllerConfigNRPN,
 } from '../../../midi/types'
 import { shouldSend } from '../../../midi/utils'
 import logger from '../../../utils/logger'
@@ -141,6 +141,7 @@ export const boolParamSend = (
     if (!shouldSend(source)) {
         return
     }
+
     const index = on ? 1 : 0
     logger.midi(`Setting value for ${cfg.label} to ${index}`)
     cc.send(cfg, cfg.values[index])
