@@ -44,14 +44,6 @@ const getUiStageState = (envId: number, stage: Stage): Controllers => {
     return controllers
 }
 
-export const getDefaultController = (ctrl: ControllerConfig, value: number): Controllers => {
-    return {
-        0: {
-            [ctrl.id]: [value]
-        }
-    }
-}
-
 const getEnvState = (env: Envelope): Controllers => {
     const {
         resetOnTrigger,

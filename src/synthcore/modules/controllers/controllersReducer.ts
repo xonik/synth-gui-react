@@ -2,12 +2,15 @@ import { createSlice, Draft, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
 import { ControllerConfig } from '../../../midi/types'
 import { Controllers } from './types'
-import { getDefaultController, getDefaultEnv, getDefaultEnvStages, getDefaultEnvUiStages } from '../env/envUtils'
+import { getDefaultEnv, getDefaultEnvStages, getDefaultEnvUiStages } from '../env/envUtils'
 import { envCtrls } from '../env/envControllers'
 import { mergeControllers } from './controllersUtils'
 import { Stage, STAGES } from '../env/types'
 import { NumericControllerPayload } from '../common/types'
 import { getDefaultLfo, getDefaultLfoStages, getDefaultUiLfoStages } from '../lfo/lfoUtils'
+import { getDefaultController } from './controllersUtils'
+import { getDefaultOscState } from '../osc/oscUtils'
+import { getDefaultFiltersState } from '../filters/filtersUtils'
 
 type ControllersState = {
 
@@ -54,6 +57,9 @@ export const initialState: ControllersState = {
         getDefaultLfoStages(1),
         getDefaultLfoStages(2),
         getDefaultLfoStages(3),
+
+        getDefaultOscState(),
+        getDefaultFiltersState(),
     ]),
     uiControllers: mergeControllers(
         [
