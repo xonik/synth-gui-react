@@ -100,7 +100,7 @@ export const handleMpk25 = (ccNum: number, midiValue: number): boolean => {
     } else if(ccNum === 36) {
         cc.publish(mapCC.LEVEL_NOISE, midiValue)
     } else if(ccNum === 37) {
-
+        cc.publish(mapCC.LEVEL_RING_MOD, midiValue)
     } else if(ccNum === 16) {
     } else if(ccNum === 17) {
     } else if(ccNum === 18) {

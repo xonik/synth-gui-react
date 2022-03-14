@@ -122,7 +122,7 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
     // For scaling, use viewBox on the outer svg and unitless the rest of the way
 
     // positive pointer
-    const storeValue = useAppSelector(selectUiController(ctrl, ctrlIndex || 0, valueIndex))
+    const storeValue = useAppSelector(selectUiController(ctrl, ctrlIndex, valueIndex))
     const currentValue = value !== undefined ? value :  storeValue
 
     const ledPosition = getLedPos(centerLed, ledCount, potMode, currentValue)

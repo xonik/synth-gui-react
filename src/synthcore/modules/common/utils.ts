@@ -78,7 +78,7 @@ export const createSetterFuncs = (
         // Not always present, and may only be sent for nrpn messages. Represents stage etc, the top
         // 5 bits left over when 16 bits have been used for value.
         const boundedValueIndex = valueIndex !== undefined ? getBounded(valueIndex, 0, 31) : undefined
-        const boundedInput = {...input, value: boundedValue, valueIndex: boundedValueIndex}
+        const boundedInput = {...input, value: boundedValue, valueIndex: boundedValueIndex, uiValue}
 
         dispatch(setController(boundedInput))
 

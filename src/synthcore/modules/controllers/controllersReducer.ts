@@ -109,7 +109,7 @@ const controllerState = {
             state.controllers[ctrlIndex][ctrl.id][valueIndex] = value
         }
     },
-    get: (state: RootState, ctrl: ControllerConfig, ctrlIndex: number, valueIndex: number) => {
+    get: (state: RootState, ctrl: ControllerConfig, ctrlIndex: number = 0, valueIndex: number = 0) => {
         const ctrlValue = state.controllers.controllers[ctrlIndex]
         if (ctrlValue === undefined || ctrlValue[ctrl.id] === undefined) {
             return 0
@@ -132,7 +132,7 @@ const uiControllerState = {
             state.uiControllers[ctrlIndex][ctrl.id][valueIndex] = value
         }
     },
-    get: (state: RootState, ctrl: ControllerConfig, ctrlIndex: number, valueIndex: number) => {
+    get: (state: RootState, ctrl: ControllerConfig, ctrlIndex: number = 0, valueIndex: number = 0) => {
         const ctrlValue = state.controllers.uiControllers[ctrlIndex]
         if (ctrlValue === undefined || ctrlValue[ctrl.id] === undefined) {
             return 0
