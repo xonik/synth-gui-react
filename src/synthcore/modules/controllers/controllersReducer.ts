@@ -11,6 +11,7 @@ import { getDefaultLfo, getDefaultLfoStages, getDefaultUiLfoStages } from '../lf
 import { getDefaultController } from './controllersUtils'
 import { getDefaultOscState } from '../osc/oscUtils'
 import { getDefaultFiltersState } from '../filters/filtersUtils'
+import { getDefaultSrcMixState, getDefaultSrcMixUiState } from '../srcMix/srcMixUtils'
 
 type ControllersState = {
 
@@ -59,6 +60,9 @@ export const initialState: ControllersState = {
         getDefaultLfoStages(3),
 
         getDefaultOscState(),
+
+        getDefaultSrcMixState(),
+
         getDefaultFiltersState(),
     ]),
     uiControllers: mergeControllers(
@@ -73,6 +77,8 @@ export const initialState: ControllersState = {
             getDefaultUiLfoStages(1),
             getDefaultUiLfoStages(2),
             getDefaultUiLfoStages(3),
+
+            getDefaultSrcMixUiState(),
         ]
     ),
 }
