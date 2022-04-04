@@ -4,7 +4,6 @@ import { dispatch, getBounded, getQuantized } from '../../utils'
 import { store } from '../../store'
 import { ButtonInputProperty, NumericInputProperty } from './types'
 import { selectController, selectUiController, setController } from '../controllers/controllersReducer'
-import { Controllers } from '../controllers/types'
 
 export type ApiIncrementMapperType = {
     [key: number]: (value: number) => void

@@ -2,10 +2,8 @@ import { Curve, Envelope, LoopMode, ReleaseMode, Stage, StageId } from './types'
 import { envCtrls } from './envControllers'
 import { Controllers } from '../controllers/types'
 import { mergeControllers } from '../controllers/controllersUtils'
-import { ControllerConfig } from '../../../midi/types'
 import { timeResponseMapper } from './envResponseMappers'
 import { levelResponseMapper } from '../common/responseMappers'
-
 
 
 const getStageState = (envId: number, stage: Stage): Controllers => {
