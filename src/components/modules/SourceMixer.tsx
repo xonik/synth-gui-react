@@ -1,5 +1,5 @@
 import React from 'react'
-import RotaryPot17 from '../pots/RotaryPot17'
+import RotaryPot15 from '../pots/RotaryPot15'
 import Header from '../misc/Header'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import { ControllerGroupIds } from '../../synthcore/types'
@@ -23,7 +23,7 @@ const ctrlGroup = ControllerGroupIds.SRC_MIX
 
 const MixerChannel = ({ x, y, label, levelCtrl, outCtrl }: ChannelProps) => {
     return <>
-        <RotaryPot17 ledMode="multi" label={label} x={x} y={y}
+        <RotaryPot15 ledMode="multi" label={label} x={x} y={y}
                      ctrlGroup={ctrlGroup}
                      ctrl={levelCtrl}
         />

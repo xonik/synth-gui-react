@@ -1,5 +1,5 @@
 import React from 'react'
-import RotaryPot17 from '../pots/RotaryPot17'
+import RotaryPot15 from '../pots/RotaryPot15'
 import RotaryPot10 from '../pots/RotaryPot10'
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
@@ -37,27 +37,27 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
 
     return <>
         <Header align="left" label={label} x={x} y={y} width={255}/>
-        <RotaryPot17 ledMode="single" label="Attack" x={firstPotX} y={potY}
+        <RotaryPot15 ledMode="single" label="Attack" x={firstPotX} y={potY}
                      ctrlGroup={ctrlGroup}
                      ctrl={envCtrls.TIME}
                      ctrlIndex={envId}
                      valueIndex={StageId.ATTACK}
         />
-        <RotaryPot17 ledMode="single" label="Decay 1" x={firstPotX + potDistance} y={potY}
+        <RotaryPot15 ledMode="single" label="Decay 1" x={firstPotX + potDistance} y={potY}
                      ctrlGroup={ctrlGroup}
                      ctrl={envCtrls.TIME}
                      ctrlIndex={envId}
                      valueIndex={StageId.DECAY1}
                      disabled={decay1Disabled}
         />
-        <RotaryPot17 ledMode="single" label="Decay 2" x={firstPotX + potDistance * 2} y={potY}
+        <RotaryPot15 ledMode="single" label="Decay 2" x={firstPotX + potDistance * 2} y={potY}
                      ctrlGroup={ctrlGroup}
                      ctrl={envCtrls.TIME}
                      ctrlIndex={envId}
                      valueIndex={StageId.DECAY2}
                      disabled={decay2Disabled}
         />
-        <RotaryPot17 ledMode="multi" label="Sustain" x={firstPotX + potDistance * 3} y={potY}
+        <RotaryPot15 ledMode="multi" label="Sustain" x={firstPotX + potDistance * 3} y={potY}
                      ctrlGroup={ctrlGroup}
                      ctrl={envCtrls.LEVEL}
                      ctrlIndex={envId}
@@ -65,7 +65,7 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
                      valueIndex={StageId.SUSTAIN}
                      disabled={sustainDisabled}
         />
-        <RotaryPot17 ledMode="single" label="Release 1" x={firstPotX + potDistance * 4} y={potY}
+        <RotaryPot15 ledMode="single" label="Release 1" x={firstPotX + potDistance * 4} y={potY}
                      ctrlGroup={ctrlGroup}
                      ctrl={envCtrls.TIME}
                      ctrlIndex={envId}
@@ -73,7 +73,7 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
                      disabled={release1Disabled}
 
         />
-        <RotaryPot17 ledMode="single" label="Release 2" x={firstPotX + potDistance * 5} y={potY}
+        <RotaryPot15 ledMode="single" label="Release 2" x={firstPotX + potDistance * 5} y={potY}
                      ctrlGroup={ctrlGroup}
                      ctrl={envCtrls.TIME}
                      ctrlIndex={envId}

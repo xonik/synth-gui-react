@@ -24,16 +24,24 @@ type NRPNSubscriber = {
     callback: (value: number) => void;
 }
 
+/*
+{key: '505084812', value: MIDIInput}
+midibus.ts:191 {key: '1055775126', value: MIDIInput}
+midibus.ts:192 {key: '-746118775', value: MIDIOutput}
+midibus.ts:192 {key: '347087974', value: MIDIOutput}
+ */
 const midiConfig = {
     inputIds: [
         '-213316575', // Akai MPK25 Port 1/A
         '1211529875', // Steinberg UR22C Port 1
+        '505084812', // Steinberg UR22C Port 1
         //'-762163153', // Steinberg UR22C Port 2
 
     ],
     outputIds: [
         '-259958146',
         '437363294', // Steinberg UR22C Port 1
+        '-746118775', // Steinberg UR22C Port 1
         // '298365873', // Steinberg UR22C Port 2
     ],
     sysexAddr: [1, 2, 3],

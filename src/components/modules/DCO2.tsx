@@ -1,5 +1,5 @@
 import React from 'react'
-import RotaryPot32 from '../pots/RotaryPot32'
+import RotaryPot24 from '../pots/RotaryPot24'
 import RotaryPot10 from '../pots/RotaryPot10'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import Header from '../misc/Header'
@@ -26,7 +26,7 @@ const DCO2 = ({ x, y }: Props) => {
 
     return <>
         <Header label="Oscillator 2" x={x} y={topRow - 20} width={100} align="center"/>
-        <RotaryPot32 x={x} y={y} ledMode="single" label="Waveform"
+        <RotaryPot24 x={x} y={y} ledMode="single" label="Waveform"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.DCO2.WAVEFORM}
         />

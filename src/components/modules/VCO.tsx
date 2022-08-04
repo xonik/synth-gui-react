@@ -1,5 +1,5 @@
 import React from 'react'
-import RotaryPot32 from '../pots/RotaryPot32'
+import RotaryPot24 from '../pots/RotaryPot24'
 import RotaryPot10 from '../pots/RotaryPot10'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import Header from '../misc/Header'
@@ -26,7 +26,7 @@ const VCO = ({ x, y }: Props) => {
 
     return <>
         <Header label="Oscillator 3" x={x} y={topRow - 20} width={100} align="center"/>
-        <RotaryPot32 x={x} y={y} ledMode="single" label="Waveform"
+        <RotaryPot24 x={x} y={y} ledMode="single" label="Waveform"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.VCO.WAVEFORM}
         />
@@ -43,7 +43,7 @@ const VCO = ({ x, y }: Props) => {
         />
 
         <RoundPushButton8 x={col2} y={topRow}
-                          ledPosition="right" ledCount={3} ledLabels={['Hard', 'CEM Hard', 'CEM Soft']}
+                          ledPosition="right" ledCount={2} ledLabels={['Hard', 'CEM Hard']}
                           label="Sync" labelPosition="bottom"
                           hasOff
                           ctrlGroup={ctrlGroup}

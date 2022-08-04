@@ -1,6 +1,6 @@
 import React from 'react';
 import RotaryPot10 from '../pots/RotaryPot10';
-import RotaryPot17 from '../pots/RotaryPot17';
+import RotaryPot15 from '../pots/RotaryPot15';
 import Header from '../misc/Header';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
 import { ControllerGroupIds } from '../../synthcore/types'
@@ -41,7 +41,7 @@ const BitCrusherPre = ({ x, y }: Props) => {
                      ctrl={fxControllers.BIT_CRUSHER.RATE}
         />
 
-        <RotaryPot17 ledMode="multi" label="Level" x={col4} y={row2}
+        <RotaryPot15 ledMode="multi" label="Level" x={col4} y={row2}
                      ctrlGroup={ctrlGroup}
                      ctrl={fxControllers.BIT_CRUSHER.LEVEL}
         />

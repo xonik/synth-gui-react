@@ -1,5 +1,5 @@
 import React from 'react';
-import RotaryPot17 from '../pots/RotaryPot17';
+import RotaryPot15 from '../pots/RotaryPot15';
 import Header from '../misc/Header';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
 import { ControllerGroupIds } from '../../synthcore/types'
@@ -26,7 +26,7 @@ const Clock = ({ x, y }: Props) => {
                           ctrl={masterClockControllers.SOURCE}
         />
 
-        <RotaryPot17 ledMode="single" label="Rate" x={col2} y={row2}
+        <RotaryPot15 ledMode="single" label="Rate" x={col2} y={row2}
                      ctrlGroup={ctrlGroup}
                      ctrl={masterClockControllers.RATE}
         />

@@ -1,5 +1,5 @@
 import React from 'react'
-import RotaryPot17 from '../pots/RotaryPot17'
+import RotaryPot15 from '../pots/RotaryPot15'
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import Header from '../misc/Header'
@@ -64,13 +64,13 @@ const LFO = ({ x, y }: Props) => {
                              value={lfoId}
         />
 
-        <RotaryPot17 ledMode="single" label="Rate" x={firstPotCol} y={potRow1}
+        <RotaryPot15 ledMode="single" label="Rate" x={firstPotCol} y={potRow1}
                      ctrlGroup={ctrlGroup}
                      ctrl={lfoCtrls.RATE}
                      ctrlIndex={lfoId}
         />
 
-        <RotaryPot17 ledMode="single" label="Depth" x={firstPotCol + potDistance} y={potRow1}
+        <RotaryPot15 ledMode="single" label="Depth" x={firstPotCol + potDistance} y={potRow1}
                      ctrlGroup={ctrlGroup}
                      ctrl={lfoCtrls.DEPTH}
                      ctrlIndex={lfoId}
@@ -85,7 +85,7 @@ const LFO = ({ x, y }: Props) => {
                           ctrlIndex={lfoId}
         />
 
-        <RotaryPot17 ledMode="single" label="Delay" x={firstPotCol} y={potRow2}
+        <RotaryPot15 ledMode="single" label="Delay" x={firstPotCol} y={potRow2}
                      ctrlGroup={ctrlGroup}
                      ctrl={lfoCtrls.DELAY}
                      ctrlIndex={lfoId}

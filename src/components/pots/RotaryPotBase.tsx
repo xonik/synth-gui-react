@@ -8,6 +8,7 @@ interface Props {
   onIncrement?: (steps: number, stepSize: number) => void;
   arc?: number;
   resolution?: number
+  silver?: boolean
 }
 
 // 0 degrees is deltaX > 1, deltaY = +0
@@ -28,7 +29,7 @@ const distToCenter = (center: Point, pointer: Point) => {
   return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
 }
 
-const RotaryPot = ({knobRadius, onClick, onIncrement, arc = 360, resolution = 1000}: Props) => {
+const RotaryPot = ({knobRadius, onClick, onIncrement, arc = 360, resolution = 1000, silver}: Props) => {
 
   const stepSize = 1 / resolution;
 
@@ -117,7 +118,8 @@ const RotaryPot = ({knobRadius, onClick, onIncrement, arc = 360, resolution = 10
     };
   },[onMouseMove, onMouseUp])
 
-  return <circle ref={svgRef} cx={0} cy={0} onClick={onClick} onMouseDown={onMouseDown} r={knobRadius} className="pot-knob"/>
+  return <circle ref={svgRef} cx={0} cy={0} onClick={onClick} onMouseDown={onMouseDown} r={knobRadius}
+                 className={silver ? 'pot-knob-silver': 'pot-knob'}/>
 };
 
 export default RotaryPot;

@@ -1,8 +1,8 @@
 import React from 'react'
 import Display from '../misc/Display'
-import RotaryPotWOLeds17 from '../pots/RotaryPotWOLeds17'
+import RotaryPotWOLeds10 from '../pots/RotaryPotWOLeds10'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
-import RotaryPotWOLeds32 from '../pots/RotaryPotWOLeds32'
+import RotaryPotWOLeds24 from '../pots/RotaryPotWOLeds24'
 import { ControllerGroupIds } from '../../synthcore/types'
 import { getPotResolution } from '../../synthcore/modules/mainDisplay/mainDisplayApi'
 import { useAppSelector } from '../../synthcore/hooks'
@@ -86,32 +86,37 @@ const MainDisplay = React.forwardRef<SVGRectElement, Props>(({ x, y }, displayRe
         />
         <Display x={x} y={y} width={displayWidth} height={displayHeight} ref={displayRef}/>
 
-        <RotaryPotWOLeds17 x={displayCenter - 2 * potSpacing} y={potRow}
+        <RotaryPotWOLeds10 x={displayCenter - 2 * potSpacing} y={potRow}
+                           silver
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
                            ctrl={mainDisplayControllers.POT1}
                            resolution={getPotResolution(mainDisplayControllers.POT1.id, currScreen)}
         />
-        <RotaryPotWOLeds17 x={displayCenter - 1 * potSpacing} y={potRow}
+        <RotaryPotWOLeds10 x={displayCenter - 1 * potSpacing} y={potRow}
+                           silver
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
                            ctrl={mainDisplayControllers.POT2}
                            resolution={getPotResolution(mainDisplayControllers.POT2.id, currScreen)}
         />
-        <RotaryPotWOLeds17 x={displayCenter} y={potRow}
+        <RotaryPotWOLeds10 x={displayCenter} y={potRow}
+                           silver
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
                            ctrl={mainDisplayControllers.POT3}
                            resolution={getPotResolution(mainDisplayControllers.POT3.id, currScreen)}
         />
-        <RotaryPotWOLeds17 x={displayCenter + 1 * potSpacing} y={potRow}
+        <RotaryPotWOLeds10 x={displayCenter + 1 * potSpacing} y={potRow}
+                           silver
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
                            ctrl={mainDisplayControllers.POT4}
                            resolution={getPotResolution(mainDisplayControllers.POT4.id, currScreen)}
         />
-        <RotaryPotWOLeds17 x={displayCenter + 2 * potSpacing} y={potRow}
+        <RotaryPotWOLeds10 x={displayCenter + 2 * potSpacing} y={potRow}
+                           silver
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
                            ctrl={mainDisplayControllers.POT5}
                            resolution={getPotResolution(mainDisplayControllers.POT5.id, currScreen)}
         />
-        <RotaryPotWOLeds32 x={displayCenter} y={masterPotRow}
+        <RotaryPotWOLeds24 x={displayCenter} y={masterPotRow}
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
                            ctrl={mainDisplayControllers.POT6}
                            resolution={getPotResolution(mainDisplayControllers.POT6.id, currScreen)}

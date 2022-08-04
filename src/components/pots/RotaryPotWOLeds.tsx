@@ -15,6 +15,7 @@ export interface Props {
     ctrlIndex?: number
     valueIndex?: number
     resolution?: number
+    silver?: boolean;
 }
 
 interface Config {
@@ -22,7 +23,7 @@ interface Config {
 }
 
 const RotaryPotWOLeds = (props: Props & Config) => {
-    const { x, y, label, knobRadius, ctrlGroup, ctrl, ctrlIndex, valueIndex, resolution } = props
+    const { x, y, label, knobRadius, ctrlGroup, ctrl, ctrlIndex, valueIndex, resolution, silver } = props
     const labelY = knobRadius + 5
 
     const dispatch = useAppDispatch()
@@ -36,6 +37,7 @@ const RotaryPotWOLeds = (props: Props & Config) => {
             knobRadius={knobRadius}
             onIncrement={onIncrement}
             resolution={resolution}
+            silver={silver}
         />
         {label && <text x={0} y={labelY} className="pot-label" textAnchor="middle">{label}</text>}
     </svg>

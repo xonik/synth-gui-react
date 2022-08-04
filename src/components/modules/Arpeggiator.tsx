@@ -7,7 +7,7 @@
 - Button - Sync (button) - int clock, Lfo, ext clock
  */
 import React from 'react';
-import RotaryPot17 from '../pots/RotaryPot17';
+import RotaryPot15 from '../pots/RotaryPot15';
 import Header from '../misc/Header';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
@@ -44,7 +44,7 @@ const Arpeggiator = ({ x, y }: Props) => {
                              ctrl={arpControllers.TRIGGER}
         />
 
-        <RotaryPot17 ledMode="single" label="Tempo" x={col3} y={row2}
+        <RotaryPot15 ledMode="single" label="Tempo" x={col3} y={row2}
                      ctrlGroup={ctrlGroup}
                      ctrl={arpControllers.TEMPO}
         />

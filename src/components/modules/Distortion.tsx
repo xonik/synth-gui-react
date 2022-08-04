@@ -1,5 +1,5 @@
 import React from 'react'
-import RotaryPot17 from '../pots/RotaryPot17'
+import RotaryPot15 from '../pots/RotaryPot15'
 import Header from '../misc/Header'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import { ControllerGroupIds } from '../../synthcore/types'
@@ -31,7 +31,7 @@ const Distortion = ({ x, y }: Props) => {
                           ctrl={fxControllers.DISTORTION.IN}
         />
 
-        <RotaryPot17 ledMode="multi" label="Drive" x={col2} y={row2}
+        <RotaryPot15 ledMode="multi" label="Drive" x={col2} y={row2}
                      ctrlGroup={ctrlGroup}
                      ctrl={fxControllers.DISTORTION.DRIVE}
         />
@@ -42,7 +42,7 @@ const Distortion = ({ x, y }: Props) => {
                           ctrl={fxControllers.DISTORTION.CLIP}
         />
 
-        <RotaryPot17 ledMode="multi" label="Level" x={col5} y={row2}
+        <RotaryPot15 ledMode="multi" label="Level" x={col5} y={row2}
                      ctrlGroup={ctrlGroup}
                      ctrl={fxControllers.DISTORTION.LEVEL}
         />

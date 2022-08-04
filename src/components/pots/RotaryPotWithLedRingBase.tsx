@@ -25,6 +25,7 @@ export interface Props {
     ctrl: ControllerConfig;
     ctrlIndex?: number;
     disabled?: boolean;
+    silver?: boolean;
 }
 
 interface Config {
@@ -101,7 +102,7 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
 
     // Position should be in the range 0-1 in all modes but pan. In pan the range is -0.5 - 0.5
     const { x, y, ledMode = 'single', potMode = 'normal', label,
-        value, valueIndex, ctrlGroup, ctrl, ctrlIndex, disabled
+        value, valueIndex, ctrlGroup, ctrl, ctrlIndex, disabled,silver
     } = props
 
     const dispatch = useAppDispatch()
@@ -146,6 +147,7 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
                 knobRadius={knobRadius}
                 onIncrement={onIncrement}
                 arc={ledArc}
+                silver={silver}
             />
             <path d={windowArc} className="pot-ring-window" strokeWidth={windowWidth}/>
             {ledAngles.map((angle, led) => {

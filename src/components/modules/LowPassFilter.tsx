@@ -1,7 +1,7 @@
 import React from 'react'
-import RotaryPot40 from '../pots/RotaryPot40'
+import RotaryPot24 from '../pots/RotaryPot24'
 import RotaryPot10 from '../pots/RotaryPot10'
-import RotaryPot17 from '../pots/RotaryPot17'
+import RotaryPot15 from '../pots/RotaryPot15'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
 import Header from '../misc/Header'
@@ -26,22 +26,22 @@ const LowPassFilter = ({ x, y }: Props) => {
 
     return <>
         <Header label="Low pass filter" x={x} y={topRow - 27} width={110} align="center"/>
-        <RotaryPot40 x={x} y={y} ledMode="single" label="Cutoff"
+        <RotaryPot24 x={x} y={y} ledMode="single" label="Cutoff"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.LPF.CUTOFF}
         />
 
-        <RotaryPot17 x={col1} y={topRow} ledMode="multi" label="Input"
+        <RotaryPot15 x={col1} y={topRow} ledMode="multi" label="Input"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.LPF.INPUT}
         />
 
-        <RotaryPot17 x={x} y={topRow} ledMode="multi" label="Drive"
+        <RotaryPot15 x={x} y={topRow} ledMode="multi" label="Drive"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.LPF.DRIVE}
         />
 
-        <RotaryPot17 x={col4} y={topRow} ledMode="multi" label="Resonance"
+        <RotaryPot15 x={col4} y={topRow} ledMode="multi" label="Resonance"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.LPF.RESONANCE}
         />

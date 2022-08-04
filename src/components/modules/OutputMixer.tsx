@@ -1,5 +1,5 @@
 import React from 'react'
-import RotaryPot17 from '../pots/RotaryPot17'
+import RotaryPot15 from '../pots/RotaryPot15'
 import Header from '../misc/Header'
 import { PotMode } from '../pots/RotaryPotWithLedRingBase'
 import { ControllerGroupIds } from '../../synthcore/types'
@@ -26,7 +26,7 @@ const colDistance = 40
 
 const OutputMixerChannel = ({ x, y, label, potMode = 'normal', ctrlGroup, ctrl }: ChannelProps) => {
     return <>
-        <RotaryPot17 ledMode="multi" label={label} x={x} y={y} potMode={potMode}
+        <RotaryPot15 ledMode="multi" label={label} x={x} y={y} potMode={potMode}
                      ctrlGroup={ctrlGroup}
                      ctrl={ctrl}
         />
