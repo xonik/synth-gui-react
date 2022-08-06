@@ -47,6 +47,7 @@ const fxControllers: FxControllers = {
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
+                BUTTONS.BUTTONS_LEFT.values.DISTORTION_IN_OFF,
                 BUTTONS.BUTTONS_LEFT.values.DISTORTION_IN_A,
                 BUTTONS.BUTTONS_LEFT.values.DISTORTION_IN_B,
                 BUTTONS.BUTTONS_LEFT.values.DISTORTION_IN_BOTH,
@@ -68,6 +69,7 @@ const fxControllers: FxControllers = {
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
+                BUTTONS.BUTTONS_LEFT.values.DISTORTION_OUT_OFF,
                 BUTTONS.BUTTONS_LEFT.values.DISTORTION_OUT_A,
                 BUTTONS.BUTTONS_LEFT.values.DISTORTION_OUT_B,
                 BUTTONS.BUTTONS_LEFT.values.DISTORTION_OUT_BOTH,
@@ -104,6 +106,7 @@ const fxControllers: FxControllers = {
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
+                BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_IN_OFF,
                 BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_IN_A,
                 BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_IN_B,
                 BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_IN_BOTH,
@@ -115,6 +118,7 @@ const fxControllers: FxControllers = {
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
+                BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_OUT_OFF,
                 BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_OUT_A,
                 BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_OUT_B,
                 BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_OUT_BOTH,

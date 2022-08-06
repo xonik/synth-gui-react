@@ -12,6 +12,7 @@ import { getDefaultController } from './controllersUtils'
 import { getDefaultOscState } from '../osc/oscUtils'
 import { getDefaultFiltersState } from '../filters/filtersUtils'
 import { getDefaultSrcMixState, getDefaultSrcMixUiState } from '../srcMix/srcMixUtils'
+import { getDefaultPreFxState } from "../fx/fxUtils";
 
 type ControllersState = {
 
@@ -64,6 +65,8 @@ export const initialState: ControllersState = {
         getDefaultSrcMixState(),
 
         getDefaultFiltersState(),
+
+        getDefaultPreFxState(),
     ]),
     uiControllers: mergeControllers(
         [

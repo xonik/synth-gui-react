@@ -28,6 +28,7 @@ const Distortion = ({ x, y }: Props) => {
         <Header label="Distortion" x={x} y={row1} width={125}/>
         <RoundPushButton8 x={col1} y={row2 + 8} ledPosition="top" ledCount={2} label="In" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
+                          hasOff
                           ctrl={fxControllers.DISTORTION.IN}
         />
 
@@ -49,6 +50,7 @@ const Distortion = ({ x, y }: Props) => {
 
         <RoundPushButton8 x={col6} y={row2 + 8} ledPosition="top" ledCount={2} label="Out" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
+                          hasOff
                           ctrl={fxControllers.DISTORTION.OUT}
         />
 

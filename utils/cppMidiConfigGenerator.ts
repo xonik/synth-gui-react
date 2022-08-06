@@ -222,20 +222,25 @@ const generateCppFiles = () => {
     const midiButtonCenterValues = `enum ButtonCenterMidiValues {\n  ${buttonCenterMidiKeys.join(',\n  ')}\n};`
     const midiButtonRightValues = `enum ButtonRightMidiValues {\n  ${buttonRightMidiKeys.join(',\n  ')}\n};`
 
-    fs.writeFileSync(`${outputRoot}paramIO.h`, generateParamIO())
-    fs.writeFileSync(`${outputRoot}midiButtons.h`, buttonEnumFileContents)
-    fs.writeFileSync(`${outputRoot}midiButtonsCC.h`, buttonCCFileContents)
-    fs.writeFileSync(`${outputRoot}midiButtonsFirstValue.h`, buttonFirstValueFileContents)
-    fs.writeFileSync(`${outputRoot}midiButtonsNumberOfValues.h`, buttonNumberOfValuesFileContents)
-    fs.writeFileSync(`${outputRoot}midiPots.h`, potEnumFileContents)
-    fs.writeFileSync(`${outputRoot}midiPotsCC.h`, potCCFileContents)
-    fs.writeFileSync(`${outputRoot}midiCom.h`, comEnumFileContents)
-    fs.writeFileSync(`${outputRoot}midiComCC.h`, comCCFileContents)
-    fs.writeFileSync(`${outputRoot}midiPotsNrpnEnum.h`, potEnumNrpnFileContents)
-    fs.writeFileSync(`${outputRoot}midiPotsNrpn.h`, potNrpnFileContents)
-    fs.writeFileSync(`${outputRoot}midiButtonLeftValues.h`, midiButtonLeftValues)
-    fs.writeFileSync(`${outputRoot}midiButtonCenterValues.h`, midiButtonCenterValues)
-    fs.writeFileSync(`${outputRoot}midiButtonRightValues.h`, midiButtonRightValues)
+    writeToFile(`${outputRoot}paramIO.h`, generateParamIO())
+    writeToFile(`${outputRoot}midiButtons.h`, buttonEnumFileContents)
+    writeToFile(`${outputRoot}midiButtonsCC.h`, buttonCCFileContents)
+    writeToFile(`${outputRoot}midiButtonsFirstValue.h`, buttonFirstValueFileContents)
+    writeToFile(`${outputRoot}midiButtonsNumberOfValues.h`, buttonNumberOfValuesFileContents)
+    writeToFile(`${outputRoot}midiPots.h`, potEnumFileContents)
+    writeToFile(`${outputRoot}midiPotsCC.h`, potCCFileContents)
+    writeToFile(`${outputRoot}midiCom.h`, comEnumFileContents)
+    writeToFile(`${outputRoot}midiComCC.h`, comCCFileContents)
+    writeToFile(`${outputRoot}midiPotsNrpnEnum.h`, potEnumNrpnFileContents)
+    writeToFile(`${outputRoot}midiPotsNrpn.h`, potNrpnFileContents)
+    writeToFile(`${outputRoot}midiButtonLeftValues.h`, midiButtonLeftValues)
+    writeToFile(`${outputRoot}midiButtonCenterValues.h`, midiButtonCenterValues)
+    writeToFile(`${outputRoot}midiButtonRightValues.h`, midiButtonRightValues)
+}
+
+const writeToFile = (path: string, contents: string) => {
+    console.log(`writing ${contents.length} bytes to ${path}`)
+    fs.writeFileSync(path, contents)
 }
 
 generateCppFiles()

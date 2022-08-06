@@ -78,6 +78,7 @@ const srcMixControllers: SrcMixControllers = {
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
+            BUTTONS.BUTTONS_LEFT.values.OSC1_OUT_OFF,
             BUTTONS.BUTTONS_LEFT.values.OSC1_OUT_A,
             BUTTONS.BUTTONS_LEFT.values.OSC1_OUT_B,
             BUTTONS.BUTTONS_LEFT.values.OSC1_OUT_BOTH,
@@ -89,6 +90,7 @@ const srcMixControllers: SrcMixControllers = {
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
+            BUTTONS.BUTTONS_LEFT.values.OSC2_OUT_OFF,
             BUTTONS.BUTTONS_LEFT.values.OSC2_OUT_A,
             BUTTONS.BUTTONS_LEFT.values.OSC2_OUT_B,
             BUTTONS.BUTTONS_LEFT.values.OSC2_OUT_BOTH,
@@ -100,6 +102,7 @@ const srcMixControllers: SrcMixControllers = {
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
+            BUTTONS.BUTTONS_LEFT.values.OSC3_OUT_OFF,
             BUTTONS.BUTTONS_LEFT.values.OSC3_OUT_A,
             BUTTONS.BUTTONS_LEFT.values.OSC3_OUT_B,
             BUTTONS.BUTTONS_LEFT.values.OSC3_OUT_BOTH,
@@ -111,6 +114,7 @@ const srcMixControllers: SrcMixControllers = {
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
+            BUTTONS.BUTTONS_LEFT.values.NOISE_OUT_OFF,
             BUTTONS.BUTTONS_LEFT.values.NOISE_OUT_A,
             BUTTONS.BUTTONS_LEFT.values.NOISE_OUT_B,
             BUTTONS.BUTTONS_LEFT.values.NOISE_OUT_BOTH,
@@ -122,6 +126,7 @@ const srcMixControllers: SrcMixControllers = {
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
+            BUTTONS.BUTTONS_LEFT.values.RING_MOD_OUT_OFF,
             BUTTONS.BUTTONS_LEFT.values.RING_MOD_OUT_A,
             BUTTONS.BUTTONS_LEFT.values.RING_MOD_OUT_B,
             BUTTONS.BUTTONS_LEFT.values.RING_MOD_OUT_BOTH,
@@ -133,6 +138,7 @@ const srcMixControllers: SrcMixControllers = {
         type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
+            BUTTONS.BUTTONS_LEFT.values.EXT_AUDIO_OUT_OFF,
             BUTTONS.BUTTONS_LEFT.values.EXT_AUDIO_OUT_A,
             BUTTONS.BUTTONS_LEFT.values.EXT_AUDIO_OUT_B,
             BUTTONS.BUTTONS_LEFT.values.EXT_AUDIO_OUT_BOTH,

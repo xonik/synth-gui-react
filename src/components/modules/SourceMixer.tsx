@@ -30,6 +30,7 @@ const MixerChannel = ({ x, y, label, levelCtrl, outCtrl }: ChannelProps) => {
 
         <RoundPushButton8 x={x + 25} y={y + 3}
                           ledPosition="top" ledCount={2}
+                          hasOff
                           ctrlGroup={ctrlGroup}
                           ctrl={outCtrl}
         />
