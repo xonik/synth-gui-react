@@ -42,4 +42,8 @@ export enum buttonCenterMidiValues {
     KBD_MODE_SOLO,
     KBD_MODE_UNISON,
     KBD_MODE_POLY,
+
+    // config/settings stuff. Should be moved to sysex.
+    CALIBRATE_DCO1,
+    CALIBRATE_DCO2,
 }

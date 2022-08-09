@@ -4,6 +4,7 @@ import { selectCurrScreen } from '../synthcore/modules/mainDisplay/mainDisplayRe
 import { MainDisplayScreenId } from '../synthcore/modules/mainDisplay/types'
 import Mod from './mods/Mod'
 import Env from './envelopes/Env'
+import Settings from './settings/Settings'
 import './Controller.scss'
 
 const Controller = () => {
@@ -15,6 +16,9 @@ const Controller = () => {
         }
         {
             currScreen === MainDisplayScreenId.MOD && <Mod/>
+        }
+        {
+            currScreen === MainDisplayScreenId.SETTINGS && <Settings/>
         }
     </div>
 }

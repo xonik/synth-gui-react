@@ -297,6 +297,10 @@ export enum ControllerIdNonMod {
     CHORUS_MODE,
 
     FX_BIT_CRUSHER_SOURCE,
+
+    // Config/settings, should not be part of CC system.
+    CALIBRATE_DCO1,
+    CALIBRATE_DCO2,
 }
 
 export const NON_MOD_COUNT = Object.keys(ControllerIdNonMod).filter(o => isNaN(o as any)).length

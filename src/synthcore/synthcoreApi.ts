@@ -14,6 +14,7 @@ import outApi from './modules/out/outApi'
 import lfoApi from './modules/lfo/lfoApi'
 import voicesApi from './modules/voices/voicesApi'
 import mainDisplayApi from './modules/mainDisplay/mainDisplayApi'
+import settingsApi from './modules/settings/settingsApi'
 
 export {
     envApi,
@@ -32,4 +33,5 @@ export {
     lfoApi,
     voicesApi,
     mainDisplayApi,
+    settingsApi,
 }

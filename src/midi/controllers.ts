@@ -17,6 +17,7 @@ import envControllers from '../synthcore/modules/env/envControllers'
 import commonFxControllers from '../synthcore/modules/commonFx/commonFxControllers'
 import outControllers from '../synthcore/modules/out/outControllers'
 import performanceControllers from '../synthcore/modules/performance/performanceControllers'
+import settingsControllers from "../synthcore/modules/settings/settingsControllers";
 
 // controller functions grouped by type
 export const controllerGroups = {
@@ -119,7 +120,8 @@ const controllers = {
     FX_BIT_CRUSHER: commonFxControllers.FX_BIT_CRUSHER,
     FX_MIX: commonFxControllers.FX_MIX,
     OUTPUT: outControllers,
-    PERFORMANCE: performanceControllers
+    PERFORMANCE: performanceControllers,
+    SETTINGS: settingsControllers,
 }
 
 export default controllers

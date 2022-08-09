@@ -88,7 +88,7 @@ const voicesControllers: VoicesControllers = {
         ],
     },
     VOICE8: {
-        id: ControllerIdNonMod.VOICE_SELECTOR_7,
+        id: ControllerIdNonMod.VOICE_SELECTOR_8,
         label: 'Voice 8',
         type: 'button',
             cc: BUTTONS.BUTTONS_CENTER.cc,

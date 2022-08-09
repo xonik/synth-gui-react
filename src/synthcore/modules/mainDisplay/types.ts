@@ -4,5 +4,6 @@ export enum MainDisplayScreenId {
     FILTER,
     ENV,
     MOD,
-    FX
+    FX,
+    SETTINGS
 }

@@ -8,7 +8,8 @@ import { AnyAction } from '@reduxjs/toolkit'
 import modsApi from './modules/mods/modsApi'
 import {
     arpApi,
-    commonFxApi, envApi,
+    commonFxApi,
+    envApi,
     filtersApi,
     fxApi,
     kbdApi, lfoApi,
@@ -23,6 +24,7 @@ import {
     voicesApi
 } from './synthcoreApi'
 import { click, increment } from './modules/ui/uiReducer'
+import settingsApi from './modules/settings/settingsApi'
 
 const forApi = (action: AnyAction, ctrlGroup: number, path: string): boolean => {
     return action.payload.ctrlGroup === ctrlGroup || action.type.indexOf(`${path}/`) > -1
@@ -61,6 +63,8 @@ const getApi = (action: AnyAction) => {
         return outApi
     } else if (forApi(action, ControllerGroupIds.VOICES, 'voices')) {
         return voicesApi
+    } else if (forApi(action, ControllerGroupIds.SETTINGS, 'voices')) {
+        return settingsApi
     } else if (action.payload.ctrlGroup === ControllerGroupIds.MAIN_DISP) {
         return mainDisplayApi
     }

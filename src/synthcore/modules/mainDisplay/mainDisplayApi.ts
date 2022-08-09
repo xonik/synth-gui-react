@@ -8,6 +8,7 @@ import mainDisplayMidiApi from './mainDisplayMidiApi'
 import { ApiSource } from '../../types'
 import mainDisplayControllers from './mainDisplayControllers'
 import { createClickMapper, createIncrementMapper } from '../common/utils'
+import { mainDisplaySettingsApi, mainDisplaySettingsPotResolutions } from '../settings/settingsMainDisplayApi'
 
 type PotResolutions = {
     [key: number]: {
@@ -17,7 +18,8 @@ type PotResolutions = {
 
 const potResolution: PotResolutions = {
     [MainDisplayScreenId.ENV]: mainDisplayEnvPotResolutions,
-    [MainDisplayScreenId.MOD]: mainDisplayModsPotResolutions
+    [MainDisplayScreenId.MOD]: mainDisplayModsPotResolutions,
+    [MainDisplayScreenId.SETTINGS]: mainDisplaySettingsPotResolutions,
 }
 
 export const getPotResolution = (ctrlId: number, currScreen: number) => {
@@ -60,6 +62,8 @@ const handleMainDisplayController = (ctrlId: number, value: number, source: ApiS
         mainDisplayModsApi.handleMainDisplayController(ctrlId, value)
     } else if (currScreenId === MainDisplayScreenId.ENV) {
         mainDisplayEnvApi.handleMainDisplayController(ctrlId, value)
+    } else if (currScreenId === MainDisplayScreenId.SETTINGS) {
+        mainDisplaySettingsApi.handleMainDisplayController(ctrlId, value)
     }
 
     if(ctrlId >= mainDisplayControllers.POT1.id && ctrlId <= mainDisplayControllers.POT6.id){

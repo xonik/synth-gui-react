@@ -59,8 +59,7 @@ const getBoundedController = (ctrl: ControllerConfig, value: number) => {
 export const createSetterFuncs = (
     controllers: ControllerConfig[]
 ) => {
-    const set = (input: NumericInputProperty, uiValue?: number) => {
-
+    const set = (input: NumericInputProperty, forceSet = false, uiValue?: number) => {
         const { ctrl, ctrlIndex, valueIndex, value } = input
 
         // Not for this reducer!
@@ -71,7 +70,7 @@ export const createSetterFuncs = (
         const boundedValue = getBoundedController(ctrl, value)
         const currentValue = selectController(ctrl, ctrlIndex || 0)(store.getState())
 
-        if (boundedValue === currentValue) {
+        if (boundedValue === currentValue && !forceSet) {
             return
         }
 
@@ -93,6 +92,12 @@ export const createSetterFuncs = (
 
         const currentValue = selectController(input.ctrl, input.ctrlIndex || 0)(store.getState())
         const values = input.ctrl.values?.length || 1;
+
+        // Single value buttons, click only, no toggle
+        if(values === 1) {
+            set({...input, value: 0}, true)
+            return;
+        }
 
         // Radio buttons
         if(input.radioButtonIndex !== undefined) {
@@ -127,7 +132,7 @@ export const createSetterFuncs = (
             let currentValue = selectUiController(input.ctrl, input.ctrlIndex || 0)(store.getState())
             let uiValue = getBoundedController(ctrl,currentValue + inc)
             const updatedValue = ctrl.uiResponse.output(uiValue)
-            set({...input, value: updatedValue}, uiValue)
+            set({...input, value: updatedValue}, false, uiValue)
         } else {
             let currentValue = selectController(input.ctrl, input.ctrlIndex || 0)(store.getState())
             set({...input, value: currentValue + inc})
@@ -137,7 +142,7 @@ export const createSetterFuncs = (
     const setWithUiUpdate = (input: NumericInputProperty) => {
         const updatedValue = input.ctrl.uiResponse?.input(input.value) || 0
         const uiValue = getBoundedController(input.ctrl, updatedValue)
-        set(input, uiValue)
+        set(input, false, uiValue)
     }
 
     // receive midi

@@ -16,6 +16,7 @@ export enum ControllerGroupIds {
     OUT,
     LFO,
     VOICES,
+    SETTINGS,
 }
 
 export enum ApiSource {
