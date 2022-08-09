@@ -84,7 +84,9 @@ export const synthcoreMiddleware: Middleware<{}, any> = storeAPI => next => acti
         getApi(action)?.toggle(action.payload)
     } else if (release.match(action)) {
         getApi(action)?.release?.(action.payload)
-    } else if (action.payload.ctrlGroup === ControllerGroupIds.ENV || action.type.indexOf('envelopes/') > -1) {
+    }
+
+    if (action.payload.ctrlGroup === ControllerGroupIds.ENV || action.type.indexOf('envelopes/') > -1) {
         envMiddleware(action)
     } else if (action.payload.ctrlGroup === ControllerGroupIds.MODS || action.type.indexOf('mods/') > -1) {
         modsMiddleware(action)
