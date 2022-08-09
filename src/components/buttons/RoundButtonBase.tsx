@@ -49,6 +49,9 @@ export interface Props {
     // Used if button is part of a group - "radio button"
     radioButtonIndex?: number;
 
+    // If momentary is true it may have two values - one that is sent on key pressed and one on release.
+    momentary?: boolean;
+
     ctrlGroup: ControllerGroupIds;
     ctrl: ControllerConfig;
     ctrlIndex?: number;
@@ -216,6 +219,7 @@ export const RoundButtonBase = (props: Props & Config) => {
     const {
         x, y, label, radioButtonIndex,
         hasOff, ledCount, ledButton, reverse, loop = true,
+        momentary,
         ctrlGroup, ctrl, ctrlIndex, value, valueIndex, resolution
     } = props
 
@@ -239,12 +243,12 @@ export const RoundButtonBase = (props: Props & Config) => {
     }, [ctrlGroup, ctrl, loop, valueIndex])
 
     const handleOnClick = useCallback(() => {
-        dispatch(click({ ctrlGroup, ctrl, ctrlIndex, radioButtonIndex, reverse, loop, source: ApiSource.UI }))
-    }, [ctrlGroup, ctrl, ctrlIndex, radioButtonIndex, reverse, loop])
+        dispatch(click({ ctrlGroup, ctrl, ctrlIndex, radioButtonIndex, reverse, loop, momentary, source: ApiSource.UI }))
+    }, [ctrlGroup, ctrl, ctrlIndex, radioButtonIndex, reverse, loop, momentary])
 
     const handleOnRelease = useCallback(() => {
-        dispatch(release({ ctrlGroup, ctrl, ctrlIndex, source: ApiSource.UI }))
-    }, [ctrl, ctrlGroup, ctrlIndex])
+        dispatch(release({ ctrlGroup, ctrl, ctrlIndex, momentary, source: ApiSource.UI }))
+    }, [ctrl, ctrlGroup, ctrlIndex, momentary])
 
     const ledOn: boolean[] = []
     for (let i = 0; i < (ledCount || 1); i++) {

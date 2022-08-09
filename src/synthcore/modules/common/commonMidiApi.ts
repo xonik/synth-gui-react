@@ -10,6 +10,19 @@ import logger from '../../../utils/logger'
 import { cc, nrpn } from '../../../midi/midibus'
 import { NumericInputProperty } from './types'
 
+// Send signature
+export type ParamSendFunc  = (
+    input: NumericInputProperty,
+    outputMapper?: (value: number, ctrl: ControllerConfig, valueIndex?: number) => number
+) => void
+
+// Receive signature
+export type ParamReceiveFunc  = (
+    ctrl: ControllerConfig | ControllerConfigCC | ControllerConfigCCWithValue,
+    apiSetValue: (input: NumericInputProperty) => void,
+    inputMapper?: (midiValue: number, ctrl: ControllerConfig) => ({ value: number, valueIndex?: number }),
+) => void
+
 export const toggleParamSend = (
     source: ApiSource,
     value: number,
@@ -77,11 +90,10 @@ const nrpnMapper = {
     }
 }
 
-export const paramSend = (
+export const paramSend: ParamSendFunc = (
     input: NumericInputProperty,
     outputMapper?: (value: number, ctrl: ControllerConfig, valueIndex?: number) => number
 ) => {
-
     const {
         source,
         ctrl,
@@ -110,7 +122,7 @@ export const paramSend = (
     }
 }
 
-export const paramReceive = (
+export const paramReceive: ParamReceiveFunc = (
     ctrl: ControllerConfig | ControllerConfigCC | ControllerConfigCCWithValue,
     apiSetValue: (input: NumericInputProperty) => void,
     inputMapper?: (midiValue: number, ctrl: ControllerConfig) => ({ value: number, valueIndex?: number }),

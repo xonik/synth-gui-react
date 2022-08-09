@@ -1,10 +1,12 @@
 import { ControllerConfig } from '../../../midi/types'
-import { paramReceive, paramSend } from './commonMidiApi'
+import { paramReceive, ParamReceiveFunc, paramSend, ParamSendFunc } from './commonMidiApi'
 import { dispatch, getBounded, getQuantized } from '../../utils'
 import { store } from '../../store'
 import { ButtonInputProperty, NumericInputProperty } from './types'
 import { selectController, selectUiController, setController } from '../controllers/controllersReducer'
 
+// TODO: Not in use and I can't remember why
+/*
 export type ApiIncrementMapperType = {
     [key: number]: (value: number) => void
 }
@@ -12,6 +14,10 @@ export type ApiIncrementMapperType = {
 export type ApiClickMapperType = {
     [key: number]: () => void
 }
+ */
+
+// TODO: Not in use and I can't remember why
+/*
 
 type IndexIncMapperEntry = [ControllerConfig, (input: NumericInputProperty) => void]
 export const createIndexIncrementMapper = (map: IndexIncMapperEntry[]) => (input: NumericInputProperty) => {
@@ -20,7 +26,10 @@ export const createIndexIncrementMapper = (map: IndexIncMapperEntry[]) => (input
         return key.id === input.ctrl.id
     })?.[1](input)
 }
+*/
 
+// TODO: Not in use and I can't remember why
+/*
 type IndexClickMapperEntry = [ControllerConfig, (input: ButtonInputProperty) => void]
 export const createIndexClickMapper = (map: IndexClickMapperEntry[]) => (input: ButtonInputProperty) => {
     // search for a ctrl and call the corresponding function
@@ -28,11 +37,15 @@ export const createIndexClickMapper = (map: IndexClickMapperEntry[]) => (input: 
         return key.id === input.ctrl.id
     })?.[1](input)
 }
+ */
 
 // Create a mapper that receives a controller and selects the correct set function.
-// Also sends midi
+// Also sends midi. Midi functions may be overridden, useful for for example envs and lfos where
+// we send the env id separately
+// TODO: Not in use and I can't remember why
 type MapperEntry = [ControllerConfig, (input: NumericInputProperty) => void]
-export const createSetMapper = (map: MapperEntry[]) => {
+/*
+export const createSetMapper = (map: MapperEntry[], midiFuncs?: {send?: ParamSendFunc, receive?: ParamReceiveFunc}) => {
 
     const set =  (input: NumericInputProperty) => {
         // search for a ctrl and call the corresponding function
@@ -41,14 +54,25 @@ export const createSetMapper = (map: MapperEntry[]) => {
         })?.[1](input)
 
         // send over midi
-        paramSend(input)
+        if(midiFuncs && midiFuncs.send) {
+            midiFuncs.send(input)
+        } else {
+            paramSend(input)
+        }
     }
 
     // receive midi
-    map.forEach(([input]) => paramReceive(input, set))
+    map.forEach(([input]) => {
+        if(midiFuncs && midiFuncs.receive){
+            midiFuncs.receive(input, set)
+        } else {
+            paramReceive(input, set)
+        }
+    })
 
     return set
 }
+ */
 
 const getBoundedController = (ctrl: ControllerConfig, value: number) => {
     const lowerBound = ctrl.bipolar === true ? -1 : 0
@@ -57,7 +81,8 @@ const getBoundedController = (ctrl: ControllerConfig, value: number) => {
 }
 
 export const createSetterFuncs = (
-    controllers: ControllerConfig[]
+    controllers: ControllerConfig[],
+    midiFuncs?: {send?: ParamSendFunc, receive?: ParamReceiveFunc}
 ) => {
     const set = (input: NumericInputProperty, forceSet = false, uiValue?: number) => {
         const { ctrl, ctrlIndex, valueIndex, value } = input
@@ -82,7 +107,11 @@ export const createSetterFuncs = (
         dispatch(setController(boundedInput))
 
         // send over midi
-        paramSend(boundedInput)
+        if(midiFuncs && midiFuncs.send) {
+            midiFuncs.send(boundedInput)
+        } else {
+            paramSend(boundedInput)
+        }
     }
     const toggle = (input: ButtonInputProperty) => {
         // Not for this reducer!
@@ -121,6 +150,12 @@ export const createSetterFuncs = (
         }
     }
 
+    const release = (input: ButtonInputProperty) => {
+        if(input.momentary && input.ctrl.values && input.ctrl.values.length > 1){
+            set({...input, value: 1}, true)
+        }
+    }
+
     const increment = (input: NumericInputProperty) => {
         // Not for this reducer!
         if(!controllers.find((cont) => cont.id === input.ctrl.id)){
@@ -146,11 +181,19 @@ export const createSetterFuncs = (
     }
 
     // receive midi
-    controllers.forEach((ctrl) => paramReceive(ctrl, setWithUiUpdate))
+    controllers.forEach((ctrl) => {
+        if(midiFuncs && midiFuncs.receive){
+            midiFuncs.receive(ctrl, setWithUiUpdate)
+        } else {
+            paramReceive(ctrl, setWithUiUpdate)
+        }
+
+    })
 
     return {
         set,
         toggle,
+        release,
         increment,
     }
 }

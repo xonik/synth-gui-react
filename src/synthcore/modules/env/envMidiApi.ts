@@ -6,7 +6,7 @@ import { shouldSend } from '../../../midi/utils'
 import logger from '../../../utils/logger'
 import { NumericInputProperty } from '../common/types'
 import { ControllerConfig, ControllerConfigCC, ControllerConfigCCWithValue, MidiGroup } from '../../../midi/types'
-import { paramReceive, paramSend } from '../common/commonMidiApi'
+import { paramReceive, ParamReceiveFunc, paramSend, ParamSendFunc } from '../common/commonMidiApi'
 import { envCtrls } from './envControllers'
 
 let currentReceivedEnvId = -1
@@ -43,36 +43,6 @@ const envSelect = (() => {
             }, cfg)
 
         }
-    }
-})()
-
-const trigger = (() => {
-    const cfg = controllers.ENV.TRIGGER
-
-    return {
-        send: (source: ApiSource, envId: number) => {
-            if (!shouldSend(source)) {
-                return
-            }
-            logger.midi(`Env trigger for ${envId}`)
-            envSelect.send(source, envId)
-            cc.send(cfg, cfg.values[0])
-        },
-    }
-})()
-
-const release = (() => {
-    const cfg = controllers.ENV.RELEASE
-
-    return {
-        send: (source: ApiSource, envId: number) => {
-            if (!shouldSend(source)) {
-                return
-            }
-            envSelect.send(source, envId)
-            logger.midi(`Env release for ${envId}`)
-            cc.send(cfg, cfg.values[0])
-        },
     }
 })()
 
@@ -114,7 +84,7 @@ const stageEnabled = (() => {
     }
 })()
 
-export const envParamSend = (
+export const envParamSend: ParamSendFunc = (
     input: NumericInputProperty,
     outputMapper?: (value: number, ctrl: ControllerConfig, valueIndex?: number) => number
 ) => {
@@ -122,7 +92,7 @@ export const envParamSend = (
     paramSend(input, outputMapper)
 }
 
-export const envParamReceive = (
+export const envParamReceive: ParamReceiveFunc = (
     ctrl: ControllerConfig | ControllerConfigCC | ControllerConfigCCWithValue,
     apiSetValue: (input: NumericInputProperty) => void,
     inputMapper?: (midiValue: number, ctrl: ControllerConfig) => ({ value: number, valueIndex?: number }),
@@ -136,8 +106,6 @@ const initReceive = () => {
     envSelect.receive()
 }
 const envMidiApi = {
-    trigger,
-    release,
     curve,
     stageEnabled,
     initReceive,

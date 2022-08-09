@@ -127,8 +127,9 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
         />
         <RoundPushButton8 label="Trigger" x={firstPotX + potDistance * 5.5} y={topRowY} labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
-                          ctrl={envCtrls.TRIGGER}
+                          ctrl={envCtrls.ENV_GATE}
                           ctrlIndex={envId}
+                          momentary
         />
     </>
 }

@@ -23,14 +23,21 @@ import {
     srcMixApi,
     voicesApi
 } from './synthcoreApi'
-import { click, increment } from './modules/ui/uiReducer'
+import { click, increment, release } from './modules/ui/uiReducer'
 import settingsApi from './modules/settings/settingsApi'
+import { ButtonInputProperty, NumericInputProperty } from './modules/common/types'
 
 const forApi = (action: AnyAction, ctrlGroup: number, path: string): boolean => {
     return action.payload.ctrlGroup === ctrlGroup || action.type.indexOf(`${path}/`) > -1
 }
 
-const getApi = (action: AnyAction) => {
+interface CtrlApi {
+    toggle: (input: ButtonInputProperty) => void
+    release?: (input: ButtonInputProperty) => void
+    increment: (input: NumericInputProperty) => void
+}
+
+const getApi = (action: AnyAction): CtrlApi | undefined => {
     if (forApi(action, ControllerGroupIds.MODS, 'mods')) {
         return modsApi
     } else if (forApi(action, ControllerGroupIds.ENV, 'envelopes')) {
@@ -75,8 +82,9 @@ export const synthcoreMiddleware: Middleware<{}, any> = storeAPI => next => acti
         getApi(action)?.increment(action.payload)
     } else if (click.match(action)) {
         getApi(action)?.toggle(action.payload)
-    }
-    if (action.payload.ctrlGroup === ControllerGroupIds.ENV || action.type.indexOf('envelopes/') > -1) {
+    } else if (release.match(action)) {
+        getApi(action)?.release?.(action.payload)
+    } else if (action.payload.ctrlGroup === ControllerGroupIds.ENV || action.type.indexOf('envelopes/') > -1) {
         envMiddleware(action)
     } else if (action.payload.ctrlGroup === ControllerGroupIds.MODS || action.type.indexOf('mods/') > -1) {
         modsMiddleware(action)

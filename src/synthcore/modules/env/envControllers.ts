@@ -30,8 +30,7 @@ interface EnvControllers {
     TOGGLE_STAGE: ControllerConfigCC
     SELECT: ControllerConfigCC
     SELECT_ENV3_ID: ControllerConfigCC
-    TRIGGER: ControllerConfigCCWithValue
-    RELEASE: ControllerConfigCCWithValue
+    ENV_GATE: ControllerConfigCCWithValue
     LOOP: ControllerConfigCCWithValue
     INVERT: ControllerConfigCCWithValue
     RESET_ON_TRIGGER: ControllerConfigCCWithValue
@@ -138,21 +137,13 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             type: 'pot',
             cc: CC.ENV_SELECT_ENV3_ID
         },
-        TRIGGER: {
-            id: ControllerIdNonMod.ENV_TRIGGER,
-            label: 'Trigger',
+        ENV_GATE: {
+            id: ControllerIdNonMod.ENV_GATE,
+            label: 'Env gate',
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
                 BUTTONS.BUTTONS_RIGHT.values.ENV_TRIGGER,
-            ],
-        },
-        RELEASE: {
-            id: ControllerIdNonMod.ENV_RELEASE,
-            label: 'Release',
-            type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
-            values: [
                 BUTTONS.BUTTONS_RIGHT.values.ENV_RELEASE,
             ],
         },

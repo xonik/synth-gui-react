@@ -28,6 +28,12 @@ export type ButtonInputProperty = {
     // a param if button is pressed twice.
     radioButtonIndex?: number;
 
+    // A momentary switch, sends release when releasing button.
+    // Requires two values two work, value [0] is the click/press value
+    // and value [1] is the release value. If value [1] is missing, no
+    // release is sent.
+    momentary?: boolean;
+
     // Decrement instead of increment value when button is clicked.
     reverse?: boolean;
 

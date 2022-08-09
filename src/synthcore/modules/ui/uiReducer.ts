@@ -29,6 +29,7 @@ type ButtonControllerPayload = {
     radioButtonIndex?: number;
     reverse?: boolean;
     loop?: boolean;
+    momentary?: boolean;
     source: ApiSource
 }
 

@@ -7,7 +7,8 @@ import {
     selectStage,
 } from './envReducer'
 import { store } from '../../store'
-import midiApi, { envParamReceive, envParamSend } from './envMidiApi'
+import { envParamReceive, envParamSend } from './envMidiApi'
+import envMidiApi from './envMidiApi'
 import { curveFuncs } from '../../../components/curves/curveCalculator'
 import { ApiSource } from '../../types'
 import { dispatch, getBounded, getQuantized } from '../../utils'
@@ -20,7 +21,7 @@ import {
     setController,
 } from '../controllers/controllersReducer'
 import { ButtonInputProperty, NumericInputProperty } from '../common/types'
-import envMidiApi from './envMidiApi'
+
 
 const cannotDisableStage = (stage: StageId) => stage === StageId.ATTACK || stage === StageId.RELEASE2 || stage === StageId.SUSTAIN
 
@@ -342,15 +343,6 @@ const env3Id = (() => {
     }
 })()
 
-// DIRECT TO MIDI STUFF
-
-const trigger = (envId: number, source: ApiSource) => {
-    midiApi.trigger.send(source, envId)
-}
-const release = (envId: number, source: ApiSource) => {
-    midiApi.release.send(source, envId)
-}
-
 // GUI STUFF
 const setCurrentEnv = (envId: number, source: ApiSource) => {
     const boundedEnv = getBounded(envId, 0, NUMBER_OF_ENVELOPES - 1)
@@ -371,13 +363,14 @@ const toggleStageSelected = (envId: number, stageId: StageId, source: ApiSource)
     }
 }
 
-const { increment: commonInc, toggle: commonToggle, set: commonSet } = createSetterFuncs([
+const { increment: commonInc, toggle: commonToggle, set: commonSet, release } = createSetterFuncs([
         envCtrls.LOOP,
-        envCtrls.TRIGGER,
+        envCtrls.ENV_GATE,
         envCtrls.RESET_ON_TRIGGER,
         envCtrls.RELEASE_MODE,
         envCtrls.LOOP_MODE,
-    ])
+    ],
+    {send: envParamSend, receive: envParamReceive})
 
 const customSetterFuncs = {
     [envCtrls.LEVEL.id]: stageLevel,
@@ -411,7 +404,6 @@ const envApi = {
     setCurrentEnv,
     incrementCurrentEnvelope,
 
-    trigger,
     release,
 
     increment,
