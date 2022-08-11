@@ -4,6 +4,7 @@ import Header from '../misc/Header'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import { ControllerGroupIds } from '../../synthcore/types'
 import fxControllers from '../../synthcore/modules/fx/fxControllers'
+import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
 
 interface Props {
     x: number,
@@ -18,8 +19,8 @@ const Distortion = ({ x, y }: Props) => {
     const row2 = row1 + 30
 
     const col1 = x + 7
-    const col2 = col1 + 25
-    const col3 = col2 + 25
+    const col2 = col1 + 20
+    const col3 = col2 + 30
     const col4 = col3 + 10
     const col5 = col4 + 25
     const col6 = col5 + 25
@@ -37,10 +38,17 @@ const Distortion = ({ x, y }: Props) => {
                      ctrl={fxControllers.DISTORTION.DRIVE}
         />
 
-        <RoundPushButton8 x={col3} y={row2 + 8} ledCount={2} ledPosition="top" ledLabels={['Soft', 'Hard']} label="Clip"
+        <RoundPushButton8 x={col3-7} y={row2 + 8} ledCount={2} ledPosition="top" ledLabels={['S', 'H']} label="Clip"
                           labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={fxControllers.DISTORTION.CLIP}
+        />
+
+        <RoundLedPushButton8 x={col3+10} y={row2 + 8}
+                          label="Recon"
+                          labelPosition="bottom"
+                          ctrlGroup={ctrlGroup}
+                          ctrl={fxControllers.DISTORTION.RECON}
         />
 
         <RotaryPot15 ledMode="multi" label="Level" x={col5} y={row2}

@@ -6,6 +6,7 @@ const setterFuncs = createSetterFuncs(
         fxControllers.DISTORTION.IN,
         fxControllers.DISTORTION.DRIVE,
         fxControllers.DISTORTION.CLIP,
+        fxControllers.DISTORTION.RECON,
         fxControllers.DISTORTION.OUT,
         fxControllers.DISTORTION.LEVEL,
         fxControllers.BIT_CRUSHER.IN,

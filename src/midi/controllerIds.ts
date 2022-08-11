@@ -207,6 +207,7 @@ export enum ControllerIdNonMod {
 
     DISTORTION_IN,
     DISTORTION_CLIP,
+    DISTORTION_RECON,
     DISTORTION_OUT,
 
     BIT_CRUSHER_IN,

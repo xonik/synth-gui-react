@@ -16,6 +16,12 @@ export const logarithmicFunc = (sharpness: number) => {
     }
 }
 
+// LFO funcs, half period.
+// Not really a sine but a cos, to make it start at 0 and go to 1 AND be reflective.
+export const cosineFunc = (x: number) => {
+    return 0.5 - Math.cos(x * Math.PI) / 2; // gives first half of sine
+}
+
 export const squared = (x: number) => Math.pow(x, 2);
 
 export const getKeypoints = (keypointCount: number) => {
