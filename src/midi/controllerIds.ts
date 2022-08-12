@@ -221,10 +221,6 @@ export enum ControllerIdNonMod {
     SRC_MIX_OUT_EXT_AUDIO,
 
     LFO_LFO,
-    LFO_SHAPE,
-    LFO_SYNC,
-    LFO_RESET,
-    LFO_ONCE,
     MOD_DST,
     MOD_SRC,
     MOD_SET_SRC_ID,
@@ -272,20 +268,13 @@ export enum ControllerIdNonMod {
     SVF_INVERT,
     SVF_SLOPE,
 
-    ENV_CURVE,
+    // TODO: Why are these here?
     ENV_LEVEL,
     ENV_TIME,
-    ENV_MAX_LOOPS,
-    ENV_TOGGLE_STAGE,
+
     ENV_SELECT,
     ENV_SELECT_ENV3_ID,
     ENV_GATE,
-    ENV_LOOP,
-    ENV_INVERT,
-    ENV_RESET_ON_TRIGGER,
-    ENV_RELEASE_MODE,
-    ENV_LOOP_MODE,
-    ENV_BIPOLAR,
 
     DSP1_EFFECT,
     DSP1_SOURCE,
@@ -302,5 +291,36 @@ export enum ControllerIdNonMod {
     CALIBRATE_DCO1,
     CALIBRATE_DCO2,
 }
+
+export enum ControllerIdEnvNonMod {
+  ENV_RESET_ON_TRIGGER,
+  ENV_RELEASE_MODE,
+  ENV_LOOP_MODE,
+  ENV_MAX_LOOPS,
+  ENV_LOOP,
+  ENV_INVERT,
+  ENV_BIPOLAR,
+  ENV_USE_VELOCITY
+}
+export const ENV_NON_MOD_COUNT = Object.keys(ControllerIdEnvNonMod).filter(o => isNaN(o as any)).length
+
+export enum ControllerIdEnvStageNonMod {
+  ENV_CURVE,
+  ENV_TOGGLE_STAGE,
+}
+export const ENV_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdEnvStageNonMod).filter(o => isNaN(o as any)).length
+
+export enum ControllerIdLfoNonMod {
+  LFO_SHAPE,
+  LFO_SYNC,
+  LFO_RESET,
+  LFO_ONCE,
+}
+export const LFO_NON_MOD_COUNT = Object.keys(ControllerIdLfoNonMod).filter(o => isNaN(o as any)).length
+
+export enum ControllerIdLfoStageNonMod {
+  LFO_CURVE
+}
+export const LFO_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdLfoStageNonMod).filter(o => isNaN(o as any)).length
 
 export const NON_MOD_COUNT = Object.keys(ControllerIdNonMod).filter(o => isNaN(o as any)).length

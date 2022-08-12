@@ -8,7 +8,13 @@ import {
     ControllerConfigCCWithValue,
     ControllerConfigNRPN, MidiGroup
 } from '../../../midi/types'
-import { ControllerIdEnvDst, ControllerIdNonMod, ControllerIdSrc } from '../../../midi/controllerIds'
+import {
+    ControllerIdEnvDst,
+    ControllerIdEnvNonMod,
+    ControllerIdEnvStageNonMod,
+    ControllerIdNonMod,
+    ControllerIdSrc
+} from '../../../midi/controllerIds'
 import { timeResponseMapper } from './envResponseMappers'
 import { levelResponseMapper } from '../common/responseMappers'
 
@@ -107,7 +113,7 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             isDstDigi: true,
             type: 'pot'
         },
-        CURVE: { id: ControllerIdNonMod.ENV_CURVE, label: 'Curve', type: 'pot', addr: NRPN.ENV_CURVE },
+        CURVE: { id: ControllerIdEnvStageNonMod.ENV_CURVE, label: 'Curve', type: 'pot', addr: NRPN.ENV_CURVE },
         LEVEL: {
             id: ControllerIdNonMod.ENV_LEVEL,
             label: 'Level',
@@ -123,9 +129,9 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             addr: NRPN.ENV_TIME,
             uiResponse: timeResponseMapper,
         },
-        MAX_LOOPS: { id: ControllerIdNonMod.ENV_MAX_LOOPS, label: 'Max loops', type: 'pot', cc: CC.ENV_MAX_LOOPS },
+        MAX_LOOPS: { id: ControllerIdEnvNonMod.ENV_MAX_LOOPS, label: 'Max loops', type: 'pot', cc: CC.ENV_MAX_LOOPS },
         TOGGLE_STAGE: {
-            id: ControllerIdNonMod.ENV_TOGGLE_STAGE,
+            id: ControllerIdEnvStageNonMod.ENV_TOGGLE_STAGE,
             label: 'Stage on/off',
             type: 'pot',
             cc: CC.ENV_TOGGLE_STAGE
@@ -148,7 +154,7 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             ],
         },
         INVERT: {
-            id: ControllerIdNonMod.ENV_INVERT,
+            id: ControllerIdEnvNonMod.ENV_INVERT,
             label: 'Invert',
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
@@ -158,7 +164,7 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             ],
         },
         RESET_ON_TRIGGER: {
-            id: ControllerIdNonMod.ENV_RESET_ON_TRIGGER,
+            id: ControllerIdEnvNonMod.ENV_RESET_ON_TRIGGER,
             label: 'Reset on trigger',
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
@@ -168,7 +174,7 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             ],
         },
         RELEASE_MODE: {
-            id: ControllerIdNonMod.ENV_RELEASE_MODE,
+            id: ControllerIdEnvNonMod.ENV_RELEASE_MODE,
             label: 'Release mode',
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
@@ -179,7 +185,7 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             ],
         },
         LOOP: {
-            id: ControllerIdNonMod.ENV_LOOP,
+            id: ControllerIdEnvNonMod.ENV_LOOP,
             label: 'Loop on/off',
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
@@ -189,7 +195,7 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             ],
         },
         LOOP_MODE: {
-            id: ControllerIdNonMod.ENV_LOOP_MODE,
+            id: ControllerIdEnvNonMod.ENV_LOOP_MODE,
             label: 'Loop mode',
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
@@ -200,7 +206,7 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             ],
         },
         BIPOLAR: {
-            id: ControllerIdNonMod.ENV_BIPOLAR,
+            id: ControllerIdEnvNonMod.ENV_BIPOLAR,
             label: 'Bipolar',
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,

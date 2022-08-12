@@ -5,17 +5,28 @@ import { buttonRightMidiValues } from '../src/midi/buttonRightMidiValues'
 import {
     ControllerIdDst,
     ControllerIdEnvDst,
+    ControllerIdEnvNonMod,
+    ControllerIdEnvStageNonMod,
     ControllerIdIntermediate,
-    ControllerIdLfoDst, ControllerIdNonMod, ControllerIdNonModPots,
+    ControllerIdLfoDst,
+    ControllerIdLfoNonMod,
+    ControllerIdLfoStageNonMod,
+    ControllerIdNonMod,
+    ControllerIdNonModPots,
     ControllerIdSrc, DST_COUNT, DST_ENV_COUNT,
     DST_LFO_COUNT,
+    ENV_NON_MOD_COUNT,
+    ENV_STAGE_NON_MOD_COUNT,
     FIRST_DST,
     FIRST_ENV_DST,
     FIRST_INTERMEDIATE,
     FIRST_LFO_DST,
     FIRST_NON_MOD,
     FIRST_NON_MOD_POTS,
-    INT_COUNT, NON_MOD_COUNT,
+    INT_COUNT,
+    LFO_NON_MOD_COUNT,
+    LFO_STAGE_NON_MOD_COUNT,
+    NON_MOD_COUNT,
     NON_MOD_POTS_COUNT,
     SRC_COUNT
 } from '../src/midi/controllerIds'
@@ -85,6 +96,12 @@ namespace paramIO {
   const unsigned short NON_MOD_COUNT = ${NON_MOD_COUNT};
   const unsigned short LAST_NON_MOD = ${FIRST_NON_MOD + NON_MOD_COUNT - 1};     
   
+  const unsigned short ENV_NON_MOD_COUNT = ${ENV_NON_MOD_COUNT};
+  const unsigned short ENV_STAGE_NON_MOD_COUNT = ${ENV_STAGE_NON_MOD_COUNT};
+
+  const unsigned short LFO_NON_MOD_COUNT = ${LFO_NON_MOD_COUNT};
+  const unsigned short LFO_STAGE_NON_MOD_COUNT = ${LFO_STAGE_NON_MOD_COUNT};
+  
   const unsigned short SRC_INT_COUNT = ${SRC_COUNT + INT_COUNT};
   const unsigned short SRC_INT_DST_COUNT = ${SRC_COUNT + INT_COUNT + DST_COUNT};
   const unsigned short INT_DST_COUNT = ${INT_COUNT + DST_COUNT};  
@@ -135,6 +152,33 @@ namespace paramIO {
     ${Object.keys(ControllerIdNonMod)
             .filter(o => isNaN(o as any))
             .map((key, index) => `DST_NM_${key}${index === 0 ? ' = ' + FIRST_NON_MOD : ''}`)
+            .join(',\n    ')}
+  };  
+
+  enum NonModEnvDestinations {
+    ${Object.keys(ControllerIdEnvNonMod)
+            .filter(o => isNaN(o as any))
+            .map((key, index) => `DST_ENV_NM_${key}`)
+            .join(',\n    ')}
+  };  
+
+  enum NonModEnvStageDestinations {
+    ${Object.keys(ControllerIdEnvStageNonMod)
+            .filter(o => isNaN(o as any))
+            .map((key, index) => `DST_ENV_STG_NM_${key}`)
+            .join(',\n    ')}
+  };  
+  enum NonModLfoDestinations {
+    ${Object.keys(ControllerIdLfoNonMod)
+            .filter(o => isNaN(o as any))
+            .map((key, index) => `DST_LFO_NM_${key}`)
+            .join(',\n    ')}
+  };  
+
+  enum NonModLfoStageDestinations {
+    ${Object.keys(ControllerIdLfoStageNonMod)
+            .filter(o => isNaN(o as any))
+            .map((key, index) => `DST_LFO_STG_NM_${key}`)
             .join(',\n    ')}
   };  
 }

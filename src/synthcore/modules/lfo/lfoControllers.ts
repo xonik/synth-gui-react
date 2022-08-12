@@ -3,6 +3,7 @@ import { BUTTONS } from '../../../midi/buttons'
 import { FuncProps, ControllerConfig, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
 import {
     ControllerIdLfoDst,
+    ControllerIdLfoNonMod,
     ControllerIdNonMod,
     ControllerIdSrc
 } from '../../../midi/controllerIds'
@@ -61,7 +62,7 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         ],
     },
     SHAPE: {
-        id: ControllerIdNonMod.LFO_SHAPE,
+        id: ControllerIdLfoNonMod.LFO_SHAPE,
         label: 'Shape',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -74,7 +75,7 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         ],
     },
     SYNC: {
-        id: ControllerIdNonMod.LFO_SYNC,
+        id: ControllerIdLfoNonMod.LFO_SYNC,
         label: 'Sync',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -84,7 +85,7 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         ],
     },
     RESET: {
-        id: ControllerIdNonMod.LFO_RESET,
+        id: ControllerIdLfoNonMod.LFO_RESET,
         label: 'Reset',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
@@ -94,7 +95,7 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         ],
     },
     ONCE: {
-        id: ControllerIdNonMod.LFO_ONCE,
+        id: ControllerIdLfoNonMod.LFO_ONCE,
         label: 'Once',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
