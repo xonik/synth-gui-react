@@ -116,8 +116,8 @@ const MainPanel = () => {
 
                 <Noise x={noiseCol} y={noiseRow}/>
                 <Ringmod x={ringModCol} y={noiseRow}/>
-                <Distortion x={fxCol} y={fxRow}/>
-                <BitCrusherPre x={fxCol + 135} y={fxRow}/>
+                <BitCrusherPre x={fxCol} y={fxRow}/>
+                <Distortion x={fxCol + 130} y={fxRow}/>
 
                 <LFO x={lfoCol} y={lfo1Row}/>
                 <SourceMixer x={sourceMixCol} y={sourceMixRow}/>

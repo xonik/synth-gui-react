@@ -10,13 +10,13 @@ interface FxControllers {
         LEVEL: ControllerConfigCC
         IN: ControllerConfigCCWithValue
         CLIP: ControllerConfigCCWithValue
-        RECON: ControllerConfigCCWithValue
         OUT: ControllerConfigCCWithValue
     },
     BIT_CRUSHER: {
         props: FuncProps
         BITS: ControllerConfigCC
         RATE: ControllerConfigCC
+        RECON: ControllerConfigCCWithValue
         LEVEL: ControllerConfigCC
         IN: ControllerConfigCCWithValue
         OUT: ControllerConfigCCWithValue
@@ -64,16 +64,6 @@ const fxControllers: FxControllers = {
                 BUTTONS.BUTTONS_LEFT.values.DISTORTION_HARD,
             ],
         },
-        RECON: {
-            id: ControllerIdNonMod.DISTORTION_RECON,
-            label: 'Clip',
-            type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
-            values: [
-                BUTTONS.BUTTONS_LEFT.values.DISTORTION_RECON_OFF,
-                BUTTONS.BUTTONS_LEFT.values.DISTORTION_RECON_ON,
-            ],
-        },
         OUT: {
             id: ControllerIdNonMod.DISTORTION_OUT,
             label: 'Out',
@@ -102,6 +92,16 @@ const fxControllers: FxControllers = {
             isDstDigi: true,
             type: 'pot',
             cc: CC.BIT_CRUSHER_RATE
+        },
+        RECON: {
+            id: ControllerIdNonMod.BIT_CRUSHER_RECON,
+            label: 'Clip',
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_RECON_OFF,
+                BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_RECON_ON,
+            ],
         },
         LEVEL: {
             id: ControllerIdDst.BIT_CRUSHER_LEVEL,
