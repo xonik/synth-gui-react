@@ -207,6 +207,7 @@ const stageEnabled = (() => {
 
 const stageCurve = (() => {
     const set = (input: NumericInputProperty) => {
+
         const { ctrlIndex: envId = 0, value: curve, valueIndex: stageId = 0, ctrl } = input
 
         const currentCurve = selectController(ctrl, envId, stageId)(store.getState())
@@ -214,7 +215,6 @@ const stageCurve = (() => {
         if (currentCurve === boundedCurve) {
             return
         }
-
         const boundedInput = { ...input, value: boundedCurve }
         dispatch(setController(boundedInput))
         envMidiApi.curve.send(boundedInput)
@@ -382,9 +382,10 @@ const customSetterFuncs = {
     [envCtrls.SELECT_ENV3_ID.id]: env3Id,
 }
 
+// TODO: Only things not handled by custom must be sent to common!
 const increment = (input: NumericInputProperty) => {
     customSetterFuncs[input.ctrl.id]?.increment(input)
-    commonInc(input)
+    //commonInc(input)
 }
 
 const toggle = (input: ButtonInputProperty) => {

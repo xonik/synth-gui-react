@@ -95,7 +95,6 @@ export const controllersSlice = createSlice({
         setController: (state, { payload }: PayloadAction<NumericControllerPayload | NumericControllerPayload[]>) => {
 
             const payloads = Array.isArray(payload) ? payload : [payload]
-
             payloads.forEach((aPayload) => {
                 controllerState.set(state, aPayload)
                 if(aPayload.uiValue !== undefined) {

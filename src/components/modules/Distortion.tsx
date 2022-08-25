@@ -4,7 +4,6 @@ import Header from '../misc/Header'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import { ControllerGroupIds } from '../../synthcore/types'
 import fxControllers from '../../synthcore/modules/fx/fxControllers'
-import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
 
 interface Props {
     x: number,
