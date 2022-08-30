@@ -39,6 +39,7 @@ export const releaseModeNames = {
 }
 
 export const curveNames = {
+    [Curve.COSINE]: 'Cosine',
     [Curve.EXP3]: 'Exp 3',
     [Curve.EXP2]: 'Exp 2',
     [Curve.EXP1]: 'Exp 1',

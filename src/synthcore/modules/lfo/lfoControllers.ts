@@ -7,6 +7,7 @@ import {
     ControllerIdNonMod,
     ControllerIdSrc
 } from '../../../midi/controllerIds'
+import { timeResponseMapper } from '../env/envResponseMappers'
 
 interface ControllersLfo {
     props: FuncProps
@@ -32,7 +33,8 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         label: 'Rate',
         isDstDigi: true,
         type: 'pot',
-        cc: CC.LFO_RATE
+        cc: CC.LFO_RATE,
+        uiResponse: timeResponseMapper,
     },
     DEPTH: {
         id: ControllerIdLfoDst.DEPTH,
@@ -46,7 +48,8 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         label: 'Delay',
         isDstDigi: true,
         type: 'pot',
-        cc: CC.LFO_DELAY
+        cc: CC.LFO_DELAY,
+        uiResponse: timeResponseMapper,
     },
     // Buttons
     LFO: {

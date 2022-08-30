@@ -59,6 +59,7 @@ const log3 = logarithmicFunc(2);
 const cosine = cosineFunc;
 
 export const curveFuncs = [
+    cosine,
     expo3,
     expo2,
     expo1,
@@ -66,10 +67,10 @@ export const curveFuncs = [
     log1,
     log2,
     log3,
-    cosine,
 ]
 
 export const curveNamesForCpp = [
+    'cosine',
     'expo3',
     'expo2',
     'expo1',
@@ -77,7 +78,6 @@ export const curveNamesForCpp = [
     'log1',
     'log2',
     'log3',
-    'cosine',
 ]
 
 /*

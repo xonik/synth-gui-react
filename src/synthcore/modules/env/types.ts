@@ -25,6 +25,7 @@ export enum LoopMode {
 }
 
 export enum Curve {
+    COSINE,
     EXP1,
     EXP2,
     EXP3,
