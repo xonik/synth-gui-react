@@ -1,19 +1,25 @@
-import CC from '../../../midi/mapCC'
+import NRPN from '../../../midi/mapNRPN'
 import { BUTTONS } from '../../../midi/buttons'
-import { FuncProps, ControllerConfig, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
+import {
+    FuncProps,
+    ControllerConfig,
+    ControllerConfigCCWithValue,
+    ControllerConfigNRPN
+} from '../../../midi/types'
 import {
     ControllerIdLfoDst,
     ControllerIdLfoNonMod,
     ControllerIdNonMod,
     ControllerIdSrc
 } from '../../../midi/controllerIds'
-import { timeResponseMapper } from '../env/envResponseMappers'
+import { timeResponseMapper } from '../common/responseMappers'
+
 
 interface ControllersLfo {
     props: FuncProps
-    RATE: ControllerConfigCC
-    DEPTH: ControllerConfigCC
-    DELAY: ControllerConfigCC
+    RATE: ControllerConfigNRPN
+    DEPTH: ControllerConfigNRPN
+    DELAY: ControllerConfigNRPN
     LFO: ControllerConfigCCWithValue
     SHAPE: ControllerConfigCCWithValue
     SYNC: ControllerConfigCCWithValue
@@ -33,7 +39,7 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         label: 'Rate',
         isDstDigi: true,
         type: 'pot',
-        cc: CC.LFO_RATE,
+        addr: NRPN.LFO_RATE,
         uiResponse: timeResponseMapper,
     },
     DEPTH: {
@@ -41,14 +47,14 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         label: 'Depth',
         isDstDigi: true,
         type: 'pot',
-        cc: CC.LFO_DEPTH
+        addr: NRPN.LFO_DEPTH,
     },
     DELAY: {
         id: ControllerIdLfoDst.DELAY,
         label: 'Delay',
         isDstDigi: true,
         type: 'pot',
-        cc: CC.LFO_DELAY,
+        addr: NRPN.LFO_DELAY,
         uiResponse: timeResponseMapper,
     },
     // Buttons

@@ -15,8 +15,7 @@ import {
     ControllerIdNonMod,
     ControllerIdSrc
 } from '../../../midi/controllerIds'
-import { timeResponseMapper } from './envResponseMappers'
-import { levelResponseMapper } from '../common/responseMappers'
+import { dbLevelResponseMapper, timeResponseMapper } from '../common/responseMappers'
 
 interface EnvControllers {
     props: FuncProps
@@ -120,7 +119,7 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             type: 'pot',
             addr: NRPN.ENV_LEVEL,
             bipolar: true,
-            uiResponse: levelResponseMapper,
+            uiResponse: dbLevelResponseMapper,
         },
         TIME: {
             id: ControllerIdNonMod.ENV_TIME,

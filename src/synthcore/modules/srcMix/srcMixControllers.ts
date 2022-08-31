@@ -2,7 +2,7 @@ import CC from '../../../midi/mapCC'
 import { BUTTONS } from '../../../midi/buttons'
 import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
 import { ControllerIdDst, ControllerIdNonMod } from '../../../midi/controllerIds'
-import { levelResponseMapper } from '../common/responseMappers'
+import { dbLevelResponseMapper } from '../common/responseMappers'
 
 interface SrcMixControllers {
     props: FuncProps
@@ -30,7 +30,7 @@ const srcMixControllers: SrcMixControllers = {
         isDstDigi: true,
         type: 'pot',
         cc: CC.LEVEL_OSC1,
-        uiResponse: levelResponseMapper,
+        uiResponse: dbLevelResponseMapper,
     },
     LEVEL_OSC2: {
         id: ControllerIdDst.SOURCE_MIX_LEVEL_OSC2,
@@ -38,7 +38,7 @@ const srcMixControllers: SrcMixControllers = {
         isDstDigi: true,
         type: 'pot',
         cc: CC.LEVEL_OSC2,
-        uiResponse: levelResponseMapper,
+        uiResponse: dbLevelResponseMapper,
     },
     LEVEL_OSC3: {
         id: ControllerIdDst.SOURCE_MIX_LEVEL_OSC3,
@@ -46,7 +46,7 @@ const srcMixControllers: SrcMixControllers = {
         isDstDigi: true,
         type: 'pot',
         cc: CC.LEVEL_OSC3,
-        uiResponse: levelResponseMapper,
+        uiResponse: dbLevelResponseMapper,
     },
     LEVEL_NOISE: {
         id: ControllerIdDst.SOURCE_MIX_LEVEL_NOISE,
@@ -54,7 +54,7 @@ const srcMixControllers: SrcMixControllers = {
         isDstDigi: true,
         type: 'pot',
         cc: CC.LEVEL_NOISE,
-        uiResponse: levelResponseMapper,
+        uiResponse: dbLevelResponseMapper,
     },
     LEVEL_RING_MOD: {
         id: ControllerIdDst.SOURCE_MIX_LEVEL_RING_MOD,
@@ -62,7 +62,7 @@ const srcMixControllers: SrcMixControllers = {
         isDstDigi: true,
         type: 'pot',
         cc: CC.LEVEL_RING_MOD,
-        uiResponse: levelResponseMapper,
+        uiResponse: dbLevelResponseMapper,
     },
     LEVEL_EXT_AUDIO: {
         id: ControllerIdDst.SOURCE_MIX_LEVEL_EXT_AUDIO,
@@ -70,7 +70,7 @@ const srcMixControllers: SrcMixControllers = {
         isDstDigi: true,
         type: 'pot',
         cc: CC.LEVEL_EXT_AUDIO,
-        uiResponse: levelResponseMapper,
+        uiResponse: dbLevelResponseMapper,
     },
     OUT_OSC1: {
         id: ControllerIdNonMod.SRC_MIX_OUT_OSC1,

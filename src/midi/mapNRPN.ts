@@ -7,6 +7,9 @@ const mapNRPN = {
     VCO_PITCH: 5,
     MOD_AMOUNT: 6,
     MOD_UI_AMOUNT: 7,
+    LFO_RATE: 8,
+    LFO_DEPTH: 9,
+    LFO_DELAY: 10,
 }
 
 export default mapNRPN

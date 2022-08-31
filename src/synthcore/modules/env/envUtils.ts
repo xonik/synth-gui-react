@@ -2,8 +2,7 @@ import { Curve, Envelope, LoopMode, ReleaseMode, Stage, StageId } from './types'
 import { envCtrls } from './envControllers'
 import { Controllers } from '../controllers/types'
 import { mergeControllers } from '../controllers/controllersUtils'
-import { timeResponseMapper } from './envResponseMappers'
-import { levelResponseMapper } from '../common/responseMappers'
+import { dbLevelResponseMapper, timeResponseMapper } from '../common/responseMappers'
 
 
 const getStageState = (envId: number, stage: Stage): Controllers => {
@@ -33,7 +32,7 @@ const getUiStageState = (envId: number, stage: Stage): Controllers => {
     const controllers: Controllers = {}
     controllers[envId] = {
         [envCtrls.LEVEL.id]: {
-            [stageId]: levelResponseMapper.input(level)
+            [stageId]: dbLevelResponseMapper.input(level)
         },
         [envCtrls.TIME.id]: {
             [stageId]: timeResponseMapper.input(time)
