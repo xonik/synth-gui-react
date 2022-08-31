@@ -4,7 +4,8 @@ import {
     FuncProps,
     ControllerConfig,
     ControllerConfigCCWithValue,
-    ControllerConfigNRPN
+    ControllerConfigNRPN,
+    ControllerConfigCC
 } from '../../../midi/types'
 import {
     ControllerIdLfoDst,
@@ -12,7 +13,8 @@ import {
     ControllerIdNonMod,
     ControllerIdSrc
 } from '../../../midi/controllerIds'
-import { timeResponseMapper } from '../common/responseMappers'
+import { timeResponseMapper, uniBipolarLevelResponseMapper } from '../common/responseMappers'
+import CC from '../../../midi/mapCC'
 
 
 interface ControllersLfo {
@@ -26,6 +28,8 @@ interface ControllersLfo {
     RESET: ControllerConfigCCWithValue
     ONCE: ControllerConfigCCWithValue
     OUTPUT: ControllerConfig
+    SELECT: ControllerConfigCC
+    BIPOLAR: ControllerConfigCCWithValue
 }
 
 const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
@@ -48,6 +52,7 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         isDstDigi: true,
         type: 'pot',
         addr: NRPN.LFO_DEPTH,
+        uiResponse: uniBipolarLevelResponseMapper,
     },
     DELAY: {
         id: ControllerIdLfoDst.DELAY,
@@ -119,6 +124,17 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         label: `LFO ${1 + ctrlIndex}`,
         type: 'output',
         isSourceDigi: true
+    },
+    SELECT: { id: ControllerIdNonMod.LFO_SELECT, label: 'Select lfo', type: 'pot', cc: CC.LFO_SELECT_LFO },
+    BIPOLAR: {
+        id: ControllerIdLfoNonMod.LFO_BIPOLAR,
+        label: 'Bipolar',
+        type: 'button',
+        cc: BUTTONS.BUTTONS_RIGHT.cc,
+        values: [
+            BUTTONS.BUTTONS_LEFT.values.LFO_BIPOLAR_OFF,
+            BUTTONS.BUTTONS_LEFT.values.LFO_BIPOLAR_ON,
+        ],
     },
 })
 

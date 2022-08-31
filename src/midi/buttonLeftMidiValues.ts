@@ -88,6 +88,8 @@ export enum buttonLeftMidiValues {
     LFO_RESET_ON,
     LFO_ONCE_OFF,
     LFO_ONCE_ON,
+    LFO_BIPOLAR_OFF,
+    LFO_BIPOLAR_ON,
     OSC1_OUT_OFF,
     OSC1_OUT_A,
     OSC1_OUT_B,

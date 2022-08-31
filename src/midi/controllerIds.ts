@@ -221,6 +221,8 @@ export enum ControllerIdNonMod {
     SRC_MIX_OUT_EXT_AUDIO,
 
     LFO_LFO,
+    LFO_SELECT,
+
     MOD_DST,
     MOD_SRC,
     MOD_SET_SRC_ID,
@@ -315,6 +317,7 @@ export enum ControllerIdLfoNonMod {
   LFO_SYNC,
   LFO_RESET,
   LFO_ONCE,
+  LFO_BIPOLAR,
 }
 export const LFO_NON_MOD_COUNT = Object.keys(ControllerIdLfoNonMod).filter(o => isNaN(o as any)).length
 

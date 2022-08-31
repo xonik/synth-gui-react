@@ -1,6 +1,7 @@
 import { Curve, Lfo, Stage, StageId } from './types'
 import { Controllers } from '../controllers/types'
 import { mergeControllers } from '../controllers/controllersUtils'
+import { lfoCtrls } from './lfoControllers'
 
 const getStageState = (envId: number, stage: Stage): Controllers => {
     // const { id: stageId, enabled, curve, level, time } = stage
@@ -50,8 +51,8 @@ const getLfoState = (lfo: Lfo) => {
         loopMode,
         loopEnabled,
         maxLoops,
-        invert,
-        bipolar,*/
+        invert,*/
+        bipolar,
     } = lfo
     const lfoControllers: Controllers = {}
     lfoControllers[lfo.id] = {
@@ -62,8 +63,8 @@ const getLfoState = (lfo: Lfo) => {
         [lfoCtrls.LOOP.id]: loopEnabled ? 1 : 0,
         [lfoCtrls.MAX_LOOPS.id]: maxLoops,
         [lfoCtrls.INVERT.id]: invert ? 1 : 0,
-        [lfoCtrls.BIPOLAR.id]: bipolar ? 1 : 0,
-         */
+        */
+        [lfoCtrls.BIPOLAR.id]: [bipolar ? 1 : 0],
     }
     return lfoControllers
 }
@@ -79,8 +80,9 @@ export const getDefaultLfo = (lfoId: number): Controllers => {
         loopEnabled: false,
         maxLoops: 2,
         invert: false,
+         */
         // VCA and VCF envs are hardcoded to unipolar for now. VCF should probably be bipolar
-        bipolar: lfoId !== 0 && lfoId !== 1,*/
+        bipolar: true,
     })
 }
 
@@ -95,14 +97,14 @@ const defaultStageConfigs: Stage[] = [
     {
         id: StageId.ATTACK,
         enabled: 1,
-        curve: Curve.LOG1,
+        curve: Curve.LIN,
         level: 0,
         time: 0.001,
     },
     {
         id: StageId.DECAY,
         enabled: 1,
-        curve: Curve.LOG1,
+        curve: Curve.LIN,
         level: 1,
         time: 0.5,
     },

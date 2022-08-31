@@ -31,32 +31,31 @@ export const dbLevelResponseMapper = (() => {
     return { input, output }
 })()
 
-/*
+// mapper for controllers that may be switched between uni and bipolar but where the output is always
+// bipolar (so negative part is not used if unipolar)
 export const uniBipolarLevelResponseMapper = (() => {
 
-    // input is 0 to 1, or -1 to 1 for bipolar
     const output = (x: number, bipolar: boolean = false) => {
         if (bipolar) {
-            const out = unscaledOutput(0.5 * x + 0.5)
-            return 2 * (out - 0.5)
+            // x input as -1 to 1, output should be 0 to 1
+            return 0.5 * x + 0.5;
         } else {
-            return unscaledOutput(x)
+            // x input as 0 to 1, output should be 0.5 to 1
+            return 0.5 + x / 2;
         }
     }
     const input = (x: number, bipolar: boolean = false) => {
         if (bipolar) {
-            const adjIn = x * 0.5 + 0.5
-            const out = inverse(unscaledOutput, 65534)(adjIn)
-            return 2 * (out - 0.5)
+            // x input as 0 to 1, output should be -1 to 1
+            return 2 * (x - 0.5);
         } else {
-            return inverse(unscaledOutput, 65534)(x)
+            //x input as 0.5 to 1, output should be 0 to 1;
+            return 2 * (x - 0.5);
         }
     }
 
     return { input, output }
 })()
-
- */
 
 export const timeResponseMapper = (() => {
     const output = getLinearToExpMapper(1, 1, 3.5)

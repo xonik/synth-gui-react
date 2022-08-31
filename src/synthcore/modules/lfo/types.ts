@@ -37,8 +37,8 @@ export type Lfo = {
     loopEnabled: boolean;
     maxLoops: number;
     invert: boolean;
+    */
     bipolar: boolean;
-     */
 }
 
 

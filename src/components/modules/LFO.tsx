@@ -7,6 +7,7 @@ import { ControllerGroupIds } from '../../synthcore/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { selectUiLfoId } from '../../synthcore/modules/lfo/lfoReducer'
+import { selectController } from '../../synthcore/modules/controllers/controllersReducer'
 
 interface Props {
     x: number,
@@ -33,6 +34,8 @@ const LFO = ({ x, y }: Props) => {
     const button4Row = button3Row + buttonRowSpacing
 
     const lfoId = useAppSelector(selectUiLfoId)
+
+    const bipolar = useAppSelector(selectController(lfoCtrls.BIPOLAR, lfoId))
 
     return <svg x={x} y={y}>
         <Header align="left" label="LFOs" x={0} y={0} width={145}/>
@@ -74,6 +77,7 @@ const LFO = ({ x, y }: Props) => {
                      ctrlGroup={ctrlGroup}
                      ctrl={lfoCtrls.DEPTH}
                      ctrlIndex={lfoId}
+                     potMode={bipolar ? 'pan' : 'normal'}
         />
 
         <RoundPushButton8 x={firstPotCol + potDistance + 30} y={potRow1}
