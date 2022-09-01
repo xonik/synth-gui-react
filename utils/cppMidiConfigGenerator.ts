@@ -155,6 +155,9 @@ namespace paramIO {
             .join(',\n    ')}
   };  
 
+  // For NonModEnvDestinations the enum value is different between the ts and c++ code - for
+  // ts we need to have an unique ID so we use an offset, but for c++ it only needs to be the correct 
+  // index in a 0-indexed array. 
   enum NonModEnvDestinations {
     ${Object.keys(ControllerIdEnvNonMod)
             .filter(o => isNaN(o as any))
@@ -162,12 +165,19 @@ namespace paramIO {
             .join(',\n    ')}
   };  
 
+  // For NonModEnvStageDestinations the enum value is different between the ts and c++ code - for
+  // ts we need to have an unique ID so we use an offset, but for c++ it only needs to be the correct 
+  // index in a 0-indexed array. 
   enum NonModEnvStageDestinations {
     ${Object.keys(ControllerIdEnvStageNonMod)
             .filter(o => isNaN(o as any))
             .map((key, index) => `DST_ENV_STG_NM_${key}`)
             .join(',\n    ')}
   };  
+  
+  // For NonModLfoDestinations the enum value is different between the ts and c++ code - for
+  // ts we need to have an unique ID so we use an offset, but for c++ it only needs to be the correct 
+  // index in a 0-indexed array.   
   enum NonModLfoDestinations {
     ${Object.keys(ControllerIdLfoNonMod)
             .filter(o => isNaN(o as any))
@@ -175,6 +185,9 @@ namespace paramIO {
             .join(',\n    ')}
   };  
 
+  // For NonModLfoStageDestinations the enum value is different between the ts and c++ code - for
+  // ts we need to have an unique ID so we use an offset, but for c++ it only needs to be the correct 
+  // index in a 0-indexed array. 
   enum NonModLfoStageDestinations {
     ${Object.keys(ControllerIdLfoStageNonMod)
             .filter(o => isNaN(o as any))

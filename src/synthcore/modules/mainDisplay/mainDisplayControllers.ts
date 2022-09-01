@@ -59,7 +59,7 @@ const mainDisplayControllers: MainDisplayControllers = {
     },
     FUNC_SETTINGS: {
         id: ControllerIdNonMod.MAIN_DISP_FUNC_SETTINGS,
-        label: 'Settings',
+        label: 'Setup',
         type: 'button',
         cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [

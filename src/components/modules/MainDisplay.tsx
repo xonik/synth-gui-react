@@ -127,7 +127,7 @@ const MainDisplay = React.forwardRef<SVGRectElement, Props>(({ x, y }, displayRe
                           ctrl={mainDisplayControllers.FUNC_HOME}
         />
 
-        <RoundPushButton8 x={displayCenter - 1.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Settings" labelPosition="bottom"
+        <RoundPushButton8 x={displayCenter - 1.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Setup" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={mainDisplayControllers.FUNC_SETTINGS}
         />

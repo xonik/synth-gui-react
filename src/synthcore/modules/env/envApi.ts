@@ -382,10 +382,9 @@ const customSetterFuncs = {
     [envCtrls.SELECT_ENV3_ID.id]: env3Id,
 }
 
-// TODO: Only things not handled by custom must be sent to common!
 const increment = (input: NumericInputProperty) => {
     customSetterFuncs[input.ctrl.id]?.increment(input)
-    //commonInc(input)
+    commonInc(input)
 }
 
 const toggle = (input: ButtonInputProperty) => {
