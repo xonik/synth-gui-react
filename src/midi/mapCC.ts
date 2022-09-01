@@ -45,6 +45,7 @@ const mapCC = {
     //LFO_DEPTH: 40,
     //LFO_DELAY: 41,
     LFO_SELECT_LFO: 39,
+    LFO_MAX_LOOPS: 40,
     LEVEL_OSC1: 42,
     LEVEL_OSC2: 43,
     LEVEL_OSC3: 44,

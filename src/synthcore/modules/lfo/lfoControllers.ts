@@ -30,6 +30,15 @@ interface ControllersLfo {
     OUTPUT: ControllerConfig
     SELECT: ControllerConfigCC
     BIPOLAR: ControllerConfigCCWithValue
+    INVERT: ControllerConfigCC
+    LOOP: ControllerConfigCC
+    LOOP_MODE: ControllerConfigCC
+    MAX_LOOPS: ControllerConfigCC
+    RESET_ON_TRIGGER: ControllerConfigCC
+    RESET_ON_STOP: ControllerConfigCC
+    RESET_LEVEL_ON_CLOCK: ControllerConfigCC
+    SYNC_TO_CLOCK: ControllerConfigCC
+    GATED: ControllerConfigCC
 }
 
 const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
@@ -136,6 +145,89 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
             BUTTONS.BUTTONS_LEFT.values.LFO_BIPOLAR_ON,
         ],
     },
+    INVERT: {
+        id: ControllerIdLfoNonMod.LFO_INVERT,
+        label: 'Invert',
+        type: 'button',
+        cc: BUTTONS.BUTTONS_RIGHT.cc,
+        values: [
+            BUTTONS.BUTTONS_CENTER.values.LFO_INVERT_OFF,
+            BUTTONS.BUTTONS_CENTER.values.LFO_INVERT_ON,
+        ],
+    },
+    LOOP: {
+        id: ControllerIdLfoNonMod.LFO_LOOP,
+        label: 'Loop on/off',
+        type: 'button',
+        cc: BUTTONS.BUTTONS_RIGHT.cc,
+        values: [
+            BUTTONS.BUTTONS_CENTER.values.LFO_LOOP_OFF,
+            BUTTONS.BUTTONS_CENTER.values.LFO_LOOP_ON,
+        ],
+    },
+    LOOP_MODE: {
+        id: ControllerIdLfoNonMod.LFO_LOOP_MODE,
+        label: 'Loop mode',
+        type: 'button',
+        cc: BUTTONS.BUTTONS_RIGHT.cc,
+        values: [
+            //BUTTONS.BUTTONS_CENTER.values.LFO_LOOP_MODE_GATED,
+            BUTTONS.BUTTONS_CENTER.values.LFO_LOOP_MODE_COUNTED,
+            BUTTONS.BUTTONS_CENTER.values.LFO_LOOP_MODE_INFINITE,
+        ],
+    },
+    MAX_LOOPS: { id: ControllerIdLfoNonMod.LFO_MAX_LOOPS, label: 'Max loops', type: 'pot', cc: CC.LFO_MAX_LOOPS },
+    RESET_ON_TRIGGER: {
+        id: ControllerIdLfoNonMod.LFO_RESET_ON_TRIGGER,
+        label: 'Reset on trigger',
+        type: 'button',
+        cc: BUTTONS.BUTTONS_RIGHT.cc,
+        values: [
+            BUTTONS.BUTTONS_CENTER.values.LFO_RESET_ON_TRIGGER_OFF,
+            BUTTONS.BUTTONS_CENTER.values.LFO_RESET_ON_TRIGGER_ON,
+        ],
+    },
+    RESET_ON_STOP: {
+        id: ControllerIdLfoNonMod.LFO_RESET_ON_STOP,
+        label: 'Reset on stop',
+        type: 'button',
+        cc: BUTTONS.BUTTONS_RIGHT.cc,
+        values: [
+            BUTTONS.BUTTONS_CENTER.values.LFO_RESET_ON_STOP_OFF,
+            BUTTONS.BUTTONS_CENTER.values.LFO_RESET_ON_STOP_ON,
+        ],
+    },
+    RESET_LEVEL_ON_CLOCK: {
+        id: ControllerIdLfoNonMod.LFO_RESET_LEVEL_ON_CLOCK,
+        label: 'Reset level on clock',
+        type: 'button',
+        cc: BUTTONS.BUTTONS_RIGHT.cc,
+        values: [
+            BUTTONS.BUTTONS_CENTER.values.LFO_RESET_LEVEL_ON_CLOCK_OFF,
+            BUTTONS.BUTTONS_CENTER.values.LFO_RESET_LEVEL_ON_CLOCK_ON,
+        ],
+    },
+    SYNC_TO_CLOCK: {
+        id: ControllerIdLfoNonMod.LFO_SYNC_TO_CLOCK,
+        label: 'Sync to clock',
+        type: 'button',
+        cc: BUTTONS.BUTTONS_RIGHT.cc,
+        values: [
+            BUTTONS.BUTTONS_CENTER.values.LFO_SYNC_TO_CLOCK_OFF,
+            BUTTONS.BUTTONS_CENTER.values.LFO_SYNC_TO_CLOCK_ON,
+        ],
+    },
+    GATED: {
+        id: ControllerIdLfoNonMod.LFO_GATED,
+        label: 'Gated',
+        type: 'button',
+        cc: BUTTONS.BUTTONS_RIGHT.cc,
+        values: [
+            BUTTONS.BUTTONS_CENTER.values.LFO_GATED_OFF,
+            BUTTONS.BUTTONS_CENTER.values.LFO_GATED_ON,
+        ],
+    },
+
 })
 
 // TODO: Make this select from controllers.ts
