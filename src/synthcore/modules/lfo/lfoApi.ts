@@ -15,7 +15,8 @@ import { createSetterFuncs } from '../common/utils'
 import { lfoCtrls } from './lfoControllers'
 import { selectController, selectUiController, setController } from '../controllers/controllersReducer'
 import { ButtonInputProperty, NumericInputProperty } from '../common/types'
-import { lfoParamReceive, lfoParamSend } from './lfoMidiApi'
+import lfoMidiApi, { lfoParamReceive, lfoParamSend } from './lfoMidiApi'
+import { curveFuncs } from '../../../components/curves/curveCalculator'
 
 const depth = (() => {
 
@@ -109,6 +110,159 @@ const toggleUiLfo = (source: ApiSource) => {
     setUiLfo(nextId, source)
 }
 
+const cannotDisableStage = (stage: StageId) => stage === StageId.ATTACK || stage === StageId.STOPPED
+
+const stageCurve = (() => {
+    const set = (input: NumericInputProperty) => {
+
+        const { ctrlIndex: lfoId = 0, value: curve, valueIndex: stageId = 0, ctrl } = input
+
+        const currentCurve = selectController(ctrl, lfoId, stageId)(store.getState())
+        const boundedCurve = getBounded(curve, 0, curveFuncs.length - 1)
+        if (currentCurve === boundedCurve) {
+            return
+        }
+        const boundedInput = { ...input, value: boundedCurve }
+        dispatch(setController(boundedInput))
+        lfoMidiApi.curve.send(boundedInput)
+    }
+
+    const increment = (input: NumericInputProperty) => {
+        const { ctrlIndex: lfoId = 0, valueIndex: stageId = 0, value: inc, ctrl } = input
+        const currentCurve = selectController(ctrl, lfoId, stageId)(store.getState())
+        set({ ...input, value: currentCurve + inc })
+    }
+
+    lfoMidiApi.curve.receive(set)
+
+    return {
+        set,
+        increment,
+        toggle: (input: ButtonInputProperty) => {
+        }
+    }
+})()
+
+const stageEnabled = (() => {
+
+    const set = (input: NumericInputProperty) => {
+        const { ctrlIndex: lfoId = 0, value: enabled, valueIndex: stageId = 0, ctrl } = input
+
+        if (cannotDisableStage(stageId)) {
+            return
+        }
+
+        const currentEnabled = selectController(ctrl, lfoId, stageId)(store.getState())
+        if (currentEnabled === enabled) {
+            return
+        }
+
+        dispatch(setController(input))
+
+        lfoMidiApi.stageEnabled.send(input)
+    }
+
+    const toggle = (input: ButtonInputProperty) => {
+        const { ctrlIndex: lfoId = 0, valueIndex: stageId = 0, ctrl } = input
+
+        const currentEnabled = selectController(ctrl, lfoId, stageId)(store.getState())
+        const enabled = (currentEnabled + 1) % 2
+        set({ ...input, value: enabled })
+    }
+
+    lfoMidiApi.stageEnabled.receive(set)
+
+    return {
+        set,
+        toggle,
+        increment: (input: NumericInputProperty) => {
+        }
+    }
+})()
+
+const invert = (() => {
+    const set = (input: NumericInputProperty) => {
+        const { ctrlIndex: lfoId = 0, value } = input
+        const currInvert = selectController(
+            input.ctrl,
+            lfoId)(store.getState())
+
+        const boundedInvert = getBounded(value, 0, input.ctrl.values?.length || 1)
+        if (boundedInvert === currInvert) {
+            return
+        }
+
+        const boundedInput = { ...input, value: boundedInvert }
+        dispatch(setController(boundedInput))
+        lfoParamSend(boundedInput, (value: number) => value)
+
+        const attackLevel = boundedInvert ? 1 : 0
+        const decayLevel = value ? 0 : 1
+        dispatch(setController({ ctrl: lfoCtrls.DEPTH, ctrlIndex: lfoId, valueIndex: StageId.DELAY, value: attackLevel }))
+        dispatch(setController({ ctrl: lfoCtrls.DEPTH, ctrlIndex: lfoId, valueIndex: StageId.ATTACK, value: attackLevel }))
+        dispatch(setController({ ctrl: lfoCtrls.DEPTH, ctrlIndex: lfoId, valueIndex: StageId.DECAY, value: decayLevel }))
+        const decayEnabled = selectController(
+            lfoCtrls.TOGGLE_STAGE,
+            lfoId,
+            StageId.DECAY)(store.getState())
+        dispatch(setController({ ctrl: lfoCtrls.DEPTH, ctrlIndex: lfoId, valueIndex: StageId.STOPPED, value: decayEnabled ? attackLevel : decayLevel }))
+
+    }
+
+    const toggle = (input: ButtonInputProperty) => {
+        const { ctrlIndex: lfoId = 0, ctrl } = input
+
+        const currentEnabled = selectController(ctrl, lfoId)(store.getState())
+        const enabled = (currentEnabled + 1) % (input.ctrl.values?.length || 1)
+        set({ ...input, value: enabled })
+    }
+
+    lfoParamReceive(lfoCtrls.INVERT, set)
+
+    return {
+        set,
+        increment: (input: NumericInputProperty) => {
+
+        },
+        toggle,
+    }
+})()
+
+const maxLoops = (() => {
+    const set = (input: NumericInputProperty) => {
+        const { ctrlIndex: lfoId = 0, value } = input
+        const currMaxLoops = selectController(
+            lfoCtrls.MAX_LOOPS,
+            lfoId)(store.getState())
+
+        const boundedMaxLoops = getBounded(value, 1, 127)
+        if (boundedMaxLoops === currMaxLoops) {
+            return
+        }
+        const boundedInput = { ...input, value: boundedMaxLoops }
+        dispatch(setController(boundedInput))
+        lfoParamSend(boundedInput, (value: number) => value)
+    }
+
+    const increment = (input: NumericInputProperty) => {
+        const { ctrlIndex: lfoId = 0, value: inc } = input
+        const currMaxLoops = selectController(
+            lfoCtrls.MAX_LOOPS,
+            lfoId)(store.getState())
+
+        set({ ...input, value: currMaxLoops + inc })
+    }
+
+    lfoParamReceive(lfoCtrls.MAX_LOOPS, set, (midiValue: number) => ({ value: midiValue }))
+
+    return {
+        set,
+        increment,
+        toggle: (input: ButtonInputProperty) => {
+        }
+    }
+})()
+
 const { increment: commonInc, toggle: commonToggle, set: commonSet } = createSetterFuncs([
         lfoCtrls.RATE,
         lfoCtrls.DELAY,
@@ -116,11 +270,26 @@ const { increment: commonInc, toggle: commonToggle, set: commonSet } = createSet
         lfoCtrls.SYNC,
         lfoCtrls.RESET,
         lfoCtrls.ONCE,
+        lfoCtrls.RESET_ON_TRIGGER,
+        lfoCtrls.RESET_ON_STOP,
+        lfoCtrls.RESET_LEVEL_ON_CLOCK,
+        lfoCtrls.SYNC_TO_CLOCK,
+        lfoCtrls.GATED,
+        lfoCtrls.LOOP,
+        lfoCtrls.LOOP_MODE,
+        lfoCtrls.RANDOM_PHASE,
+        lfoCtrls.PHASE_OFFSET,
+        lfoCtrls.LEVEL_OFFSET,
+        lfoCtrls.BALANCE,
     ],
     { send: lfoParamSend, receive: lfoParamReceive })
 
 const customSetterFuncs = {
     [lfoCtrls.DEPTH.id]: depth,
+    [lfoCtrls.CURVE.id]: stageCurve,
+    [lfoCtrls.TOGGLE_STAGE.id]: stageEnabled,
+    [lfoCtrls.INVERT.id]: invert,
+    [lfoCtrls.MAX_LOOPS.id]: maxLoops,
 }
 
 const increment = (input: NumericInputProperty) => {

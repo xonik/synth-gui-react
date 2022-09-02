@@ -327,6 +327,10 @@ export enum ControllerIdLfoNonMod {
   LFO_RESET_LEVEL_ON_CLOCK,
   LFO_SYNC_TO_CLOCK,
   LFO_GATED,
+  LFO_BALANCE,
+  LFO_PHASE_OFFSET,
+  LFO_LEVEL_OFFSET,
+  LFO_RANDOM_PHASE,
 }
 export const LFO_NON_MOD_COUNT = Object.keys(ControllerIdLfoNonMod).filter(o => isNaN(o as any)).length
 

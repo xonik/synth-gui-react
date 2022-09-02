@@ -10,6 +10,10 @@ const mapNRPN = {
     LFO_RATE: 8,
     LFO_DEPTH: 9,
     LFO_DELAY: 10,
+    LFO_CURVE: 11,
+    LFO_BALANCE: 12,
+    LFO_PHASE_OFFSET: 13,
+    LFO_LEVEL_OFFSET: 14,
 }
 
 export default mapNRPN

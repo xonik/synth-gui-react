@@ -40,12 +40,10 @@ const mapCC = {
     KBD_PORTAMENTO_LSB: 37,
     DATA_ENTRY_LSB: 38,
 
-    // Moved to NRPN
-    //LFO_RATE: 39,
-    //LFO_DEPTH: 40,
-    //LFO_DELAY: 41,
     LFO_SELECT_LFO: 39,
     LFO_MAX_LOOPS: 40,
+    LFO_TOGGLE_STAGE: 41,
+
     LEVEL_OSC1: 42,
     LEVEL_OSC2: 43,
     LEVEL_OSC3: 44,

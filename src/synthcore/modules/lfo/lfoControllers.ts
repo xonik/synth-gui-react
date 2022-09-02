@@ -9,7 +9,7 @@ import {
 } from '../../../midi/types'
 import {
     ControllerIdLfoDst,
-    ControllerIdLfoNonMod,
+    ControllerIdLfoNonMod, ControllerIdLfoStageNonMod,
     ControllerIdNonMod,
     ControllerIdSrc
 } from '../../../midi/controllerIds'
@@ -39,6 +39,12 @@ interface ControllersLfo {
     RESET_LEVEL_ON_CLOCK: ControllerConfigCC
     SYNC_TO_CLOCK: ControllerConfigCC
     GATED: ControllerConfigCC
+    CURVE: ControllerConfigNRPN
+    TOGGLE_STAGE: ControllerConfigCC
+    BALANCE: ControllerConfigNRPN
+    PHASE_OFFSET: ControllerConfigNRPN
+    LEVEL_OFFSET: ControllerConfigNRPN
+    RANDOM_PHASE: ControllerConfigCCWithValue
 }
 
 const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
@@ -139,7 +145,7 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         id: ControllerIdLfoNonMod.LFO_BIPOLAR,
         label: 'Bipolar',
         type: 'button',
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
+        cc: BUTTONS.BUTTONS_LEFT.cc,
         values: [
             BUTTONS.BUTTONS_LEFT.values.LFO_BIPOLAR_OFF,
             BUTTONS.BUTTONS_LEFT.values.LFO_BIPOLAR_ON,
@@ -149,7 +155,7 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         id: ControllerIdLfoNonMod.LFO_INVERT,
         label: 'Invert',
         type: 'button',
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
+        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
             BUTTONS.BUTTONS_CENTER.values.LFO_INVERT_OFF,
             BUTTONS.BUTTONS_CENTER.values.LFO_INVERT_ON,
@@ -159,7 +165,7 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         id: ControllerIdLfoNonMod.LFO_LOOP,
         label: 'Loop on/off',
         type: 'button',
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
+        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
             BUTTONS.BUTTONS_CENTER.values.LFO_LOOP_OFF,
             BUTTONS.BUTTONS_CENTER.values.LFO_LOOP_ON,
@@ -169,7 +175,7 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         id: ControllerIdLfoNonMod.LFO_LOOP_MODE,
         label: 'Loop mode',
         type: 'button',
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
+        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
             //BUTTONS.BUTTONS_CENTER.values.LFO_LOOP_MODE_GATED,
             BUTTONS.BUTTONS_CENTER.values.LFO_LOOP_MODE_COUNTED,
@@ -181,7 +187,7 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         id: ControllerIdLfoNonMod.LFO_RESET_ON_TRIGGER,
         label: 'Reset on trigger',
         type: 'button',
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
+        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
             BUTTONS.BUTTONS_CENTER.values.LFO_RESET_ON_TRIGGER_OFF,
             BUTTONS.BUTTONS_CENTER.values.LFO_RESET_ON_TRIGGER_ON,
@@ -191,7 +197,7 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         id: ControllerIdLfoNonMod.LFO_RESET_ON_STOP,
         label: 'Reset on stop',
         type: 'button',
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
+        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
             BUTTONS.BUTTONS_CENTER.values.LFO_RESET_ON_STOP_OFF,
             BUTTONS.BUTTONS_CENTER.values.LFO_RESET_ON_STOP_ON,
@@ -201,7 +207,7 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         id: ControllerIdLfoNonMod.LFO_RESET_LEVEL_ON_CLOCK,
         label: 'Reset level on clock',
         type: 'button',
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
+        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
             BUTTONS.BUTTONS_CENTER.values.LFO_RESET_LEVEL_ON_CLOCK_OFF,
             BUTTONS.BUTTONS_CENTER.values.LFO_RESET_LEVEL_ON_CLOCK_ON,
@@ -211,7 +217,7 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         id: ControllerIdLfoNonMod.LFO_SYNC_TO_CLOCK,
         label: 'Sync to clock',
         type: 'button',
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
+        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
             BUTTONS.BUTTONS_CENTER.values.LFO_SYNC_TO_CLOCK_OFF,
             BUTTONS.BUTTONS_CENTER.values.LFO_SYNC_TO_CLOCK_ON,
@@ -221,13 +227,33 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         id: ControllerIdLfoNonMod.LFO_GATED,
         label: 'Gated',
         type: 'button',
-        cc: BUTTONS.BUTTONS_RIGHT.cc,
+        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
             BUTTONS.BUTTONS_CENTER.values.LFO_GATED_OFF,
             BUTTONS.BUTTONS_CENTER.values.LFO_GATED_ON,
         ],
     },
+    CURVE: { id: ControllerIdLfoStageNonMod.LFO_CURVE, label: 'Curve', type: 'pot', addr: NRPN.LFO_CURVE },
+    TOGGLE_STAGE: {
+        id: ControllerIdLfoStageNonMod.LFO_TOGGLE_STAGE,
+        label: 'Stage on/off',
+        type: 'pot',
+        cc: CC.LFO_TOGGLE_STAGE
+    }, // 4 bit stage, 7 bit on/off
+    BALANCE: { id: ControllerIdLfoNonMod.LFO_BALANCE, label: 'Balance', type: 'pot', addr: NRPN.LFO_BALANCE },
+    PHASE_OFFSET: { id: ControllerIdLfoNonMod.LFO_PHASE_OFFSET, label: 'Phase offset', type: 'pot', addr: NRPN.LFO_PHASE_OFFSET },
+    LEVEL_OFFSET: { id: ControllerIdLfoNonMod.LFO_LEVEL_OFFSET, label: 'Level offset', type: 'pot', addr: NRPN.LFO_LEVEL_OFFSET },
+    RANDOM_PHASE: {
+        id: ControllerIdLfoNonMod.LFO_RANDOM_PHASE,
+        label: 'Random phase on trigger',
+        type: 'pot',
+        cc: CC.BUTTONS_CENTER,
+        values: [
+            BUTTONS.BUTTONS_CENTER.values.LFO_RANDOM_PHASE_OFF,
+            BUTTONS.BUTTONS_CENTER.values.LFO_RANDOM_PHASE_ON,
+        ],
 
+    }, // 4 bit stage, 7 bit on/off
 })
 
 // TODO: Make this select from controllers.ts
