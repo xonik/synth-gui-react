@@ -269,7 +269,6 @@ const { increment: commonInc, toggle: commonToggle, set: commonSet } = createSet
         lfoCtrls.SHAPE,
         lfoCtrls.SYNC,
         lfoCtrls.RESET,
-        lfoCtrls.ONCE,
         lfoCtrls.RESET_ON_TRIGGER,
         lfoCtrls.RESET_ON_STOP,
         lfoCtrls.RESET_LEVEL_ON_CLOCK,

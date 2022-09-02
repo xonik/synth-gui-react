@@ -107,9 +107,9 @@ const LFO = ({ x, y }: Props) => {
                              ctrlIndex={lfoId}
         />
 
-        <RoundLedPushButton8 label="Once" x={buttonCol4} y={potRow2} labelPosition="bottom"
+        <RoundLedPushButton8 label="Loop" x={buttonCol4} y={potRow2} labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
-                             ctrl={lfoCtrls.ONCE}
+                             ctrl={lfoCtrls.LOOP}
                              ctrlIndex={lfoId}
         />
 

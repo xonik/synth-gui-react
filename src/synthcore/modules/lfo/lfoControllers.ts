@@ -26,7 +26,6 @@ interface ControllersLfo {
     SHAPE: ControllerConfigCCWithValue
     SYNC: ControllerConfigCCWithValue
     RESET: ControllerConfigCCWithValue
-    ONCE: ControllerConfigCCWithValue
     OUTPUT: ControllerConfig
     SELECT: ControllerConfigCC
     BIPOLAR: ControllerConfigCCWithValue
@@ -121,16 +120,6 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         values: [
             BUTTONS.BUTTONS_LEFT.values.LFO_RESET_OFF,
             BUTTONS.BUTTONS_LEFT.values.LFO_RESET_ON,
-        ],
-    },
-    ONCE: {
-        id: ControllerIdLfoNonMod.LFO_ONCE,
-        label: 'Once',
-        type: 'button',
-        cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.LFO_ONCE_OFF,
-            BUTTONS.BUTTONS_LEFT.values.LFO_ONCE_ON,
         ],
     },
     OUTPUT: {

@@ -319,7 +319,6 @@ export enum ControllerIdLfoNonMod {
   LFO_SHAPE = 219,
   LFO_SYNC,
   LFO_RESET,
-  LFO_ONCE,
   LFO_BIPOLAR,
   LFO_INVERT,
   LFO_LOOP_MODE,
@@ -335,7 +334,7 @@ export enum ControllerIdLfoNonMod {
 export const LFO_NON_MOD_COUNT = Object.keys(ControllerIdLfoNonMod).filter(o => isNaN(o as any)).length
 
 export enum ControllerIdLfoStageNonMod {
-  LFO_CURVE = 234,
+  LFO_CURVE = 233,
   LFO_TOGGLE_STAGE,
 }
 export const LFO_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdLfoStageNonMod).filter(o => isNaN(o as any)).length
