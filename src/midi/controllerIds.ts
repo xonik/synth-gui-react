@@ -153,6 +153,9 @@ export enum ControllerIdLfoDst {
     RATE = 100,
     DEPTH,
     DELAY,
+    BALANCE,
+    PHASE_OFFSET,
+    LEVEL_OFFSET,
 }
 export const DST_LFO_COUNT = Object.keys(ControllerIdLfoDst).filter(o => isNaN(o as any)).length
 export const FIRST_NON_MOD_POTS = FIRST_LFO_DST + DST_LFO_COUNT
@@ -161,7 +164,7 @@ export const FIRST_NON_MOD_POTS = FIRST_LFO_DST + DST_LFO_COUNT
 // controllers that affect stuff that is not part of the
 // modulation matrix, such as global pots (volume etc)
 export enum ControllerIdNonModPots {
-    MOD_AMOUNT = 103,
+    MOD_AMOUNT = 106,
     MAIN_DISP_POT1,
     MAIN_DISP_POT2,
     MAIN_DISP_POT3,
@@ -178,7 +181,7 @@ export const FIRST_NON_MOD = FIRST_NON_MOD_POTS + NON_MOD_POTS_COUNT
 
 export enum ControllerIdNonMod {
     // Non-modulatable controllers
-    DCO1_SYNC = 113,
+    DCO1_SYNC = 116,
     DCO1_MODE,
     DCO1_SUB_WAVE,
     DCO1_WHEEL,
@@ -295,7 +298,7 @@ export enum ControllerIdNonMod {
 }
 
 export enum ControllerIdEnvNonMod {
-  ENV_RESET_ON_TRIGGER= 206,
+  ENV_RESET_ON_TRIGGER= 209,
   ENV_RELEASE_MODE,
   ENV_LOOP_MODE,
   ENV_MAX_LOOPS,
@@ -307,13 +310,13 @@ export enum ControllerIdEnvNonMod {
 export const ENV_NON_MOD_COUNT = Object.keys(ControllerIdEnvNonMod).filter(o => isNaN(o as any)).length
 
 export enum ControllerIdEnvStageNonMod {
-  ENV_CURVE = 214,
+  ENV_CURVE = 217,
   ENV_TOGGLE_STAGE,
 }
 export const ENV_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdEnvStageNonMod).filter(o => isNaN(o as any)).length
 
 export enum ControllerIdLfoNonMod {
-  LFO_SHAPE = 216,
+  LFO_SHAPE = 219,
   LFO_SYNC,
   LFO_RESET,
   LFO_ONCE,
@@ -327,15 +330,12 @@ export enum ControllerIdLfoNonMod {
   LFO_RESET_LEVEL_ON_CLOCK,
   LFO_SYNC_TO_CLOCK,
   LFO_GATED,
-  LFO_BALANCE,
-  LFO_PHASE_OFFSET,
-  LFO_LEVEL_OFFSET,
   LFO_RANDOM_PHASE,
 }
 export const LFO_NON_MOD_COUNT = Object.keys(ControllerIdLfoNonMod).filter(o => isNaN(o as any)).length
 
 export enum ControllerIdLfoStageNonMod {
-  LFO_CURVE = 230,
+  LFO_CURVE = 234,
   LFO_TOGGLE_STAGE,
 }
 export const LFO_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdLfoStageNonMod).filter(o => isNaN(o as any)).length
