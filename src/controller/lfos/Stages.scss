@@ -1,0 +1,15 @@
+.stages {
+  &-center-line,
+  &-divider {
+    stroke-width: 0.0625em;
+    stroke-dasharray: 0.2em 0.2em;
+    stroke: gray;
+    vector-effect: non-scaling-stroke;
+  }
+  &-background {
+    fill:transparent;
+    &--selected {
+      fill: #3335;
+    }
+  }
+}

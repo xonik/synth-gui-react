@@ -1,0 +1,8 @@
+.stage-block {
+  &-disabled {
+    visibility: hidden;
+  }
+  &-line {
+    stroke-width: 0.15em;
+  }
+}

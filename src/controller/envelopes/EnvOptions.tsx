@@ -10,7 +10,7 @@ import './EnvOptions.scss'
 import { click } from '../../synthcore/modules/ui/uiReducer'
 import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 import { envCtrls } from '../../synthcore/modules/env/envControllers'
-import { selectController, selectStageById } from '../../synthcore/modules/controllers/controllersReducer'
+import { selectController, selectEnvStageById } from '../../synthcore/modules/controllers/controllersReducer'
 
 interface Props {
     envId: number
@@ -38,7 +38,7 @@ const EnvOptions = ({ envId }: Props) => {
     const invert = useAppSelector(selectController(envCtrls.INVERT, envId))
     const retrigger = useAppSelector(selectController(envCtrls.RESET_ON_TRIGGER, envId))
     const currStageId = useAppSelector(selectCurrStageId)
-    const curve = useAppSelector(selectStageById(envId, currStageId)).curve
+    const curve = useAppSelector(selectEnvStageById(envId, currStageId)).curve
 
 
     const clickInvert = click({ ...action, ctrl: envCtrls.INVERT })

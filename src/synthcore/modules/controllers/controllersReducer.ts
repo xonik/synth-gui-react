@@ -6,6 +6,7 @@ import { getDefaultEnv, getDefaultEnvStages, getDefaultEnvUiStages } from '../en
 import { envCtrls } from '../env/envControllers'
 import { mergeControllers } from './controllersUtils'
 import { Stage, STAGES } from '../env/types'
+import { Stage as LfoStage, STAGES as LFO_STAGES } from '../lfo/types'
 import { NumericControllerPayload } from '../common/types'
 import { getDefaultLfo, getDefaultLfoStages, getDefaultUiLfoStages } from '../lfo/lfoUtils'
 import { getDefaultController } from './controllersUtils'
@@ -13,6 +14,7 @@ import { getDefaultOscState } from '../osc/oscUtils'
 import { getDefaultFiltersState } from '../filters/filtersUtils'
 import { getDefaultSrcMixState, getDefaultSrcMixUiState } from '../srcMix/srcMixUtils'
 import { getDefaultPreFxState } from "../fx/fxUtils";
+import { lfoCtrls } from '../lfo/lfoControllers'
 
 type ControllersState = {
 
@@ -168,7 +170,7 @@ export const selectUiController = (ctrl: ControllerConfig, ctrlIndex: number = 0
     }
 }
 
-export const selectStageById = (envId: number, stageId: number) => (state: RootState): Stage => {
+export const selectEnvStageById = (envId: number, stageId: number) => (state: RootState): Stage => {
 
     return {
         id: stageId,
@@ -179,10 +181,27 @@ export const selectStageById = (envId: number, stageId: number) => (state: RootS
     }
 }
 
-export const selectStages = (envId: number) => (state: RootState): Stage[] => {
+export const selectEnvStages = (envId: number) => (state: RootState): Stage[] => {
     const stages: Stage[] = []
     for (let i = 0; i < STAGES; i++) {
-        stages.push(selectStageById(envId, i)(state))
+        stages.push(selectEnvStageById(envId, i)(state))
+    }
+    return stages
+}
+
+export const selectLfoStageById = (lfoId: number, stageId: number) => (state: RootState): LfoStage => {
+
+    return {
+        id: stageId,
+        enabled: controllerState.get(state, lfoCtrls.TOGGLE_STAGE, lfoId, stageId),
+        curve: controllerState.get(state, lfoCtrls.CURVE, lfoId, stageId),
+    }
+}
+
+export const selectLfoStages = (lfoId: number) => (state: RootState): LfoStage[] => {
+    const stages: LfoStage[] = []
+    for (let i = 0; i < STAGES; i++) {
+        stages.push(selectLfoStageById(lfoId, i)(state))
     }
     return stages
 }

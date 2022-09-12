@@ -6,7 +6,7 @@ import Header from '../misc/Header'
 import { ControllerGroupIds } from '../../synthcore/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
-import { selectUiLfoId } from '../../synthcore/modules/lfo/lfoReducer'
+import { selectCurrUiLfoId } from '../../synthcore/modules/lfo/lfoReducer'
 import { selectController } from '../../synthcore/modules/controllers/controllersReducer'
 
 interface Props {
@@ -33,7 +33,7 @@ const LFO = ({ x, y }: Props) => {
     const button3Row = button2Row + buttonRowSpacing
     const button4Row = button3Row + buttonRowSpacing
 
-    const lfoId = useAppSelector(selectUiLfoId)
+    const lfoId = useAppSelector(selectCurrUiLfoId)
 
     const bipolar = useAppSelector(selectController(lfoCtrls.BIPOLAR, lfoId))
 

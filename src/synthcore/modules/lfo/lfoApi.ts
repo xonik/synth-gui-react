@@ -1,10 +1,10 @@
 import { NUMBER_OF_LFOS, StageId } from './types'
 import {
     deselectStage,
-    selectGuiLfoId,
-    selectGuiStageId,
+    selectCurrGuiLfoId,
+    selectCurrGuiStageId,
     selectStage,
-    selectUiLfoId,
+    selectCurrUiLfoId,
     setGuiLfo as setGuiLfoAction,
     setUiLfo as setUiLfoAction,
 } from './lfoReducer'
@@ -78,7 +78,7 @@ const depth = (() => {
 })()
 
 const toggleStageSelected = (lfoId: number, stageId: StageId, source: ApiSource) => {
-    const currStageId = selectGuiStageId(store.getState())
+    const currStageId = selectCurrGuiStageId(store.getState())
     if (currStageId === stageId) {
         dispatch(selectStage({ lfo: -1, stage: stageId }))
     } else {
@@ -88,24 +88,24 @@ const toggleStageSelected = (lfoId: number, stageId: StageId, source: ApiSource)
 
 const setGuiLfo = (lfoId: number, source: ApiSource) => {
     const boundedLfo = getBounded(lfoId, 0, NUMBER_OF_LFOS - 1)
-    if (selectGuiLfoId(store.getState()) !== boundedLfo) {
+    if (selectCurrGuiLfoId(store.getState()) !== boundedLfo) {
         dispatch(setGuiLfoAction({ lfo: boundedLfo }))
     }
 }
 
 const incrementGuiLfo = (increment: number, source: ApiSource) => {
-    setGuiLfo(selectGuiLfoId(store.getState()) + increment, source)
+    setGuiLfo(selectCurrGuiLfoId(store.getState()) + increment, source)
 }
 
 const setUiLfo = (id: number, source: ApiSource) => {
-    const currentUiLfoId = selectUiLfoId(store.getState())
+    const currentUiLfoId = selectCurrUiLfoId(store.getState())
     if (id !== currentUiLfoId && id < NUMBER_OF_LFOS && id > -1) {
         dispatch(setUiLfoAction({ value: id }))
     }
 }
 
 const toggleUiLfo = (source: ApiSource) => {
-    const currentId = selectUiLfoId(store.getState())
+    const currentId = selectCurrUiLfoId(store.getState())
     const nextId = (currentId + 1 + NUMBER_OF_LFOS) % NUMBER_OF_LFOS // + lfo to keep modulo positive
     setUiLfo(nextId, source)
 }

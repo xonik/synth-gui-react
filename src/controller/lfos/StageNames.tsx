@@ -1,22 +1,22 @@
 import React from 'react'
-import { StageId } from '../../synthcore/modules/env/types'
+import { StageId } from '../../synthcore/modules/lfo/types'
 import classNames from 'classnames'
 import { stageNames } from './utils'
-import './StageNames.scss'
 import { useAppSelector } from '../../synthcore/hooks'
-import { selectEnvStages } from '../../synthcore/modules/controllers/controllersReducer'
+import { selectLfoStages } from '../../synthcore/modules/controllers/controllersReducer'
+import './StageNames.scss'
 
 interface Props {
     className?: string
-    envId: number
+    lfoId: number
 }
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
-const StageNames = ({ envId, className }: Props) => {
-    const stages = useAppSelector(selectEnvStages(envId))
+const StageNames = ({ lfoId, className }: Props) => {
+    const stages = useAppSelector(selectLfoStages(lfoId))
     return <div className={classNames('stage-names', className)}>
         {stages.filter((stage) => stage.enabled && stage.id !== StageId.STOPPED).map((stage) => {
-            return <div key={stage.id} className="env-ctrl__heading">
+            return <div key={stage.id} className="lfo-ctrl__heading">
                 {stageNames[stage.id]}
             </div>
         })}

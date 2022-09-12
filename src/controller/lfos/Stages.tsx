@@ -1,18 +1,18 @@
 import React, { useCallback } from 'react'
-import { StageId, Stage } from '../../synthcore/modules/env/types'
+import { StageId, Stage } from '../../synthcore/modules/lfo/types'
 import StageBlock from './StageBlock'
 import {
-    selectCurrStageId,
+    selectCurrGuiStageId,
     toggleStageSelected,
-} from '../../synthcore/modules/env/envReducer'
+} from '../../synthcore/modules/lfo/lfoReducer'
 import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import classNames from 'classnames'
 import './Stages.scss'
-import { envCtrls } from '../../synthcore/modules/env/envControllers'
-import { selectController, selectEnvStages } from '../../synthcore/modules/controllers/controllersReducer'
+import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
+import { selectController, selectLfoStages } from '../../synthcore/modules/controllers/controllersReducer'
 
 interface Props {
-    envId: number
+    lfoId: number
 }
 
 const getNextEnabled = (stages: Stage[], currentId: StageId) => {
@@ -26,10 +26,10 @@ const getNextEnabled = (stages: Stage[], currentId: StageId) => {
 }
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
-const Stages = ({ envId }: Props) => {
+const Stages = ({ lfoId }: Props) => {
 
-    const stages = useAppSelector(selectEnvStages(envId))
-    const bipolar = useAppSelector(selectController(envCtrls.BIPOLAR, envId))
+    const stages = useAppSelector(selectLfoStages(lfoId))
+    const bipolar = useAppSelector(selectController(lfoCtrls.BIPOLAR, lfoId))
     const dispatch = useAppDispatch();
     const select = useAppSelector;
     const enabledStages = stages.filter((stage) => stage.enabled)
@@ -39,11 +39,11 @@ const Stages = ({ envId }: Props) => {
 
     let startX = 0
 
-    const currStageId = select(selectCurrStageId);
+    const currStageId = select(selectCurrGuiStageId);
 
     const onSvgClicked = useCallback((stageId: number) => {
-        dispatch(toggleStageSelected({env: envId, stage: stageId}))
-    }, [envId, dispatch])
+        dispatch(toggleStageSelected({lfo: lfoId, stage: stageId}))
+    }, [lfoId, dispatch])
 
 
 

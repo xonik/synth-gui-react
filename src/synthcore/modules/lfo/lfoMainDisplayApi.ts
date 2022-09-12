@@ -1,4 +1,4 @@
-import { selectGuiLfoId, selectGuiStageId } from './lfoReducer'
+import { selectCurrGuiLfoId, selectCurrGuiStageId } from './lfoReducer'
 import { store } from '../../store'
 import { lfoApi } from '../../synthcoreApi'
 import { ApiSource } from '../../types'
@@ -18,21 +18,21 @@ export const mainDisplayLfoPotResolutions = {
 export const mainDisplayLfoApi = {
     handleMainDisplayController: (ctrlId: number, increment: number) => {
         //TODO Check current display page here
-        const lfoId = selectGuiLfoId(store.getState())
+        const lfoId = selectCurrGuiLfoId(store.getState())
         if (ctrlId === mainDisplayControllers.POT1.id) {
             lfoApi.incrementGuiLfo(step(increment), ApiSource.UI)
         } else if (ctrlId === mainDisplayControllers.POT2.id) {
-            const stageId = selectGuiStageId(store.getState())
+            const stageId = selectCurrGuiStageId(store.getState())
             if (stageId !== StageId.STOPPED) {
                 //lfoApi.incrementStageTime(lfoId, stageId, increment, ApiSource.UI)
             }
         } else if (ctrlId === mainDisplayControllers.POT3.id) {
-            const stageId = selectGuiStageId(store.getState())
+            const stageId = selectCurrGuiStageId(store.getState())
             if (stageId !== StageId.STOPPED) {
                 //lfoApi.incrementStageLevel(lfoId, stageId, increment, ApiSource.UI)
             }
         } else if (ctrlId === mainDisplayControllers.POT4.id) {
-            const stageId = selectGuiStageId(store.getState())
+            const stageId = selectCurrGuiStageId(store.getState())
             if (stageId !== StageId.STOPPED) {
                 //lfoApi.incrementStageCurve(lfoId, stageId, step(increment), ApiSource.UI)
             }

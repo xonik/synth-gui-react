@@ -6,21 +6,21 @@ import { NumericPayload } from '../common/types'
 type LfosState = {
 
     gui: {
-        lfoId: number;
-        stageId: StageId;
+        currLfoId: number;
+        currStageId: StageId;
     }
     ui: {
-        lfoId: number;
+        currLfoId: number;
     }
 }
 
 export const initialState: LfosState = {
     gui: {
-        lfoId: 0,
-        stageId: StageId.STOPPED,
+        currLfoId: 0,
+        currStageId: StageId.STOPPED,
     },
     ui: {
-        lfoId: 2
+        currLfoId: 2
     }
 }
 
@@ -38,16 +38,16 @@ export const lfosSlice = createSlice({
     initialState,
     reducers: {
         selectStage: (state, { payload }: PayloadAction<StagePayload>) => {
-            state.gui.stageId = payload.stage
+            state.gui.currStageId = payload.stage
         },
         deselectStage: (state, { payload }: PayloadAction<StagePayload>) => {
-            state.gui.stageId = StageId.STOPPED
+            state.gui.currStageId = StageId.STOPPED
         },
         setGuiLfo: (state, { payload }: PayloadAction<LfoPayload>) => {
-            state.gui.lfoId = payload.lfo
+            state.gui.currLfoId = payload.lfo
         },
         setUiLfo: (state, { payload }: PayloadAction<NumericPayload>) => {
-            state.ui.lfoId = payload.value
+            state.ui.currLfoId = payload.value
         },
 
         // actions only consumed by api
@@ -68,8 +68,8 @@ export const {
 } = lfosSlice.actions
 
 export const selectLfos = (state: RootState) => state.lfos
-export const selectGuiStageId = (state: RootState) => state.lfos.gui.stageId
-export const selectGuiLfoId = (state: RootState) => state.lfos.gui.lfoId
-export const selectUiLfoId = (state: RootState) => state.lfos.ui.lfoId
+export const selectCurrGuiStageId = (state: RootState) => state.lfos.gui.currStageId
+export const selectCurrGuiLfoId = (state: RootState) => state.lfos.gui.currLfoId
+export const selectCurrUiLfoId = (state: RootState) => state.lfos.ui.currLfoId
 
 export default lfosSlice.reducer

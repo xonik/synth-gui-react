@@ -1,0 +1,12 @@
+.lfo-options{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 6.5em;
+
+  .ctrl-button {
+    text-align: center;
+    height: 2.5em;
+    margin-bottom: 0.25em;
+  }
+}
