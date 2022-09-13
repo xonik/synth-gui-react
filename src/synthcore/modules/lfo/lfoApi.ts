@@ -188,6 +188,7 @@ const invert = (() => {
             lfoId)(store.getState())
 
         const boundedInvert = getBounded(value, 0, input.ctrl.values?.length || 1)
+        console.log('inv', boundedInvert)
         if (boundedInvert === currInvert) {
             return
         }

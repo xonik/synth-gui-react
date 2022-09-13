@@ -1,6 +1,6 @@
 import { getScaledPoints } from '../../components/curves/curveCalculator'
 import { Point } from '../../utils/types'
-import { Curve, LoopMode, ReleaseMode, StageId } from '../../synthcore/modules/lfo/types'
+import { Curve, LoopMode, StageId } from '../../synthcore/modules/lfo/types'
 
 export const getPoints = (
     curveFunc: (x: number) => number,
@@ -23,15 +23,8 @@ export const stageNames = {
 }
 
 export const loopModeNames = {
-    [LoopMode.GATED]: 'gated',
     [LoopMode.COUNTED]: 'times',
     [LoopMode.INFINITE]: 'forever',
-}
-
-export const releaseModeNames = {
-    [ReleaseMode.NORMAL.valueOf()]: 'Normal release',
-    [ReleaseMode.FREE_RUN.valueOf()]: 'Free running',
-    [ReleaseMode.SKIP_R1.valueOf()]: 'Skip R1',
 }
 
 export const curveNames = {

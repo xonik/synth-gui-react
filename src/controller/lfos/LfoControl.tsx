@@ -3,10 +3,11 @@ import Stages from './Stages'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectCurrGuiLfoId } from '../../synthcore/modules/lfo/lfoReducer'
 import StageActivator from './StageActivator'
-import LfoOptions from './LfoOptions'
+import LfoOptionsLeft from './LfoOptionsLeft'
 import StageParams from './StageParams'
 import StageNames from './StageNames'
 import './LfoControl.scss'
+import LfoOptionsRight from './LfoOptionsRight'
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
 const LfoControl = () => {
@@ -14,7 +15,7 @@ const LfoControl = () => {
     const lfoId = useAppSelector(selectCurrGuiLfoId)
 
     return <div className="lfo-ctrl">
-        <LfoOptions lfoId={lfoId}/>
+        <LfoOptionsLeft lfoId={lfoId}/>
         <div className="lfo-ctrl-stages">
             <StageNames lfoId={lfoId}/>
             <div className="lfo-ctrl-graph">
@@ -24,7 +25,10 @@ const LfoControl = () => {
             </div>
             <StageParams lfoId={lfoId}/>
         </div>
-        <StageActivator lfoId={lfoId}/>
+        <div>
+            <StageActivator lfoId={lfoId}/>
+            <LfoOptionsRight lfoId={lfoId}/>
+        </div>
 
     </div>
 }

@@ -9,7 +9,7 @@ type MainDisplayState = {
 }
 
 const initialState: MainDisplayState = {
-    currentScreen:MainDisplayScreenId.ENV,
+    currentScreen:MainDisplayScreenId.LFO,
     shiftOn: false,
 }
 

@@ -195,12 +195,16 @@ export const selectLfoStageById = (lfoId: number, stageId: number) => (state: Ro
         id: stageId,
         enabled: controllerState.get(state, lfoCtrls.TOGGLE_STAGE, lfoId, stageId),
         curve: controllerState.get(state, lfoCtrls.CURVE, lfoId, stageId),
+
+        // TODO: NOT IN USE
+        level: 1,//controllerState.get(state, lfoCtrls.CURVE, lfoId, stageId),
+        time: 0.5//controllerState.get(state, lfoCtrls.CURVE, lfoId, stageId),
     }
 }
 
 export const selectLfoStages = (lfoId: number) => (state: RootState): LfoStage[] => {
     const stages: LfoStage[] = []
-    for (let i = 0; i < STAGES; i++) {
+    for (let i = 0; i < LFO_STAGES; i++) {
         stages.push(selectLfoStageById(lfoId, i)(state))
     }
     return stages

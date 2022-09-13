@@ -4,6 +4,7 @@ import { selectCurrScreen } from '../synthcore/modules/mainDisplay/mainDisplayRe
 import { MainDisplayScreenId } from '../synthcore/modules/mainDisplay/types'
 import Mod from './mods/Mod'
 import Env from './envelopes/Env'
+import LFO from './lfos/LFO'
 import Settings from './settings/Settings'
 import './Controller.scss'
 
@@ -11,6 +12,9 @@ const Controller = () => {
 
     const currScreen = useAppSelector(selectCurrScreen)
     return <div className="controller-grid">
+        {
+            currScreen === MainDisplayScreenId.LFO && <LFO/>
+        }
         {
             currScreen === MainDisplayScreenId.ENV && <Env/>
         }
