@@ -9,6 +9,7 @@ import { ApiSource } from '../../types'
 import mainDisplayControllers from './mainDisplayControllers'
 import { createClickMapper, createIncrementMapper } from '../common/utils'
 import { mainDisplaySettingsApi, mainDisplaySettingsPotResolutions } from '../settings/settingsMainDisplayApi'
+import { mainDisplayLfoApi, mainDisplayLfoPotResolutions } from '../lfo/lfoMainDisplayApi'
 
 type PotResolutions = {
     [key: number]: {
@@ -18,6 +19,7 @@ type PotResolutions = {
 
 const potResolution: PotResolutions = {
     [MainDisplayScreenId.ENV]: mainDisplayEnvPotResolutions,
+    [MainDisplayScreenId.LFO]: mainDisplayLfoPotResolutions,
     [MainDisplayScreenId.MOD]: mainDisplayModsPotResolutions,
     [MainDisplayScreenId.SETTINGS]: mainDisplaySettingsPotResolutions,
 }
@@ -62,6 +64,8 @@ const handleMainDisplayController = (ctrlId: number, value: number, source: ApiS
         mainDisplayModsApi.handleMainDisplayController(ctrlId, value)
     } else if (currScreenId === MainDisplayScreenId.ENV) {
         mainDisplayEnvApi.handleMainDisplayController(ctrlId, value)
+    } else if (currScreenId === MainDisplayScreenId.LFO) {
+        mainDisplayLfoApi.handleMainDisplayController(ctrlId, value)
     } else if (currScreenId === MainDisplayScreenId.SETTINGS) {
         mainDisplaySettingsApi.handleMainDisplayController(ctrlId, value)
     }

@@ -7,9 +7,9 @@ import {
 } from '../../synthcore/modules/lfo/lfoReducer'
 import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import classNames from 'classnames'
-import './Stages.scss'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { selectController, selectLfoStages } from '../../synthcore/modules/controllers/controllersReducer'
+import './Stages.scss'
 
 interface Props {
     lfoId: number

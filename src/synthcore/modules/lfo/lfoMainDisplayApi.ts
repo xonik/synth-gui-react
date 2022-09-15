@@ -2,9 +2,11 @@ import { selectCurrGuiLfoId, selectCurrGuiStageId } from './lfoReducer'
 import { store } from '../../store'
 import { lfoApi } from '../../synthcoreApi'
 import { ApiSource } from '../../types'
-import { StageId } from './types'
+import { LoopMode, StageId } from './types'
 import { step } from '../../utils'
 import mainDisplayControllers from '../mainDisplay/mainDisplayControllers'
+import { lfoCtrls } from './lfoControllers'
+import { selectController } from '../controllers/controllersReducer'
 
 export const mainDisplayLfoPotResolutions = {
     [mainDisplayControllers.POT1.id]: 8,
@@ -24,7 +26,7 @@ export const mainDisplayLfoApi = {
         } else if (ctrlId === mainDisplayControllers.POT2.id) {
             const stageId = selectCurrGuiStageId(store.getState())
             if (stageId !== StageId.STOPPED) {
-                //lfoApi.incrementStageTime(lfoId, stageId, increment, ApiSource.UI)
+                //lfoApi.increment(lfoId, stageId, increment, ApiSource.UI)
             }
         } else if (ctrlId === mainDisplayControllers.POT3.id) {
             const stageId = selectCurrGuiStageId(store.getState())
@@ -34,9 +36,23 @@ export const mainDisplayLfoApi = {
         } else if (ctrlId === mainDisplayControllers.POT4.id) {
             const stageId = selectCurrGuiStageId(store.getState())
             if (stageId !== StageId.STOPPED) {
-                //lfoApi.incrementStageCurve(lfoId, stageId, step(increment), ApiSource.UI)
+                lfoApi.increment({
+                    ctrl: lfoCtrls.CURVE,
+                    ctrlIndex: lfoId,
+                    valueIndex: stageId,
+                    value: step(increment),
+                    source: ApiSource.UI})
             }
         } else if (ctrlId === mainDisplayControllers.POT5.id) {
+            const loopMode = selectController(lfoCtrls.LOOP_MODE, lfoId)(store.getState())
+            if (loopMode !== LoopMode.COUNTED) {
+                return
+            }
+            lfoApi.increment({
+                ctrl: lfoCtrls.MAX_LOOPS,
+                ctrlIndex: lfoId,
+                value: step(increment),
+                source: ApiSource.UI})            
         } else if (ctrlId === mainDisplayControllers.POT6.id) {
         }
     }

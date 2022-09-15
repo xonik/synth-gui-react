@@ -80,9 +80,9 @@ const depth = (() => {
 const toggleStageSelected = (lfoId: number, stageId: StageId, source: ApiSource) => {
     const currStageId = selectCurrGuiStageId(store.getState())
     if (currStageId === stageId) {
-        dispatch(selectStage({ lfo: -1, stage: stageId }))
-    } else {
         dispatch(deselectStage({ lfo: -1, stage: stageId }))
+    } else {
+        dispatch(selectStage({ lfo: -1, stage: stageId }))
     }
 }
 
@@ -298,6 +298,7 @@ const increment = (input: NumericInputProperty) => {
 }
 
 const toggle = (input: ButtonInputProperty) => {
+    customSetterFuncs[input.ctrl.id]?.toggle(input)
     commonToggle(input)
 }
 
