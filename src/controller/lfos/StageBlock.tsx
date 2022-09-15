@@ -13,7 +13,8 @@ interface Props {
     height: number
     width: number
     stage: Stage
-    nextStage: Stage
+    startLev: number
+    endLev: number
     isBipolar: boolean
 }
 
@@ -23,11 +24,7 @@ const mapToSvg = (point: Point, isBipolar: boolean) => ({
 })
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
-const StageBlock = ({ x, y, width, height, stage, nextStage, isBipolar }: Props) => {
-
-    const startLev = stage.enabled ? stage.level : nextStage.level;
-
-    const endLev = nextStage.level
+const StageBlock = ({ x, y, width, height, stage, startLev, endLev, isBipolar }: Props) => {
 
     const offset = startLev
     const scale = endLev - startLev

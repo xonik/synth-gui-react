@@ -1,15 +1,13 @@
-import React, { useCallback } from 'react'
-import { StageId, Stage } from '../../synthcore/modules/lfo/types'
+import React, { useCallback, useMemo } from 'react'
+import { Stage, StageId } from '../../synthcore/modules/lfo/types'
 import StageBlock from './StageBlock'
-import {
-    selectCurrGuiStageId,
-    toggleStageSelected,
-} from '../../synthcore/modules/lfo/lfoReducer'
+import { selectCurrGuiStageId, toggleStageSelected, } from '../../synthcore/modules/lfo/lfoReducer'
 import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import classNames from 'classnames'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { selectController, selectLfoStages } from '../../synthcore/modules/controllers/controllersReducer'
 import './Stages.scss'
+import { uniBipolarLevelResponseMapper } from '../../synthcore/modules/common/responseMappers'
 
 interface Props {
     lfoId: number
@@ -25,14 +23,50 @@ const getNextEnabled = (stages: Stage[], currentId: StageId) => {
     return stages[StageId.STOPPED]
 }
 
+const getUnscaledLevels = (bipolar: boolean, invert: boolean, decayEnabled: boolean) => {
+    let attackLevel;
+    let decayLevel;
+
+    if(bipolar) {
+        if(invert) {
+            attackLevel = 1;
+            decayLevel = -1;
+        } else {
+            attackLevel = -1
+            decayLevel = 1;
+        }
+    } else {
+        if(invert) {
+            attackLevel = 1;
+            decayLevel = 0;
+        } else {
+            attackLevel = 0;
+            decayLevel = 1;
+        }
+    }
+
+    return {
+        [StageId.DELAY]: attackLevel,
+        [StageId.ATTACK]: attackLevel,
+        [StageId.DECAY]: decayLevel,
+        [StageId.STOPPED]: decayEnabled ? attackLevel : decayLevel,
+    }
+}
+
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
 const Stages = ({ lfoId }: Props) => {
 
-    const stages = useAppSelector(selectLfoStages(lfoId))
-    const bipolar = useAppSelector(selectController(lfoCtrls.BIPOLAR, lfoId))
-    const dispatch = useAppDispatch();
     const select = useAppSelector;
+    const stages = select(selectLfoStages(lfoId))
+    const bipolar = select(selectController(lfoCtrls.BIPOLAR, lfoId)) === 1
+
+    const invert = select(selectController(lfoCtrls.INVERT, lfoId)) === 1
+    const depth = uniBipolarLevelResponseMapper.input(select(selectController(lfoCtrls.DEPTH, lfoId)), bipolar)
+
+    const dispatch = useAppDispatch();
     const enabledStages = stages.filter((stage) => stage.enabled)
+    const decayEnabled = enabledStages.find((stage) => stage.id === StageId.DECAY) !== undefined
+
     const stageCount = enabledStages.length - 1 // -1 because stopped is hidden.
     const stageWidth = 1 / stageCount
     const graphCenter = bipolar ? 1 / 2 : 1
@@ -45,7 +79,10 @@ const Stages = ({ lfoId }: Props) => {
         dispatch(toggleStageSelected({lfo: lfoId, stage: stageId}))
     }, [lfoId, dispatch])
 
-
+    const unscaledLevels = useMemo(
+        () => getUnscaledLevels(bipolar, invert, decayEnabled),
+        [bipolar, invert, decayEnabled]
+    )
 
     return <svg x={0} y={0}>
         {
@@ -60,7 +97,9 @@ const Stages = ({ lfoId }: Props) => {
                 if (stage.id === StageId.STOPPED) {
                     return null
                 }
-                const nextStage = getNextEnabled(stages, stage.id)
+                const level = unscaledLevels[stage.id] * depth
+                const nextLevel = unscaledLevels[getNextEnabled(stages, stage.id).id] * depth
+
                 const isLast = index === stages.length - 2
                 const enabled = stage.enabled
                 const content = <React.Fragment key={stage.id}>
@@ -87,8 +126,9 @@ const Stages = ({ lfoId }: Props) => {
                         width={stageWidth}
                         height={1}
                         stage={stage}
-                        nextStage={nextStage}
-                        isBipolar={bipolar === 1}
+                        startLev={level}
+                        endLev={nextLevel}
+                        isBipolar={bipolar}
                     />
                 </React.Fragment>
                 if (enabled) {

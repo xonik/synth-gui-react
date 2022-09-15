@@ -54,7 +54,7 @@ const stageLevel = (() => {
                 return
             }
 
-            // sustain level is not used directly. Instead it replaces r1 or r2 level depending on if
+            // sustain level is not used directly. Instead, it replaces r1 or r2 level depending on if
             // r1 is enabled or not.
             if (stageId === StageId.SUSTAIN) {
                 const stage2Id = r1enabled ? StageId.RELEASE1 : StageId.RELEASE2

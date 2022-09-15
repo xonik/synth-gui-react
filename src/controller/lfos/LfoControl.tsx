@@ -6,8 +6,8 @@ import StageActivator from './StageActivator'
 import LfoOptionsLeft from './LfoOptionsLeft'
 import StageParams from './StageParams'
 import StageNames from './StageNames'
-import './LfoControl.scss'
 import LfoOptionsRight from './LfoOptionsRight'
+import './LfoControl.scss'
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
 const LfoControl = () => {

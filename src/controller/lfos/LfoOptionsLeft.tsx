@@ -37,6 +37,7 @@ const LfoOptionsLeft = ({ lfoId }: Props) => {
     const resetOnStop = useAppSelector(selectController(lfoCtrls.RESET_ON_STOP, lfoId))
     const resetLevelOnClock = useAppSelector(selectController(lfoCtrls.RESET_LEVEL_ON_CLOCK, lfoId))
     const syncToClock = useAppSelector(selectController(lfoCtrls.SYNC_TO_CLOCK, lfoId))
+    const bipolar = useAppSelector(selectController(lfoCtrls.BIPOLAR, lfoId))
 
     const clickInvert = click({ ...action, ctrl: lfoCtrls.INVERT })
     const clickResetOnTrigger = click({ ...action, ctrl: lfoCtrls.RESET_ON_TRIGGER })
@@ -44,6 +45,7 @@ const LfoOptionsLeft = ({ lfoId }: Props) => {
     const clickResetOnStop = click({ ...action, ctrl: lfoCtrls.RESET_ON_STOP })
     const clickResetLevelOnClock = click({ ...action, ctrl: lfoCtrls.RESET_LEVEL_ON_CLOCK })
     const clickSyncToClock = click({ ...action, ctrl: lfoCtrls.SYNC_TO_CLOCK })
+    const clickBipolar = click({ ...action, ctrl: lfoCtrls.BIPOLAR })
 
     const hasCurve = currStageId === StageId.ATTACK || currStageId === StageId.DECAY
     const curveLabel = hasCurve ? curveNames[curve] : '-'
@@ -51,6 +53,7 @@ const LfoOptionsLeft = ({ lfoId }: Props) => {
         <div className="lfo-ctrl__heading">LFO {lfoId + 1}</div>
         <div className="lfo-ctrl__heading">{curveLabel}</div>
         <Button active={!!invert} onClick={() => dispatch(clickInvert)}>Invert</Button>
+        <Button active={!!bipolar} onClick={() => dispatch(clickBipolar)}>Bipolar</Button>
         <Button active={!!randomPhase} onClick={() => dispatch(clickRandomPhase)}>
             Random phase
         </Button>

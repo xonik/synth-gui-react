@@ -29,7 +29,6 @@ const depth = (() => {
 
     const set = (input: NumericInputProperty, uiValue?: number) => {
         const { ctrlIndex: lfoId = 0, value, ctrl } = input
-
         const boundedValue = getBoundedController(value, lfoId)
         const currentLevel = selectController(ctrl, lfoId)(store.getState())
         if (boundedValue === currentLevel) {
@@ -196,18 +195,6 @@ const invert = (() => {
         const boundedInput = { ...input, value: boundedInvert }
         dispatch(setController(boundedInput))
         lfoParamSend(boundedInput, (value: number) => value)
-
-        const attackLevel = boundedInvert ? 1 : 0
-        const decayLevel = value ? 0 : 1
-        dispatch(setController({ ctrl: lfoCtrls.DEPTH, ctrlIndex: lfoId, valueIndex: StageId.DELAY, value: attackLevel }))
-        dispatch(setController({ ctrl: lfoCtrls.DEPTH, ctrlIndex: lfoId, valueIndex: StageId.ATTACK, value: attackLevel }))
-        dispatch(setController({ ctrl: lfoCtrls.DEPTH, ctrlIndex: lfoId, valueIndex: StageId.DECAY, value: decayLevel }))
-        const decayEnabled = selectController(
-            lfoCtrls.TOGGLE_STAGE,
-            lfoId,
-            StageId.DECAY)(store.getState())
-        dispatch(setController({ ctrl: lfoCtrls.DEPTH, ctrlIndex: lfoId, valueIndex: StageId.STOPPED, value: decayEnabled ? attackLevel : decayLevel }))
-
     }
 
     const toggle = (input: ButtonInputProperty) => {
@@ -281,6 +268,7 @@ const { increment: commonInc, toggle: commonToggle, set: commonSet } = createSet
         lfoCtrls.PHASE_OFFSET,
         lfoCtrls.LEVEL_OFFSET,
         lfoCtrls.BALANCE,
+        lfoCtrls.BIPOLAR,
     ],
     { send: lfoParamSend, receive: lfoParamReceive })
 

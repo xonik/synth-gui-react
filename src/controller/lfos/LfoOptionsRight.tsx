@@ -35,7 +35,6 @@ const LfoOptionsRight = ({ lfoId }: Props) => {
     const loopEnabled = useAppSelector(selectController(lfoCtrls.LOOP, lfoId))
     const maxLoops = useAppSelector(selectController(lfoCtrls.MAX_LOOPS, lfoId))
 
-    const currStageId = useAppSelector(selectCurrGuiStageId)
     const clickLoopMode = click({ ...action, ctrl: lfoCtrls.LOOP_MODE })
     const clickLoopEnabled = click({ ...action, ctrl: lfoCtrls.LOOP })
 
