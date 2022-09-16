@@ -61,7 +61,8 @@ const Stages = ({ lfoId }: Props) => {
     const bipolar = select(selectController(lfoCtrls.BIPOLAR, lfoId)) === 1
 
     const invert = select(selectController(lfoCtrls.INVERT, lfoId)) === 1
-    const depth = uniBipolarLevelResponseMapper.input(select(selectController(lfoCtrls.DEPTH, lfoId)), bipolar)
+    const xOffset = select(selectController(lfoCtrls.LEVEL_OFFSET, lfoId))
+    const depth = select(selectController(lfoCtrls.DEPTH, lfoId))
 
     const dispatch = useAppDispatch();
     const enabledStages = stages.filter((stage) => stage.enabled)
@@ -128,7 +129,7 @@ const Stages = ({ lfoId }: Props) => {
                         startLev={level}
                         endLev={nextLevel}
                         isBipolar={bipolar}
-                        xOffset={0.5}
+                        xOffset={xOffset}
                     />
                 </React.Fragment>
                 if (enabled) {

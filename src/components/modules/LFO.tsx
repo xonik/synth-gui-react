@@ -35,8 +35,6 @@ const LFO = ({ x, y }: Props) => {
 
     const lfoId = useAppSelector(selectCurrUiLfoId)
 
-    const bipolar = useAppSelector(selectController(lfoCtrls.BIPOLAR, lfoId))
-
     return <svg x={x} y={y}>
         <Header align="left" label="LFOs" x={0} y={0} width={145}/>
         <RoundLedPushButton8 label="1" x={buttonCol} y={button1Row} labelPosition="right" radioButtonIndex={0}
@@ -77,7 +75,6 @@ const LFO = ({ x, y }: Props) => {
                      ctrlGroup={ctrlGroup}
                      ctrl={lfoCtrls.DEPTH}
                      ctrlIndex={lfoId}
-                     potMode={bipolar ? 'pan' : 'normal'}
         />
 
         <RoundPushButton8 x={firstPotCol + potDistance + 30} y={potRow1}

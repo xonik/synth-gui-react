@@ -20,7 +20,7 @@ export const initialState: LfosState = {
         currStageId: StageId.STOPPED,
     },
     ui: {
-        currLfoId: 2
+        currLfoId: 0
     }
 }
 

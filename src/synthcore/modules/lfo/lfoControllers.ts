@@ -66,7 +66,6 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         isDstDigi: true,
         type: 'pot',
         addr: NRPN.LFO_DEPTH,
-        uiResponse: uniBipolarLevelResponseMapper,
     },
     DELAY: {
         id: ControllerIdLfoDst.DELAY,

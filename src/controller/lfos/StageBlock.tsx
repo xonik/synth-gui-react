@@ -21,7 +21,7 @@ interface Props {
 
 const mapToSvg = (point: Point, isBipolar: boolean) => ({
     x: point.x,
-    y: isBipolar ? (1 - point.y) / 2 : (1 - point.y) / 2 - 0.5
+    y: (1 - point.y) / 2
 })
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
