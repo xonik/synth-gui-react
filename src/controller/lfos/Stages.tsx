@@ -69,7 +69,6 @@ const Stages = ({ lfoId }: Props) => {
 
     const stageCount = enabledStages.length - 1 // -1 because stopped is hidden.
     const stageWidth = 1 / stageCount
-    const graphCenter = bipolar ? 1 / 2 : 1
 
     let startX = 0
 
@@ -86,9 +85,9 @@ const Stages = ({ lfoId }: Props) => {
 
     return <svg x={0} y={0}>
         {
-            bipolar && <line
-              x1={0} y1={graphCenter}
-              x2={1} y2={graphCenter}
+            <line
+              x1={0} y1={0.5}
+              x2={1} y2={0.5}
               className={'stages-center-line'}
             />
         }
@@ -129,6 +128,7 @@ const Stages = ({ lfoId }: Props) => {
                         startLev={level}
                         endLev={nextLevel}
                         isBipolar={bipolar}
+                        xOffset={0.5}
                     />
                 </React.Fragment>
                 if (enabled) {
