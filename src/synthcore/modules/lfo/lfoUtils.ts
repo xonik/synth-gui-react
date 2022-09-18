@@ -59,11 +59,7 @@ const getLfoState = (lfo: Lfo) => {
         offset,
         phaseOffset,
         randomPhase,
-
-        // TODO: REMOVE?
-        resetLevel,
-        timeOffset,
-        timeOffsetStage,
+        depth,
     } = lfo
     const lfoControllers: Controllers = {}
     lfoControllers[id] = {
@@ -77,6 +73,7 @@ const getLfoState = (lfo: Lfo) => {
         [lfoCtrls.INVERT.id]: [invert ? 1 : 0],
         [lfoCtrls.BIPOLAR.id]: [bipolar ? 1 : 0],
         [lfoCtrls.RATE.id]: [time],
+        [lfoCtrls.DEPTH.id]: [depth],
         [lfoCtrls.BALANCE.id]: [balance],
         [lfoCtrls.LEVEL_OFFSET.id]: [offset],
         [lfoCtrls.PHASE_OFFSET.id]: [phaseOffset],
@@ -99,7 +96,8 @@ export const getDefaultLfo = (lfoId: number): Controllers => {
         invert: false,
         bipolar: true,
         time: 1,
-        balance: 0.5,
+        balance: 0.25,
+        depth: 1,
         offset: 0,
         phaseOffset: 0,
         randomPhase: false,

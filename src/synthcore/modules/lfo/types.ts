@@ -42,6 +42,7 @@ export type Lfo = {
     bipolar: boolean;
 
     time: number;
+    depth: number;
     balance: number;
     offset: number;
     phaseOffset: number;

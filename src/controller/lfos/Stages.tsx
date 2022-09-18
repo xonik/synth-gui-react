@@ -7,7 +7,6 @@ import classNames from 'classnames'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { selectController, selectLfoStages } from '../../synthcore/modules/controllers/controllersReducer'
 import './Stages.scss'
-import { uniBipolarLevelResponseMapper } from '../../synthcore/modules/common/responseMappers'
 
 interface Props {
     lfoId: number
@@ -63,13 +62,16 @@ const Stages = ({ lfoId }: Props) => {
     const invert = select(selectController(lfoCtrls.INVERT, lfoId)) === 1
     const xOffset = select(selectController(lfoCtrls.LEVEL_OFFSET, lfoId))
     const depth = select(selectController(lfoCtrls.DEPTH, lfoId))
+    let balance = select(selectController(lfoCtrls.BALANCE, lfoId))
+    if(balance < 0.005) balance = 0.005;
+    if(balance > 0.995) balance = 0.995;
 
     const dispatch = useAppDispatch();
     const enabledStages = stages.filter((stage) => stage.enabled)
     const decayEnabled = enabledStages.find((stage) => stage.id === StageId.DECAY) !== undefined
 
     const stageCount = enabledStages.length - 1 // -1 because stopped is hidden.
-    const stageWidth = 1 / stageCount
+    const baseStageWidth = 1 / stageCount
 
     let startX = 0
 
@@ -99,6 +101,15 @@ const Stages = ({ lfoId }: Props) => {
                 }
                 const level = unscaledLevels[stage.id] * depth
                 const nextLevel = unscaledLevels[getNextEnabled(stages, stage.id).id] * depth
+
+                let stageWidth = baseStageWidth
+                if(decayEnabled && balance !== 0.5) {
+                    if(stage.id === StageId.ATTACK) {
+                        stageWidth = 2 * baseStageWidth * balance
+                    } else if(stage.id === StageId.DECAY) {
+                        stageWidth = 2 * baseStageWidth * (1-balance)
+                    }
+                }
 
                 const isLast = index === stages.length - 2
                 const enabled = stage.enabled
