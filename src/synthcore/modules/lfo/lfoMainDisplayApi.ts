@@ -11,7 +11,7 @@ import { selectController } from '../controllers/controllersReducer'
 export const mainDisplayLfoPotResolutions = {
     [mainDisplayControllers.POT1.id]: 8,
     [mainDisplayControllers.POT2.id]: 1000,
-    [mainDisplayControllers.POT3.id]: 1000,
+    [mainDisplayControllers.POT3.id]: 128,
     [mainDisplayControllers.POT4.id]: 8,
     [mainDisplayControllers.POT5.id]: 32,
     [mainDisplayControllers.POT6.id]: 1000,
@@ -29,10 +29,11 @@ export const mainDisplayLfoApi = {
                 //lfoApi.increment(lfoId, stageId, increment, ApiSource.UI)
             }
         } else if (ctrlId === mainDisplayControllers.POT3.id) {
-            const stageId = selectCurrGuiStageId(store.getState())
-            if (stageId !== StageId.STOPPED) {
-                //lfoApi.incrementStageLevel(lfoId, stageId, increment, ApiSource.UI)
-            }
+            lfoApi.increment({
+                ctrl: lfoCtrls.PHASE_OFFSET,
+                ctrlIndex: lfoId,
+                value: step(increment),
+                source: ApiSource.UI})
         } else if (ctrlId === mainDisplayControllers.POT4.id) {
             const stageId = selectCurrGuiStageId(store.getState())
             if (stageId !== StageId.STOPPED) {

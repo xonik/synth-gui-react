@@ -96,14 +96,12 @@ export const getDefaultLfo = (lfoId: number): Controllers => {
         invert: false,
         bipolar: true,
         time: 1,
-        balance: 0.25,
+        balance: 0.5,
         depth: 1,
         offset: 0,
-        phaseOffset: 0,
+        phaseOffset: 0.85,
         randomPhase: false,
 
-        // TODO: REMOVE?
-        resetLevel: 1,
         timeOffset: 0,
         timeOffsetStage: StageId.ATTACK,
     })

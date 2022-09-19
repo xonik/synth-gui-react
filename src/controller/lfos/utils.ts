@@ -2,16 +2,25 @@ import { getScaledPoints } from '../../components/curves/curveCalculator'
 import { Point } from '../../utils/types'
 import { Curve, LoopMode, StageId } from '../../synthcore/modules/lfo/types'
 
+export const keypoints = 64;
+
+// If start and end is not 0 and max, curve is stretched in the x direction to
+// fit a 0-1 interval. We still keep the same number of points to be able to
+// warp between graphs, but the points before start and after end are all at the same location
 export const getPoints = (
     curveFunc: (x: number) => number,
-    reflectX?: boolean,
-    reflectY?: boolean,
+    startPoint: number, endPoint: number
 ): Point[] => {
-    const keypoints = 64;
     return getScaledPoints(curveFunc, 1, keypoints, false)
-        .map((point, index) => ({x: index / keypoints, y: point}))
-        .map((point) => reflectX ? ({x: 1 - point.x, y: point.y}) : point)
-        .map((point) => reflectY ? ({x: point.x, y: 1 - point.y}) : point);
+        .map((point, index, scaledPoints) => {
+            if(index < startPoint) {
+                return {x: 0, y: scaledPoints[startPoint]}
+            }
+            if(index > endPoint-1) {
+                return {x: 1, y: scaledPoints[endPoint-1]}
+            }
+            return {x: (index - startPoint) / (endPoint - startPoint - 1), y: point}
+        })
 }
 
 

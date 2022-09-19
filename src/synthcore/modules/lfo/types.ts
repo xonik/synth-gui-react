@@ -34,7 +34,6 @@ export type Stage = {
 
 export type Lfo = {
     id: number;
-    resetLevel: number;
     loopMode: LoopMode;
     loopEnabled: boolean;
     maxLoops: number;
@@ -56,9 +55,3 @@ export type Lfo = {
     timeOffset: number;
     timeOffsetStage: number;
 }
-
-
-export const MIN_LEVEL = 100;
-export const MAX_LEVEL = 100;
-export const MIN_TIME = 1; //ms
-export const MAX_TIME = 65536; // approx 1 minute.

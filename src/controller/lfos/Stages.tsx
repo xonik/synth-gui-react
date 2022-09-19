@@ -60,17 +60,41 @@ const Stages = ({ lfoId }: Props) => {
     const bipolar = select(selectController(lfoCtrls.BIPOLAR, lfoId)) === 1
 
     const invert = select(selectController(lfoCtrls.INVERT, lfoId)) === 1
-    const xOffset = select(selectController(lfoCtrls.LEVEL_OFFSET, lfoId))
+    const yOffset = select(selectController(lfoCtrls.LEVEL_OFFSET, lfoId))
+    const xOffset = select(selectController(lfoCtrls.PHASE_OFFSET, lfoId))
+
+
     const depth = select(selectController(lfoCtrls.DEPTH, lfoId))
     let balance = select(selectController(lfoCtrls.BALANCE, lfoId))
     if(balance < 0.005) balance = 0.005;
     if(balance > 0.995) balance = 0.995;
 
     const dispatch = useAppDispatch();
-    const enabledStages = stages.filter((stage) => stage.enabled)
-    const decayEnabled = enabledStages.find((stage) => stage.id === StageId.DECAY) !== undefined
 
-    const stageCount = enabledStages.length - 1 // -1 because stopped is hidden.
+    const delayStage = stages[StageId.DELAY]
+    const attackStage = stages[StageId.ATTACK]
+    const decayStage = stages[StageId.DECAY]
+    const stoppedStage = stages[StageId.STOPPED]
+
+    const delayEnabled = delayStage?.enabled === 1
+    const decayEnabled = decayStage?.enabled === 1
+
+    let offsetStage = StageId.ATTACK
+    let offsetInStage = 0
+
+    if(xOffset !== 0) {
+        if(!decayEnabled){
+            offsetInStage = xOffset
+        } else if(xOffset < 0.5){
+            offsetInStage = xOffset * 2
+        } else {
+            offsetInStage = (xOffset - 0.5) * 2
+            offsetStage = StageId.DECAY
+        }
+    }
+
+
+    const stageCount = 1 + (delayEnabled ? 1 : 0) + (decayEnabled ? 1 : 0)
     const baseStageWidth = 1 / stageCount
 
     let startX = 0
@@ -86,6 +110,26 @@ const Stages = ({ lfoId }: Props) => {
         [bipolar, invert, decayEnabled]
     )
 
+    const renderStages = []
+    if(delayEnabled) renderStages.push(delayStage) // TODO: This is probably very wrong when offset is set. Need to change level. Do it in getUnscaledLevels
+    if(offsetStage === StageId.ATTACK) {
+        renderStages.push(attackStage)
+        if(decayEnabled) {
+            renderStages.push(decayStage)
+        }
+        if(xOffset > 0){
+            renderStages.push(attackStage)
+        }
+    } else {
+        renderStages.push(decayStage)
+        renderStages.push(attackStage)
+        if(xOffset >= 0.5){
+            renderStages.push(decayStage)
+        }
+    }
+    renderStages.push(stoppedStage) // TODO: This is probably very wrong when offset is set. Do it in getUnscaledLevels
+
+
     return <svg x={0} y={0}>
         {
             <line
@@ -95,7 +139,7 @@ const Stages = ({ lfoId }: Props) => {
             />
         }
         {
-            stages.map((stage, index) => {
+            renderStages.map((stage, index) => {
                 if (stage.id === StageId.STOPPED) {
                     return null
                 }
@@ -111,9 +155,24 @@ const Stages = ({ lfoId }: Props) => {
                     }
                 }
 
+                // adjust for phase offset, move whole graph to the left
+                // TODO: Quantize to match
+                let startPhase = 0;
+                let endPhase = 1;
+                if(xOffset !== 0 && stage.id === offsetStage){
+                    if(index < 2) {
+                        startPhase = offsetInStage
+                        stageWidth = (1-offsetInStage)
+                    } else {
+                        endPhase = offsetInStage
+                        stageWidth = offsetInStage
+                    }
+                    if(decayEnabled) stageWidth = stageWidth / 2
+                }
+
                 const isLast = index === stages.length - 2
                 const enabled = stage.enabled
-                const content = <React.Fragment key={stage.id}>
+                const content = <React.Fragment key={`stage${index}`}>
                     {enabled &&
                     <>
                       <rect x={startX} y={0} width={stageWidth} height={1} onClick={() => onSvgClicked(stage.id)}
@@ -139,8 +198,10 @@ const Stages = ({ lfoId }: Props) => {
                         stage={stage}
                         startLev={level}
                         endLev={nextLevel}
+                        startPhase={startPhase}
+                        endPhase={endPhase}
                         isBipolar={bipolar}
-                        xOffset={xOffset}
+                        xOffset={yOffset}
                     />
                 </React.Fragment>
                 if (enabled) {
