@@ -7,6 +7,8 @@ import classNames from 'classnames'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { selectController, selectLfoStages } from '../../synthcore/modules/controllers/controllersReducer'
 import './Stages.scss'
+import { getPoints, keypoints } from './utils'
+import { curveFuncs } from '../../components/curves/curveCalculator'
 
 interface Props {
     lfoId: number
@@ -65,7 +67,7 @@ const Stages = ({ lfoId }: Props) => {
 
 
     const depth = select(selectController(lfoCtrls.DEPTH, lfoId))
-    let balance = select(selectController(lfoCtrls.BALANCE, lfoId))
+    let balance = 0.25;//select(selectController(lfoCtrls.BALANCE, lfoId))
     if(balance < 0.005) balance = 0.005;
     if(balance > 0.995) balance = 0.995;
 
@@ -110,7 +112,8 @@ const Stages = ({ lfoId }: Props) => {
         [bipolar, invert, decayEnabled]
     )
 
-    const renderStages = []
+
+    const renderStages: Stage[] = []
     if(delayEnabled) renderStages.push(delayStage) // TODO: This is probably very wrong when offset is set. Need to change level. Do it in getUnscaledLevels
     if(offsetStage === StageId.ATTACK) {
         renderStages.push(attackStage)
@@ -129,6 +132,45 @@ const Stages = ({ lfoId }: Props) => {
     }
     renderStages.push(stoppedStage) // TODO: This is probably very wrong when offset is set. Do it in getUnscaledLevels
 
+    const points = useMemo(() => renderStages.map((stage, index) => {
+        if (stage.id === StageId.STOPPED) {
+            return []
+        }
+
+        // adjust for phase offset, move whole graph to the left
+        // TODO: Quantize to match
+        let startPhase = 0;
+        let endPhase = 1;
+        if(xOffset !== 0 && stage.id === offsetStage){
+            if(index < stageCount) {
+                startPhase = offsetInStage
+            } else {
+                endPhase = offsetInStage
+            }
+        }
+
+        const startPoint = Math.floor(keypoints * startPhase)
+        const endPoint = Math.floor(keypoints * endPhase) + 1
+
+        const points = getPoints(curveFuncs[stage.curve], startPoint, endPoint)
+
+        const level = unscaledLevels[stage.id] * depth
+        const nextLevel = unscaledLevels[getNextEnabled(stages, stage.id).id] * depth
+
+        const offset = level + yOffset;
+        const scale = nextLevel - level
+
+        return points
+                .map((point) => {
+                    let y = point.y * scale + offset;
+                    return { x: point.x, y }
+                })
+    }), [offsetInStage, offsetStage, renderStages, xOffset, depth, stages, unscaledLevels, yOffset])
+
+    if(delayEnabled){
+        const delayLevel = points[1][0].y
+        points[0] = points[0].map((point) => ({...point, y: delayLevel}))
+    }
 
     return <svg x={0} y={0}>
         {
@@ -143,9 +185,6 @@ const Stages = ({ lfoId }: Props) => {
                 if (stage.id === StageId.STOPPED) {
                     return null
                 }
-                const level = unscaledLevels[stage.id] * depth
-                const nextLevel = unscaledLevels[getNextEnabled(stages, stage.id).id] * depth
-
                 let stageWidth = baseStageWidth
                 if(decayEnabled && balance !== 0.5) {
                     if(stage.id === StageId.ATTACK) {
@@ -155,19 +194,12 @@ const Stages = ({ lfoId }: Props) => {
                     }
                 }
 
-                // adjust for phase offset, move whole graph to the left
-                // TODO: Quantize to match
-                let startPhase = 0;
-                let endPhase = 1;
                 if(xOffset !== 0 && stage.id === offsetStage){
-                    if(index < 2) {
-                        startPhase = offsetInStage
-                        stageWidth = (1-offsetInStage)
+                    if (index < stageCount) {
+                        stageWidth = (1 - offsetInStage) * baseStageWidth
                     } else {
-                        endPhase = offsetInStage
-                        stageWidth = offsetInStage
+                        stageWidth = offsetInStage * baseStageWidth
                     }
-                    if(decayEnabled) stageWidth = stageWidth / 2
                 }
 
                 const isLast = index === stages.length - 2
@@ -196,12 +228,8 @@ const Stages = ({ lfoId }: Props) => {
                         width={stageWidth}
                         height={1}
                         stage={stage}
-                        startLev={level}
-                        endLev={nextLevel}
-                        startPhase={startPhase}
-                        endPhase={endPhase}
-                        isBipolar={bipolar}
-                        xOffset={yOffset}
+                        points={points[index]}
+                        yOffset={yOffset}
                     />
                 </React.Fragment>
                 if (enabled) {
