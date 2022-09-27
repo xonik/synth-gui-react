@@ -146,97 +146,37 @@ const Stages = ({ lfoId }: Props) => {
     }), [depth, renderStages, stages, unscaledLevels, yOffset])
 
 
-    const origAttackPoints = points[0]
-    const origDecayPoints = points[1]
-
     let startPoint = delayDelta
 
-    const decayPoints = decayEnabled
-        ? origDecayPoints.map((point) => ({ x: point.x / stageCount + startPoint + baseStageWidth, y: point.y }))
-        : origDecayPoints.map((point) => ({ x: 1, y: point.y }))
+    let firstPoints = offsetStage === StageId.ATTACK ? points[0] : points[1]
+    let secondPoints = offsetStage === StageId.ATTACK ? points[1] : points[0]
 
-    const delayY = offsetStage === StageId.ATTACK ? origAttackPoints[phasePoint].y : origDecayPoints[phasePoint].y
+    const delayY = firstPoints[phasePoint].y
     const delayPoints = [{x: 0, y: delayY}]
+
     delayEnabled ? delayPoints.push({x: delayDelta, y: delayY}) : delayPoints.push({x: 0, y: delayY})
+    const allPoints: Point[] = delayPoints
 
-    const allPoints: Point[] = []
+    allPoints.push(...firstPoints.slice(phasePoint + 1).map(
+        (point) => {
+            startPoint += attackDelta
+            return { x: startPoint, y: point.y }
+        }
+    ))
 
-    allPoints.push(...delayPoints)
+    allPoints.push(...secondPoints.slice(1).map(
+        (point) => {
+            startPoint += decayDelta
+            return { x: startPoint, y: point.y }
+        }
+    ))
 
-    // TODO: Issue when only having delay and attack
-    if (offsetStage === StageId.ATTACK) {
-        const a1points = origAttackPoints.slice(phasePoint + 1).map(
+    if (xOffset > 0) {
+        allPoints.push(...firstPoints.slice(1, phasePoint).map(
             (point) => {
                 startPoint += attackDelta
                 return { x: startPoint, y: point.y }
-            }
-        )
-        allPoints.push(...a1points)
-        console.log(`Pushed (A) ${a1points.length}`, a1points)
-
-        const dPoints = decayPoints.slice(1).map(
-            (point) => {
-                startPoint += decayDelta
-                return { x: startPoint, y: point.y }
-            }
-        )
-        allPoints.push(...dPoints)
-        console.log(`Pushed (D) ${dPoints.length}`, dPoints)
-
-        if (xOffset > 0) {
-            const a2Points = origAttackPoints.slice(1, phasePoint).map(
-                (point) => {
-                    startPoint += attackDelta
-                    return { x: startPoint, y: point.y }
-                })
-            allPoints.push(...a2Points )
-            console.log(`Pushed (A2) ${a2Points.length}`, a2Points)
-        }
-    } else {
-        const d1Points = origDecayPoints.slice(phasePoint + 1).map(
-            (point) => {
-                startPoint += decayDelta
-                return { x: startPoint, y: point.y }
-            }
-        )
-        allPoints.push(...d1Points)
-        console.log(`Pushed (D) ${d1Points.length}`, d1Points)
-
-        const aPoints = origAttackPoints.slice(1).map(
-            (point) => {
-                startPoint += attackDelta
-                return { x: startPoint, y: point.y }
-            }
-        )
-        allPoints.push(...aPoints)
-        console.log(`Pushed (A) ${aPoints.length}`, aPoints)
-
-        if (xOffset >= 0.5) {
-            const d2Points = origDecayPoints.slice(1, phasePoint).map(
-                (point) => {
-                    startPoint += decayDelta
-                    return {x: startPoint, y: point.y}
-                }
-            )
-            allPoints.push(...d2Points)
-            console.log(`Pushed (D2) ${d2Points.length}`, d2Points)
-        }
-    }
-
-    console.log({
-        phasePoint,
-        allPointsLength: allPoints.length,
-        baseStageWidth,
-        startPoint,
-        allPoints,
-        delayDelta,
-        attackDelta,
-        decayDelta,
-    })
-
-    if (delayEnabled) {
-        const delayLevel = points[1][0].y
-        points[0] = points[0].map((point) => ({ ...point, y: delayLevel }))
+            }))
     }
 
     return <svg x={0} y={0}>
