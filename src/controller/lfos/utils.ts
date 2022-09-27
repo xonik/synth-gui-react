@@ -9,18 +9,13 @@ export const keypoints = 64;
 // warp between graphs, but the points before start and after end are all at the same location
 export const getPoints = (
     curveFunc: (x: number) => number,
-    startPoint: number, endPoint: number
 ): Point[] => {
+    // @ts-ignore
     return getScaledPoints(curveFunc, 1, keypoints, false)
-        .map((point, index, scaledPoints) => {
-            if(index < startPoint) {
-                return {x: 0, y: scaledPoints[startPoint]}
-            }
-            if(index > endPoint-1) {
-                return {x: 1, y: scaledPoints[endPoint-1]}
-            }
-            return {x: (index - startPoint) / (endPoint - startPoint - 1), y: point}
+        .map((point, index) => {
+            return {x: index / keypoints, y: point}
         })
+        .filter((point) => point !== null)
 }
 
 

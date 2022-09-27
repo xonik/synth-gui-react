@@ -9,6 +9,7 @@ import { selectController, selectLfoStages } from '../../synthcore/modules/contr
 import './Stages.scss'
 import { getPoints, keypoints } from './utils'
 import { curveFuncs } from '../../components/curves/curveCalculator'
+import { Point } from '../../utils/types'
 
 interface Props {
     lfoId: number
@@ -28,8 +29,8 @@ const getUnscaledLevels = (bipolar: boolean, invert: boolean, decayEnabled: bool
     let attackLevel;
     let decayLevel;
 
-    if(bipolar) {
-        if(invert) {
+    if (bipolar) {
+        if (invert) {
             attackLevel = 1;
             decayLevel = -1;
         } else {
@@ -37,7 +38,7 @@ const getUnscaledLevels = (bipolar: boolean, invert: boolean, decayEnabled: bool
             decayLevel = 1;
         }
     } else {
-        if(invert) {
+        if (invert) {
             attackLevel = 1;
             decayLevel = 0;
         } else {
@@ -67,9 +68,9 @@ const Stages = ({ lfoId }: Props) => {
 
 
     const depth = select(selectController(lfoCtrls.DEPTH, lfoId))
-    let balance = 0.25;//select(selectController(lfoCtrls.BALANCE, lfoId))
-    if(balance < 0.005) balance = 0.005;
-    if(balance > 0.995) balance = 0.995;
+    let balance = select(selectController(lfoCtrls.BALANCE, lfoId))
+    if (balance < 0.005) balance = 0.005;
+    if (balance > 0.995) balance = 0.995;
 
     const dispatch = useAppDispatch();
 
@@ -84,10 +85,10 @@ const Stages = ({ lfoId }: Props) => {
     let offsetStage = StageId.ATTACK
     let offsetInStage = 0
 
-    if(xOffset !== 0) {
-        if(!decayEnabled){
+    if (xOffset !== 0) {
+        if (!decayEnabled) {
             offsetInStage = xOffset
-        } else if(xOffset < 0.5){
+        } else if (xOffset < 0.5) {
             offsetInStage = xOffset * 2
         } else {
             offsetInStage = (xOffset - 0.5) * 2
@@ -99,12 +100,16 @@ const Stages = ({ lfoId }: Props) => {
     const stageCount = 1 + (delayEnabled ? 1 : 0) + (decayEnabled ? 1 : 0)
     const baseStageWidth = 1 / stageCount
 
+    const delayDelta = delayEnabled ? baseStageWidth : 0
+    const attackDelta = baseStageWidth / keypoints
+    const decayDelta = decayEnabled ? baseStageWidth / keypoints : 0
+
     let startX = 0
 
     const currStageId = select(selectCurrGuiStageId);
 
     const onSvgClicked = useCallback((stageId: number) => {
-        dispatch(toggleStageSelected({lfo: lfoId, stage: stageId}))
+        dispatch(toggleStageSelected({ lfo: lfoId, stage: stageId }))
     }, [lfoId, dispatch])
 
     const unscaledLevels = useMemo(
@@ -114,22 +119,10 @@ const Stages = ({ lfoId }: Props) => {
 
 
     const renderStages: Stage[] = []
-    if(delayEnabled) renderStages.push(delayStage) // TODO: This is probably very wrong when offset is set. Need to change level. Do it in getUnscaledLevels
-    if(offsetStage === StageId.ATTACK) {
-        renderStages.push(attackStage)
-        if(decayEnabled) {
-            renderStages.push(decayStage)
-        }
-        if(xOffset > 0){
-            renderStages.push(attackStage)
-        }
-    } else {
-        renderStages.push(decayStage)
-        renderStages.push(attackStage)
-        if(xOffset >= 0.5){
-            renderStages.push(decayStage)
-        }
-    }
+    const phasePoint = xOffset !== 0 ? Math.floor(keypoints * offsetInStage) : 0
+
+    renderStages.push(attackStage)
+    renderStages.push(decayStage)
     renderStages.push(stoppedStage) // TODO: This is probably very wrong when offset is set. Do it in getUnscaledLevels
 
     const points = useMemo(() => renderStages.map((stage, index) => {
@@ -137,22 +130,7 @@ const Stages = ({ lfoId }: Props) => {
             return []
         }
 
-        // adjust for phase offset, move whole graph to the left
-        // TODO: Quantize to match
-        let startPhase = 0;
-        let endPhase = 1;
-        if(xOffset !== 0 && stage.id === offsetStage){
-            if(index < stageCount) {
-                startPhase = offsetInStage
-            } else {
-                endPhase = offsetInStage
-            }
-        }
-
-        const startPoint = Math.floor(keypoints * startPhase)
-        const endPoint = Math.floor(keypoints * endPhase) + 1
-
-        const points = getPoints(curveFuncs[stage.curve], startPoint, endPoint)
+        const points = getPoints(curveFuncs[stage.curve])
 
         const level = unscaledLevels[stage.id] * depth
         const nextLevel = unscaledLevels[getNextEnabled(stages, stage.id).id] * depth
@@ -161,23 +139,103 @@ const Stages = ({ lfoId }: Props) => {
         const scale = nextLevel - level
 
         return points
-                .map((point) => {
-                    let y = point.y * scale + offset;
-                    return { x: point.x, y }
-                })
-    }), [offsetInStage, offsetStage, renderStages, xOffset, depth, stages, unscaledLevels, yOffset])
+            .map((point) => {
+                let y = point.y * scale + offset;
+                return { x: point.x, y }
+            })
+    }), [depth, renderStages, stages, unscaledLevels, yOffset])
 
-    if(delayEnabled){
+
+    const origAttackPoints = points[0]
+    const origDecayPoints = points[1]
+
+    let startPoint = delayDelta
+
+    const decayPoints = decayEnabled
+        ? origDecayPoints.map((point) => ({ x: point.x / stageCount + startPoint + baseStageWidth, y: point.y }))
+        : origDecayPoints.map((point) => ({ x: 1, y: point.y }))
+
+    const delayY = offsetStage === StageId.ATTACK ? origAttackPoints[phasePoint].y : origDecayPoints[phasePoint].y
+    const delayPoints = [{x: 0, y: delayY}]
+    delayEnabled ? delayPoints.push({x: delayDelta, y: delayY}) : delayPoints.push({x: 0, y: delayY})
+
+    const allPoints: Point[] = []
+
+    allPoints.push(...delayPoints)
+
+    // TODO: Issue when only having delay and attack
+    if (offsetStage === StageId.ATTACK) {
+        allPoints.push(...origAttackPoints.slice(phasePoint + 1).map(
+            (point) => {
+                startPoint += attackDelta
+                return { x: startPoint, y: point.y }
+            }
+        ))
+        console.log(`Pushed (A) ${allPoints.length}`)
+        allPoints.push(...decayPoints.slice(1).map(
+            (point) => {
+                startPoint += delayDelta
+                return { x: startPoint, y: point.y }
+            }
+        ))
+        console.log(`Pushed (D) ${allPoints.length}`)
+        if (xOffset > 0) {
+            allPoints.push(...origAttackPoints.slice(1, phasePoint).map(
+                (point) => {
+                    startPoint += attackDelta
+                    return { x: startPoint, y: point.y }
+                })
+            )
+            console.log(`Pushed (A2) ${allPoints.length}`)
+        }
+    } else {
+        allPoints.push(...origDecayPoints.slice(phasePoint + 1).map(
+            (point) => {
+                startPoint += decayDelta
+                return { x: startPoint, y: point.y }
+            }
+        ))
+        console.log(`Pushed (D) ${allPoints.length}`)
+        allPoints.push(...origAttackPoints.slice(1).map(
+            (point) => {
+                startPoint += attackDelta
+                return { x: startPoint, y: point.y }
+            }
+        ))
+        console.log(`Pushed (A) ${allPoints.length}`)
+        if (xOffset >= 0.5) {
+            allPoints.push(...origDecayPoints.slice(1, phasePoint).map(
+                (point) => {
+                    startPoint += decayDelta
+                    return {x: startPoint, y: point.y}
+                }
+            ))
+            console.log(`Pushed (D2) ${allPoints.length}`)
+        }
+    }
+
+    console.log({
+        phasePoint,
+        allPointsLength: allPoints.length,
+        baseStageWidth,
+        startPoint,
+        allPoints,
+        delayDelta,
+        attackDelta,
+        decayDelta,
+    })
+
+    if (delayEnabled) {
         const delayLevel = points[1][0].y
-        points[0] = points[0].map((point) => ({...point, y: delayLevel}))
+        points[0] = points[0].map((point) => ({ ...point, y: delayLevel }))
     }
 
     return <svg x={0} y={0}>
         {
             <line
-              x1={0} y1={0.5}
-              x2={1} y2={0.5}
-              className={'stages-center-line'}
+                x1={0} y1={0.5}
+                x2={1} y2={0.5}
+                className={'stages-center-line'}
             />
         }
         {
@@ -185,16 +243,17 @@ const Stages = ({ lfoId }: Props) => {
                 if (stage.id === StageId.STOPPED) {
                     return null
                 }
+
                 let stageWidth = baseStageWidth
-                if(decayEnabled && balance !== 0.5) {
-                    if(stage.id === StageId.ATTACK) {
+                if (decayEnabled && balance !== 0.5) {
+                    if (stage.id === StageId.ATTACK) {
                         stageWidth = 2 * baseStageWidth * balance
-                    } else if(stage.id === StageId.DECAY) {
-                        stageWidth = 2 * baseStageWidth * (1-balance)
+                    } else if (stage.id === StageId.DECAY) {
+                        stageWidth = 2 * baseStageWidth * (1 - balance)
                     }
                 }
 
-                if(xOffset !== 0 && stage.id === offsetStage){
+                if (xOffset !== 0 && stage.id === offsetStage) {
                     if (index < stageCount) {
                         stageWidth = (1 - offsetInStage) * baseStageWidth
                     } else {
@@ -206,31 +265,22 @@ const Stages = ({ lfoId }: Props) => {
                 const enabled = stage.enabled
                 const content = <React.Fragment key={`stage${index}`}>
                     {enabled &&
-                    <>
-                      <rect x={startX} y={0} width={stageWidth} height={1} onClick={() => onSvgClicked(stage.id)}
-                            className={classNames('stages-background', {'stages-background--selected': currStageId === stage.id})}
+                        <>
+                            <rect x={startX} y={0} width={stageWidth} height={1} onClick={() => onSvgClicked(stage.id)}
+                                  className={classNames('stages-background', { 'stages-background--selected': currStageId === stage.id })}
 
-                      />
-                      <line
-                        x1={startX} y1={0}
-                        x2={startX} y2={1}
-                        className={'stages-divider'}
-                      />
-                    </>}
+                            />
+                            <line
+                                x1={startX} y1={0}
+                                x2={startX} y2={1}
+                                className={'stages-divider'}
+                            />
+                        </>}
                     {isLast && <line
-                      x1={startX + stageWidth} y1={0}
-                      x2={startX + stageWidth} y2={1}
-                      className={'stages-divider'}
+                        x1={startX + stageWidth} y1={0}
+                        x2={startX + stageWidth} y2={1}
+                        className={'stages-divider'}
                     />}
-                    <StageBlock
-                        x={startX}
-                        y={0}
-                        width={stageWidth}
-                        height={1}
-                        stage={stage}
-                        points={points[index]}
-                        yOffset={yOffset}
-                    />
                 </React.Fragment>
                 if (enabled) {
                     startX += stageWidth
@@ -238,6 +288,16 @@ const Stages = ({ lfoId }: Props) => {
                 return content
             })
         }
+
+        <StageBlock
+            x={0}
+            y={0}
+            width={1}
+            height={1}
+            stage={stages[StageId.ATTACK]}
+            points={allPoints}
+            yOffset={yOffset}
+        />
     </svg>
 }
 

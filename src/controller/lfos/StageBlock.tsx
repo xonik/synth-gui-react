@@ -26,12 +26,12 @@ const StageBlock = ({ x, y, width, height, stage, points }: Props) => {
     const svgPoints = useMemo(
         () => points
             .map((point) => mapToSvg(point))
-            .map((point) => {
+            /*.map((point) => {
                 // cut off top/bottom to stay within possible range
                 let y = point.y
                 if(y < 0) { y = 0 } else if(y > 1) { y = 1}
                 return { x: point.x, y }
-            }),
+            })*/,
         [points]
     )
 
