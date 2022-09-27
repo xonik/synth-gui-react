@@ -165,52 +165,61 @@ const Stages = ({ lfoId }: Props) => {
 
     // TODO: Issue when only having delay and attack
     if (offsetStage === StageId.ATTACK) {
-        allPoints.push(...origAttackPoints.slice(phasePoint + 1).map(
+        const a1points = origAttackPoints.slice(phasePoint + 1).map(
             (point) => {
                 startPoint += attackDelta
                 return { x: startPoint, y: point.y }
             }
-        ))
-        console.log(`Pushed (A) ${allPoints.length}`)
-        allPoints.push(...decayPoints.slice(1).map(
-            (point) => {
-                startPoint += delayDelta
-                return { x: startPoint, y: point.y }
-            }
-        ))
-        console.log(`Pushed (D) ${allPoints.length}`)
-        if (xOffset > 0) {
-            allPoints.push(...origAttackPoints.slice(1, phasePoint).map(
-                (point) => {
-                    startPoint += attackDelta
-                    return { x: startPoint, y: point.y }
-                })
-            )
-            console.log(`Pushed (A2) ${allPoints.length}`)
-        }
-    } else {
-        allPoints.push(...origDecayPoints.slice(phasePoint + 1).map(
+        )
+        allPoints.push(...a1points)
+        console.log(`Pushed (A) ${a1points.length}`, a1points)
+
+        const dPoints = decayPoints.slice(1).map(
             (point) => {
                 startPoint += decayDelta
                 return { x: startPoint, y: point.y }
             }
-        ))
-        console.log(`Pushed (D) ${allPoints.length}`)
-        allPoints.push(...origAttackPoints.slice(1).map(
+        )
+        allPoints.push(...dPoints)
+        console.log(`Pushed (D) ${dPoints.length}`, dPoints)
+
+        if (xOffset > 0) {
+            const a2Points = origAttackPoints.slice(1, phasePoint).map(
+                (point) => {
+                    startPoint += attackDelta
+                    return { x: startPoint, y: point.y }
+                })
+            allPoints.push(...a2Points )
+            console.log(`Pushed (A2) ${a2Points.length}`, a2Points)
+        }
+    } else {
+        const d1Points = origDecayPoints.slice(phasePoint + 1).map(
+            (point) => {
+                startPoint += decayDelta
+                return { x: startPoint, y: point.y }
+            }
+        )
+        allPoints.push(...d1Points)
+        console.log(`Pushed (D) ${d1Points.length}`, d1Points)
+
+        const aPoints = origAttackPoints.slice(1).map(
             (point) => {
                 startPoint += attackDelta
                 return { x: startPoint, y: point.y }
             }
-        ))
-        console.log(`Pushed (A) ${allPoints.length}`)
+        )
+        allPoints.push(...aPoints)
+        console.log(`Pushed (A) ${aPoints.length}`, aPoints)
+
         if (xOffset >= 0.5) {
-            allPoints.push(...origDecayPoints.slice(1, phasePoint).map(
+            const d2Points = origDecayPoints.slice(1, phasePoint).map(
                 (point) => {
                     startPoint += decayDelta
                     return {x: startPoint, y: point.y}
                 }
-            ))
-            console.log(`Pushed (D2) ${allPoints.length}`)
+            )
+            allPoints.push(...d2Points)
+            console.log(`Pushed (D2) ${d2Points.length}`, d2Points)
         }
     }
 
