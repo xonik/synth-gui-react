@@ -101,8 +101,8 @@ const Stages = ({ lfoId }: Props) => {
     const baseStageWidth = 1 / stageCount
 
     const delayDelta = delayEnabled ? baseStageWidth : 0
-    const attackDelta = baseStageWidth / keypoints
-    const decayDelta = decayEnabled ? baseStageWidth / keypoints : 0
+    const attackDelta = (baseStageWidth / keypoints) * 2 * balance
+    const decayDelta = decayEnabled ? (baseStageWidth / keypoints) * 2 * (1-balance) : 0
 
     let startX = 0
 
@@ -117,15 +117,16 @@ const Stages = ({ lfoId }: Props) => {
         [bipolar, invert, decayEnabled]
     )
 
+    // Stages used for calculating points on the line
+    const contourStages: Stage[] = useMemo(
+        () => [attackStage, decayStage, stoppedStage],
+        [attackStage, decayStage, stoppedStage]
+    )
 
-    const renderStages: Stage[] = []
+    // starting point in stage when not starting at beginning
     const phasePoint = xOffset !== 0 ? Math.floor(keypoints * offsetInStage) : 0
 
-    renderStages.push(attackStage)
-    renderStages.push(decayStage)
-    renderStages.push(stoppedStage) // TODO: This is probably very wrong when offset is set. Do it in getUnscaledLevels
-
-    const points = useMemo(() => renderStages.map((stage, index) => {
+    const points = useMemo(() => contourStages.map((stage, index) => {
         if (stage.id === StageId.STOPPED) {
             return []
         }
@@ -143,42 +144,66 @@ const Stages = ({ lfoId }: Props) => {
                 let y = point.y * scale + offset;
                 return { x: point.x, y }
             })
-    }), [depth, renderStages, stages, unscaledLevels, yOffset])
+    }), [depth, contourStages, stages, unscaledLevels, yOffset])
 
 
-    let startPoint = delayDelta
+    let firstPoints
+    let firstDelta: number
+    let secondPoints
+    let secondDelta: number
 
-    let firstPoints = offsetStage === StageId.ATTACK ? points[0] : points[1]
-    let secondPoints = offsetStage === StageId.ATTACK ? points[1] : points[0]
+    if(offsetStage === StageId.ATTACK) {
+        firstPoints = points[0]
+        firstDelta = attackDelta
+        secondPoints = points[1]
+        secondDelta = decayDelta
+
+    } else {
+        firstPoints = points[1]
+        firstDelta = decayDelta
+        secondPoints = points[0]
+        secondDelta = attackDelta
+    }
 
     const delayY = firstPoints[phasePoint].y
-    const delayPoints = [{x: 0, y: delayY}]
+    let currentX = delayDelta
 
-    delayEnabled ? delayPoints.push({x: delayDelta, y: delayY}) : delayPoints.push({x: 0, y: delayY})
-    const allPoints: Point[] = delayPoints
+    const sections: {from: number, to: number, id: StageId }[] = []
 
+    // calculate all points with correct x value. x has a range of 0 to 1.
+    const allPoints: Point[] = [{x: 0, y: delayY}, {x: delayEnabled ? delayDelta : 0, y: delayY}]
+    if(delayEnabled) sections.push({from: 0, to: currentX, id: StageId.DELAY})
+    let prevX = currentX;
     allPoints.push(...firstPoints.slice(phasePoint + 1).map(
         (point) => {
-            startPoint += attackDelta
-            return { x: startPoint, y: point.y }
+            currentX += firstDelta
+            return { x: currentX, y: point.y }
         }
     ))
+    sections.push({from: prevX, to: currentX, id: offsetStage})
+    prevX = currentX;
 
     allPoints.push(...secondPoints.slice(1).map(
         (point) => {
-            startPoint += decayDelta
-            return { x: startPoint, y: point.y }
+            currentX += secondDelta
+            return { x: currentX, y: point.y }
         }
     ))
+    if (decayEnabled) sections.push({from: prevX, to: currentX, id: offsetStage === StageId.ATTACK ? StageId.DECAY : StageId.ATTACK})
+    prevX = currentX;
 
     if (xOffset > 0) {
+        // If decay is not enabled, we need to add a point to get a fully vertical line
+        allPoints.push({x: currentX - (decayEnabled ? 0 : secondDelta), y: firstPoints[0].y})
         allPoints.push(...firstPoints.slice(1, phasePoint).map(
             (point) => {
-                startPoint += attackDelta
-                return { x: startPoint, y: point.y }
+                currentX += firstDelta
+                return { x: currentX, y: point.y }
             }))
+        sections.push({from: prevX, to: currentX, id: offsetStage})
     }
 
+    //TODO Test with balance 0.75
     return <svg x={0} y={0}>
         {
             <line
@@ -188,53 +213,26 @@ const Stages = ({ lfoId }: Props) => {
             />
         }
         {
-            renderStages.map((stage, index) => {
-                if (stage.id === StageId.STOPPED) {
-                    return null
-                }
-
-                let stageWidth = baseStageWidth
-                if (decayEnabled && balance !== 0.5) {
-                    if (stage.id === StageId.ATTACK) {
-                        stageWidth = 2 * baseStageWidth * balance
-                    } else if (stage.id === StageId.DECAY) {
-                        stageWidth = 2 * baseStageWidth * (1 - balance)
-                    }
-                }
-
-                if (xOffset !== 0 && stage.id === offsetStage) {
-                    if (index < stageCount) {
-                        stageWidth = (1 - offsetInStage) * baseStageWidth
-                    } else {
-                        stageWidth = offsetInStage * baseStageWidth
-                    }
-                }
-
+            sections.map(({from, to, id}, index) => {
                 const isLast = index === stages.length - 2
-                const enabled = stage.enabled
-                const content = <React.Fragment key={`stage${index}`}>
-                    {enabled &&
-                        <>
-                            <rect x={startX} y={0} width={stageWidth} height={1} onClick={() => onSvgClicked(stage.id)}
-                                  className={classNames('stages-background', { 'stages-background--selected': currStageId === stage.id })}
+                return <React.Fragment key={`stage${index}`}>
+                    <>
+                        <rect x={from} y={0} width={to - from} height={1} onClick={() => onSvgClicked(id)}
+                              className={classNames('stages-background', { 'stages-background--selected': currStageId === id })}
 
-                            />
-                            <line
-                                x1={startX} y1={0}
-                                x2={startX} y2={1}
-                                className={'stages-divider'}
-                            />
-                        </>}
+                        />
+                        <line
+                            x1={from} y1={0}
+                            x2={from} y2={1}
+                            className={'stages-divider'}
+                        />
+                    </>
                     {isLast && <line
-                        x1={startX + stageWidth} y1={0}
-                        x2={startX + stageWidth} y2={1}
+                        x1={to} y1={0}
+                        x2={to} y2={1}
                         className={'stages-divider'}
                     />}
                 </React.Fragment>
-                if (enabled) {
-                    startX += stageWidth
-                }
-                return content
             })
         }
 
