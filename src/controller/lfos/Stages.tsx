@@ -6,23 +6,13 @@ import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import classNames from 'classnames'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { selectController, selectLfoStages } from '../../synthcore/modules/controllers/controllersReducer'
-import './Stages.scss'
 import { getPoints, keypoints } from './utils'
 import { curveFuncs } from '../../components/curves/curveCalculator'
 import { Point } from '../../utils/types'
+import './Stages.scss'
 
 interface Props {
     lfoId: number
-}
-
-const getNextEnabled = (stages: Stage[], currentId: StageId) => {
-    for (let i = currentId + 1; i < stages.length; i++) {
-        const stage = stages[i]
-        if (stage.enabled) {
-            return stage
-        }
-    }
-    return stages[StageId.STOPPED]
 }
 
 const getUnscaledLevels = (bipolar: boolean, invert: boolean, decayEnabled: boolean) => {
@@ -47,15 +37,10 @@ const getUnscaledLevels = (bipolar: boolean, invert: boolean, decayEnabled: bool
         }
     }
 
-    return {
-        [StageId.DELAY]: attackLevel,
-        [StageId.ATTACK]: attackLevel,
-        [StageId.DECAY]: decayLevel,
-        [StageId.STOPPED]: decayEnabled ? attackLevel : decayLevel,
-    }
+    // Levels for Delay, Attack, Decay and Stop
+    return [attackLevel, attackLevel, decayLevel, decayEnabled ? attackLevel : decayLevel]
 }
 
-// Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
 const Stages = ({ lfoId }: Props) => {
 
     const select = useAppSelector;
@@ -66,8 +51,8 @@ const Stages = ({ lfoId }: Props) => {
     const yOffset = select(selectController(lfoCtrls.LEVEL_OFFSET, lfoId))
     const xOffset = select(selectController(lfoCtrls.PHASE_OFFSET, lfoId))
 
-
     const depth = select(selectController(lfoCtrls.DEPTH, lfoId))
+
     let balance = select(selectController(lfoCtrls.BALANCE, lfoId))
     if (balance < 0.005) balance = 0.005;
     if (balance > 0.995) balance = 0.995;
@@ -96,7 +81,6 @@ const Stages = ({ lfoId }: Props) => {
         }
     }
 
-
     const stageCount = 1 + (delayEnabled ? 1 : 0) + (decayEnabled ? 1 : 0)
     const baseStageWidth = 1 / stageCount
 
@@ -122,20 +106,16 @@ const Stages = ({ lfoId }: Props) => {
             return []
         }
 
-        const points = getPoints(curveFuncs[stage.curve])
+        const yValues = getPoints(curveFuncs[stage.curve])
 
         const level = unscaledLevels[stage.id] * depth
-        const nextLevel = unscaledLevels[getNextEnabled(stages, stage.id).id] * depth
+        const nextLevel = unscaledLevels[stage.id + 1] * depth
 
         const offset = level + yOffset;
         const scale = nextLevel - level
 
-        return points
-            .map((point) => {
-                let y = point.y * scale + offset;
-                return { x: point.x, y }
-            })
-    }), [depth, contourStages, stages, unscaledLevels, yOffset])
+        return yValues.map((yValue) => yValue * scale + offset)
+    }), [depth, contourStages, unscaledLevels, yOffset])
 
 
     // calculate all points with correct x value. x has a range of 0 to 1.
@@ -143,73 +123,76 @@ const Stages = ({ lfoId }: Props) => {
 
         const delayDelta = delayEnabled ? baseStageWidth : 0
         const attackDelta = (baseStageWidth / keypoints) * (decayEnabled ? 2 * balance : 1)
-        const decayDelta = decayEnabled ? (baseStageWidth / keypoints) * 2 * (1-balance) : 0
+        const decayDelta = decayEnabled ? (baseStageWidth / keypoints) * 2 * (1 - balance) : 0
 
-        let firstPoints
-        let firstDelta: number
-        let secondPoints
-        let secondDelta: number
+        let firstYValues
+        let firstXDelta: number
+        let secondYValues
+        let secondXDelta: number
 
-        const sections: {from: number, to: number, id: StageId }[] = []
+        const sections: { from: number, to: number, id: StageId }[] = []
 
         // Starting point in stage when not starting at beginning
         const phasePoint = xOffset !== 0 ? Math.floor(keypoints * offsetInStage) : 0
-        if(offsetStage === StageId.ATTACK) {
-            firstPoints = pointsPerStage[0]
-            firstDelta = attackDelta
-            secondPoints = pointsPerStage[1]
-            secondDelta = decayDelta
+        if (offsetStage === StageId.ATTACK) {
+            firstYValues = pointsPerStage[0]
+            firstXDelta = attackDelta
+            secondYValues = pointsPerStage[1]
+            secondXDelta = decayDelta
 
         } else {
-            firstPoints = pointsPerStage[1]
-            firstDelta = decayDelta
-            secondPoints = pointsPerStage[0]
-            secondDelta = attackDelta
+            firstYValues = pointsPerStage[1]
+            firstXDelta = decayDelta
+            secondYValues = pointsPerStage[0]
+            secondXDelta = attackDelta
         }
 
-        const delayY = firstPoints[phasePoint].y
+        const delayY = firstYValues[phasePoint]
         let currentX = delayDelta
 
-        const allPoints: Point[] = [{x: 0, y: delayY}, {x: delayEnabled ? delayDelta : 0, y: delayY}]
-        if(delayEnabled) sections.push({from: 0, to: currentX, id: StageId.DELAY})
+        const allPoints: Point[] = [{ x: 0, y: delayY }, { x: delayEnabled ? delayDelta : 0, y: delayY }]
+        if (delayEnabled) sections.push({ from: 0, to: currentX, id: StageId.DELAY })
         let prevX = currentX;
-        allPoints.push(...firstPoints.slice(phasePoint + 1).map(
-            (point) => {
-                currentX += firstDelta
-                return { x: currentX, y: point.y }
+        allPoints.push(...firstYValues.slice(phasePoint + 1).map(
+            (yValue) => {
+                currentX += firstXDelta
+                return { x: currentX, y: yValue }
             }
         ))
 
         // TODO: There is something wrong with the deltas here isn't it? We should start at point 0 for the
         // second section and end at the last point minus 1 instead.
-        sections.push({from: prevX, to: currentX, id: offsetStage})
+        sections.push({ from: prevX, to: currentX, id: offsetStage })
         prevX = currentX;
 
-        allPoints.push(...secondPoints.slice(1).map(
-            (point) => {
-                currentX += secondDelta
-                return { x: currentX, y: point.y }
+        allPoints.push(...secondYValues.slice(1).map(
+            (yValue) => {
+                currentX += secondXDelta
+                return { x: currentX, y: yValue }
             }
         ))
-        if (decayEnabled) sections.push({from: prevX, to: currentX, id: offsetStage === StageId.ATTACK ? StageId.DECAY : StageId.ATTACK})
+        if (decayEnabled) sections.push({
+            from: prevX,
+            to: currentX,
+            id: offsetStage === StageId.ATTACK ? StageId.DECAY : StageId.ATTACK
+        })
         prevX = currentX;
 
         if (xOffset > 0) {
             // If decay is not enabled, we need to add a point to get a fully vertical line
             // TODO: sjekk hvorfor det blir rett å bruke y fra firstPoints[0]???
-            allPoints.push({x: currentX - (decayEnabled ? 0 : secondDelta), y: firstPoints[0].y})
-            allPoints.push(...firstPoints.slice(1, phasePoint).map(
-                (point) => {
-                    currentX += firstDelta
-                    return { x: currentX, y: point.y }
+            allPoints.push({ x: currentX - (decayEnabled ? 0 : secondXDelta), y: firstYValues[0] })
+            allPoints.push(...firstYValues.slice(1, phasePoint).map(
+                (yValue) => {
+                    currentX += firstXDelta
+                    return { x: currentX, y: yValue }
                 }))
-            sections.push({from: prevX, to: currentX, id: offsetStage})
+            sections.push({ from: prevX, to: currentX, id: offsetStage })
         }
         return [allPoints, sections]
     }, [balance, baseStageWidth, decayEnabled, delayEnabled, offsetInStage, offsetStage, pointsPerStage, xOffset])
 
 
-    //TODO Test with balance 0.75
     return <svg x={0} y={0}>
         {
             <line
@@ -219,7 +202,7 @@ const Stages = ({ lfoId }: Props) => {
             />
         }
         {
-            sections.map(({from, to, id}, index) => {
+            sections.map(({ from, to, id }, index) => {
                 const isLast = index === stages.length - 2
                 return <React.Fragment key={`stage${index}`}>
                     <>

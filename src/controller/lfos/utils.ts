@@ -1,5 +1,4 @@
 import { getScaledPoints } from '../../components/curves/curveCalculator'
-import { Point } from '../../utils/types'
 import { Curve, LoopMode, StageId } from '../../synthcore/modules/lfo/types'
 
 export const keypoints = 64;
@@ -9,14 +8,7 @@ export const keypoints = 64;
 // warp between graphs, but the points before start and after end are all at the same location
 export const getPoints = (
     curveFunc: (x: number) => number,
-): Point[] => {
-    // @ts-ignore
-    return getScaledPoints(curveFunc, 1, keypoints, false)
-        .map((point, index) => {
-            return {x: index / keypoints, y: point}
-        })
-        .filter((point) => point !== null)
-}
+): number[] => getScaledPoints(curveFunc, 1, keypoints, false)
 
 
 export const stageNames = {
