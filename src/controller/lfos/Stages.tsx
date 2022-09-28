@@ -100,12 +100,6 @@ const Stages = ({ lfoId }: Props) => {
     const stageCount = 1 + (delayEnabled ? 1 : 0) + (decayEnabled ? 1 : 0)
     const baseStageWidth = 1 / stageCount
 
-    const delayDelta = delayEnabled ? baseStageWidth : 0
-    const attackDelta = (baseStageWidth / keypoints) * 2 * balance
-    const decayDelta = decayEnabled ? (baseStageWidth / keypoints) * 2 * (1-balance) : 0
-
-    let startX = 0
-
     const currStageId = select(selectCurrGuiStageId);
 
     const onSvgClicked = useCallback((stageId: number) => {
@@ -123,10 +117,7 @@ const Stages = ({ lfoId }: Props) => {
         [attackStage, decayStage, stoppedStage]
     )
 
-    // starting point in stage when not starting at beginning
-    const phasePoint = xOffset !== 0 ? Math.floor(keypoints * offsetInStage) : 0
-
-    const points = useMemo(() => contourStages.map((stage, index) => {
+    const pointsPerStage = useMemo(() => contourStages.map((stage, index) => {
         if (stage.id === StageId.STOPPED) {
             return []
         }
@@ -147,61 +138,76 @@ const Stages = ({ lfoId }: Props) => {
     }), [depth, contourStages, stages, unscaledLevels, yOffset])
 
 
-    let firstPoints
-    let firstDelta: number
-    let secondPoints
-    let secondDelta: number
-
-    if(offsetStage === StageId.ATTACK) {
-        firstPoints = points[0]
-        firstDelta = attackDelta
-        secondPoints = points[1]
-        secondDelta = decayDelta
-
-    } else {
-        firstPoints = points[1]
-        firstDelta = decayDelta
-        secondPoints = points[0]
-        secondDelta = attackDelta
-    }
-
-    const delayY = firstPoints[phasePoint].y
-    let currentX = delayDelta
-
-    const sections: {from: number, to: number, id: StageId }[] = []
-
     // calculate all points with correct x value. x has a range of 0 to 1.
-    const allPoints: Point[] = [{x: 0, y: delayY}, {x: delayEnabled ? delayDelta : 0, y: delayY}]
-    if(delayEnabled) sections.push({from: 0, to: currentX, id: StageId.DELAY})
-    let prevX = currentX;
-    allPoints.push(...firstPoints.slice(phasePoint + 1).map(
-        (point) => {
-            currentX += firstDelta
-            return { x: currentX, y: point.y }
-        }
-    ))
-    sections.push({from: prevX, to: currentX, id: offsetStage})
-    prevX = currentX;
+    const [allPoints, sections] = useMemo(() => {
 
-    allPoints.push(...secondPoints.slice(1).map(
-        (point) => {
-            currentX += secondDelta
-            return { x: currentX, y: point.y }
-        }
-    ))
-    if (decayEnabled) sections.push({from: prevX, to: currentX, id: offsetStage === StageId.ATTACK ? StageId.DECAY : StageId.ATTACK})
-    prevX = currentX;
+        const delayDelta = delayEnabled ? baseStageWidth : 0
+        const attackDelta = (baseStageWidth / keypoints) * (decayEnabled ? 2 * balance : 1)
+        const decayDelta = decayEnabled ? (baseStageWidth / keypoints) * 2 * (1-balance) : 0
 
-    if (xOffset > 0) {
-        // If decay is not enabled, we need to add a point to get a fully vertical line
-        allPoints.push({x: currentX - (decayEnabled ? 0 : secondDelta), y: firstPoints[0].y})
-        allPoints.push(...firstPoints.slice(1, phasePoint).map(
+        let firstPoints
+        let firstDelta: number
+        let secondPoints
+        let secondDelta: number
+
+        const sections: {from: number, to: number, id: StageId }[] = []
+
+        // Starting point in stage when not starting at beginning
+        const phasePoint = xOffset !== 0 ? Math.floor(keypoints * offsetInStage) : 0
+        if(offsetStage === StageId.ATTACK) {
+            firstPoints = pointsPerStage[0]
+            firstDelta = attackDelta
+            secondPoints = pointsPerStage[1]
+            secondDelta = decayDelta
+
+        } else {
+            firstPoints = pointsPerStage[1]
+            firstDelta = decayDelta
+            secondPoints = pointsPerStage[0]
+            secondDelta = attackDelta
+        }
+
+        const delayY = firstPoints[phasePoint].y
+        let currentX = delayDelta
+
+        const allPoints: Point[] = [{x: 0, y: delayY}, {x: delayEnabled ? delayDelta : 0, y: delayY}]
+        if(delayEnabled) sections.push({from: 0, to: currentX, id: StageId.DELAY})
+        let prevX = currentX;
+        allPoints.push(...firstPoints.slice(phasePoint + 1).map(
             (point) => {
                 currentX += firstDelta
                 return { x: currentX, y: point.y }
-            }))
+            }
+        ))
+
+        // TODO: There is something wrong with the deltas here isn't it? We should start at point 0 for the
+        // second section and end at the last point minus 1 instead.
         sections.push({from: prevX, to: currentX, id: offsetStage})
-    }
+        prevX = currentX;
+
+        allPoints.push(...secondPoints.slice(1).map(
+            (point) => {
+                currentX += secondDelta
+                return { x: currentX, y: point.y }
+            }
+        ))
+        if (decayEnabled) sections.push({from: prevX, to: currentX, id: offsetStage === StageId.ATTACK ? StageId.DECAY : StageId.ATTACK})
+        prevX = currentX;
+
+        if (xOffset > 0) {
+            // If decay is not enabled, we need to add a point to get a fully vertical line
+            // TODO: sjekk hvorfor det blir rett å bruke y fra firstPoints[0]???
+            allPoints.push({x: currentX - (decayEnabled ? 0 : secondDelta), y: firstPoints[0].y})
+            allPoints.push(...firstPoints.slice(1, phasePoint).map(
+                (point) => {
+                    currentX += firstDelta
+                    return { x: currentX, y: point.y }
+                }))
+            sections.push({from: prevX, to: currentX, id: offsetStage})
+        }
+        return [allPoints, sections]
+    }, [balance, baseStageWidth, decayEnabled, delayEnabled, offsetInStage, offsetStage, pointsPerStage, xOffset])
+
 
     //TODO Test with balance 0.75
     return <svg x={0} y={0}>
