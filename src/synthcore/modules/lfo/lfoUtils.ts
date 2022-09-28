@@ -96,10 +96,10 @@ export const getDefaultLfo = (lfoId: number): Controllers => {
         invert: false,
         bipolar: true,
         time: 1,
-        balance: 0.25,
+        balance: 0.5,
         depth: 1,
-        offset: -0.25,
-        phaseOffset: 0.25,
+        offset: 0,
+        phaseOffset: 0,
         randomPhase: false,
 
         timeOffset: 0,

@@ -150,13 +150,16 @@ const Stages = ({ lfoId }: Props) => {
         const delayY = firstYValues[phasePoint]
         let currentX = delayDelta
 
-        const allPoints: Point[] = [{ x: 0, y: delayY }, { x: delayEnabled ? delayDelta : 0, y: delayY }]
-        if (delayEnabled) sections.push({ from: 0, to: currentX, id: StageId.DELAY })
+        const allPoints: Point[] = [{ x: 0, y: delayY }]
+        if (delayEnabled) {
+            sections.push({ from: 0, to: currentX, id: StageId.DELAY })
+        }
         let prevX = currentX;
-        allPoints.push(...firstYValues.slice(phasePoint + 1).map(
+        allPoints.push(...firstYValues.slice(phasePoint, firstYValues.length - 1).map(
             (yValue) => {
+                const point = { x: currentX, y: yValue }
                 currentX += firstXDelta
-                return { x: currentX, y: yValue }
+                return point
             }
         ))
 
@@ -165,10 +168,11 @@ const Stages = ({ lfoId }: Props) => {
         sections.push({ from: prevX, to: currentX, id: offsetStage })
         prevX = currentX;
 
-        allPoints.push(...secondYValues.slice(1).map(
+        allPoints.push(...secondYValues.slice(0, secondYValues.length - 1).map(
             (yValue) => {
+                const point = { x: currentX, y: yValue }
                 currentX += secondXDelta
-                return { x: currentX, y: yValue }
+                return point
             }
         ))
         if (decayEnabled) sections.push({
@@ -179,19 +183,19 @@ const Stages = ({ lfoId }: Props) => {
         prevX = currentX;
 
         if (xOffset > 0) {
-            // If decay is not enabled, we need to add a point to get a fully vertical line
-            // TODO: sjekk hvorfor det blir rett å bruke y fra firstPoints[0]???
-            allPoints.push({ x: currentX - (decayEnabled ? 0 : secondXDelta), y: firstYValues[0] })
-            allPoints.push(...firstYValues.slice(1, phasePoint).map(
+            // If decay is not enabled, we need to add a point to get a fully vertical line. To keep the number of
+            // points the same on change we always add this point.
+            allPoints.push({ x: currentX, y: firstYValues[0] })
+            allPoints.push(...firstYValues.slice(0, phasePoint+1).map(
                 (yValue) => {
+                    const point = { x: currentX, y: yValue }
                     currentX += firstXDelta
-                    return { x: currentX, y: yValue }
+                    return point
                 }))
-            sections.push({ from: prevX, to: currentX, id: offsetStage })
+            sections.push({ from: prevX, to: currentX - firstXDelta, id: offsetStage })
         }
         return [allPoints, sections]
     }, [balance, baseStageWidth, decayEnabled, delayEnabled, offsetInStage, offsetStage, pointsPerStage, xOffset])
-
 
     return <svg x={0} y={0}>
         {
@@ -203,7 +207,7 @@ const Stages = ({ lfoId }: Props) => {
         }
         {
             sections.map(({ from, to, id }, index) => {
-                const isLast = index === stages.length - 2
+                const isLast = index === sections.length - 1
                 return <React.Fragment key={`stage${index}`}>
                     <>
                         <rect x={from} y={0} width={to - from} height={1} onClick={() => onSvgClicked(id)}
