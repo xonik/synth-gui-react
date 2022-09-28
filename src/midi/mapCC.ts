@@ -120,6 +120,7 @@ const mapCC = {
     MOD_SRC_ID: 116,
     MOD_DST_ID: 117,
     MOD_DST_INDEX: 118, // Used when there are multiple modules using same dst, such as LFOs and envs
+    MAIN_POT7: 119,
     // 120 - 127 reserved for channel mode messages
 }
 

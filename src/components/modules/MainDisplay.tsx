@@ -34,7 +34,7 @@ const MainDisplay = React.forwardRef<SVGRectElement, Props>(({ x, y }, displayRe
     const buttonSpacing = 30
     const buttonRow = y - 25
 
-    const potSpacing = 35
+    const potSpacing = 30
     const potRow = y + displayHeight + 30
     const masterPotRow = potRow + 55
     const ctrlSwitchesRow1 = masterPotRow - 10
@@ -86,40 +86,46 @@ const MainDisplay = React.forwardRef<SVGRectElement, Props>(({ x, y }, displayRe
         />
         <Display x={x} y={y} width={displayWidth} height={displayHeight} ref={displayRef}/>
 
-        <RotaryPotWOLeds10 x={displayCenter - 2 * potSpacing} y={potRow}
+        <RotaryPotWOLeds10 x={displayCenter - 2.5 * potSpacing} y={potRow}
                            silver
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
                            ctrl={mainDisplayControllers.POT1}
                            resolution={getPotResolution(mainDisplayControllers.POT1.id, currScreen)}
         />
-        <RotaryPotWOLeds10 x={displayCenter - 1 * potSpacing} y={potRow}
+        <RotaryPotWOLeds10 x={displayCenter - 1.5 * potSpacing} y={potRow}
                            silver
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
                            ctrl={mainDisplayControllers.POT2}
                            resolution={getPotResolution(mainDisplayControllers.POT2.id, currScreen)}
         />
-        <RotaryPotWOLeds10 x={displayCenter} y={potRow}
+        <RotaryPotWOLeds10 x={displayCenter - 0.5 * potSpacing} y={potRow}
                            silver
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
                            ctrl={mainDisplayControllers.POT3}
                            resolution={getPotResolution(mainDisplayControllers.POT3.id, currScreen)}
         />
-        <RotaryPotWOLeds10 x={displayCenter + 1 * potSpacing} y={potRow}
+        <RotaryPotWOLeds10 x={displayCenter + 0.5 * potSpacing} y={potRow}
                            silver
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
                            ctrl={mainDisplayControllers.POT4}
                            resolution={getPotResolution(mainDisplayControllers.POT4.id, currScreen)}
         />
-        <RotaryPotWOLeds10 x={displayCenter + 2 * potSpacing} y={potRow}
+        <RotaryPotWOLeds10 x={displayCenter + 1.5 * potSpacing} y={potRow}
                            silver
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
                            ctrl={mainDisplayControllers.POT5}
                            resolution={getPotResolution(mainDisplayControllers.POT5.id, currScreen)}
         />
-        <RotaryPotWOLeds24 x={displayCenter} y={masterPotRow}
+        <RotaryPotWOLeds10 x={displayCenter + 2.5 * potSpacing} y={potRow}
+                           silver
                            ctrlGroup={ControllerGroupIds.MAIN_DISP}
                            ctrl={mainDisplayControllers.POT6}
                            resolution={getPotResolution(mainDisplayControllers.POT6.id, currScreen)}
+        />
+        <RotaryPotWOLeds24 x={displayCenter} y={masterPotRow}
+                           ctrlGroup={ControllerGroupIds.MAIN_DISP}
+                           ctrl={mainDisplayControllers.POT7}
+                           resolution={getPotResolution(mainDisplayControllers.POT7.id, currScreen)}
         />
 
         <RoundPushButton8 x={displayCenter - 2.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Home" labelPosition="bottom"

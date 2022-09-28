@@ -11,6 +11,7 @@ interface MainDisplayControllers {
     POT4: ControllerConfigCC,
     POT5: ControllerConfigCC,
     POT6: ControllerConfigCC,
+    POT7: ControllerConfigCC,
 
     GROUP_MENU: ControllerConfigCCWithValue
     FUNC_HOME: ControllerConfigCCWithValue
@@ -31,6 +32,7 @@ const mainDisplayControllers: MainDisplayControllers = {
     POT4: { id: ControllerIdNonModPots.MAIN_DISP_POT4, label: 'Pot 4', type: 'pot', cc: CC.MAIN_POT4 },
     POT5: { id: ControllerIdNonModPots.MAIN_DISP_POT5, label: 'Pot 5', type: 'pot', cc: CC.MAIN_POT5 },
     POT6: { id: ControllerIdNonModPots.MAIN_DISP_POT6, label: 'Main pot', type: 'pot', cc: CC.MAIN_POT6 },
+    POT7: { id: ControllerIdNonModPots.MAIN_DISP_POT7, label: 'Main pot', type: 'pot', cc: CC.MAIN_POT7 },
 
     GROUP_MENU: {
         id: ControllerIdNonMod.MAIN_DISP_GROUP_MENU,

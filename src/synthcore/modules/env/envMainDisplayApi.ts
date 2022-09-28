@@ -13,8 +13,9 @@ export const mainDisplayEnvPotResolutions = {
     [mainDisplayControllers.POT2.id]: 1000, // Time
     [mainDisplayControllers.POT3.id]: 1000, // Level
     [mainDisplayControllers.POT4.id]: 8, // Curve
-    [mainDisplayControllers.POT5.id]: 32, // Loops
-    [mainDisplayControllers.POT6.id]: 1000,
+    [mainDisplayControllers.POT5.id]: 100,
+    [mainDisplayControllers.POT6.id]: 32, // Loops
+    [mainDisplayControllers.POT7.id]: 1000,
 }
 
 export const mainDisplayEnvApi = {
@@ -54,6 +55,7 @@ export const mainDisplayEnvApi = {
                     source: ApiSource.UI})
             }
         } else if (ctrlId === mainDisplayControllers.POT5.id) {
+        } else if (ctrlId === mainDisplayControllers.POT6.id) {
             const loopMode = selectController(envCtrls.LOOP_MODE, envId)(store.getState())
             if (loopMode !== LoopMode.COUNTED) {
                 return
@@ -63,7 +65,7 @@ export const mainDisplayEnvApi = {
                 ctrlIndex: envId,
                 value: step(increment),
                 source: ApiSource.UI})
-        } else if (ctrlId === mainDisplayControllers.POT6.id) {
+        } else if (ctrlId === mainDisplayControllers.POT7.id) {
 
         }
     }

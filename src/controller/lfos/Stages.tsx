@@ -15,6 +15,27 @@ interface Props {
     lfoId: number
 }
 
+/*
+
+Info:
+-----
+Level:  50%   Delay: 0    Bal:  A: 20 D: 80   Offset: -20%
+Freq: 500Hz   D lev: 23   Tim   A: 3s D: 7s   Phase:   100
+
+
+Pots:
+-----
+1) LFO
+2) Freq / delay time
+3) Level / Offset,
+4) Balance / Phase
+5) Curve / Loops
+
+Eller ha seks params og ha separat curve/loops
+
+For ENV: ekstra pot for offset etter
+ */
+
 const getUnscaledLevels = (bipolar: boolean, invert: boolean, decayEnabled: boolean) => {
     let attackLevel;
     let decayLevel;
@@ -125,15 +146,17 @@ const Stages = ({ lfoId }: Props) => {
         const attackDelta = (baseStageWidth / keypoints) * (decayEnabled ? 2 * balance : 1)
         const decayDelta = decayEnabled ? (baseStageWidth / keypoints) * 2 * (1 - balance) : 0
 
-        let firstYValues
+        let firstYValues: number[]
         let firstXDelta: number
-        let secondYValues
+        let secondYValues: number[]
         let secondXDelta: number
 
         const sections: { from: number, to: number, id: StageId }[] = []
 
         // Starting point in stage when not starting at beginning
-        const phasePoint = xOffset !== 0 ? Math.floor(keypoints * offsetInStage) : 0
+        let phasePoint = xOffset !== 0 ? Math.floor(keypoints * offsetInStage) : 0
+        //TODO: Test if this feels right or not - if(phasePoint === keypoints) phasePoint = 0
+
         if (offsetStage === StageId.ATTACK) {
             firstYValues = pointsPerStage[0]
             firstXDelta = attackDelta
@@ -147,14 +170,14 @@ const Stages = ({ lfoId }: Props) => {
             secondXDelta = attackDelta
         }
 
-        // calculate points for all stages. stages that are disabled will have all points in the same position.
+        // Calculate points for all stages. Stages that are disabled will have all points in the same position.
         // This is necessary to be able to morph between LFOs with different number of stages activated.
 
         // Delay stage points
-        const delayY = firstYValues[phasePoint]
-        const points: Point[] = [{ x: 0, y: delayY }]
+        const points: Point[] = [{ x: 0, y: firstYValues[phasePoint] }]
 
-        let currentX = delayDelta // delta will be 0 if delay is disabled
+        // Delta will be 0 if delay is disabled
+        let currentX = delayDelta
 
         // Delay stage rectangle
         if (delayEnabled) {
@@ -197,18 +220,19 @@ const Stages = ({ lfoId }: Props) => {
         prevX = currentX;
 
         // Second partial stage
-        if (xOffset > 0) {
-            // If decay is not enabled, we need to add a point to get a fully vertical line. To keep the number of
-            // points the same on change we always add this point.
-            points.push({ x: currentX, y: firstYValues[0] })
-            points.push(...firstYValues.slice(0, phasePoint+1).map(
-                (yValue) => {
-                    const point = { x: currentX, y: yValue }
-                    currentX += firstXDelta
-                    return point
-                }))
-            sections.push({ from: prevX, to: currentX - firstXDelta, id: offsetStage })
-        }
+        // If decay is not enabled, we need to add a point to get a fully vertical line. To keep the number of
+        // points the same on change we always add this point.
+        //points.push({ x: currentX, y: decayEnabled ? firstYValues[0] : firstYValues[firstYValues.length-1]})
+        points.push(...firstYValues.slice(0, phasePoint+1).map(
+            (yValue) => {
+                // Prevent a vertical line on the last point if phase is 0 and decay is disabled
+                const y = (!decayEnabled && phasePoint === 0 ? firstYValues[firstYValues.length-1] : yValue)
+                const point = { x: currentX, y }
+                currentX += firstXDelta
+                return point
+            }))
+        sections.push({ from: prevX, to: currentX - firstXDelta, id: offsetStage })
+
         return [points, sections]
 
     }, [balance, baseStageWidth, decayEnabled, delayEnabled, offsetInStage, offsetStage, pointsPerStage, xOffset])

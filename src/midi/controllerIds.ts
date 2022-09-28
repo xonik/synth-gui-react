@@ -171,6 +171,7 @@ export enum ControllerIdNonModPots {
     MAIN_DISP_POT4,
     MAIN_DISP_POT5,
     MAIN_DISP_POT6,
+    MAIN_DISP_POT7,
     OUT_VOLUME,
     OUT_SPREAD,
     OUT_HEADPHONES,
@@ -181,7 +182,7 @@ export const FIRST_NON_MOD = FIRST_NON_MOD_POTS + NON_MOD_POTS_COUNT
 
 export enum ControllerIdNonMod {
     // Non-modulatable controllers
-    DCO1_SYNC = 116,
+    DCO1_SYNC = 117,
     DCO1_MODE,
     DCO1_SUB_WAVE,
     DCO1_WHEEL,
@@ -298,7 +299,7 @@ export enum ControllerIdNonMod {
 }
 
 export enum ControllerIdEnvNonMod {
-  ENV_RESET_ON_TRIGGER= 209,
+  ENV_RESET_ON_TRIGGER= 210,
   ENV_RELEASE_MODE,
   ENV_LOOP_MODE,
   ENV_MAX_LOOPS,
@@ -310,13 +311,13 @@ export enum ControllerIdEnvNonMod {
 export const ENV_NON_MOD_COUNT = Object.keys(ControllerIdEnvNonMod).filter(o => isNaN(o as any)).length
 
 export enum ControllerIdEnvStageNonMod {
-  ENV_CURVE = 217,
+  ENV_CURVE = 218,
   ENV_TOGGLE_STAGE,
 }
 export const ENV_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdEnvStageNonMod).filter(o => isNaN(o as any)).length
 
 export enum ControllerIdLfoNonMod {
-  LFO_SHAPE = 219,
+  LFO_SHAPE = 220,
   LFO_SYNC,
   LFO_RESET,
   LFO_BIPOLAR,
@@ -334,7 +335,7 @@ export enum ControllerIdLfoNonMod {
 export const LFO_NON_MOD_COUNT = Object.keys(ControllerIdLfoNonMod).filter(o => isNaN(o as any)).length
 
 export enum ControllerIdLfoStageNonMod {
-  LFO_CURVE = 233,
+  LFO_CURVE = 234,
   LFO_TOGGLE_STAGE,
 }
 export const LFO_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdLfoStageNonMod).filter(o => isNaN(o as any)).length

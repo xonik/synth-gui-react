@@ -15,6 +15,7 @@ export const mainDisplayLfoPotResolutions = {
     [mainDisplayControllers.POT4.id]: 8,
     [mainDisplayControllers.POT5.id]: 32,
     [mainDisplayControllers.POT6.id]: 1000,
+    [mainDisplayControllers.POT7.id]: 1000,
 }
 
 export const mainDisplayLfoApi = {
@@ -55,6 +56,7 @@ export const mainDisplayLfoApi = {
                 value: step(increment),
                 source: ApiSource.UI})            
         } else if (ctrlId === mainDisplayControllers.POT6.id) {
+        } else if (ctrlId === mainDisplayControllers.POT7.id) {
         }
     }
 }

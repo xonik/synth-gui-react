@@ -10,6 +10,7 @@ export const mainDisplayModsPotResolutions = {
     [mainDisplayControllers.POT4.id]: 16,
     [mainDisplayControllers.POT5.id]: 100,
     [mainDisplayControllers.POT6.id]: 1000,
+    [mainDisplayControllers.POT7.id]: 1000,
 }
 
 export const mainDisplayModsApi = {
@@ -25,6 +26,7 @@ export const mainDisplayModsApi = {
         } else if (ctrlId === mainDisplayControllers.POT5.id) {
             modsApi.incrementGuiModValue(increment, ApiSource.UI)
         } else if (ctrlId === mainDisplayControllers.POT6.id) {
+        } else if (ctrlId === mainDisplayControllers.POT7.id) {
 
         }
     }
