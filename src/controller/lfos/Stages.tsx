@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 import { Stage, StageId } from '../../synthcore/modules/lfo/types'
-import StageBlock from './StageBlock'
+import StagesCurve from './StagesCurve'
 import { selectCurrGuiStageId, toggleStageSelected, } from '../../synthcore/modules/lfo/lfoReducer'
 import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import classNames from 'classnames'
@@ -119,7 +119,7 @@ const Stages = ({ lfoId }: Props) => {
 
 
     // calculate all points with correct x value. x has a range of 0 to 1.
-    const [allPoints, sections] = useMemo(() => {
+    const [points, stageBackgrounds] = useMemo(() => {
 
         const delayDelta = delayEnabled ? baseStageWidth : 0
         const attackDelta = (baseStageWidth / keypoints) * (decayEnabled ? 2 * balance : 1)
@@ -147,28 +147,42 @@ const Stages = ({ lfoId }: Props) => {
             secondXDelta = attackDelta
         }
 
-        const delayY = firstYValues[phasePoint]
-        let currentX = delayDelta
+        // calculate points for all stages. stages that are disabled will have all points in the same position.
+        // This is necessary to be able to morph between LFOs with different number of stages activated.
 
-        const allPoints: Point[] = [{ x: 0, y: delayY }]
+        // Delay stage points
+        const delayY = firstYValues[phasePoint]
+        const points: Point[] = [{ x: 0, y: delayY }]
+
+        let currentX = delayDelta // delta will be 0 if delay is disabled
+
+        // Delay stage rectangle
         if (delayEnabled) {
             sections.push({ from: 0, to: currentX, id: StageId.DELAY })
         }
         let prevX = currentX;
-        allPoints.push(...firstYValues.slice(phasePoint, firstYValues.length - 1).map(
+
+        // Attack and Decay may take up to three blocks
+        // - If the phasePoint is part way into the attack stage we will get a partial Attack + full Decay (if enabled)
+        //   and a partial Attack again.
+        // - If the phasePoint is part way into the decay stage we will get a partial Decay + full Attack
+        //   and a partial Attack again.
+        // - If phasePoint is 0 we will get a full Attack + a full Decay (if enabled)
+
+        // First partial stage
+        points.push(...firstYValues.slice(phasePoint, firstYValues.length - 1).map(
             (yValue) => {
                 const point = { x: currentX, y: yValue }
                 currentX += firstXDelta
                 return point
             }
         ))
-
-        // TODO: There is something wrong with the deltas here isn't it? We should start at point 0 for the
-        // second section and end at the last point minus 1 instead.
         sections.push({ from: prevX, to: currentX, id: offsetStage })
         prevX = currentX;
 
-        allPoints.push(...secondYValues.slice(0, secondYValues.length - 1).map(
+        // Full second stage. If this is decay and decay is disabled, secondXDelta will be 0 and all points will
+        // be on top of each other.
+        points.push(...secondYValues.slice(0, secondYValues.length - 1).map(
             (yValue) => {
                 const point = { x: currentX, y: yValue }
                 currentX += secondXDelta
@@ -182,11 +196,12 @@ const Stages = ({ lfoId }: Props) => {
         })
         prevX = currentX;
 
+        // Second partial stage
         if (xOffset > 0) {
             // If decay is not enabled, we need to add a point to get a fully vertical line. To keep the number of
             // points the same on change we always add this point.
-            allPoints.push({ x: currentX, y: firstYValues[0] })
-            allPoints.push(...firstYValues.slice(0, phasePoint+1).map(
+            points.push({ x: currentX, y: firstYValues[0] })
+            points.push(...firstYValues.slice(0, phasePoint+1).map(
                 (yValue) => {
                     const point = { x: currentX, y: yValue }
                     currentX += firstXDelta
@@ -194,7 +209,8 @@ const Stages = ({ lfoId }: Props) => {
                 }))
             sections.push({ from: prevX, to: currentX - firstXDelta, id: offsetStage })
         }
-        return [allPoints, sections]
+        return [points, sections]
+
     }, [balance, baseStageWidth, decayEnabled, delayEnabled, offsetInStage, offsetStage, pointsPerStage, xOffset])
 
     return <svg x={0} y={0}>
@@ -206,8 +222,8 @@ const Stages = ({ lfoId }: Props) => {
             />
         }
         {
-            sections.map(({ from, to, id }, index) => {
-                const isLast = index === sections.length - 1
+            stageBackgrounds.map(({ from, to, id }, index) => {
+                const isLast = index === stageBackgrounds.length - 1
                 return <React.Fragment key={`stage${index}`}>
                     <>
                         <rect x={from} y={0} width={to - from} height={1} onClick={() => onSvgClicked(id)}
@@ -229,13 +245,8 @@ const Stages = ({ lfoId }: Props) => {
             })
         }
 
-        <StageBlock
-            x={0}
-            y={0}
-            width={1}
-            height={1}
-            stage={stages[StageId.ATTACK]}
-            points={allPoints}
+        <StagesCurve
+            points={points}
             yOffset={yOffset}
         />
     </svg>
