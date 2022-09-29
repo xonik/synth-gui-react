@@ -4,39 +4,28 @@ import { mergeControllers } from '../controllers/controllersUtils'
 import { lfoCtrls } from './lfoControllers'
 import { timeResponseMapper } from '../common/responseMappers'
 
-const getStageState = (envId: number, stage: Stage): Controllers => {
-    const { id: stageId, enabled, curve, level, time } = stage
+const getStageState = (lfoId: number, stage: Stage): Controllers => {
+    const { id: stageId, enabled, curve } = stage
 
     const controllers: Controllers = {}
-    controllers[envId] = {
+    controllers[lfoId] = {
         [lfoCtrls.TOGGLE_STAGE.id]: {
             [stageId]: enabled
         },
         [lfoCtrls.CURVE.id]: {
             [stageId]: curve
         },
-        /*
-        [lfoCtrls.LEVEL.id]: {
-            [stageId]: level
-        },
-        [lfoCtrls.TIME.id]: {
-            [stageId]: time
-        },
-         */
     }
     return controllers
 }
 
-const getUiStageState = (envId: number, stage: Stage): Controllers => {
-    const { id: stageId, level, time } = stage
+const getUiStageState = (lfoId: number, stage: Stage): Controllers => {
+    const { id: stageId, time } = stage
 
     const controllers: Controllers = {}
-    controllers[envId] = {
-        [lfoCtrls.RATE.id]: {
-            [stageId]: level
-        },
+    controllers[lfoId] = {
         [lfoCtrls.DEPTH.id]: {
-            [stageId]: timeResponseMapper.input(time)
+            [stageId]: timeResponseMapper.input(time || 0)
         },
     }
     return controllers
@@ -112,29 +101,22 @@ const defaultStageConfigs: Stage[] = [
         id: StageId.DELAY,
         enabled: 0,
         curve: Curve.LIN,
-        level: 0,
         time: 0,
     },
     {
         id: StageId.ATTACK,
         enabled: 1,
         curve: Curve.LIN,
-        level: 0,
-        time: 0.001,
     },
     {
         id: StageId.DECAY,
         enabled: 1,
         curve: Curve.LIN,
-        level: 1,
-        time: 0.5,
     },
     {
         id: StageId.STOPPED,
         enabled: 1,
         curve: Curve.LIN,
-        level: 0,
-        time: 0,
     }
 ]
 

@@ -196,8 +196,7 @@ export const selectLfoStageById = (lfoId: number, stageId: number) => (state: Ro
         enabled: controllerState.get(state, lfoCtrls.TOGGLE_STAGE, lfoId, stageId),
         curve: controllerState.get(state, lfoCtrls.CURVE, lfoId, stageId),
 
-        // TODO: NOT IN USE
-        level: 1,//controllerState.get(state, lfoCtrls.CURVE, lfoId, stageId),
+        // TODO: FIX, is used for delay time?
         time: 0.5//controllerState.get(state, lfoCtrls.CURVE, lfoId, stageId),
     }
 }

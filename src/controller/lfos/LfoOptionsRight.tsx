@@ -2,9 +2,6 @@ import React from 'react'
 import { LoopMode } from '../../synthcore/modules/lfo/types'
 import Button from '../Button'
 import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
-import {
-    selectCurrGuiStageId,
-} from '../../synthcore/modules/lfo/lfoReducer'
 import { loopModeNames } from './utils'
 import { click } from '../../synthcore/modules/ui/uiReducer'
 import { ApiSource, ControllerGroupIds } from '../../synthcore/types'

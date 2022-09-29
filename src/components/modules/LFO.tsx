@@ -7,7 +7,6 @@ import { ControllerGroupIds } from '../../synthcore/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { selectCurrUiLfoId } from '../../synthcore/modules/lfo/lfoReducer'
-import { selectController } from '../../synthcore/modules/controllers/controllersReducer'
 
 interface Props {
     x: number,

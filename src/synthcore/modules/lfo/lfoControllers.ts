@@ -13,7 +13,7 @@ import {
     ControllerIdNonMod,
     ControllerIdSrc
 } from '../../../midi/controllerIds'
-import { timeResponseMapper, uniBipolarLevelResponseMapper } from '../common/responseMappers'
+import { timeResponseMapper } from '../common/responseMappers'
 import CC from '../../../midi/mapCC'
 
 

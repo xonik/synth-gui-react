@@ -24,12 +24,10 @@ const formatTime = (time: number) => {
     }
 }
 
-const formatLevel = (stage: Stage) => Math.round(stage.level * 1000) / 10
-
 // TODO: make time calculator elsewhere
 const getTime = (stage: Stage, time: number, balance: number, decayEnabled: boolean) => {
     if (stage.id === StageId.DELAY) {
-        return stage.time
+        return stage.time || 0
     } else if (stage.id === StageId.ATTACK) {
         return decayEnabled ? time * balance : time * 2
     } else if (stage.id === StageId.DECAY) {
@@ -52,7 +50,6 @@ const StageParams = ({ lfoId, className }: Props) => {
             return <div className="lfo-ctrl__footer" key={stage.id}>
                 <div
                     className={classNames('lfo-ctrl__footer__item')}>{formatTime(getTime(stage, time, balance, !!decay?.enabled))}</div>
-                <div className={classNames('lfo-ctrl__footer__item')}>{formatLevel(stage)}</div>
             </div>
         })}
     </div>

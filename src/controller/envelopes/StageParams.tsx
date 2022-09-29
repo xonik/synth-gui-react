@@ -1,9 +1,9 @@
 import React from 'react'
 import { Stage, StageId } from '../../synthcore/modules/env/types'
-import './StageParams.scss'
 import classNames from 'classnames'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectEnvStages } from '../../synthcore/modules/controllers/controllersReducer'
+import './StageParams.scss'
 
 interface Props {
     className?: string

@@ -28,8 +28,7 @@ export type Stage = {
     id: StageId;
     enabled: number;
     curve: Curve;
-    level: number; //-1 to 1
-    time: number; // 0 to 1
+    time?: number; // 0 to 1
 };
 
 export type Lfo = {
