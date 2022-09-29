@@ -369,6 +369,7 @@ const { increment: commonInc, toggle: commonToggle, set: commonSet, release } = 
         envCtrls.RESET_ON_TRIGGER,
         envCtrls.RELEASE_MODE,
         envCtrls.LOOP_MODE,
+        envCtrls.OFFSET,
     ],
     {send: envParamSend, receive: envParamReceive})
 

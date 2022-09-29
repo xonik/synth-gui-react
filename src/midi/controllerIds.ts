@@ -278,6 +278,8 @@ export enum ControllerIdNonMod {
     ENV_LEVEL,
     ENV_TIME,
 
+    ENV_OFFSET,
+
     ENV_SELECT,
     ENV_SELECT_ENV3_ID,
     ENV_GATE,
@@ -299,7 +301,7 @@ export enum ControllerIdNonMod {
 }
 
 export enum ControllerIdEnvNonMod {
-  ENV_RESET_ON_TRIGGER= 210,
+  ENV_RESET_ON_TRIGGER= 211,
   ENV_RELEASE_MODE,
   ENV_LOOP_MODE,
   ENV_MAX_LOOPS,
@@ -311,13 +313,13 @@ export enum ControllerIdEnvNonMod {
 export const ENV_NON_MOD_COUNT = Object.keys(ControllerIdEnvNonMod).filter(o => isNaN(o as any)).length
 
 export enum ControllerIdEnvStageNonMod {
-  ENV_CURVE = 218,
+  ENV_CURVE = 219,
   ENV_TOGGLE_STAGE,
 }
 export const ENV_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdEnvStageNonMod).filter(o => isNaN(o as any)).length
 
 export enum ControllerIdLfoNonMod {
-  LFO_SHAPE = 220,
+  LFO_SHAPE = 221,
   LFO_SYNC,
   LFO_RESET,
   LFO_BIPOLAR,
@@ -335,7 +337,7 @@ export enum ControllerIdLfoNonMod {
 export const LFO_NON_MOD_COUNT = Object.keys(ControllerIdLfoNonMod).filter(o => isNaN(o as any)).length
 
 export enum ControllerIdLfoStageNonMod {
-  LFO_CURVE = 234,
+  LFO_CURVE = 235,
   LFO_TOGGLE_STAGE,
 }
 export const LFO_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdLfoStageNonMod).filter(o => isNaN(o as any)).length

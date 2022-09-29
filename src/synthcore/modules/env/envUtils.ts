@@ -50,6 +50,7 @@ const getEnvState = (env: Envelope): Controllers => {
         maxLoops,
         invert,
         bipolar,
+        offset,
     } = env
     const envControllers: Controllers = {}
     envControllers[env.id] = {
@@ -60,6 +61,7 @@ const getEnvState = (env: Envelope): Controllers => {
         [envCtrls.MAX_LOOPS.id]: [maxLoops],
         [envCtrls.INVERT.id]: [invert ? 1 : 0],
         [envCtrls.BIPOLAR.id]: [bipolar ? 1 : 0],
+        [envCtrls.OFFSET.id]: [offset],
     }
     return envControllers
 }
@@ -76,6 +78,7 @@ export const getDefaultEnv = (envId: number): Controllers => {
         invert: false,
         // VCA and VCF envs are hardcoded to unipolar for now. VCF should probably be bipolar
         bipolar: envId !== 0 && envId !== 1,
+        offset: 0,
     })
 }
 

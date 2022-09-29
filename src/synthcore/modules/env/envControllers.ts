@@ -31,6 +31,7 @@ interface EnvControllers {
     CURVE: ControllerConfigNRPN
     LEVEL: ControllerConfigNRPN
     TIME: ControllerConfigNRPN
+    OFFSET: ControllerConfigNRPN
     MAX_LOOPS: ControllerConfigCC
     TOGGLE_STAGE: ControllerConfigCC
     SELECT: ControllerConfigCC
@@ -127,6 +128,12 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             type: 'pot',
             addr: NRPN.ENV_TIME,
             uiResponse: timeResponseMapper,
+        },
+        OFFSET: {
+            id: ControllerIdNonMod.ENV_OFFSET,
+            label: 'Offset',
+            type: 'pot',
+            addr: NRPN.ENV_OFFSET,
         },
         MAX_LOOPS: { id: ControllerIdEnvNonMod.ENV_MAX_LOOPS, label: 'Max loops', type: 'pot', cc: CC.ENV_MAX_LOOPS },
         TOGGLE_STAGE: {

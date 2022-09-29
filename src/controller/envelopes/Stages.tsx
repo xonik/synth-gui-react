@@ -30,6 +30,7 @@ const Stages = ({ envId }: Props) => {
 
     const stages = useAppSelector(selectEnvStages(envId))
     const bipolar = useAppSelector(selectController(envCtrls.BIPOLAR, envId))
+    const offset = useAppSelector(selectController(envCtrls.OFFSET, envId))
     const dispatch = useAppDispatch();
     const select = useAppSelector;
     const enabledStages = stages.filter((stage) => stage.enabled)
@@ -89,6 +90,7 @@ const Stages = ({ envId }: Props) => {
                         stage={stage}
                         nextStage={nextStage}
                         isBipolar={bipolar === 1}
+                        offset={offset}
                     />
                 </React.Fragment>
                 if (enabled) {

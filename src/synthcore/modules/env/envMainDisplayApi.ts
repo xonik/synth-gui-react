@@ -55,6 +55,12 @@ export const mainDisplayEnvApi = {
                     source: ApiSource.UI})
             }
         } else if (ctrlId === mainDisplayControllers.POT5.id) {
+            console.log('inc', )
+            envApi.increment({
+                ctrl: envCtrls.OFFSET,
+                ctrlIndex: envId,
+                value: increment,
+                source: ApiSource.UI})
         } else if (ctrlId === mainDisplayControllers.POT6.id) {
             const loopMode = selectController(envCtrls.LOOP_MODE, envId)(store.getState())
             if (loopMode !== LoopMode.COUNTED) {

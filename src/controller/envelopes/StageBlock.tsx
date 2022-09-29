@@ -15,6 +15,7 @@ interface Props {
     stage: Stage
     nextStage: Stage
     isBipolar: boolean
+    offset: number
 }
 
 const mapToSvg = (point: Point, isBipolar: boolean) => ({
@@ -23,13 +24,13 @@ const mapToSvg = (point: Point, isBipolar: boolean) => ({
 })
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
-const StageBlock = ({ x, y, width, height, stage, nextStage, isBipolar }: Props) => {
+const StageBlock = ({ x, y, width, height, stage, nextStage, isBipolar, offset }: Props) => {
 
     const startLev = stage.enabled ? stage.level : nextStage.level;
 
     const endLev = nextStage.level
 
-    const offset = startLev
+    const summedOffset = startLev + offset
     const scale = endLev - startLev
 
     const points = useMemo(
@@ -39,9 +40,14 @@ const StageBlock = ({ x, y, width, height, stage, nextStage, isBipolar }: Props)
 
     const svgPoints = useMemo(
         () => points
-            .map((point) => ({ x: point.x, y: point.y * scale + offset }))
+            .map((point) => {
+                // cut off top/bottom to stay within possible range
+                let y = point.y * scale + summedOffset
+                if(y < 0) { y = 0 } else if(y > 1) { y = 1}
+                return { x: point.x, y }
+            })
             .map((point) => mapToSvg(point, isBipolar)),
-        [points, offset, scale, isBipolar]
+        [points, summedOffset, scale, isBipolar]
     )
 
     return <svg x={x} y={y} className={classNames('stage-block', {'stage-block-disabled': !stage.enabled})}>

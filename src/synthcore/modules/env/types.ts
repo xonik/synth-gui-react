@@ -52,4 +52,5 @@ export type Envelope = {
     maxLoops: number;
     invert: boolean;
     bipolar: boolean;
+    offset: number;
 }
