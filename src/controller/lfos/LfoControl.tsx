@@ -4,7 +4,7 @@ import { useAppSelector } from '../../synthcore/hooks'
 import { selectCurrGuiLfoId } from '../../synthcore/modules/lfo/lfoReducer'
 import StageActivator from './StageActivator'
 import LfoOptionsLeft from './LfoOptionsLeft'
-import StageParams from './StageParams'
+import LfoParams from './LfoParams'
 import StageNames from './StageNames'
 import LfoOptionsRight from './LfoOptionsRight'
 import './LfoControl.scss'
@@ -23,7 +23,7 @@ const LfoControl = () => {
                     <Stages lfoId={lfoId}/>
                 </svg>
             </div>
-            <StageParams lfoId={lfoId}/>
+            <LfoParams lfoId={lfoId}/>
         </div>
         <div>
             <StageActivator lfoId={lfoId}/>

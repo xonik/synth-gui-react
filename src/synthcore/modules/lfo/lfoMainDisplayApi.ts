@@ -14,7 +14,7 @@ export const mainDisplayLfoPotResolutions = {
     [mainDisplayControllers.POT2.id]: 1000,
     [mainDisplayControllers.POT3.id]: 128,
     [mainDisplayControllers.POT4.id]: 8,
-    [mainDisplayControllers.POT5.id]: 32,
+    [mainDisplayControllers.POT5.id]: 100,
     [mainDisplayControllers.POT6.id]: 1000,
     [mainDisplayControllers.POT7.id]: 1000,
 }
