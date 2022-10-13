@@ -27,23 +27,20 @@ export const mainDisplayLfoApi = {
         if (ctrlId === mainDisplayControllers.POT1.id) {
             lfoApi.incrementGuiLfo(step(increment), ApiSource.UI)
         } else if (ctrlId === mainDisplayControllers.POT2.id) {
-            const stageId = selectCurrGuiStageId(store.getState())
-            if (stageId !== StageId.STOPPED) {
-                // Freq / delay
-                if(!shiftOn) {
-                    lfoApi.increment({
-                        ctrl: lfoCtrls.RATE,
-                        ctrlIndex: lfoId,
-                        value: increment,
-                        source: ApiSource.UI
-                    })
-                } else {
-                    lfoApi.increment({
-                        ctrl: lfoCtrls.DELAY,
-                        ctrlIndex: lfoId,
-                        value: increment,
-                        source: ApiSource.UI})
-                }
+            // Freq / delay
+            if(!shiftOn) {
+                lfoApi.increment({
+                    ctrl: lfoCtrls.RATE,
+                    ctrlIndex: lfoId,
+                    value: increment,
+                    source: ApiSource.UI
+                })
+            } else {
+                lfoApi.increment({
+                    ctrl: lfoCtrls.DELAY,
+                    ctrlIndex: lfoId,
+                    value: increment,
+                    source: ApiSource.UI})
             }
         } else if (ctrlId === mainDisplayControllers.POT3.id) {
             // Level / offset

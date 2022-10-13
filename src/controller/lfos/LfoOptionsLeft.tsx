@@ -50,19 +50,17 @@ const LfoOptionsLeft = ({ lfoId }: Props) => {
     const hasCurve = currStageId === StageId.ATTACK || currStageId === StageId.DECAY
     const curveLabel = hasCurve ? curveNames[curve] : '-'
     return <div className="lfo-options">
-        <div className="lfo-ctrl__heading">LFO {lfoId + 1}</div>
-        <div className="lfo-ctrl__heading">{curveLabel}</div>
+        <div className="lfo-ctrl__heading">Params</div>
         <Button active={!!invert} onClick={() => dispatch(clickInvert)}>Invert</Button>
         <Button active={!!bipolar} onClick={() => dispatch(clickBipolar)}>Bipolar</Button>
         <Button active={!!randomPhase} onClick={() => dispatch(clickRandomPhase)}>
             Random phase
         </Button>
         <Button active={!!resetOnTrigger} onClick={() => dispatch(clickResetOnTrigger)}>Retrigger</Button>
-        <Button active={!!resetOnStop} onClick={() => dispatch(clickResetOnStop)}>Reset on stop</Button>
         <Button active={!!syncToClock} onClick={() => dispatch(clickSyncToClock)}>Sync to clock</Button>
         <Button active={!!resetLevelOnClock} onClick={() => dispatch(clickResetLevelOnClock)}>Reset on
             clock</Button>
-
+        <Button active={!!resetOnStop} onClick={() => dispatch(clickResetOnStop)}>Reset on stop</Button>
     </div>
 }
 

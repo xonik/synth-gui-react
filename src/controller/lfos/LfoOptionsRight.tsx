@@ -1,12 +1,12 @@
 import React from 'react'
-import { LoopMode } from '../../synthcore/modules/lfo/types'
+import { LoopMode, } from '../../synthcore/modules/lfo/types'
 import Button from '../Button'
 import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import { loopModeNames } from './utils'
 import { click } from '../../synthcore/modules/ui/uiReducer'
 import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
-import { selectController } from '../../synthcore/modules/controllers/controllersReducer'
+import { selectController, selectLfoStages } from '../../synthcore/modules/controllers/controllersReducer'
 import './LfoOptions.scss'
 
 interface Props {
@@ -34,6 +34,8 @@ const LfoOptionsRight = ({ lfoId }: Props) => {
 
     const clickLoopMode = click({ ...action, ctrl: lfoCtrls.LOOP_MODE })
     const clickLoopEnabled = click({ ...action, ctrl: lfoCtrls.LOOP })
+
+    const stages = useAppSelector(selectLfoStages(lfoId))
 
     return <div className="lfo-options">
         <div className="lfo-ctrl__heading">Looping</div>

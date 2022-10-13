@@ -24,11 +24,11 @@ export const loopModeNames = {
 }
 
 export const curveNames = {
-    [Curve.COSINE]: 'Cosine',
+    [Curve.COSINE]: 'Cos',
     [Curve.EXP3]: 'Exp 3',
     [Curve.EXP2]: 'Exp 2',
     [Curve.EXP1]: 'Exp 1',
-    [Curve.LIN]: 'Linear',
+    [Curve.LIN]: 'Lin',
     [Curve.LOG1]: 'Log 1',
     [Curve.LOG2]: 'Log 2',
     [Curve.LOG3]: 'Log 3',

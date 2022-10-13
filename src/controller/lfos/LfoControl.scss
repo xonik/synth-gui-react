@@ -34,25 +34,4 @@
     padding-bottom: 0.33em;
     margin-bottom: 0.5em;
   }
-
-  &__footer {
-    background-color: $footer-bg-color;
-    color: $footer-color;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    width: 100%;
-    padding-top: 0.33em;
-    padding-bottom: 0.33em;
-    margin-top: 0.5em;
-
-    &__item {
-      display: flex;
-      justify-content: center;
-
-      &--hidden {
-        visibility: hidden;
-      }
-    }
-  }
 }

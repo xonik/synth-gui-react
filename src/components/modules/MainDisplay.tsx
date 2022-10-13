@@ -1,14 +1,18 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import Display from '../misc/Display'
+import useEventListener from '@use-it/event-listener'
+
 import RotaryPotWOLeds10 from '../pots/RotaryPotWOLeds10'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import RotaryPotWOLeds24 from '../pots/RotaryPotWOLeds24'
-import { ControllerGroupIds } from '../../synthcore/types'
+import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 import { getPotResolution } from '../../synthcore/modules/mainDisplay/mainDisplayApi'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectCurrScreen } from '../../synthcore/modules/mainDisplay/mainDisplayReducer'
 import './MainDisplay.scss'
 import mainDisplayControllers from '../../synthcore/modules/mainDisplay/mainDisplayControllers'
+import { dispatch } from '../../synthcore/utils'
+import { click, release } from '../../synthcore/modules/ui/uiReducer'
 
 interface Props {
     x: number,
@@ -16,6 +20,8 @@ interface Props {
 }
 
 const ctrlGroup = ControllerGroupIds.MAIN_DISP
+
+const SHIFT_KEYS = ['16', 'Shift'];
 
 const MainDisplay = React.forwardRef<SVGRectElement, Props>(({ x, y }, displayRef) => {
 
@@ -39,6 +45,26 @@ const MainDisplay = React.forwardRef<SVGRectElement, Props>(({ x, y }, displayRe
     const masterPotRow = potRow + 55
     const ctrlSwitchesRow1 = masterPotRow - 10
     const ctrlSwitchesRow2 = masterPotRow + 10
+
+    // PC Keyboard handlers
+    const handleOnClick = useCallback(({ key }: {key: any}) => {
+        if (SHIFT_KEYS.includes(String(key))) {
+            dispatch(click({
+                ctrlGroup,
+                ctrl: mainDisplayControllers.FUNC_SHIFT,
+                source: ApiSource.UI
+            }))
+        }
+    }, [])
+
+    const handleOnRelease = useCallback(({ key }: {key: any}) => {
+        if (SHIFT_KEYS.includes(String(key))) {
+            dispatch(release({ ctrlGroup, ctrl: mainDisplayControllers.FUNC_SHIFT, source: ApiSource.UI }))
+        }
+    }, [])
+
+    useEventListener('keydown', handleOnClick);
+    useEventListener('keyup', handleOnRelease);
 
     return <>
         <rect x={x - bezelLRMargin} y={y - bezelTopMargin} height={displayHeight + bezelTopMargin + bezelBottomMargin} width={displayWidth + 2 * bezelLRMargin} className="bezel"/>

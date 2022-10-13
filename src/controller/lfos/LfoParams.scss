@@ -1,6 +1,49 @@
+@import '../constants';
+
 .lfo-params {
   display: flex;
-  color: white;
   justify-content: space-evenly;
+  flex-direction: row;
   align-items: center;
+
+  background-color: $footer-bg-color;
+  color: $footer-color;
+  width: 100%;
+  padding-top: 0.33em;
+  padding-bottom: 0.33em;
+  margin-top: 0.5em;
+
+  &__footer {
+
+    &__item {
+      display: flex;
+      justify-content: center;
+
+      &--hidden {
+        visibility: hidden;
+      }
+
+      &--labels {
+        div {
+          margin-left: 0.25rem;
+          margin-right: 0.25rem;
+        }
+      }
+
+      &--values {
+        div {
+          text-align: end;
+          margin-right: 0.5rem;
+        }
+      }
+
+      &--divider {
+        div {
+          margin-left: 0.25rem;
+          margin-right: 0.25rem;
+        }
+      }
+    }
+  }
 }
+
