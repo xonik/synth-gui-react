@@ -65,6 +65,7 @@ const LfoParams = ({ lfoId, className }: Props) => {
     const decay = stages[StageId.DECAY];
 
     const delayLevel = 0; // TODO
+    const delayTime = useAppSelector(selectController(lfoCtrls.DELAY, lfoId))
     const attackTime = getTime(attack, time, balance, !!decay.enabled)
     const decayTime = getTime(decay, time, balance, !!decay.enabled)
 
@@ -103,7 +104,7 @@ const LfoParams = ({ lfoId, className }: Props) => {
                 <div>Dly L:</div>
             </div>
             <div className="lfo-params__footer__item--values--time">
-                <div>{delay.enabled ? formatTime(delay.time || 0) : '-'}</div>
+                <div>{delay.enabled ? formatTime(delayTime || 0) : '-'}</div>
                 <div>{delay.enabled ? delayLevel : '-'}</div>
             </div>
         </div>

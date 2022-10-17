@@ -193,10 +193,54 @@ const maxLoops = (() => {
     }
 })()
 
+// TODO: Could listen to set-event from 'normal' handler instead.
+const shape = (() => {
+    const set = (input: NumericInputProperty) => {
+        const { ctrlIndex: lfoId = 0, value } = input
+        const currShape = selectController(
+            lfoCtrls.SHAPE,
+            lfoId)(store.getState())
+
+        const boundedShape = getBounded(value, 0, lfoCtrls.SHAPE.values.length-1)
+        if (boundedShape === currShape) {
+            return
+        }
+        // TODO: Update LFO here!
+        const boundedInput = { ...input, value: boundedShape }
+        dispatch(setController(boundedInput))
+        lfoParamSend(boundedInput, (value: number) => value)
+    }
+
+    const increment = (input: NumericInputProperty) => {
+        console.log("Inc to")
+        const { ctrlIndex: lfoId = 0, value: inc } = input
+        const currShape = selectController(
+            lfoCtrls.SHAPE,
+            lfoId)(store.getState())
+
+        set({ ...input, value: currShape + inc })
+    }
+
+    lfoParamReceive(lfoCtrls.SHAPE, set, (midiValue: number) => ({ value: midiValue }))
+
+    const toggle = (input: ButtonInputProperty) => {
+        const { ctrlIndex: envId = 0, ctrl } = input
+
+        const currentEnabled = selectController(ctrl, envId)(store.getState())
+        const enabled = (currentEnabled + 1) % (input.ctrl.values?.length || 1)
+        set({ ...input, value: enabled })
+    }
+
+    return {
+        set,
+        increment,
+        toggle,
+    }
+})()
+
 const { increment: commonInc, toggle: commonToggle, set: commonSet } = createSetterFuncs([
         lfoCtrls.RATE,
         lfoCtrls.DELAY,
-        lfoCtrls.SHAPE,
         lfoCtrls.SYNC,
         lfoCtrls.RESET,
         lfoCtrls.RESET_ON_TRIGGER,
@@ -220,6 +264,7 @@ const customSetterFuncs = {
     [lfoCtrls.TOGGLE_STAGE.id]: stageEnabled,
     [lfoCtrls.INVERT.id]: invert,
     [lfoCtrls.MAX_LOOPS.id]: maxLoops,
+    [lfoCtrls.SHAPE.id]: shape,
 }
 
 const increment = (input: NumericInputProperty) => {

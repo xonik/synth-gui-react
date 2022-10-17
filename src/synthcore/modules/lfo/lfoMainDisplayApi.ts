@@ -12,10 +12,10 @@ import { selectShiftOn } from '../mainDisplay/mainDisplayReducer'
 export const mainDisplayLfoPotResolutions = {
     [mainDisplayControllers.POT1.id]: 8,
     [mainDisplayControllers.POT2.id]: 1000,
-    [mainDisplayControllers.POT3.id]: 128,
-    [mainDisplayControllers.POT4.id]: 8,
-    [mainDisplayControllers.POT5.id]: 100,
-    [mainDisplayControllers.POT6.id]: 1000,
+    [mainDisplayControllers.POT3.id]: 1000,
+    [mainDisplayControllers.POT4.id]: 1000,
+    [mainDisplayControllers.POT5.id]: 8,
+    [mainDisplayControllers.POT6.id]: 128,
     [mainDisplayControllers.POT7.id]: 1000,
 }
 

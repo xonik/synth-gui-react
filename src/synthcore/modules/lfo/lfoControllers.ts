@@ -229,8 +229,19 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         cc: CC.LFO_TOGGLE_STAGE
     }, // 4 bit stage, 7 bit on/off
     BALANCE: { id: ControllerIdLfoDst.BALANCE, label: 'Balance', type: 'pot', addr: NRPN.LFO_BALANCE },
-    PHASE_OFFSET: { id: ControllerIdLfoDst.PHASE_OFFSET, label: 'Phase offset', type: 'pot', addr: NRPN.LFO_PHASE_OFFSET },
-    LEVEL_OFFSET: { id: ControllerIdLfoDst.LEVEL_OFFSET, label: 'Level offset', type: 'pot', addr: NRPN.LFO_LEVEL_OFFSET },
+    PHASE_OFFSET: {
+        id: ControllerIdLfoDst.PHASE_OFFSET,
+        label: 'Phase offset',
+        type: 'pot',
+        addr: NRPN.LFO_PHASE_OFFSET,
+    },
+    LEVEL_OFFSET: {
+        id: ControllerIdLfoDst.LEVEL_OFFSET,
+        label: 'Level offset',
+        type: 'pot',
+        addr: NRPN.LFO_LEVEL_OFFSET,
+        bipolar: true,
+    },
     RANDOM_PHASE: {
         id: ControllerIdLfoNonMod.LFO_RANDOM_PHASE,
         label: 'Random phase on trigger',
