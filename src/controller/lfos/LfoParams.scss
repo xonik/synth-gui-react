@@ -31,16 +31,46 @@
       }
 
       &--values {
+        &--curve {
+          width: 45px;
+          margin-right: 0.25rem;
+          div {
+            text-align: end;
+          }
+        }
+        &--stage-percentage {
+          width: 45px;
+          div {
+            text-align: end;
+          }
+          margin-right: 0.25rem;
+        }
+        &--offset {
+          width: 35px;
+          div {
+            text-align: end;
+          }
+          padding-right: 0.25rem;
+          border-right: 1px solid white;
+        }
+        &--stage-time {
+          width: 58px;
+          div {
+            text-align: end;
+          }
+        }
+        &--time {
+          width: 49px;
+          div {
+            text-align: end;
+          }
+          padding-right: 0.25rem;
+          border-right: 1px solid white;
+        }
         div {
           text-align: end;
           margin-right: 0.5rem;
-        }
-      }
 
-      &--divider {
-        div {
-          margin-left: 0.25rem;
-          margin-right: 0.25rem;
         }
       }
     }

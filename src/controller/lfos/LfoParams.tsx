@@ -25,8 +25,12 @@ const formatTime = (time: number) => {
     }
 }
 
+
+const stepLengthMs = 1.33
+
 const formatRate = (time: number) => {
-    return `${Math.floor(100 / time) / 100}Hz`;
+    console.log(time)
+    return `${Math.floor(10000 / (2 * time * 65535 * stepLengthMs)) / 10}Hz`;
 }
 
 // TODO: make time calculator elsewhere
@@ -49,7 +53,7 @@ const LfoParams = ({ lfoId, className }: Props) => {
 
     const time = useAppSelector(selectController(lfoCtrls.RATE, lfoId))
     let timeFormatted = loopOn ? formatRate(time) : formatTime(time)
-    let timeLabelFormatted = loopOn ? 'Rate:' : 'Time:'
+    let timeLabelFormatted = loopOn ? 'F:' : 'T:'
 
     const balance = useAppSelector(selectController(lfoCtrls.BALANCE, lfoId))
     const levelOffset = useAppSelector(selectController(lfoCtrls.LEVEL_OFFSET, lfoId))
@@ -73,21 +77,21 @@ const LfoParams = ({ lfoId, className }: Props) => {
     return <div className={classNames('lfo-params', className)}>
         <div className="lfo-params__footer__item">
             <div className="lfo-params__footer__item--labels">
-                <div>Level:</div>
                 <div>{timeLabelFormatted}</div>
+                <div>L:</div>
             </div>
-            <div className="lfo-params__footer__item--values">
-                <div>{Math.floor(depth * 1000 / 10)}</div>
+            <div className="lfo-params__footer__item--values--time">
                 <div>{timeFormatted}</div>
+                <div>{Math.floor(depth * 1000 / 10)}</div>
             </div>
         </div>
 
         <div className="lfo-params__footer__item">
             <div className="lfo-params__footer__item--labels">
-                <div>Offset:</div>
-                <div>Phase:</div>
+                <div>Offs:</div>
+                <div>Pha:</div>
             </div>
-            <div className="lfo-params__footer__item--values">
+            <div className="lfo-params__footer__item--values--offset">
                 <div>{Math.round(100 * levelOffset)}</div>
                 <div>{Math.round(100 * phaseOffset)}</div>
             </div>
@@ -95,10 +99,10 @@ const LfoParams = ({ lfoId, className }: Props) => {
 
         <div className="lfo-params__footer__item">
             <div className="lfo-params__footer__item--labels">
-                <div>D time:</div>
-                <div>D level:</div>
+                <div>Dly T:</div>
+                <div>Dly L:</div>
             </div>
-            <div className="lfo-params__footer__item--values">
+            <div className="lfo-params__footer__item--values--time">
                 <div>{delay.enabled ? formatTime(delay.time || 0) : '-'}</div>
                 <div>{delay.enabled ? delayLevel : '-'}</div>
             </div>
@@ -109,15 +113,15 @@ const LfoParams = ({ lfoId, className }: Props) => {
                 <div>A:</div>
                 <div>D:</div>
             </div>
-            <div className="lfo-params__footer__item--values">
+            <div className="lfo-params__footer__item--values--curve">
                 <div>{attackCurve}</div>
                 <div>{decay.enabled ? decayCurve : ''}</div>
             </div>
-            <div className="lfo-params__footer__item--values">
+            <div className="lfo-params__footer__item--values--stage-percentage">
                 <div>{decay.enabled ? attackBalance : '100'}%</div>
                 <div>{decay.enabled ? `${decayBalance}%` : ''}</div>
             </div>
-            <div className="lfo-params__footer__item--values">
+            <div className="lfo-params__footer__item--values--stage-time">
                 <div>({formatTime(attackTime)})</div>
                 <div>{decay.enabled ? `(${formatTime(decayTime)})` : ''}</div>
             </div>

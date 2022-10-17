@@ -37,42 +37,17 @@ export const mainDisplayLfoApi = {
                 })
             } else {
                 lfoApi.increment({
-                    ctrl: lfoCtrls.DELAY,
-                    ctrlIndex: lfoId,
-                    value: increment,
-                    source: ApiSource.UI})
-            }
-        } else if (ctrlId === mainDisplayControllers.POT3.id) {
-            // Level / offset
-            if(!shiftOn) {
-                lfoApi.increment({
                     ctrl: lfoCtrls.DEPTH,
                     ctrlIndex: lfoId,
                     value: increment,
                     source: ApiSource.UI
                 })
-            } else {
-                lfoApi.increment({
-                    ctrl: lfoCtrls.LEVEL_OFFSET,
-                    ctrlIndex: lfoId,
-                    value: increment,
-                    source: ApiSource.UI})
             }
-        } else if (ctrlId === mainDisplayControllers.POT4.id) {
-            const stageId = selectCurrGuiStageId(store.getState())
-            if (stageId !== StageId.STOPPED) {
-                lfoApi.increment({
-                    ctrl: lfoCtrls.CURVE,
-                    ctrlIndex: lfoId,
-                    valueIndex: stageId,
-                    value: step(increment),
-                    source: ApiSource.UI})
-            }
-        } else if (ctrlId === mainDisplayControllers.POT5.id) {
-            // Balance / phase
+        } else if (ctrlId === mainDisplayControllers.POT3.id) {
+            // Level / offset
             if(!shiftOn) {
                 lfoApi.increment({
-                    ctrl: lfoCtrls.BALANCE,
+                    ctrl: lfoCtrls.LEVEL_OFFSET,
                     ctrlIndex: lfoId,
                     value: increment,
                     source: ApiSource.UI})
@@ -83,7 +58,32 @@ export const mainDisplayLfoApi = {
                     value: increment,
                     source: ApiSource.UI})
             }
-
+        } else if (ctrlId === mainDisplayControllers.POT4.id) {
+            if(!shiftOn) {
+                lfoApi.increment({
+                    ctrl: lfoCtrls.DELAY,
+                    ctrlIndex: lfoId,
+                    value: increment,
+                    source: ApiSource.UI
+                })
+            } else {
+                lfoApi.increment({
+                    ctrl: lfoCtrls.BALANCE,
+                    ctrlIndex: lfoId,
+                    value: increment,
+                    source: ApiSource.UI})
+            }
+        } else if (ctrlId === mainDisplayControllers.POT5.id) {
+            const stageId = selectCurrGuiStageId(store.getState())
+            if (stageId !== StageId.STOPPED) {
+                lfoApi.increment({
+                    ctrl: lfoCtrls.CURVE,
+                    ctrlIndex: lfoId,
+                    valueIndex: stageId,
+                    value: step(increment),
+                    source: ApiSource.UI
+                })
+            }
         } else if (ctrlId === mainDisplayControllers.POT6.id) {
             const loopMode = selectController(lfoCtrls.LOOP_MODE, lfoId)(store.getState())
             if (loopMode !== LoopMode.COUNTED) {
