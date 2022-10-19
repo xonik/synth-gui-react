@@ -17,6 +17,8 @@ export enum Curve {
     LOG1,
     LOG2,
     LOG3,
+    SQUARE,
+    RANDOM
 }
 
 export enum LoopMode {

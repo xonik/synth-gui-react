@@ -32,4 +32,6 @@ export const curveNames = {
     [Curve.LOG1]: 'Log 1',
     [Curve.LOG2]: 'Log 2',
     [Curve.LOG3]: 'Log 3',
+    [Curve.SQUARE]: 'Sqr',
+    [Curve.RANDOM]: 'Ran',
 }

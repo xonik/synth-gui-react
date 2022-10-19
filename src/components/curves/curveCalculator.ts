@@ -57,6 +57,8 @@ const log1 = logarithmicFunc(1.35);
 const log2 = logarithmicFunc(1.6);
 const log3 = logarithmicFunc(2);
 const cosine = cosineFunc;
+const square = (x: number) => 0;
+const random = (x: number) => 0.75;
 
 export const curveFuncs = [
     cosine,
@@ -67,6 +69,8 @@ export const curveFuncs = [
     log1,
     log2,
     log3,
+    square,
+    random
 ]
 
 export const curveNamesForCpp = [

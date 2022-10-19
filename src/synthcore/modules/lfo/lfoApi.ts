@@ -1,15 +1,15 @@
-import { NUMBER_OF_LFOS, StageId } from './types'
+import { Curve, NUMBER_OF_LFOS, StageId } from './types'
 import {
     deselectStage,
     selectCurrGuiLfoId,
     selectCurrGuiStageId,
-    selectStage,
     selectCurrUiLfoId,
+    selectStage,
     setGuiLfo as setGuiLfoAction,
     setUiLfo as setUiLfoAction,
 } from './lfoReducer'
 import { store } from '../../store'
-import { ApiSource } from '../../types'
+import { ApiSource, ControllerGroupIds } from '../../types'
 import { dispatch, getBounded } from '../../utils'
 import { createSetterFuncs } from '../common/utils'
 import { lfoCtrls } from './lfoControllers'
@@ -17,6 +17,7 @@ import { selectController, setController } from '../controllers/controllersReduc
 import { ButtonInputProperty, NumericInputProperty } from '../common/types'
 import lfoMidiApi, { lfoParamReceive, lfoParamSend } from './lfoMidiApi'
 import { curveFuncs } from '../../../components/curves/curveCalculator'
+import { BUTTONS } from '../../../midi/buttons'
 
 const toggleStageSelected = (lfoId: number, stageId: StageId, source: ApiSource) => {
     const currStageId = selectCurrGuiStageId(store.getState())
@@ -68,6 +69,17 @@ const stageCurve = (() => {
         lfoMidiApi.curve.send(boundedInput)
     }
 
+    const setFromOtherAction = (input: NumericInputProperty, stageId: StageId, curve: Curve) => {
+        set({
+            ctrlGroup: ControllerGroupIds.LFO,
+            ctrl: lfoCtrls.CURVE,
+            ctrlIndex: input.ctrlIndex,
+            valueIndex: stageId,
+            value: curve,
+            source: input.source
+        })
+    }
+
     const increment = (input: NumericInputProperty) => {
         const { ctrlIndex: lfoId = 0, valueIndex: stageId = 0, value: inc, ctrl } = input
         const currentCurve = selectController(ctrl, lfoId, stageId)(store.getState())
@@ -78,6 +90,7 @@ const stageCurve = (() => {
 
     return {
         set,
+        setFromOtherAction,
         increment,
         toggle: (input: ButtonInputProperty) => {
         }
@@ -103,6 +116,17 @@ const stageEnabled = (() => {
         lfoMidiApi.stageEnabled.send(input)
     }
 
+    const setFromOtherAction = (input: NumericInputProperty, stageId: StageId, enabled: boolean) => {
+        set({
+            ctrlGroup: ControllerGroupIds.LFO,
+            ctrl: lfoCtrls.TOGGLE_STAGE,
+            ctrlIndex: input.ctrlIndex,
+            valueIndex: stageId,
+            value: enabled ? 1 : 0,
+            source: input.source
+        })
+    }
+
     const toggle = (input: ButtonInputProperty) => {
         const { ctrlIndex: lfoId = 0, valueIndex: stageId = 0, ctrl } = input
 
@@ -115,6 +139,7 @@ const stageEnabled = (() => {
 
     return {
         set,
+        setFromOtherAction,
         toggle,
         increment: (input: NumericInputProperty) => {
         }
@@ -208,6 +233,38 @@ const shape = (() => {
         // TODO: Update LFO here!
         const boundedInput = { ...input, value: boundedShape }
         dispatch(setController(boundedInput))
+
+        // A bit inefficient to look up indexes but it makes sure that we use the correct shape in case
+        // the ordering changes
+        if(boundedShape === lfoCtrls.SHAPE.values.indexOf(BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SAW)) {
+            stageCurve.setFromOtherAction(input, StageId.ATTACK, Curve.LIN)
+            stageEnabled.setFromOtherAction(input, StageId.DECAY, false);
+        }
+        if(boundedShape === lfoCtrls.SHAPE.values.indexOf(BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_TRI)) {
+            stageCurve.setFromOtherAction(input, StageId.ATTACK, Curve.LIN)
+            stageCurve.setFromOtherAction(input, StageId.DECAY, Curve.LIN)
+            stageEnabled.setFromOtherAction(input, StageId.DECAY, true);
+
+        }
+        if(boundedShape === lfoCtrls.SHAPE.values.indexOf(BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SQR)) {
+            stageCurve.setFromOtherAction(input, StageId.ATTACK, Curve.SQUARE)
+            stageCurve.setFromOtherAction(input, StageId.DECAY, Curve.SQUARE)
+
+            stageEnabled.setFromOtherAction(input, StageId.DECAY, true);
+
+        }
+        if(boundedShape === lfoCtrls.SHAPE.values.indexOf(BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SIN)) {
+            stageCurve.setFromOtherAction(input, StageId.ATTACK, Curve.COSINE)
+            stageCurve.setFromOtherAction(input, StageId.DECAY, Curve.COSINE)
+
+            stageEnabled.setFromOtherAction(input, StageId.DECAY, true);
+
+        }
+        if(boundedShape === lfoCtrls.SHAPE.values.indexOf(BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SH)) {
+            stageCurve.setFromOtherAction(input, StageId.ATTACK, Curve.RANDOM)
+            stageEnabled.setFromOtherAction(input, StageId.DECAY, false);
+        }
+
         lfoParamSend(boundedInput, (value: number) => value)
     }
 
