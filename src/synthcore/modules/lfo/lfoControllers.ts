@@ -99,6 +99,7 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
             BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SQR,
             BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SIN,
             BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SH,
+            BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_CUSTOM,
         ],
     },
     SYNC: {

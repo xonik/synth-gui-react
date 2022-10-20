@@ -218,6 +218,47 @@ const maxLoops = (() => {
     }
 })()
 
+type ShapeParams = {
+    decayEnabled: boolean,
+    curves: {[key: number]: Curve}
+}
+
+const shapes: {[key: number]: ShapeParams} = {
+    [BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SAW]: {
+        decayEnabled: false,
+        curves: {
+            [StageId.ATTACK]: Curve.LIN
+        }
+    },
+    [BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_TRI]: {
+        decayEnabled: true,
+        curves: {
+            [StageId.ATTACK]: Curve.LIN,
+            [StageId.DECAY]: Curve.LIN
+        }
+    },
+    [BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SQR]: {
+        decayEnabled: true,
+        curves: {
+            [StageId.ATTACK]: Curve.SQUARE,
+            [StageId.DECAY]: Curve.SQUARE
+        }
+    },
+    [BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SIN]: {
+        decayEnabled: false,
+        curves: {
+            [StageId.ATTACK]: Curve.COSINE,
+            [StageId.DECAY]: Curve.COSINE
+        }
+    },
+    [BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SH]: {
+        decayEnabled: false,
+        curves: {
+            [StageId.ATTACK]: Curve.RANDOM
+        }
+    },
+}
+
 // TODO: Could listen to set-event from 'normal' handler instead.
 const shape = (() => {
     const set = (input: NumericInputProperty) => {
@@ -230,39 +271,16 @@ const shape = (() => {
         if (boundedShape === currShape) {
             return
         }
-        // TODO: Update LFO here!
+
         const boundedInput = { ...input, value: boundedShape }
         dispatch(setController(boundedInput))
 
-        // A bit inefficient to look up indexes but it makes sure that we use the correct shape in case
-        // the ordering changes
-        if(boundedShape === lfoCtrls.SHAPE.values.indexOf(BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SAW)) {
-            stageCurve.setFromOtherAction(input, StageId.ATTACK, Curve.LIN)
-            stageEnabled.setFromOtherAction(input, StageId.DECAY, false);
-        }
-        if(boundedShape === lfoCtrls.SHAPE.values.indexOf(BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_TRI)) {
-            stageCurve.setFromOtherAction(input, StageId.ATTACK, Curve.LIN)
-            stageCurve.setFromOtherAction(input, StageId.DECAY, Curve.LIN)
-            stageEnabled.setFromOtherAction(input, StageId.DECAY, true);
-
-        }
-        if(boundedShape === lfoCtrls.SHAPE.values.indexOf(BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SQR)) {
-            stageCurve.setFromOtherAction(input, StageId.ATTACK, Curve.SQUARE)
-            stageCurve.setFromOtherAction(input, StageId.DECAY, Curve.SQUARE)
-
-            stageEnabled.setFromOtherAction(input, StageId.DECAY, true);
-
-        }
-        if(boundedShape === lfoCtrls.SHAPE.values.indexOf(BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SIN)) {
-            stageCurve.setFromOtherAction(input, StageId.ATTACK, Curve.COSINE)
-            stageCurve.setFromOtherAction(input, StageId.DECAY, Curve.COSINE)
-
-            stageEnabled.setFromOtherAction(input, StageId.DECAY, true);
-
-        }
-        if(boundedShape === lfoCtrls.SHAPE.values.indexOf(BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SH)) {
-            stageCurve.setFromOtherAction(input, StageId.ATTACK, Curve.RANDOM)
-            stageEnabled.setFromOtherAction(input, StageId.DECAY, false);
+        const shapeParams = shapes[lfoCtrls.SHAPE.values[boundedShape]]
+        if(shapeParams){
+            stageEnabled.setFromOtherAction(input, StageId.DECAY, shapeParams.decayEnabled);
+            Object.entries(shapeParams.curves).forEach(([stageId, curve]) => {
+                stageCurve.setFromOtherAction(input, Number.parseInt(stageId), curve)
+            })
         }
 
         lfoParamSend(boundedInput, (value: number) => value)
