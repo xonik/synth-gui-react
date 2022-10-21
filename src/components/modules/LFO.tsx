@@ -79,7 +79,7 @@ const LFO = ({ x, y }: Props) => {
         <RoundPushButton8 x={firstPotCol + potDistance + 30} y={potRow1}
                           label="Shape" labelPosition="bottom"
                           ledPosition="right" ledCount={6}
-                          ledLabels={['Saw', 'Tri', 'Sqr', 'Sin', 'S & H', 'Custom']}
+                          ledLabels={['Saw', 'Tri', 'Sqr', 'Sin', 'Random', 'Custom']}
                           ctrlGroup={ctrlGroup}
                           ctrl={lfoCtrls.SHAPE}
                           ctrlIndex={lfoId}

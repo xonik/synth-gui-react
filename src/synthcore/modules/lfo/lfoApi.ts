@@ -263,7 +263,7 @@ const shape = (() => {
                 [StageId.DECAY]: Curve.COSINE
             }
         },
-        [BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SH]: {
+        [BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_RANDOM]: {
             decayEnabled: false,
             curves: {
                 [StageId.ATTACK]: Curve.RANDOM
@@ -303,10 +303,8 @@ const shape = (() => {
         if (detectedShape) {
             const shapeMidiValue = Number.parseInt(detectedShape[0])
             shapeId = lfoCtrls.SHAPE.values.indexOf(shapeMidiValue)
-            console.log('detected shape id', shapeId)
         } else {
             shapeId = lfoCtrls.SHAPE.values.indexOf(BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_CUSTOM)
-            console.log('detected shape id custom', shapeId)
         }
 
         if (shapeId) {

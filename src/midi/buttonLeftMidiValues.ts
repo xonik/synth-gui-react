@@ -81,7 +81,7 @@ export enum buttonLeftMidiValues {
     LFO_SHAPE_TRI,
     LFO_SHAPE_SQR,
     LFO_SHAPE_SIN,
-    LFO_SHAPE_SH,
+    LFO_SHAPE_RANDOM,
     LFO_SHAPE_CUSTOM,
     LFO_SYNC_OFF,
     LFO_SYNC_ON,
