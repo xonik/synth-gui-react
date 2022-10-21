@@ -1,16 +1,11 @@
 import React from 'react'
-import { StageId } from '../../synthcore/modules/lfo/types'
 import Button from '../Button'
 import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
-import {
-    selectCurrGuiStageId,
-} from '../../synthcore/modules/lfo/lfoReducer'
-import { curveNames } from './utils'
-import './LfoOptions.scss'
 import { click } from '../../synthcore/modules/ui/uiReducer'
 import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
-import { selectController, selectLfoStageById } from '../../synthcore/modules/controllers/controllersReducer'
+import { selectController } from '../../synthcore/modules/controllers/controllersReducer'
+import './LfoOptions.scss'
 
 interface Props {
     lfoId: number
@@ -31,8 +26,6 @@ const LfoOptionsLeft = ({ lfoId }: Props) => {
     const dispatch = useAppDispatch()
     const invert = useAppSelector(selectController(lfoCtrls.INVERT, lfoId))
     const resetOnTrigger = useAppSelector(selectController(lfoCtrls.RESET_ON_TRIGGER, lfoId))
-    const currStageId = useAppSelector(selectCurrGuiStageId)
-    const curve = useAppSelector(selectLfoStageById(lfoId, currStageId)).curve
     const randomPhase = useAppSelector(selectController(lfoCtrls.RANDOM_PHASE, lfoId))
     const resetOnStop = useAppSelector(selectController(lfoCtrls.RESET_ON_STOP, lfoId))
     const resetLevelOnClock = useAppSelector(selectController(lfoCtrls.RESET_LEVEL_ON_CLOCK, lfoId))
@@ -47,8 +40,6 @@ const LfoOptionsLeft = ({ lfoId }: Props) => {
     const clickSyncToClock = click({ ...action, ctrl: lfoCtrls.SYNC_TO_CLOCK })
     const clickBipolar = click({ ...action, ctrl: lfoCtrls.BIPOLAR })
 
-    const hasCurve = currStageId === StageId.ATTACK || currStageId === StageId.DECAY
-    const curveLabel = hasCurve ? curveNames[curve] : '-'
     return <div className="lfo-options">
         <div className="lfo-ctrl__heading">Params</div>
         <Button active={!!invert} onClick={() => dispatch(clickInvert)}>Invert</Button>

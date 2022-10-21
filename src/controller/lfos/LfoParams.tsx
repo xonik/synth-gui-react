@@ -1,5 +1,5 @@
 import React from 'react'
-import { LoopMode, Stage, StageId } from '../../synthcore/modules/lfo/types'
+import { Stage, StageId } from '../../synthcore/modules/lfo/types'
 import classNames from 'classnames'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectController, selectLfoStages } from '../../synthcore/modules/controllers/controllersReducer'
