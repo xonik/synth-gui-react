@@ -1,0 +1,7 @@
+
+// refreshes per second
+export const DAC_REFRESH_RATE = 12000
+export const LFO_REFRESHES_PER_UNIT = 32
+export const LFO_SEC_PER_UNIT = LFO_REFRESHES_PER_UNIT / DAC_REFRESH_RATE
+export const ENV_REFRESHES_PER_UNIT = 16
+export const ENV_SEC_PER_UNIT = ENV_REFRESHES_PER_UNIT / DAC_REFRESH_RATE

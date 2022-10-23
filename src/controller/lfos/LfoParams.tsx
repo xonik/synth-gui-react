@@ -6,6 +6,7 @@ import { selectController, selectLfoStages } from '../../synthcore/modules/contr
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import './LfoParams.scss'
 import { curveNames } from './utils'
+import { LFO_SEC_PER_UNIT } from '../../utils/constants'
 
 interface Props {
     className?: string
@@ -13,7 +14,7 @@ interface Props {
 }
 
 // TODO: FIX
-const formatTime = (time: number) => {
+const formatTimeOld = (time: number) => {
     const timeMillis = Math.floor(65534 * time) + 1
     if (timeMillis < 500) {
         return `${timeMillis}ms`
@@ -25,11 +26,31 @@ const formatTime = (time: number) => {
     }
 }
 
+const formatTime = (time: number) => {
+    const unitsPerPeriod = time * 65535 + 1
+    const secondsPerPeriod = unitsPerPeriod * LFO_SEC_PER_UNIT
 
-const stepLengthMs = 1.33
+    if (secondsPerPeriod < 0.50) {
+        return `${Math.round(secondsPerPeriod * 1000)}ms`
+    } else if (secondsPerPeriod < 20) {
+        return `${Math.round(10 * secondsPerPeriod) / 10}s`
+    } else {
+        const seconds = Math.round(secondsPerPeriod)
+        return `${seconds}s`
+    }
+}
 
 const formatRate = (time: number) => {
-    return `${Math.floor(10000 / (2 * time * 65535 * stepLengthMs)) / 10}Hz`;
+    const unitsPerPeriod = time * 65535 + 1
+    const secondsPerPeriod = unitsPerPeriod * LFO_SEC_PER_UNIT
+    const frequency = 1 / secondsPerPeriod
+    if(frequency < 0.05) {
+        return `${Math.floor(1000 / secondsPerPeriod) / 1000}Hz`;
+    } else if(frequency < 0.5){
+        return `${Math.floor(100 / secondsPerPeriod) / 100}Hz`;
+    } else {
+        return `${Math.floor(10 / secondsPerPeriod) / 10}Hz`;
+    }
 }
 
 // TODO: make time calculator elsewhere
@@ -37,9 +58,9 @@ const getTime = (stage: Stage, time: number, balance: number, decayEnabled: bool
     if (stage.id === StageId.DELAY) {
         return stage.time || 0
     } else if (stage.id === StageId.ATTACK) {
-        return decayEnabled ? 2 * time * balance : time * 2
+        return decayEnabled ? time * balance : time
     } else if (stage.id === StageId.DECAY) {
-        return decayEnabled ? 2 * time * (1 - balance) : 0
+        return decayEnabled ? time * (1 - balance) : 0
     }
     return 0
 }
