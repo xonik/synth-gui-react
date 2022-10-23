@@ -4,7 +4,9 @@ import {
     selectCurrGuiLfoId,
     selectCurrGuiStageId,
     selectCurrUiLfoId,
+    selectCustomShapeParams,
     selectStage,
+    setCustomShapeParams,
     setGuiLfo as setGuiLfoAction,
     setUiLfo as setUiLfoAction,
 } from './lfoReducer'
@@ -18,6 +20,13 @@ import { ButtonInputProperty, NumericInputProperty } from '../common/types'
 import lfoMidiApi, { lfoParamReceive, lfoParamSend } from './lfoMidiApi'
 import { curveFuncs } from '../../../components/curves/curveCalculator'
 import { BUTTONS } from '../../../midi/buttons'
+
+// helper function - we use indexOf to make sure code works even if ordering of shapes changes
+const customShapeIndex = lfoCtrls.SHAPE.values.indexOf(BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_CUSTOM)
+
+const selectShape = (lfoId: number) => selectController(
+    lfoCtrls.SHAPE,
+    lfoId)(store.getState())
 
 const toggleStageSelected = (lfoId: number, stageId: StageId, source: ApiSource) => {
     const currStageId = selectCurrGuiStageId(store.getState())
@@ -57,7 +66,7 @@ const cannotDisableStage = (stage: StageId) => stage === StageId.ATTACK || stage
 const stageCurve = (() => {
     const set = (input: NumericInputProperty) => {
 
-        const { ctrlIndex: lfoId = 0, value: curve, valueIndex: stageId = 0, ctrl } = input
+        const { ctrlIndex: lfoId = 0, value: curve, valueIndex: stageId = 0, ctrl, source } = input
 
         const currentCurve = selectController(ctrl, lfoId, stageId)(store.getState())
         const boundedCurve = getBounded(curve, 0, curveFuncs.length - 1)
@@ -68,9 +77,15 @@ const stageCurve = (() => {
         dispatch(setController(boundedInput))
 
         // Update shape as it may have changed
-        shape.detectFromStoreAndSet(lfoId)
+        const detectedShape = shape.detectCurrent(lfoId)
+        if (detectedShape) {
+            shape.setInStoreIfChanged(lfoId, detectedShape)
+        }
 
-        lfoMidiApi.curve.send(boundedInput)
+        if (source !== ApiSource.INTERNAL) {
+            shape.saveCustomShapeParams(lfoId)
+            lfoMidiApi.curve.send(boundedInput)
+        }
     }
 
     const setFromOtherAction = (input: NumericInputProperty, stageId: StageId, curve: Curve) => {
@@ -80,7 +95,7 @@ const stageCurve = (() => {
             ctrlIndex: input.ctrlIndex,
             valueIndex: stageId,
             value: curve,
-            source: input.source
+            source: ApiSource.INTERNAL
         })
     }
 
@@ -104,7 +119,7 @@ const stageCurve = (() => {
 const stageEnabled = (() => {
 
     const set = (input: NumericInputProperty) => {
-        const { ctrlIndex: lfoId = 0, value: enabled, valueIndex: stageId = 0, ctrl } = input
+        const { ctrlIndex: lfoId = 0, value: enabled, valueIndex: stageId = 0, ctrl, source } = input
 
         if (cannotDisableStage(stageId)) {
             return
@@ -118,9 +133,16 @@ const stageEnabled = (() => {
         dispatch(setController(input))
 
         // Update shape as it may have changed
-        shape.detectFromStoreAndSet(lfoId)
+        const detectedShape = shape.detectCurrent(lfoId)
+        if (detectedShape) {
+            shape.setInStoreIfChanged(lfoId, detectedShape)
+        }
 
-        lfoMidiApi.stageEnabled.send(input)
+        if (source !== ApiSource.INTERNAL) {
+            shape.saveCustomShapeParams(lfoId)
+            lfoMidiApi.stageEnabled.send(input)
+        }
+
     }
 
     const setFromOtherAction = (input: NumericInputProperty, stageId: StageId, enabled: boolean) => {
@@ -130,7 +152,7 @@ const stageEnabled = (() => {
             ctrlIndex: input.ctrlIndex,
             valueIndex: stageId,
             value: enabled ? 1 : 0,
-            source: input.source
+            source: ApiSource.INTERNAL
         })
     }
 
@@ -272,17 +294,24 @@ const shape = (() => {
     }
 
     const dispatchShapeActions = (input: NumericInputProperty, boundedShape: number) => {
-        const shapeParams = shapes[lfoCtrls.SHAPE.values[boundedShape]]
-        if (shapeParams) {
-            stageEnabled.setFromOtherAction(input, StageId.DECAY, shapeParams.decayEnabled);
-            Object.entries(shapeParams.curves).forEach(([stageId, curve]) => {
-                stageCurve.setFromOtherAction(input, Number.parseInt(stageId), curve)
-            })
+        if (boundedShape === customShapeIndex) {
+            const customShapeParams = selectCustomShapeParams(store.getState())(input.ctrlIndex || 0)
+            stageEnabled.setFromOtherAction(input, StageId.DECAY, customShapeParams.decayEnabled);
+            stageCurve.setFromOtherAction(input, StageId.ATTACK, customShapeParams.attackCurve)
+            stageCurve.setFromOtherAction(input, StageId.DECAY, customShapeParams.decayCurve)
+        } else {
+            const shapeParams = shapes[lfoCtrls.SHAPE.values[boundedShape]]
+            if (shapeParams) {
+                stageEnabled.setFromOtherAction(input, StageId.DECAY, shapeParams.decayEnabled);
+                Object.entries(shapeParams.curves).forEach(([stageId, curve]) => {
+                    stageCurve.setFromOtherAction(input, Number.parseInt(stageId), curve)
+                })
+            }
         }
     }
 
     // Use this to update shape whenever decay enabled or curves change
-    const detectFromStoreAndSet = (lfoId: number) => {
+    const detectCurrent = (lfoId: number): number | undefined => {
 
         const lfoStages = selectLfoStages(lfoId)(store.getState())
 
@@ -304,29 +333,45 @@ const shape = (() => {
             const shapeMidiValue = Number.parseInt(detectedShape[0])
             shapeId = lfoCtrls.SHAPE.values.indexOf(shapeMidiValue)
         } else {
-            shapeId = lfoCtrls.SHAPE.values.indexOf(BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_CUSTOM)
+            shapeId = customShapeIndex
         }
 
-        if (shapeId) {
-            const currShape = selectController(
-                lfoCtrls.SHAPE,
-                lfoId)(store.getState())
+        return shapeId
+    }
 
-            if (currShape !== shapeId) {
-                dispatch(setController({
-                    ctrl: lfoCtrls.SHAPE,
-                    ctrlIndex: lfoId,
-                    value: shapeId,
-                }))
+    const setInStoreIfChanged = (lfoId: number, shapeId: number) => {
+        const currShape = selectShape(lfoId)
+
+        if (currShape !== shapeId) {
+            dispatch(setController({
+                ctrl: lfoCtrls.SHAPE,
+                ctrlIndex: lfoId,
+                value: shapeId,
+            }))
+        }
+    }
+
+    const saveCustomShapeParams = (lfoId: number) => {
+        const lfoStages = selectLfoStages(lfoId)(store.getState())
+
+        const decayEnabled = lfoStages[StageId.DECAY].enabled === 1
+        const attackCurve = lfoStages[StageId.ATTACK].curve
+        const decayCurve = lfoStages[StageId.DECAY].curve
+
+        const action = setCustomShapeParams({
+            lfoId, params: {
+                decayEnabled,
+                decayCurve,
+                attackCurve,
             }
-        }
+        })
+        console.log(action)
+        dispatch(action)
     }
 
     const set = (input: NumericInputProperty) => {
         const { ctrlIndex: lfoId = 0, value } = input
-        const currShape = selectController(
-            lfoCtrls.SHAPE,
-            lfoId)(store.getState())
+        const currShape = selectShape(lfoId)
 
         const boundedShape = getBounded(value, 0, lfoCtrls.SHAPE.values.length - 1)
         if (boundedShape === currShape) {
@@ -344,9 +389,7 @@ const shape = (() => {
     const increment = (input: NumericInputProperty) => {
         console.log("Inc to")
         const { ctrlIndex: lfoId = 0, value: inc } = input
-        const currShape = selectController(
-            lfoCtrls.SHAPE,
-            lfoId)(store.getState())
+        const currShape = selectShape(lfoId)
 
         set({ ...input, value: currShape + inc })
     }
@@ -363,7 +406,9 @@ const shape = (() => {
 
     return {
         set,
-        detectFromStoreAndSet,
+        setInStoreIfChanged,
+        detectCurrent,
+        saveCustomShapeParams,
         increment,
         toggle,
     }

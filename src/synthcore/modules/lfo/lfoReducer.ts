@@ -1,16 +1,30 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { StageId } from './types'
+import { Curve, StageId } from './types'
 import { RootState } from '../../store'
 import { NumericPayload } from '../common/types'
 
-type LfosState = {
+type CustomParams = {
+    decayEnabled: boolean;
+    decayCurve: number;
+    attackCurve: number;
+}
 
+const getDefaultCustomShapeParams = () => ({
+    decayEnabled: true,
+    decayCurve: Curve.LIN,
+    attackCurve: Curve.LIN
+})
+
+type LfosState = {
     gui: {
         currLfoId: number;
         currStageId: StageId;
     }
     ui: {
         currLfoId: number;
+    }
+    misc: {
+        customShapeParams: CustomParams[]
     }
 }
 
@@ -21,6 +35,14 @@ export const initialState: LfosState = {
     },
     ui: {
         currLfoId: 0
+    },
+    misc: {
+        customShapeParams: [
+            getDefaultCustomShapeParams(),
+            getDefaultCustomShapeParams(),
+            getDefaultCustomShapeParams(),
+            getDefaultCustomShapeParams(),
+        ]
     }
 }
 
@@ -31,6 +53,11 @@ type StagePayload = {
 
 type LfoPayload = {
     lfo: number;
+}
+
+type CustomShapeParamsPayload = {
+    lfoId: number,
+    params: CustomParams
 }
 
 export const lfosSlice = createSlice({
@@ -53,6 +80,10 @@ export const lfosSlice = createSlice({
         // actions only consumed by api
         toggleStageSelected: (state, { payload }: PayloadAction<StagePayload>) => {
         },
+
+        setCustomShapeParams: (state, { payload }: PayloadAction<CustomShapeParamsPayload>) => {
+            state.misc.customShapeParams[payload.lfoId] = payload.params
+        },
     }
 })
 
@@ -64,6 +95,7 @@ export const {
     setUiLfo,
 
     toggleStageSelected,
+    setCustomShapeParams,
 
 } = lfosSlice.actions
 
@@ -71,5 +103,6 @@ export const selectLfos = (state: RootState) => state.lfos
 export const selectCurrGuiStageId = (state: RootState) => state.lfos.gui.currStageId
 export const selectCurrGuiLfoId = (state: RootState) => state.lfos.gui.currLfoId
 export const selectCurrUiLfoId = (state: RootState) => state.lfos.ui.currLfoId
+export const selectCustomShapeParams = (state: RootState) => (lfoId: number) => state.lfos.misc.customShapeParams[lfoId]
 
 export default lfosSlice.reducer

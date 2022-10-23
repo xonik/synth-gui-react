@@ -29,7 +29,6 @@ const formatTime = (time: number) => {
 const stepLengthMs = 1.33
 
 const formatRate = (time: number) => {
-    console.log(time)
     return `${Math.floor(10000 / (2 * time * 65535 * stepLengthMs)) / 10}Hz`;
 }
 

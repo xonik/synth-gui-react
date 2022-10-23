@@ -23,5 +23,6 @@ export enum ApiSource {
     UI,
     GUI,
     SPI,
-    MIDI
+    MIDI,
+    INTERNAL
 }
