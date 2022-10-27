@@ -154,7 +154,7 @@ const Stages = ({ lfoId }: Props) => {
         const sections: { from: number, to: number, id: StageId }[] = []
 
         // Starting point in stage when not starting at beginning
-        let phasePoint = xOffset !== 0 ? Math.floor(keypoints * offsetInStage) : 0
+        const phasePoint = xOffset !== 0 ? Math.floor(keypoints * offsetInStage) : 0
         //TODO: Test if this feels right or not - if(phasePoint === keypoints) phasePoint = 0
 
         if (offsetStage === StageId.ATTACK) {
@@ -193,22 +193,35 @@ const Stages = ({ lfoId }: Props) => {
         // - If phasePoint is 0 we will get a full Attack + a full Decay (if enabled)
 
         // First partial stage
-        points.push(...firstYValues.slice(phasePoint, firstYValues.length - 1).map(
-            (yValue) => {
+        points.push(...firstYValues.slice(phasePoint, firstYValues.length).map(
+            (yValue, index, subArray) => {
                 const point = { x: currentX, y: yValue }
-                currentX += firstXDelta
+                if(index < subArray.length - 1){
+                    // The last point in the list is at the same x value as the first in the next, so don't increment
+                    // index x for the last point. (it may still have a different y value so the point has to be
+                    // included)
+                    currentX += firstXDelta
+                }
                 return point
             }
         ))
         sections.push({ from: prevX, to: currentX, id: offsetStage })
-        prevX = currentX;
+        prevX = currentX
+        const lastYInFirstStage = points[points.length-1].y
 
-        // Full second stage. If this is decay and decay is disabled, secondXDelta will be 0 and all points will
-        // be on top of each other.
-        points.push(...secondYValues.slice(0, secondYValues.length - 1).map(
-            (yValue) => {
-                const point = { x: currentX, y: yValue }
-                currentX += secondXDelta
+        // Full second stage. If this is decay and decay is disabled, secondXDelta will be 0, the y value will be fixed
+        // at the y value of the last point in the attack stage, and all points will  be on top of each other
+        // effectively hiding them. We cannot remove the points because this will break the animation between
+        // waveforms as the number of points won't be the same.
+        points.push(...secondYValues.slice(0, secondYValues.length).map(
+            (yValue, index, subArray) => {
+                const point = { x: currentX, y: decayEnabled ? yValue : lastYInFirstStage }
+                if(index < subArray.length - 1) {
+                    // The last point in the list is at the same x value as the first in the next, so don't increment
+                    // index x for the last point. (it may still have a different y value so the point has to be
+                    // included)
+                    currentX += secondXDelta
+                }
                 return point
             }
         ))
@@ -217,17 +230,12 @@ const Stages = ({ lfoId }: Props) => {
             to: currentX,
             id: offsetStage === StageId.ATTACK ? StageId.DECAY : StageId.ATTACK
         })
-        prevX = currentX;
+        prevX = currentX
 
         // Second partial stage
-        // If decay is not enabled, we need to add a point to get a fully vertical line. To keep the number of
-        // points the same on change we always add this point.
-        //points.push({ x: currentX, y: decayEnabled ? firstYValues[0] : firstYValues[firstYValues.length-1]})
-        points.push(...firstYValues.slice(0, phasePoint+1).map(
+        points.push(...firstYValues.slice(0, phasePoint + 1).map(
             (yValue) => {
-                // Prevent a vertical line on the last point if phase is 0 and decay is disabled
-                const y = (!decayEnabled && phasePoint === 0 ? firstYValues[firstYValues.length-1] : yValue)
-                const point = { x: currentX, y }
+                const point = { x: currentX, y: yValue }
                 currentX += firstXDelta
                 return point
             }))
