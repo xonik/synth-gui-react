@@ -130,10 +130,12 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             uiResponse: timeResponseMapper,
         },
         OFFSET: {
-            id: ControllerIdNonMod.ENV_OFFSET,
+            id: ControllerIdEnvDst.OFFSET,
             label: 'Offset',
+            shortLabel: 'Offset',
             type: 'pot',
             addr: NRPN.ENV_OFFSET,
+            isDstDigi: true,
             bipolar: true,
         },
         MAX_LOOPS: { id: ControllerIdEnvNonMod.ENV_MAX_LOOPS, label: 'Max loops', type: 'pot', cc: CC.ENV_MAX_LOOPS },

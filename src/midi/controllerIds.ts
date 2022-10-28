@@ -145,12 +145,13 @@ export enum ControllerIdEnvDst {
     RELEASE2_TIME,
     DECAY2_LEVEL,
     RELEASE2_LEVEL,
+    OFFSET,
 }
 export const DST_ENV_COUNT = Object.keys(ControllerIdEnvDst).filter(o => isNaN(o as any)).length
 export const FIRST_LFO_DST = FIRST_ENV_DST + DST_ENV_COUNT
 
 export enum ControllerIdLfoDst {
-    RATE = 100,
+    RATE = 101,
     DEPTH,
     DELAY,
     BALANCE,
@@ -164,7 +165,7 @@ export const FIRST_NON_MOD_POTS = FIRST_LFO_DST + DST_LFO_COUNT
 // controllers that affect stuff that is not part of the
 // modulation matrix, such as global pots (volume etc)
 export enum ControllerIdNonModPots {
-    MOD_AMOUNT = 106,
+    MOD_AMOUNT = 107,
     MAIN_DISP_POT1,
     MAIN_DISP_POT2,
     MAIN_DISP_POT3,
@@ -182,7 +183,7 @@ export const FIRST_NON_MOD = FIRST_NON_MOD_POTS + NON_MOD_POTS_COUNT
 
 export enum ControllerIdNonMod {
     // Non-modulatable controllers
-    DCO1_SYNC = 117,
+    DCO1_SYNC = 118,
     DCO1_MODE,
     DCO1_SUB_WAVE,
     DCO1_WHEEL,
@@ -277,8 +278,6 @@ export enum ControllerIdNonMod {
     // TODO: Why are these here?
     ENV_LEVEL,
     ENV_TIME,
-
-    ENV_OFFSET,
 
     ENV_SELECT,
     ENV_SELECT_ENV3_ID,

@@ -77,12 +77,11 @@ const stageCurve = (() => {
         dispatch(setController(boundedInput))
 
         // Update shape as it may have changed
-        const detectedShape = shape.detectCurrent(lfoId)
-        if (detectedShape) {
-            shape.setInStoreIfChanged(lfoId, detectedShape)
-        }
-
         if (source !== ApiSource.INTERNAL) {
+            const detectedShape = shape.detectCurrent(lfoId)
+            if (detectedShape) {
+                shape.setInStoreIfChanged(lfoId, detectedShape)
+            }
             shape.saveCustomShapeParams(lfoId)
             lfoMidiApi.curve.send(boundedInput)
         }
@@ -133,12 +132,12 @@ const stageEnabled = (() => {
         dispatch(setController(input))
 
         // Update shape as it may have changed
-        const detectedShape = shape.detectCurrent(lfoId)
-        if (detectedShape) {
-            shape.setInStoreIfChanged(lfoId, detectedShape)
-        }
-
         if (source !== ApiSource.INTERNAL) {
+            const detectedShape = shape.detectCurrent(lfoId)
+            if (detectedShape) {
+                shape.setInStoreIfChanged(lfoId, detectedShape)
+            }
+
             shape.saveCustomShapeParams(lfoId)
             lfoMidiApi.stageEnabled.send(input)
         }
@@ -387,7 +386,6 @@ const shape = (() => {
     }
 
     const increment = (input: NumericInputProperty) => {
-        console.log("Inc to")
         const { ctrlIndex: lfoId = 0, value: inc } = input
         const currShape = selectShape(lfoId)
 
@@ -397,11 +395,11 @@ const shape = (() => {
     lfoParamReceive(lfoCtrls.SHAPE, set, (midiValue: number) => ({ value: midiValue }))
 
     const toggle = (input: ButtonInputProperty) => {
-        const { ctrlIndex: envId = 0, ctrl } = input
+        const { ctrlIndex: lfoId = 0, ctrl } = input
 
-        const currentEnabled = selectController(ctrl, envId)(store.getState())
-        const enabled = (currentEnabled + 1) % (input.ctrl.values?.length || 1)
-        set({ ...input, value: enabled })
+        const currentShape = selectController(ctrl, lfoId)(store.getState())
+        const shape = (currentShape + 1) % (input.ctrl.values?.length || 1)
+        set({ ...input, value: shape })
     }
 
     return {
