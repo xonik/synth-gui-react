@@ -134,6 +134,7 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             label: 'Offset',
             type: 'pot',
             addr: NRPN.ENV_OFFSET,
+            bipolar: true,
         },
         MAX_LOOPS: { id: ControllerIdEnvNonMod.ENV_MAX_LOOPS, label: 'Max loops', type: 'pot', cc: CC.ENV_MAX_LOOPS },
         TOGGLE_STAGE: {

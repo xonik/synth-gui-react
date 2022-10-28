@@ -41,9 +41,10 @@ const StageBlock = ({ x, y, width, height, stage, nextStage, isBipolar, offset }
     const svgPoints = useMemo(
         () => points
             .map((point) => {
+                const minY = isBipolar ? -1 : 0
                 // cut off top/bottom to stay within possible range
                 let y = point.y * scale + summedOffset
-                if(y < 0) { y = 0 } else if(y > 1) { y = 1}
+                if(y < minY) { y = minY } else if(y > 1) { y = 1}
                 return { x: point.x, y }
             })
             .map((point) => mapToSvg(point, isBipolar)),
