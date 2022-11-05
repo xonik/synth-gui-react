@@ -140,41 +140,22 @@ const Stages = ({ lfoId }: Props) => {
 
 
     // calculate all points with correct x value. x has a range of 0 to 1.
-    const [points, stageBackgrounds] = useMemo(() => {
+    const [points2, stageBackgrounds] = useMemo(() => {
 
         const delayDelta = delayEnabled ? baseStageWidth : 0
         const attackDelta = (baseStageWidth / keypoints) * (decayEnabled ? 2 * balance : 1)
         const decayDelta = decayEnabled ? (baseStageWidth / keypoints) * 2 * (1 - balance) : 0
-
-        let firstYValues: number[]
-        let firstXDelta: number
-        let secondYValues: number[]
-        let secondXDelta: number
+        let attackValues = pointsPerStage[0]
+        let decayValues = pointsPerStage[1]
 
         const sections: { from: number, to: number, id: StageId }[] = []
 
         // Starting point in stage when not starting at beginning
-        const phasePoint = xOffset !== 0 ? Math.floor(keypoints * offsetInStage) : 0
-        //TODO: Test if this feels right or not - if(phasePoint === keypoints) phasePoint = 0
-
-        if (offsetStage === StageId.ATTACK) {
-            firstYValues = pointsPerStage[0]
-            firstXDelta = attackDelta
-            secondYValues = pointsPerStage[1]
-            secondXDelta = decayDelta
-
-        } else {
-            firstYValues = pointsPerStage[1]
-            firstXDelta = decayDelta
-            secondYValues = pointsPerStage[0]
-            secondXDelta = attackDelta
+        let phasePointStart = xOffset !== 0 ? Math.floor(keypoints * offsetInStage) : 0
+        if( offsetStage === StageId.DECAY) {
+            phasePointStart += (keypoints + 1)
         }
-
-        // Calculate points for all stages. Stages that are disabled will have all points in the same position.
-        // This is necessary to be able to morph between LFOs with different number of stages activated.
-
-        // Delay stage points
-        const points: Point[] = [{ x: 0, y: firstYValues[phasePoint] }]
+        const phasePointEnd =  (2 * keypoints + 2) + phasePointStart
 
         // Delta will be 0 if delay is disabled
         let currentX = delayDelta
@@ -183,63 +164,58 @@ const Stages = ({ lfoId }: Props) => {
         if (delayEnabled) {
             sections.push({ from: 0, to: currentX, id: StageId.DELAY })
         }
+
+        const cycle: { y: number, inc: number, stageId: StageId }[] = []
+
+        cycle.push(...attackValues.map(
+            (yValue, index, values) => ({
+                y: yValue,
+                inc: index < values.length - 1 ? attackDelta : 0,
+                stageId: StageId.ATTACK
+            })
+        ))
+        cycle.push(...decayValues.map(
+            (yValue, index, values) => ({
+                y: yValue,
+                inc: index < values.length - 1 ? decayDelta : 0,
+                stageId: StageId.DECAY
+            })
+        ))
+
+        // Add two full cycles of the wave to be able to move the phase offset from 0 to 1
+        const cycles = [...cycle, ...cycle]
+
+        // Adding first point to get line when delay is enabled
+        let prevY = cycles[phasePointStart].y;
         let prevX = currentX;
+        let prevStageId = StageId.ATTACK;
+        const points: Point[] = [{ x: 0, y: prevY }]
 
-        // Attack and Decay may take up to three blocks
-        // - If the phasePoint is part way into the attack stage we will get a partial Attack + full Decay (if enabled)
-        //   and a partial Attack again.
-        // - If the phasePoint is part way into the decay stage we will get a partial Decay + full Attack
-        //   and a partial Attack again.
-        // - If phasePoint is 0 we will get a full Attack + a full Decay (if enabled)
+        points.push(...cycles.map(
+            (value, index, subArray) => {
+                const hidePoint = index < phasePointStart || index > phasePointEnd
+                const hideNextPoint = index === phasePointEnd // For the last point
+                if (!hidePoint) prevY = value.y;
 
-        // First partial stage
-        points.push(...firstYValues.slice(phasePoint, firstYValues.length).map(
-            (yValue, index, subArray) => {
-                const point = { x: currentX, y: yValue }
-                if(index < subArray.length - 1){
+                const point = { x: currentX, y: hidePoint ? prevY : value.y }
+
+                // Create background sections
+                if(prevStageId !== value.stageId || index === subArray.length - 1){
+                    sections.push({ from: prevX, to: currentX, id: prevStageId })
+                    prevX = currentX
+                    prevStageId = value.stageId
+                }
+
+                if (index < subArray.length - 1) {
                     // The last point in the list is at the same x value as the first in the next, so don't increment
                     // index x for the last point. (it may still have a different y value so the point has to be
                     // included)
-                    currentX += firstXDelta
+                    currentX += hideNextPoint || hidePoint ? 0 : value.inc
                 }
+
                 return point
             }
         ))
-        sections.push({ from: prevX, to: currentX, id: offsetStage })
-        prevX = currentX
-        const lastYInFirstStage = points[points.length-1].y
-
-        // Full second stage. If this is decay and decay is disabled, secondXDelta will be 0, the y value will be fixed
-        // at the y value of the last point in the attack stage, and all points will  be on top of each other
-        // effectively hiding them. We cannot remove the points because this will break the animation between
-        // waveforms as the number of points won't be the same.
-        points.push(...secondYValues.slice(0, secondYValues.length).map(
-            (yValue, index, subArray) => {
-                const point = { x: currentX, y: decayEnabled ? yValue : lastYInFirstStage }
-                if(index < subArray.length - 1) {
-                    // The last point in the list is at the same x value as the first in the next, so don't increment
-                    // index x for the last point. (it may still have a different y value so the point has to be
-                    // included)
-                    currentX += secondXDelta
-                }
-                return point
-            }
-        ))
-        if (decayEnabled) sections.push({
-            from: prevX,
-            to: currentX,
-            id: offsetStage === StageId.ATTACK ? StageId.DECAY : StageId.ATTACK
-        })
-        prevX = currentX
-
-        // Second partial stage
-        points.push(...firstYValues.slice(0, phasePoint + 1).map(
-            (yValue) => {
-                const point = { x: currentX, y: yValue }
-                currentX += firstXDelta
-                return point
-            }))
-        sections.push({ from: prevX, to: currentX - firstXDelta, id: offsetStage })
 
         return [points, sections]
 
@@ -278,7 +254,7 @@ const Stages = ({ lfoId }: Props) => {
         }
 
         <StagesCurve
-            points={points}
+            points={points2}
             yOffset={yOffset}
         />
     </svg>
