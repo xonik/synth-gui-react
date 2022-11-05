@@ -88,7 +88,7 @@ export const getDefaultLfo = (lfoId: number): Controllers => {
         balance: 0.5,
         depth: 1,
         offset: 0,
-        phaseOffset: 0.25,
+        phaseOffset: 0,
         randomPhase: false,
 
         timeOffset: 0,

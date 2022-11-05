@@ -102,7 +102,7 @@ const Stages = ({ lfoId }: Props) => {
         }
     }
 
-    const stageCount = 1 + (delayEnabled ? 1 : 0) + (decayEnabled ? 1 : 0)
+    const stageCount = 2 + (delayEnabled ? 1 : 0)
     const baseStageWidth = 1 / stageCount
 
     const currStageId = select(selectCurrGuiStageId);
@@ -122,7 +122,7 @@ const Stages = ({ lfoId }: Props) => {
         [attackStage, decayStage, stoppedStage]
     )
 
-    const pointsPerStage = useMemo(() => contourStages.map((stage, index) => {
+    const pointsPerStage = useMemo(() => contourStages.map((stage) => {
         if (stage.id === StageId.STOPPED) {
             return []
         }
@@ -140,11 +140,15 @@ const Stages = ({ lfoId }: Props) => {
 
 
     // calculate all points with correct x value. x has a range of 0 to 1.
-    const [points2, stageBackgrounds] = useMemo(() => {
+    const [points, stageBackgrounds] = useMemo(() => {
 
         const delayDelta = delayEnabled ? baseStageWidth : 0
-        const attackDelta = (baseStageWidth / keypoints) * (decayEnabled ? 2 * balance : 1)
+
+        // Attack + Decay always takes up 2  * baseStageWidth even if decay is disabled, to keep
+        // the delay-end-point at the same pos (also, the cycle time stays the same independent of decay enable/disable)
+        const attackDelta = (2 * baseStageWidth / keypoints) * (decayEnabled ? balance : 1)
         const decayDelta = decayEnabled ? (baseStageWidth / keypoints) * 2 * (1 - balance) : 0
+
         let attackValues = pointsPerStage[0]
         let decayValues = pointsPerStage[1]
 
@@ -193,6 +197,9 @@ const Stages = ({ lfoId }: Props) => {
 
         points.push(...cycles.map(
             (value, index, subArray) => {
+
+                // Hide points outside before and after phase points, so we can only see the
+                // ones we want
                 const hidePoint = index < phasePointStart || index > phasePointEnd
                 const hideNextPoint = index === phasePointEnd // For the last point
                 if (!hidePoint) prevY = value.y;
@@ -254,7 +261,7 @@ const Stages = ({ lfoId }: Props) => {
         }
 
         <StagesCurve
-            points={points2}
+            points={points}
             yOffset={yOffset}
         />
     </svg>
