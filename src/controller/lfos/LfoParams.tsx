@@ -4,26 +4,13 @@ import classNames from 'classnames'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectController, selectLfoStages } from '../../synthcore/modules/controllers/controllersReducer'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
-import './LfoParams.scss'
 import { curveNames } from './utils'
 import { LFO_SEC_PER_UNIT } from '../../utils/constants'
+import './LfoParams.scss'
 
 interface Props {
     className?: string
     lfoId: number
-}
-
-// TODO: FIX
-const formatTimeOld = (time: number) => {
-    const timeMillis = Math.floor(65534 * time) + 1
-    if (timeMillis < 500) {
-        return `${timeMillis}ms`
-    } else if (timeMillis < 20000) {
-        return `${Math.floor(timeMillis / 100) / 10}s`
-    } else {
-        const seconds = Math.floor(timeMillis / 1000)
-        return `${seconds}s`
-    }
 }
 
 const formatTime = (time: number) => {
