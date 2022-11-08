@@ -11,6 +11,7 @@ import './LfoParams.scss'
 interface Props {
     className?: string
     lfoId: number
+    delayLevel: number
 }
 
 const formatTime = (time: number) => {
@@ -53,7 +54,7 @@ const getTime = (stage: Stage, time: number, balance: number, decayEnabled: bool
 }
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
-const LfoParams = ({ lfoId, className }: Props) => {
+const LfoParams = ({ lfoId, className, delayLevel }: Props) => {
 
     const stages = useAppSelector(selectLfoStages(lfoId))
     const loopOn = useAppSelector(selectController(lfoCtrls.LOOP, lfoId)) === 1
@@ -71,7 +72,8 @@ const LfoParams = ({ lfoId, className }: Props) => {
     const attack = stages[StageId.ATTACK];
     const decay = stages[StageId.DECAY];
 
-    const delayLevel = 0; // TODO
+    const boundedDelayLevel = Math.round((delayLevel < -1 ? -1 : delayLevel > 1 ? 1 : delayLevel) * 100)
+
     const delayTime = useAppSelector(selectController(lfoCtrls.DELAY, lfoId))
     const attackTime = getTime(attack, time, balance, !!decay.enabled)
     const decayTime = getTime(decay, time, balance, !!decay.enabled)
@@ -112,7 +114,7 @@ const LfoParams = ({ lfoId, className }: Props) => {
             </div>
             <div className="lfo-params__footer__item--values--time">
                 <div>{delay.enabled ? formatTime(delayTime || 0) : '-'}</div>
-                <div>{delay.enabled ? delayLevel : '-'}</div>
+                <div>{delay.enabled ? boundedDelayLevel : '-'}</div>
             </div>
         </div>
 

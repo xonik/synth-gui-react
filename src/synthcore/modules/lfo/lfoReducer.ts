@@ -19,6 +19,7 @@ type LfosState = {
     gui: {
         currLfoId: number;
         currStageId: StageId;
+        currDelayLevel: number;
     }
     ui: {
         currLfoId: number;
@@ -32,6 +33,7 @@ export const initialState: LfosState = {
     gui: {
         currLfoId: 0,
         currStageId: StageId.STOPPED,
+        currDelayLevel: 0,
     },
     ui: {
         currLfoId: 0
@@ -76,6 +78,9 @@ export const lfosSlice = createSlice({
         setUiLfo: (state, { payload }: PayloadAction<NumericPayload>) => {
             state.ui.currLfoId = payload.value
         },
+        setCurrDelayLevel: (state, { payload }: PayloadAction<NumericPayload>) => {
+            state.gui.currDelayLevel = payload.value
+        },
 
         // actions only consumed by api
         toggleStageSelected: (state, { payload }: PayloadAction<StagePayload>) => {
@@ -93,6 +98,7 @@ export const {
 
     setGuiLfo,
     setUiLfo,
+    setCurrDelayLevel,
 
     toggleStageSelected,
     setCustomShapeParams,
@@ -102,6 +108,7 @@ export const {
 export const selectLfos = (state: RootState) => state.lfos
 export const selectCurrGuiStageId = (state: RootState) => state.lfos.gui.currStageId
 export const selectCurrGuiLfoId = (state: RootState) => state.lfos.gui.currLfoId
+export const selectCurrGuiDelayLevel = (state: RootState) => state.lfos.gui.currDelayLevel
 export const selectCurrUiLfoId = (state: RootState) => state.lfos.ui.currLfoId
 export const selectCustomShapeParams = (state: RootState) => (lfoId: number) => state.lfos.misc.customShapeParams[lfoId]
 

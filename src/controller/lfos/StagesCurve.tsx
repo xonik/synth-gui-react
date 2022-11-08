@@ -5,7 +5,6 @@ import './StagesCurve.scss'
 
 interface Props {
     points: Point[]
-    yOffset?: number
 }
 
 const mapToSvg = (point: Point) => ({
