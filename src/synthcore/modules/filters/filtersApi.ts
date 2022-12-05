@@ -14,6 +14,7 @@ const setterFuncs = createSetterFuncs(
         filtersControllers.LPF.EXT_CV,
         filtersControllers.LPF.WHEEL,
         filtersControllers.LPF.SLOPE,
+        filtersControllers.LPF.FM_MODE,
 
         filtersControllers.FILTERS.LINK_CUTOFF,
         filtersControllers.FILTERS.ROUTING,

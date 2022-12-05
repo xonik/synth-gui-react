@@ -19,6 +19,7 @@ interface FiltersControllers {
         EXT_CV: ControllerConfigCCWithValue
         WHEEL: ControllerConfigCCWithValue
         SLOPE: ControllerConfigCCWithValue
+        FM_MODE: ControllerConfigCCWithValue
     },
     FILTERS: {
         props: FuncProps
@@ -109,6 +110,16 @@ const filtersControllers: FiltersControllers = {
                 BUTTONS.BUTTONS_RIGHT.values.LPF_SLOPE_24DB,
             ],
         },
+        FM_MODE: {
+            id: ControllerIdNonMod.LPF_FM_MODE,
+            label: 'FM mode',
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.LPF_FM_MODE_LIN,
+                BUTTONS.BUTTONS_RIGHT.values.LPF_FM_MODE_LOG,
+            ],
+        },
     },
     FILTERS: {
         props: { label: 'Link/route' },
@@ -181,7 +192,7 @@ const filtersControllers: FiltersControllers = {
         },
         WHEEL: {
             id: ControllerIdNonMod.SVF_WHEEL,
-            label: 'Wheel',
+            label: 'Mod wheel',
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
@@ -191,7 +202,7 @@ const filtersControllers: FiltersControllers = {
         },
         INVERT: {
             id: ControllerIdNonMod.SVF_INVERT,
-            label: 'Wheel',
+            label: 'Invert',
             type: 'button',
             cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [

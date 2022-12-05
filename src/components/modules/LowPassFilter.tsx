@@ -46,13 +46,19 @@ const LowPassFilter = ({ x, y }: Props) => {
                      ctrl={filtersControllers.LPF.RESONANCE}
         />
 
-        <RoundPushButton8 x={col4} y={y + 10} ledPosition="top" ledCount={2} ledLabels={['12dB', '24dB']}
+        <RoundPushButton8 x={col1} y={y - 10} ledPosition="top" ledCount={2} ledLabels={['Lin', 'Log']}
+                          label="FM mode" labelPosition="bottom"
+                          ctrlGroup={ctrlGroup}
+                          ctrl={filtersControllers.LPF.FM_MODE}
+        />
+
+        <RoundPushButton8 x={col4} y={y - 10} ledPosition="top" ledCount={2} ledLabels={['12dB', '24dB']}
                           label="Slope" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={filtersControllers.LPF.SLOPE}
         />
 
-        <RoundLedPushButton8 x={col1} y={y - 10} label="Ext CV" labelPosition="bottom"
+        <RoundLedPushButton8 x={col4} y={y + 10} label="Ext CV" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={filtersControllers.LPF.EXT_CV}
         />
