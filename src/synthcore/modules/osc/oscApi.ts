@@ -23,6 +23,7 @@ const setterFuncs = createSetterFuncs(
         oscControllers.DCO2.SUB1,
         oscControllers.DCO2.SUB2,
         oscControllers.DCO2.PW,
+        oscControllers.DCO2.SYNC,
         oscControllers.DCO2.MODE,
         oscControllers.DCO2.SUB_WAVE,
         oscControllers.DCO2.WHEEL,

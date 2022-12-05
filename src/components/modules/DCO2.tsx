@@ -36,6 +36,14 @@ const DCO2 = ({ x, y }: Props) => {
                      ctrl={oscControllers.DCO2.NOTE}
         />
 
+        <RoundPushButton8 x={col2} y={topRow}
+                          ledPosition="right" ledCount={2} ledLabels={['Hard', 'Metal']}
+                          label="Sync 2" labelPosition="bottom"
+                          hasOff
+                          ctrlGroup={ctrlGroup}
+                          ctrl={oscControllers.DCO2.SYNC}
+        />
+
         <RotaryPot10 x={col4} y={topRow} ledMode="single" label="Detune"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.DCO2.DETUNE}

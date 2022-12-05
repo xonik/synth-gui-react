@@ -30,6 +30,7 @@ const setterFuncs = createSetterFuncs(
         filtersControllers.SVF.EXT_CV,
         filtersControllers.SVF.WHEEL,
         filtersControllers.SVF.SLOPE,
+        filtersControllers.SVF.FM_MODE,
         filtersControllers.SVF.INVERT,
     ])
 

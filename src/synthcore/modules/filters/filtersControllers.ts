@@ -39,6 +39,7 @@ interface FiltersControllers {
         EXT_CV: ControllerConfigCCWithValue
         WHEEL: ControllerConfigCCWithValue
         SLOPE: ControllerConfigCCWithValue
+        FM_MODE: ControllerConfigCCWithValue
         INVERT: ControllerConfigCCWithValue
     }
 }
@@ -226,6 +227,16 @@ const filtersControllers: FiltersControllers = {
                 BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_HP_BP,
                 BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_NOTCH,
                 BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_NOTCH_LP,
+            ],
+        },
+        FM_MODE: {
+            id: ControllerIdNonMod.SVF_FM_MODE,
+            label: 'FM mode',
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.SVF_FM_MODE_LIN,
+                BUTTONS.BUTTONS_RIGHT.values.SVF_FM_MODE_LOG,
             ],
         },
     }

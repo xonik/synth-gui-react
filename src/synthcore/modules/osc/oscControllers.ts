@@ -33,6 +33,7 @@ interface OscControllers {
         SUB1: ControllerConfigCC
         SUB2: ControllerConfigCC
         PW: ControllerConfigCC
+        SYNC: ControllerConfigCCWithValue
         MODE: ControllerConfigCCWithValue
         SUB_WAVE: ControllerConfigCCWithValue
         WHEEL: ControllerConfigCCWithValue
@@ -114,13 +115,13 @@ const oscControllers: OscControllers = {
         //buttons
         SYNC: {
             id: ControllerIdNonMod.DCO1_SYNC,
-            label: 'Sync',
+            label: 'Sync DCO 1',
             type: 'button',
             cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
                 BUTTONS.BUTTONS_LEFT.values.OSC1_SYNC_OFF,
-                BUTTONS.BUTTONS_LEFT.values.OSC1_SYNC_1_2,
-                BUTTONS.BUTTONS_LEFT.values.OSC1_SYNC_2_1,
+                BUTTONS.BUTTONS_LEFT.values.OSC1_SYNC_HARD,
+                BUTTONS.BUTTONS_LEFT.values.OSC1_SYNC_METAL,
             ],
         },
         MODE: {
@@ -255,6 +256,17 @@ const oscControllers: OscControllers = {
         },
 
         //buttons
+        SYNC: {
+            id: ControllerIdNonMod.DCO2_SYNC,
+            label: 'Sync DCO 2',
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC2_SYNC_OFF,
+                BUTTONS.BUTTONS_LEFT.values.OSC2_SYNC_HARD,
+                BUTTONS.BUTTONS_LEFT.values.OSC2_SYNC_METAL,
+            ],
+        },
         MODE: {
             id: ControllerIdNonMod.DCO2_MODE,
             label: 'Mode',

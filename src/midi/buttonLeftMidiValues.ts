@@ -1,7 +1,7 @@
 export enum buttonLeftMidiValues {
     OSC1_SYNC_OFF,
-    OSC1_SYNC_1_2,
-    OSC1_SYNC_2_1,
+    OSC1_SYNC_HARD,
+    OSC1_SYNC_METAL,
     OSC1_MODE_DCO,
     OSC1_MODE_WT,
     OSC1_MODE_PCM,
@@ -18,6 +18,9 @@ export enum buttonLeftMidiValues {
     OSC1_PRE_FILTER_SINE_OFF,
     OSC1_PRE_FILTER_SINE_ON,
 
+    OSC2_SYNC_OFF,
+    OSC2_SYNC_HARD,
+    OSC2_SYNC_METAL,
     OSC2_MODE_DCO,
     OSC2_MODE_WT,
     OSC2_MODE_PCM,

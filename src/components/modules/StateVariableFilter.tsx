@@ -78,9 +78,15 @@ const StateVariableFilter = ({ x, y }: Props) => {
                      ctrl={filtersControllers.SVF.RESONANCE}
         />
 
-        <RoundLedPushButton8 x={col1} y={y - 10} label="Ext CV" labelPosition="bottom"
+        <RoundPushButton8 x={col1} y={y - 10} ledPosition="top" ledCount={2} ledLabels={['Lin', 'Log']}
+                          label="FM mode" labelPosition="bottom"
+                          ctrlGroup={ctrlGroup}
+                          ctrl={filtersControllers.SVF.FM_MODE}
+        />
+
+        <RoundLedPushButton8 x={col4} y={y - 10} label="Invert" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
-                             ctrl={filtersControllers.SVF.EXT_CV}
+                             ctrl={filtersControllers.SVF.INVERT}
         />
 
         <RoundLedPushButton8 x={col1} y={y + 10} label="Wheel" labelPosition="bottom"
@@ -88,11 +94,10 @@ const StateVariableFilter = ({ x, y }: Props) => {
                              ctrl={filtersControllers.SVF.WHEEL}
         />
 
-        <RoundLedPushButton8 x={col4} y={y + 10} label="Invert" labelPosition="bottom"
+        <RoundLedPushButton8 x={col4} y={y + 10} label="Ext CV" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
-                             ctrl={filtersControllers.SVF.INVERT}
+                             ctrl={filtersControllers.SVF.EXT_CV}
         />
-
 
         <RoundRotaryButton17 x={x} y={bottomRow1}
                              label="Slope" labelPosition="bottom"

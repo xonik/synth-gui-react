@@ -38,7 +38,7 @@ const DCO1 = ({ x, y }: Props) => {
         />
 
         <RoundPushButton8 x={col2} y={topRow}
-                          ledPosition="right" ledCount={2} ledLabels={['1 -> 2', '2 -> 1']}
+                          ledPosition="right" ledCount={2} ledLabels={['Hard', 'Metal']}
                           label="Sync" labelPosition="bottom"
                           hasOff
                           ctrlGroup={ctrlGroup}
