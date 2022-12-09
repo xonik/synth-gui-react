@@ -76,21 +76,24 @@ export const createSetMapper = (map: MapperEntry[], midiFuncs?: {send?: ParamSen
 
 const getBoundedController = (ctrl: ControllerConfig, value: number) => {
     const lowerBound = ctrl.bipolar === true ? -1 : 0
-    const upperBound = ctrl.values? ctrl.values.length : 1
+    const upperBound = ctrl.values ? ctrl.values.length : 1
     return getQuantized(getBounded(value, lowerBound, upperBound))
 }
 
-export const createSetterFuncs = (
-    controllers: ControllerConfig[],
-    midiFuncs?: {send?: ParamSendFunc, receive?: ParamReceiveFunc}
-) => {
+type Handler = {
+    set: (input: NumericInputProperty, forceSet: boolean, uiValue?: number) => void
+    toggle: (input: ButtonInputProperty) => void
+    release: (input: ButtonInputProperty) => void
+    increment: (input: NumericInputProperty) => void
+}
+
+// TODO: Extract internal functions so that they're not recreated for every controller.
+const createFuncs = (
+    ctrl: ControllerConfig,
+    midiFuncs?: { send?: ParamSendFunc, receive?: ParamReceiveFunc }
+): Handler => {
     const set = (input: NumericInputProperty, forceSet = false, uiValue?: number) => {
         const { ctrl, ctrlIndex, valueIndex, value } = input
-
-        // Not for this reducer!
-        if(!controllers.find((cont) => cont.id === ctrl.id)){
-            return
-        }
 
         const boundedValue = getBoundedController(ctrl, value)
         const currentValue = selectController(ctrl, ctrlIndex || 0)(store.getState())
@@ -102,75 +105,65 @@ export const createSetterFuncs = (
         // Not always present, and may only be sent for nrpn messages. Represents stage etc, the top
         // 5 bits left over when 16 bits have been used for value.
         const boundedValueIndex = valueIndex !== undefined ? getBounded(valueIndex, 0, 31) : undefined
-        const boundedInput = {...input, value: boundedValue, valueIndex: boundedValueIndex, uiValue}
+        const boundedInput = { ...input, value: boundedValue, valueIndex: boundedValueIndex, uiValue }
 
         dispatch(setController(boundedInput))
 
         // send over midi
-        if(midiFuncs && midiFuncs.send) {
+        if (midiFuncs && midiFuncs.send) {
             midiFuncs.send(boundedInput)
         } else {
             paramSend(boundedInput)
         }
     }
     const toggle = (input: ButtonInputProperty) => {
-        // Not for this reducer!
-        if(!controllers.find((cont) => cont.id === input.ctrl.id)){
-            return
-        }
-
         const currentValue = selectController(input.ctrl, input.ctrlIndex || 0)(store.getState())
         const values = input.ctrl.values?.length || 1;
 
         // Single value buttons, click only, no toggle
-        if(values === 1) {
-            set({...input, value: 0}, true)
+        if (values === 1) {
+            set({ ...input, value: 0 }, true)
             return;
         }
 
         // Radio buttons
-        if(input.radioButtonIndex !== undefined) {
-            if(currentValue === input.radioButtonIndex) {
-                set({...input, value: 0})
+        if (input.radioButtonIndex !== undefined) {
+            if (currentValue === input.radioButtonIndex) {
+                set({ ...input, value: 0 })
             } else {
-                set({...input, value: input.radioButtonIndex})
+                set({ ...input, value: input.radioButtonIndex })
             }
             return;
         }
 
         // Normal buttons
-        if(input.reverse){
-            if(currentValue > 0 || input.loop) {
-                set({...input, value: (currentValue - 1 + values) % values})
+        if (input.reverse) {
+            if (currentValue > 0 || input.loop) {
+                set({ ...input, value: (currentValue - 1 + values) % values })
             }
         } else {
-            if(currentValue < values - 1 || input.loop) {
-                set({...input, value: (currentValue + 1) % values})
+            if (currentValue < values - 1 || input.loop) {
+                set({ ...input, value: (currentValue + 1) % values })
             }
         }
     }
 
     const release = (input: ButtonInputProperty) => {
-        if(input.momentary && input.ctrl.values && input.ctrl.values.length > 1){
-            set({...input, value: 1}, true)
+        if (input.momentary && input.ctrl.values && input.ctrl.values.length > 1) {
+            set({ ...input, value: 1 }, true)
         }
     }
 
     const increment = (input: NumericInputProperty) => {
-        // Not for this reducer!
-        if(!controllers.find((cont) => cont.id === input.ctrl.id)){
-            return
-        }
-
         const { value: inc, ctrl } = input
-        if(ctrl.uiResponse && selectUiController){
+        if (ctrl.uiResponse && selectUiController) {
             let currentValue = selectUiController(input.ctrl, input.ctrlIndex || 0)(store.getState())
-            let uiValue = getBoundedController(ctrl,currentValue + inc)
+            let uiValue = getBoundedController(ctrl, currentValue + inc)
             const updatedValue = ctrl.uiResponse.output(uiValue)
-            set({...input, value: updatedValue}, false, uiValue)
+            set({ ...input, value: updatedValue }, false, uiValue)
         } else {
             let currentValue = selectController(input.ctrl, input.ctrlIndex || 0)(store.getState())
-            set({...input, value: currentValue + inc})
+            set({ ...input, value: currentValue + inc })
         }
     }
 
@@ -181,20 +174,55 @@ export const createSetterFuncs = (
     }
 
     // receive midi
-    controllers.forEach((ctrl) => {
-        if(midiFuncs && midiFuncs.receive){
-            midiFuncs.receive(ctrl, setWithUiUpdate)
-        } else {
-            paramReceive(ctrl, setWithUiUpdate)
-        }
-
-    })
+    if (midiFuncs && midiFuncs.receive) {
+        midiFuncs.receive(ctrl, setWithUiUpdate)
+    } else {
+        paramReceive(ctrl, setWithUiUpdate)
+    }
 
     return {
         set,
         toggle,
         release,
         increment,
+    }
+}
+
+export const createSetterFuncs = (
+    controllers: ControllerConfig[],
+    midiFuncs?: { send?: ParamSendFunc, receive?: ParamReceiveFunc }
+) => {
+    const handlers: { [id: string]: Handler } = {}
+    controllers.forEach((controller) => {
+        handlers[controller.id] = createFuncs(controller, midiFuncs)
+    })
+
+    const set = (input: NumericInputProperty, forceSet= false, uiValue?: number) => {
+        if (handlers[input.ctrl.id]) {
+            handlers[input.ctrl.id].set(input, forceSet, uiValue)
+        }
+    }
+    const toggle = (input: ButtonInputProperty) => {
+        if (handlers[input.ctrl.id]) {
+            handlers[input.ctrl.id].toggle(input)
+        }
+    }
+    const release = (input: ButtonInputProperty) => {
+        if (handlers[input.ctrl.id]) {
+            handlers[input.ctrl.id].release(input)
+        }
+    }
+    const increment = (input: NumericInputProperty) => {
+        if (handlers[input.ctrl.id]) {
+            handlers[input.ctrl.id].increment(input)
+        }
+    }
+
+    return {
+        set,
+        toggle,
+        release,
+        increment
     }
 }
 
