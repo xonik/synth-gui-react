@@ -1,7 +1,7 @@
-import { createSetterFuncs } from '../common/utils'
+import { createHandlers } from '../common/utils'
 import commonFxControllers from './commonFxControllers'
 
-const { set, toggle, increment } = createSetterFuncs(
+const { set, toggle, increment } = createHandlers(
     [
         commonFxControllers.DSP1.PARAM1,
         commonFxControllers.DSP1.PARAM2,

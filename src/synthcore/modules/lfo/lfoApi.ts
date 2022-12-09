@@ -13,7 +13,7 @@ import {
 import { store } from '../../store'
 import { ApiSource, ControllerGroupIds } from '../../types'
 import { dispatch, getBounded } from '../../utils'
-import { createSetterFuncs } from '../common/utils'
+import { createHandlers } from '../common/utils'
 import { lfoCtrls } from './lfoControllers'
 import { selectController, selectLfoStages, setController } from '../controllers/controllersReducer'
 import { ButtonInputProperty, NumericInputProperty } from '../common/types'
@@ -412,7 +412,7 @@ const shape = (() => {
     }
 })()
 
-const { increment: commonInc, toggle: commonToggle, set: commonSet } = createSetterFuncs([
+const { increment: commonInc, toggle: commonToggle, set: commonSet } = createHandlers([
         lfoCtrls.RATE,
         lfoCtrls.DELAY,
         lfoCtrls.SYNC,
@@ -433,7 +433,7 @@ const { increment: commonInc, toggle: commonToggle, set: commonSet } = createSet
     ],
     { send: lfoParamSend, receive: lfoParamReceive })
 
-const customSetterFuncs = {
+const customhandlers = {
     [lfoCtrls.CURVE.id]: stageCurve,
     [lfoCtrls.TOGGLE_STAGE.id]: stageEnabled,
     [lfoCtrls.INVERT.id]: invert,
@@ -442,17 +442,17 @@ const customSetterFuncs = {
 }
 
 const increment = (input: NumericInputProperty) => {
-    customSetterFuncs[input.ctrl.id]?.increment(input)
+    customhandlers[input.ctrl.id]?.increment(input)
     commonInc(input)
 }
 
 const toggle = (input: ButtonInputProperty) => {
-    customSetterFuncs[input.ctrl.id]?.toggle(input)
+    customhandlers[input.ctrl.id]?.toggle(input)
     commonToggle(input)
 }
 
 const set = (input: NumericInputProperty) => {
-    customSetterFuncs[input.ctrl.id]?.set(input)
+    customhandlers[input.ctrl.id]?.set(input)
     commonSet(input)
 }
 

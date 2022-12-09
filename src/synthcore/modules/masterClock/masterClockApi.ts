@@ -1,7 +1,7 @@
 import masterClockControllers from './masterClockControllers'
-import { createSetterFuncs } from '../common/utils'
+import { createHandlers } from '../common/utils'
 
-const setterFuncs = createSetterFuncs(
+const handlers = createHandlers(
     [
         masterClockControllers.RATE,
         masterClockControllers.SOURCE,
@@ -9,7 +9,7 @@ const setterFuncs = createSetterFuncs(
 
 
 const api = {
-    ...setterFuncs,
+    ...handlers,
 }
 
 export default api

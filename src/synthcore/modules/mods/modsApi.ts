@@ -189,16 +189,16 @@ export const uiAmount = (() => {
     }
 })()
 
-const customSetterFuncs = {
+const customhandlers = {
     [modsControllers.UI_AMOUNT.id]: uiAmount,
 }
 
 const increment = (input: NumericInputProperty) => {
-    customSetterFuncs[input.ctrl.id]?.increment(input)
+    customhandlers[input.ctrl.id]?.increment(input)
 }
 
 const toggle = (input: ButtonInputProperty) => {
-    customSetterFuncs[input.ctrl.id]?.toggle(input)
+    customhandlers[input.ctrl.id]?.toggle(input)
 }
 
 const modsApi = {

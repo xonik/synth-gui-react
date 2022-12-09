@@ -1,7 +1,7 @@
-import { createSetterFuncs } from '../common/utils'
+import { createHandlers } from '../common/utils'
 import postMixControllers from './postMixControllers'
 
-const setterFuncs = createSetterFuncs(
+const handlers = createHandlers(
     [
         postMixControllers.LPF,
         postMixControllers.SVF,
@@ -14,7 +14,7 @@ const setterFuncs = createSetterFuncs(
     ])
 
 const api = {
-    ...setterFuncs,
+    ...handlers,
 }
 
 export default api

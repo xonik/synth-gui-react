@@ -1,7 +1,7 @@
 import outControllers from './outControllers'
-import { createSetterFuncs } from '../common/utils'
+import { createHandlers } from '../common/utils'
 
-const { set, toggle, increment } = createSetterFuncs(
+const { set, toggle, increment } = createHandlers(
     [
         outControllers.VOLUME,
         outControllers.SPREAD,

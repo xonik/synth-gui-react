@@ -1,7 +1,7 @@
-import { createSetterFuncs } from '../common/utils'
+import { createHandlers } from '../common/utils'
 import filtersControllers from './filtersControllers'
 
-const setterFuncs = createSetterFuncs(
+const handlers = createHandlers(
     [
         filtersControllers.LPF.INPUT,
         filtersControllers.LPF.DRIVE,
@@ -35,7 +35,7 @@ const setterFuncs = createSetterFuncs(
     ])
 
 const filtersApi = {
-    ...setterFuncs,
+    ...handlers,
 }
 
 export default filtersApi

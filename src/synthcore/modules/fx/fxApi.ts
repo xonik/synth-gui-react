@@ -1,7 +1,7 @@
-import { createSetterFuncs } from '../common/utils'
+import { createHandlers } from '../common/utils'
 import fxControllers from './fxControllers'
 
-const setterFuncs = createSetterFuncs(
+const handlers = createHandlers(
     [
         fxControllers.DISTORTION.IN,
         fxControllers.DISTORTION.DRIVE,
@@ -17,7 +17,7 @@ const setterFuncs = createSetterFuncs(
     ])
 
 const api = {
-    ...setterFuncs,
+    ...handlers,
 }
 
 export default api

@@ -12,7 +12,7 @@ import envMidiApi from './envMidiApi'
 import { curveFuncs } from '../../../components/curves/curveCalculator'
 import { ApiSource } from '../../types'
 import { dispatch, getBounded, getQuantized } from '../../utils'
-import { createSetterFuncs } from '../common/utils'
+import { createHandlers } from '../common/utils'
 import { envCtrls } from './envControllers'
 import { paramReceive, paramSend } from '../common/commonMidiApi'
 import {
@@ -363,7 +363,7 @@ const toggleStageSelected = (envId: number, stageId: StageId, source: ApiSource)
     }
 }
 
-const { increment: commonInc, toggle: commonToggle, set: commonSet, release } = createSetterFuncs([
+const { increment: commonInc, toggle: commonToggle, set: commonSet, release } = createHandlers([
         envCtrls.LOOP,
         envCtrls.ENV_GATE,
         envCtrls.RESET_ON_TRIGGER,
@@ -373,7 +373,7 @@ const { increment: commonInc, toggle: commonToggle, set: commonSet, release } = 
     ],
     {send: envParamSend, receive: envParamReceive})
 
-const customSetterFuncs = {
+const customhandlers = {
     [envCtrls.LEVEL.id]: stageLevel,
     [envCtrls.TIME.id]: stageTime,
     [envCtrls.TOGGLE_STAGE.id]: stageEnabled,
@@ -384,17 +384,17 @@ const customSetterFuncs = {
 }
 
 const increment = (input: NumericInputProperty) => {
-    customSetterFuncs[input.ctrl.id]?.increment(input)
+    customhandlers[input.ctrl.id]?.increment(input)
     commonInc(input)
 }
 
 const toggle = (input: ButtonInputProperty) => {
-    customSetterFuncs[input.ctrl.id]?.toggle(input)
+    customhandlers[input.ctrl.id]?.toggle(input)
     commonToggle(input)
 }
 
 const set = (input: NumericInputProperty) => {
-    customSetterFuncs[input.ctrl.id]?.set(input)
+    customhandlers[input.ctrl.id]?.set(input)
     commonSet(input)
 }
 

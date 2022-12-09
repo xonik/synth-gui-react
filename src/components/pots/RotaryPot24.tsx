@@ -2,10 +2,9 @@ import React from 'react'
 import RotaryPotWithLedRingBase, { Props } from './RotaryPotWithLedRingBase';
 
 const RotaryPot24 = (props: Props) => <RotaryPotWithLedRingBase
-    knobRadius={12}
+    knobRadius={15}
     ledCount={47}
     windowToKnobMargin={1.5}
-    silver
     {...props}
 />
 

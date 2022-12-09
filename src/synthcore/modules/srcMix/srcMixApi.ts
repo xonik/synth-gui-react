@@ -1,7 +1,7 @@
-import { createSetterFuncs } from '../common/utils'
+import { createHandlers } from '../common/utils'
 import srcMixControllers from './srcMixControllers'
 
-const setterFuncs = createSetterFuncs(
+const handlers = createHandlers(
     [
         srcMixControllers.LEVEL_OSC1,
         srcMixControllers.LEVEL_OSC2,
@@ -20,7 +20,7 @@ const setterFuncs = createSetterFuncs(
 
 
 const api = {
-    ...setterFuncs,
+    ...handlers,
 }
 
 export default api

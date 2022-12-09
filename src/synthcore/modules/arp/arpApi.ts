@@ -1,7 +1,7 @@
-import { createSetterFuncs } from '../common/utils'
+import { createHandlers } from '../common/utils'
 import arpControllers from './arpControllers'
 
-const { set, toggle, increment } = createSetterFuncs(
+const { set, toggle, increment } = createHandlers(
     [
         arpControllers.TEMPO,
         arpControllers.ON_OFF,

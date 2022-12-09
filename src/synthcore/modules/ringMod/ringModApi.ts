@@ -1,14 +1,14 @@
-import { createSetterFuncs } from '../common/utils'
+import { createHandlers } from '../common/utils'
 import ringModControllers from './ringModControllers'
 
-const setterFuncs = createSetterFuncs(
+const handlers = createHandlers(
     [
         ringModControllers.SOURCE,
     ])
 
 
 const api = {
-    ...setterFuncs,
+    ...handlers,
 }
 
 export default api

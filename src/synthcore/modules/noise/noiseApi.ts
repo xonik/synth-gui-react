@@ -1,14 +1,14 @@
-import { createSetterFuncs } from '../common/utils'
+import { createHandlers } from '../common/utils'
 import noiseControllers from './noiseControllers'
 
-const setterFuncs = createSetterFuncs(
+const handlers = createHandlers(
     [
         noiseControllers.COLOUR,
     ])
 
 
 const api = {
-    ...setterFuncs,
+    ...handlers,
 }
 
 export default api

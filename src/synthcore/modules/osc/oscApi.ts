@@ -1,86 +1,28 @@
-import { createSetterFuncs } from '../common/utils'
+import { createHandlers, Handler } from '../common/utils'
 import oscControllers from './oscControllers'
 import { ButtonInputProperty, NumericInputProperty } from '../common/types'
 import { setController } from '../controllers/controllersReducer'
 import { dispatch } from '../../utils'
 
-const osc1Sync = (() => {
-    const {
-        toggle: internalToggle,
-        set: internalSet,
-        increment: internalIncrement,
-    } = createSetterFuncs([oscControllers.DCO1.SYNC])
+const osc1Sync = new Handler(oscControllers.DCO1.SYNC, undefined, () => {
+    // clear any osc 2 sync as we can only have either osc1->osc2 or osc2->osc1 sync
+    dispatch(setController({
+        ctrl: oscControllers.DCO2.SYNC, value: 0
+    }))
+})
 
-    const set = (input: NumericInputProperty) => {
-        console.log('Set sync')
-        /*dispatch(setController({
-            ctrl: oscControllers.DCO2.SYNC, value: 0
-        }))*/
-        internalSet(input)
-    }
+const osc2Sync = new Handler(oscControllers.DCO2.SYNC, undefined, () => {
+    dispatch(setController({
+        ctrl: oscControllers.DCO1.SYNC, value: 0
+    }))
+})
 
-    const toggle = (input: ButtonInputProperty) => {
-        console.log('toggle sync', input)
-        dispatch(setController({
-            ctrl: oscControllers.DCO2.SYNC, value: 0
-        }))
-        internalToggle(input)
-    }
-
-    const increment = (input: NumericInputProperty) => {
-        console.log('increment sync')
-        internalIncrement(input)
-    }
-
-    return {
-        set,
-        increment,
-        toggle,
-    }
-})()
-
-const osc2Sync = (() => {
-    const {
-        toggle: internalToggle,
-        set: internalSet,
-        increment: internalIncrement,
-    } = createSetterFuncs([oscControllers.DCO2.SYNC])
-
-    const set = (input: NumericInputProperty) => {
-        console.log('Set sync')
-        /*dispatch(setController({
-            ctrl: oscControllers.DCO1.SYNC, value: 0
-        }))*/
-        internalSet(input)
-    }
-
-    const toggle = (input: ButtonInputProperty) => {
-        console.log('toggle sync')
-        dispatch(setController({
-            ctrl: oscControllers.DCO1.SYNC, value: 0
-        }))
-        internalToggle(input)
-    }
-
-    const increment = (input: NumericInputProperty) => {
-        console.log('increment sync')
-        internalIncrement(input)
-    }
-
-
-    return {
-        set,
-        increment,
-        toggle,
-    }
-})()
-
-const customSetterFuncs = {
+const customHandlers = {
     [oscControllers.DCO1.SYNC.id]: osc1Sync,
     [oscControllers.DCO2.SYNC.id]: osc2Sync,
 }
 
-const setterFuncs = createSetterFuncs(
+const handlers = createHandlers(
     [
         oscControllers.DCO1.NOTE,
         oscControllers.DCO1.WAVEFORM,
@@ -122,22 +64,20 @@ const setterFuncs = createSetterFuncs(
         oscControllers.VCO.KBD,
     ])
 
-
 const increment = (input: NumericInputProperty) => {
-    customSetterFuncs[input.ctrl.id]?.increment(input)
-    setterFuncs.increment(input)
+    customHandlers[input.ctrl.id]?.increment(input)
+    handlers.increment(input)
 }
 
 const toggle = (input: ButtonInputProperty) => {
-    customSetterFuncs[input.ctrl.id]?.toggle(input)
-    setterFuncs.toggle(input)
+    customHandlers[input.ctrl.id]?.toggle(input)
+    handlers.toggle(input)
 }
 
 const set = (input: NumericInputProperty) => {
-    customSetterFuncs[input.ctrl.id]?.set(input)
-    setterFuncs.set(input)
+    customHandlers[input.ctrl.id]?.set(input)
+    handlers.set(input)
 }
-
 
 
 const api = {

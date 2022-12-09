@@ -1,7 +1,7 @@
-import { createSetterFuncs } from '../common/utils'
+import { createHandlers } from '../common/utils'
 import kbdControllers from './kbdControllers'
 
-const setterFuncs = createSetterFuncs(
+const handlers = createHandlers(
     [
         kbdControllers.TRANSPOSE,
         kbdControllers.PORTAMENTO,
@@ -13,7 +13,7 @@ const setterFuncs = createSetterFuncs(
 
 
 const api = {
-    ...setterFuncs,
+    ...handlers,
 }
 
 export default api
