@@ -38,7 +38,7 @@ const DCO2 = ({ x, y }: Props) => {
 
         <RoundPushButton8 x={col2} y={topRow}
                           ledPosition="right" ledCount={2} ledLabels={['Hard', 'Metal']}
-                          label="Sync 2" labelPosition="bottom"
+                          label="Sync" labelPosition="bottom"
                           hasOff
                           ctrlGroup={ctrlGroup}
                           ctrl={oscControllers.DCO2.SYNC}

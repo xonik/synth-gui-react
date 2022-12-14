@@ -38,27 +38,27 @@ const outputRoot = '/Users/joakim/git/xonik/xm8-voice-controller/xm8-voice-contr
 const generateParamIO = (): string => {
 
     if (FIRST_INTERMEDIATE !== ControllerIdIntermediate.LPF_FM_AMT.valueOf()) {
-        throw new Error('paramIO: First intermediate does not match src ctrl last, did you forget to change it after adding something?')
+        throw new Error(`paramIO: First intermediate ${FIRST_INTERMEDIATE} does not match src ctrl last ${ControllerIdIntermediate.LPF_FM_AMT.valueOf()}, did you forget to change it after adding something?`)
     }
 
     if (FIRST_DST !== ControllerIdDst.DCO1_PITCH.valueOf()) {
-        throw new Error('paramIO: First dest does not match intermediate last, did you forget to change it after adding something?')
+        throw new Error(`paramIO: First dest ${FIRST_DST} does not match intermediate last ${ControllerIdDst.DCO1_PITCH.valueOf()}, did you forget to change it after adding something?`)
     }
 
     if (FIRST_ENV_DST !== ControllerIdEnvDst.DELAY_TIME.valueOf()) {
-        throw new Error('paramIO: First env dest does not match last dst, did you forget to change it after adding something?')
+        throw new Error(`paramIO: First env dest ${FIRST_ENV_DST} does not match last dst ${ControllerIdEnvDst.DELAY_TIME.valueOf()}, did you forget to change it after adding something?`)
     }
 
     if (FIRST_LFO_DST !== ControllerIdLfoDst.RATE.valueOf()) {
-        throw new Error('paramIO: First lfo dest does not match last env dst, did you forget to change it after adding something?')
+        throw new Error(`paramIO: First lfo dest ${FIRST_LFO_DST} does not match last env dst ${ControllerIdLfoDst.RATE.valueOf()}, did you forget to change it after adding something?`)
     }
 
     if (FIRST_NON_MOD_POTS !== ControllerIdNonModPots.MOD_AMOUNT.valueOf()) {
-        throw new Error('paramIO: First non mod pots does not match last env dst, did you forget to change it after adding something?')
+        throw new Error(`paramIO: First non mod pots ${FIRST_NON_MOD_POTS} does not match last env dst ${ControllerIdNonModPots.MOD_AMOUNT.valueOf()}, did you forget to change it after adding something?`)
     }
 
-    if (FIRST_NON_MOD !== ControllerIdNonMod.DCO1_SYNC.valueOf()) {
-        throw new Error('paramIO: First non mod does not match last env dst, did you forget to change it after adding something?')
+    if (FIRST_NON_MOD !== ControllerIdNonMod.DCO1_RANGE.valueOf()) {
+        throw new Error(`paramIO: First non mod ${FIRST_NON_MOD} does not match last env dst ${ControllerIdNonMod.DCO1_SYNC.valueOf()}, did you forget to change it after adding something?`)
     }
 
     const paramIOContents =

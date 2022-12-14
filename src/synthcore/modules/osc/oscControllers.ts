@@ -7,6 +7,7 @@ import { ControllerIdDst, ControllerIdNonMod } from '../../../midi/controllerIds
 interface OscControllers {
     DCO1: {
         props: FuncProps
+        RANGE: ControllerConfigCCWithValue
         PITCH: ControllerConfigNRPN
         NOTE: ControllerConfigCC
         SUPER_SAW: ControllerConfigCC
@@ -25,6 +26,7 @@ interface OscControllers {
     },
     DCO2: {
         props: FuncProps
+        RANGE: ControllerConfigCCWithValue
         PITCH: ControllerConfigNRPN
         NOTE: ControllerConfigCC
         DETUNE: ControllerConfigCC
@@ -76,6 +78,16 @@ const oscControllers: OscControllers = {
             isDstDigi: true,
             type: 'pot',
             cc: CC.DCO1_NOTE
+        },
+        RANGE: {
+            id: ControllerIdNonMod.DCO1_RANGE,
+            label: 'Range',
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC1_RANGE_LOW,
+                BUTTONS.BUTTONS_LEFT.values.OSC1_RANGE_HIGH,
+            ],
         },
         SUPER_SAW: {
             id: ControllerIdDst.DCO1_SUPER_SAW,
@@ -212,6 +224,16 @@ const oscControllers: OscControllers = {
             isDstDigi: true,
             type: 'pot',
             cc: CC.DCO2_NOTE
+        },
+        RANGE: {
+            id: ControllerIdNonMod.DCO2_RANGE,
+            label: 'Range',
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC2_RANGE_LOW,
+                BUTTONS.BUTTONS_LEFT.values.OSC2_RANGE_HIGH,
+            ],
         },
         DETUNE: {
             id: ControllerIdDst.DCO2_DETUNE,

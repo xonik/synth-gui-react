@@ -1,17 +1,17 @@
-import { createHandlers, Handler } from '../common/utils'
+import { createHandlers, ControllerHandler } from '../common/utils'
 import oscControllers from './oscControllers'
 import { ButtonInputProperty, NumericInputProperty } from '../common/types'
 import { setController } from '../controllers/controllersReducer'
 import { dispatch } from '../../utils'
 
-const osc1Sync = new Handler(oscControllers.DCO1.SYNC, undefined, () => {
+const osc1Sync = new ControllerHandler(oscControllers.DCO1.SYNC, undefined, () => {
     // clear any osc 2 sync as we can only have either osc1->osc2 or osc2->osc1 sync
     dispatch(setController({
         ctrl: oscControllers.DCO2.SYNC, value: 0
     }))
 })
 
-const osc2Sync = new Handler(oscControllers.DCO2.SYNC, undefined, () => {
+const osc2Sync = new ControllerHandler(oscControllers.DCO2.SYNC, undefined, () => {
     dispatch(setController({
         ctrl: oscControllers.DCO1.SYNC, value: 0
     }))
@@ -25,6 +25,7 @@ const customHandlers = {
 const handlers = createHandlers(
     [
         oscControllers.DCO1.NOTE,
+        oscControllers.DCO1.RANGE,
         oscControllers.DCO1.WAVEFORM,
         oscControllers.DCO1.SUB1,
         oscControllers.DCO1.SUB2,
@@ -38,6 +39,7 @@ const handlers = createHandlers(
         oscControllers.DCO1.PRE_FILTER_SINE,
 
         oscControllers.DCO2.NOTE,
+        oscControllers.DCO2.RANGE,
         oscControllers.DCO2.DETUNE,
         oscControllers.DCO2.WAVEFORM,
         oscControllers.DCO2.SUB1,

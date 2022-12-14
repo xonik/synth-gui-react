@@ -1,4 +1,6 @@
 export enum buttonLeftMidiValues {
+    OSC1_RANGE_LOW,
+    OSC1_RANGE_HIGH,
     OSC1_SYNC_OFF,
     OSC1_SYNC_HARD,
     OSC1_SYNC_METAL,
@@ -18,6 +20,8 @@ export enum buttonLeftMidiValues {
     OSC1_PRE_FILTER_SINE_OFF,
     OSC1_PRE_FILTER_SINE_ON,
 
+    OSC2_RANGE_LOW,
+    OSC2_RANGE_HIGH,
     OSC2_SYNC_OFF,
     OSC2_SYNC_HARD,
     OSC2_SYNC_METAL,
