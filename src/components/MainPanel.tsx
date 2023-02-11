@@ -49,8 +49,9 @@ const MainPanel = () => {
 
     const lfoCol = 20
     const noiseCol = 20
-    const ringModCol = noiseCol + 45
-    const fxCol = ringModCol + 41
+    const ringModCol = noiseCol + 30
+    const bcCol = ringModCol + 30
+    const distCol = bcCol + 168
 
     const routeCol = 20
     const clockCol = routeCol + 56
@@ -116,8 +117,8 @@ const MainPanel = () => {
 
                 <Noise x={noiseCol} y={noiseRow}/>
                 <Ringmod x={ringModCol} y={noiseRow}/>
-                <BitCrusherPre x={fxCol} y={fxRow}/>
-                <Distortion x={fxCol + 130} y={fxRow}/>
+                <BitCrusherPre x={bcCol} y={fxRow}/>
+                <Distortion x={distCol} y={fxRow}/>
 
                 <LFO x={lfoCol} y={lfo1Row}/>
                 <SourceMixer x={sourceMixCol} y={sourceMixRow}/>

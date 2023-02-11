@@ -18,14 +18,12 @@ const Distortion = ({ x, y }: Props) => {
     const row2 = row1 + 30
 
     const col1 = x + 5
-    const col2 = col1 + 26
-    const col3 = col2 + 31
-    const col4 = col3 + 5
-    const col5 = col4 + 15
+    const col2 = col1 + 25
+    const col5 = col2 + 40
     const col6 = col5 + 25
 
     return <>
-        <Header label="Distortion" x={x} y={row1} width={115}/>
+        <Header label="Distortion" x={x} y={row1} width={105}/>
         <RoundPushButton8 x={col1} y={row2 + 8} ledPosition="top" ledCount={2} label="In" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={fxControllers.DISTORTION.IN}
@@ -34,12 +32,6 @@ const Distortion = ({ x, y }: Props) => {
         <RotaryPot15 ledMode="multi" label="Drive" x={col2} y={row2}
                      ctrlGroup={ctrlGroup}
                      ctrl={fxControllers.DISTORTION.DRIVE}
-        />
-
-        <RoundPushButton8 x={col3-7} y={row2 + 8} ledCount={2} ledPosition="top" ledLabels={['S', 'H']} label="Clip"
-                          labelPosition="bottom"
-                          ctrlGroup={ctrlGroup}
-                          ctrl={fxControllers.DISTORTION.CLIP}
         />
 
         <RotaryPot15 ledMode="multi" label="Level" x={col5} y={row2}

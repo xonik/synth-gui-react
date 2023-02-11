@@ -9,7 +9,6 @@ interface FxControllers {
         DRIVE: ControllerConfigCC
         LEVEL: ControllerConfigCC
         IN: ControllerConfigCCWithValue
-        CLIP: ControllerConfigCCWithValue
         OUT: ControllerConfigCCWithValue
     },
     BIT_CRUSHER: {
@@ -52,16 +51,6 @@ const fxControllers: FxControllers = {
                 BUTTONS.BUTTONS_LEFT.values.DISTORTION_IN_A,
                 BUTTONS.BUTTONS_LEFT.values.DISTORTION_IN_B,
                 //BUTTONS.BUTTONS_LEFT.values.DISTORTION_IN_BOTH,
-            ],
-        },
-        CLIP: {
-            id: ControllerIdNonMod.DISTORTION_CLIP,
-            label: 'Clip',
-            type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
-            values: [
-                BUTTONS.BUTTONS_LEFT.values.DISTORTION_SOFT,
-                BUTTONS.BUTTONS_LEFT.values.DISTORTION_HARD,
             ],
         },
         OUT: {

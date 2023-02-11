@@ -5,7 +5,6 @@ const handlers = createHandlers(
     [
         fxControllers.DISTORTION.IN,
         fxControllers.DISTORTION.DRIVE,
-        fxControllers.DISTORTION.CLIP,
         fxControllers.DISTORTION.OUT,
         fxControllers.DISTORTION.LEVEL,
         fxControllers.BIT_CRUSHER.IN,
