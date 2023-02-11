@@ -107,6 +107,7 @@ const LFO = ({ x, y }: Props) => {
                              ctrlGroup={ctrlGroup}
                              ctrl={lfoCtrls.LOOP}
                              ctrlIndex={lfoId}
+                             loop
         />
 
     </svg>

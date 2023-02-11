@@ -4,14 +4,15 @@ import { ButtonInputProperty, NumericInputProperty } from '../common/types'
 import { setController } from '../controllers/controllersReducer'
 import { dispatch } from '../../utils'
 
-const osc1Sync = new ControllerHandler(oscControllers.DCO1.SYNC, undefined, () => {
+const osc1Sync = new ControllerHandler(oscControllers.DCO1.SYNC, undefined, undefined,() => {
     // clear any osc 2 sync as we can only have either osc1->osc2 or osc2->osc1 sync
     dispatch(setController({
         ctrl: oscControllers.DCO2.SYNC, value: 0
     }))
 })
 
-const osc2Sync = new ControllerHandler(oscControllers.DCO2.SYNC, undefined, () => {
+const osc2Sync = new ControllerHandler(oscControllers.DCO2.SYNC, undefined, undefined,() => {
+    // clear any osc 1 sync as we can only have either osc1->osc2 or osc2->osc1 sync
     dispatch(setController({
         ctrl: oscControllers.DCO1.SYNC, value: 0
     }))

@@ -98,6 +98,7 @@ const stageCurve = (() => {
         })
     }
 
+    // TODO: Increment og toggle samme som normal
     const increment = (input: NumericInputProperty) => {
         const { ctrlIndex: lfoId = 0, valueIndex: stageId = 0, value: inc, ctrl } = input
         const currentCurve = selectController(ctrl, lfoId, stageId)(store.getState())
@@ -155,6 +156,8 @@ const stageEnabled = (() => {
         })
     }
 
+    // Increment ok samme som global
+    // TODO: som global men må sette loop på button
     const toggle = (input: ButtonInputProperty) => {
         const { ctrlIndex: lfoId = 0, valueIndex: stageId = 0, ctrl } = input
 
@@ -368,6 +371,7 @@ const shape = (() => {
         dispatch(action)
     }
 
+    // TODO: CHECK
     const set = (input: NumericInputProperty) => {
         const { ctrlIndex: lfoId = 0, value } = input
         const currShape = selectShape(lfoId)
@@ -382,6 +386,7 @@ const shape = (() => {
         dispatch(setController(boundedInput))
         dispatchShapeActions(input, boundedShape)
 
+        // TODO: CHECK if possible to replace with internal
         lfoParamSend(boundedInput, (value: number) => value)
     }
 
@@ -433,7 +438,7 @@ const { increment: commonInc, toggle: commonToggle, set: commonSet } = createHan
     ],
     { send: lfoParamSend, receive: lfoParamReceive })
 
-const customhandlers = {
+const customHandlers = {
     [lfoCtrls.CURVE.id]: stageCurve,
     [lfoCtrls.TOGGLE_STAGE.id]: stageEnabled,
     [lfoCtrls.INVERT.id]: invert,
@@ -442,17 +447,17 @@ const customhandlers = {
 }
 
 const increment = (input: NumericInputProperty) => {
-    customhandlers[input.ctrl.id]?.increment(input)
+    customHandlers[input.ctrl.id]?.increment(input)
     commonInc(input)
 }
 
 const toggle = (input: ButtonInputProperty) => {
-    customhandlers[input.ctrl.id]?.toggle(input)
+    customHandlers[input.ctrl.id]?.toggle(input)
     commonToggle(input)
 }
 
 const set = (input: NumericInputProperty) => {
-    customhandlers[input.ctrl.id]?.set(input)
+    customHandlers[input.ctrl.id]?.set(input)
     commonSet(input)
 }
 

@@ -19,11 +19,20 @@ const getBoundedController = (ctrl: ControllerConfig, value: number) => {
 
 export class ControllerHandler {
 
+    set: (input: NumericInputProperty, forceSet?: boolean, uiValue?: number) => void
+
     constructor(
         private ctrl: ControllerConfig,
         private midiFuncs?: { send?: ParamSendFunc, receive?: ParamReceiveFunc },
-        private onSetCompleted?: (boundedInput: NumericControllerPayload) => void
+        setOverride?: (input: NumericInputProperty, forceSet?: boolean, uiValue?: number) => void,
+        private onSetCompleted?: (boundedInput: NumericControllerPayload) => void,
     ) {
+        if(setOverride){
+            this.set = setOverride
+        } else {
+            this.set = this.internalSet
+        }
+
         // setup receive midi
         if (midiFuncs && midiFuncs.receive) {
             midiFuncs.receive(ctrl, this.setWithUiUpdate)
@@ -32,7 +41,7 @@ export class ControllerHandler {
         }
     }
 
-    set(input: NumericInputProperty, forceSet = false, uiValue?: number) {
+    internalSet(input: NumericInputProperty, forceSet = false, uiValue?: number) {
         const { ctrl, ctrlIndex, valueIndex, value } = input
 
         const boundedValue = getBoundedController(ctrl, value)
@@ -156,15 +165,15 @@ export const createHandlers = (
 
 export const createIncrementMapper = (map: MapperEntry[]) => (input: NumericInputProperty) => {
     // search for a ctrl and call the corresponding function
-    map.find(([key]) => {
-        return key.id === input.ctrl.id
+    map.find((entry) => {
+        return entry[0].id === input.ctrl.id
     })?.[1](input)
 }
 
 type ClickMapperEntry = [ControllerConfig, (input: ButtonInputProperty) => void]
 export const createClickMapper = (map: ClickMapperEntry[]) => (input: ButtonInputProperty) => {
     // search for a ctrl and call the corresponding function
-    map.find(([key]) => {
-        return key.id === input.ctrl.id
+    map.find((entry) => {
+        return entry[0].id === input.ctrl.id
     })?.[1](input)
 }
