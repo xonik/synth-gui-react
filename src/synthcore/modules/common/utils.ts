@@ -2,7 +2,7 @@ import { ControllerConfig } from '../../../midi/types'
 import { paramReceive, ParamReceiveFunc, paramSend, ParamSendFunc } from './commonMidiApi'
 import { dispatch, getBounded, getQuantized } from '../../utils'
 import { store } from '../../store'
-import { ButtonInputProperty, NumericControllerPayload, NumericInputProperty } from './types'
+import { ButtonInputProperty, NumericControllerPayload, NumericInputProperty, PatchControllers } from './types'
 import { selectController, selectUiController, setController } from '../controllers/controllersReducer'
 import { ApiSource } from '../../types'
 
@@ -68,6 +68,14 @@ export class ControllerHandler {
         } else {
             paramSend(boundedInput)
         }
+    }
+
+    setFromLoad(value: number) {
+        this.set({
+            ctrl: this.ctrl,
+            value,
+            source: ApiSource.LOAD
+        })
     }
 
     get(ctrlIndex = 0) {
@@ -161,11 +169,6 @@ export const createHandlers = (
             handlers[input.ctrl.id].increment(input)
         }
     }
-
-    type PatchControllers = {
-        [key: string]: number
-    }
-
     const getForSave = () => {
         const patchControllers: PatchControllers = {}
 
@@ -180,11 +183,7 @@ export const createHandlers = (
         Object.entries(patchControllers).forEach(([key, value]) => {
             const handler = handlers[key]
             if (handler) {
-                handler.set({
-                    ctrl: handler.ctrl,
-                    value,
-                    source: ApiSource.LOAD
-                })
+                handler.setFromLoad(value)
             }
         })
     }

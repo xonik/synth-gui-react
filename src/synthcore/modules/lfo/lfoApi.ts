@@ -16,7 +16,7 @@ import { dispatch, getBounded } from '../../utils'
 import { createHandlers } from '../common/utils'
 import { lfoCtrls } from './lfoControllers'
 import { selectController, selectLfoStages, setController } from '../controllers/controllersReducer'
-import { ButtonInputProperty, NumericInputProperty } from '../common/types'
+import { ButtonInputProperty, NumericInputProperty, PatchControllers } from '../common/types'
 import lfoMidiApi, { lfoParamReceive, lfoParamSend } from './lfoMidiApi'
 import { curveFuncs } from '../../../components/curves/curveCalculator'
 import { BUTTONS } from '../../../midi/buttons'
@@ -417,7 +417,7 @@ const shape = (() => {
     }
 })()
 
-const { increment: commonInc, toggle: commonToggle, set: commonSet } = createHandlers([
+const handlers = createHandlers([
         lfoCtrls.RATE,
         lfoCtrls.DELAY,
         lfoCtrls.SYNC,
@@ -448,18 +448,30 @@ const customHandlers = {
 
 const increment = (input: NumericInputProperty) => {
     customHandlers[input.ctrl.id]?.increment(input)
-    commonInc(input)
+    handlers.increment(input)
 }
 
 const toggle = (input: ButtonInputProperty) => {
     customHandlers[input.ctrl.id]?.toggle(input)
-    commonToggle(input)
+    handlers.toggle(input)
 }
 
 const set = (input: NumericInputProperty) => {
     customHandlers[input.ctrl.id]?.set(input)
-    commonSet(input)
+    handlers.set(input)
 }
+
+const getForSave = () => {
+    return {
+        ...handlers.getForSave()
+        // TODO: Custom getters
+    }
+}
+const setFromLoad = (patchController: PatchControllers) => {
+    handlers.setFromLoad(patchController)
+    // TODO: Custom setters
+}
+
 
 const lfoApi = {
 
@@ -474,9 +486,8 @@ const lfoApi = {
     toggle,
     set,
 
-    // TODO getForSave, setFromLoad
-    getForSave: () => {},
-    setFromLoad: (patchController: any) => {}
+    getForSave,
+    setFromLoad,
 }
 
 export default lfoApi

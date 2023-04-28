@@ -55,3 +55,7 @@ export type NumericPayload = {
 export type BooleanPayload = {
     value: boolean;
 }
+
+export type PatchControllers = {
+    [key: string]: number
+}

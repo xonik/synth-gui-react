@@ -1,6 +1,6 @@
 import { createHandlers, ControllerHandler } from '../common/utils'
 import oscControllers from './oscControllers'
-import { ButtonInputProperty, NumericInputProperty } from '../common/types'
+import { ButtonInputProperty, NumericInputProperty, PatchControllers } from '../common/types'
 import { setController } from '../controllers/controllersReducer'
 import { dispatch } from '../../utils'
 
@@ -82,15 +82,33 @@ const set = (input: NumericInputProperty) => {
     handlers.set(input)
 }
 
+const getForSave = () => {
+    return {
+        ...handlers.getForSave(),
+        ...{
+            [osc1Sync.ctrl.id]: osc1Sync.get(),
+            [osc2Sync.ctrl.id]: osc2Sync.get(),
+        }
+    }
+}
+
+const setFromLoad = (patchController: PatchControllers) => {
+    if(patchController[osc1Sync.ctrl.id]){
+        osc1Sync.setFromLoad(patchController[osc1Sync.ctrl.id])
+    }
+    if(patchController[osc2Sync.ctrl.id]){
+        osc2Sync.setFromLoad(patchController[osc2Sync.ctrl.id])
+    }
+    handlers.setFromLoad(patchController)
+}
 
 const api = {
     increment,
     toggle,
     set,
 
-    // TODO getForSave, setFromLoad
-    getForSave: () => {},
-    setFromLoad: (patchController: any) => {}
+    getForSave,
+    setFromLoad,
 }
 
 export default api

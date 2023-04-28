@@ -10,6 +10,7 @@ import {
     oscApi,
     outApi, postMixApi, ringModApi, srcMixApi
 } from '../../synthcoreApi'
+import { PatchControllers } from '../common/types'
 
 
 const patchApis = [
@@ -21,7 +22,7 @@ const patchApis = [
     kbdApi,
     lfoApi, // TODO
     noiseApi,
-    oscApi, // TODO
+    oscApi,
     outApi,
     postMixApi,
     ringModApi,
@@ -29,11 +30,23 @@ const patchApis = [
 ]
 
 const savePatch = () => {
-    const patchControllers = patchApis.map((source) => source.getForSave())
-    // TODO: Save to file
+    const patchControllers = patchApis.reduce((mergedControllers: PatchControllers, source) => {
+        return {
+            ...mergedControllers,
+            ...source.getForSave()
+        }
+    }, {})
+    console.log('SAVE', patchControllers)
 }
 
 const loadPatch = () => {
     const patchControllers = {} // TODO: Load from file
     patchApis.forEach((source) => source.setFromLoad(patchControllers))
 }
+
+const patchStorageApi = {
+    savePatch,
+    loadPatch,
+}
+
+export default patchStorageApi

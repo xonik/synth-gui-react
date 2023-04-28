@@ -20,7 +20,7 @@ import {
     selectUiController,
     setController,
 } from '../controllers/controllersReducer'
-import { ButtonInputProperty, NumericInputProperty } from '../common/types'
+import { ButtonInputProperty, NumericInputProperty, PatchControllers } from '../common/types'
 
 
 const cannotDisableStage = (stage: StageId) => stage === StageId.ATTACK || stage === StageId.RELEASE2 || stage === StageId.SUSTAIN
@@ -363,7 +363,7 @@ const toggleStageSelected = (envId: number, stageId: StageId, source: ApiSource)
     }
 }
 
-const { increment: commonInc, toggle: commonToggle, set: commonSet, release } = createHandlers([
+const handlers = createHandlers([
         envCtrls.LOOP,
         envCtrls.ENV_GATE,
         envCtrls.RESET_ON_TRIGGER,
@@ -385,17 +385,28 @@ const customhandlers = {
 
 const increment = (input: NumericInputProperty) => {
     customhandlers[input.ctrl.id]?.increment(input)
-    commonInc(input)
+    handlers.increment(input)
 }
 
 const toggle = (input: ButtonInputProperty) => {
     customhandlers[input.ctrl.id]?.toggle(input)
-    commonToggle(input)
+    handlers.toggle(input)
 }
 
 const set = (input: NumericInputProperty) => {
     customhandlers[input.ctrl.id]?.set(input)
-    commonSet(input)
+    handlers.set(input)
+}
+
+const getForSave = () => {
+    return {
+        ...handlers.getForSave()
+        // TODO: Custom getters
+    }
+}
+const setFromLoad = (patchController: PatchControllers) => {
+    handlers.setFromLoad(patchController)
+    // TODO: Custom setters
 }
 
 const envApi = {
@@ -405,15 +416,13 @@ const envApi = {
     setCurrentEnv,
     incrementCurrentEnvelope,
 
-    release,
+    release: handlers.release,
 
     increment,
     toggle,
     set,
-
-    // TODO getForSave, setFromLoad
-    getForSave: () => {},
-    setFromLoad: (patchController: any) => {}
+    setFromLoad,
+    getForSave,
 }
 
 export default envApi

@@ -10,6 +10,7 @@ import mainDisplayControllers from './mainDisplayControllers'
 import { createClickMapper, createIncrementMapper } from '../common/utils'
 import { mainDisplaySettingsApi, mainDisplaySettingsPotResolutions } from '../settings/settingsMainDisplayApi'
 import { mainDisplayLfoApi, mainDisplayLfoPotResolutions } from '../lfo/lfoMainDisplayApi'
+import patchStorageApi from '../patchStorage/patchStorageApi'
 
 type PotResolutions = {
     [key: number]: {
@@ -47,9 +48,12 @@ const handlePerformClick = (source: ApiSource) => {
 }
 const handleLoadClick = (source: ApiSource) => {
     mainDisplayMidiApi.loadClick(source)
+    patchStorageApi.loadPatch()
 }
 const handleSaveClick = (source: ApiSource) => {
+    console.log(`Save form ${source}`)
     mainDisplayMidiApi.saveClick(source)
+    patchStorageApi.savePatch()
 }
 const handleCompareClick = (source: ApiSource) => {
     mainDisplayMidiApi.compareClick(source)
