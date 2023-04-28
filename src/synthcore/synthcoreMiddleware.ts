@@ -97,3 +97,4 @@ export const synthcoreMiddleware: Middleware<{}, any> = storeAPI => next => acti
     }
     return next(action)
 }
+

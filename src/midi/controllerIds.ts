@@ -1,3 +1,4 @@
+// TODO: Very weird having these in midi when they're used elsewhere?
 export enum ControllerIdSrc {
     // Sources
     ARP,
@@ -347,3 +348,15 @@ export enum ControllerIdLfoStageNonMod {
 export const LFO_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdLfoStageNonMod).filter(o => isNaN(o as any)).length
 
 export const NON_MOD_COUNT = Object.keys(ControllerIdNonMod).filter(o => isNaN(o as any)).length
+
+export type ControllerId = | ControllerIdSrc
+    | ControllerIdIntermediate
+    | ControllerIdDst
+    | ControllerIdEnvDst
+    | ControllerIdLfoDst
+    | ControllerIdNonModPots
+    | ControllerIdNonMod
+    | ControllerIdEnvNonMod
+    | ControllerIdEnvStageNonMod
+    | ControllerIdLfoNonMod
+    | ControllerIdLfoStageNonMod

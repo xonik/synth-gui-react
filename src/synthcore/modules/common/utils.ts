@@ -4,6 +4,7 @@ import { dispatch, getBounded, getQuantized } from '../../utils'
 import { store } from '../../store'
 import { ButtonInputProperty, NumericControllerPayload, NumericInputProperty } from './types'
 import { selectController, selectUiController, setController } from '../controllers/controllersReducer'
+import { ApiSource } from '../../types'
 
 
 // Create a mapper that receives a controller and selects the correct set function.
@@ -22,12 +23,14 @@ export class ControllerHandler {
     set: (input: NumericInputProperty, forceSet?: boolean, uiValue?: number) => void
 
     constructor(
-        private ctrl: ControllerConfig,
+        // TODO: We should really try to make ctrl private and see if we could hide it from
+        // NumericInputProp.
+        public ctrl: ControllerConfig,
         private midiFuncs?: { send?: ParamSendFunc, receive?: ParamReceiveFunc },
         setOverride?: (input: NumericInputProperty, forceSet?: boolean, uiValue?: number) => void,
         private onSetCompleted?: (boundedInput: NumericControllerPayload) => void,
     ) {
-        if(setOverride){
+        if (setOverride) {
             this.set = setOverride
         } else {
             this.set = this.internalSet
@@ -57,7 +60,7 @@ export class ControllerHandler {
         const boundedInput = { ...input, value: boundedValue, valueIndex: boundedValueIndex, uiValue }
 
         dispatch(setController(boundedInput))
-        if(this.onSetCompleted) this.onSetCompleted(boundedInput)
+        if (this.onSetCompleted) this.onSetCompleted(boundedInput)
 
         // send over midi
         if (this.midiFuncs && this.midiFuncs.send) {
@@ -65,6 +68,10 @@ export class ControllerHandler {
         } else {
             paramSend(boundedInput)
         }
+    }
+
+    get(ctrlIndex = 0) {
+        return selectController(this.ctrl, ctrlIndex)(store.getState());
     }
 
     toggle(input: ButtonInputProperty) {
@@ -99,7 +106,7 @@ export class ControllerHandler {
         }
     }
 
-    release(input: ButtonInputProperty){
+    release(input: ButtonInputProperty) {
         if (input.momentary && input.ctrl.values && input.ctrl.values.length > 1) {
             this.set({ ...input, value: 1 }, true)
         }
@@ -134,7 +141,7 @@ export const createHandlers = (
         handlers[controller.id] = new ControllerHandler(controller, midiFuncs)
     })
 
-    const set = (input: NumericInputProperty, forceSet= false, uiValue?: number) => {
+    const set = (input: NumericInputProperty, forceSet = false, uiValue?: number) => {
         if (handlers[input.ctrl.id]) {
             handlers[input.ctrl.id].set(input, forceSet, uiValue)
         }
@@ -155,7 +162,36 @@ export const createHandlers = (
         }
     }
 
+    type PatchControllers = {
+        [key: string]: number
+    }
+
+    const getForSave = () => {
+        const patchControllers: PatchControllers = {}
+
+        Object.entries(handlers).forEach(([key, handler]) => {
+            patchControllers[key] = handler.get()
+        })
+
+        return patchControllers
+    }
+
+    const setFromLoad = (patchControllers: PatchControllers) => {
+        Object.entries(patchControllers).forEach(([key, value]) => {
+            const handler = handlers[key]
+            if (handler) {
+                handler.set({
+                    ctrl: handler.ctrl,
+                    value,
+                    source: ApiSource.LOAD
+                })
+            }
+        })
+    }
+
     return {
+        getForSave,
+        setFromLoad,
         set,
         toggle,
         release,

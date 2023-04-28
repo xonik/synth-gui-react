@@ -1,7 +1,7 @@
 import { createHandlers } from '../common/utils'
 import commonFxControllers from './commonFxControllers'
 
-const { set, toggle, increment } = createHandlers(
+const { set, toggle, increment, getForSave, setFromLoad } = createHandlers(
     [
         commonFxControllers.DSP1.PARAM1,
         commonFxControllers.DSP1.PARAM2,
@@ -36,6 +36,8 @@ const api = {
     set,
     increment,
     toggle,
+    getForSave,
+    setFromLoad
 }
 
 export default api

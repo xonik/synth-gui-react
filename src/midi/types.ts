@@ -1,15 +1,5 @@
 import {
-    ControllerIdDst,
-    ControllerIdEnvDst,
-    ControllerIdEnvNonMod,
-    ControllerIdEnvStageNonMod,
-    ControllerIdIntermediate,
-    ControllerIdLfoDst,
-    ControllerIdLfoNonMod,
-    ControllerIdLfoStageNonMod,
-    ControllerIdNonMod,
-    ControllerIdNonModPots,
-    ControllerIdSrc
+    ControllerId,
 } from './controllerIds'
 
 export enum MidiGroup {
@@ -21,18 +11,7 @@ export interface ControllerConfig {
     // ID is uniquely identifying a controller TYPE, but some controllers may be repeated
     // as params on multiple functions LFOs and Envs - params on these have the same
     // controllerId and ctrlIndex on the function is used to tell them apart.
-    readonly id:
-        | ControllerIdSrc
-        | ControllerIdIntermediate
-        | ControllerIdDst
-        | ControllerIdEnvDst
-        | ControllerIdLfoDst
-        | ControllerIdNonModPots
-        | ControllerIdNonMod
-        | ControllerIdEnvNonMod
-        | ControllerIdEnvStageNonMod
-        | ControllerIdLfoNonMod
-        | ControllerIdLfoStageNonMod,
+    readonly id: ControllerId,
     readonly label: string,
     readonly shortLabel?: string,
     readonly isSourceDigi?: boolean,

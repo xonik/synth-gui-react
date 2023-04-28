@@ -473,6 +473,10 @@ const lfoApi = {
     increment,
     toggle,
     set,
+
+    // TODO getForSave, setFromLoad
+    getForSave: () => {},
+    setFromLoad: (patchController: any) => {}
 }
 
 export default lfoApi

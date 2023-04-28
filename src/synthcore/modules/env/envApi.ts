@@ -410,6 +410,10 @@ const envApi = {
     increment,
     toggle,
     set,
+
+    // TODO getForSave, setFromLoad
+    getForSave: () => {},
+    setFromLoad: (patchController: any) => {}
 }
 
 export default envApi
