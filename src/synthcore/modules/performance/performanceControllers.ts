@@ -1,5 +1,5 @@
 import { ControllerConfig, FuncProps } from '../../../midi/types'
-import { ControllerIdSrc } from '../../../midi/controllerIds'
+import { ControllerIdSrc } from '../controllers/controllerIds'
 
 interface PerformanceControllers {
     props: FuncProps

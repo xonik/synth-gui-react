@@ -1,5 +1,5 @@
 import { ControllerConfig, FuncProps } from '../../../midi/types'
-import { controllerGroups } from '../../../midi/controllers'
+import { controllerGroups } from '../controllers/controllers'
 
 export const shortLabel = (element: ControllerConfig | FuncProps) => element.shortLabel || element.label
 

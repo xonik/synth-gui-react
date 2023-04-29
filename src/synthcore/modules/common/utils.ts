@@ -2,8 +2,17 @@ import { ControllerConfig } from '../../../midi/types'
 import { paramReceive, ParamReceiveFunc, paramSend, ParamSendFunc } from './commonMidiApi'
 import { dispatch, getBounded, getQuantized } from '../../utils'
 import { store } from '../../store'
-import { ButtonInputProperty, NumericControllerPayload, NumericInputProperty, PatchControllers } from './types'
-import { selectController, selectUiController, setController } from '../controllers/controllersReducer'
+import {
+    ButtonInputProperty,
+    NumericControllerPayload,
+    NumericInputProperty,
+    PatchControllers,
+} from './types'
+import {
+    selectController, selectControllerValueIndexValues,
+    selectUiController,
+    setController
+} from '../controllers/controllersReducer'
 import { ApiSource } from '../../types'
 
 
@@ -44,7 +53,7 @@ export class ControllerHandler {
         }
     }
 
-    internalSet(input: NumericInputProperty, forceSet = false, uiValue?: number) {
+    private internalSet(input: NumericInputProperty, forceSet = false, uiValue?: number) {
         const { ctrl, ctrlIndex, valueIndex, value } = input
 
         const boundedValue = getBoundedController(ctrl, value)
@@ -70,16 +79,18 @@ export class ControllerHandler {
         }
     }
 
-    setFromLoad(value: number) {
+    setFromLoad(value: number, ctrlIndex = 0, valueIndex = 0) {
         this.set({
             ctrl: this.ctrl,
+            ctrlIndex,
+            valueIndex,
             value,
             source: ApiSource.LOAD
         })
     }
 
     get(ctrlIndex = 0) {
-        return selectController(this.ctrl, ctrlIndex)(store.getState());
+        return selectControllerValueIndexValues(this.ctrl, ctrlIndex)(store.getState());
     }
 
     toggle(input: ButtonInputProperty) {
@@ -169,21 +180,32 @@ export const createHandlers = (
             handlers[input.ctrl.id].increment(input)
         }
     }
-    const getForSave = () => {
+
+    const getForSave = (ctrlIndex = 0): PatchControllers => {
         const patchControllers: PatchControllers = {}
 
         Object.entries(handlers).forEach(([key, handler]) => {
-            patchControllers[key] = handler.get()
+            const ctrlId = Number.parseInt(key)
+            if(!patchControllers[ctrlId]) patchControllers[ctrlId] = {
+                label: handler.ctrl.label,
+                instances: {}
+            }
+            patchControllers[ctrlId].instances[ctrlIndex] = handler.get(ctrlIndex)
         })
 
         return patchControllers
     }
 
     const setFromLoad = (patchControllers: PatchControllers) => {
-        Object.entries(patchControllers).forEach(([key, value]) => {
-            const handler = handlers[key]
+        Object.entries(patchControllers).forEach(([ctrlId, ctrl]) => {
+            const handler = handlers[ctrlId]
             if (handler) {
-                handler.setFromLoad(value)
+                console.log(`Loading ${ctrl.label}`)
+                Object.entries(ctrl.instances).forEach(([ctrlIndex, valueIndexValues]) => {
+                    Object.entries(valueIndexValues).forEach(([valueIndex, value]) => {
+                        handler.setFromLoad(value, Number.parseInt(ctrlIndex), Number.parseInt(valueIndex))
+                    })
+                })
             }
         })
     }

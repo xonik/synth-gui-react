@@ -16,14 +16,15 @@ import { createHandlers } from '../common/utils'
 import { envCtrls } from './envControllers'
 import { paramReceive, paramSend } from '../common/commonMidiApi'
 import {
-    selectController,
+    selectController, selectControllerValueIndexValues,
     selectUiController,
     setController,
 } from '../controllers/controllersReducer'
 import { ButtonInputProperty, NumericInputProperty, PatchControllers } from '../common/types'
+import deepmerge from 'deepmerge'
 
 
-const cannotDisableStage = (stage: StageId) => stage === StageId.ATTACK || stage === StageId.RELEASE2 || stage === StageId.SUSTAIN
+const cannotDisableStage = (stage: StageId) => !envCtrls.TOGGLE_STAGE.legalValueIndexes?.includes(stage)
 
 const stageLevel = (() => {
 
@@ -84,7 +85,6 @@ const stageLevel = (() => {
             const currentValue = selectController(ctrl, envId, stageId)(store.getState())
             set({ ...input, value: currentValue + inc })
         }
-
     }
 
     const setWithUiUpdate = (input: NumericInputProperty) => {
@@ -96,13 +96,29 @@ const stageLevel = (() => {
         set(input, uiValue)
     }
 
+    const setFromLoad = (value: number, ctrlIndex = 0, valueIndex = 0) => {
+        set({
+            ctrl: envCtrls.LEVEL,
+            ctrlIndex,
+            valueIndex,
+            value,
+            source: ApiSource.LOAD
+        })
+    }
+
+    const get = (ctrlIndex = 0) => {
+        return selectControllerValueIndexValues(envCtrls.LEVEL, ctrlIndex)(store.getState());
+    }
+
     envParamReceive(envCtrls.LEVEL, setWithUiUpdate)
 
     return {
         set,
         increment,
         toggle: (input: ButtonInputProperty) => {
-        }
+        },
+        setFromLoad,
+        get
     }
 })()
 
@@ -398,11 +414,16 @@ const set = (input: NumericInputProperty) => {
     handlers.set(input)
 }
 
-const getForSave = () => {
-    return {
-        ...handlers.getForSave()
-        // TODO: Custom getters
+const getForSave = (): PatchControllers => {
+
+    let patchControllers = {}
+
+    for (let ctrlIndex = 0; ctrlIndex < NUMBER_OF_ENVELOPES; ctrlIndex++) {
+        const newControllers = handlers.getForSave(ctrlIndex)
+        console.log(`Env controllers ${ctrlIndex}`, newControllers)
+        patchControllers = deepmerge(patchControllers, newControllers)
     }
+    return patchControllers
 }
 const setFromLoad = (patchController: PatchControllers) => {
     handlers.setFromLoad(patchController)

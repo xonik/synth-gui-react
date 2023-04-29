@@ -1,5 +1,5 @@
 import { mainDisplayApi } from '../../synthcoreApi'
-import controllers from '../../../midi/controllers'
+import controllers from '../controllers/controllers'
 import { cc } from '../../../midi/midibus'
 import { ApiSource } from '../../types'
 import { shouldSend } from '../../../midi/utils'

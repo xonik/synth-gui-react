@@ -16,11 +16,11 @@ import { PatchControllers } from '../common/types'
 const patchApis = [
     arpApi,
     commonFxApi,
-    envApi, // TODO
+    envApi, // TODO for custom handlers and multiple ctrlIndex
     filtersApi,
     fxApi,
     kbdApi,
-    lfoApi, // TODO
+    lfoApi, // TODO for custom handlers and multiple ctrlIndex
     noiseApi,
     oscApi,
     outApi,
@@ -30,10 +30,14 @@ const patchApis = [
 ]
 
 const savePatch = () => {
-    const patchControllers = patchApis.reduce((mergedControllers: PatchControllers, source) => {
+    const patchControllers = patchApis.reduce((
+        mergedControllers: PatchControllers,
+        api
+    ) => {
+        const patchControllers = api.getForSave()
         return {
             ...mergedControllers,
-            ...source.getForSave()
+            ...patchControllers
         }
     }, {})
     console.log('SAVE', patchControllers)

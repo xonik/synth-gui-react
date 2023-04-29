@@ -1,6 +1,6 @@
 import { BUTTONS } from '../../../midi/buttons'
 import { ControllerConfigCCWithValue, FuncProps } from '../../../midi/types'
-import { ControllerIdNonMod } from '../../../midi/controllerIds'
+import { ControllerIdNonMod } from '../controllers/controllerIds'
 
 
 interface VoicesControllers {

@@ -20,6 +20,7 @@ import { ButtonInputProperty, NumericInputProperty, PatchControllers } from '../
 import lfoMidiApi, { lfoParamReceive, lfoParamSend } from './lfoMidiApi'
 import { curveFuncs } from '../../../components/curves/curveCalculator'
 import { BUTTONS } from '../../../midi/buttons'
+import deepmerge from 'deepmerge'
 
 // helper function - we use indexOf to make sure code works even if ordering of shapes changes
 const customShapeIndex = lfoCtrls.SHAPE.values.indexOf(BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_CUSTOM)
@@ -61,7 +62,7 @@ const toggleUiLfo = (source: ApiSource) => {
     setUiLfo(nextId, source)
 }
 
-const cannotDisableStage = (stage: StageId) => stage === StageId.ATTACK || stage === StageId.STOPPED
+const cannotDisableStage = (stage: StageId) => !lfoCtrls.TOGGLE_STAGE.legalValueIndexes?.includes(stage)
 
 const stageCurve = (() => {
     const set = (input: NumericInputProperty) => {
@@ -461,11 +462,16 @@ const set = (input: NumericInputProperty) => {
     handlers.set(input)
 }
 
-const getForSave = () => {
-    return {
-        ...handlers.getForSave()
-        // TODO: Custom getters
+const getForSave = (): PatchControllers => {
+
+    let patchControllers = {}
+
+    for (let ctrlIndex = 0; ctrlIndex < NUMBER_OF_LFOS; ctrlIndex++) {
+        const newControllers = handlers.getForSave(ctrlIndex)
+        console.log(`Lfo controllers ${ctrlIndex}`, newControllers)
+        patchControllers = deepmerge(patchControllers, newControllers)
     }
+    return patchControllers
 }
 const setFromLoad = (patchController: PatchControllers) => {
     handlers.setFromLoad(patchController)

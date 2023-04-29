@@ -1,4 +1,4 @@
-import controllers from '../../../midi/controllers'
+import controllers from '../controllers/controllers'
 import { cc, nrpn } from '../../../midi/midibus'
 import { shouldSend } from '../../../midi/utils'
 import modsApi from './modsApi'

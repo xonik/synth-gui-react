@@ -14,8 +14,9 @@ import {
     ControllerIdEnvStageNonMod,
     ControllerIdNonMod,
     ControllerIdSrc
-} from '../../../midi/controllerIds'
+} from '../controllers/controllerIds'
 import { dbLevelResponseMapper, timeResponseMapper } from '../common/responseMappers'
+import { StageId } from './types'
 
 interface EnvControllers {
     props: FuncProps
@@ -113,7 +114,21 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             isDstDigi: true,
             type: 'pot'
         },
-        CURVE: { id: ControllerIdEnvStageNonMod.ENV_CURVE, label: 'Curve', type: 'pot', addr: NRPN.ENV_CURVE },
+        CURVE: {
+            id: ControllerIdEnvStageNonMod.ENV_CURVE,
+            label: 'Curve',
+            type: 'pot',
+            addr: NRPN.ENV_CURVE,
+            legalValueIndexes: [
+                StageId.DELAY,
+                StageId.ATTACK,
+                StageId.DECAY1,
+                StageId.DECAY2,
+                StageId.SUSTAIN,
+                StageId.RELEASE1,
+                StageId.RELEASE2
+            ]
+        },
         LEVEL: {
             id: ControllerIdNonMod.ENV_LEVEL,
             label: 'Level',
@@ -121,6 +136,11 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             addr: NRPN.ENV_LEVEL,
             bipolar: true,
             uiResponse: dbLevelResponseMapper,
+            legalValueIndexes: [
+                StageId.DECAY2,
+                StageId.SUSTAIN,
+                StageId.RELEASE2,
+            ]
         },
         TIME: {
             id: ControllerIdNonMod.ENV_TIME,
@@ -128,6 +148,14 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             type: 'pot',
             addr: NRPN.ENV_TIME,
             uiResponse: timeResponseMapper,
+            legalValueIndexes: [
+                StageId.DELAY,
+                StageId.ATTACK,
+                StageId.DECAY1,
+                StageId.DECAY2,
+                StageId.RELEASE1,
+                StageId.RELEASE2,
+            ]
         },
         OFFSET: {
             id: ControllerIdEnvDst.OFFSET,
@@ -143,7 +171,13 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             id: ControllerIdEnvStageNonMod.ENV_TOGGLE_STAGE,
             label: 'Stage on/off',
             type: 'pot',
-            cc: CC.ENV_TOGGLE_STAGE
+            cc: CC.ENV_TOGGLE_STAGE,
+            legalValueIndexes: [
+                StageId.DELAY,
+                StageId.DECAY1,
+                StageId.DECAY2,
+                StageId.RELEASE1,
+            ]
         }, // 4 bit stage, 7 bit on/off
         SELECT: { id: ControllerIdNonMod.ENV_SELECT, label: 'Select env', type: 'pot', cc: CC.ENV_SELECT_ENV },
         SELECT_ENV3_ID: {

@@ -1,7 +1,7 @@
 import CC from '../../../midi/mapCC'
 import { BUTTONS } from '../../../midi/buttons'
 import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
-import { ControllerIdDst, ControllerIdNonMod } from '../../../midi/controllerIds'
+import { ControllerIdDst, ControllerIdNonMod } from '../controllers/controllerIds'
 
 interface CommonFxControllers {
     DSP1: {

@@ -1,5 +1,5 @@
 // If imported directly we get a cyclic dependency. Not sure why it works now.
-import controllers from '../../../midi/controllers'
+import controllers from '../controllers/controllers'
 import { cc, lastSentMidiGroup } from '../../../midi/midibus'
 import { ApiSource } from '../../types'
 import { shouldSend } from '../../../midi/utils'

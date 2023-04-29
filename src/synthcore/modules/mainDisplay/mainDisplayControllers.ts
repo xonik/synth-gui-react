@@ -1,7 +1,7 @@
 import CC from '../../../midi/mapCC'
 import { BUTTONS } from '../../../midi/buttons'
 import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
-import { ControllerIdNonMod, ControllerIdNonModPots } from '../../../midi/controllerIds'
+import { ControllerIdNonMod, ControllerIdNonModPots } from '../controllers/controllerIds'
 
 interface MainDisplayControllers {
     props: FuncProps

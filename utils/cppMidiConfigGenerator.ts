@@ -1,4 +1,4 @@
-import controllers from '../src/midi/controllers'
+import controllers from '../src/synthcore/modules/controllers/controllers'
 import { buttonLeftMidiValues } from '../src/midi/buttonLeftMidiValues'
 import { buttonCenterMidiValues } from '../src/midi/buttonCenterMidiValues'
 import { buttonRightMidiValues } from '../src/midi/buttonRightMidiValues'
@@ -29,7 +29,7 @@ import {
     NON_MOD_COUNT,
     NON_MOD_POTS_COUNT,
     SRC_COUNT
-} from '../src/midi/controllerIds'
+} from '../src/synthcore/modules/controllers/controllerIds'
 
 const fs = require('fs')
 

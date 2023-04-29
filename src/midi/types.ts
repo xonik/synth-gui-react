@@ -1,6 +1,6 @@
 import {
     ControllerId,
-} from './controllerIds'
+} from '../synthcore/modules/controllers/controllerIds'
 
 export enum MidiGroup {
     ENV,
@@ -28,6 +28,8 @@ export interface ControllerConfig {
     // used for special functions that may require a ctrlIndex to be sent before the actual controller, such as
     // envelope values.
     readonly midiGroup?: MidiGroup
+
+    readonly legalValueIndexes?: number[]
 }
 
 export interface ControllerConfigCC extends ControllerConfig {

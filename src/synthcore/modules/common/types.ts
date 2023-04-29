@@ -56,6 +56,14 @@ export type BooleanPayload = {
     value: boolean;
 }
 
+export type PatchControllerValues = {
+    [valueIndex: number]: number
+}
 export type PatchControllers = {
-    [key: string]: number
+    [ctrlId: number]: {
+        label: string
+        instances: {
+            [ctrlIndex: number]: PatchControllerValues
+        }
+    }
 }

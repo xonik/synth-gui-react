@@ -1,6 +1,6 @@
 import CC from '../../../midi/mapCC'
 import { FuncProps, ControllerConfigCC } from '../../../midi/types'
-import { ControllerIdDst } from '../../../midi/controllerIds'
+import { ControllerIdDst } from '../controllers/controllerIds'
 
 
 interface PostMixControllers {

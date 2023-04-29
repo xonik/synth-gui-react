@@ -10,7 +10,7 @@ export enum StageId {
 }
 
 export const NUMBER_OF_ENVELOPES = 5
-export const STAGES = Object.keys(StageId).length / 2
+export const NUMBER_OF_ENVELOPE_STAGES = Object.keys(StageId).length / 2
 
 export enum ReleaseMode {
     NORMAL,

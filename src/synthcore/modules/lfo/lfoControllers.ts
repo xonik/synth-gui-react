@@ -12,9 +12,10 @@ import {
     ControllerIdLfoNonMod, ControllerIdLfoStageNonMod,
     ControllerIdNonMod,
     ControllerIdSrc
-} from '../../../midi/controllerIds'
+} from '../controllers/controllerIds'
 import { timeResponseMapper } from '../common/responseMappers'
 import CC from '../../../midi/mapCC'
+import { StageId } from './types'
 
 
 interface ControllersLfo {
@@ -222,19 +223,33 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
             BUTTONS.BUTTONS_CENTER.values.LFO_GATED_ON,
         ],
     },
-    CURVE: { id: ControllerIdLfoStageNonMod.LFO_CURVE, label: 'Curve', type: 'pot', addr: NRPN.LFO_CURVE },
+    CURVE: {
+        id: ControllerIdLfoStageNonMod.LFO_CURVE,
+        label: 'Curve',
+        type: 'pot',
+        addr: NRPN.LFO_CURVE,
+        legalValueIndexes: [
+            StageId.ATTACK,
+            StageId.DECAY,
+        ]
+    },
     TOGGLE_STAGE: {
         id: ControllerIdLfoStageNonMod.LFO_TOGGLE_STAGE,
         label: 'Stage on/off',
         type: 'pot',
-        cc: CC.LFO_TOGGLE_STAGE
+        cc: CC.LFO_TOGGLE_STAGE,
+        legalValueIndexes: [
+            StageId.DELAY,
+            StageId.DECAY,
+        ]
     }, // 4 bit stage, 7 bit on/off
     BALANCE: {
         id: ControllerIdLfoDst.BALANCE,
         label: 'Balance',
         type: 'pot',
         isDstDigi: true,
-        addr: NRPN.LFO_BALANCE },
+        addr: NRPN.LFO_BALANCE
+    },
     PHASE_OFFSET: {
         id: ControllerIdLfoDst.PHASE_OFFSET,
         label: 'Phase offset',

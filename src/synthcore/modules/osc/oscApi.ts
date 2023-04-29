@@ -82,22 +82,28 @@ const set = (input: NumericInputProperty) => {
     handlers.set(input)
 }
 
-const getForSave = () => {
+const getForSave = (): PatchControllers => {
     return {
         ...handlers.getForSave(),
         ...{
-            [osc1Sync.ctrl.id]: osc1Sync.get(),
-            [osc2Sync.ctrl.id]: osc2Sync.get(),
+            [osc1Sync.ctrl.id]: {
+                label: osc1Sync.ctrl.label, 
+                instances: {0: osc1Sync.get()}
+            },
+            [osc2Sync.ctrl.id]: {
+                label: osc2Sync.ctrl.label, 
+                instances: {0: osc2Sync.get()}
+            },
         }
     }
 }
 
 const setFromLoad = (patchController: PatchControllers) => {
     if(patchController[osc1Sync.ctrl.id]){
-        osc1Sync.setFromLoad(patchController[osc1Sync.ctrl.id])
+        osc1Sync.setFromLoad(patchController[osc1Sync.ctrl.id].instances[0][0])
     }
     if(patchController[osc2Sync.ctrl.id]){
-        osc2Sync.setFromLoad(patchController[osc2Sync.ctrl.id])
+        osc2Sync.setFromLoad(patchController[osc2Sync.ctrl.id].instances[0][0])
     }
     handlers.setFromLoad(patchController)
 }

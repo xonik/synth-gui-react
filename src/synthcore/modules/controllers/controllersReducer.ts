@@ -5,9 +5,9 @@ import { Controllers } from './types'
 import { getDefaultEnv, getDefaultEnvStages, getDefaultEnvUiStages } from '../env/envUtils'
 import { envCtrls } from '../env/envControllers'
 import { mergeControllers } from './controllersUtils'
-import { Stage, STAGES } from '../env/types'
-import { Stage as LfoStage, STAGES as LFO_STAGES } from '../lfo/types'
-import { NumericControllerPayload } from '../common/types'
+import { Stage, NUMBER_OF_ENVELOPE_STAGES } from '../env/types'
+import { Stage as LfoStage, NUMBER_OF_LFO_STAGES as LFO_STAGES } from '../lfo/types'
+import { NumericControllerPayload, PatchControllerValues } from '../common/types'
 import { getDefaultLfo, getDefaultLfoStages, getDefaultUiLfoStages } from '../lfo/lfoUtils'
 import { getDefaultController } from './controllersUtils'
 import { getDefaultOscState } from '../osc/oscUtils'
@@ -132,6 +132,22 @@ const controllerState = {
         } else {
             return state.controllers.controllers[ctrlIndex][ctrl.id][valueIndex] || 0
         }
+    },
+    getValueIndexValues: (state: RootState, ctrl: ControllerConfig, ctrlIndex: number = 0): PatchControllerValues => {
+        const ctrlValue = state.controllers.controllers[ctrlIndex]
+        if (ctrlValue === undefined || ctrlValue[ctrl.id] === undefined) {
+            return {0: 0}
+        } else {
+            let valueIndexValues: PatchControllerValues = {}
+            if(ctrl.legalValueIndexes) {
+                ctrl.legalValueIndexes?.forEach((valueIndex) => {
+                    valueIndexValues[valueIndex] = state.controllers.controllers[ctrlIndex][ctrl.id][valueIndex] || 0
+                })
+            } else {
+                valueIndexValues[0] = state.controllers.controllers[ctrlIndex][ctrl.id][0] || 0
+            }
+            return valueIndexValues
+        }
     }
 }
 
@@ -162,6 +178,10 @@ export const selectController = (ctrl: ControllerConfig, ctrlIndex: number = 0, 
     return controllerState.get(state, ctrl, ctrlIndex, valueIndex)
 }
 
+export const selectControllerValueIndexValues = (ctrl: ControllerConfig, ctrlIndex: number = 0) => (state: RootState): PatchControllerValues => {
+    return controllerState.getValueIndexValues(state, ctrl, ctrlIndex)
+}
+
 export const selectUiController = (ctrl: ControllerConfig, ctrlIndex: number = 0, valueIndex: number = 0) => (state: RootState): number => {
     if (ctrl.uiResponse) {
         return uiControllerState.get(state, ctrl, ctrlIndex, valueIndex)
@@ -183,7 +203,7 @@ export const selectEnvStageById = (envId: number, stageId: number) => (state: Ro
 
 export const selectEnvStages = (envId: number) => (state: RootState): Stage[] => {
     const stages: Stage[] = []
-    for (let i = 0; i < STAGES; i++) {
+    for (let i = 0; i < NUMBER_OF_ENVELOPE_STAGES; i++) {
         stages.push(selectEnvStageById(envId, i)(state))
     }
     return stages
