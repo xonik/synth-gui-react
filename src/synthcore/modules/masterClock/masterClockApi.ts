@@ -1,7 +1,7 @@
 import masterClockControllers from './masterClockControllers'
-import { createHandlers } from '../common/utils'
+import { createGroupedHandlers } from '../common/utils'
 
-const handlers = createHandlers(
+const handlers = createGroupedHandlers(
     [
         masterClockControllers.RATE,
         masterClockControllers.SOURCE,

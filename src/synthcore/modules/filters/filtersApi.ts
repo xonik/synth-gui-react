@@ -1,7 +1,7 @@
-import { createHandlers } from '../common/utils'
+import { createGroupedHandlers } from '../common/utils'
 import filtersControllers from './filtersControllers'
 
-const handlers = createHandlers(
+const handlers = createGroupedHandlers(
     [
         filtersControllers.LPF.INPUT,
         filtersControllers.LPF.DRIVE,

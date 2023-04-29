@@ -1,7 +1,7 @@
 import outControllers from './outControllers'
-import { createHandlers } from '../common/utils'
+import { createGroupedHandlers } from '../common/utils'
 
-const { set, toggle, increment, getForSave, setFromLoad } = createHandlers(
+const { set, toggle, increment, getForSave, setFromLoad } = createGroupedHandlers(
     [
         outControllers.VOLUME,
         outControllers.SPREAD,

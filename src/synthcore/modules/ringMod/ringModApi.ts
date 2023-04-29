@@ -1,7 +1,7 @@
-import { createHandlers } from '../common/utils'
+import { createGroupedHandlers } from '../common/utils'
 import ringModControllers from './ringModControllers'
 
-const handlers = createHandlers(
+const handlers = createGroupedHandlers(
     [
         ringModControllers.SOURCE,
     ])

@@ -1,7 +1,7 @@
-import { createHandlers } from '../common/utils'
+import { createGroupedHandlers } from '../common/utils'
 import srcMixControllers from './srcMixControllers'
 
-const handlers = createHandlers(
+const handlers = createGroupedHandlers(
     [
         srcMixControllers.LEVEL_OSC1,
         srcMixControllers.LEVEL_OSC2,

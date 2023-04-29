@@ -1,7 +1,7 @@
-import { createHandlers } from '../common/utils'
+import { createGroupedHandlers } from '../common/utils'
 import fxControllers from './fxControllers'
 
-const handlers = createHandlers(
+const handlers = createGroupedHandlers(
     [
         fxControllers.DISTORTION.IN,
         fxControllers.DISTORTION.DRIVE,

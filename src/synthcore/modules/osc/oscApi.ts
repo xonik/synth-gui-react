@@ -1,4 +1,4 @@
-import { createHandlers, ControllerHandler } from '../common/utils'
+import { createGroupedHandlers, ControllerHandler } from '../common/utils'
 import oscControllers from './oscControllers'
 import { ButtonInputProperty, NumericInputProperty, PatchControllers } from '../common/types'
 import { setController } from '../controllers/controllersReducer'
@@ -23,7 +23,7 @@ const customHandlers = {
     [oscControllers.DCO2.SYNC.id]: osc2Sync,
 }
 
-const handlers = createHandlers(
+const handlers = createGroupedHandlers(
     [
         oscControllers.DCO1.NOTE,
         oscControllers.DCO1.RANGE,

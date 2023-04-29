@@ -1,7 +1,7 @@
-import { createHandlers } from '../common/utils'
+import { createGroupedHandlers } from '../common/utils'
 import arpControllers from './arpControllers'
 
-const { set, toggle, increment, getForSave, setFromLoad } = createHandlers(
+const { set, toggle, increment, getForSave, setFromLoad } = createGroupedHandlers(
     [
         arpControllers.TEMPO,
         arpControllers.ON_OFF,

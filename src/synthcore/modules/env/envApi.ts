@@ -12,31 +12,33 @@ import envMidiApi from './envMidiApi'
 import { curveFuncs } from '../../../components/curves/curveCalculator'
 import { ApiSource } from '../../types'
 import { dispatch, getBounded, getQuantized } from '../../utils'
-import { createHandlers } from '../common/utils'
+import { ControllerHandler, createDefaultHandlers, groupHandlers } from '../common/utils'
 import { envCtrls } from './envControllers'
 import { paramReceive, paramSend } from '../common/commonMidiApi'
 import {
-    selectController, selectControllerValueIndexValues,
+    selectController,
     selectUiController,
     setController,
 } from '../controllers/controllersReducer'
 import { ButtonInputProperty, NumericInputProperty, PatchControllers } from '../common/types'
 import deepmerge from 'deepmerge'
 
+class StageLevelControllerHandler extends ControllerHandler {
+    constructor() {
+        super(envCtrls.LEVEL, {
+            receive: envParamReceive
+        })
+    }
 
-const cannotDisableStage = (stage: StageId) => !envCtrls.TOGGLE_STAGE.legalValueIndexes?.includes(stage)
-
-const stageLevel = (() => {
-
-    const getBoundedController = (value: number, envId: number) => {
+    private getBoundedController(value: number, envId: number) {
         const bipolar = selectController(envCtrls.BIPOLAR, envId)(store.getState()) === 1
         return bipolar
             ? getQuantized(getBounded(value, -1, 1), 32767)
             : getQuantized(getBounded(value), 32767)
     }
 
-    const set = (input: NumericInputProperty, uiValue?: number) => {
-        const { ctrlIndex: envId = 0, value, valueIndex: stageId = 0, ctrl } = input
+    customSet(input: NumericInputProperty, uiValue?: number) {
+        const { ctrlIndex: envId = 0, value, valueIndex: stageId = 0 } = input
 
         const r1enabled = selectController(
             envCtrls.TOGGLE_STAGE,
@@ -49,8 +51,8 @@ const stageLevel = (() => {
             (stageId === StageId.RELEASE2 && r1enabled)
         ) {
 
-            const boundedValue = getBoundedController(value, envId)
-            const currentLevel = selectController(ctrl, envId, stageId)(store.getState())
+            const boundedValue = this.getBoundedController(value, envId)
+            const currentLevel = selectController(this.ctrl, envId, stageId)(store.getState())
             if (boundedValue === currentLevel) {
                 return
             }
@@ -67,70 +69,52 @@ const stageLevel = (() => {
                 dispatch(setController({ ...input, value: boundedValue, uiValue }))
             }
 
-            envParamSend({...input, value: boundedValue})
+            envParamSend({ ...input, value: boundedValue })
         }
     }
 
-    const increment = (input: NumericInputProperty) => {
-        const { ctrlIndex: envId = 0, valueIndex: stageId = 0, value: inc, ctrl } = input
+    increment(input: NumericInputProperty) {
+        const { ctrlIndex: envId = 0, valueIndex: stageId = 0, value: inc } = input
 
-        if (ctrl.uiResponse) {
-            const currentValue = selectUiController(ctrl, envId, stageId)(store.getState())
-            const uiValue = getBoundedController(currentValue + inc, envId)
+        if (this.ctrl.uiResponse) {
+            const currentValue = selectUiController(this.ctrl, envId, stageId)(store.getState())
+            const uiValue = this.getBoundedController(currentValue + inc, envId)
 
             const bipolar = selectController(envCtrls.BIPOLAR, envId)(store.getState()) === 1
-            const updatedValue = ctrl.uiResponse.output(uiValue, bipolar)
-            set({ ...input, value: updatedValue }, uiValue)
+            const updatedValue = this.ctrl.uiResponse.output(uiValue, bipolar)
+            this.customSet({ ...input, value: updatedValue }, uiValue)
         } else {
-            const currentValue = selectController(ctrl, envId, stageId)(store.getState())
-            set({ ...input, value: currentValue + inc })
+            const currentValue = selectController(this.ctrl, envId, stageId)(store.getState())
+            this.customSet({ ...input, value: currentValue + inc })
         }
     }
 
-    const setWithUiUpdate = (input: NumericInputProperty) => {
-
+    setWithUiUpdate(input: NumericInputProperty) {
         const envId = selectController(envCtrls.SELECT)(store.getState())
         const bipolar = selectController(envCtrls.BIPOLAR, envId)(store.getState()) === 1
-        const updatedLevel = input.ctrl.uiResponse?.input(input.value, bipolar) || 0
+        const updatedLevel = this.ctrl.uiResponse?.input(input.value, bipolar) || 0
         const uiValue = getQuantized(getBounded(updatedLevel))
-        set(input, uiValue)
+        this.customSet(input, uiValue)
     }
+}
 
-    const setFromLoad = (value: number, ctrlIndex = 0, valueIndex = 0) => {
-        set({
-            ctrl: envCtrls.LEVEL,
-            ctrlIndex,
-            valueIndex,
-            value,
-            source: ApiSource.LOAD
+class StageTimeControllerHandler extends ControllerHandler {
+    constructor() {
+        super(envCtrls.TIME, {
+            receive: envParamReceive
         })
     }
 
-    const get = (ctrlIndex = 0) => {
-        return selectControllerValueIndexValues(envCtrls.LEVEL, ctrlIndex)(store.getState());
+    private getBoundedController(value: number) {
+        return getQuantized(getBounded(value))
     }
 
-    envParamReceive(envCtrls.LEVEL, setWithUiUpdate)
+    // TODO: Figure out why we need uiValue and if we can stop using it.
+    customSet(input: NumericInputProperty, uiValue?: number) {
+        const { ctrlIndex: envId = 0, value, valueIndex: stageId = 0 } = input
 
-    return {
-        set,
-        increment,
-        toggle: (input: ButtonInputProperty) => {
-        },
-        setFromLoad,
-        get
-    }
-})()
-
-const stageTime = (() => {
-
-    const getBoundedController = (value: number) => getQuantized(getBounded(value))
-
-    const set = (input: NumericInputProperty, uiValue?: number) => {
-        const { ctrlIndex: envId = 0, value, valueIndex: stageId = 0, ctrl } = input
-
-        let boundedValue = getBoundedController(value)
-        const currentTime = selectController(ctrl, envId, stageId)(store.getState())
+        let boundedValue = this.getBoundedController(value)
+        const currentTime = selectController(this.ctrl, envId, stageId)(store.getState())
 
         if (boundedValue === currentTime) {
             return
@@ -142,45 +126,42 @@ const stageTime = (() => {
         envParamSend(boundedInput)
     }
 
-    const setWithUiUpdate = (input: NumericInputProperty) => {
+    setWithUiUpdate(input: NumericInputProperty) {
         const updatedTime = input.ctrl.uiResponse?.input(input.value) || 0
-        let uiValue = getBoundedController(updatedTime)
-        set(input, uiValue)
+        let uiValue = this.getBoundedController(updatedTime)
+        this.customSet(input, uiValue)
     }
 
-    const increment = (input: NumericInputProperty) => {
-        const { ctrlIndex: envId = 0, valueIndex: stageId = 0, value: inc, ctrl } = input
-        if (ctrl.uiResponse) {
-            const currentTime = selectUiController(ctrl, envId, stageId)(store.getState())
-            const uiValue = getBoundedController(currentTime + inc)
-            const updatedTime = ctrl.uiResponse.output(uiValue)
-            set({ ...input, value: updatedTime }, uiValue)
+    increment(input: NumericInputProperty) {
+        const { ctrlIndex: envId = 0, valueIndex: stageId = 0, value: inc } = input
+        if (this.ctrl.uiResponse) {
+            const currentTime = selectUiController(this.ctrl, envId, stageId)(store.getState())
+            const uiValue = this.getBoundedController(currentTime + inc)
+            const updatedTime = this.ctrl.uiResponse.output(uiValue)
+            this.customSet({ ...input, value: updatedTime }, uiValue)
         } else {
-            const currentTime = selectController(ctrl, envId, stageId)(store.getState())
-            set({ ...input, value: currentTime + inc })
+            const currentTime = selectController(this.ctrl, envId, stageId)(store.getState())
+            this.customSet({ ...input, value: currentTime + inc })
         }
     }
+}
 
-    envParamReceive(envCtrls.TIME, setWithUiUpdate)
-
-    return {
-        set,
-        increment,
-        toggle: (input: ButtonInputProperty) => {
-        }
+class StageEnabledControllerHandler
+    extends ControllerHandler {
+    constructor() {
+        super(envCtrls.TOGGLE_STAGE, {
+            receive: envMidiApi.stageEnabled.receive
+        })
     }
-})()
 
-const stageEnabled = (() => {
+    defaultSet(input: NumericInputProperty) {
+        const { ctrlIndex: envId = 0, value: enabled, valueIndex: stageId = 0 } = input
 
-    const set = (input: NumericInputProperty) => {
-        const { ctrlIndex: envId = 0, value: enabled, valueIndex: stageId = 0, ctrl } = input
-
-        if (cannotDisableStage(stageId)) {
+        if (!this.ctrl.legalValueIndexes?.includes(stageId)) {
             return
         }
 
-        const currentEnabled = selectController(ctrl, envId, stageId)(store.getState())
+        const currentEnabled = selectController(this.ctrl, envId, stageId)(store.getState())
         if (currentEnabled === enabled) {
             return
         }
@@ -203,30 +184,26 @@ const stageEnabled = (() => {
         envMidiApi.stageEnabled.send(input)
     }
 
-    const toggle = (input: ButtonInputProperty) => {
-        const { ctrlIndex: envId = 0, valueIndex: stageId = 0, ctrl } = input
+    toggle(input: ButtonInputProperty) {
+        const { ctrlIndex: envId = 0, valueIndex: stageId = 0 } = input
 
-        const currentEnabled = selectController(ctrl, envId, stageId)(store.getState())
+        const currentEnabled = selectController(this.ctrl, envId, stageId)(store.getState())
         const enabled = (currentEnabled + 1) % 2
-        set({ ...input, value: enabled })
+        this.set({ ...input, value: enabled })
+    }
+}
+
+class StageCurveControllerHandler extends ControllerHandler {
+    constructor() {
+        super(envCtrls.CURVE, {
+            receive: envMidiApi.curve.receive
+        })
     }
 
-    envMidiApi.stageEnabled.receive(set)
+    defaultSet(input: NumericInputProperty) {
+        const { ctrlIndex: envId = 0, value: curve, valueIndex: stageId = 0 } = input
 
-    return {
-        set,
-        toggle,
-        increment: (input: NumericInputProperty) => {
-        }
-    }
-})()
-
-const stageCurve = (() => {
-    const set = (input: NumericInputProperty) => {
-
-        const { ctrlIndex: envId = 0, value: curve, valueIndex: stageId = 0, ctrl } = input
-
-        const currentCurve = selectController(ctrl, envId, stageId)(store.getState())
+        const currentCurve = selectController(this.ctrl, envId, stageId)(store.getState())
         const boundedCurve = getBounded(curve, 0, curveFuncs.length - 1)
         if (currentCurve === boundedCurve) {
             return
@@ -236,27 +213,29 @@ const stageCurve = (() => {
         envMidiApi.curve.send(boundedInput)
     }
 
-    const increment = (input: NumericInputProperty) => {
-        const { ctrlIndex: envId = 0, valueIndex: stageId = 0, value: inc, ctrl } = input
-        const currentCurve = selectController(ctrl, envId, stageId)(store.getState())
-        set({ ...input, value: currentCurve + inc })
+    increment(input: NumericInputProperty) {
+        const { ctrlIndex: envId = 0, valueIndex: stageId = 0, value: inc } = input
+        const currentCurve = selectController(this.ctrl, envId, stageId)(store.getState())
+        this.set({ ...input, value: currentCurve + inc })
+    }
+}
+
+class MaxLoopsControllerHandler extends ControllerHandler {
+
+    constructor() {
+        super(envCtrls.MAX_LOOPS, {
+            receive: (ctrl, apiSetValue) => envParamReceive(
+                ctrl,
+                apiSetValue,
+                (midiValue: number) => ({ value: midiValue })
+            )
+        })
     }
 
-    envMidiApi.curve.receive(set)
-
-    return {
-        set,
-        increment,
-        toggle: (input: ButtonInputProperty) => {
-        }
-    }
-})()
-
-const maxLoops = (() => {
-    const set = (input: NumericInputProperty) => {
+    defaultSet(input: NumericInputProperty) {
         const { ctrlIndex: envId = 0, value } = input
         const currMaxLoops = selectController(
-            envCtrls.MAX_LOOPS,
+            this.ctrl,
             envId)(store.getState())
 
         const boundedMaxLoops = getBounded(value, 1, 127)
@@ -268,30 +247,28 @@ const maxLoops = (() => {
         envParamSend(boundedInput, (value: number) => value)
     }
 
-    const increment = (input: NumericInputProperty) => {
+    increment(input: NumericInputProperty) {
         const { ctrlIndex: envId = 0, value: inc } = input
         const currMaxLoops = selectController(
-            envCtrls.MAX_LOOPS,
+            this.ctrl,
             envId)(store.getState())
 
-        set({ ...input, value: currMaxLoops + inc })
+        this.set({ ...input, value: currMaxLoops + inc })
+    }
+}
+
+class InvertControllerHandler extends ControllerHandler {
+
+    constructor() {
+        super(envCtrls.INVERT, {
+            receive: envParamReceive
+        })
     }
 
-    envParamReceive(envCtrls.MAX_LOOPS, set, (midiValue: number) => ({ value: midiValue }))
-
-    return {
-        set,
-        increment,
-        toggle: (input: ButtonInputProperty) => {
-        }
-    }
-})()
-
-const invert = (() => {
-    const set = (input: NumericInputProperty) => {
+    defaultSet(input: NumericInputProperty) {
         const { ctrlIndex: envId = 0, value } = input
         const currInvert = selectController(
-            input.ctrl,
+            this.ctrl,
             envId)(store.getState())
 
         const boundedInvert = getBounded(value, 0, input.ctrl.values?.length || 1)
@@ -304,60 +281,73 @@ const invert = (() => {
         envParamSend(boundedInput, (value: number) => value)
 
         const resetLevel = boundedInvert ? 1 : 0
-        dispatch(setController({ ctrl: envCtrls.LEVEL, ctrlIndex: envId, valueIndex: StageId.DELAY, value: resetLevel }))
-        dispatch(setController({ ctrl: envCtrls.LEVEL, ctrlIndex: envId, valueIndex: StageId.ATTACK, value: resetLevel }))
-        dispatch(setController({ ctrl: envCtrls.LEVEL, ctrlIndex: envId, valueIndex: StageId.DECAY1, value: value ? 0 : 1 }))
-        dispatch(setController({ ctrl: envCtrls.LEVEL, ctrlIndex: envId, valueIndex: StageId.STOPPED, value: resetLevel }))
+        dispatch(setController({
+            ctrl: envCtrls.LEVEL,
+            ctrlIndex: envId,
+            valueIndex: StageId.DELAY,
+            value: resetLevel
+        }))
+        dispatch(setController({
+            ctrl: envCtrls.LEVEL,
+            ctrlIndex: envId,
+            valueIndex: StageId.ATTACK,
+            value: resetLevel
+        }))
+        dispatch(setController({
+            ctrl: envCtrls.LEVEL,
+            ctrlIndex: envId,
+            valueIndex: StageId.DECAY1,
+            value: value ? 0 : 1
+        }))
+        dispatch(setController({
+            ctrl: envCtrls.LEVEL,
+            ctrlIndex: envId,
+            valueIndex: StageId.STOPPED,
+            value: resetLevel
+        }))
 
     }
 
-    const toggle = (input: ButtonInputProperty) => {
+    toggle(input: ButtonInputProperty) {
         const { ctrlIndex: envId = 0, ctrl } = input
 
         const currentEnabled = selectController(ctrl, envId)(store.getState())
         const enabled = (currentEnabled + 1) % (input.ctrl.values?.length || 1)
-        set({ ...input, value: enabled })
+        this.set({ ...input, value: enabled })
+    }
+}
+
+class Env3IdControllerHandler extends ControllerHandler {
+
+    constructor() {
+        super(envCtrls.SELECT_ENV3_ID, {
+            receive: (ctrl, apiSetValue) => paramReceive(
+                ctrl,
+                apiSetValue,
+                (midiValue: number) => ({ value: midiValue })
+            )
+        })
     }
 
-    envParamReceive(envCtrls.INVERT, set)
-
-    return {
-        set,
-        increment: (input: NumericInputProperty) => {
-
-        },
-        toggle,
-    }
-})()
-
-const env3Id = (() => {
-    const set = (input: NumericInputProperty) => {
+    defaultSet(input: NumericInputProperty) {
         const { value: id } = input
 
-        const currentEnv3Id = selectController(input.ctrl, 0)(store.getState())
+        const currentEnv3Id = selectController(this.ctrl, 0)(store.getState())
         if (id !== currentEnv3Id && id < NUMBER_OF_ENVELOPES && id > 1) {
             dispatch(setController(input))
             paramSend(input, (value: number) => value)
         }
     }
 
-    const toggle = (input: ButtonInputProperty) => {
-        const currentEnv3Id = selectController(input.ctrl, 0)(store.getState())
+    toggle(input: ButtonInputProperty) {
+        const currentEnv3Id = selectController(this.ctrl, 0)(store.getState())
         let nextEnv3Id = (currentEnv3Id + 1)
         if (nextEnv3Id > NUMBER_OF_ENVELOPES - 1) {
             nextEnv3Id = 2
         }
-        set({ ...input, value: nextEnv3Id })
+        this.set({ ...input, value: nextEnv3Id })
     }
-    paramReceive(envCtrls.SELECT_ENV3_ID, set, (midiValue: number) => ({ value: midiValue }))
-
-    return {
-        set,
-        toggle,
-        increment: (input: NumericInputProperty) => {
-        }
-    }
-})()
+}
 
 // GUI STUFF
 const setCurrentEnv = (envId: number, source: ApiSource) => {
@@ -379,38 +369,34 @@ const toggleStageSelected = (envId: number, stageId: StageId, source: ApiSource)
     }
 }
 
-const handlers = createHandlers([
-        envCtrls.LOOP,
-        envCtrls.ENV_GATE,
-        envCtrls.RESET_ON_TRIGGER,
-        envCtrls.RELEASE_MODE,
-        envCtrls.LOOP_MODE,
-        envCtrls.OFFSET,
-    ],
-    {send: envParamSend, receive: envParamReceive})
-
-const customhandlers = {
-    [envCtrls.LEVEL.id]: stageLevel,
-    [envCtrls.TIME.id]: stageTime,
-    [envCtrls.TOGGLE_STAGE.id]: stageEnabled,
-    [envCtrls.CURVE.id]: stageCurve,
-    [envCtrls.INVERT.id]: invert,
-    [envCtrls.MAX_LOOPS.id]: maxLoops,
-    [envCtrls.SELECT_ENV3_ID.id]: env3Id,
-}
+const handlers = groupHandlers({
+    [envCtrls.LEVEL.id]: new StageLevelControllerHandler(),
+    [envCtrls.TIME.id]: new StageTimeControllerHandler(),
+    [envCtrls.TOGGLE_STAGE.id]: new StageEnabledControllerHandler(),
+    [envCtrls.CURVE.id]: new StageCurveControllerHandler(),
+    [envCtrls.INVERT.id]: new InvertControllerHandler(),
+    [envCtrls.MAX_LOOPS.id]: new MaxLoopsControllerHandler(),
+    [envCtrls.SELECT_ENV3_ID.id]: new Env3IdControllerHandler(),
+    ...createDefaultHandlers([
+            envCtrls.LOOP,
+            envCtrls.ENV_GATE,
+            envCtrls.RESET_ON_TRIGGER,
+            envCtrls.RELEASE_MODE,
+            envCtrls.LOOP_MODE,
+            envCtrls.OFFSET,
+        ],
+        { send: envParamSend, receive: envParamReceive }),
+})
 
 const increment = (input: NumericInputProperty) => {
-    customhandlers[input.ctrl.id]?.increment(input)
     handlers.increment(input)
 }
 
 const toggle = (input: ButtonInputProperty) => {
-    customhandlers[input.ctrl.id]?.toggle(input)
     handlers.toggle(input)
 }
 
 const set = (input: NumericInputProperty) => {
-    customhandlers[input.ctrl.id]?.set(input)
     handlers.set(input)
 }
 

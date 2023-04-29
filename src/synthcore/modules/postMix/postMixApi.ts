@@ -1,7 +1,7 @@
-import { createHandlers } from '../common/utils'
+import { createGroupedHandlers } from '../common/utils'
 import postMixControllers from './postMixControllers'
 
-const handlers = createHandlers(
+const handlers = createGroupedHandlers(
     [
         postMixControllers.LPF,
         postMixControllers.SVF,

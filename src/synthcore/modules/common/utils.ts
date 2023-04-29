@@ -27,6 +27,7 @@ const getBoundedController = (ctrl: ControllerConfig, value: number) => {
     return getQuantized(getBounded(value, lowerBound, upperBound))
 }
 
+// TODO: Make common class without default implementations of functions (or rather, null-versions)
 export class ControllerHandler {
 
     set: (input: NumericInputProperty, forceSet?: boolean, uiValue?: number) => void
@@ -42,7 +43,7 @@ export class ControllerHandler {
         if (setOverride) {
             this.set = setOverride
         } else {
-            this.set = this.internalSet
+            this.set = this.defaultSet
         }
 
         // setup receive midi
@@ -53,7 +54,7 @@ export class ControllerHandler {
         }
     }
 
-    private internalSet(input: NumericInputProperty, forceSet = false, uiValue?: number) {
+    defaultSet(input: NumericInputProperty, forceSet = false, uiValue?: number) {
         const { ctrl, ctrlIndex, valueIndex, value } = input
 
         const boundedValue = getBoundedController(ctrl, value)
@@ -145,21 +146,14 @@ export class ControllerHandler {
     }
 
     setWithUiUpdate(input: NumericInputProperty) {
+        // TODO: hvorfor er det 0 her? burde det ikke vært input.vale?
         const updatedValue = input.ctrl.uiResponse?.input(input.value) || 0
         const uiValue = getBoundedController(input.ctrl, updatedValue)
         this.set(input, false, uiValue)
     }
 }
 
-export const createHandlers = (
-    controllers: ControllerConfig[],
-    midiFuncs?: { send?: ParamSendFunc, receive?: ParamReceiveFunc }
-) => {
-    const handlers: { [id: string]: ControllerHandler } = {}
-    controllers.forEach((controller) => {
-        handlers[controller.id] = new ControllerHandler(controller, midiFuncs)
-    })
-
+export const groupHandlers = (handlers: {[id: string]: ControllerHandler}) => {
     const set = (input: NumericInputProperty, forceSet = false, uiValue?: number) => {
         if (handlers[input.ctrl.id]) {
             handlers[input.ctrl.id].set(input, forceSet, uiValue)
@@ -218,6 +212,24 @@ export const createHandlers = (
         release,
         increment
     }
+}
+
+export const createDefaultHandlers = (
+    controllers: ControllerConfig[],
+    midiFuncs?: { send?: ParamSendFunc, receive?: ParamReceiveFunc }
+) => {
+    const handlers: { [id: string]: ControllerHandler } = {}
+    controllers.forEach((controller) => {
+        handlers[controller.id] = new ControllerHandler(controller, midiFuncs)
+    })
+    return handlers
+}
+
+export const createGroupedHandlers = (
+    controllers: ControllerConfig[],
+    midiFuncs?: { send?: ParamSendFunc, receive?: ParamReceiveFunc }
+) => {
+    return groupHandlers(createDefaultHandlers(controllers, midiFuncs))
 }
 
 export const createIncrementMapper = (map: MapperEntry[]) => (input: NumericInputProperty) => {

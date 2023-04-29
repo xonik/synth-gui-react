@@ -1,8 +1,8 @@
-import { createHandlers } from '../common/utils'
+import { createGroupedHandlers } from '../common/utils'
 import settingsControllers from './settingsControllers'
 import { ButtonInputProperty, NumericInputProperty } from '../common/types'
 
-const { increment: commonInc, toggle: commonToggle, set: commonSet } = createHandlers([
+const { increment: commonInc, toggle: commonToggle, set: commonSet } = createGroupedHandlers([
     settingsControllers.CALIBRATE_DCO1,
     settingsControllers.CALIBRATE_DCO2,
 ])

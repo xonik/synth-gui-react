@@ -1,7 +1,7 @@
-import { createHandlers } from '../common/utils'
+import { createGroupedHandlers } from '../common/utils'
 import kbdControllers from './kbdControllers'
 
-const handlers = createHandlers(
+const handlers = createGroupedHandlers(
     [
         kbdControllers.TRANSPOSE,
         kbdControllers.PORTAMENTO,

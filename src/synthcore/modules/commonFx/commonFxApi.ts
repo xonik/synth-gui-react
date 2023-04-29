@@ -1,7 +1,7 @@
-import { createHandlers } from '../common/utils'
+import { createGroupedHandlers } from '../common/utils'
 import commonFxControllers from './commonFxControllers'
 
-const { set, toggle, increment, getForSave, setFromLoad } = createHandlers(
+const { set, toggle, increment, getForSave, setFromLoad } = createGroupedHandlers(
     [
         commonFxControllers.DSP1.PARAM1,
         commonFxControllers.DSP1.PARAM2,

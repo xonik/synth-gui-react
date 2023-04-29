@@ -59,7 +59,7 @@ const curve = (() => {
 
     return {
         send: (input: NumericInputProperty) => envParamSend(input, curveOutputMapper),
-        receive: (set: (input: NumericInputProperty) => void) => envParamReceive(envCtrls.CURVE, set, curveInputMapper)
+        receive: (ctrl: ControllerConfig, set: (input: NumericInputProperty) => void) => envParamReceive(ctrl, set, curveInputMapper)
     }
 })()
 
@@ -80,7 +80,7 @@ const stageEnabled = (() => {
 
     return {
         send: (input: NumericInputProperty) => envParamSend(input, stageEnabledOutputMapper),
-        receive: (set: (input: NumericInputProperty) => void) => envParamReceive(envCtrls.TOGGLE_STAGE, set, stageEnabledInputMapper)
+        receive: (ctrl: ControllerConfig, set: (input: NumericInputProperty) => void) => envParamReceive(envCtrls.TOGGLE_STAGE, set, stageEnabledInputMapper)
     }
 })()
 

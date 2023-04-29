@@ -13,7 +13,7 @@ import {
 import { store } from '../../store'
 import { ApiSource, ControllerGroupIds } from '../../types'
 import { dispatch, getBounded } from '../../utils'
-import { createHandlers } from '../common/utils'
+import { createGroupedHandlers } from '../common/utils'
 import { lfoCtrls } from './lfoControllers'
 import { selectController, selectLfoStages, setController } from '../controllers/controllersReducer'
 import { ButtonInputProperty, NumericInputProperty, PatchControllers } from '../common/types'
@@ -418,7 +418,7 @@ const shape = (() => {
     }
 })()
 
-const handlers = createHandlers([
+const handlers = createGroupedHandlers([
         lfoCtrls.RATE,
         lfoCtrls.DELAY,
         lfoCtrls.SYNC,
