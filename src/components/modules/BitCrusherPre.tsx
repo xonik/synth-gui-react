@@ -1,5 +1,4 @@
 import React from 'react';
-import RotaryPot10 from '../pots/RotaryPot10';
 import RotaryPot15 from '../pots/RotaryPot15';
 import Header from '../misc/Header';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
