@@ -92,8 +92,8 @@ export class ControllerHandler {
     }
 
     toggle(input: ButtonInputProperty) {
-        const currentValue = selectController(input.ctrl, input.ctrlIndex || 0)(store.getState())
-        const values = input.ctrl.values?.length || 1;
+        const currentValue = selectController(this.ctrl, input.ctrlIndex || 0)(store.getState())
+        const values = this.ctrl.values?.length || 1;
 
         // Single value buttons, click only, no toggle
         if (values === 1) {
@@ -124,7 +124,7 @@ export class ControllerHandler {
     }
 
     release(input: ButtonInputProperty) {
-        if (input.momentary && input.ctrl.values && input.ctrl.values.length > 1) {
+        if (input.momentary && this.ctrl.values && this.ctrl.values.length > 1) {
             this.set({ ...input, value: 1 }, true)
         }
     }
@@ -143,9 +143,9 @@ export class ControllerHandler {
     }
 
     setWithUiUpdate(input: NumericInputProperty) {
-        if(input.ctrl.uiResponse){
-            const updatedValue = input.ctrl.uiResponse?.input(input.value) || 0
-            const uiValue = getBoundedController(input.ctrl, updatedValue)
+        if(this.ctrl.uiResponse){
+            const updatedValue = this.ctrl.uiResponse?.input(input.value) || 0
+            const uiValue = getBoundedController(this.ctrl, updatedValue)
             this.set(input, false, uiValue)
 
         } else {
