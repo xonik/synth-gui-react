@@ -7,7 +7,6 @@ import logger from '../../../utils/logger'
 import { NumericInputProperty } from '../common/types'
 import { ControllerConfig, ControllerConfigCC, ControllerConfigCCWithValue, MidiGroup } from '../../../midi/types'
 import { paramReceive, ParamReceiveFunc, paramSend, ParamSendFunc } from '../common/commonMidiApi'
-import { envCtrls } from './envControllers'
 
 let currentReceivedEnvId = -1
 let currentSentEnvId = -1
@@ -80,7 +79,7 @@ const stageEnabled = (() => {
 
     return {
         send: (input: NumericInputProperty) => envParamSend(input, stageEnabledOutputMapper),
-        receive: (ctrl: ControllerConfig, set: (input: NumericInputProperty) => void) => envParamReceive(envCtrls.TOGGLE_STAGE, set, stageEnabledInputMapper)
+        receive: (ctrl: ControllerConfig, set: (input: NumericInputProperty) => void) => envParamReceive(ctrl, set, stageEnabledInputMapper)
     }
 })()
 

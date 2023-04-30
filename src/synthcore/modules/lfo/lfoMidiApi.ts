@@ -7,7 +7,6 @@ import logger from '../../../utils/logger'
 import { NumericInputProperty } from '../common/types'
 import { ControllerConfig, ControllerConfigCC, ControllerConfigCCWithValue, MidiGroup } from '../../../midi/types'
 import { paramReceive, ParamReceiveFunc, paramSend, ParamSendFunc } from '../common/commonMidiApi'
-import { lfoCtrls } from './lfoControllers'
 
 let currentReceivedLfoId = -1
 let currentSentLfoId = -1
@@ -59,7 +58,7 @@ const curve = (() => {
 
     return {
         send: (input: NumericInputProperty) => lfoParamSend(input, curveOutputMapper),
-        receive: (set: (input: NumericInputProperty) => void) => lfoParamReceive(lfoCtrls.CURVE, set, curveInputMapper)
+        receive: (ctrl: ControllerConfig, set: (input: NumericInputProperty) => void) => lfoParamReceive(ctrl, set, curveInputMapper)
     }
 })()
 
@@ -80,7 +79,7 @@ const stageEnabled = (() => {
 
     return {
         send: (input: NumericInputProperty) => lfoParamSend(input, stageEnabledOutputMapper),
-        receive: (set: (input: NumericInputProperty) => void) => lfoParamReceive(lfoCtrls.TOGGLE_STAGE, set, stageEnabledInputMapper)
+        receive: (ctrl: ControllerConfig, set: (input: NumericInputProperty) => void) => lfoParamReceive(ctrl, set, stageEnabledInputMapper)
     }
 })()
 

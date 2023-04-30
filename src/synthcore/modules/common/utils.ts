@@ -130,14 +130,14 @@ export class ControllerHandler {
     }
 
     increment(input: NumericInputProperty) {
-        const { value: inc, ctrl } = input
-        if (ctrl.uiResponse && selectUiController) {
-            let currentValue = selectUiController(input.ctrl, input.ctrlIndex || 0)(store.getState())
-            let uiValue = getBoundedController(ctrl, currentValue + inc)
-            const updatedValue = ctrl.uiResponse.output(uiValue)
+        const { ctrlIndex, valueIndex, value: inc } = input
+        if (this.ctrl.uiResponse && selectUiController) {
+            let currentValue = selectUiController(this.ctrl, ctrlIndex, valueIndex)(store.getState())
+            let uiValue = getBoundedController(this.ctrl, currentValue + inc)
+            const updatedValue = this.ctrl.uiResponse.output(uiValue)
             this.set({ ...input, value: updatedValue }, false, uiValue)
         } else {
-            let currentValue = selectController(input.ctrl, input.ctrlIndex || 0)(store.getState())
+            let currentValue = selectController(this.ctrl, ctrlIndex, valueIndex)(store.getState())
             this.set({ ...input, value: currentValue + inc })
         }
     }

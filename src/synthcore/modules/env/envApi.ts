@@ -127,20 +127,7 @@ class StageTimeControllerHandler extends ControllerHandler {
     setWithUiUpdate(input: NumericInputProperty) {
         const updatedTime = input.ctrl.uiResponse?.input(input.value) || 0
         let uiValue = this.getBoundedController(updatedTime)
-        this.defaultSet(input, false, uiValue)
-    }
-
-    increment(input: NumericInputProperty) {
-        const { ctrlIndex: envId = 0, valueIndex: stageId = 0, value: inc } = input
-        if (this.ctrl.uiResponse) {
-            const currentTime = selectUiController(this.ctrl, envId, stageId)(store.getState())
-            const uiValue = this.getBoundedController(currentTime + inc)
-            const updatedTime = this.ctrl.uiResponse.output(uiValue)
-            this.defaultSet({ ...input, value: updatedTime }, false, uiValue)
-        } else {
-            const currentTime = selectController(this.ctrl, envId, stageId)(store.getState())
-            this.defaultSet({ ...input, value: currentTime + inc })
-        }
+        this.set(input, false, uiValue)
     }
 }
 
@@ -209,12 +196,6 @@ class StageCurveControllerHandler extends ControllerHandler {
         const boundedInput = { ...input, value: boundedCurve }
         dispatch(setController(boundedInput))
         envMidiApi.curve.send(boundedInput)
-    }
-
-    increment(input: NumericInputProperty) {
-        const { ctrlIndex: envId = 0, valueIndex: stageId = 0, value: inc } = input
-        const currentCurve = selectController(this.ctrl, envId, stageId)(store.getState())
-        this.set({ ...input, value: currentCurve + inc })
     }
 }
 
@@ -386,18 +367,6 @@ const handlers = groupHandlers({
         { send: envParamSend, receive: envParamReceive }),
 })
 
-const increment = (input: NumericInputProperty) => {
-    handlers.increment(input)
-}
-
-const toggle = (input: ButtonInputProperty) => {
-    handlers.toggle(input)
-}
-
-const set = (input: NumericInputProperty) => {
-    handlers.set(input)
-}
-
 const getForSave = (): PatchControllers => {
 
     let patchControllers = {}
@@ -409,10 +378,6 @@ const getForSave = (): PatchControllers => {
     }
     return patchControllers
 }
-const setFromLoad = (patchController: PatchControllers) => {
-    handlers.setFromLoad(patchController)
-    // TODO: Custom setters
-}
 
 const envApi = {
     // stage stuff
@@ -422,12 +387,12 @@ const envApi = {
     incrementCurrentEnvelope,
 
     release: handlers.release,
+    increment: handlers.increment,
+    toggle: handlers.toggle,
+    set: handlers.set,
 
-    increment,
-    toggle,
-    set,
-    setFromLoad,
     getForSave,
+    setFromLoad: handlers.setFromLoad,
 }
 
 export default envApi
