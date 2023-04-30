@@ -41,10 +41,16 @@ const savePatch = () => {
         }
     }, {})
     console.log('SAVE', patchControllers)
+    saved = patchControllers
+    return patchControllers
 }
 
+let saved: PatchControllers | undefined;
+
 const loadPatch = () => {
-    const patchControllers = {} // TODO: Load from file
+    if(!saved) return
+    const patchControllers = saved
+    //const patchControllers = {} // TODO: Load from file
     patchApis.forEach((source) => source.setFromLoad(patchControllers))
 }
 

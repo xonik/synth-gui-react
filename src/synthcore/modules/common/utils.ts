@@ -17,9 +17,8 @@ import { ApiSource } from '../../types'
 
 
 // Create a mapper that receives a controller and selects the correct set function.
-// Also sends midi. Midi functions may be overridden, useful for for example envs and lfos where
+// Also sends midi. Midi functions may be overridden, useful for envs and lfos where
 // we send the env id separately
-type MapperEntry = [ControllerConfig, (input: NumericInputProperty) => void]
 
 const getBoundedController = (ctrl: ControllerConfig, value: number) => {
     const lowerBound = ctrl.bipolar === true ? -1 : 0
@@ -27,14 +26,11 @@ const getBoundedController = (ctrl: ControllerConfig, value: number) => {
     return getQuantized(getBounded(value, lowerBound, upperBound))
 }
 
-// TODO: Make common class without default implementations of functions (or rather, null-versions)
 export class ControllerHandler {
 
     set: (input: NumericInputProperty, forceSet?: boolean, uiValue?: number) => void
 
     constructor(
-        // TODO: We should really try to make ctrl private and see if we could hide it from
-        // NumericInputProp.
         public ctrl: ControllerConfig,
         private midiFuncs?: { send?: ParamSendFunc, receive?: ParamReceiveFunc },
         setOverride?: (input: NumericInputProperty, forceSet?: boolean, uiValue?: number) => void,
@@ -81,13 +77,14 @@ export class ControllerHandler {
     }
 
     setFromLoad(value: number, ctrlIndex = 0, valueIndex = 0) {
+        const uiValue = this.ctrl.uiResponse?.input ? this.ctrl.uiResponse?.input(value) : undefined
         this.set({
             ctrl: this.ctrl,
             ctrlIndex,
             valueIndex,
             value,
             source: ApiSource.LOAD
-        })
+        }, false, uiValue)
     }
 
     get(ctrlIndex = 0) {
@@ -146,10 +143,14 @@ export class ControllerHandler {
     }
 
     setWithUiUpdate(input: NumericInputProperty) {
-        // TODO: hvorfor er det 0 her? burde det ikke vært input.vale?
-        const updatedValue = input.ctrl.uiResponse?.input(input.value) || 0
-        const uiValue = getBoundedController(input.ctrl, updatedValue)
-        this.set(input, false, uiValue)
+        if(input.ctrl.uiResponse){
+            const updatedValue = input.ctrl.uiResponse?.input(input.value) || 0
+            const uiValue = getBoundedController(input.ctrl, updatedValue)
+            this.set(input, false, uiValue)
+
+        } else {
+            this.set(input, false, input.value)
+        }
     }
 }
 
@@ -194,9 +195,10 @@ export const groupHandlers = (handlers: {[id: string]: ControllerHandler}) => {
         Object.entries(patchControllers).forEach(([ctrlId, ctrl]) => {
             const handler = handlers[ctrlId]
             if (handler) {
-                console.log(`Loading ${ctrl.label}`)
+                //console.log(`Loading ${ctrl.label}`)
                 Object.entries(ctrl.instances).forEach(([ctrlIndex, valueIndexValues]) => {
                     Object.entries(valueIndexValues).forEach(([valueIndex, value]) => {
+                  //      console.log(`Setting ctrlIndex ${ctrlIndex}, valueIndex ${valueIndex} to ${value}`)
                         handler.setFromLoad(value, Number.parseInt(ctrlIndex), Number.parseInt(valueIndex))
                     })
                 })
@@ -232,6 +234,7 @@ export const createGroupedHandlers = (
     return groupHandlers(createDefaultHandlers(controllers, midiFuncs))
 }
 
+type MapperEntry = [ControllerConfig, (input: NumericInputProperty) => void]
 export const createIncrementMapper = (map: MapperEntry[]) => (input: NumericInputProperty) => {
     // search for a ctrl and call the corresponding function
     map.find((entry) => {

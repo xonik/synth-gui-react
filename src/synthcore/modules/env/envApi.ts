@@ -37,7 +37,7 @@ class StageLevelControllerHandler extends ControllerHandler {
             : getQuantized(getBounded(value), 32767)
     }
 
-    customSet(input: NumericInputProperty, uiValue?: number) {
+    defaultSet(input: NumericInputProperty, forceSet?: boolean, uiValue?: number) {
         const { ctrlIndex: envId = 0, value, valueIndex: stageId = 0 } = input
 
         const r1enabled = selectController(
@@ -82,10 +82,10 @@ class StageLevelControllerHandler extends ControllerHandler {
 
             const bipolar = selectController(envCtrls.BIPOLAR, envId)(store.getState()) === 1
             const updatedValue = this.ctrl.uiResponse.output(uiValue, bipolar)
-            this.customSet({ ...input, value: updatedValue }, uiValue)
+            this.defaultSet({ ...input, value: updatedValue }, false, uiValue)
         } else {
             const currentValue = selectController(this.ctrl, envId, stageId)(store.getState())
-            this.customSet({ ...input, value: currentValue + inc })
+            this.defaultSet({ ...input, value: currentValue + inc })
         }
     }
 
@@ -94,7 +94,7 @@ class StageLevelControllerHandler extends ControllerHandler {
         const bipolar = selectController(envCtrls.BIPOLAR, envId)(store.getState()) === 1
         const updatedLevel = this.ctrl.uiResponse?.input(input.value, bipolar) || 0
         const uiValue = getQuantized(getBounded(updatedLevel))
-        this.customSet(input, uiValue)
+        this.defaultSet(input, false, uiValue)
     }
 }
 
@@ -109,8 +109,7 @@ class StageTimeControllerHandler extends ControllerHandler {
         return getQuantized(getBounded(value))
     }
 
-    // TODO: Figure out why we need uiValue and if we can stop using it.
-    customSet(input: NumericInputProperty, uiValue?: number) {
+    defaultSet(input: NumericInputProperty, forceSet?: boolean, uiValue?: number) {
         const { ctrlIndex: envId = 0, value, valueIndex: stageId = 0 } = input
 
         let boundedValue = this.getBoundedController(value)
@@ -122,14 +121,13 @@ class StageTimeControllerHandler extends ControllerHandler {
 
         const boundedInput = { ...input, value: boundedValue, uiValue }
         dispatch(setController(boundedInput))
-
         envParamSend(boundedInput)
     }
 
     setWithUiUpdate(input: NumericInputProperty) {
         const updatedTime = input.ctrl.uiResponse?.input(input.value) || 0
         let uiValue = this.getBoundedController(updatedTime)
-        this.customSet(input, uiValue)
+        this.defaultSet(input, false, uiValue)
     }
 
     increment(input: NumericInputProperty) {
@@ -138,10 +136,10 @@ class StageTimeControllerHandler extends ControllerHandler {
             const currentTime = selectUiController(this.ctrl, envId, stageId)(store.getState())
             const uiValue = this.getBoundedController(currentTime + inc)
             const updatedTime = this.ctrl.uiResponse.output(uiValue)
-            this.customSet({ ...input, value: updatedTime }, uiValue)
+            this.defaultSet({ ...input, value: updatedTime }, false, uiValue)
         } else {
             const currentTime = selectController(this.ctrl, envId, stageId)(store.getState())
-            this.customSet({ ...input, value: currentTime + inc })
+            this.defaultSet({ ...input, value: currentTime + inc })
         }
     }
 }

@@ -281,7 +281,7 @@ export enum ControllerIdNonMod {
     SVF_SLOPE,
     SVF_FM_MODE,
 
-    // TODO: Why are these here?
+    // TODO: Why are these here? -- they set level and time for an arbitrary stage.
     ENV_LEVEL,
     ENV_TIME,
 

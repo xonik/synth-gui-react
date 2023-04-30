@@ -22,7 +22,7 @@ type ControllersState = {
     // potmeter differs from the value in controllers. This is used for level/time on envelopes for example,
     // to give better sensitivity in lower parts of the scale.
 
-    // Controllers are structured as a three dimensional array:
+    // Controllers are structured as a three-dimensional array:
     // - First index is the ctrlIndex, e.g. envId
     // - Second is the ctrlId, e.g. level
     // - Third is the valueIndex, if there are multiple instances of a value for a ctrlIndex, e.g. attack
