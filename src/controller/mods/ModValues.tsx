@@ -25,6 +25,7 @@ const ModValues = () => {
         <div className="mod-values__item">{modDst.funcProps[dstGroupId][dstFuncId].label}</div>
         <div className="mod-values__item">{modDst.dsts[dstGroupId][dstFuncId][dstParamId].label}</div>
         <div className="mod-values__item">{Math.round(100 * dstValue)}%</div>
+        <div className="mod-values__item"></div>
     </div>
 }
 

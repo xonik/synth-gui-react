@@ -22,8 +22,6 @@ const SourceLabel = ({ sourceIndex, source }: LabelProps) => {
 }
 
 const SourceLabels = ({ onMouseDown, onMouseMove }: DraggableElementProps) => {
-
-
     return (
         <div className="mod-ctrl__sources"
              onMouseDown={onMouseDown}
