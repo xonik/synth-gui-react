@@ -8,9 +8,12 @@ import {
     lfoApi,
     noiseApi,
     oscApi,
-    outApi, postMixApi, ringModApi, srcMixApi
+    postMixApi,
+    ringModApi,
+    srcMixApi
 } from '../../synthcoreApi'
 import { PatchControllers } from '../common/types'
+import modsApi from '../mods/modsApi'
 
 
 const patchApis = [
@@ -23,13 +26,17 @@ const patchApis = [
     lfoApi, // TODO for custom handlers and multiple ctrlIndex
     noiseApi,
     oscApi,
-    outApi,
     postMixApi,
     ringModApi,
     srcMixApi,
 ]
 
-const savePatch = () => {
+type Patch = {
+    controllers: PatchControllers,
+    mods: number [][][],
+}
+
+const savePatch = (): Patch => {
     const patchControllers = patchApis.reduce((
         mergedControllers: PatchControllers,
         api
@@ -40,18 +47,27 @@ const savePatch = () => {
             ...patchControllers
         }
     }, {})
-    console.log('SAVE', patchControllers)
-    saved = patchControllers
-    return patchControllers
+
+    const mods = modsApi.getForSave()
+    savedPatch = {
+        controllers: patchControllers,
+        mods,
+    }
+    console.log('SAVE', savedPatch)
+    return savedPatch
 }
 
-let saved: PatchControllers | undefined;
+let savedPatch: {
+    controllers: PatchControllers,
+    mods: number[][][]
+} | undefined
 
 const loadPatch = () => {
-    if(!saved) return
-    const patchControllers = saved
+    if (!savedPatch) return
     //const patchControllers = {} // TODO: Load from file
-    patchApis.forEach((source) => source.setFromLoad(patchControllers))
+    const patchControllers = savedPatch
+    patchApis.forEach((source) => source.setFromLoad(patchControllers.controllers))
+    modsApi.setFromLoad(savedPatch.mods)
 }
 
 const patchStorageApi = {

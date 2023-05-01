@@ -8,6 +8,7 @@ import {
     setGuiDstFunc as setGuiDstFuncAction,
     setGuiDstParam as setGuiDstParamAction,
     setModValue as setModValueAction,
+    setModValues as setModValuesAction,
 
     setUiAmount,
     setUiRouteButton,
@@ -18,6 +19,7 @@ import {
     selectGuiDstParam,
     selectModValue,
     selectModsUi,
+    selectModValues,
 } from './modsReducer'
 import { digitalModSources, modDst } from './utils'
 import modsControllers from './modsControllers'
@@ -201,6 +203,30 @@ const toggle = (input: ButtonInputProperty) => {
     customhandlers[input.ctrl.id]?.toggle(input)
 }
 
+// float 0 is hard.
+const epsilon: number = 0.001;
+export const isZero = (A: number) => {
+    return (Math.abs(A) < epsilon);
+}
+
+const getForSave = () => {
+    const mods = selectModValues()(store.getState())
+
+    // remove empty entries to make patch smaller.
+    return mods.map((destinations) => {
+        return destinations.map((dstIndexes) => {
+            return dstIndexes.filter((dstIndexAmount) => !isZero(dstIndexAmount))
+        }).filter((destinations) => destinations.length > 0)
+    }).filter((destinations) => destinations.length > 0)
+}
+
+const setFromLoad = (modValues: number[][][]) => {
+    dispatch(setModValuesAction({
+        modValues,
+        source: ApiSource.LOAD
+    }))
+}
+
 const modsApi = {
     setGuiMod,
     setGuiSource,
@@ -219,6 +245,8 @@ const modsApi = {
 
     increment,
     toggle,
+    getForSave,
+    setFromLoad,
 }
 
 export default modsApi

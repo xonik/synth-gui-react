@@ -72,6 +72,11 @@ type ModValuePayload = {
 
 }
 
+type ModValuesPayload = {
+    modValues: number[][][];
+    source: ApiSource
+}
+
 export const modsSlice = createSlice({
     name: 'mods',
     initialState,
@@ -107,7 +112,9 @@ export const modsSlice = createSlice({
             }
             state.modValues[sourceId][dstId][dstCtrlIndex] = modValue
         },
-
+        setModValues: (state, { payload }: PayloadAction<ModValuesPayload>) => {
+            state.modValues = payload.modValues
+        },
         setUiRouteButton: (state, { payload }: PayloadAction<NumericPayload>) => {
             state.ui.routeButton = payload.value;
         },
@@ -128,6 +135,7 @@ export const {
     setGuiDstParam,
     setGuiMod,
     setModValue,
+    setModValues,
     setLastModSelectSource,
 
     setUiAmount,
@@ -142,6 +150,9 @@ export const selectGuiDstParam = (state: RootState) => state.mods.gui.dstParam
 export const selectGuiLastModSelectSource = (state: RootState) => state.mods.gui.lastModSelectSource
 export const selectModValue = (sourceId: number, dstId: number, dstCtrlIndex: number) => (state: RootState) => {
     return state.mods.modValues?.[sourceId]?.[dstId]?.[dstCtrlIndex] || 0
+}
+export const selectModValues = () => (state: RootState) => {
+    return state.mods.modValues
 }
 
 export default modsSlice.reducer
