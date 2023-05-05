@@ -88,9 +88,9 @@ export declare const Groupers: {
 
 // #region sorters
 export type Sorter = (
-  files: FileBrowserTree[],
+  files: FileBrowserTree,
   root: string
-) => FileBrowserTree[]
+) => FileBrowserTree
 
 export declare const Sorters: {
   SortByName: Sorter
@@ -143,6 +143,7 @@ type RenameFolderHandler = (oldFolderKey: string, newFolderKey: string) => void
 type DeleteFileHandler = (fileKey: string) => void
 type DeleteFolderHandler = (folderKey: string) => void
 type DownloadFileHandler = (keys: string[]) => void
+type DownloadFolderHandler = (keys: string[]) => void
 // #endregion handlers
 
 // #region renderers
@@ -155,6 +156,10 @@ export type HeaderRendererProps<P = {}> = {
   browserProps: RendererBrowserProps
   connectDropTarget: () => void
 } & P
+
+export type HeaderRenderer<P = {}> = (
+    props: HeaderRendererProps<P>
+) => JSX.Element
 
 // Filter
 export type FilterRendererProps<P = {}> = {
@@ -229,6 +234,12 @@ export interface ActionRendererProps {
   onDownloadFolder: (event: React.FormEvent) => void
 }
 
+export type ActionRenderer = (
+    props: ActionRendererProps
+) => JSX.Element
+
+
+
 // Confirm Deletion
 
 export interface ConfirmDeletionRendererProps {
@@ -271,9 +282,9 @@ export interface RendererBrowserProps {
   // browser config
   nestChildren: boolean
   fileRenderer: FileRenderer
-  fileRendererProps: FileRendererProps
+  fileRendererProps?: FileRendererProps
   folderRenderer: FolderRenderer
-  folderRendererProps: FolderRendererProps
+  folderRendererProps?: FolderRendererProps
   confirmDeletionRenderer: ConfirmDeletionRenderer
   confirmMultipleDeletionRenderer: ConfirmMultipleDeletionRenderer
   icons: IconsProp
@@ -288,13 +299,13 @@ export interface RendererBrowserProps {
   // browser manipulation
   select: (
     key: string,
-    selectedType?: string,
+    selectedType?: 'file' | 'folder',
     ctrlKey?: boolean,
     shiftKey?: boolean
   ) => void
   openFolder: (folderKey: string) => void
   toggleFolder: (folderKey: string) => void
-  beginAction: ActionType | null
+  beginAction: (action: ActionType | null, keys: string[] | null) => void
   endAction: () => void
   preview: (file: FileBrowserFile) => void
 
@@ -319,33 +330,34 @@ export interface RendererBrowserProps {
 export interface FileBrowserProps {
   files: FileBrowserFile[]
   actions?: JSX.Element
-  showActionBar?: boolean
-  canFilter?: boolean
-  noFilesMessage?: string | JSX.Element
+  showActionBar: boolean
+  canFilter: boolean
+  showFoldersOnFilter?: boolean,
+  noFilesMessage: string | JSX.Element
 
-  group?: () => void
-  sort?: () => void
+  group?: Grouper
+  sort?: Sorter
 
-  icons?: IconsProp
+  icons: IconsProp
 
-  nestChildren?: boolean
-  renderStyle?: 'list' | 'table'
+  nestChildren: boolean
+  renderStyle: 'list' | 'table'
 
-  startOpen?: boolean
+  startOpen: boolean
 
-  headerRenderer?: HeaderRenderer
-  headerRendererProps?: HeaderRendererProps
-  filterRenderer?: FilterRenderer
+  headerRenderer: HeaderRenderer
+  headerRendererProps: HeaderRendererProps
+  filterRenderer: FilterRenderer
   filterRendererProps?: FilterRendererProps
-  fileRenderer?: FileRenderer
+  fileRenderer: FileRenderer
   fileRendererProps?: FileRendererProps
-  folderRenderer?: FolderRenderer
+  folderRenderer: FolderRenderer
   folderRendererProps?: FolderRendererProps
-  detailRenderer?: DetailRenderer
+  detailRenderer: DetailRenderer
   detailRendererProps?: DetailRendererProps
-  actionRenderer?: ActionRenderer
-  confirmDeletionRenderer?: ConfirmDeletionRenderer
-  confirmMultipleDeletionRenderer?: ConfirmMultipleDeletionRenderer
+  actionRenderer: ActionRenderer
+  confirmDeletionRenderer: ConfirmDeletionRenderer
+  confirmMultipleDeletionRenderer: ConfirmMultipleDeletionRenderer
 
   onCreateFiles?: CreateFilesHandler
   onCreateFolder?: CreateFolderHandler
@@ -356,14 +368,15 @@ export interface FileBrowserProps {
   onDeleteFile?: DeleteFileHandler
   onDeleteFolder?: DeleteFolderHandler
   onDownloadFile?: DownloadFileHandler
+  onDownloadFolder?: DownloadFolderHandler,
 
   onSelect: (fileOrFolder: FileBrowserFile | FileBrowserFolder) => void
   onSelectFile: (file: FileBrowserFile) => void
   onSelectFolder: (folder: FileBrowserFolder) => void
 
-  onPreviewOpen?: (file: FileBrowserFile) => void
-  onPreviewClose?: (file: FileBrowserFile) => void
+  onPreviewOpen: (file: FileBrowserFile) => void
+  onPreviewClose: (file: FileBrowserFile) => void
 
-  onFolderOpen?: (folder: FileBrowserFolder) => void
-  onFolderClose?: (folder: FileBrowserFolder) => void
+  onFolderOpen: (folder: FileBrowserFolder) => void
+  onFolderClose: (folder: FileBrowserFolder) => void
 }

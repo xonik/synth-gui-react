@@ -1,36 +1,10 @@
 // @ts-nocheck
-import PropTypes from 'prop-types'
 import React from 'react'
 import { move } from './utils'
 import { EXTENSION } from './constants'
+import { FileProps } from './types'
 
-class BaseFile extends React.Component {
-  static propTypes = {
-    fileKey: PropTypes.string,
-    url: PropTypes.string,
-
-    newKey: PropTypes.string,
-    isRenaming: PropTypes.bool,
-
-    connectDragSource: PropTypes.func,
-    connectDropTarget: PropTypes.func,
-    isDragging: PropTypes.bool,
-    action: PropTypes.string,
-
-    browserProps: PropTypes.shape({
-      icons: PropTypes.object,
-      select: PropTypes.func,
-      beginAction: PropTypes.func,
-      endAction: PropTypes.func,
-      preview: PropTypes.func,
-
-      createFiles: PropTypes.func,
-      moveFile: PropTypes.func,
-      moveFolder: PropTypes.func,
-      renameFile: PropTypes.func,
-      deleteFile: PropTypes.func,
-    }),
-  }
+class BaseFile extends React.Component<FileProps> {
 
   state = {
     newName: this.getName(),

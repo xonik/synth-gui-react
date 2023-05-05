@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React, { Component, ReactNode } from 'react'
 // drag and drop
 import { DndProvider } from 'react-dnd'
@@ -21,45 +20,41 @@ import { sortByName } from './sorters'
 import { isFolder } from './utils'
 import { DefaultAction } from './actions'
 import {
-  ActionRendererProps,
-  DetailRendererProps,
   FileBrowserTree,
-  FileRendererProps,
-  FilterRendererProps,
-  FolderRendererProps,
   FileBrowserFile,
   FileBrowserTreeNode,
   isFolderType,
   HeaderRendererProps,
-  ConfirmMultipleDeletionRendererProps,
   RendererBrowserProps,
   FileBrowserFolder,
-  FileBrowserTreeFileNode,
-  IconsProp,
-  ConfirmDeletionRenderer
+  FileRenderer,
+  FolderRenderer,
+  ConfirmMultipleDeletionRenderer,
+  FilterRenderer,
+  FileBrowserProps, ActionType, ItemProps,
 } from './types'
 
 const SEARCH_RESULTS_PER_PAGE = 20
 const regexForNewFolderOrFileSelection = /.*\/__new__[/]?$/gm
 
-function getItemProps(file: FileBrowserTreeNode, browserProps: RendererBrowserProps) {
+function getItemProps(file: FileBrowserFile, browserProps: RendererBrowserProps): ItemProps {
   return {
     key: `file-${file.key}`,
     fileKey: file.key,
     isSelected: (browserProps.selection.includes(file.key)),
-    isOpen: file.key in browserProps.openFolders || browserProps.nameFilter,
+    isOpen: file.key in browserProps.openFolders || browserProps.nameFilter !== undefined,
     isRenaming: browserProps.activeAction === 'rename' && browserProps.actionTargets.includes(file.key),
     isDeleting: browserProps.activeAction === 'delete' && browserProps.actionTargets.includes(file.key),
     isDraft: !!file.draft,
   }
 }
 
-type RawFileBrowserProps = {
+/*type RawFileBrowserProps = {
   files: FileBrowserFile[],
   actions?: JSX.Element
   showActionBar: boolean,
   canFilter: boolean,
-  showFoldersOnFilter?: boolean,
+  showFoldersOnFilter: boolean,
   noFilesMessage?: string,
 
   group: (files: FileBrowserTree, root: string) => FileBrowserTree,
@@ -74,17 +69,17 @@ type RawFileBrowserProps = {
 
   headerRenderer: React.FC<HeaderRendererProps>,
   headerRendererProps?: HeaderRendererProps,
-  filterRenderer: React.FC<FilterRendererProps>,
+  filterRenderer: FilterRenderer,
   filterRendererProps?: FilterRendererProps,
-  fileRenderer: React.FC<FileRendererProps>,
+  fileRenderer: FileRenderer,
   fileRendererProps?: FileRendererProps,
-  folderRenderer: React.FC<FolderRendererProps>,
+  folderRenderer: FolderRenderer,
   folderRendererProps?: FolderRendererProps,
-  detailRenderer: React.FC<DetailRendererProps>,
+  detailRenderer: DetailRenderer,
   detailRendererProps?: DetailRendererProps,
   actionRenderer: React.FC<ActionRendererProps>,
-  confirmDeletionRenderer?: React.FC<ConfirmDeletionRenderer>,
-  confirmMultipleDeletionRenderer: React.FC<ConfirmMultipleDeletionRendererProps>,
+  confirmDeletionRenderer?: ConfirmDeletionRenderer,
+  confirmMultipleDeletionRenderer: ConfirmMultipleDeletionRenderer,
 
   onCreateFiles?: (files: FileBrowserTreeFileNode[], prefix: string) => void | boolean,
   onCreateFolder?: (key: string) => void | boolean,
@@ -106,14 +101,14 @@ type RawFileBrowserProps = {
 
   onFolderOpen?: (folder: FileBrowserFolder) => void
   onFolderClose?: (folder: FileBrowserFolder) => void
-}
+}*/
 
 type Action = 'rename' | 'delete' | 'createFolder'
 
 type RawFileBrowserState = {
   openFolders: {[key: string]: boolean},
   selection: string[],
-  activeAction: Action | null,
+  activeAction: ActionType | null,
   actionTargets: string[],
   nameFilter: string,
   searchResultsShown: number,
@@ -121,7 +116,24 @@ type RawFileBrowserState = {
   addFolder: null,
 }
 
-class RawFileBrowser extends Component<RawFileBrowserProps, RawFileBrowserState> {
+class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
+
+  constructor(props: FileBrowserProps) {
+    super(props)
+    this.state = {
+      openFolders: {},
+      selection: [],
+      activeAction: null,
+      actionTargets: [],
+
+      nameFilter: '',
+      searchResultsShown: SEARCH_RESULTS_PER_PAGE,
+
+      previewFile: null,
+
+      addFolder: null,
+    }
+  }
 
   public static defaultProps = {
     showActionBar: true,
@@ -140,13 +152,9 @@ class RawFileBrowser extends Component<RawFileBrowserProps, RawFileBrowserState>
     headerRenderer: TableHeader,
     headerRendererProps: {},
     filterRenderer: DefaultFilter,
-    filterRendererProps: {},
     fileRenderer: TableFile,
-    fileRendererProps: {},
     folderRenderer: TableFolder,
-    folderRendererProps: {},
     detailRenderer: DefaultDetails,
-    detailRendererProps: {},
     actionRenderer: DefaultAction,
     confirmDeletionRenderer: SingleConfirmation,
     confirmMultipleDeletionRenderer: MultipleConfirmation,
@@ -172,19 +180,7 @@ class RawFileBrowser extends Component<RawFileBrowserProps, RawFileBrowserState>
     onFolderClose: (folder: FileBrowserFolder) => {},
   }
 
-  state = {
-    openFolders: {},
-    selection: [],
-    activeAction: null,
-    actionTargets: [],
-
-    nameFilter: '',
-    searchResultsShown: SEARCH_RESULTS_PER_PAGE,
-
-    previewFile: null,
-
-    addFolder: null,
-  }
+  private browserRef: HTMLDivElement | null | undefined
 
   componentDidMount() {
     if (this.props.renderStyle === 'table' && this.props.nestChildren) {
@@ -230,7 +226,7 @@ class RawFileBrowser extends Component<RawFileBrowserProps, RawFileBrowserState>
       }
       return stateChanges
     }, () => {
-      this.props.onCreateFiles(files, prefix)
+      this.props.onCreateFiles?.(files, prefix)
     })
   }
 
@@ -336,12 +332,12 @@ class RawFileBrowser extends Component<RawFileBrowserProps, RawFileBrowserState>
     })
   }
 
-  downloadFile = (key: string) => {
+  downloadFile = (keys: string[]) => {
     this.setState({
       activeAction: null,
       actionTargets: [],
     }, () => {
-      this.props.onDownloadFile?.(key)
+      this.props.onDownloadFile?.(keys)
     })
   }
 
@@ -355,7 +351,7 @@ class RawFileBrowser extends Component<RawFileBrowserProps, RawFileBrowserState>
   }
 
   // browser manipulation
-  beginAction = (action: Action | null, keys: string[] | null) => {
+  beginAction = (action: ActionType | null, keys: string[] | null) => {
     this.setState({
       activeAction: action,
       actionTargets: keys || [],
@@ -372,7 +368,7 @@ class RawFileBrowser extends Component<RawFileBrowserProps, RawFileBrowserState>
   }
 
   // Looks like this allows selection of multiple elements?
-  select = (key: string, selectedType: 'file' | 'folder', ctrlKey, shiftKey) => {
+  select = (key: string, selectedType?: 'file' | 'folder', ctrlKey?: boolean, shiftKey?: boolean) => {
     const { actionTargets } = this.state
     const shouldClearState = actionTargets.length && !actionTargets.includes(key)
     const selected = this.getFile(key)
@@ -412,11 +408,13 @@ class RawFileBrowser extends Component<RawFileBrowserProps, RawFileBrowserState>
     })
   }
 
+  // TODO: Rewritten
   closeDetail = () => {
+    if(this.state.previewFile){
+      this.props.onPreviewClose?.(this.state.previewFile)
+    }
     this.setState({
       previewFile: null,
-    }, () => {
-      this.props.onPreviewClose?.(this.state.previewFile)
     })
   }
 
@@ -463,8 +461,8 @@ class RawFileBrowser extends Component<RawFileBrowserProps, RawFileBrowserState>
   }
 
   // event handlers
-  handleGlobalClick = (event: React.FormEvent) => {
-    const inBrowser = !!(this.browserRef && this.browserRef.contains(event.target))
+  handleGlobalClick = (event: MouseEvent) => {
+    const inBrowser = !!(this.browserRef && this.browserRef.contains(event.target as Node))
 
     if (!inBrowser) {
       this.setState({
@@ -497,7 +495,7 @@ class RawFileBrowser extends Component<RawFileBrowserProps, RawFileBrowserState>
       }
 
       if (addKey !== '__new__/' && !addKey.endsWith('/__new__/')) addKey += '__new__/'
-      const stateChanges = {
+      const stateChanges: RawFileBrowserState = {
         ...prevState,
         actionTargets: [addKey],
         activeAction: 'createFolder',
@@ -534,7 +532,7 @@ class RawFileBrowser extends Component<RawFileBrowserProps, RawFileBrowserState>
     })
   }
 
-  getBrowserProps(): RawFileBrowserProps {
+  getBrowserProps(): RendererBrowserProps {
     return {
       // browser config
       nestChildren: this.props.nestChildren,
@@ -575,7 +573,7 @@ class RawFileBrowser extends Component<RawFileBrowserProps, RawFileBrowserState>
     }
   }
 
-  renderActionBar(selectedItems) {
+  renderActionBar(selectedItems: FileBrowserTree) {
     const {
       icons,
       canFilter,
@@ -613,25 +611,25 @@ class RawFileBrowser extends Component<RawFileBrowserProps, RawFileBrowserState>
         icons={icons}
         nameFilter={this.state.nameFilter}
 
-        canCreateFolder={typeof onCreateFolder === 'function'}
+        canCreateFolder={onCreateFolder !== undefined}
         onCreateFolder={this.handleActionBarAddFolderClick}
 
-        canRenameFile={typeof onRenameFile === 'function'}
+        canRenameFile={onRenameFile !== undefined}
         onRenameFile={this.handleActionBarRenameClick}
 
-        canRenameFolder={typeof onRenameFolder === 'function'}
+        canRenameFolder={onRenameFolder !== undefined}
         onRenameFolder={this.handleActionBarRenameClick}
 
-        canDeleteFile={typeof onDeleteFile === 'function'}
+        canDeleteFile={onDeleteFile !== undefined}
         onDeleteFile={this.handleActionBarDeleteClick}
 
-        canDeleteFolder={typeof onDeleteFolder === 'function'}
+        canDeleteFolder={onDeleteFolder !== undefined}
         onDeleteFolder={this.handleActionBarDeleteClick}
 
-        canDownloadFile={typeof onDownloadFile === 'function'}
+        canDownloadFile={onDownloadFile !== undefined}
         onDownloadFile={this.handleActionBarDownloadClick}
 
-        canDownloadFolder={typeof onDownloadFolder === 'function'}
+        canDownloadFolder={onDownloadFolder !== undefined}
         onDownloadFolder={this.handleActionBarDownloadClick}
       />
     )
@@ -654,13 +652,13 @@ class RawFileBrowser extends Component<RawFileBrowserProps, RawFileBrowserState>
     const browserProps = this.getBrowserProps()
     let renderedFiles: ReactNode[] = []
 
-    files.map((file) => {
+    files.forEach((file) => {
       const thisItemProps = {
         ...browserProps.getItemProps(file, browserProps),
         depth: this.state.nameFilter ? 0 : depth,
       }
 
-      if (!isFolder(file)) {
+      if (!isFolderType(file)) {
         renderedFiles.push(
           <FileRenderer
             {...file}
@@ -690,8 +688,12 @@ class RawFileBrowser extends Component<RawFileBrowserProps, RawFileBrowserState>
 
   handleMultipleDeleteSubmit = () => {
     console.log(this)
-    this.deleteFolder(this.state.selection.filter(selection => selection[selection.length - 1] === '/'))
-    this.deleteFile(this.state.selection.filter(selection => selection[selection.length - 1] !== '/'))
+    this.state.selection.filter(selection => selection[selection.length - 1] !== '/').forEach(
+        (fileKey) => this.deleteFile(fileKey)
+    )
+    this.state.selection.filter(selection => selection[selection.length - 1] === '/').forEach(
+        (folderKey) => this.deleteFolder(folderKey)
+    )
   }
 
   getFiles() {
@@ -720,19 +722,19 @@ class RawFileBrowser extends Component<RawFileBrowserProps, RawFileBrowserState>
       })
       files = filteredFiles
     }
-    if (typeof this.props.group === 'function') {
+    if (this.props.group) {
       files = this.props.group(files, '')
     } else {
       const newFiles: FileBrowserTree = []
       files.map((file) => {
-        if (!isFolder(file)) {
+        if (!isFolderType(file)) {
           newFiles.push(file)
         }
       })
       files = newFiles
     }
-    if (typeof this.props.sort === 'function') {
-      files = this.props.sort(files)
+    if (this.props.sort) {
+      files = this.props.sort(files, '')
     }
     return files
   }
@@ -753,7 +755,7 @@ class RawFileBrowser extends Component<RawFileBrowserProps, RawFileBrowserState>
 
   render() {
     const browserProps = this.getBrowserProps()
-    const headerProps: HeaderRendererProps = {
+    const headerProps: Partial<HeaderRendererProps> = {
       browserProps,
       fileKey: '',
       fileCount: this.props.files.length,
@@ -807,6 +809,7 @@ class RawFileBrowser extends Component<RawFileBrowserProps, RawFileBrowserState>
           }
         }
 
+        // TODO: Denne er aldri false!
         if (this.props.headerRenderer) {
           header = (
             <thead>
@@ -859,6 +862,7 @@ class RawFileBrowser extends Component<RawFileBrowserProps, RawFileBrowserState>
           ]
         }
 
+        // TODO: Denne er aldri false!
         if (this.props.headerRenderer) {
           header = (
             <this.props.headerRenderer
@@ -904,7 +908,7 @@ class RawFileBrowser extends Component<RawFileBrowserProps, RawFileBrowserState>
   }
 }
 
-class FileBrowser extends Component {
+class FileBrowser extends Component<FileBrowserProps> {
   render() {
     return (
       <DndProvider backend={HTML5Backend}>

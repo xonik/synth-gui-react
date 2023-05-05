@@ -1,7 +1,7 @@
 import { compareAsc } from 'date-fns'
 import { FileBrowserFile, FileBrowserTree, FileBrowserTreeGroupNode, isFolderType } from '../types'
 
-function sortByLastModified(payload: FileBrowserTree) {
+function sortByLastModified(payload: FileBrowserTree): FileBrowserTree {
   const folders: FileBrowserTreeGroupNode[] = [] as any
   let files: FileBrowserFile[] = []
   for (let fileIndex = 0; fileIndex < payload.length; fileIndex++) {
