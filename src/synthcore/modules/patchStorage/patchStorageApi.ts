@@ -62,7 +62,16 @@ let savedPatch: {
     mods: number[][][]
 } | undefined
 
-const loadPatch = () => {
+const loadPatch = async () => {
+    const res = await fetch('/lusers')
+    console.log("RES", res)
+    try{
+        const users = await res.text();
+        console.log("USERS", users)
+    } catch (err) {
+        console.log(err)
+    }
+
     if (!savedPatch) return
     //const patchControllers = {} // TODO: Load from file
     const patchControllers = savedPatch

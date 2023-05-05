@@ -36,3 +36,6 @@ midiVerdi og uiVerdi settes så i store.
 Potmeterne henter verdien sin gjennom selectUiController.
 Denne sjekker om ctrl har uiResponse, hvis den har det så returneres uiVerdi,
 hvis ikke returneres midiVerdi.
+
+### Backend:
+https://medium.com/@dceddia/create-react-app-with-an-express-backend-9fbf7a2e0b59
