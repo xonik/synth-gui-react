@@ -17,7 +17,6 @@ import { SingleConfirmation, MultipleConfirmation } from './confirmations'
 import { groupByFolder } from './groupers'
 import { sortByName } from './sorters'
 
-import { isFolder } from './utils'
 import { DefaultAction } from './actions'
 import {
   FileBrowserTree,
@@ -42,6 +41,7 @@ function getItemProps(file: FileBrowserFile, browserProps: RendererBrowserProps)
     key: `file-${file.key}`,
     fileKey: file.key,
     isSelected: (browserProps.selection.includes(file.key)),
+    isOver: false, // TODO: FIX THIS!
     isOpen: file.key in browserProps.openFolders || browserProps.nameFilter !== undefined,
     isRenaming: browserProps.activeAction === 'rename' && browserProps.actionTargets.includes(file.key),
     isDeleting: browserProps.activeAction === 'delete' && browserProps.actionTargets.includes(file.key),
@@ -461,7 +461,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
   }
 
   // event handlers
-  handleGlobalClick = (event: MouseEvent) => {
+  handleGlobalClick = (event: React.MouseEvent) => {
     const inBrowser = !!(this.browserRef && this.browserRef.contains(event.target as Node))
 
     if (!inBrowser) {
@@ -516,7 +516,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
     const files = this.getFiles()
     const selectedItems = this.getSelectedItems(files)
 
-    const selectionIsFolder = (selectedItems.length === 1 && isFolder(selectedItems[0]))
+    const selectionIsFolder = (selectedItems.length === 1 && isFolderType(selectedItems[0]))
     if (selectionIsFolder) {
       this.downloadFolder(this.state.selection)
       return
@@ -589,7 +589,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
       onDownloadFolder,
     } = this.props
     const browserProps = this.getBrowserProps()
-    const selectionIsFolder = (selectedItems.length === 1 && isFolder(selectedItems[0]))
+    const selectionIsFolder = (selectedItems.length === 1 && isFolderType(selectedItems[0]))
     let filter
     if (canFilter && FilterRenderer) {
       filter = (

@@ -16,7 +16,7 @@ function sortByLastModified(payload: FileBrowserTree): FileBrowserTree {
     }
   }
 
-  files = files.sort((a, b) => compareAsc(a.modified, b.modified))
+  files = files.sort((a, b) => compareAsc(a.modified || 0, b.modified || 0))
 
   for (let folderIndex = 0; folderIndex < folders.length; folderIndex++) {
     const folder = folders[folderIndex]

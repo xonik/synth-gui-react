@@ -5,10 +5,11 @@ import { NativeTypes } from 'react-dnd-html5-backend'
 import { formatDistanceToNow } from 'date-fns'
 import flow from 'lodash/flow'
 
-import BaseFile, { BaseFileConnectors } from './../base-file.js'
-import { fileSize } from './utils.js'
+import BaseFile, { BaseFileConnectors } from './../base-file'
+import { fileSize } from './utils'
+import { FileRendererProps } from '../types'
 
-class RawTableFile extends BaseFile {
+class RawTableFile extends BaseFile<FileRendererProps> {
   render() {
     const {
       isDragging, isDeleting, isRenaming, isOver, isSelected,
@@ -65,7 +66,7 @@ class RawTableFile extends BaseFile {
         {name}
       </div>
     )
-    if (typeof browserProps.moveFile === 'function') {
+    if (typeof browserProps.moveFile === 'function' && connectDragPreview) {
       draggable = connectDragPreview(draggable)
     }
 
@@ -85,7 +86,7 @@ class RawTableFile extends BaseFile {
             {draggable}
           </div>
         </td>
-        <td className="size">{fileSize(size)}</td>
+        <td className="size">{fileSize(size || 0)}</td>
         <td className="modified">
           {typeof modified === 'undefined' ? '-' : formatDistanceToNow(modified, { addSuffix: true })}
         </td>

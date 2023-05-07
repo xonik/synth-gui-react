@@ -4,7 +4,7 @@ import { DragSource, DropTarget } from 'react-dnd'
 import { NativeTypes } from 'react-dnd-html5-backend'
 import flow from 'lodash/flow'
 
-import BaseFolder, { BaseFolderConnectors } from './../base-folder.js'
+import BaseFolder, { BaseFolderConnectors } from '../base-folder.js'
 import { BaseFileConnectors } from '../base-file'
 
 class RawTableFolder extends BaseFolder {
@@ -24,7 +24,7 @@ class RawTableFolder extends BaseFolder {
       name = (
         <ConfirmDeletionRenderer
           handleDeleteSubmit={this.handleDeleteSubmit}
-          handleFileClick={this.handleFileClick}
+          handleFileClick={this.handleFolderClick}
           url={url}
         >
           {icon}
@@ -63,7 +63,7 @@ class RawTableFolder extends BaseFolder {
         {name}
       </div>
     )
-    if (typeof browserProps.moveFile === 'function') {
+    if (typeof browserProps.moveFile === 'function' && connectDragPreview) {
       draggable = connectDragPreview(draggable)
     }
 

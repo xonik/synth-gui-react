@@ -1,7 +1,7 @@
 import { REGEX } from "../constants"
-import { FileBrowserTreeGroupNode } from '../types'
+import { FileBrowserTreeNode } from '../types'
 
-function sortByDefault(prev: FileBrowserTreeGroupNode, next: FileBrowserTreeGroupNode): number {
+function sortByDefault(prev: FileBrowserTreeNode, next: FileBrowserTreeNode): number {
   const aa = String(prev.name).split(REGEX.NUMBER_GROUPS)
   const bb = String(next.name).split(REGEX.NUMBER_GROUPS)
   const min = Math.min(aa.length, bb.length)

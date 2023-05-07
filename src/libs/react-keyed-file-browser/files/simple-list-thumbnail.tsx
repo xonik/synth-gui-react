@@ -1,16 +1,19 @@
 import React from 'react'
-import ListThumbnailFile from './list-thumbnail.js'
 
-const SimpleListThumbnail: React.FC = (props) => {
-  return (
-        <ListThumbnailFile
-        {...props}
-        showName={false}
-        showSize={false}
-        showModified={false}
-        isSelectable={false}
-      />
-  )
+import ListThumbnailFile from './list-thumbnail'
+
+class SimpleListThumbnailFile extends React.Component {
+    render() {
+        return (
+            <ListThumbnailFile
+                {...this.props}
+                showName={false}
+                showSize={false}
+                showModified={false}
+                isSelectable={false}
+            />
+        )
+    }
 }
 
-export { SimpleListThumbnail }
+export default SimpleListThumbnailFile

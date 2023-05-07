@@ -4,10 +4,10 @@ import { DragSource, DropTarget } from 'react-dnd'
 import { NativeTypes } from 'react-dnd-html5-backend'
 import flow from 'lodash/flow'
 
-import BaseFolder, { BaseFolderConnectors } from './../base-folder.js'
+import BaseFolder, { BaseFolderConnectors } from '../base-folder.js'
 import { BaseFileConnectors } from '../base-file'
 
-import { isFolder } from '../utils'
+import { isFolderType } from "../types";
 
 class RawListThumbnailFolder extends BaseFolder {
   render() {
@@ -17,7 +17,6 @@ class RawListThumbnailFolder extends BaseFolder {
     } = this.props
 
     const icon = browserProps.icons[isOpen ? 'FolderOpen' : 'Folder']
-
     const inAction = (isDragging || action)
 
     const ConfirmDeletionRenderer = browserProps.confirmDeletionRenderer
@@ -27,7 +26,7 @@ class RawListThumbnailFolder extends BaseFolder {
       name = (
         <ConfirmDeletionRenderer
           handleDeleteSubmit={this.handleDeleteSubmit}
-          handleFileClick={this.handleFileClick}
+          handleFileClick={this.handleFolderClick}
           url={url}
         >
           {this.getName()}
@@ -61,15 +60,16 @@ class RawListThumbnailFolder extends BaseFolder {
     let children
     if (isOpen && browserProps.nestChildren) {
       children = []
-      for (let childIndex = 0; childIndex < children.length; childIndex++) {
-        const file = children[childIndex]
+      // TODO: HEr er det jo noe veeelig rart, den vil jo alltid være 0
+      for (let childIndex = 0; childIndex < this.props.children.length; childIndex++) {
+        const file = this.props.children[childIndex]
 
         const thisItemProps = {
           ...browserProps.getItemProps(file, browserProps),
           depth: depth + 1,
         }
 
-        if (!isFolder(file)) {
+        if (!isFolderType(file)) {
           children.push(
             <browserProps.fileRenderer
               {...file}
@@ -115,7 +115,7 @@ class RawListThumbnailFolder extends BaseFolder {
         {children}
       </li>
     )
-    if (typeof browserProps.moveFolder === 'function' && keyDerived) {
+    if (typeof browserProps.moveFolder === 'function' && keyDerived && connectDragPreview) {
       folder = connectDragPreview(folder)
     }
 

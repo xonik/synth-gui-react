@@ -1,20 +1,20 @@
 import { format, startOfMonth, endOfMonth } from 'date-fns'
-import { isFolder, relativeTimeWindows } from '../utils'
-import { FileBrowserTree } from '../types'
+import { relativeTimeWindows } from '../utils'
+import { FileBrowserTree, FileBrowserWindow, isFolderType } from '../types'
 
 function groupByModified(files: FileBrowserTree, root: string) {
   const timeWindows = relativeTimeWindows()
 
   for (let fileIndex = 0; fileIndex < files.length; fileIndex++) {
     const file = files[fileIndex]
-    if (isFolder(file)) { continue }
+    if (isFolderType(file)) { continue }
     const newFile = {
       ...file,
       keyDerived: true,
     }
 
     let allocated = false
-    const fileModified = +newFile.modified
+    const fileModified = +(newFile.modified ||0)
     for (let windex = 0; windex < timeWindows.length; windex++) {
       const timeWindow = timeWindows[windex]
       if (fileModified > +timeWindow.begins && fileModified <= +timeWindow.ends) {
@@ -24,10 +24,10 @@ function groupByModified(files: FileBrowserTree, root: string) {
       }
     }
     if (!allocated) {
-      const newWindow = {
-        name: format(newFile.modified, 'MMMM yyyy'),
-        begins: startOfMonth(newFile.modified),
-        ends: endOfMonth(newFile.modified),
+      const newWindow: FileBrowserWindow = {
+        name: format(fileModified, 'MMMM yyyy'),
+        begins: startOfMonth(fileModified),
+        ends: endOfMonth(fileModified),
         items: [],
       }
       newWindow.items.push(newFile)

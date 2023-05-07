@@ -1,5 +1,5 @@
 import FileBrowser, { RawFileBrowser } from './browser'
-import { BaseFile, BaseFileConnectors } from './base-file'
+import BaseFile, { BaseFileConnectors } from './base-file'
 import BaseFolder, { BaseFolderConnectors } from './base-folder'
 
 import * as Headers from './headers'

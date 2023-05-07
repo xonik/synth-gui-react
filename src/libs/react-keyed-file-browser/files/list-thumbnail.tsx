@@ -6,9 +6,10 @@ import { formatDistanceToNow } from 'date-fns'
 import flow from 'lodash/flow'
 
 import BaseFile, { BaseFileConnectors } from './../base-file.js'
-import { fileSize } from './utils.js'
+import { fileSize } from './utils'
+import { FileProps } from '../types'
 
-class RawListThumbnailFile extends BaseFile {
+class RawListThumbnailFile extends BaseFile<FileProps> {
   static defaultProps = {
     showName: true,
     showSize: true,
@@ -79,7 +80,7 @@ class RawListThumbnailFile extends BaseFile {
     if (showSize) {
       if (!isRenaming && !isDeleting) {
         size = (
-          <span className="size"><small>{fileSize(this.props.size)}</small></span>
+          <span className="size"><small>{fileSize(this.props.size || 0)}</small></span>
         )
       }
     }
@@ -88,7 +89,7 @@ class RawListThumbnailFile extends BaseFile {
       if (!isRenaming && !isDeleting) {
         modified = (
           <span className="modified">
-            Last modified: {formatDistanceToNow(this.props.modified, { addSuffix: true })}
+            Last modified: {formatDistanceToNow(this.props.modified || 0, { addSuffix: true })}
           </span>
         )
       }
@@ -101,7 +102,7 @@ class RawListThumbnailFile extends BaseFile {
       }
     }
 
-    let row = (
+    let row: JSX.Element = (
       <li
         className={ClassNames('file', {
           pending: action,
@@ -120,7 +121,7 @@ class RawListThumbnailFile extends BaseFile {
         </div>
       </li>
     )
-    if (typeof browserProps.moveFile === 'function') {
+    if (typeof browserProps.moveFile === 'function' && connectDragPreview) {
       row = connectDragPreview(row)
     }
 

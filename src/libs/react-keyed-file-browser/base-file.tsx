@@ -1,16 +1,15 @@
-// @ts-nocheck
 import React from 'react'
 import { move } from './utils'
 import { EXTENSION } from './constants'
-import { FileProps } from './types'
+import { FileRendererProps, ItemProps } from './types'
 
-class BaseFile extends React.Component<FileProps> {
+class BaseFile<T> extends React.Component<FileRendererProps<T>> {
 
   state = {
     newName: this.getName(),
   }
 
-  selectFileNameFromRef(element) {
+  selectFileNameFromRef(element: HTMLInputElement) {
     if (element) {
       const currentName = element.value
       const pointIndex = currentName.lastIndexOf('.')
@@ -36,7 +35,7 @@ class BaseFile extends React.Component<FileProps> {
     return EXTENSION.TYPES[this.getExtension()] || 'File'
   }
 
-  handleFileClick = (event) => {
+  handleFileClick = (event: React.MouseEvent) => {
     event && event.preventDefault()
     this.props.browserProps.preview({
       url: this.props.url,
@@ -45,26 +44,26 @@ class BaseFile extends React.Component<FileProps> {
       extension: this.getExtension(),
     })
   }
-  handleItemClick = (event) => {
+  handleItemClick = (event: React.MouseEvent) => {
     event.stopPropagation()
     this.props.browserProps.select(this.props.fileKey, 'file', event.ctrlKey || event.metaKey, event.shiftKey)
   }
-  handleItemDoubleClick = (event) => {
+  handleItemDoubleClick = (event: React.MouseEvent) => {
     event.stopPropagation()
-    this.handleFileClick()
+    this.handleFileClick(event)
   }
 
-  handleRenameClick = (event) => {
+  handleRenameClick = () => {
     if (!this.props.browserProps.renameFile) {
       return
     }
-    this.props.browserProps.beginAction('rename', this.props.fileKey)
+    this.props.browserProps.beginAction('rename', [this.props.fileKey])
   }
-  handleNewNameChange = (event) => {
-    const newName = event.target.value
+  handleNewNameChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const newName = event.currentTarget.value
     this.setState({ newName: newName })
   }
-  handleRenameSubmit = (event) => {
+  handleRenameSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     if (event) {
       event.preventDefault()
     }
@@ -97,47 +96,49 @@ class BaseFile extends React.Component<FileProps> {
     this.props.browserProps.renameFile(this.props.fileKey, newKey)
   }
 
-  handleDeleteClick = (event) => {
+  handleDeleteClick = (event: React.MouseEvent) => {
     if (!this.props.browserProps.deleteFile) {
       return
     }
-    this.props.browserProps.beginAction('delete', this.props.fileKey)
+    this.props.browserProps.beginAction('delete', [this.props.fileKey])
   }
-  handleDeleteSubmit = (event) => {
+  handleDeleteSubmit = (event: React.FormEvent) => {
     event.preventDefault()
     if (!this.props.browserProps.deleteFile) {
       return
     }
 
-    this.props.browserProps.deleteFile(this.props.browserProps.actionTargets)
+    this.props.browserProps.deleteFile(this.props.browserProps.actionTargets[0]) //TODO: Fishy
   }
 
-  handleCancelEdit = (event) => {
+  handleCancelEdit = () => {
     this.props.browserProps.endAction()
   }
 
-  connectDND(render) {
+  connectDND(render: JSX.Element) {
     const inAction = (this.props.isDragging || this.props.action)
     if (
         typeof this.props.browserProps.moveFile === 'function' &&
         !inAction &&
-        !this.props.isRenaming
+        !this.props.isRenaming &&
+        this.props.connectDragSource
     ) {
-      render = this.props.connectDragSource(render)
+      return this.props.connectDragSource(render)
     }
     if (
-        typeof this.props.browserProps.createFiles === 'function' ||
+        (typeof this.props.browserProps.createFiles === 'function' ||
         typeof this.props.browserProps.moveFile === 'function' ||
-        typeof this.props.browserProps.moveFolder === 'function'
+        typeof this.props.browserProps.moveFolder === 'function') &&
+        this.props.connectDropTarget
     ) {
-      render = this.props.connectDropTarget(render)
+      return this.props.connectDropTarget(render)
     }
     return render
   }
 }
 
 const dragSource = {
-  beginDrag(props) {
+  beginDrag(props: FileRendererProps<ItemProps>) {
     if (
         !props.browserProps.selection.length ||
         !props.browserProps.selection.includes(props.fileKey)
@@ -149,7 +150,7 @@ const dragSource = {
     }
   },
 
-  endDrag(props, monitor, component) {
+  endDrag(props: FileRendererProps<ItemProps>, monitor, component) {
     move(props, monitor, component)
   },
 }
@@ -163,7 +164,7 @@ function dragCollect(connect, monitor) {
 }
 
 const targetSource = {
-  drop(props, monitor) {
+  drop(props: FileRendererProps<ItemProps>, monitor) {
     if (monitor.didDrop()) {
       return
     }

@@ -17,18 +17,19 @@
     "@use-it/event-listener": "^0.1.7",
     "classnames": "^2.2.6",
     "deepmerge": "^4.2.2",
+    "lodash.flow": "^3.5.0",
     "react": "^16.13.1",
+    "react-dnd": "^14.0.2",
+    "react-dnd-html5-backend": "^14.0",
     "react-dom": "^16.13.1",
     "react-keyed-file-browser": "^1.14.0",
     "react-redux": "^7.2.4",
     "react-scripts": "4.0.3",
     "react-spring": "^9.2.3",
     "sass": "^1.49.11",
+    "styled-components": "^5.3.0",
     "ts-node": "^10.2.1",
-    "typescript": "~4.3.2",
-
-    "react-dnd": "^14.0.2",
-    "styled-components": "^5.3.0"
+    "typescript": "~4.3.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -58,6 +59,8 @@
     ]
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.194",
+    "@types/styled-components": "^5.1.10",
     "gh-pages": "^3.2.3"
   }
 }

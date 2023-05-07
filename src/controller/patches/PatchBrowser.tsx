@@ -1,21 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import FileBrowser, { Icons } from '../../libs/react-keyed-file-browser'
-
-//import FileBrowser, {Icons} from 'react-keyed-file-browser'
+import { FileBrowserTree, FileBrowserTreeNode } from '../../libs/react-keyed-file-browser/types'
 
 type State = {
-    files: TreeElement[]
-}
-
-type TreeElement = {
-    key: string,
-    size?: number,
-}
-
-type InputFile = {
-    name: string,
-    size?: number,
+    files: FileBrowserTree
 }
 
 class NestedEditableDemo extends React.Component {
@@ -62,7 +51,7 @@ class NestedEditableDemo extends React.Component {
     }
     handleCreateFiles = (files: InputFile[], path: string) => {
         this.setState((state: State) => {
-            const newFiles = files.map((file) => {
+            const newFiles: FileBrowserTreeNode[] = files.map((file) => {
                 let newKey = path
                 if (path !== '' && path.substring(path.length - 1, path.length) !== '/') {
                     newKey += '/'
@@ -74,7 +63,7 @@ class NestedEditableDemo extends React.Component {
                 }
             })
 
-            const uniqueNewFiles: TreeElement[] = []
+            const uniqueNewFiles: FileBrowserTreeNode[] = []
             newFiles.map((newFile) => {
                 let exists = false
                 state.files.map((existingFile) => {
@@ -92,7 +81,7 @@ class NestedEditableDemo extends React.Component {
     }
     handleRenameFolder = (oldKey: string, newKey: string) => {
         this.setState((state: State) => {
-            const newFiles: TreeElement[] = []
+            const newFiles: FileBrowserTreeNode[] = []
             state.files.map((file) => {
                 if (file.key.substr(0, oldKey.length) === oldKey) {
                     newFiles.push({
@@ -109,7 +98,7 @@ class NestedEditableDemo extends React.Component {
     }
     handleRenameFile = (oldKey: string, newKey: string) => {
         this.setState((state: State) => {
-            const newFiles: TreeElement[] = []
+            const newFiles: FileBrowserTreeNode[] = []
             state.files.map((file) => {
                 if (file.key === oldKey) {
                     newFiles.push({
@@ -126,7 +115,7 @@ class NestedEditableDemo extends React.Component {
     }
     handleDeleteFolder = (folderKey: string) => {
         this.setState((state: State) => {
-            const newFiles: TreeElement[] = []
+            const newFiles: FileBrowserTreeNode[] = []
             state.files.map((file) => {
                 if (file.key.substr(0, folderKey.length) !== folderKey) {
                     newFiles.push(file)
@@ -138,7 +127,7 @@ class NestedEditableDemo extends React.Component {
     }
     handleDeleteFile = (fileKey: string) => {
         this.setState((state: State) => {
-            const newFiles: TreeElement[] = []
+            const newFiles: FileBrowserTreeNode[] = []
             state.files.map((file) => {
                 if (file.key !== fileKey) {
                     newFiles.push(file)
