@@ -1,3 +1,6 @@
+const nothing = () => ''
+export default nothing
+/*
 type Filetype = 'patch' | 'performance'
 
 type Dir = {
@@ -48,8 +51,6 @@ class PathElement {
         return child
     }
 }
-
-class Dir
 
 const tree: Dir = {
     isDir: true,
@@ -127,3 +128,4 @@ const getFileVersions = (path: string) => {
 const getFileContents = (path: string) => {
 
 }
+ */
