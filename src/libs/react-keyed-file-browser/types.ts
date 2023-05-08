@@ -1,5 +1,4 @@
 import React from 'react'
-import { DragDropMonitor } from 'react-dnd'
 
 export interface FileBrowserFile {
     key: string
@@ -21,15 +20,6 @@ export interface FileBrowserWindow {
 
 export type FileBrowserFolder = FileBrowserFile
 
-// #region details
-class DefaultDetail extends React.FC<DetailRendererProps> {
-}
-
-export declare const Details: {
-    DefaultDetail: DefaultDetail
-}
-// #endregion details
-
 // #region filters
 declare class DefaultFilter extends React.Component<FilterRendererProps> {
 }
@@ -45,8 +35,7 @@ export type Draft = {
     draft: true
     name?: string // added runtime
 }
-export const isDraftType = (file: FileBrowserTreeNode): file is FileBrowserTreeGroupNode
-{
+export const isDraftType = (file: FileBrowserTreeNode): file is FileBrowserTreeGroupNode => {
     return 'draft' in file
 }
 
@@ -122,17 +111,6 @@ export type IconsProp = {
 
 // #endregion icons
 
-// #region utils
-export declare const Utils: {
-    isFolder: (file: FileBrowserFile) => boolean
-    moveFilesAndFolders: (
-        props: { browserProps: RendererBrowserProps },
-        monitor: DragDropMonitor,
-        component: any
-    ) => void
-}
-// #endregion utils
-
 // #region handlers
 type CreateFilesHandler = (files: File[], prefix: string) => void
 type CreateFolderHandler = (key: string) => void
@@ -177,6 +155,7 @@ export type FolderAndFileRendererProps<P = {}> = ItemProps &
     browserProps: RendererBrowserProps
     depth: number
     newName?: string
+    newKey?: string // TODO: Very weird that this is here. it is internal to base-file
     connectDragSource?: (element: JSX.Element) => JSX.Element
     connectDropTarget?: (element: JSX.Element) => JSX.Element
     connectDragPreview?: (element: JSX.Element) => JSX.Element
@@ -209,6 +188,16 @@ export type DetailRendererProps<P = {}> = {
     file: FileBrowserTreeFileNode
     close: () => void
 } & P
+
+// TODO: These are probably not correct
+export type DraggedFile = {
+    key: string
+    files?: File[]
+}
+
+export type DropResult = {
+    path: string
+}
 
 export type DetailRenderer<P = {}> = (
     props: DetailRendererProps<P>
@@ -289,7 +278,7 @@ export interface ItemProps {
     isRenaming: boolean
     isDeleting: boolean
     isDraft: boolean
-    isDragging: boolean
+    isDragging: boolean // TODO: Probably doesn't belong here?
 }
 
 export interface RendererBrowserProps {

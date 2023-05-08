@@ -1,7 +1,8 @@
 import React from 'react'
 import { move } from './utils'
 import { EXTENSION } from './constants'
-import { FileRendererProps, ItemProps } from './types'
+import { DraggedFile, DropResult, FileRendererProps, ItemProps } from './types'
+import { DragSourceConnector, DragSourceMonitor, DropTargetConnector, DropTargetMonitor } from 'react-dnd'
 
 class BaseFile<T> extends React.Component<FileRendererProps<T>> {
 
@@ -19,7 +20,7 @@ class BaseFile<T> extends React.Component<FileRendererProps<T>> {
   }
 
   getName() {
-    let name = this.props.newKey || this.props.fileKey
+    let name: string = this.props.newKey || this.props.fileKey
     const slashIndex = name.lastIndexOf('/')
     if (slashIndex !== -1) {
       name = name.substr(slashIndex + 1)
@@ -138,7 +139,7 @@ class BaseFile<T> extends React.Component<FileRendererProps<T>> {
 }
 
 const dragSource = {
-  beginDrag(props: FileRendererProps<ItemProps>) {
+  beginDrag(props: FileRendererProps<ItemProps>): DraggedFile {
     if (
         !props.browserProps.selection.length ||
         !props.browserProps.selection.includes(props.fileKey)
@@ -150,12 +151,12 @@ const dragSource = {
     }
   },
 
-  endDrag(props: FileRendererProps<ItemProps>, monitor, component) {
+  endDrag(props: FileRendererProps<ItemProps>, monitor: DragSourceMonitor, component: DraggedFile) {
     move(props, monitor, component)
   },
 }
 
-function dragCollect(connect, monitor) {
+function dragCollect(connect: DragSourceConnector, monitor: DragSourceMonitor) {
   return {
     connectDragPreview: connect.dragPreview(),
     connectDragSource: connect.dragSource(),
@@ -164,7 +165,7 @@ function dragCollect(connect, monitor) {
 }
 
 const targetSource = {
-  drop(props: FileRendererProps<ItemProps>, monitor) {
+  drop(props: FileRendererProps<ItemProps>, monitor: DropTargetMonitor<DraggedFile, DropResult>) {
     if (monitor.didDrop()) {
       return
     }
@@ -181,7 +182,7 @@ const targetSource = {
   },
 }
 
-function targetCollect(connect, monitor) {
+function targetCollect(connect: DropTargetConnector, monitor: DropTargetMonitor) {
   return {
     connectDropTarget: connect.dropTarget(),
     isOver: monitor.isOver({ shallow: true }),

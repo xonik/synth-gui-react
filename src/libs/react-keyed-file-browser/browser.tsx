@@ -46,64 +46,9 @@ function getItemProps(file: FileBrowserFile, browserProps: RendererBrowserProps)
     isRenaming: browserProps.activeAction === 'rename' && browserProps.actionTargets.includes(file.key),
     isDeleting: browserProps.activeAction === 'delete' && browserProps.actionTargets.includes(file.key),
     isDraft: !!file.draft,
+    isDragging: false // TODO: Probably doesn't belong here
   }
 }
-
-/*type RawFileBrowserProps = {
-  files: FileBrowserFile[],
-  actions?: JSX.Element
-  showActionBar: boolean,
-  canFilter: boolean,
-  showFoldersOnFilter: boolean,
-  noFilesMessage?: string,
-
-  group: (files: FileBrowserTree, root: string) => FileBrowserTree,
-  sort: (allFiles: FileBrowserTree) => FileBrowserTree,
-
-  icons: IconsProp,
-
-  nestChildren: boolean,
-  renderStyle: 'list' | 'table',
-
-  startOpen: boolean,
-
-  headerRenderer: React.FC<HeaderRendererProps>,
-  headerRendererProps?: HeaderRendererProps,
-  filterRenderer: FilterRenderer,
-  filterRendererProps?: FilterRendererProps,
-  fileRenderer: FileRenderer,
-  fileRendererProps?: FileRendererProps,
-  folderRenderer: FolderRenderer,
-  folderRendererProps?: FolderRendererProps,
-  detailRenderer: DetailRenderer,
-  detailRendererProps?: DetailRendererProps,
-  actionRenderer: React.FC<ActionRendererProps>,
-  confirmDeletionRenderer?: ConfirmDeletionRenderer,
-  confirmMultipleDeletionRenderer: ConfirmMultipleDeletionRenderer,
-
-  onCreateFiles?: (files: FileBrowserTreeFileNode[], prefix: string) => void | boolean,
-  onCreateFolder?: (key: string) => void | boolean,
-  onMoveFile?: (oldKey: string, newKey: string) => void | boolean,
-  onMoveFolder?: (oldKey: string, newKey: string) => void | boolean,
-  onRenameFile?: (oldKey: string, newKey: string) => void | boolean,
-  onRenameFolder?: (oldKey: string, newKey: string) => void | boolean,
-  onDeleteFile?: (fileKey: string) => void,
-  onDeleteFolder?: (key: string) => void,
-  onDownloadFile?: (folderKey: string) => void,
-  onDownloadFolder?: (keys: string[]) => void,
-
-  onSelect: (fileOrFolder: FileBrowserFile | FileBrowserFolder) => void
-  onSelectFile: (file: FileBrowserFile) => void
-  onSelectFolder: (folder: FileBrowserFolder) => void
-
-  onPreviewOpen?: (file: FileBrowserFile) => void
-  onPreviewClose?: (file: FileBrowserFile) => void
-
-  onFolderOpen?: (folder: FileBrowserFolder) => void
-  onFolderClose?: (folder: FileBrowserFolder) => void
-}*/
-
-type Action = 'rename' | 'delete' | 'createFolder'
 
 type RawFileBrowserState = {
   openFolders: {[key: string]: boolean},
@@ -212,7 +157,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
   }
 
   // item manipulation
-  createFiles = (files, prefix: string) => {
+  createFiles = (files: File[], prefix: string) => {
     this.setState(prevState => {
       const stateChanges = {
         ...prevState,
@@ -461,7 +406,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
   }
 
   // event handlers
-  handleGlobalClick = (event: React.MouseEvent) => {
+  handleGlobalClick = (event: MouseEvent) => {
     const inBrowser = !!(this.browserRef && this.browserRef.contains(event.target as Node))
 
     if (!inBrowser) {
