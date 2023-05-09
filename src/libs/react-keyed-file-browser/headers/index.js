@@ -1,4 +1,4 @@
-import TableHeader from './table.js'
+import TableHeader from './table'
 
 export {
   TableHeader,

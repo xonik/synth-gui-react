@@ -16,7 +16,7 @@ class BaseFolder extends React.Component<FolderRendererProps> {
         }
     }
 
-    getName() {
+    getName(): string {
         if (this.props.name) {
             return this.props.name
         }

@@ -5,9 +5,9 @@ import { DropTarget } from 'react-dnd'
 import { NativeTypes } from 'react-dnd-html5-backend'
 
 import { BaseFileConnectors } from '../base-file'
-import { HeaderRendererProps, ItemProps } from '../types'
+import { HeaderRendererProps } from '../types'
 
-class RawTableHeader extends React.Component<HeaderRendererProps<ItemProps>> {
+class RawTableHeader extends React.Component<HeaderRendererProps> {
 
     handleHeaderClick() {
         this.props.select(this.props.fileKey)
@@ -43,6 +43,8 @@ const TableHeader = DropTarget(
     ['file', 'folder', NativeTypes.FILE],
     BaseFileConnectors.targetSource,
     BaseFileConnectors.targetCollect
+    // Not sure why exactly this one does not work
+    // @ts-ignore
 )(RawTableHeader)
 
 export default TableHeader

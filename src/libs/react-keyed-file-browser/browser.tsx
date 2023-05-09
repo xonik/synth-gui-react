@@ -23,15 +23,18 @@ import {
   FileBrowserFile,
   FileBrowserTreeNode,
   isFolderType,
-  HeaderRendererProps,
   RendererBrowserProps,
   FileBrowserFolder,
   FileRenderer,
   FolderRenderer,
   ConfirmMultipleDeletionRenderer,
   FilterRenderer,
-  FileBrowserProps, ActionType, ItemProps,
+  FileBrowserProps,
+  ActionType,
+  ItemProps,
 } from './types'
+
+import './browser.scss'
 
 const SEARCH_RESULTS_PER_PAGE = 20
 const regexForNewFolderOrFileSelection = /.*\/__new__[/]?$/gm
@@ -700,7 +703,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
 
   render() {
     const browserProps = this.getBrowserProps()
-    const headerProps: Partial<HeaderRendererProps> = {
+    const headerProps = {
       browserProps,
       fileKey: '',
       fileCount: this.props.files.length,

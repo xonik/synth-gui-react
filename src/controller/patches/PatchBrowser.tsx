@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import FileBrowser, { Icons } from '../../libs/react-keyed-file-browser'
 import { FileBrowserTree, FileBrowserTreeNode } from '../../libs/react-keyed-file-browser/types'
 
@@ -7,7 +6,7 @@ type State = {
     files: FileBrowserTree
 }
 
-class NestedEditableDemo extends React.Component {
+class PatchBrowser extends React.Component {
     state: State = {
         files: [
             {
@@ -158,8 +157,4 @@ class NestedEditableDemo extends React.Component {
     }
 }
 
-const mount = document.querySelectorAll('div.demo-mount-nested-editable')
-ReactDOM.render(
-    <NestedEditableDemo />,
-    mount[0]
-)
+export default PatchBrowser

@@ -5,7 +5,7 @@ import { NativeTypes } from 'react-dnd-html5-backend'
 import { formatDistanceToNow } from 'date-fns'
 import flow from 'lodash/flow'
 
-import BaseFile, { BaseFileConnectors } from './../base-file.js'
+import BaseFile, { BaseFileConnectors } from './../base-file'
 import { fileSize } from './utils'
 import { FileProps } from '../types'
 

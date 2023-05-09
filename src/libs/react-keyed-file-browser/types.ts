@@ -1,4 +1,5 @@
 import React from 'react'
+import { RawFileBrowser } from './browser'
 
 export interface FileBrowserFile {
     key: string
@@ -127,16 +128,16 @@ type DownloadFolderHandler = (keys: string[]) => void
 // #region renderers
 
 // Header
-export type HeaderRendererProps<P = {}> = {
+export type HeaderRendererProps = ItemProps & {
     select: (value: string) => void
     fileKey: string
     fileCount: number
     browserProps: RendererBrowserProps
     connectDropTarget?: (element: JSX.Element) => JSX.Element
-} & P
+}
 
-export type HeaderRenderer<P = {}> = (
-    props: HeaderRendererProps<P>
+export type HeaderRenderer = (
+    props: HeaderRendererProps
 ) => JSX.Element
 
 // Filter
@@ -331,7 +332,11 @@ export interface RendererBrowserProps {
 // #endregion renderer-browser-props
 
 // #region file-browser-props
-export interface FileBrowserProps {
+
+// This way of declaring props is really confusing, but it makes it possible to
+// have non-optional props here that are not required on the react tag when
+// calling the RawFileBrowser component.
+export type FileBrowserProps = typeof RawFileBrowser.defaultProps & {
     files: FileBrowserFile[]
     actions?: JSX.Element
     showActionBar: boolean
