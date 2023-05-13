@@ -48,12 +48,12 @@ const handlePerformClick = (source: ApiSource) => {
 }
 const handleLoadClick = (source: ApiSource) => {
     mainDisplayMidiApi.loadClick(source)
-    patchStorageApi.loadPatch()
+    //patchStorageApi.loadPatch()
 }
 const handleSaveClick = (source: ApiSource) => {
     console.log(`Save form ${source}`)
     mainDisplayMidiApi.saveClick(source)
-    patchStorageApi.savePatch()
+    //patchStorageApi.savePatch()
 }
 const handleCompareClick = (source: ApiSource) => {
     mainDisplayMidiApi.compareClick(source)

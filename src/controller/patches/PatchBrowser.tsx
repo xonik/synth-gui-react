@@ -1,6 +1,11 @@
 import React from 'react'
-import FileBrowser, { Icons } from '../../libs/react-keyed-file-browser'
+import { Icons, RawFileBrowser } from '../../libs/react-keyed-file-browser'
 import { FileBrowserTree, FileBrowserTreeNode } from '../../libs/react-keyed-file-browser/types'
+import { RawTableFile } from '../../libs/react-keyed-file-browser/files'
+import { RawTableFolder } from '../../libs/react-keyed-file-browser/folders'
+import { RawTableHeader } from '../../libs/react-keyed-file-browser/headers/table'
+import patchStorageApi from '../../synthcore/modules/patchStorage/patchStorageApi'
+import './PatchBrowser.scss'
 
 type State = {
     files: FileBrowserTree
@@ -44,9 +49,10 @@ class PatchBrowser extends React.Component {
         this.setState((state: State) => {
             return [
                 ...state.files,
-                {key}
+                { key }
             ]
         })
+        patchStorageApi.createFolder(key)
     }
     handleCreateFiles = (files: File[], path: string) => {
         this.setState((state: State) => {
@@ -94,6 +100,7 @@ class PatchBrowser extends React.Component {
             state.files = newFiles
             return state
         })
+        patchStorageApi.renameFolder(oldKey, newKey)
     }
     handleRenameFile = (oldKey: string, newKey: string) => {
         this.setState((state: State) => {
@@ -111,6 +118,7 @@ class PatchBrowser extends React.Component {
             state.files = newFiles
             return state
         })
+        patchStorageApi.renamePatch(oldKey, newKey)
     }
     handleDeleteFolder = (folderKey: string) => {
         this.setState((state: State) => {
@@ -123,6 +131,7 @@ class PatchBrowser extends React.Component {
             state.files = newFiles
             return state
         })
+        patchStorageApi.deleteFolder(folderKey)
     }
     handleDeleteFile = (fileKey: string) => {
         this.setState((state: State) => {
@@ -135,24 +144,37 @@ class PatchBrowser extends React.Component {
             state.files = newFiles
             return state
         })
+        patchStorageApi.deletePatch(fileKey)
     }
 
     render() {
         return (
-            <FileBrowser
-                files={this.state.files}
-                // @ts-ignore
-                icons={Icons.FontAwesome(4)}
+            <div className="patch-browser">
+                <RawFileBrowser
 
-                onCreateFolder={this.handleCreateFolder}
-                onCreateFiles={this.handleCreateFiles}
-                onMoveFolder={this.handleRenameFolder}
-                onMoveFile={this.handleRenameFile}
-                onRenameFolder={this.handleRenameFolder}
-                onRenameFile={this.handleRenameFile}
-                onDeleteFolder={this.handleDeleteFolder}
-                onDeleteFile={this.handleDeleteFile}
-            />
+                    files={this.state.files}
+                    // @ts-ignore
+                    icons={Icons.FontAwesome(4)}
+
+                    onCreateFolder={this.handleCreateFolder}
+                    onCreateFiles={this.handleCreateFiles}
+                    onMoveFolder={this.handleRenameFolder}
+                    onMoveFile={this.handleRenameFile}
+                    onRenameFolder={this.handleRenameFolder}
+                    onRenameFile={this.handleRenameFile}
+                    onDeleteFolder={this.handleDeleteFolder}
+                    onDeleteFile={this.handleDeleteFile}
+
+
+                    // @ts-ignore
+                    headerRenderer={RawTableHeader}
+                    fileRenderer={RawTableFile}
+                    folderRenderer={RawTableFolder}
+                />
+                <div className="patch-browser_filename">
+                    Filename: <input type="text"/>
+                </div>
+            </div>
         )
     }
 }

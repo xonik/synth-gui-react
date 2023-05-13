@@ -14,7 +14,7 @@ import {
 } from '../../synthcoreApi'
 import { PatchControllers } from '../common/types'
 import modsApi from '../mods/modsApi'
-
+import patchFileSystemFacade from './patchFileSystemFacade'
 
 const patchApis = [
     arpApi,
@@ -31,12 +31,12 @@ const patchApis = [
     srcMixApi,
 ]
 
-type Patch = {
+export type Patch = {
     controllers: PatchControllers,
     mods: number [][][],
 }
 
-const savePatch = (): Patch => {
+async function savePatch(key: string) {
     const patchControllers = patchApis.reduce((
         mergedControllers: PatchControllers,
         api
@@ -49,39 +49,36 @@ const savePatch = (): Patch => {
     }, {})
 
     const mods = modsApi.getForSave()
-    savedPatch = {
+    const patch: Patch = {
         controllers: patchControllers,
         mods,
     }
-    console.log('SAVE', savedPatch)
-    return savedPatch
+
+    await patchFileSystemFacade.savePatch(key, patch)
 }
 
-let savedPatch: {
-    controllers: PatchControllers,
-    mods: number[][][]
-} | undefined
-
-const loadPatch = async () => {
-    const res = await fetch('/lusers')
-    console.log("RES", res)
-    try{
-        const users = await res.text();
-        console.log("USERS", users)
-    } catch (err) {
-        console.log(err)
+async function loadPatch(key: string, version?: string) {
+    const patch = await patchFileSystemFacade.loadPatch(key, version)
+    if (!patch) {
+        console.log('Could not load file')
+        return
     }
-
-    if (!savedPatch) return
-    //const patchControllers = {} // TODO: Load from file
-    const patchControllers = savedPatch
-    patchApis.forEach((source) => source.setFromLoad(patchControllers.controllers))
-    modsApi.setFromLoad(savedPatch.mods)
+    patchApis.forEach((source) => source.setFromLoad(patch.controllers))
+    modsApi.setFromLoad(patch.mods)
 }
 
 const patchStorageApi = {
     savePatch,
     loadPatch,
+    renamePatch: patchFileSystemFacade.renamePatch,
+    deletePatch: patchFileSystemFacade.deletePatch,
+
+    createFolder: patchFileSystemFacade.createFolder,
+    renameFolder: patchFileSystemFacade.renameFolder,
+    deleteFolder: patchFileSystemFacade.deleteFolder,
+
+    getFileTree: patchFileSystemFacade.getFileTree,
+    getPatchVersions: patchFileSystemFacade.getPatchVersions,
 }
 
 export default patchStorageApi

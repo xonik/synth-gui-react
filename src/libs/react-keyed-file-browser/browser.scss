@@ -1,7 +1,10 @@
 $main-padding: 0.5rem !default;
 $theme-colour-text: #337ab7 !default;
+$font-color: white;
 
 div.rendered-react-keyed-file-browser {
+  color: $font-color;
+  overflow: hidden;
   div.action-bar {
     margin-bottom: $main-padding;
     flex-wrap: wrap;

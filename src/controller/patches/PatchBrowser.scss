@@ -1,0 +1,11 @@
+.patch-browser {
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 90%;
+
+  &_filename{
+    margin-top: 2rem;
+  }
+}

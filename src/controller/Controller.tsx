@@ -6,8 +6,8 @@ import Mod from './mods/Mod'
 import Env from './envelopes/Env'
 import LFO from './lfos/LFO'
 import Settings from './settings/Settings'
-import './Controller.scss'
 import PatchBrowser from './patches/PatchBrowser'
+import './Controller.scss'
 
 const Controller = () => {
 
