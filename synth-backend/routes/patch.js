@@ -96,9 +96,23 @@ router.delete('/', function (req, res, next) {
     }
 });
 
+router.post('/rename', function (req, res, next) {
+    const {oldKey, newKey} = req.body
+    if (!oldKey.endsWith('/') && !newKey.endsWith('/')) {
+        try {
+            // TODO: RENAME
+            return res.json({result: 'ok'})
+        } catch (error) {
+            return res.status(500).json({error: 'Could not rename file'})
+        }
+    } else {
+        res.status(500).json({error: `keys ${oldKey} or ${newKey} are not files`})
+    }
+});
+
 router.put('/folder', function (req, res, next) {
     const {key} = req.body
-    if (!key.endsWith('/')) {
+    if (key.endsWith('/')) {
         try {
             filesystem.createFolder(key)
             return res.json({result: 'ok'})
@@ -107,6 +121,20 @@ router.put('/folder', function (req, res, next) {
         }
     } else {
         res.status(500).json({error: `key ${key} is not a folder`})
+    }
+});
+
+router.post('/folder/rename', function (req, res, next) {
+    const {oldKey, newKey} = req.body
+    if (oldKey.endsWith('/') && newKey.endsWith('/')) {
+        try {
+            // TODO: RENAME
+            return res.json({result: 'ok'})
+        } catch (error) {
+            return res.status(500).json({error: 'Could not rename folder'})
+        }
+    } else {
+        res.status(500).json({error: `keys ${oldKey} or ${newKey} are not folders`})
     }
 });
 

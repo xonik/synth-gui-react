@@ -147,7 +147,7 @@ async function getPatchVersions(key: string) {
     }
 }
 
-const patchFileSystemFacade = {
+const patchFileServerFacade = {
     savePatch,
     renamePatch,
     loadPatch,
@@ -159,4 +159,4 @@ const patchFileSystemFacade = {
     getPatchVersions,
 }
 
-export default patchFileSystemFacade
+export default patchFileServerFacade

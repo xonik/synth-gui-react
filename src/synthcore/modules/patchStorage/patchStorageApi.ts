@@ -14,7 +14,7 @@ import {
 } from '../../synthcoreApi'
 import { PatchControllers } from '../common/types'
 import modsApi from '../mods/modsApi'
-import patchFileSystemFacade from './patchFileSystemFacade'
+import patchFileServerFacade from './patchFileServerFacade'
 
 const patchApis = [
     arpApi,
@@ -54,11 +54,11 @@ async function savePatch(key: string) {
         mods,
     }
 
-    await patchFileSystemFacade.savePatch(key, patch)
+    await patchFileServerFacade.savePatch(key, patch)
 }
 
 async function loadPatch(key: string, version?: string) {
-    const patch = await patchFileSystemFacade.loadPatch(key, version)
+    const patch = await patchFileServerFacade.loadPatch(key, version)
     if (!patch) {
         console.log('Could not load file')
         return
@@ -67,18 +67,19 @@ async function loadPatch(key: string, version?: string) {
     modsApi.setFromLoad(patch.mods)
 }
 
+// TODO: Move patch.
 const patchStorageApi = {
     savePatch,
     loadPatch,
-    renamePatch: patchFileSystemFacade.renamePatch,
-    deletePatch: patchFileSystemFacade.deletePatch,
+    renamePatch: patchFileServerFacade.renamePatch,
+    deletePatch: patchFileServerFacade.deletePatch,
 
-    createFolder: patchFileSystemFacade.createFolder,
-    renameFolder: patchFileSystemFacade.renameFolder,
-    deleteFolder: patchFileSystemFacade.deleteFolder,
+    createFolder: patchFileServerFacade.createFolder,
+    renameFolder: patchFileServerFacade.renameFolder,
+    deleteFolder: patchFileServerFacade.deleteFolder,
 
-    getFileTree: patchFileSystemFacade.getFileTree,
-    getPatchVersions: patchFileSystemFacade.getPatchVersions,
+    getFileTree: patchFileServerFacade.getFileTree,
+    getPatchVersions: patchFileServerFacade.getPatchVersions,
 }
 
 export default patchStorageApi
