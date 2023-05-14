@@ -24,7 +24,7 @@ class FileSystemFacade {
     }
 
     createFolder(path: string){
-
+        fs.mkdirSync(`${this.root}${path}`, { recursive: true })
     }
     deleteFolder(path: string){
         // TODO: Move to deleted-folder.
@@ -58,8 +58,11 @@ class FileSystemFacade {
     }
 
     async writeFileInstance(content: any, path: string, filename: string, instanceName: string){
-        //TODO create folder
-        const filepath = this.getFileSystemFileFolder(path, filename, instanceName)
+        const folder = this.getFileSystemFileFolder(path, filename)
+        if (!fs.existsSync(folder)) {
+            fs.mkdirSync(`${this.root}${path}`, { recursive: true })
+        }
+        const filepath = `${folder}/${instanceName}`
         fs.writeFileSync(filepath, JSON.stringify(content, null, 2), 'utf8');
     }
 
