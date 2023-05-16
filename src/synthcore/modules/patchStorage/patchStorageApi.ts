@@ -58,13 +58,15 @@ async function savePatch(key: string) {
 }
 
 async function loadPatch(key: string, version?: string) {
-    const patch = await patchFileServerFacade.loadPatch(key, version)
-    if (!patch) {
+    try {
+        const patch = await patchFileServerFacade.loadPatch(key, version)
+        console.log('Received', patch)
+        patchApis.forEach((source) => source.setFromLoad(patch.controllers))
+        modsApi.setFromLoad(patch.mods)
+    } catch (err) {
         console.log('Could not load file')
         return
     }
-    patchApis.forEach((source) => source.setFromLoad(patch.controllers))
-    modsApi.setFromLoad(patch.mods)
 }
 
 // TODO: Move patch.

@@ -6,7 +6,7 @@ import express from 'express'
 
 var router = express.Router();
 
-const filesystem = new FileSystemFacade('patches')
+const filesystem = new FileSystemFacade('./storage/patches/')
 
 // TODO: Prevent caching
 router.get('/filetree', function (req, res, next) {
@@ -21,7 +21,8 @@ router.get('/filetree', function (req, res, next) {
 
 // TODO: Prevent caching
 router.get('/', function (req, res, next) {
-    const { key, version } = req.body
+    const { key, version }: {key?: string, version?: string} = req.query
+    if(!key) return res.status(400).json({ error: 'Key not included' })
     if (key.endsWith('/')) {
         res.json({})
     } else {
@@ -35,7 +36,7 @@ router.get('/', function (req, res, next) {
             }
         } catch (error) {
             if (error instanceof FileNotFoundException) {
-                return res.status(404).json({ error: 'File not found' })
+                return res.status(404).json({ error: error.message })
             }
             return res.status(500).json({ error: `Could not read file (version ${version})` })
         }

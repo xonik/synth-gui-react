@@ -1,8 +1,5 @@
-import debug from 'debug'
 import * as http from 'http'
 import app from '../app.js'
-
-const debuggger = debug('synth-backend:server');
 
 /**
  * Get port from environment and store in Express.
@@ -83,5 +80,4 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr?.port;
   console.log('listening 2', bind)
-  debuggger('Listening on ' + bind);
 }
