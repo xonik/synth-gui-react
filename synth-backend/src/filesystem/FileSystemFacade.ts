@@ -58,6 +58,7 @@ class FileSystemFacade {
         fs.mkdirSync(`${this.root}${path}`, { recursive: true })
     }
     deleteFolder(path: string){
+        console.log(`Deleting folder ${path}`)
         // TODO: Move to deleted-folder.
     }
 
@@ -79,13 +80,19 @@ class FileSystemFacade {
         this.writeFileInstance(fileMetadata, path, filename, METADATA_FILE_NAME)
     }
 
+    deleteFile(path: string, filename: string){
+        console.log(`Deleting file ${path} ${filename}`)
+        // TODO: Move to deleted-folder.
+    }
+
+    rename(oldKey: string, newKey: string){
+        console.log(`Renaming ${oldKey} to ${newKey}`)
+        // TODO: Rename!
+    }
+
     getVersionsFromFileSystem(path: string, filename: string): string[] {
         const filepath = this.getFileSystemFileFolder(path, filename)
         return fs.readdirSync(filepath).filter(file => file !== METADATA_FILE_NAME)
-    }
-
-    deleteFile(path: string, filename: string){
-        // TODO: Move to deleted-folder.
     }
 
     writeFileInstance(content: any, path: string, filename: string, instanceName: string){

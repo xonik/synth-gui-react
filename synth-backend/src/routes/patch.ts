@@ -80,14 +80,10 @@ router.put('/', function (req, res, next) {
 });
 
 router.delete('/', function (req, res, next) {
-    const { key } = req.body
+    const { key }: {key?: string} = req.query
+    if(!key) return res.status(400).json({ error: 'Key not included' })
     if (key.endsWith('/')) {
-        try {
-            filesystem.deleteFolder(key)
-            return res.json({ result: 'ok' })
-        } catch (error) {
-            return res.status(500).json({ error: 'Could not delete folder' })
-        }
+        res.status(500).json({ error: `key ${key} is not a file` })
     } else {
         try {
             const [folder, filename] = splitKey(key)
@@ -103,7 +99,7 @@ router.post('/rename', function (req, res, next) {
     const { oldKey, newKey } = req.body
     if (!oldKey.endsWith('/') && !newKey.endsWith('/')) {
         try {
-            // TODO: RENAME
+            filesystem.rename(oldKey, newKey)
             return res.json({ result: 'ok' })
         } catch (error) {
             return res.status(500).json({ error: 'Could not rename file' })
@@ -131,13 +127,28 @@ router.post('/folder/rename', function (req, res, next) {
     const { oldKey, newKey } = req.body
     if (oldKey.endsWith('/') && newKey.endsWith('/')) {
         try {
-            // TODO: RENAME
+            filesystem.rename(oldKey, newKey)
             return res.json({ result: 'ok' })
         } catch (error) {
             return res.status(500).json({ error: 'Could not rename folder' })
         }
     } else {
         res.status(500).json({ error: `keys ${oldKey} or ${newKey} are not folders` })
+    }
+});
+
+router.delete('/folder', function (req, res, next) {
+    const { key }: {key?: string} = req.query
+    if(!key) return res.status(400).json({ error: 'Key not included' })
+    if (key.endsWith('/')) {
+        try {
+            filesystem.deleteFolder(key)
+            return res.json({ result: 'ok' })
+        } catch (error) {
+            return res.status(500).json({ error: 'Could not delete folder' })
+        }
+    } else {
+        res.status(500).json({ error: `key ${key} is not a folder` })
     }
 });
 

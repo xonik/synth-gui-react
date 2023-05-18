@@ -8,23 +8,21 @@ class PatchNotFoundException extends Error {
 
 //OK
 async function savePatch(key: string, patch: Patch) {
-    try {
-        console.log(`Saving patch ${key}`, patch)
-        const res = await fetch(patchRoot, {
-                method: 'PUT',
-                cache: "no-cache",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    key,
-                    content: patch
-                }),
-            }
-        )
-        // TODO: Error handler reading res status
-    } catch (err) {
-        console.log(`Failed to save patch ${key}`)
+    console.log(`Saving patch ${key}`, patch)
+    const res = await fetch(patchRoot, {
+            method: 'PUT',
+            cache: "no-cache",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                key,
+                content: patch
+            }),
+        }
+    )
+    if (res.status !== 200) {
+        console.log(`Error while saving patch ${key}, received status ${res.status}`)
     }
 }
 
@@ -58,98 +56,93 @@ async function loadPatch(key: string, version?: string) {
 }
 
 async function createFolder(key: string) {
-    try {
-        console.log(`Creating folder ${key}`)
-        await fetch(patchRoot + '/folder', {
-                method: 'PUT',
-                body: JSON.stringify({
-                    key,
-                }),
-                cache: "no-cache",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
-        )
-    } catch (err) {
-        console.log(`Error while creating folder ${key}`, err)
+    console.log(`Creating folder ${key}`)
+    const res = await fetch(patchRoot + '/folder', {
+            method: 'PUT',
+            body: JSON.stringify({
+                key,
+            }),
+            cache: "no-cache",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }
+    )
+    if (res.status !== 200) {
+        console.log(`Error while creating folder ${key}, received status ${res.status}`)
+        // TODO: Throw?
     }
 }
 
 async function renameFolder(oldKey: string, newKey: string) {
-    try {
-        console.log(`Renaming folder ${oldKey} to ${newKey}`)
-        const res = await fetch(patchRoot + '/folder/rename', {
-                method: 'POST',
-                body: JSON.stringify({
-                    oldKey,
-                    newKey
-                }),
-                cache: "no-cache",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
-        )
-
-        await res.json();
-    } catch (err) {
-        console.log(`Error while renaming folder ${oldKey} to ${newKey}`, err)
+    console.log(`Renaming folder ${oldKey} to ${newKey}`)
+    const res = await fetch(patchRoot + '/folder/rename', {
+            method: 'POST',
+            body: JSON.stringify({
+                oldKey,
+                newKey
+            }),
+            cache: "no-cache",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }
+    )
+    if (res.status !== 200) {
+        console.log(`Error while renaming folder ${oldKey}, received status ${res.status}`)
+        // TODO: Throw?
     }
 }
 
 async function deleteFolder(key: string) {
-    try {
-        console.log(`Deleting folder ${key}`)
-        const res = await fetch(patchRoot + '/folder?' + new URLSearchParams({ key }), {
-                method: 'DELETE',
-                cache: "no-cache",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
-        )
+    console.log(`Deleting folder ${key}`)
+    const res = await fetch(patchRoot + '/folder?' + new URLSearchParams({ key }), {
+            method: 'DELETE',
+            cache: "no-cache",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }
+    )
 
-        await res.json();
-    } catch (err) {
-        console.log(`Error while deleting patch ${key}`, err)
+    if (res.status !== 200) {
+        console.log(`Error while deleting patch, received status ${res.status}`)
+        // TODO: Throw?
     }
 }
 
 async function renamePatch(oldKey: string, newKey: string) {
-    try {
-        console.log(`Renaming patch ${oldKey} to ${newKey}`)
-        const res = await fetch(patchRoot + '/rename', {
-                method: 'POST',
-                body: JSON.stringify({
-                    oldKey,
-                    newKey
-                }),
-                cache: "no-cache",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
-        )
-
-        await res.json();
-    } catch (err) {
-        console.log(`Error while renaming patch ${oldKey} to ${newKey}`, err)
+    console.log(`Renaming patch ${oldKey} to ${newKey}`)
+    const res = await fetch(patchRoot + '/rename', {
+            method: 'POST',
+            body: JSON.stringify({
+                oldKey,
+                newKey
+            }),
+            cache: "no-cache",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }
+    )
+    if (res.status !== 200) {
+        console.log(`Error while renaming patch ${oldKey}, received status ${res.status}`)
+        // TODO: Throw?
     }
 }
 
 async function deletePatch(key: string) {
-    try {
-        await fetch(patchRoot + '?' + new URLSearchParams({ key }), {
-                method: 'DELETE',
-                cache: "no-cache",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
-        )
-    } catch (err) {
-        console.log(`Error while deleting patch ${key}`, err)
+    const res = await fetch(patchRoot + '?' + new URLSearchParams({ key }), {
+            method: 'DELETE',
+            cache: "no-cache",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }
+    )
+    if (res.status !== 200) {
+        console.log(`Error while deleting patch, received status ${res.status}`)
+        // TODO: Throw?
     }
 }
 
@@ -172,21 +165,22 @@ async function getFileTree(): Promise<FileBrowserTree> {
 }
 
 async function getPatchVersions(key: string) {
-    try {
-        const res = await fetch(patchRoot + '/versions?' + new URLSearchParams({ key }), {
-                method: 'GET',
-                cache: "no-cache",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
-        )
-        const versions: string[] = await res.json();
-        console.log(`Versions for ${key}`, versions)
-        return versions
-    } catch (err) {
-        console.log(`Error while fetching versions for patch ${key}`, err)
+    const res = await fetch(patchRoot + '/versions?' + new URLSearchParams({ key }), {
+            method: 'GET',
+            cache: "no-cache",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }
+    )
+    if (res.status !== 200) {
+        console.log(`Error while deleting patch, received status ${res.status}`)
+        return []
+        // TODO: Throw?
     }
+    const versions: string[] = await res.json();
+    console.log(`Versions for ${key}`, versions)
+    return versions
 }
 
 const patchFileServerFacade = {

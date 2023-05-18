@@ -64,6 +64,8 @@ function groupByFolder(files: FileBrowserTree, root: string): FileBrowserTree {
       prefix += '/'
     }
 
+    console.log('Adding all children', prefix)
+
     let files: FileBrowserTreeNode[] = []
 
     for (const folderKey in level.children) {
@@ -81,8 +83,6 @@ function groupByFolder(files: FileBrowserTree, root: string): FileBrowserTree {
     files = files.concat(level.contents)
     return files
   }
-
-  console.log('File tree', fileTree)
 
   files = addAllChildren(fileTree, '')
   return files
