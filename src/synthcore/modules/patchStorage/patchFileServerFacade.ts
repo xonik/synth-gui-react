@@ -55,6 +55,7 @@ async function loadPatch(key: string, version?: string) {
     return patch
 }
 
+// OK
 async function createFolder(key: string) {
     console.log(`Creating folder ${key}`)
     const res = await fetch(patchRoot + '/folder', {
@@ -94,6 +95,7 @@ async function renameFolder(oldKey: string, newKey: string) {
     }
 }
 
+// OK
 async function deleteFolder(key: string) {
     console.log(`Deleting folder ${key}`)
     const res = await fetch(patchRoot + '/folder?' + new URLSearchParams({ key }), {
@@ -106,7 +108,7 @@ async function deleteFolder(key: string) {
     )
 
     if (res.status !== 200) {
-        console.log(`Error while deleting patch, received status ${res.status}`)
+        console.log(`Error while deleting folder, received status ${res.status}`)
         // TODO: Throw?
     }
 }
@@ -131,6 +133,7 @@ async function renamePatch(oldKey: string, newKey: string) {
     }
 }
 
+// OK
 async function deletePatch(key: string) {
     const res = await fetch(patchRoot + '?' + new URLSearchParams({ key }), {
             method: 'DELETE',
@@ -146,6 +149,7 @@ async function deletePatch(key: string) {
     }
 }
 
+// OK
 async function getFileTree(): Promise<FileBrowserTree> {
     const res = await fetch(patchRoot + '/filetree', {
             method: 'GET',
@@ -164,6 +168,7 @@ async function getFileTree(): Promise<FileBrowserTree> {
     return filetree
 }
 
+// OK
 async function getPatchVersions(key: string) {
     const res = await fetch(patchRoot + '/versions?' + new URLSearchParams({ key }), {
             method: 'GET',
@@ -174,7 +179,7 @@ async function getPatchVersions(key: string) {
         }
     )
     if (res.status !== 200) {
-        console.log(`Error while deleting patch, received status ${res.status}`)
+        console.log(`Error while getting patch versions, received status ${res.status}`)
         return []
         // TODO: Throw?
     }

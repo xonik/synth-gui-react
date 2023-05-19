@@ -1,6 +1,6 @@
 import FileSystemFacade from '../filesystem/FileSystemFacade.js';
 import { FileNotFoundException } from '../filesystem/FileSystemFacade.js';
-import { splitKey } from './fileUtils.js'
+import { splitKey } from '../filesystem/fileUtils.js'
 
 import express from 'express'
 
@@ -45,7 +45,8 @@ router.get('/', function (req, res, next) {
 
 // TODO: Prevent caching
 router.get('/versions', function (req, res, next) {
-    const { key } = req.body
+    const { key }: {key?: string } = req.query
+    if(!key) return res.status(400).json({ error: 'Key not included' })
     if (key.endsWith('/')) {
         res.json({})
     } else {
@@ -99,7 +100,9 @@ router.post('/rename', function (req, res, next) {
     const { oldKey, newKey } = req.body
     if (!oldKey.endsWith('/') && !newKey.endsWith('/')) {
         try {
-            filesystem.rename(oldKey, newKey)
+            const [oldFolder, oldFilename] = splitKey(oldKey)
+            const [newFolder, newFilename] = splitKey(oldKey)
+            filesystem.rename(oldFolder, oldFilename, newFolder, newFilename)
             return res.json({ result: 'ok' })
         } catch (error) {
             return res.status(500).json({ error: 'Could not rename file' })
@@ -113,6 +116,7 @@ router.put('/folder', function (req, res, next) {
     const { key } = req.body
     if (key.endsWith('/')) {
         try {
+            console.log(`Creating folder ${key}`)
             filesystem.createFolder(key)
             return res.json({ result: 'ok' })
         } catch (error) {
@@ -127,7 +131,7 @@ router.post('/folder/rename', function (req, res, next) {
     const { oldKey, newKey } = req.body
     if (oldKey.endsWith('/') && newKey.endsWith('/')) {
         try {
-            filesystem.rename(oldKey, newKey)
+            filesystem.rename(oldKey, undefined, newKey, undefined)
             return res.json({ result: 'ok' })
         } catch (error) {
             return res.status(500).json({ error: 'Could not rename folder' })
