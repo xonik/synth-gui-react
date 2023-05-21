@@ -14,7 +14,7 @@ class FileSystemFacade {
 
     fat: Fat
 
-    constructor(private root: string) {
+    constructor(private root: string, private rootDeleted: string) {
         this.fat = new Fat(root)
     }
 
@@ -31,9 +31,15 @@ class FileSystemFacade {
     }
 
     async deleteFolder(path: string) {
-        await this.fat.deleteFolder(path)
-        console.log(`Deleting folder ${path}`)
-        // TODO: Move contents to deleted-folder.
+        const deletedFileKeys = await this.fat.deleteFolder(path)
+        console.log(`Deleting folder ${path}, file keys deleted: ${deletedFileKeys.join(',')}`)
+
+        await Promise.all(deletedFileKeys.map((key)=> this.moveFileToDeleted(key)))
+    }
+
+    private async moveFileToDeleted(keyOnDisk: string) {
+        const newPath = `${this.rootDeleted}${keyOnDisk}`
+        await fs.rename(this.getFileSystemPath(keyOnDisk), newPath)
     }
 
     async readFile(fullPath: string, version?: string) {
@@ -71,9 +77,11 @@ class FileSystemFacade {
 
     async deleteFile(fullPath: string) {
         const [path, filename] = splitKey(fullPath)
-        await this.fat.deleteFile(path, filename)
-        console.log(`Deleting file ${path} ${filename}`)
-        // TODO: Move to deleted-folder.
+        const deletedFileKey = await this.fat.deleteFile(path, filename)
+        console.log(`Deleting file ${path} ${filename} with key ${deletedFileKey}`)
+        if(deletedFileKey) {
+            await this.moveFileToDeleted(deletedFileKey)
+        }
     }
 
     async rename(oldPath: string, newPath: string) {

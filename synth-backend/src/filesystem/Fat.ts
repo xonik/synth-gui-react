@@ -1,8 +1,8 @@
 import { readFileSync } from 'fs'
 import fs from 'fs/promises'
 import { v4 as uuidv4 } from 'uuid'
-import { getPathParts } from './fileUtils.js'
-import { FileNotFoundException, FileTreeEntry } from './types.js'
+import { getFilesRecursively, getPathParts } from './fileUtils.js'
+import { FileEntry, FileNotFoundException, FileTreeEntry, FolderEntry } from './types.js'
 
 /**
  * A virtual file system (File Allocation Table) that maps between a path
@@ -59,15 +59,15 @@ export class Fat {
 
     getFolderWithCreate(path: string): FolderEntry {
         const pathParts = getPathParts(path)
-        console.log(`Getting folder ${path}`, {pathParts})
+        console.log(`Getting folder ${path}`, { pathParts })
 
         // split will always give one element which is root.
         let folder: FolderEntry = this.root
-        for(let i=1; i<pathParts.length; i++){
+        for (let i = 1; i < pathParts.length; i++) {
             const childPath = pathParts[i]
             const childFolder = folder.contents.find((node) => node.name === childPath)
-            if(childFolder){
-                if(childFolder.type === 'folder') {
+            if (childFolder) {
+                if (childFolder.type === 'folder') {
                     folder = childFolder
                 } else {
                     throw new Error(`Found file ${childPath} when expecting a folder`)
@@ -91,16 +91,16 @@ export class Fat {
 
     getFolder(path: string): FolderEntry | undefined {
         const pathParts = getPathParts(path)
-        console.log(`Getting folder ${path}`, {pathParts})
+        console.log(`Getting folder ${path}`, { pathParts })
 
         let folder: FolderEntry = this.root
-        for(let i=1; i<pathParts.length; i++){
+        for (let i = 1; i < pathParts.length; i++) {
             const childPath = pathParts[i]
             const childFolder = folder.contents.find((node) => node.name === childPath)
-            if(!childFolder){
+            if (!childFolder) {
                 return undefined
             }
-            if(childFolder.type === 'file'){
+            if (childFolder.type === 'file') {
                 throw Error(`Found a file when expecting a folder at path ${path}`)
             }
             folder = childFolder
@@ -172,42 +172,47 @@ export class Fat {
         return undefined
     }
 
+    // Delete returns id of deleted file
     async deleteFile(path: string, filename: string) {
         const folder = this.getFolder(path)
-        if (folder) {
-            const file = this.getFileFromFolder(folder, filename)
-            if (file) {
-                const index = folder.contents.indexOf(file);
-                folder.contents.splice(index, 1);
-            }
+        if(!folder) return ''
+
+        const file = this.getFileFromFolder(folder, filename)
+        if (file) {
+            const index = folder.contents.indexOf(file);
+            folder.contents.splice(index, 1);
+            await this.writeToDisk()
+            return file.keyOnDisk
         }
-        await this.writeToDisk()
     }
 
+    // Delete returns the id of all deleted files
     async deleteFolder(path: string) {
         const folder = this.getFolder(path)
-        if (folder) {
-            const parent = folder.parent
-            if (parent) {
-                const index = parent.contents.indexOf(parent);
-                parent.contents.splice(index, 1);
-            }
+        if(!folder) return []
+
+        const parent = folder.parent
+        if (parent) {
+            const index = parent.contents.indexOf(parent);
+            parent.contents.splice(index, 1);
         }
         await this.writeToDisk()
+
+        return getFilesRecursively(folder).map((file) => file.keyOnDisk)
     }
 
     async renameFile(path: string, oldName: string, newName: string) {
-        if(newName === ''){
+        if (newName === '') {
             throw Error(`Cannot rename file, new file name cannot be blank`)
         }
 
-        if(oldName === ''){
+        if (oldName === '') {
             throw Error(`Cannot rename file, old file name cannot be blank`)
         }
 
         const folder = this.getFolder(path)
         if (folder) {
-            if(folder.contents.find((child) => child.name === newName)){
+            if (folder.contents.find((child) => child.name === newName)) {
                 throw Error(`Cannot rename file as ${path}${newName} already exists`)
             }
             const file = this.getFileFromFolder(folder, oldName)
@@ -217,12 +222,12 @@ export class Fat {
     }
 
     async renameFolder(path: string, newName: string) {
-        if(newName === ''){
+        if (newName === '') {
             throw Error(`Cannot rename folder, new folder name cannot be blank`)
         }
         const folder = this.getFolder(path)
         if (folder) {
-            if(folder.parent?.contents.find((child) => child.name === newName)){
+            if (folder.parent?.contents.find((child) => child.name === newName)) {
                 throw Error(`Cannot rename folder as ${path}${newName} already exists`)
             }
 
@@ -295,19 +300,6 @@ export class Fat {
 
 const FAT_FILE_NAME = 'fat.json'
 
-type FileEntry = {
-    name: string,
-    keyOnDisk: string,
-    type: 'file'
-    parent?: FolderEntry
-}
-
-type FolderEntry = {
-    name: string,
-    type: 'folder'
-    contents: (FileEntry | FolderEntry)[]
-    parent?: FolderEntry
-}
 
 
 

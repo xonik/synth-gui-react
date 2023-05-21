@@ -5,7 +5,7 @@ import express from 'express'
 
 var router = express.Router();
 
-const filesystem = new FileSystemFacade('../storage/patches/')
+const filesystem = new FileSystemFacade('../storage/patches/', '../storage/patchesDeleted/')
 
 // TODO: Prevent caching
 router.get('/filetree', function (req, res, next) {
