@@ -1,5 +1,5 @@
 import FileSystemFacade from '../filesystem/FileSystemFacade.js';
-import { FileNotFoundException } from '../filesystem/FileSystemFacade.js';
+import { FileNotFoundException } from '../filesystem/types.js';
 import { splitKey } from '../filesystem/fileUtils.js'
 
 import express from 'express'
