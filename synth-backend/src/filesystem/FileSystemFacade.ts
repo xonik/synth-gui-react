@@ -18,10 +18,6 @@ class FileSystemFacade {
         this.fat = new Fat(root)
     }
 
-    private getFileSystemFolder(path: string) {
-        return `${this.root}${path}`
-    }
-
     private getFileSystemPath(keyOnDisk: string) {
         return `${this.root}${keyOnDisk}`
     }
@@ -32,7 +28,6 @@ class FileSystemFacade {
 
     async createFolder(path: string) {
         await this.fat.createFolder(path)
-        await fs.mkdir(`${this.getFileSystemFolder(path)}`, { recursive: true })
     }
 
     async deleteFolder(path: string) {
@@ -57,13 +52,9 @@ class FileSystemFacade {
 
     async writeFile(content: any, fullPath: string) {
         const [path, filename] = splitKey(fullPath)
-
-        console.log(`Writing file p: ${path} f: ${filename}`)
         let keyOnDisk = this.fat.getFileKeyOnDisk(path, filename)
         if (!keyOnDisk) {
-            console.log(`Existing file not found`)
             keyOnDisk = await this.fat.createFile(path, filename)
-            console.log(`Added new file ${keyOnDisk} to fat`)
         }
         const newVersion = `${Date.now()}`
 
@@ -117,7 +108,6 @@ class FileSystemFacade {
     }
 
     async writeFileInstance(content: any, keyOnDisk: string, instanceName: string) {
-        // TODO: Errors aren't caught by try/catch.
         const folder = `${this.getFileSystemPath(keyOnDisk)}/`
         if (!existsSync(folder)) {
             console.log(`Creating folder ${folder}`)
@@ -132,7 +122,6 @@ class FileSystemFacade {
     }
 
     async readFileInstance(keyOnDisk: string, instanceName: string): Promise<any> {
-        //TODO: Check existance and throw FileNotFoundException
         const filepath = `${this.getFileSystemPath(keyOnDisk)}/${instanceName}`
         if (!existsSync(filepath)) {
             throw new FileNotFoundException(`File ${keyOnDisk} not found (version ${instanceName})`)

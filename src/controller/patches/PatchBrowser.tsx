@@ -152,7 +152,7 @@ class PatchBrowser extends React.Component {
                 <button onClick={async () => {
                     //patchStorageApi.getPatchVersions('testpatch')
                     await patchStorageApi.savePatch('/f/o/l/superpatch')
-                    await patchStorageApi.renameFolder('/f/o/l/', '/f/o/dol/')
+                    await patchStorageApi.getPatchVersions('/f/o/l/superpatch')
 
                 }}>Save</button>
             </div>
