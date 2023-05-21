@@ -178,7 +178,7 @@ export class Fat {
             const file = this.getFileFromFolder(folder, filename)
             if (file) {
                 const index = folder.contents.indexOf(file);
-                folder.contents = folder.contents.splice(index, 1);
+                folder.contents.splice(index, 1);
             }
         }
         await this.writeToDisk()
@@ -190,7 +190,7 @@ export class Fat {
             const parent = folder.parent
             if (parent) {
                 const index = parent.contents.indexOf(parent);
-                parent.contents = parent.contents.splice(index, 1);
+                parent.contents.splice(index, 1);
             }
         }
         await this.writeToDisk()
