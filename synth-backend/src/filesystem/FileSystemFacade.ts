@@ -2,6 +2,7 @@ import * as fs from 'fs/promises'
 import { existsSync } from 'fs'
 import { Fat } from './Fat.js'
 import { FileNotFoundException, FileTreeEntry } from './types.js'
+import { splitKey } from './fileUtils.js'
 
 export type FileMetadata = {
     currentVersion: string,
@@ -40,7 +41,8 @@ class FileSystemFacade {
         // TODO: Move contents to deleted-folder.
     }
 
-    async readFile(path: string, filename: string, version?: string) {
+    async readFile(fullPath: string, version?: string) {
+        const [path, filename] = splitKey(fullPath)
         const keyOnDisk = this.fat.getFileKeyOnDisk(path, filename)
         if (!keyOnDisk) {
             throw new FileNotFoundException(`File ${path}/${filename} does not exist in FAT`)
@@ -53,7 +55,9 @@ class FileSystemFacade {
         }
     }
 
-    async writeFile(content: any, path: string, filename: string) {
+    async writeFile(content: any, fullPath: string) {
+        const [path, filename] = splitKey(fullPath)
+
         console.log(`Writing file p: ${path} f: ${filename}`)
         let keyOnDisk = this.fat.getFileKeyOnDisk(path, filename)
         if (!keyOnDisk) {
@@ -74,26 +78,32 @@ class FileSystemFacade {
         await this.writeFileInstance(fileMetadata, keyOnDisk, METADATA_FILE_NAME)
     }
 
-    async deleteFile(path: string, filename: string) {
+    async deleteFile(fullPath: string) {
+        const [path, filename] = splitKey(fullPath)
         await this.fat.deleteFile(path, filename)
         console.log(`Deleting file ${path} ${filename}`)
         // TODO: Move to deleted-folder.
     }
 
-    async rename(oldFolder: string, oldKey: string | undefined, newFolder: string, newKey: string | undefined) {
-        console.log(`Renaming ${oldKey} to ${newKey}`)
-        if (oldKey && newKey) {
-            await this.fat.renameFile(oldFolder, oldKey, newKey)
+    async rename(oldPath: string, newPath: string) {
+        const [oldFolder, oldFilename] = splitKey(oldPath)
+        const [newFolder, newFilename] = splitKey(newPath)
+        if (oldFilename && newFilename) {
+            console.log(`Renaming file ${oldFilename} to ${newFilename}`)
+            await this.fat.renameFile(oldFolder, oldFilename, newFilename)
         } else if (!oldFolder.endsWith('/') && !oldFolder.endsWith('/')) {
             throw new Error('Cannot rename a file to a directory and vice versa')
         } else {
             const pathParts = newFolder.split('/')
-            const newName = pathParts[pathParts.length - 1]
+            const newName = pathParts[pathParts.length - 2]
+            console.log(`Renaming folder ${oldFolder} to ${newName}`)
             await this.fat.renameFolder(oldFolder, newName)
         }
     }
 
-    async getVersionsFromFileSystem(path: string, filename: string): Promise<string[]> {
+    async getVersionsFromFileSystem(fullPath: string): Promise<string[]> {
+        const [path, filename] = splitKey(fullPath)
+
         const keyOnDisk = this.fat.getFileKeyOnDisk(path, filename)
         if (!keyOnDisk) {
             throw new FileNotFoundException(`File ${filename} does not exist in FAT`)

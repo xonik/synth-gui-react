@@ -197,8 +197,19 @@ export class Fat {
     }
 
     async renameFile(path: string, oldName: string, newName: string) {
+        if(newName === ''){
+            throw Error(`Cannot rename file, new file name cannot be blank`)
+        }
+
+        if(oldName === ''){
+            throw Error(`Cannot rename file, old file name cannot be blank`)
+        }
+
         const folder = this.getFolder(path)
         if (folder) {
+            if(folder.contents.find((child) => child.name === newName)){
+                throw Error(`Cannot rename file as ${path}${newName} already exists`)
+            }
             const file = this.getFileFromFolder(folder, oldName)
             if (file) file.name = newName
         }
@@ -206,8 +217,15 @@ export class Fat {
     }
 
     async renameFolder(path: string, newName: string) {
+        if(newName === ''){
+            throw Error(`Cannot rename folder, new folder name cannot be blank`)
+        }
         const folder = this.getFolder(path)
         if (folder) {
+            if(folder.parent?.contents.find((child) => child.name === newName)){
+                throw Error(`Cannot rename folder as ${path}${newName} already exists`)
+            }
+
             folder.name = newName
         }
         await this.writeToDisk()

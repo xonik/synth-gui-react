@@ -1,6 +1,5 @@
 import FileSystemFacade from '../filesystem/FileSystemFacade.js';
 import { FileNotFoundException } from '../filesystem/types.js';
-import { splitKey } from '../filesystem/fileUtils.js'
 
 import express from 'express'
 
@@ -27,10 +26,8 @@ router.get('/', async function (req, res, next) {
     if (key.endsWith('/')) {
         res.json({})
     } else {
-        const [folder, filename] = splitKey(key)
-
         try {
-            return res.json(await filesystem.readFile(folder, filename, version))
+            return res.json(await filesystem.readFile(key, version))
         } catch (error) {
             if (error instanceof FileNotFoundException) {
                 return res.status(404).json({ error: error.message })
@@ -47,10 +44,8 @@ router.get('/versions', async function (req, res, next) {
     if (key.endsWith('/')) {
         res.json({})
     } else {
-        const [folder, filename] = splitKey(key)
-
         try {
-            const versions = await filesystem.getVersionsFromFileSystem(folder, filename)
+            const versions = await filesystem.getVersionsFromFileSystem(key)
             return res.json(versions)
         } catch (error) {
             if (error instanceof FileNotFoundException) {
@@ -66,11 +61,9 @@ router.put('/', async function (req, res, next) {
     if (key.endsWith('/')) {
         res.json({})
     } else {
-        const [folder, filename] = splitKey(key)
-
         try {
-            console.log(`Writing patch ${folder}${filename}`)
-            await filesystem.writeFile(content, folder, filename)
+            console.log(`Writing patch ${key}`)
+            await filesystem.writeFile(content, key)
             return res.json({ result: 'ok' })
         } catch (error) {
             return res.status(500).json({ error: 'Could not write patch' })
@@ -85,8 +78,7 @@ router.delete('/', async function (req, res, next) {
         res.status(500).json({ error: `key ${key} is not a file` })
     } else {
         try {
-            const [folder, filename] = splitKey(key)
-            await filesystem.deleteFile(folder, filename)
+            await filesystem.deleteFile(key)
             return res.json({ result: 'ok' })
         } catch (error) {
             return res.status(500).json({ error: 'Could not delete patch' })
@@ -98,9 +90,7 @@ router.post('/rename', async function (req, res, next) {
     const { oldKey, newKey } = req.body
     if (!oldKey.endsWith('/') && !newKey.endsWith('/')) {
         try {
-            const [oldFolder, oldFilename] = splitKey(oldKey)
-            const [newFolder, newFilename] = splitKey(oldKey)
-            await filesystem.rename(oldFolder, oldFilename, newFolder, newFilename)
+            await filesystem.rename(oldKey, newKey)
             return res.json({ result: 'ok' })
         } catch (error) {
             return res.status(500).json({ error: 'Could not rename file' })
@@ -129,7 +119,7 @@ router.post('/folder/rename', async function (req, res, next) {
     const { oldKey, newKey } = req.body
     if (oldKey.endsWith('/') && newKey.endsWith('/')) {
         try {
-            await filesystem.rename(oldKey, undefined, newKey, undefined)
+            await filesystem.rename(oldKey, newKey)
             return res.json({ result: 'ok' })
         } catch (error) {
             return res.status(500).json({ error: 'Could not rename folder' })
