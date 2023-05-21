@@ -44,3 +44,9 @@ export const getFilesRecursively = (folder: FolderEntry): FileEntry[] => {
         ...childFiles,
     ]
 }
+
+export const getAsJSONString = (entry: FolderEntry) => {
+    // Ignore parent on write as it is a cyclic reference
+    const replacer = (key: string, value: string) => (key === "parent") ? undefined : value
+    return JSON.stringify(entry, replacer, 2)
+}

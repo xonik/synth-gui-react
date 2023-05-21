@@ -37,6 +37,19 @@ router.get('/', async function (req, res, next) {
     }
 });
 
+router.get('/path', async function (req, res, next) {
+    const { keyOnDisk }: {keyOnDisk?: string} = req.query
+    if(!keyOnDisk) return res.status(400).json({ error: 'Key not included' })
+    try {
+        return res.json(await filesystem.getPath(keyOnDisk))
+    } catch (error) {
+        if (error instanceof FileNotFoundException) {
+            return res.status(404).json({ error: error.message })
+        }
+        return res.status(500).json({ error: `Error while searching for path of ${keyOnDisk}` })
+    }
+});
+
 // TODO: Prevent caching
 router.get('/versions', async function (req, res, next) {
     const { key }: {key?: string } = req.query

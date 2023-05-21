@@ -3,6 +3,7 @@ import { RawFileBrowser } from './browser'
 
 export interface FileBrowserFile {
     key: string
+    keyOnDisk?: string // Key on physical storage (directory with all versions)
     modified?: number
     size?: number
     url?: string

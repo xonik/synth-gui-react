@@ -3,6 +3,7 @@ export class FileNotFoundException extends Error {
 
 export type FileTreeEntry = {
     key: string
+    keyOnDisk?: string
     size: number
 }
 

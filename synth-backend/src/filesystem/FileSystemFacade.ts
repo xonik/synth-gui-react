@@ -34,7 +34,7 @@ class FileSystemFacade {
         const deletedFileKeys = await this.fat.deleteFolder(path)
         console.log(`Deleting folder ${path}, file keys deleted: ${deletedFileKeys.join(',')}`)
 
-        await Promise.all(deletedFileKeys.map((key)=> this.moveFileToDeleted(key)))
+        await Promise.all(deletedFileKeys.map((key) => this.moveFileToDeleted(key)))
     }
 
     private async moveFileToDeleted(keyOnDisk: string) {
@@ -42,17 +42,25 @@ class FileSystemFacade {
         await fs.rename(this.getFileSystemPath(keyOnDisk), newPath)
     }
 
-    async readFile(fullPath: string, version?: string) {
+    async readFile(fullPath: string, version?: string): Promise<any> {
         const [path, filename] = splitKey(fullPath)
         const keyOnDisk = this.fat.getFileKeyOnDisk(path, filename)
         if (!keyOnDisk) {
             throw new FileNotFoundException(`File ${path}/${filename} does not exist in FAT`)
         }
         if (version) {
-            return this.readFileInstance(keyOnDisk, version)
+            return {
+                version,
+                keyOnDisk,
+                ...await this.readFileInstance(keyOnDisk, version)
+            }
         } else {
             const fileMetadata: FileMetadata = await this.readFileInstance(keyOnDisk, METADATA_FILE_NAME)
-            return this.readFileInstance(keyOnDisk, fileMetadata.currentVersion)
+            return {
+                version: fileMetadata.currentVersion,
+                keyOnDisk,
+                ...await this.readFileInstance(keyOnDisk, fileMetadata.currentVersion)
+            }
         }
     }
 
@@ -79,7 +87,7 @@ class FileSystemFacade {
         const [path, filename] = splitKey(fullPath)
         const deletedFileKey = await this.fat.deleteFile(path, filename)
         console.log(`Deleting file ${path} ${filename} with key ${deletedFileKey}`)
-        if(deletedFileKey) {
+        if (deletedFileKey) {
             await this.moveFileToDeleted(deletedFileKey)
         }
     }
@@ -115,7 +123,11 @@ class FileSystemFacade {
         return (await fs.readdir(folderOnDisk)).filter(file => file !== METADATA_FILE_NAME)
     }
 
-    async writeFileInstance(content: any, keyOnDisk: string, instanceName: string) {
+    getPath(keyOnDisk: string){
+        return this.fat.getPath(keyOnDisk)
+    }
+
+    private async writeFileInstance(content: any, keyOnDisk: string, instanceName: string) {
         const folder = `${this.getFileSystemPath(keyOnDisk)}/`
         if (!existsSync(folder)) {
             console.log(`Creating folder ${folder}`)
@@ -129,7 +141,7 @@ class FileSystemFacade {
         }
     }
 
-    async readFileInstance(keyOnDisk: string, instanceName: string): Promise<any> {
+    private async readFileInstance(keyOnDisk: string, instanceName: string): Promise<any> {
         const filepath = `${this.getFileSystemPath(keyOnDisk)}/${instanceName}`
         if (!existsSync(filepath)) {
             throw new FileNotFoundException(`File ${keyOnDisk} not found (version ${instanceName})`)

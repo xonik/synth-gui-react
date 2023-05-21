@@ -1,13 +1,13 @@
 import { readFileSync } from 'fs'
 import fs from 'fs/promises'
 import { v4 as uuidv4 } from 'uuid'
-import { getFilesRecursively, getPathParts } from './fileUtils.js'
+import { getAsJSONString, getFilesRecursively, getPathParts } from './fileUtils.js'
 import { FileEntry, FileNotFoundException, FileTreeEntry, FolderEntry } from './types.js'
 
 /**
  * A virtual file system (File Allocation Table) that maps between a path
  * and a file on disk. Files on disk are stored in a single directory with
- * a subdirectory pr file. Each file is mapped to a directory using an unique ID.
+ * a subdirectory pr file. Each file is mapped to a directory using a unique ID.
  * This allows us to keep the same file id when moving and renaming files,
  * and we can link directly to a file in for example a performance/multi patch setup
  * without thinking about updating it if the patch file is moved.
@@ -36,19 +36,17 @@ export class Fat {
         }
     }
 
-    async writeToDisk() {
+    private async writeToDisk() {
         console.log('Writing fat to disk')
-        // Ignore parent on write as it is a cyclic reference
-        const replacer = (key: string, value: string) => (key === "parent") ? undefined : value
 
         await fs.writeFile(
             `${this.rootOnDisk}${FAT_FILE_NAME}`,
-            JSON.stringify(this.root, replacer, 2),
+            getAsJSONString(this.root),
             'utf8'
         );
     }
 
-    setParentOnContents(parent: FolderEntry) {
+    private setParentOnContents(parent: FolderEntry) {
         parent.contents.forEach((child) => {
             child.parent = parent
             if (child.type === 'folder') {
@@ -57,7 +55,7 @@ export class Fat {
         })
     }
 
-    getFolderWithCreate(path: string): FolderEntry {
+    private getFolderWithCreate(path: string): FolderEntry {
         const pathParts = getPathParts(path)
         console.log(`Getting folder ${path}`, { pathParts })
 
@@ -85,11 +83,10 @@ export class Fat {
             }
         }
 
-
         return folder
     }
 
-    getFolder(path: string): FolderEntry | undefined {
+    private getFolder(path: string): FolderEntry | undefined {
         const pathParts = getPathParts(path)
         console.log(`Getting folder ${path}`, { pathParts })
 
@@ -108,20 +105,15 @@ export class Fat {
         return folder
     }
 
-    getEntry(path: string): FolderEntry | FileEntry | undefined {
-        const levels = path.split('/')
-        let folder = this.root;
-        levels.forEach((level) => {
-            const nextFolder = folder.contents.find((node) => node.name === level)
-            if (!nextFolder) {
-                return undefined
-            }
-        })
-        return folder
-    }
-
     getPath(keyOnDisk: string) {
-        // TODO search for key in all folders.
+        // A bit inefficient as it serialises the whole fat, on average we could get
+        // the result 50% faster by searching but probably not a necessary optimization
+        const entries = this.flatten()
+        const entry = entries.find((entry) => entry.keyOnDisk === keyOnDisk)
+        if (!entry) {
+            throw new FileNotFoundException(`No entry for ${keyOnDisk} found`)
+        }
+        return entry.key
     }
 
     async createFile(path: string, filename: string) {
@@ -153,14 +145,6 @@ export class Fat {
         return undefined
     }
 
-    getFolderFromFolder(folder: FolderEntry, key: string): FolderEntry | undefined {
-        const entry = folder.contents.find((entry) => entry.name === key && entry.type === 'folder')
-        if (entry && entry.type === 'folder') {
-            return entry
-        }
-        return undefined
-    }
-
     getFileKeyOnDisk(path: string, filename: string) {
         const folder = this.getFolder(path)
         if (!folder) return undefined
@@ -175,7 +159,7 @@ export class Fat {
     // Delete returns id of deleted file
     async deleteFile(path: string, filename: string) {
         const folder = this.getFolder(path)
-        if(!folder) return ''
+        if (!folder) return ''
 
         const file = this.getFileFromFolder(folder, filename)
         if (file) {
@@ -189,7 +173,7 @@ export class Fat {
     // Delete returns the id of all deleted files
     async deleteFolder(path: string) {
         const folder = this.getFolder(path)
-        if(!folder) return []
+        if (!folder) return []
 
         const parent = folder.parent
         if (parent) {
@@ -283,6 +267,7 @@ export class Fat {
         const fileTreeEntry = {
             key: path,
             size: 0,
+            keyOnDisk: entry?.type === 'file' ? entry.keyOnDisk : ''
         }
 
         const children = element.type === 'file'
