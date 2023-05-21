@@ -6,13 +6,14 @@ import express from 'express'
 
 var router = express.Router();
 
-const filesystem = new FileSystemFacade('./storage/patches/')
+const filesystem = new FileSystemFacade('../storage/patches/')
 
 // TODO: Prevent caching
 router.get('/filetree', function (req, res, next) {
     console.log("Got a file tree request")
     try {
         const content = filesystem.getFileTree()
+        console.log(content)
         return res.json(content)
     } catch (error) {
         return res.status(500).json({ error: 'Could not read patch list' })
@@ -20,7 +21,7 @@ router.get('/filetree', function (req, res, next) {
 });
 
 // TODO: Prevent caching
-router.get('/', function (req, res, next) {
+router.get('/', async function (req, res, next) {
     const { key, version }: {key?: string, version?: string} = req.query
     if(!key) return res.status(400).json({ error: 'Key not included' })
     if (key.endsWith('/')) {
@@ -29,11 +30,7 @@ router.get('/', function (req, res, next) {
         const [folder, filename] = splitKey(key)
 
         try {
-            if (version) {
-                return res.json(filesystem.readFileInstance(folder, filename, version))
-            } else {
-                return res.json(filesystem.readFile(folder, filename))
-            }
+            return res.json(await filesystem.readFile(folder, filename, version))
         } catch (error) {
             if (error instanceof FileNotFoundException) {
                 return res.status(404).json({ error: error.message })
@@ -44,7 +41,7 @@ router.get('/', function (req, res, next) {
 });
 
 // TODO: Prevent caching
-router.get('/versions', function (req, res, next) {
+router.get('/versions', async function (req, res, next) {
     const { key }: {key?: string } = req.query
     if(!key) return res.status(400).json({ error: 'Key not included' })
     if (key.endsWith('/')) {
@@ -53,7 +50,7 @@ router.get('/versions', function (req, res, next) {
         const [folder, filename] = splitKey(key)
 
         try {
-            const versions = filesystem.getVersionsFromFileSystem(folder, filename)
+            const versions = await filesystem.getVersionsFromFileSystem(folder, filename)
             return res.json(versions)
         } catch (error) {
             if (error instanceof FileNotFoundException) {
@@ -64,7 +61,7 @@ router.get('/versions', function (req, res, next) {
     }
 });
 
-router.put('/', function (req, res, next) {
+router.put('/', async function (req, res, next) {
     const { key, content } = req.body
     if (key.endsWith('/')) {
         res.json({})
@@ -72,7 +69,8 @@ router.put('/', function (req, res, next) {
         const [folder, filename] = splitKey(key)
 
         try {
-            filesystem.writeFile(content, folder, filename)
+            console.log(`Writing patch ${folder}${filename}`)
+            await filesystem.writeFile(content, folder, filename)
             return res.json({ result: 'ok' })
         } catch (error) {
             return res.status(500).json({ error: 'Could not write patch' })
@@ -80,7 +78,7 @@ router.put('/', function (req, res, next) {
     }
 });
 
-router.delete('/', function (req, res, next) {
+router.delete('/', async function (req, res, next) {
     const { key }: {key?: string} = req.query
     if(!key) return res.status(400).json({ error: 'Key not included' })
     if (key.endsWith('/')) {
@@ -88,7 +86,7 @@ router.delete('/', function (req, res, next) {
     } else {
         try {
             const [folder, filename] = splitKey(key)
-            filesystem.deleteFile(folder, filename)
+            await filesystem.deleteFile(folder, filename)
             return res.json({ result: 'ok' })
         } catch (error) {
             return res.status(500).json({ error: 'Could not delete patch' })
@@ -96,13 +94,13 @@ router.delete('/', function (req, res, next) {
     }
 });
 
-router.post('/rename', function (req, res, next) {
+router.post('/rename', async function (req, res, next) {
     const { oldKey, newKey } = req.body
     if (!oldKey.endsWith('/') && !newKey.endsWith('/')) {
         try {
             const [oldFolder, oldFilename] = splitKey(oldKey)
             const [newFolder, newFilename] = splitKey(oldKey)
-            filesystem.rename(oldFolder, oldFilename, newFolder, newFilename)
+            await filesystem.rename(oldFolder, oldFilename, newFolder, newFilename)
             return res.json({ result: 'ok' })
         } catch (error) {
             return res.status(500).json({ error: 'Could not rename file' })
@@ -112,12 +110,12 @@ router.post('/rename', function (req, res, next) {
     }
 });
 
-router.put('/folder', function (req, res, next) {
+router.put('/folder', async function (req, res, next) {
     const { key } = req.body
     if (key.endsWith('/')) {
         try {
             console.log(`Creating folder ${key}`)
-            filesystem.createFolder(key)
+            await filesystem.createFolder(key)
             return res.json({ result: 'ok' })
         } catch (error) {
             return res.status(500).json({ error: 'Could not create folder' })
@@ -127,11 +125,11 @@ router.put('/folder', function (req, res, next) {
     }
 });
 
-router.post('/folder/rename', function (req, res, next) {
+router.post('/folder/rename', async function (req, res, next) {
     const { oldKey, newKey } = req.body
     if (oldKey.endsWith('/') && newKey.endsWith('/')) {
         try {
-            filesystem.rename(oldKey, undefined, newKey, undefined)
+            await filesystem.rename(oldKey, undefined, newKey, undefined)
             return res.json({ result: 'ok' })
         } catch (error) {
             return res.status(500).json({ error: 'Could not rename folder' })
@@ -141,12 +139,12 @@ router.post('/folder/rename', function (req, res, next) {
     }
 });
 
-router.delete('/folder', function (req, res, next) {
+router.delete('/folder', async function (req, res, next) {
     const { key }: {key?: string} = req.query
     if(!key) return res.status(400).json({ error: 'Key not included' })
     if (key.endsWith('/')) {
         try {
-            filesystem.deleteFolder(key)
+            await filesystem.deleteFolder(key)
             return res.json({ result: 'ok' })
         } catch (error) {
             return res.status(500).json({ error: 'Could not delete folder' })

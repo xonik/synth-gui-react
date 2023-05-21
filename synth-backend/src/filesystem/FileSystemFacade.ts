@@ -1,5 +1,7 @@
-import * as fs from 'fs'
+import * as fs from 'fs/promises'
 import { v4 as uuidv4 } from 'uuid';
+import { existsSync, readFileSync } from 'fs'
+import { getPathParts } from './fileUtils.js'
 
 export type FileTreeEntry = {
     key: string
@@ -31,22 +33,45 @@ type FolderEntry = {
 }
 
 
+
+/**
+ * A virtual file system (File Allocation Table) that maps between a path
+ * and a file on disk. Files on disk are stored in a single directory with
+ * a subdirectory pr file. Each file is mapped to a directory using an unique ID.
+ * This allows us to keep the same file id when moving and renaming files,
+ * and we can link directly to a file in for example a performance/multi patch setup
+ * without thinking about updating it if the patch file is moved.
+ */
 class Fat {
     root: FolderEntry
 
     constructor(private rootOnDisk: string) {
-        this.root = {
-            name: '/',
-            type: 'folder',
-            contents: []
+        this.root = this.readFromDisk()
+    }
+
+    readFromDisk() {
+        // Recreate parent on read
+        try {
+            console.log('Reading fat from disk')
+            const fat = JSON.parse(readFileSync(`${this.rootOnDisk}${FAT_FILE_NAME}`, 'utf8'))
+            this.setParentOnContents(fat)
+            return fat
+        } catch (err) {
+            console.log('Fat not found, creating blank')
+            return {
+                name: '',
+                type: 'folder',
+                contents: []
+            }
         }
     }
 
-    writeToDisk() {
+    async writeToDisk() {
+        console.log('Writing fat to disk')
         // Ignore parent on write as it is a cyclic reference
         const replacer = (key: string, value: string) => (key === "parent") ? undefined : value
 
-        fs.writeFileSync(
+        await fs.writeFile(
             `${this.rootOnDisk}${FAT_FILE_NAME}`,
             JSON.stringify(this.root, replacer, 2),
             'utf8'
@@ -62,44 +87,54 @@ class Fat {
         })
     }
 
-    readFromDisk() {
-        // Recreate parent on read
-        const fat = JSON.parse(fs.readFileSync(`${this.rootOnDisk}${FAT_FILE_NAME}`, 'utf8'))
-        if (fat) {
-            this.root = fat
-            this.setParentOnContents(this.root)
-        }
-
-    }
-
     getFolderWithCreate(path: string): FolderEntry {
-        const levels = path.split('/')
-        let folder = this.root;
-        levels.forEach((level) => {
-            const nextFolder = folder.contents.find((node) => node.name === level)
-            if (!nextFolder) {
-                const newFolder: FolderEntry = {
-                    name: level,
+        const pathParts = getPathParts(path)
+        console.log(`Getting folder ${path}`, {pathParts})
+
+        // split will always give one element which is root.
+        let folder: FolderEntry = this.root
+        for(let i=1; i<pathParts.length; i++){
+            const childPath = pathParts[i]
+            const childFolder = folder.contents.find((node) => node.name === childPath)
+            if(childFolder){
+                if(childFolder.type === 'folder') {
+                    folder = childFolder
+                } else {
+                    throw new Error(`Found file ${childPath} when expecting a folder`)
+                }
+            } else {
+                console.log(`Creating folder ${childPath}`)
+                const newChildFolder: FolderEntry = {
+                    name: childPath,
                     type: 'folder',
                     contents: []
                 }
-                folder.contents.push(newFolder)
-                newFolder.parent = folder
-                folder = newFolder
+                folder.contents.push(newChildFolder)
+                newChildFolder.parent = folder
+                folder = newChildFolder
             }
-        })
+        }
+
+
         return folder
     }
 
     getFolder(path: string): FolderEntry | undefined {
-        const levels = path.split('/')
-        let folder = this.root;
-        levels.forEach((level) => {
-            const nextFolder = folder.contents.find((node) => node.name === level)
-            if (!nextFolder) {
+        const pathParts = getPathParts(path)
+        console.log(`Getting folder ${path}`, {pathParts})
+
+        let folder: FolderEntry = this.root
+        for(let i=1; i<pathParts.length; i++){
+            const childPath = pathParts[i]
+            const childFolder = folder.contents.find((node) => node.name === childPath)
+            if(!childFolder){
                 return undefined
             }
-        })
+            if(childFolder.type === 'file'){
+                throw Error(`Found a file when expecting a folder at path ${path}`)
+            }
+            folder = childFolder
+        }
         return folder
     }
 
@@ -115,7 +150,14 @@ class Fat {
         return folder
     }
 
-    createFile(path: string, filename: string, keyOnDisk: string) {
+    getPath(keyOnDisk: string) {
+        // TODO search for key in all folders.
+    }
+
+    async createFile(path: string, filename: string) {
+        const keyOnDisk = uuidv4()
+
+        console.log(`Creating file ${path} ${filename}, keyOnDisk is ${keyOnDisk}`)
         const newFile: FileEntry = {
             name: filename,
             type: 'file',
@@ -124,12 +166,13 @@ class Fat {
         const folder = this.getFolderWithCreate(path)
         folder.contents.push(newFile)
         newFile.parent = folder
-        this.writeToDisk()
+        await this.writeToDisk()
+        return keyOnDisk
     }
 
-    createFolder(path: string) {
+    async createFolder(path: string) {
         this.getFolderWithCreate(path)
-        this.writeToDisk()
+        await this.writeToDisk()
     }
 
     getFileFromFolder(folder: FolderEntry, key: string): FileEntry | undefined {
@@ -159,7 +202,7 @@ class Fat {
         return undefined
     }
 
-    deleteFile(path: string, filename: string) {
+    async deleteFile(path: string, filename: string) {
         const folder = this.getFolder(path)
         if (folder) {
             const file = this.getFileFromFolder(folder, filename)
@@ -168,10 +211,10 @@ class Fat {
                 folder.contents = folder.contents.splice(index, 1);
             }
         }
-        this.writeToDisk()
+        await this.writeToDisk()
     }
 
-    deleteFolder(path: string) {
+    async deleteFolder(path: string) {
         const folder = this.getFolder(path)
         if (folder) {
             const parent = folder.parent
@@ -180,27 +223,27 @@ class Fat {
                 parent.contents = parent.contents.splice(index, 1);
             }
         }
-        this.writeToDisk()
+        await this.writeToDisk()
     }
 
-    renameFile(path: string, oldName: string, newName: string) {
+    async renameFile(path: string, oldName: string, newName: string) {
         const folder = this.getFolder(path)
         if (folder) {
             const file = this.getFileFromFolder(folder, oldName)
             if (file) file.name = newName
         }
-        this.writeToDisk()
+        await this.writeToDisk()
     }
 
-    renameFolder(path: string, newName: string) {
+    async renameFolder(path: string, newName: string) {
         const folder = this.getFolder(path)
         if (folder) {
             folder.name = newName
         }
-        this.writeToDisk()
+        await this.writeToDisk()
     }
 
-    moveFile(filename: string, fromPath: string, toPath: string) {
+    async moveFile(filename: string, fromPath: string, toPath: string) {
         const oldFolder = this.getFolder(fromPath)
         if (!oldFolder) throw new FileNotFoundException(`Path ${fromPath} does not exist`)
 
@@ -214,10 +257,10 @@ class Fat {
 
         newFolder.contents.push(file)
         file.parent = newFolder
-        this.writeToDisk()
+        await this.writeToDisk()
     }
 
-    moveFolder(folderPath: string, toPath: string) {
+    async moveFolder(folderPath: string, toPath: string) {
         const folderToMove = this.getFolder(folderPath)
         if (!folderToMove) throw new FileNotFoundException(`Path ${folderPath} does not exist`)
 
@@ -233,12 +276,16 @@ class Fat {
         }
 
         folderToMove.parent = targetFolder
-        this.writeToDisk()
+        await this.writeToDisk()
     }
 
     flatten(parentPath: string = '', entry?: FolderEntry | FileEntry): FileTreeEntry[] {
-        const element: FolderEntry | FileEntry  = entry || this.root
-        const path = `${parentPath}${element.name}${element.type === 'folder' ? '/' : ''}}`
+        const element: FolderEntry | FileEntry = entry || this.root
+        console.log('flatten', {
+            parentPath,
+            name: element.name
+        })
+        const path = `${parentPath}${element.name}${element.type === 'folder' ? '/' : ''}`
 
         const fileTreeEntry = {
             key: path,
@@ -278,32 +325,37 @@ class FileSystemFacade {
         return this.fat.flatten()
     }
 
-    createFolder(path: string) {
-        this.fat.createFolder(path)
-        fs.mkdirSync(`${this.getFileSystemFolder(path)}`, { recursive: true })
+    async createFolder(path: string) {
+        await this.fat.createFolder(path)
+        await fs.mkdir(`${this.getFileSystemFolder(path)}`, { recursive: true })
     }
 
-    deleteFolder(path: string) {
-        this.fat.deleteFolder(path)
+    async deleteFolder(path: string) {
+        await this.fat.deleteFolder(path)
         console.log(`Deleting folder ${path}`)
         // TODO: Move contents to deleted-folder.
     }
 
-    readFile(path: string, filename: string) {
+    async readFile(path: string, filename: string, version?: string) {
         const keyOnDisk = this.fat.getFileKeyOnDisk(path, filename)
-        if(!keyOnDisk) {
+        if (!keyOnDisk) {
             throw new FileNotFoundException(`File ${path}/${filename} does not exist in FAT`)
         }
-        // TODO: Write to that file instead
-        const fileMetadata: FileMetadata = this.readFileInstance(keyOnDisk, METADATA_FILE_NAME)
-        return this.readFileInstance(keyOnDisk, fileMetadata.currentVersion)
+        if (version) {
+            return this.readFileInstance(keyOnDisk, version)
+        } else {
+            const fileMetadata: FileMetadata = await this.readFileInstance(keyOnDisk, METADATA_FILE_NAME)
+            return this.readFileInstance(keyOnDisk, fileMetadata.currentVersion)
+        }
     }
 
-    writeFile(content: any, path: string, filename: string) {
+    async writeFile(content: any, path: string, filename: string) {
+        console.log(`Writing file p: ${path} f: ${filename}`)
         let keyOnDisk = this.fat.getFileKeyOnDisk(path, filename)
-        if(!keyOnDisk){
-            keyOnDisk = uuidv4()
-            this.fat.createFile(path, filename, keyOnDisk)
+        if (!keyOnDisk) {
+            console.log(`Existing file not found`)
+            keyOnDisk = await this.fat.createFile(path, filename)
+            console.log(`Added new file ${keyOnDisk} to fat`)
         }
         const newVersion = `${Date.now()}`
 
@@ -311,69 +363,67 @@ class FileSystemFacade {
         // Within it are the instances of the file, named with the timestamp of the
         // creation, and a versions file that tells us what is the current version
         // and a list of all versions.
-        this.writeFileInstance(content, keyOnDisk, newVersion)
+        await this.writeFileInstance(content, keyOnDisk, newVersion)
         const fileMetadata: FileMetadata = {
             currentVersion: newVersion
         }
-        this.writeFileInstance(fileMetadata, keyOnDisk, METADATA_FILE_NAME)
-
-
+        await this.writeFileInstance(fileMetadata, keyOnDisk, METADATA_FILE_NAME)
     }
 
-    deleteFile(path: string, filename: string) {
-        this.fat.deleteFile(path, filename)
+    async deleteFile(path: string, filename: string) {
+        await this.fat.deleteFile(path, filename)
         console.log(`Deleting file ${path} ${filename}`)
         // TODO: Move to deleted-folder.
     }
 
-    rename(oldFolder: string, oldKey: string | undefined, newFolder: string, newKey: string | undefined) {
+    async rename(oldFolder: string, oldKey: string | undefined, newFolder: string, newKey: string | undefined) {
         console.log(`Renaming ${oldKey} to ${newKey}`)
         if (oldKey && newKey) {
-            this.fat.renameFile(oldFolder, oldKey, newKey)
+            await this.fat.renameFile(oldFolder, oldKey, newKey)
         } else if (!oldFolder.endsWith('/') && !oldFolder.endsWith('/')) {
             throw new Error('Cannot rename a file to a directory and vice versa')
         } else {
             const pathParts = newFolder.split('/')
-            const newName = pathParts[pathParts.length -1]
-            this.fat.renameFolder(oldFolder, newName)
+            const newName = pathParts[pathParts.length - 1]
+            await this.fat.renameFolder(oldFolder, newName)
         }
     }
 
-    getVersionsFromFileSystem(path: string, filename: string): string[] {
+    async getVersionsFromFileSystem(path: string, filename: string): Promise<string[]> {
         const keyOnDisk = this.fat.getFileKeyOnDisk(path, filename)
-        if(!keyOnDisk){
+        if (!keyOnDisk) {
             throw new FileNotFoundException(`File ${filename} does not exist in FAT`)
         }
 
         const folderOnDisk = this.getFileSystemPath(keyOnDisk)
-        if (!fs.existsSync(folderOnDisk)) {
+        if (!existsSync(folderOnDisk)) {
             throw new FileNotFoundException(`File ${filename} with key ${keyOnDisk} does not exist on disk`)
         }
-        return fs.readdirSync(folderOnDisk).filter(file => file !== METADATA_FILE_NAME)
+        return (await fs.readdir(folderOnDisk)).filter(file => file !== METADATA_FILE_NAME)
     }
 
-    writeFileInstance(content: any, keyOnDisk: string, instanceName: string) {
+    async writeFileInstance(content: any, keyOnDisk: string, instanceName: string) {
         // TODO: Errors aren't caught by try/catch.
         const folder = `${this.getFileSystemPath(keyOnDisk)}/`
-        if (!fs.existsSync(folder)) {
+        if (!existsSync(folder)) {
             console.log(`Creating folder ${folder}`)
-            fs.mkdirSync(`${folder}`, { recursive: true })
+            await fs.mkdir(`${folder}`, { recursive: true })
         }
         const filepath = `${folder}${instanceName}`
         try {
-            fs.writeFileSync(filepath, JSON.stringify(content, null, 2), 'utf8');
+            await fs.writeFile(filepath, JSON.stringify(content, null, 2), 'utf8');
         } catch (err) {
             console.log('ERROR', err)
         }
     }
 
-    readFileInstance(keyOnDisk: string, instanceName: string): any {
+    async readFileInstance(keyOnDisk: string, instanceName: string): Promise<any> {
         //TODO: Check existance and throw FileNotFoundException
         const filepath = `${this.getFileSystemPath(keyOnDisk)}/${instanceName}`
-        if (!fs.existsSync(filepath)) {
+        if (!existsSync(filepath)) {
             throw new FileNotFoundException(`File ${keyOnDisk} not found (version ${instanceName})`)
         }
-        return JSON.parse(fs.readFileSync(filepath, 'utf8'))
+        return JSON.parse(await fs.readFile(filepath, 'utf8'))
     }
 
 }

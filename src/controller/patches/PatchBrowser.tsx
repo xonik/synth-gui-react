@@ -150,7 +150,8 @@ class PatchBrowser extends React.Component {
                     Filename: <input type="text"/>
                 </div>
                 <button onClick={() => {
-                    patchStorageApi.getPatchVersions('testpatch')
+                    //patchStorageApi.getPatchVersions('testpatch')
+                    patchStorageApi.savePatch('/f/o/l/superpatch')
                 }}>Save</button>
             </div>
         )
