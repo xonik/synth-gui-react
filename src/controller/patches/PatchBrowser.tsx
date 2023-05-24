@@ -21,13 +21,14 @@ class PatchBrowser extends React.Component {
     }
 
     handleCreateFolder = (key: string) => {
-        this.setState((state: State) => {
-            return [
+        const path = `/${key}`
+       this.setState((state: State) => {
+            return {files: [
                 ...state.files,
-                { key }
-            ]
+                { key: path, size: 0 }
+            ]}
         })
-        patchStorageApi.createFolder(key)
+        patchStorageApi.createFolder(path)
     }
     handleCreateFiles = (files: File[], path: string) => {
         this.setState((state: State) => {
@@ -151,13 +152,12 @@ class PatchBrowser extends React.Component {
                 </div>
                 <button onClick={async () => {
                     //patchStorageApi.getPatchVersions('testpatch')
+                    /*
                     await patchStorageApi.savePatch('/f/o/l/superpatch')
                     await patchStorageApi.savePatch('/f/o/luperpatch')
                     await patchStorageApi.savePatch('/f/o/puperpatch')
                     await patchStorageApi.savePatch('/f/cuperpatch')
-                    await patchStorageApi.deletePatch('/f/o/puperpatch')
-                    await patchStorageApi.deleteFolder('/f/')
-
+*/
                 }}>Save</button>
             </div>
         )

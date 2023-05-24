@@ -13,6 +13,7 @@ function groupByFolder(files: FileBrowserTree, root: string): FileBrowserTree {
     children: {},
   }
 
+  // Rekursivt lager et tre av entries. Kopierer over props hvis siste element i key er en fil.
   files.forEach((file) => {
     //const relativeKey = (file.newKey || file.key).substr(root.length) // Cannot see that newKey is set anywhere
     const relativeKey = file.key.substr(root.length)
@@ -21,19 +22,25 @@ function groupByFolder(files: FileBrowserTree, root: string): FileBrowserTree {
 
     // alle foldere i path, ink.
     folders.forEach((folderKey, folderIndex) => {
-
       // Har vi kommet til slutten og dette er en folder
-      // TODO: Tror ikke denne er nødvendig?
-      /*
-      if (folderIndex === folders.length - 1 && isFolderType(file)) {
-        // Kopierer over alle props...
-        for (const key in file) {
-          currentFolder[key] = file[key]
-        }
-      }
-       */
 
-      // Usikker på om denne er nødvendig?
+      // Kopierer over props for filer men ikke foldere hvis vi har med sjekken.
+      // Da forsvinner draft og vi kan ikke opprette nye foldere...
+      //if (folderIndex === folders.length - 1) && isFolderType(file)) {
+      // Kopierer over alle props...
+
+      // The key-property copied will be the original version and the draft prop copied will be for the whole stack,
+      // something is very wrong. We should only do this for the last element,
+      // but the last element for a path is the empty one after "/" so we
+      // need a better check.
+      for (const key in file) {
+        // @ts-ignore
+        currentFolder[key] = file[key]
+      }
+      //}
+
+      // Denne skjer på siste steg fordi split tar med et tomt entry
+      // hvis strengen slutter på "/"
       if (folderKey === '') {
         return
       }
@@ -64,10 +71,10 @@ function groupByFolder(files: FileBrowserTree, root: string): FileBrowserTree {
       prefix += '/'
     }
 
-    console.log('Adding all children', prefix)
-
     let files: FileBrowserTreeNode[] = []
 
+    // Legger til ekstra props på alle noder og overskriver key med
+    // key for path frem til dette nivået.
     for (const folderKey in level.children) {
       const node = {
         ...level.children[folderKey],

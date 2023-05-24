@@ -434,6 +434,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
       return
     }
     this.setState((prevState) => {
+
       let addKey = ''
       if (prevState.selection && prevState.selection.length > 0) {
         addKey += prevState.selection
@@ -443,18 +444,23 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
       }
 
       if (addKey !== '__new__/' && !addKey.endsWith('/__new__/')) addKey += '__new__/'
+
       const stateChanges: RawFileBrowserState = {
         ...prevState,
         actionTargets: [addKey],
         activeAction: 'createFolder',
         selection: [addKey],
       }
+      // TODO: What is going on here? If we already have a selection, we should
+      // keep currently open folders but open what?
       if (prevState.selection && prevState.selection.length > 0) {
+        console.log(`Selecting open ${this.state.selection[0]}`,this.state.selection)
         stateChanges.openFolders = {
           ...prevState.openFolders,
           [this.state.selection[0]]: true, // TODO: added [0], not sure if correct
         }
       }
+      console.log('State changes', stateChanges)
       return stateChanges
     })
   }
@@ -656,9 +662,9 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
     if (this.state.nameFilter) {
       const filteredFiles: FileBrowserTree = []
       const terms = this.state.nameFilter.toLowerCase().split(' ')
-      files.map((file) => {
+      files.forEach((file) => {
         let skip = false
-        terms.map((term) => {
+        terms.forEach((term) => {
           if (file.key.toLowerCase().trim().indexOf(term) === -1) {
             skip = true
           }
@@ -674,7 +680,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
       files = this.props.group(files, '')
     } else {
       const newFiles: FileBrowserTree = []
-      files.map((file) => {
+      files.forEach((file) => {
         if (!isFolderType(file)) {
           newFiles.push(file)
         }
