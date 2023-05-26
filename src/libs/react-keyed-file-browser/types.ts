@@ -7,8 +7,9 @@ export interface FileBrowserFile {
     modified?: number
     size?: number
     url?: string
-    name?: string // added runtime
-    draft?: true,
+
+    // added runtime (in 'preview' at least)
+    name?: string
     extension?: string
 }
 
@@ -60,6 +61,10 @@ export type FileBrowserTreeNode =
 
 export const isFolderType = (file: FileBrowserTreeNode): file is FileBrowserTreeGroupNode => {
     return file.key.endsWith('/')
+}
+
+export const isDraft = (file: FileBrowserTreeNode): file is Draft => {
+    return 'draft' in file
 }
 
 export type FileBrowserTree = FileBrowserTreeNode[]
@@ -312,7 +317,7 @@ export interface RendererBrowserProps {
     toggleFolder: (folderKey: string) => void
     beginAction: (action: ActionType | null, keys: string[] | null) => void
     endAction: () => void
-    preview: (file: FileBrowserFile) => void
+    preview: (file: FileBrowserFile & { name: string, extension: string }) => void
 
     // item manipulation
     createFiles?: CreateFilesHandler
@@ -325,7 +330,7 @@ export interface RendererBrowserProps {
     deleteFolder?: DeleteFolderHandler
 
     getItemProps: (
-        file: FileBrowserFile,
+        file: FileBrowserTreeNode,
         browserProps: RendererBrowserProps
     ) => ItemProps
 }
@@ -338,7 +343,7 @@ export interface RendererBrowserProps {
 // have non-optional props here that are not required on the react tag when
 // calling the RawFileBrowser component.
 export type FileBrowserProps = typeof RawFileBrowser.defaultProps & {
-    files: FileBrowserFile[]
+    files: (FileBrowserFile | Draft)[]
     actions?: JSX.Element
     showActionBar: boolean
     canFilter: boolean

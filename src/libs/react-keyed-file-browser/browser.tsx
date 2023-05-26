@@ -32,6 +32,7 @@ import {
   FileBrowserProps,
   ActionType,
   ItemProps,
+  isDraft,
 } from './types'
 
 import './browser.scss'
@@ -39,7 +40,7 @@ import './browser.scss'
 const SEARCH_RESULTS_PER_PAGE = 20
 const regexForNewFolderOrFileSelection = /.*\/__new__[/]?$/gm
 
-function getItemProps(file: FileBrowserFile, browserProps: RendererBrowserProps): ItemProps {
+function getItemProps(file: FileBrowserTreeNode, browserProps: RendererBrowserProps): ItemProps {
   return {
     key: `file-${file.key}`,
     fileKey: file.key,
@@ -48,7 +49,7 @@ function getItemProps(file: FileBrowserFile, browserProps: RendererBrowserProps)
     isOpen: file.key in browserProps.openFolders || browserProps.nameFilter !== undefined,
     isRenaming: browserProps.activeAction === 'rename' && browserProps.actionTargets.includes(file.key),
     isDeleting: browserProps.activeAction === 'delete' && browserProps.actionTargets.includes(file.key),
-    isDraft: !!file.draft,
+    isDraft: isDraft(file) && file.draft,
     isDragging: false // TODO: Probably doesn't belong here
   }
 }

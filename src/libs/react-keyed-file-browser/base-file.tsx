@@ -40,8 +40,8 @@ class BaseFile<T> extends React.Component<FileRendererProps<T>> {
     event && event.preventDefault()
     this.props.browserProps.preview({
       url: this.props.url,
-      name: this.getName(),
       key: this.props.fileKey,
+      name: this.getName(),
       extension: this.getExtension(),
     })
   }
