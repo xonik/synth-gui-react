@@ -59,7 +59,7 @@ export type FileBrowserTreeNode =
     | FileBrowserTreeGroupNode
 
 export const isFolderType = (file: FileBrowserTreeNode): file is FileBrowserTreeGroupNode => {
-    return 'relativeKey' in file
+    return file.key.endsWith('/')
 }
 
 export type FileBrowserTree = FileBrowserTreeNode[]

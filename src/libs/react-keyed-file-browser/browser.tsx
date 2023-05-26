@@ -142,7 +142,6 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
     window.removeEventListener('click', this.handleGlobalClick)
   }
 
-  // TODO: Hvordan funker denne, veldig sentral
   getFile = (key: string): FileBrowserTreeNode | undefined => {
     let hasPrefix = false
     const exactFolder = this.props.files.find((f) => {

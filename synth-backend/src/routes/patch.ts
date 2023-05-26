@@ -15,6 +15,7 @@ router.get('/filetree', function (req, res, next) {
         console.log(content)
         return res.json(content)
     } catch (error) {
+        console.log(error)
         return res.status(500).json({ error: 'Could not read patch list' })
     }
 });
@@ -29,6 +30,7 @@ router.get('/', async function (req, res, next) {
         try {
             return res.json(await filesystem.readFile(key, version))
         } catch (error) {
+            console.log(error)
             if (error instanceof FileNotFoundException) {
                 return res.status(404).json({ error: error.message })
             }
@@ -43,6 +45,7 @@ router.get('/path', async function (req, res, next) {
     try {
         return res.json(await filesystem.getPath(keyOnDisk))
     } catch (error) {
+        console.log(error)
         if (error instanceof FileNotFoundException) {
             return res.status(404).json({ error: error.message })
         }
@@ -61,6 +64,7 @@ router.get('/versions', async function (req, res, next) {
             const versions = await filesystem.getVersionsFromFileSystem(key)
             return res.json(versions)
         } catch (error) {
+            console.log(error)
             if (error instanceof FileNotFoundException) {
                 return res.status(404).json({ error: 'Patch not found' })
             }
@@ -79,6 +83,7 @@ router.put('/', async function (req, res, next) {
             await filesystem.writeFile(content, key)
             return res.json({ result: 'ok' })
         } catch (error) {
+            console.log(error)
             return res.status(500).json({ error: 'Could not write patch' })
         }
     }
@@ -94,6 +99,7 @@ router.delete('/', async function (req, res, next) {
             await filesystem.deleteFile(key)
             return res.json({ result: 'ok' })
         } catch (error) {
+            console.log(error)
             return res.status(500).json({ error: 'Could not delete patch' })
         }
     }
@@ -106,6 +112,7 @@ router.post('/rename', async function (req, res, next) {
             await filesystem.rename(oldKey, newKey)
             return res.json({ result: 'ok' })
         } catch (error) {
+            console.log(error)
             return res.status(500).json({ error: 'Could not rename file' })
         }
     } else {
@@ -121,6 +128,7 @@ router.put('/folder', async function (req, res, next) {
             await filesystem.createFolder(key)
             return res.json({ result: 'ok' })
         } catch (error) {
+            console.log(error)
             return res.status(500).json({ error: 'Could not create folder' })
         }
     } else {
@@ -135,6 +143,7 @@ router.post('/folder/rename', async function (req, res, next) {
             await filesystem.rename(oldKey, newKey)
             return res.json({ result: 'ok' })
         } catch (error) {
+            console.log(error)
             return res.status(500).json({ error: 'Could not rename folder' })
         }
     } else {
@@ -150,6 +159,7 @@ router.delete('/folder', async function (req, res, next) {
             await filesystem.deleteFolder(key)
             return res.json({ result: 'ok' })
         } catch (error) {
+            console.log(error)
             return res.status(500).json({ error: 'Could not delete folder' })
         }
     } else {

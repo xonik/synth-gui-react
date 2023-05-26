@@ -22,22 +22,15 @@ function groupByFolder(files: FileBrowserTree, root: string): FileBrowserTree {
 
     // alle foldere i path, ink.
     folders.forEach((folderKey, folderIndex) => {
+
       // Har vi kommet til slutten og dette er en folder
-
-      // Kopierer over props for filer men ikke foldere hvis vi har med sjekken.
-      // Da forsvinner draft og vi kan ikke opprette nye foldere...
-      //if (folderIndex === folders.length - 1) && isFolderType(file)) {
-      // Kopierer over alle props...
-
-      // The key-property copied will be the original version and the draft prop copied will be for the whole stack,
-      // something is very wrong. We should only do this for the last element,
-      // but the last element for a path is the empty one after "/" so we
-      // need a better check.
-      for (const key in file) {
-        // @ts-ignore
-        currentFolder[key] = file[key]
+      if (folderIndex === folders.length - 1 && isFolderType(file)) {
+        // Kopierer over isDraft
+        for (const key in file) {
+          // @ts-ignore
+          currentFolder[key] = file[key]
+        }
       }
-      //}
 
       // Denne skjer på siste steg fordi split tar med et tomt entry
       // hvis strengen slutter på "/"

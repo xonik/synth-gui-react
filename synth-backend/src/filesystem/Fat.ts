@@ -61,7 +61,7 @@ export class Fat {
 
         // split will always give one element which is root.
         let folder: FolderEntry = this.root
-        for (let i = 1; i < pathParts.length; i++) {
+        for (let i = 0; i < pathParts.length; i++) {
             const childPath = pathParts[i]
             const childFolder = folder.contents.find((node) => node.name === childPath)
             if (childFolder) {
@@ -91,7 +91,7 @@ export class Fat {
         console.log(`Getting folder ${path}`, { pathParts })
 
         let folder: FolderEntry = this.root
-        for (let i = 1; i < pathParts.length; i++) {
+        for (let i = 0; i < pathParts.length; i++) {
             const childPath = pathParts[i]
             const childFolder = folder.contents.find((node) => node.name === childPath)
             if (!childFolder) {
@@ -257,29 +257,29 @@ export class Fat {
     }
 
     flatten(parentPath: string = '', entry?: FolderEntry | FileEntry): FileTreeEntry[] {
-        const element: FolderEntry | FileEntry = entry || this.root
-        console.log('flatten', {
-            parentPath,
-            name: element.name
-        })
-        const path = `${parentPath}${element.name}${element.type === 'folder' ? '/' : ''}`
-
-        const fileTreeEntry = {
-            key: path,
-            size: 0,
-            keyOnDisk: entry?.type === 'file' ? entry.keyOnDisk : ''
+        if (entry) {
+            const path = `${parentPath}${entry.name}${entry.type === 'folder' ? '/' : ''}`
+            const fileTreeEntry = {
+                key: path,
+                size: 0,
+                keyOnDisk: entry?.type === 'file' ? entry.keyOnDisk : ''
+            }
+            const children = entry.type === 'file'
+                ? []
+                : entry.contents.flatMap(child =>
+                    this.flatten(path, child)
+                )
+            return [
+                fileTreeEntry,
+                ...children
+            ]
+        } else {
+            return [
+                ...this.root.contents.flatMap(child =>
+                    this.flatten('', child)
+                )
+            ]
         }
-
-        const children = element.type === 'file'
-            ? []
-            : element.contents.flatMap(child =>
-                this.flatten(path, child)
-            )
-
-        return [
-            fileTreeEntry,
-            ...children
-        ]
     }
 }
 

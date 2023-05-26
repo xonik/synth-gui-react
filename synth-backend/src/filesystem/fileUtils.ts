@@ -20,10 +20,6 @@ export const isFile = (file: FileEntry | FolderEntry): file is FileEntry => {
 }
 
 export const getPathParts = (path: string) => {
-    if(!path.startsWith('/')){
-        throw Error(`Only absolute paths are supported, ${path} does not start with /`)
-    }
-
     if(path.endsWith('/')){
         return path.slice(0, path.length - 1).split('/')
     }

@@ -41,7 +41,6 @@ class RawTableFolder extends BaseFolder {
               ref={this.selectFolderNameFromRef}
               value={this.state.newName}
               onChange={this.handleNewNameChange}
-              onBlur={this.handleCancelEdit}
               autoFocus
             />
           </form>
