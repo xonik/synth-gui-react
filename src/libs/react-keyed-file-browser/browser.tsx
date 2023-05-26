@@ -694,13 +694,14 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
   }
 
   getSelectedItems(files: FileBrowserTree) {
-    const { selection } = this.state // TODO: That's a bit odd...
+    const { selection } = this.state
     const selectedItems: FileBrowserTree = []
     const findSelected = (item: FileBrowserTreeNode) => {
+      if (selection.includes(item.key)) {
+        selectedItems.push(item)
+      }
       if (isFolderType(item)) {
         item.children.map(findSelected)
-      } else {
-        selectedItems.push(item)
       }
     }
     files.map(findSelected)

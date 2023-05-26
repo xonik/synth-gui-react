@@ -150,9 +150,10 @@ class PatchBrowser extends React.Component {
                     Filename: <input type="text"/>
                 </div>
                 <button onClick={async () => {
-                    await patchStorageApi.renameFolder('f/o/', 'f/older/')
-                    /*
+                    //await patchStorageApi.renameFolder('f/o/', 'f/older/')
+
                     await patchStorageApi.savePatch('f/o/l/superpatch')
+                    /*
                     await patchStorageApi.savePatch('f/o/luperpatch')
                     await patchStorageApi.savePatch('f/o/puperpatch')
                     await patchStorageApi.savePatch('f/cuperpatch')
