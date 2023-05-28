@@ -3,6 +3,11 @@ $theme-colour-text: #337ab7 !default;
 $font-color: white;
 
 div.rendered-react-keyed-file-browser {
+  a {
+    color: white;
+    text-decoration: none;
+  }
+
   color: $font-color;
   //overflow: hidden;
   div.action-bar {

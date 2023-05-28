@@ -46,7 +46,7 @@ function getItemProps(file: FileBrowserTreeNode, browserProps: RendererBrowserPr
     fileKey: file.key,
     isSelected: (browserProps.selection.includes(file.key)),
     isOver: false, // TODO: FIX THIS!
-    isOpen: file.key in browserProps.openFolders || browserProps.nameFilter !== undefined,
+    isOpen: file.key in browserProps.openFolders || Boolean(browserProps.nameFilter),
     isRenaming: browserProps.activeAction === 'rename' && browserProps.actionTargets.includes(file.key),
     isDeleting: browserProps.activeAction === 'delete' && browserProps.actionTargets.includes(file.key),
     isDraft: isDraft(file) && file.draft,
