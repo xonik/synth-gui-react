@@ -178,7 +178,10 @@ export class Fat {
         const parent = folder.parent
         if (parent) {
             const index = parent.contents.indexOf(parent);
-            parent.contents.splice(index, 1);
+            console.log('Parent', parent)
+            parent.contents.splice(index - 1, 1);
+            console.log('Parent after', parent)
+
         }
         await this.writeToDisk()
 

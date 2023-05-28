@@ -62,6 +62,8 @@ type RawFileBrowserState = {
   nameFilter: string,
   searchResultsShown: number,
   previewFile: FileBrowserFile | null,
+  selectedFileName: string | undefined,
+  selectedFilePath: string,
   addFolder: null,
 }
 
@@ -81,6 +83,9 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
       previewFile: null,
 
       addFolder: null,
+
+      selectedFileName: undefined,
+      selectedFilePath: '',
     }
   }
 
@@ -183,6 +188,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
       activeAction: null,
       actionTargets: [],
       selection: [key],
+      selectedFilePath: key,
     }, () => {
       this.props.onCreateFolder?.(key)
     })
@@ -341,8 +347,26 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
     }), () => {
       this.props.onSelect?.(selected)
 
-      if (selectedType === 'file') this.props.onSelectFile?.(selected)
-      if (selectedType === 'folder') this.props.onSelectFolder?.(selected)
+      if (selectedType === 'file') {
+        const key = selected.key
+        const lastSlashIndex = key.lastIndexOf('/')
+        const [path, file] = [key.slice(0, lastSlashIndex+1), key.slice(lastSlashIndex+1)]
+        this.setState({selectedFileName: file, selectedFilePath: path})
+        this.props.onSelectFile?.(selected)
+      }
+      if (selectedType === 'folder') {
+        this.setState((prevState) => {
+          const nextState = {
+            selectedFilePath: selected.key,
+            selectedFileName: prevState.selectedFileName
+          }
+          if(this.props.mode === 'load'){
+            nextState.selectedFileName = ''
+          }
+          return nextState
+        })
+        this.props.onSelectFolder?.(selected)
+      }
     })
   }
 
@@ -708,6 +732,38 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
     return selectedItems
   }
 
+  updateFilename = (event: React.FormEvent<HTMLInputElement>) => {
+    const name = event.currentTarget.value
+    this.setState({selectedFileName: name});
+  }
+
+  handleSaveClick = async () => {
+    const path = this.state.selectedFilePath
+    const name = this.state.selectedFileName
+    if(name){
+      console.log(`Wanna save ${path}${name}`)
+      const key = `${path}${name}`
+      await this.props.onSave?.(key)
+      this.setState(prevState => {
+        const stateChanges = {
+          openFolders: { ...prevState.openFolders },
+        }
+        stateChanges.openFolders[path] = true
+        return stateChanges
+      })
+    }
+  }
+
+  handleLoadClick = async () => {
+    const path = this.state.selectedFilePath
+    const name = this.state.selectedFileName
+    if(name){
+      console.log(`Wanna load ${path}${name}`)
+      const key = `${path}${name}`
+      await this.props.onLoad?.(key)
+    }
+  }
+
   render() {
     const browserProps = this.getBrowserProps()
     const headerProps = {
@@ -838,10 +894,12 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
 
     const ConfirmMultipleDeletionRenderer = this.props.confirmMultipleDeletionRenderer
 
+    const disableSaveLoad = !(this.state.selectedFileName && this.state.selectedFileName !== '')
+
     return (
       <div className="rendered-react-keyed-file-browser">
         {this.props.actions}
-        <div className="rendered-file-browser" ref={el => { this.browserRef = el }}>
+        <div className="file-browser" ref={el => { this.browserRef = el }}>
           {this.props.showActionBar && this.renderActionBar(selectedItems)}
           {this.state.activeAction === 'delete' && this.state.selection.length > 1 &&
             <ConfirmMultipleDeletionRenderer
@@ -850,6 +908,21 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
           <div className="files">
             {renderedFiles}
           </div>
+          <div className="path">
+            Path: {this.state.selectedFilePath}
+          </div>
+          {this.props.mode === 'save' &&
+            <div className="filename">
+              Filename: <input type="text" value={this.state.selectedFileName} onChange={this.updateFilename} className="filename__input"/>
+              <button onClick={this.handleSaveClick} disabled={disableSaveLoad}>Save</button>
+            </div>
+          }
+          {this.props.mode === 'load' &&
+            <div className="filename">
+              Filename: {this.state.selectedFileName}
+              <button onClick={this.handleLoadClick} disabled={disableSaveLoad}>Load</button>
+            </div>
+          }
         </div>
         {this.state.previewFile && (
           <this.props.detailRenderer
@@ -858,6 +931,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
             {...this.props.detailRendererProps}
           />
         )}
+
       </div>
     )
   }

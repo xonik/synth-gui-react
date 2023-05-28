@@ -9,11 +9,13 @@ import './PatchBrowser.scss'
 
 type State = {
     files: FileBrowserTree
+    selectedFileName: string | undefined
 }
 
 class PatchBrowser extends React.Component {
     state: State = {
         files: [],
+        selectedFileName: undefined
     }
 
     async componentDidMount() {
@@ -122,15 +124,28 @@ class PatchBrowser extends React.Component {
         patchStorageApi.deletePatch(fileKey)
     }
 
+    handleSave = async (key: string) => {
+        console.log(`Saving ${key}`)
+        await patchStorageApi.savePatch(key)
+        // This may be a bit inefficient when we get a lot of files later...
+        this.setState({files: await patchStorageApi.getFileTree()}, () => console.log(this.state))
+    }
+
+    handleLoad = async (key: string) => {
+        console.log(`Loading ${key}`)
+        await patchStorageApi.loadPatch(key)
+    }
+
     render() {
         return (
             <div className="patch-browser">
                 <RawFileBrowser
-
+                    mode="load"
                     files={this.state.files}
                     // @ts-ignore
                     icons={Icons.FontAwesome(4)}
-
+                    onSave={this.handleSave}
+                    onLoad={this.handleLoad}
                     onCreateFolder={this.handleCreateFolder}
                     onCreateFiles={this.handleCreateFiles}
                     onMoveFolder={this.handleRenameFolder}
@@ -140,25 +155,12 @@ class PatchBrowser extends React.Component {
                     onDeleteFolder={this.handleDeleteFolder}
                     onDeleteFile={this.handleDeleteFile}
 
-
                     // @ts-ignore
                     headerRenderer={RawTableHeader}
                     fileRenderer={RawTableFile}
                     folderRenderer={RawTableFolder}
                 />
-                <div className="patch-browser_filename">
-                    Filename: <input type="text"/>
-                </div>
-                <button onClick={async () => {
-                    //await patchStorageApi.renameFolder('f/o/', 'f/older/')
 
-                    await patchStorageApi.savePatch('f/o/l/superpatch')
-                    /*
-                    await patchStorageApi.savePatch('f/o/luperpatch')
-                    await patchStorageApi.savePatch('f/o/puperpatch')
-                    await patchStorageApi.savePatch('f/cuperpatch')
-                    */
-                }}>Save</button>
             </div>
         )
     }

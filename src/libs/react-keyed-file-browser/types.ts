@@ -394,4 +394,9 @@ export type FileBrowserProps = typeof RawFileBrowser.defaultProps & {
 
     onFolderOpen: (folder: FileBrowserFolder) => void
     onFolderClose: (folder: FileBrowserFolder) => void
+
+    onSave?: (key: string) => void
+    onLoad?: (key: string) => void
+
+    mode?: 'save' | 'load'
 }

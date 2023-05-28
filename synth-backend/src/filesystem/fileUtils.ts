@@ -1,18 +1,27 @@
 import { FileEntry, FolderEntry } from './types'
 
 export const splitKey = (key: string) => {
-    const lastSlash = key.slice(1).lastIndexOf('/')
-    if(lastSlash){
-        return [
-            key.slice(0, lastSlash + 2),
-            key.slice(lastSlash + 2)
-        ]
-    } else {
-        return [
-            key,
-            ''
-        ]
+    // root folder
+    if(key === ''){
+        return ['', '']
     }
+
+    // A directory
+    if(key.endsWith('/')){
+        return [key, '']
+    }
+    const lastSlash = key.lastIndexOf('/')
+
+    // A file on root
+    if(key.lastIndexOf('/') === -1){
+        return ['', key]
+    }
+
+    // any other file
+    return [
+        key.slice(0, lastSlash + 1),
+        key.slice(lastSlash + 1)
+    ]
 }
 
 export const isFile = (file: FileEntry | FolderEntry): file is FileEntry => {
