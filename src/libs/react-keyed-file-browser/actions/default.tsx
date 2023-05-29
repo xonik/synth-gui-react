@@ -57,7 +57,7 @@ const DefaultAction = (props: ActionRendererProps) => {
 
       actions = (
         // TODO: Enable plugging in custom spinner.
-        <div className="item-actions">
+        <div className="item-actions filebrowser-icon">
           {icons?.Loading} {actionText}
         </div>
       )

@@ -27,8 +27,9 @@ class RawTableFolder extends BaseFolder {
           handleFileClick={this.handleFolderClick}
           url={url}
         >
-          {icon}
-          {this.getName()}
+          <div className="filebrowser-icon">{icon}
+            {this.getName()}
+          </div>
         </ConfirmDeletionRenderer>
       )
     } else if ((!inAction && isRenaming) || isDraft) {
@@ -49,7 +50,7 @@ class RawTableFolder extends BaseFolder {
     } else {
       name = (
         <div>
-          <a onClick={this.toggleFolder}>
+          <a onClick={this.toggleFolder} className="filebrowser-icon">
             {icon}
             {this.getName()}
           </a>
@@ -92,7 +93,7 @@ class RawTableFolder extends BaseFolder {
 }
 
 const TableFolder = flow(
-  DragSource('folder', BaseFolderConnectors.dragSource, BaseFolderConnectors.dragCollect), 
+  DragSource('folder', BaseFolderConnectors.dragSource, BaseFolderConnectors.dragCollect),
   DropTarget(['file', 'folder', NativeTypes.FILE], BaseFileConnectors.targetSource, BaseFileConnectors.targetCollect)
 )(RawTableFolder)
 

@@ -30,8 +30,10 @@ class RawTableFile extends BaseFile<FileRendererProps> {
           handleFileClick={this.handleFileClick}
           url={url}
         >
-          {icon}
-          {this.getName()}
+          <div className="filebrowser-icon">
+            {icon}
+            {this.getName()}
+          </div>
         </ConfirmDeletionRenderer>
       )
     } else if (!inAction && isRenaming) {
@@ -54,6 +56,7 @@ class RawTableFile extends BaseFile<FileRendererProps> {
           href={url || '#'}
           download="download"
           onClick={this.handleFileClick}
+          className="filebrowser-icon"
         >
           {icon}
           {this.getName()}

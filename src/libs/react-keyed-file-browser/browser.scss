@@ -83,5 +83,25 @@ div.rendered-react-keyed-file-browser {
   }
 }
 
+.filebrowser-icon {
+  display: flex;
+  align-items: center;
+
+  &__svg {
+    display: block;
+    height: 1rem;
+    width: 1rem;
+    fill: white;
+    margin-right: 0.25rem;
+  }
+}
+
+// Prepare action links for icon
+.item-actions a {
+  display: flex;
+  align-items: center;
+}
+
+
 @import './table-style';
 @import './list-style';
