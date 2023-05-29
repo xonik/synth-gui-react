@@ -331,9 +331,11 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
     if(!selected) return
 
     let newSelection = [key]
+    let unset = false
     if (ctrlKey || shiftKey) {
       const indexOfKey = this.state.selection.indexOf(key)
       if (indexOfKey !== -1) {
+        unset = true
         newSelection = [...this.state.selection.slice(0, indexOfKey), ...this.state.selection.slice(indexOfKey + 1)]
       } else {
         newSelection = [...this.state.selection, key]
@@ -351,19 +353,36 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
         const key = selected.key
         const lastSlashIndex = key.lastIndexOf('/')
         const [path, file] = [key.slice(0, lastSlashIndex+1), key.slice(lastSlashIndex+1)]
-        this.setState({selectedFileName: file, selectedFilePath: path})
+        if(unset){
+          if(`${this.state.selectedFilePath}${this.state.selectedFileName}` === key){
+            this.setState({ selectedFilePath: '', selectedFileName: '' })
+          }
+        } else {
+          this.setState({ selectedFileName: file, selectedFilePath: path })
+        }
         this.props.onSelectFile?.(selected)
       }
       if (selectedType === 'folder') {
         this.setState((prevState) => {
-          const nextState = {
-            selectedFilePath: selected.key,
-            selectedFileName: prevState.selectedFileName
+          if(unset) {
+            if (this.state.selectedFilePath === key) {
+              return {
+                selectedFilePath: '',
+                selectedFileName: '',
+              }
+            } else {
+              return {}
+            }
+          } else {
+            const nextState = {
+              selectedFilePath: selected.key,
+              selectedFileName: prevState.selectedFileName
+            }
+            if (this.props.mode === 'load') {
+              nextState.selectedFileName = ''
+            }
+            return nextState
           }
-          if(this.props.mode === 'load'){
-            nextState.selectedFileName = ''
-          }
-          return nextState
         })
         this.props.onSelectFolder?.(selected)
       }
