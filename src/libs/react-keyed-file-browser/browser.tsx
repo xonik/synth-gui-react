@@ -898,6 +898,17 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
 
     return (
       <div className="rendered-react-keyed-file-browser">
+          {this.state.previewFile && (
+            <div className="filebrowser-modal">
+              <div className="filebrowser-modal__content">
+                <this.props.detailRenderer
+                    file={this.state.previewFile}
+                    close={this.closeDetail}
+                    {...this.props.detailRendererProps}
+                />
+              </div>
+            </div>
+          )}
         {this.props.actions}
         <div className="file-browser" ref={el => { this.browserRef = el }}>
           {this.props.showActionBar && this.renderActionBar(selectedItems)}
@@ -924,14 +935,6 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
             </div>
           }
         </div>
-        {this.state.previewFile && (
-          <this.props.detailRenderer
-            file={this.state.previewFile}
-            close={this.closeDetail}
-            {...this.props.detailRendererProps}
-          />
-        )}
-
       </div>
     )
   }

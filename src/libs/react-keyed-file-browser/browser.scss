@@ -96,6 +96,31 @@ div.rendered-react-keyed-file-browser {
   }
 }
 
+.filebrowser-modal {
+
+  left: 0;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1001;
+  background-color: #000000dd;
+
+  &__content {
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: auto;
+
+    background-color: #333;
+    padding: 1rem;
+    width: 30rem;
+    height: 20rem;
+  }
+}
+
 // Prepare action links for icon
 .item-actions a {
   display: flex;
