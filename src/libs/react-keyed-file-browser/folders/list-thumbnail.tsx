@@ -50,9 +50,9 @@ class RawListThumbnailFolder extends BaseFolder {
     } else {
       name = (
         <div>
-          <a onClick={this.toggleFolder}>
+          <div onClick={this.toggleFolder}>
             {this.getName()}
-          </a>
+          </div>
         </div>
       )
     }

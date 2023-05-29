@@ -2,7 +2,7 @@ import React from 'react'
 import { DetailRendererProps } from '../types'
 
 const DefaultDetails: React.FC<DetailRendererProps> = ({ file, close }) => {
-  function handleCloseClick(event: React.MouseEvent<HTMLAnchorElement>) {
+  function handleCloseClick(event: React.MouseEvent<HTMLElement>) {
     if (event) {
       event.preventDefault()
     }
@@ -23,9 +23,9 @@ const DefaultDetails: React.FC<DetailRendererProps> = ({ file, close }) => {
         <dt>Name</dt>
         <dd>{name}</dd>
       </dl>
-      <a href="#" onClick={handleCloseClick}>
+      <button onClick={handleCloseClick}>
         Close
-      </a>
+      </button>
     </div>
   )
 }

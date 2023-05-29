@@ -55,18 +55,6 @@ class RawTableFile extends BaseFile<FileRendererProps> {
         {icon}
         {this.getName()}
       </div>
-      /*
-      name = (
-        <a
-          href={url || '#'}
-          download="download"
-          onClick={() => {}}
-          className="filebrowser-icon"
-        >
-          {icon}
-          {this.getName()}
-        </a>
-      )*/
     }
 
     let draggable = (

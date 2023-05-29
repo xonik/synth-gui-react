@@ -49,11 +49,9 @@ class RawTableFolder extends BaseFolder {
       )
     } else {
       name = (
-        <div>
-          <a onClick={this.toggleFolder} className="filebrowser-icon">
-            {icon}
-            {this.getName()}
-          </a>
+        <div onClick={this.toggleFolder} className="filebrowser-icon">
+          {icon}
+          {this.getName()}
         </div>
       )
     }

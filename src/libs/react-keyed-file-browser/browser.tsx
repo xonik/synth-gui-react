@@ -807,12 +807,11 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
               contents.push(
                 <tr key="show-more">
                   <td colSpan={100}>
-                    <a
+                    <button
                       onClick={this.handleShowMoreClick}
-                      href="#"
                     >
                       Show more results
-                    </a>
+                    </button>
                   </td>
                 </tr>
               )
@@ -856,12 +855,11 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
             contents = contents.slice(0, this.state.searchResultsShown)
             if (numFiles > contents.length) {
               more = (
-                <a
+                <button
                   onClick={this.handleShowMoreClick}
-                  href="#"
                 >
                   Show more results
-                </a>
+                </button>
               )
             }
           }
