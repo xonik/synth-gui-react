@@ -14,6 +14,10 @@ export const mainDisplayMiddleware = (action: PayloadAction): void => {
             mainDisplayApi.setCurrentScreen(action.payload.radioButtonIndex || 0, ApiSource.UI)
         } else if(action.payload.ctrl === mainDisplayControllers.FUNC_SETTINGS){
             mainDisplayApi.setCurrentScreen(MainDisplayScreenId.SETTINGS, ApiSource.UI)
+        } else if(action.payload.ctrl === mainDisplayControllers.FUNC_LOAD){
+            mainDisplayApi.setCurrentScreen(MainDisplayScreenId.LOAD, ApiSource.UI)
+        } else if(action.payload.ctrl === mainDisplayControllers.FUNC_SAVE){
+            mainDisplayApi.setCurrentScreen(MainDisplayScreenId.SAVE, ApiSource.UI)
         }
     } else if (release.match(action)) {
         if (action.payload.ctrl === mainDisplayControllers.FUNC_SHIFT) {

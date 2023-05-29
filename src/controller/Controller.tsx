@@ -23,8 +23,13 @@ const Controller = () => {
             currScreen === MainDisplayScreenId.MOD && <Mod/>
         }
         {
-            //currScreen === MainDisplayScreenId.SETTINGS && <Settings/>
-            currScreen === MainDisplayScreenId.SETTINGS && <PatchBrowser/>
+            currScreen === MainDisplayScreenId.SETTINGS && <Settings/>
+        }
+        {
+            currScreen === MainDisplayScreenId.LOAD && <PatchBrowser mode="load"/>
+        }
+        {
+            currScreen === MainDisplayScreenId.SAVE && <PatchBrowser mode="save"/>
         }
     </div>
 }

@@ -5,5 +5,7 @@ export enum MainDisplayScreenId {
     ENV,
     MOD,
     FX,
-    SETTINGS
+    SETTINGS,
+    LOAD,
+    SAVE,
 }

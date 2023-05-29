@@ -12,7 +12,12 @@ type State = {
     selectedFileName: string | undefined
 }
 
-class PatchBrowser extends React.Component {
+type PatchBrowserProps = {
+    mode: 'save' | 'load'
+}
+
+class PatchBrowser extends React.Component<PatchBrowserProps> {
+
     state: State = {
         files: [],
         selectedFileName: undefined
@@ -140,7 +145,7 @@ class PatchBrowser extends React.Component {
         return (
             <div className="patch-browser">
                 <RawFileBrowser
-                    mode="load"
+                    mode={this.props.mode}
                     files={this.state.files}
                     // @ts-ignore
                     icons={Icons.FontAwesome(4)}
