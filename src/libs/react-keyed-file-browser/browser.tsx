@@ -62,14 +62,14 @@ type RawFileBrowserState = {
   nameFilter: string,
   searchResultsShown: number,
   previewFile: FileBrowserFile | null,
-  selectedFileName: string | undefined,
+  selectedFileName: string,
   selectedFilePath: string,
   addFolder: null,
 }
 
 type SelectionParams = {
   selection: string[],
-  selectedFileName: string | undefined,
+  selectedFileName: string,
   selectedFilePath: string,
 }
 
@@ -110,7 +110,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
 
       addFolder: null,
 
-      selectedFileName: undefined,
+      selectedFileName: '',
       selectedFilePath: '',
     }
   }
