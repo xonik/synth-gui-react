@@ -67,6 +67,32 @@ type RawFileBrowserState = {
   addFolder: null,
 }
 
+type SelectionParams = {
+  selection: string[],
+  selectedFileName: string | undefined,
+  selectedFilePath: string,
+}
+
+const getSelectionParams = (
+    selection: string[],
+    state: RawFileBrowserState,
+    ): SelectionParams  => {
+  const {selectedFilePath, selectedFileName } = state
+  const selectedKey = `${selectedFilePath}${selectedFileName}`
+    if(!selection.includes(selectedKey)){
+      return {
+        selection,
+        selectedFilePath: '',
+        selectedFileName: ''
+      }
+    }
+    return {
+      selection,
+      selectedFilePath,
+      selectedFileName,
+    }
+}
+
 class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
 
   constructor(props: FileBrowserProps) {
@@ -169,7 +195,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
     this.setState(prevState => {
       const stateChanges = {
         ...prevState,
-        selection: []
+        ...getSelectionParams([], prevState)
       }
       if (prefix) {
         stateChanges.openFolders = {
@@ -187,7 +213,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
     this.setState({
       activeAction: null,
       actionTargets: [],
-      selection: [key],
+      ...getSelectionParams([key], this.state),
       selectedFilePath: key,
     }, () => {
       this.props.onCreateFolder?.(key)
@@ -198,7 +224,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
     this.setState({
       activeAction: null,
       actionTargets: [],
-      selection: [newKey],
+      ...getSelectionParams([newKey], this.state),
     }, () => {
       this.props.onMoveFile?.(oldKey, newKey)
     })
@@ -210,7 +236,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
         ...prevState,
         activeAction: null,
         actionTargets: [],
-        selection: [newKey],
+        ...getSelectionParams([newKey], prevState),
       }
 
       if (oldKey in prevState.openFolders) {
@@ -229,7 +255,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
     this.setState({
       activeAction: null,
       actionTargets: [],
-      selection: [newKey],
+      ...getSelectionParams([newKey], this.state),
     }, () => {
       this.props.onRenameFile?.(oldKey, newKey)
     })
@@ -262,7 +288,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
     this.setState({
       activeAction: null,
       actionTargets: [],
-      selection: [],
+      ...getSelectionParams([], this.state),
     }, () => {
       this.props.onDeleteFile?.(key)
     })
@@ -274,7 +300,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
         ...prevState,
         activeAction: null,
         actionTargets: [],
-        selection: [],
+        ...getSelectionParams([], prevState),
       }
       if (key in prevState.openFolders) {
         stateChanges.openFolders = { ...prevState.openFolders }
@@ -315,7 +341,9 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
   endAction = () => {
     if (this.state.selection && this.state.selection.length > 0) {
       if(this.state.selection.filter((selection) => selection.match(regexForNewFolderOrFileSelection)).length > 0) {
-        this.setState({ selection: [] })
+        this.setState({
+          ...getSelectionParams([], this.state),
+        })
       }
     }
     this.beginAction(null, null)
@@ -323,7 +351,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
 
   // Looks like this allows selection of multiple elements?
   select = (key: string, selectedType?: 'file' | 'folder', ctrlKey?: boolean, shiftKey?: boolean) => {
-    const { actionTargets } = this.state
+    const { actionTargets, selectedFilePath, selectedFileName } = this.state
     const shouldClearState = actionTargets.length && !actionTargets.includes(key)
     const selected = this.getFile(key)
 
@@ -331,6 +359,9 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
     if(!selected) return
 
     let newSelection = [key]
+    let newSelectedFilePath = selectedFilePath
+    let newSelectedFileName = selectedFileName
+
     let unset = false
     if (ctrlKey || shiftKey) {
       const indexOfKey = this.state.selection.indexOf(key)
@@ -342,48 +373,38 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
       }
     }
 
-    this.setState(prevState => ({
-      selection: newSelection,
-      actionTargets: shouldClearState ? [] : actionTargets,
-      activeAction: shouldClearState ? null : prevState.activeAction,
-    }), () => {
-      this.props.onSelect?.(selected)
-
+    if(!unset) {
       if (selectedType === 'file') {
         const key = selected.key
         const lastSlashIndex = key.lastIndexOf('/')
-        const [path, file] = [key.slice(0, lastSlashIndex+1), key.slice(lastSlashIndex+1)]
-        if(unset){
-          if(`${this.state.selectedFilePath}${this.state.selectedFileName}` === key){
-            this.setState({ selectedFilePath: '', selectedFileName: '' })
-          }
-        } else {
-          this.setState({ selectedFileName: file, selectedFilePath: path })
-        }
+        const [path, file] = [key.slice(0, lastSlashIndex + 1), key.slice(lastSlashIndex + 1)]
+        newSelectedFilePath = path
+        newSelectedFileName = file
+      }
+
+      if (selectedType === 'folder') {
+        newSelectedFilePath = selected.key
+        newSelectedFileName = this.props.mode === 'load' ? '' : selectedFileName
+      }
+    }
+
+    this.setState(prevState => ({
+      ...getSelectionParams(newSelection, {
+        ...prevState,
+        selectedFilePath: newSelectedFilePath,
+        selectedFileName: newSelectedFileName,
+      }),
+      actionTargets: shouldClearState ? [] : actionTargets,
+      activeAction: shouldClearState ? null : prevState.activeAction,
+    }), () => {
+      if(this.props.onSelect){
+        this.props.onSelect(selected)
+      }
+
+      if (selectedType === 'file') {
         this.props.onSelectFile?.(selected)
       }
       if (selectedType === 'folder') {
-        this.setState((prevState) => {
-          if(unset) {
-            if (this.state.selectedFilePath === key) {
-              return {
-                selectedFilePath: '',
-                selectedFileName: '',
-              }
-            } else {
-              return {}
-            }
-          } else {
-            const nextState = {
-              selectedFilePath: selected.key,
-              selectedFileName: prevState.selectedFileName
-            }
-            if (this.props.mode === 'load') {
-              nextState.selectedFileName = ''
-            }
-            return nextState
-          }
-        })
         this.props.onSelectFolder?.(selected)
       }
     })
@@ -457,7 +478,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
 
     if (!inBrowser) {
       this.setState({
-        selection: [],
+        ...getSelectionParams([], this.state),
         actionTargets: [],
         activeAction: null,
       })
@@ -492,7 +513,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
         ...prevState,
         actionTargets: [addKey],
         activeAction: 'createFolder',
-        selection: [addKey],
+        ...getSelectionParams([addKey], prevState),
       }
       // TODO: What is going on here? If we already have a selection, we should
       // keep currently open folders but open what?
