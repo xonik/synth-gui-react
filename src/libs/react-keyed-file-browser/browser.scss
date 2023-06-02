@@ -24,9 +24,22 @@ div.rendered-react-keyed-file-browser {
     justify-content: space-between;
     height: 100%;
 
+    &__files-container {
+      height: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+
     div.files {
+      width: 59%;
       overflow-y: auto;
       height: 100%;
+    }
+
+    &__filedetails {
+      width: 39%;
+      background-color: #333;
+      height: 100%
     }
 
     .filename {
@@ -96,6 +109,7 @@ div.rendered-react-keyed-file-browser {
   }
 }
 
+// div in div
 .filebrowser-modal {
 
   left: 0;
