@@ -944,44 +944,45 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
         return (
             <div className="rendered-react-keyed-file-browser">
                 {this.props.actions}
-                <div className="file-browser" ref={el => {
-                    this.browserRef = el
-                }}>
-                    {this.props.showActionBar && this.renderActionBar(selectedItems)}
-                    {this.state.activeAction === 'delete' && this.state.selection.length > 1 &&
-                        <ConfirmMultipleDeletionRenderer
-                            handleDeleteSubmit={this.handleMultipleDeleteSubmit}
-                        />}
-                    <div className="file-browser__files-container">
+                <div className="file-browser__files-container">
+                    <div className="file-browser" ref={el => {
+                        this.browserRef = el
+                    }}>
+                        {this.props.showActionBar && this.renderActionBar(selectedItems)}
+                        {this.state.activeAction === 'delete' && this.state.selection.length > 1 &&
+                            <ConfirmMultipleDeletionRenderer
+                                handleDeleteSubmit={this.handleMultipleDeleteSubmit}
+                            />}
                         <div className="files">
                             {renderedFiles}
                         </div>
-                        <div className="file-browser__filedetails">
-                            {this.state.previewFile && (
-                                <this.props.detailRenderer
-                                    file={this.state.previewFile}
-                                    close={this.closeDetail}
-                                    {...this.props.detailRendererProps}
-                                />
-                            )}
+                        <div className="path">
+                            Path: {this.state.selectedFilePath}
                         </div>
+                        {this.props.mode === 'save' &&
+                            <div className="filename">
+                                Filename: <input type="text" value={this.state.selectedFileName}
+                                                 onChange={this.updateFilename} className="filename__input"/>
+                                <button onClick={this.handleSaveClick} disabled={disableSaveLoad}>Save</button>
+                            </div>
+                        }
+                        {this.props.mode === 'load' &&
+                            <div className="filename">
+                                Filename: {this.state.selectedFileName}
+                                <button onClick={this.handleLoadClick} disabled={disableSaveLoad}>Load</button>
+                            </div>
+                        }
                     </div>
-                    <div className="path">
-                        Path: {this.state.selectedFilePath}
+
+                    <div className="file-browser__filedetails">
+                        {this.state.previewFile && (
+                            <this.props.detailRenderer
+                                file={this.state.previewFile}
+                                close={this.closeDetail}
+                                {...this.props.detailRendererProps}
+                            />
+                        )}
                     </div>
-                    {this.props.mode === 'save' &&
-                        <div className="filename">
-                            Filename: <input type="text" value={this.state.selectedFileName}
-                                             onChange={this.updateFilename} className="filename__input"/>
-                            <button onClick={this.handleSaveClick} disabled={disableSaveLoad}>Save</button>
-                        </div>
-                    }
-                    {this.props.mode === 'load' &&
-                        <div className="filename">
-                            Filename: {this.state.selectedFileName}
-                            <button onClick={this.handleLoadClick} disabled={disableSaveLoad}>Load</button>
-                        </div>
-                    }
                 </div>
             </div>
         )
