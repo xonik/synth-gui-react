@@ -4,7 +4,7 @@ import './Button.scss'
 
 interface Props {
     active: boolean,
-    onClick: () => void,
+    onClick: (event?: React.MouseEvent<HTMLElement>) => void,
     children?:
         | React.ReactChild
         | React.ReactChild[];

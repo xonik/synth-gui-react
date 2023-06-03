@@ -36,6 +36,7 @@ import {
 } from './types'
 
 import './browser.scss'
+import Button from '../../controller/Button'
 
 const SEARCH_RESULTS_PER_PAGE = 20
 const regexForNewFolderOrFileSelection = /.*\/__new__[/]?$/gm
@@ -65,6 +66,7 @@ type RawFileBrowserState = {
     selectedFileName: string,
     selectedFilePath: string,
     addFolder: null,
+    autoaudit: boolean,
 }
 
 type SelectionParams = {
@@ -112,6 +114,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
 
             selectedFileName: '',
             selectedFilePath: '',
+            autoaudit: false,
         }
     }
 
@@ -259,9 +262,13 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
     }
 
     renameFile = (oldKey: string, newKey: string) => {
+        const currentPreviewFile = this.state.previewFile
+        const newPreviewFile = oldKey === this.state.previewFile?.key ? null : currentPreviewFile
+
         this.setState({
             activeAction: null,
             actionTargets: [],
+            previewFile: newPreviewFile,
             ...getSelectionParams([newKey], this.state),
         }, () => {
             this.props.onRenameFile?.(oldKey, newKey)
@@ -290,11 +297,13 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
         })
     }
 
-    // TODO: Jeg skjønner ikke hva denne gjør.
     deleteFile = (key: string) => {
+        const currentPreviewFile = this.state.previewFile
+        const newPreviewFile = key === this.state.previewFile?.key ? null : currentPreviewFile
         this.setState({
             activeAction: null,
             actionTargets: [],
+            previewFile: newPreviewFile,
             ...getSelectionParams([], this.state),
         }, () => {
             this.props.onDeleteFile?.(key)
@@ -358,7 +367,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
 
     // Looks like this allows selection of multiple elements?
     select = (key: string, selectedType?: 'file' | 'folder', ctrlKey?: boolean, shiftKey?: boolean) => {
-        const { actionTargets, selectedFilePath, selectedFileName } = this.state
+        const { actionTargets, selectedFilePath, selectedFileName, previewFile } = this.state
         const shouldClearState = actionTargets.length && !actionTargets.includes(key)
         const selected = this.getFile(key)
 
@@ -368,6 +377,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
         let newSelection = [key]
         let newSelectedFilePath = selectedFilePath
         let newSelectedFileName = selectedFileName
+        let newPreviewFile = previewFile
 
         let unset = false
         if (ctrlKey || shiftKey) {
@@ -380,6 +390,8 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
             }
         }
 
+        const selectedKey = unset ? '' : selected.key
+
         if (!unset) {
             if (selectedType === 'file') {
                 const key = selected.key
@@ -387,6 +399,9 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
                 const [path, file] = [key.slice(0, lastSlashIndex + 1), key.slice(lastSlashIndex + 1)]
                 newSelectedFilePath = path
                 newSelectedFileName = file
+                if(newSelection.length === 1){
+                    newPreviewFile = selected
+                }
             }
 
             if (selectedType === 'folder') {
@@ -401,15 +416,19 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
                 selectedFilePath: newSelectedFilePath,
                 selectedFileName: newSelectedFileName,
             }),
+            previewFile: newPreviewFile,
             actionTargets: shouldClearState ? [] : actionTargets,
             activeAction: shouldClearState ? null : prevState.activeAction,
-        }), () => {
+        }), async () => {
             if (this.props.onSelect) {
                 this.props.onSelect(selected)
             }
-
             if (selectedType === 'file') {
+
                 this.props.onSelectFile?.(selected)
+                if(this.state.autoaudit){
+                    await this.handleAudit(selectedKey)
+                }
             }
             if (selectedType === 'folder') {
                 this.props.onSelectFolder?.(selected)
@@ -811,6 +830,27 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
         }
     }
 
+    handleAudit = async (key: string) => {
+        console.log(`Wanna audit ${key}`)
+        await this.props.onAudit?.(key)
+    }
+
+    toggleAutoAudit = () => {
+        this.setState({autoaudit: !this.state.autoaudit},
+        async () => {
+            if(this.state.autoaudit){
+                const path = this.state.selectedFilePath
+                const name = this.state.selectedFileName
+                if (name) {
+                    const key = `${path}${name}`
+                    await this.handleAudit(key)
+                }
+            } else {
+                await this.handleAudit('')
+            }
+        })
+    }
+
     render() {
         const browserProps = this.getBrowserProps()
         const headerProps = {
@@ -956,32 +996,33 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
                         <div className="files">
                             {renderedFiles}
                         </div>
-                        <div className="path">
-                            Path: {this.state.selectedFilePath}
-                        </div>
                         {this.props.mode === 'save' &&
-                            <div className="filename">
-                                Filename: <input type="text" value={this.state.selectedFileName}
-                                                 onChange={this.updateFilename} className="filename__input"/>
-                                <button onClick={this.handleSaveClick} disabled={disableSaveLoad}>Save</button>
-                            </div>
+                            <React.Fragment>
+                                <div className="path">
+                                    Path: {this.state.selectedFilePath}
+                                </div>
+                                <div className="filename">
+                                    {this.props.fileTypeHeading}: <input type="text" value={this.state.selectedFileName}
+                                                     onChange={this.updateFilename} className="filename__input"/>
+                                    <button onClick={this.handleSaveClick} disabled={disableSaveLoad}>Save</button>
+                                </div>
+                            </React.Fragment>
                         }
                         {this.props.mode === 'load' &&
                             <div className="filename">
-                                Filename: {this.state.selectedFileName}
-                                <button onClick={this.handleLoadClick} disabled={disableSaveLoad}>Load</button>
+                                <Button active={this.state.autoaudit} onClick={this.toggleAutoAudit}>Audit</Button>
                             </div>
                         }
                     </div>
 
                     <div className="file-browser__filedetails">
-                        {this.state.previewFile && (
-                            <this.props.detailRenderer
-                                file={this.state.previewFile}
-                                close={this.closeDetail}
-                                {...this.props.detailRendererProps}
-                            />
-                        )}
+                        <this.props.detailRenderer
+                            file={this.state.previewFile}
+                            mode={this.props.mode}
+                            close={this.closeDetail}
+                            onAudit={this.handleAudit}
+                            {...this.props.detailRendererProps}
+                        />
                     </div>
                 </div>
             </div>

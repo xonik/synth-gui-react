@@ -130,6 +130,7 @@ class PatchBrowser extends React.Component<PatchBrowserProps> {
     }
 
     handleSave = async (key: string) => {
+        // TODO: Make sure we save the current patch, not the audit'ed one.
         console.log(`Saving ${key}`)
         await patchStorageApi.savePatch(key)
         // This may be a bit inefficient when we get a lot of files later...
@@ -145,6 +146,7 @@ class PatchBrowser extends React.Component<PatchBrowserProps> {
         return (
             <div className="patch-browser">
                 <RawFileBrowser
+                    fileTypeHeading="Patch"
                     mode={this.props.mode}
                     files={this.state.files}
                     // @ts-ignore

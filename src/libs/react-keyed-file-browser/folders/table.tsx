@@ -81,8 +81,6 @@ class RawTableFolder extends BaseFolder {
             {draggable}
           </div>
         </td>
-        <td />
-        <td />
       </tr>
     )
 

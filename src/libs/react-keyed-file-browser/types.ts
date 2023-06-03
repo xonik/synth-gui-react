@@ -192,8 +192,11 @@ export type FolderRenderer<P = {}> = (
 // Detail
 
 export type DetailRendererProps<P = {}> = {
-    file: FileBrowserTreeFileNode
+    file?: FileBrowserTreeFileNode | null
     close: () => void
+    mode: 'save' | 'load',
+    onLoad?: (key: string) => void,
+    onAudit?: (key: string) => void,
 } & P
 
 // TODO: These are probably not correct
@@ -343,6 +346,7 @@ export interface RendererBrowserProps {
 // have non-optional props here that are not required on the react tag when
 // calling the RawFileBrowser component.
 export type FileBrowserProps = typeof RawFileBrowser.defaultProps & {
+    fileTypeHeading: string
     files: (FileBrowserFile | Draft)[]
     actions?: JSX.Element
     showActionBar: boolean
@@ -398,5 +402,7 @@ export type FileBrowserProps = typeof RawFileBrowser.defaultProps & {
     onSave?: (key: string) => void
     onLoad?: (key: string) => void
 
-    mode?: 'save' | 'load'
+    onAudit?: (key: string) => void
+
+    mode: 'save' | 'load'
 }

@@ -1,35 +1,74 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { DetailRendererProps } from '../types'
 import './details.scss'
+import Button from '../../../controller/Button'
 
-const DefaultDetails: React.FC<DetailRendererProps> = ({ file, close }) => {
-    function handleCloseClick(event: React.MouseEvent<HTMLElement>) {
+const DefaultDetails: React.FC<DetailRendererProps> = (
+    {
+        file,
+        close,
+        mode,
+        onAudit,
+        onLoad,
+    }) => {
+
+    const [audit, setAudit] = useState(false)
+
+    useEffect(() => {
+        setAudit(false)
+    }, [file])
+
+    function handleAuditClick(event?: React.MouseEvent<HTMLElement>) {
         if (event) {
             event.preventDefault()
         }
 
-        close()
+        if(!file){
+            return
+        }
+
+        if(audit) {
+            setAudit(false)
+            onAudit?.('')
+        } else {
+            setAudit(true)
+            onAudit?.(file.key)
+        }
     }
 
-    const path = file.key.split('/')
+    function handleLoadClick(event?: React.MouseEvent<HTMLElement>) {
+        if (event) {
+            event.preventDefault()
+        }
+
+        if(!file){
+            return
+        }
+
+        onLoad?.('')
+    }
+
+    const path = file?.key.split('/') || ''
     const name = path.length ? path[path.length - 1] : ''
 
     return (
         <div className="filedetails">
             <div className="filedetails__content">
-                <h2>Item Detail</h2>
-                <dl>
-                    <dt>Key</dt>
-                    <dd>{file.key}</dd>
-
-                    <dt>Name</dt>
-                    <dd>{name}</dd>
-                </dl>
+                <h2>Details</h2>
+                <div>Name</div>
+                <div>{name}</div>
             </div>
             <div className="filedetails__actions">
-                <button onClick={handleCloseClick}>
-                    Close
-                </button>
+                {mode === 'save' &&
+                    <Button active={Boolean(audit)} onClick={handleAuditClick}>
+                        Audit
+                    </Button>
+                }
+                {mode === 'load' &&
+                    <Button active={true} onClick={handleLoadClick}>
+                        Load
+                    </Button>
+                }
             </div>
         </div>
     )
