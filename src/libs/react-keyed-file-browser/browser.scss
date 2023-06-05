@@ -3,14 +3,17 @@ $theme-colour-text: #337ab7 !default;
 $font-color: white;
 
 div.rendered-react-keyed-file-browser {
+
+  box-sizing: border-box;
+  padding: 1rem;
+  height: 100%;
+  color: $font-color;
+
   a {
     color: white;
     text-decoration: none;
   }
 
-  height: 100%;
-
-  color: $font-color;
 
   .deleting {
     button {
@@ -18,17 +21,20 @@ div.rendered-react-keyed-file-browser {
     }
   }
 
+
   .file-browser {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+
     height: 100%;
-    width: 59%;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
 
     &__files-container {
-      height: 100%;
       display: flex;
+      flex-direction: column;
       justify-content: space-between;
+      height: 100%;
+      flex: 1;
     }
 
     div.files {
@@ -37,7 +43,7 @@ div.rendered-react-keyed-file-browser {
     }
 
     &__filedetails {
-      width: 39%;
+      width: 33%;
       background-color: #333;
       height: 100%
     }
@@ -46,7 +52,7 @@ div.rendered-react-keyed-file-browser {
       display: flex;
       justify-content: space-between;
       gap: 1rem;
-      
+
       margin-top: 0.5rem;
       margin-bottom: 1rem;
       .ctrl-button {
@@ -64,7 +70,6 @@ div.rendered-react-keyed-file-browser {
 
   div.action-bar {
     margin-bottom: $main-padding;
-    flex-wrap: wrap;
     display: flex;
     align-items: flex-start;
 
@@ -87,7 +92,6 @@ div.rendered-react-keyed-file-browser {
     ul.item-actions {
       display: block;
       flex-grow: 1;
-      min-width: 300px;
 
       margin-left: 10px;
       white-space: nowrap;

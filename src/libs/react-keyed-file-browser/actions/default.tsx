@@ -67,7 +67,7 @@ const DefaultAction = (props: ActionRendererProps) => {
           <li key="action-add-folder">
             <a onClick={onCreateFolder} href="#" role="button">
               {icons?.Folder}
-              &nbsp;Add Subfolder
+              &nbsp;Add folder
             </a>
           </li>
         )

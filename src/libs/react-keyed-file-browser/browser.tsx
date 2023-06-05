@@ -994,8 +994,8 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
         return (
             <div className="rendered-react-keyed-file-browser">
                 {this.props.actions}
-                <div className="file-browser__files-container">
-                    <div className="file-browser" ref={el => {
+                <div className="file-browser">
+                    <div className="file-browser__files-container" ref={el => {
                         this.browserRef = el
                     }}>
                         {this.props.showActionBar && this.renderActionBar(selectedItems)}
