@@ -392,7 +392,14 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
 
         const selectedKey = unset ? '' : selected.key
 
-        if (!unset) {
+        if (unset) {
+            const key = selected.key
+            const lastSlashIndex = key.lastIndexOf('/')
+            const [path, file] = [key.slice(0, lastSlashIndex + 1), key.slice(lastSlashIndex + 1)]
+            if(path === selectedFilePath && file === selectedFileName){
+                newPreviewFile = null
+            }
+        } else {
             if (selectedType === 'file') {
                 const key = selected.key
                 const lastSlashIndex = key.lastIndexOf('/')
@@ -407,15 +414,14 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
             if (selectedType === 'folder') {
                 newSelectedFilePath = selected.key
                 newSelectedFileName = this.props.mode === 'load' ? '' : selectedFileName
+                newPreviewFile = null
             }
         }
 
         this.setState(prevState => ({
-            ...getSelectionParams(newSelection, {
-                ...prevState,
-                selectedFilePath: newSelectedFilePath,
-                selectedFileName: newSelectedFileName,
-            }),
+            selection: newSelection,
+            selectedFilePath: newSelectedFilePath,
+            selectedFileName: newSelectedFileName,
             previewFile: newPreviewFile,
             actionTargets: shouldClearState ? [] : actionTargets,
             activeAction: shouldClearState ? null : prevState.activeAction,
@@ -501,10 +507,10 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
     // event handlers
     handleGlobalClick = (event: MouseEvent) => {
         const inBrowser = !!(this.browserRef && this.browserRef.contains(event.target as Node))
-
         if (!inBrowser) {
             this.setState({
-                ...getSelectionParams([], this.state),
+                // Commented out because we want to keep selection when clicking elsewhere
+                // ...getSelectionParams([], this.state),
                 actionTargets: [],
                 activeAction: null,
             })
@@ -820,6 +826,10 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
         }
     }
 
+    handleCancelClick = async () => {
+
+    }
+
     handleLoadClick = async () => {
         const path = this.state.selectedFilePath
         const name = this.state.selectedFileName
@@ -999,18 +1009,23 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
                         {this.props.mode === 'save' &&
                             <React.Fragment>
                                 <div className="path">
-                                    Path: {this.state.selectedFilePath}
+                                    <input
+                                        type="text"
+                                        value={this.state.selectedFileName}
+                                        onChange={this.updateFilename}
+                                        className="filename__input"
+                                    />
                                 </div>
                                 <div className="filename">
-                                    {this.props.fileTypeHeading}: <input type="text" value={this.state.selectedFileName}
-                                                     onChange={this.updateFilename} className="filename__input"/>
-                                    <button onClick={this.handleSaveClick} disabled={disableSaveLoad}>Save</button>
+                                    <Button active={true} onClick={this.handleSaveClick} disabled={disableSaveLoad}>Save</Button>
+                                    <Button active={true} onClick={this.handleCancelClick}>Cancel</Button>
                                 </div>
                             </React.Fragment>
                         }
                         {this.props.mode === 'load' &&
                             <div className="filename">
-                                <Button active={this.state.autoaudit} onClick={this.toggleAutoAudit}>Audit</Button>
+                                <Button active={true} disabled={disableSaveLoad} onClick={this.handleLoadClick}>Load</Button>
+                                <Button active={true} onClick={this.handleCancelClick}>Cancel</Button>
                             </div>
                         }
                     </div>
@@ -1021,6 +1036,8 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
                             mode={this.props.mode}
                             close={this.closeDetail}
                             onAudit={this.handleAudit}
+                            onAutoAudit={this.toggleAutoAudit}
+                            autoaudit={this.state.autoaudit}
                             {...this.props.detailRendererProps}
                         />
                     </div>

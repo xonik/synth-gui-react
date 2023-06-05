@@ -43,8 +43,15 @@ div.rendered-react-keyed-file-browser {
     }
 
     .filename {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      
       margin-top: 0.5rem;
       margin-bottom: 1rem;
+      .ctrl-button {
+        flex: 1;
+      }
       button {
         margin-left: 1rem;
         margin-right: 1rem;

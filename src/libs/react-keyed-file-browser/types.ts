@@ -195,8 +195,9 @@ export type DetailRendererProps<P = {}> = {
     file?: FileBrowserTreeFileNode | null
     close: () => void
     mode: 'save' | 'load',
-    onLoad?: (key: string) => void,
     onAudit?: (key: string) => void,
+    onAutoAudit?: () => void,
+    autoaudit?: boolean,
 } & P
 
 // TODO: These are probably not correct

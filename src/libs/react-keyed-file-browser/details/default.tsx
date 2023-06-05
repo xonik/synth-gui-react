@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { DetailRendererProps } from '../types'
-import './details.scss'
 import Button from '../../../controller/Button'
+import './details.scss'
 
 const DefaultDetails: React.FC<DetailRendererProps> = (
     {
@@ -9,7 +9,8 @@ const DefaultDetails: React.FC<DetailRendererProps> = (
         close,
         mode,
         onAudit,
-        onLoad,
+        onAutoAudit,
+        autoaudit
     }) => {
 
     const [audit, setAudit] = useState(false)
@@ -36,16 +37,12 @@ const DefaultDetails: React.FC<DetailRendererProps> = (
         }
     }
 
-    function handleLoadClick(event?: React.MouseEvent<HTMLElement>) {
+    function handleAutoAuditClick(event?: React.MouseEvent<HTMLElement>) {
         if (event) {
             event.preventDefault()
         }
 
-        if(!file){
-            return
-        }
-
-        onLoad?.('')
+        onAutoAudit?.()
     }
 
     const path = file?.key.split('/') || ''
@@ -65,8 +62,8 @@ const DefaultDetails: React.FC<DetailRendererProps> = (
                     </Button>
                 }
                 {mode === 'load' &&
-                    <Button active={true} onClick={handleLoadClick}>
-                        Load
+                    <Button active={Boolean(autoaudit)} onClick={handleAutoAuditClick}>
+                        Auto-audit
                     </Button>
                 }
             </div>
