@@ -130,7 +130,6 @@ class PatchBrowser extends React.Component<PatchBrowserProps> {
     }
 
     handleSave = async (key: string) => {
-        // TODO: Make sure we save the current patch, not the audit'ed one.
         console.log(`Saving ${key}`)
         await patchStorageApi.savePatch(key)
         // This may be a bit inefficient when we get a lot of files later...
@@ -140,6 +139,21 @@ class PatchBrowser extends React.Component<PatchBrowserProps> {
     handleLoad = async (key: string) => {
         console.log(`Loading ${key}`)
         await patchStorageApi.loadPatch(key)
+    }
+
+    handleAudit = async (key: string) => {
+        if(key === '') {
+            console.log('Resetting audit')
+            patchStorageApi.revertToCurrentPatch()
+        } else {
+            console.log(`Auditing ${key}`)
+            await patchStorageApi.auditPatch(key)
+        }
+    }
+
+    handleCancel = () => {
+        console.log('Cancelling')
+        patchStorageApi.revertToCurrentPatch()
     }
 
     render() {
@@ -153,6 +167,8 @@ class PatchBrowser extends React.Component<PatchBrowserProps> {
                     icons={Icons.FontAwesome(4)}
                     onSave={this.handleSave}
                     onLoad={this.handleLoad}
+                    onAudit={this.handleAudit}
+                    onCancel={this.handleCancel}
                     onCreateFolder={this.handleCreateFolder}
                     onCreateFiles={this.handleCreateFiles}
                     onMoveFolder={this.handleRenameFolder}

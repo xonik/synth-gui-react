@@ -36,7 +36,10 @@ export type Patch = {
     mods: number [][][],
 }
 
-async function savePatch(key: string) {
+let isAuditing = false
+let previousPatch: Patch | undefined
+
+function getCurrentPatch() {
     const patchControllers = patchApis.reduce((
         mergedControllers: PatchControllers,
         api
@@ -53,8 +56,21 @@ async function savePatch(key: string) {
         controllers: patchControllers,
         mods,
     }
+    return patch
+}
 
-    await patchFileServerFacade.savePatch(key, patch)
+function setCurrentPatch(patch: Patch) {
+    console.log('Setting patch', patch)
+    patchApis.forEach((source) => source.setFromLoad(patch.controllers))
+    modsApi.setFromLoad(patch.mods)
+}
+
+async function savePatch(key: string) {
+    if(isAuditing && previousPatch){
+        console.log('Reverting before save')
+        patchStorageApi.revertToCurrentPatch()
+    }
+    await patchFileServerFacade.savePatch(key, getCurrentPatch())
 }
 
 async function loadPatch(key: string, version?: string) {
@@ -63,8 +79,45 @@ async function loadPatch(key: string, version?: string) {
         console.log('Received', patch)
         patchApis.forEach((source) => source.setFromLoad(patch.controllers))
         modsApi.setFromLoad(patch.mods)
+
+        previousPatch = undefined
+        isAuditing = false
     } catch (err) {
         console.log('Could not load file')
+        return
+    }
+}
+
+async function auditPatch(key: string, version?: string) {
+    try {
+        // Store the current patch - but only if it has not yet been set, to be able to run
+        // this function multiple times without losing state.
+        if(!isAuditing) {
+            isAuditing = true
+            previousPatch = getCurrentPatch()
+            console.log('Stored current patch as ', previousPatch)
+        }
+
+        const patch = await patchFileServerFacade.loadPatch(key, version)
+
+        console.log('Received for auditing', patch)
+        setCurrentPatch(patch)
+    } catch (err) {
+        console.log('Could not load file for auditing')
+        return
+    }
+}
+
+function revertToCurrentPatch() {
+    try {
+        console.log('Reverting to current patch', isAuditing, previousPatch)
+        if(isAuditing && previousPatch) {
+            setCurrentPatch(previousPatch)
+            previousPatch = undefined
+        }
+        isAuditing = false
+    } catch (err) {
+        console.log('Could not revert to current patch')
         return
     }
 }
@@ -73,6 +126,8 @@ async function loadPatch(key: string, version?: string) {
 const patchStorageApi = {
     savePatch,
     loadPatch,
+    auditPatch,
+    revertToCurrentPatch,
     renamePatch: patchFileServerFacade.renamePatch,
     deletePatch: patchFileServerFacade.deletePatch,
 
