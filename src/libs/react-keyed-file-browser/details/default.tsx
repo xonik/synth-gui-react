@@ -8,6 +8,7 @@ const DefaultDetails: React.FC<DetailRendererProps> = (
         file,
         close,
         mode,
+        fileTypeHeading,
         onAudit,
         onAutoAudit,
         autoaudit
@@ -45,13 +46,14 @@ const DefaultDetails: React.FC<DetailRendererProps> = (
         onAutoAudit?.()
     }
 
+    const heading = `${fileTypeHeading} to ${mode === 'load' ? 'load' : 'save'}`
     const path = file?.key.split('/') || ''
     const name = path.length ? path[path.length - 1] : ''
 
     return (
         <div className="filedetails">
             <div className="filedetails__content">
-                <h2>Details</h2>
+                <h2>{heading}</h2>
                 <div>Name</div>
                 <div>{name}</div>
             </div>

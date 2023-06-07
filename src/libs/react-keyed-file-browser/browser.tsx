@@ -827,7 +827,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
     }
 
     handleCancelClick = async () => {
-
+        this.props.onCancel?.()
     }
 
     handleLoadClick = async () => {
@@ -1038,6 +1038,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
                             onAudit={this.handleAudit}
                             onAutoAudit={this.toggleAutoAudit}
                             autoaudit={this.state.autoaudit}
+                            fileTypeHeading={this.props.fileTypeHeading}
                             {...this.props.detailRendererProps}
                         />
                     </div>

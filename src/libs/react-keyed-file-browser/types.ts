@@ -198,6 +198,7 @@ export type DetailRendererProps<P = {}> = {
     onAudit?: (key: string) => void,
     onAutoAudit?: () => void,
     autoaudit?: boolean,
+    fileTypeHeading: string,
 } & P
 
 // TODO: These are probably not correct
@@ -404,6 +405,7 @@ export type FileBrowserProps = typeof RawFileBrowser.defaultProps & {
     onLoad?: (key: string) => void
 
     onAudit?: (key: string) => void
+    onCancel?: () => void
 
     mode: 'save' | 'load'
 }

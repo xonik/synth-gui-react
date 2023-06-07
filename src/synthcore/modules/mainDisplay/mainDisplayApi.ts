@@ -1,6 +1,11 @@
 import { MainDisplayScreenId } from './types'
 import { store } from '../../store'
-import { selectCurrScreen, setCurrentScreen as setCurrentScreenAction, setShiftOn } from './mainDisplayReducer'
+import {
+    selectCurrScreen,
+    setCurrentScreen as setCurrentScreenAction,
+    setPreviousScreen as setPreviousScreenAction,
+    setShiftOn
+} from './mainDisplayReducer'
 import { dispatch } from '../../utils'
 import { mainDisplayModsApi, mainDisplayModsPotResolutions } from '../mods/modsMainDisplayApi'
 import { mainDisplayEnvApi, mainDisplayEnvPotResolutions } from '../env/envMainDisplayApi'
@@ -10,13 +15,20 @@ import mainDisplayControllers from './mainDisplayControllers'
 import { createClickMapper, createIncrementMapper } from '../common/utils'
 import { mainDisplaySettingsApi, mainDisplaySettingsPotResolutions } from '../settings/settingsMainDisplayApi'
 import { mainDisplayLfoApi, mainDisplayLfoPotResolutions } from '../lfo/lfoMainDisplayApi'
-import patchStorageApi from '../patchStorage/patchStorageApi'
+
 
 type PotResolutions = {
     [key: number]: {
         [key: number]: number
     }
 }
+
+// Screens that should not be pushed to 'previousScreen', they are modals that should revert to previous screen
+// BEFORE any modal.
+const modalScreens = [
+    MainDisplayScreenId.SAVE,
+    MainDisplayScreenId.LOAD,
+]
 
 const potResolution: PotResolutions = {
     [MainDisplayScreenId.ENV]: mainDisplayEnvPotResolutions,
@@ -80,6 +92,10 @@ const handleMainDisplayController = (ctrlId: number, value: number, source: ApiS
 }
 
 const setCurrentScreen = (id: number, source: ApiSource) => {
+    const currentId = selectCurrScreen(store.getState())
+    if(!modalScreens.includes(currentId)){
+        dispatch(setPreviousScreenAction({ id: currentId }))
+    }
     dispatch(setCurrentScreenAction({ id }))
     mainDisplayMidiApi.setCurrentScreen(source, id)
 }
