@@ -5,9 +5,9 @@ import { RawTableFile } from '../../libs/react-keyed-file-browser/files'
 import { RawTableFolder } from '../../libs/react-keyed-file-browser/folders'
 import { RawTableHeader } from '../../libs/react-keyed-file-browser/headers/table'
 import patchStorageApi from '../../synthcore/modules/patchStorage/patchStorageApi'
-import './PatchBrowser.scss'
 import { dispatch } from '../../synthcore/utils'
 import { revertToPreviousScreen } from '../../synthcore/modules/mainDisplay/mainDisplayReducer'
+import './PatchBrowser.scss'
 
 type State = {
     files: FileBrowserTree
@@ -142,9 +142,7 @@ class PatchBrowser extends React.Component<PatchBrowserProps> {
     handleLoad = async (key: string) => {
         console.log(`Loading ${key}`)
         await patchStorageApi.loadPatch(key)
-        const action = revertToPreviousScreen({reason: 'Load patch'})
-        console.log(action)
-        dispatch(action)
+        dispatch(revertToPreviousScreen({reason: 'Load patch'}))
     }
 
     handleAudit = async (key: string) => {

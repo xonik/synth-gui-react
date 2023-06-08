@@ -15,6 +15,10 @@ import {
 import { PatchControllers } from '../common/types'
 import modsApi from '../mods/modsApi'
 import patchFileServerFacade from './patchFileServerFacade'
+import { Patch } from './types'
+import { dispatch } from '../../utils'
+import { selectIsAuditing, selectPreviousPatch, setAuditing, setPreviousPatch } from './patchStorageReducer'
+import { store } from '../../store'
 
 const patchApis = [
     arpApi,
@@ -30,14 +34,6 @@ const patchApis = [
     ringModApi,
     srcMixApi,
 ]
-
-export type Patch = {
-    controllers: PatchControllers,
-    mods: number [][][],
-}
-
-let isAuditing = false
-let previousPatch: Patch | undefined
 
 function getCurrentPatch() {
     const patchControllers = patchApis.reduce((
@@ -66,6 +62,8 @@ function setCurrentPatch(patch: Patch) {
 }
 
 async function savePatch(key: string) {
+    const previousPatch = selectPreviousPatch(store.getState())
+    const isAuditing = selectIsAuditing(store.getState())
     if(isAuditing && previousPatch){
         console.log('Reverting before save')
         patchStorageApi.revertToCurrentPatch()
@@ -80,8 +78,8 @@ async function loadPatch(key: string, version?: string) {
         patchApis.forEach((source) => source.setFromLoad(patch.controllers))
         modsApi.setFromLoad(patch.mods)
 
-        previousPatch = undefined
-        isAuditing = false
+        dispatch(setPreviousPatch({patch: undefined}))
+        dispatch(setAuditing({value: false}))
     } catch (err) {
         console.log('Could not load file')
         return
@@ -92,9 +90,11 @@ async function auditPatch(key: string, version?: string) {
     try {
         // Store the current patch - but only if it has not yet been set, to be able to run
         // this function multiple times without losing state.
+        const isAuditing = selectIsAuditing(store.getState())
         if(!isAuditing) {
-            isAuditing = true
-            previousPatch = getCurrentPatch()
+            dispatch(setAuditing({value: true}))
+            const previousPatch = getCurrentPatch()
+            dispatch(setPreviousPatch({patch: previousPatch}))
             console.log('Stored current patch as ', previousPatch)
         }
 
@@ -110,12 +110,14 @@ async function auditPatch(key: string, version?: string) {
 
 function revertToCurrentPatch() {
     try {
+        const previousPatch = selectPreviousPatch(store.getState())
+        const isAuditing = selectIsAuditing(store.getState())
         console.log('Reverting to current patch', isAuditing, previousPatch)
         if(isAuditing && previousPatch) {
             setCurrentPatch(previousPatch)
-            previousPatch = undefined
+            dispatch(setPreviousPatch({patch: undefined}))
         }
-        isAuditing = false
+        dispatch(setAuditing({value: false}))
     } catch (err) {
         console.log('Could not revert to current patch')
         return

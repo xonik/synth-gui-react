@@ -1,5 +1,5 @@
 import { FileBrowserTree } from '../../../libs/react-keyed-file-browser/types'
-import { Patch } from './patchStorageApi'
+import { Patch } from './types'
 
 const patchRoot = '/patch'
 
