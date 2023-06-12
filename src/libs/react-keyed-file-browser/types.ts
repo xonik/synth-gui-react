@@ -135,8 +135,10 @@ type DownloadFolderHandler = (keys: string[]) => void
 
 // Header
 export type HeaderRendererProps = ItemProps & {
+    fileTypeHeading?: string
+    onHeaderClick: (path: string) => void,
+    path: string,
     select: (value: string) => void
-    fileKey: string
     fileCount: number
     browserProps: RendererBrowserProps
     connectDropTarget?: (element: JSX.Element) => JSX.Element

@@ -865,8 +865,13 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
         const browserProps = this.getBrowserProps()
         const headerProps = {
             browserProps,
-            fileKey: '',
+            fileKey: this.state.selectedFilePath,
             fileCount: this.props.files.length,
+            select: (path: string) => {
+                console.log(`set path to ${path}`)
+                this.select(path, 'folder')
+            },
+            fileTypeHeading: this.props.fileTypeHeading
         }
         let renderedFiles
 
@@ -923,6 +928,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
                         <this.props.headerRenderer
                             {...headerProps}
                             {...this.props.headerRendererProps}
+                            path={this.state.selectedFilePath}
                         />
                         </thead>
                     )

@@ -8,6 +8,7 @@ import patchStorageApi from '../../synthcore/modules/patchStorage/patchStorageAp
 import { dispatch } from '../../synthcore/utils'
 import { revertToPreviousScreen } from '../../synthcore/modules/mainDisplay/mainDisplayReducer'
 import './PatchBrowser.scss'
+import { PathTableHeader } from '../../libs/react-keyed-file-browser/headers/PathTableHeader'
 
 type State = {
     files: FileBrowserTree
@@ -184,7 +185,7 @@ class PatchBrowser extends React.Component<PatchBrowserProps> {
                     onDeleteFile={this.handleDeleteFile}
 
                     // @ts-ignore
-                    headerRenderer={RawTableHeader}
+                    headerRenderer={PathTableHeader}
                     fileRenderer={RawTableFile}
                     folderRenderer={RawTableFolder}
                 />
