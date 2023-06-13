@@ -474,6 +474,13 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
         if (!folder) return // TODO: Shouldn't fail silently?
 
         const isOpen = folderKey in this.state.openFolders
+        if(isOpen && folderKey !== this.state.selectedFilePath){
+            // If you have expanded a folder, then selected a different folder
+            // and THEN want to go back to the previous one, you don't want
+            // it to be closed on select.
+            return
+        }
+
         this.setState(prevState => {
             const stateChanges = {
                 openFolders: { ...prevState.openFolders },

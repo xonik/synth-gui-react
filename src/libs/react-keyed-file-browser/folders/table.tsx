@@ -13,7 +13,6 @@ class RawTableFolder extends BaseFolder {
       isOpen, isDragging, isDeleting, isRenaming, isDraft, isOver, isSelected,
       action, url, browserProps, connectDragPreview, depth,
     } = this.props
-
     const icon = browserProps.icons[isOpen ? 'FolderOpen' : 'Folder']
     const inAction = (isDragging || action)
 
