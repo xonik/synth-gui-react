@@ -2,22 +2,36 @@ import React, { Component } from 'react';
 import Keyboard from 'react-simple-keyboard';
 import 'react-simple-keyboard/build/css/index.css';
 
-
-
+// https://hodgef.com/simple-keyboard/documentation/options/
 class KeyboardInput extends Component {
 
+    private keyboard: any
+
     state = {
-        val: "",
+        value: "",
         kbdlayout: "default",
         capslocked: false,
     }
-    onChange = (input: any) => {
-        this.setState({val: input})
-        console.log("Input changed", input);
+
+    // Handle changes coming from the keyboard
+    onKeyboardInputChange = (value: any) => {
+        this.setState({value})
     }
 
+    // Handle changes to the input field (i.e. when the user enters text using a normal keyboard)
+    onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.currentTarget.value;
+        this.setState(
+            {
+                value
+            },
+            () => {
+                this.keyboard.setInput(value);
+            }
+        );
+    };
+
     onKeyPress = (key: string) => {
-        console.log(`PRessed ${key}`)
         if(key === '{shift}'){
             if(this.state.capslocked){
                 this.setState({kbdlayout: 'default'})
@@ -41,7 +55,6 @@ class KeyboardInput extends Component {
     }
 
     onKeyRelease = (key: string) => {
-        console.log(`Released ${key}`)
         if(key === '{shift}'){
             if(this.state.capslocked){
                 this.setState({kbdlayout: 'shift'})
@@ -53,12 +66,11 @@ class KeyboardInput extends Component {
 
     render() {
         return (
-            //https://hodgef.com/simple-keyboard/documentation/options/
             <>
-                <input type="text" value={this.state.val} onChange={this.onChange}/>
+                <input type="text" value={this.state.value} onChange={this.onInputChange}/>
                 <Keyboard
-
-                    onChange={this.onChange}
+                    keyboardRef={(ref) => (this.keyboard = ref)}
+                    onChange={this.onKeyboardInputChange}
                     onKeyPress={this.onKeyPress}
                     onKeyReleased={this.onKeyRelease}
                     layoutName={this.state.kbdlayout}
