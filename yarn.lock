@@ -9662,7 +9662,7 @@
     "fast-deep-equal" "^3.1.3"
     "hoist-non-react-statics" "^3.3.2"
 
-"react-dom@^16.13.1", "react-dom@>= 16.8.0":
+"react-dom@^16.0.0 || ^17.0.0 || ^18.0.0", "react-dom@^16.13.1", "react-dom@>= 16.8.0":
   "integrity" "sha512-81PIMmVLnCNLO/fFOQxdQkvEq/+Hfpv24XNJfpyZhTRfO0QcmQIF/PgCa1zCOj2w1hrn12MFLyaJ/G0+Mxtfag=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-16.13.1.tgz"
   "version" "16.13.1"
@@ -9782,6 +9782,11 @@
   optionalDependencies:
     "fsevents" "^2.1.3"
 
+"react-simple-keyboard@^3.6.15":
+  "integrity" "sha512-Mud68U6qQG/frpRLB9+fkwviBQi4FuXEP9LBPrYiayWou6hh1suRwEQdKCfKmPchwrbuvBxf4fs1sOUETTfseQ=="
+  "resolved" "https://registry.npmjs.org/react-simple-keyboard/-/react-simple-keyboard-3.6.15.tgz"
+  "version" "3.6.15"
+
 "react-spring@^9.2.3":
   "integrity" "sha512-D3fx9A7UjX4yp35TM3YxbhzKhjq6nFaEs4/RkKT+/Ch732opG6iUek9jt+mwR1bST29aa9Da6mWipAtQbD2U3g=="
   "resolved" "https://registry.npmjs.org/react-spring/-/react-spring-9.2.3.tgz"
@@ -9794,7 +9799,7 @@
     "@react-spring/web" "~9.2.0"
     "@react-spring/zdog" "~9.2.0"
 
-"react@^16.13.1", "react@>= 16.14", "react@>= 16.8.0", "react@>=16.8.0", "react@0.14.x || 15.x || 16.x || 17.x":
+"react@^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.13.1", "react@>= 16.14", "react@>= 16.8.0", "react@>=16.8.0", "react@0.14.x || 15.x || 16.x || 17.x":
   "integrity" "sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g=="
   "resolved" "https://registry.npmjs.org/react/-/react-16.14.0.tgz"
   "version" "16.14.0"
@@ -10571,6 +10576,11 @@
   "integrity" "sha1-tf3AjxKH6hF4Yo5BXiUTK3NkbG0="
   "resolved" "https://registry.npmjs.org/signal-exit/-/signal-exit-3.0.2.tgz"
   "version" "3.0.2"
+
+"simple-keyboard@^3.6.13":
+  "integrity" "sha512-PhFNx8FhKofKE0npXhcr+PmwCIOAh48CZtyNc/CxdFdTt36fggK8QAexcKkej4p4dXO5TglFuN+iEjtWP7fSPQ=="
+  "resolved" "https://registry.npmjs.org/simple-keyboard/-/simple-keyboard-3.6.13.tgz"
+  "version" "3.6.13"
 
 "simple-swizzle@^0.2.2":
   "integrity" "sha1-pNprY1/8zMoz9w0Xy5JZLeleVXo="

@@ -9,6 +9,7 @@ import { dispatch } from '../../synthcore/utils'
 import { revertToPreviousScreen } from '../../synthcore/modules/mainDisplay/mainDisplayReducer'
 import './PatchBrowser.scss'
 import { PathTableHeader } from '../../libs/react-keyed-file-browser/headers/PathTableHeader'
+import KeyboardInput from '../../libs/react-keyed-file-browser/input/KeyboardInput'
 
 type State = {
     files: FileBrowserTree
@@ -165,7 +166,8 @@ class PatchBrowser extends React.Component<PatchBrowserProps> {
     render() {
         return (
             <div className="patch-browser">
-                <RawFileBrowser
+                <KeyboardInput />
+                {/*<RawFileBrowser
                     fileTypeHeading="Patch"
                     mode={this.props.mode}
                     files={this.state.files}
@@ -188,7 +190,7 @@ class PatchBrowser extends React.Component<PatchBrowserProps> {
                     headerRenderer={PathTableHeader}
                     fileRenderer={RawTableFile}
                     folderRenderer={RawTableFolder}
-                />
+                />*/}
 
             </div>
         )

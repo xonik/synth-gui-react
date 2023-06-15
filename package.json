@@ -25,6 +25,7 @@
     "react-keyed-file-browser": "^1.14.0",
     "react-redux": "^7.2.4",
     "react-scripts": "4.0.3",
+    "react-simple-keyboard": "^3.6.15",
     "react-spring": "^9.2.3",
     "sass": "^1.49.11",
     "styled-components": "^5.3.0",
