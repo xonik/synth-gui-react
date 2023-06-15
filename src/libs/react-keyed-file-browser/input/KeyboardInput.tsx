@@ -21,6 +21,9 @@ class KeyboardInput extends Component {
     // Handle changes to the input field (i.e. when the user enters text using a normal keyboard)
     onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.currentTarget.value;
+        if(!value.match(whitelistRegex)){
+            return
+        }
         this.setState(
             {
                 value
@@ -97,5 +100,7 @@ const kbdlayouts = {
         '{space}'
     ],
 }
+
+const whitelistRegex = /^[0-9a-zA-Z \\-]*$/
 
 export default KeyboardInput
