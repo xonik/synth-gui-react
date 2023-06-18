@@ -3,13 +3,12 @@ import { Icons, RawFileBrowser } from '../../libs/react-keyed-file-browser'
 import { FileBrowserTree, FileBrowserTreeNode } from '../../libs/react-keyed-file-browser/types'
 import { RawTableFile } from '../../libs/react-keyed-file-browser/files'
 import { RawTableFolder } from '../../libs/react-keyed-file-browser/folders'
-import { RawTableHeader } from '../../libs/react-keyed-file-browser/headers/table'
 import patchStorageApi from '../../synthcore/modules/patchStorage/patchStorageApi'
 import { dispatch } from '../../synthcore/utils'
 import { revertToPreviousScreen } from '../../synthcore/modules/mainDisplay/mainDisplayReducer'
-import './PatchBrowser.scss'
 import { PathTableHeader } from '../../libs/react-keyed-file-browser/headers/PathTableHeader'
-import KeyboardInput from '../../libs/react-keyed-file-browser/input/KeyboardInput'
+import { KeyboardProvider } from '../../libs/react-keyed-file-browser/input/KeyboardProvider'
+import './PatchBrowser.scss'
 
 type State = {
     files: FileBrowserTree
@@ -163,36 +162,47 @@ class PatchBrowser extends React.Component<PatchBrowserProps> {
         dispatch(revertToPreviousScreen({reason: 'Cancel patch modal'}))
     }
 
+
+    onKeyboardOk = (value: string) => {
+        this.setState({showKeyboardInput: false})
+    }
+
+    onKeyboardCancel = () => {
+        this.setState({showKeyboardInput: false})
+    }
+
     render() {
         return (
-            <div className="patch-browser">
-                <KeyboardInput />
-                {/*<RawFileBrowser
-                    fileTypeHeading="Patch"
-                    mode={this.props.mode}
-                    files={this.state.files}
-                    // @ts-ignore
-                    icons={Icons.FontAwesome(4)}
-                    onSave={this.handleSave}
-                    onLoad={this.handleLoad}
-                    onAudit={this.handleAudit}
-                    onCancel={this.handleCancel}
-                    onCreateFolder={this.handleCreateFolder}
-                    onCreateFiles={this.handleCreateFiles}
-                    onMoveFolder={this.handleRenameFolder}
-                    onMoveFile={this.handleRenameFile}
-                    onRenameFolder={this.handleRenameFolder}
-                    onRenameFile={this.handleRenameFile}
-                    onDeleteFolder={this.handleDeleteFolder}
-                    onDeleteFile={this.handleDeleteFile}
+            <KeyboardProvider>
+                <div className="patch-browser">
 
-                    // @ts-ignore
-                    headerRenderer={PathTableHeader}
-                    fileRenderer={RawTableFile}
-                    folderRenderer={RawTableFolder}
-                />*/}
+                    <RawFileBrowser
+                        fileTypeHeading="Patch"
+                        mode={this.props.mode}
+                        files={this.state.files}
+                        // @ts-ignore
+                        icons={Icons.FontAwesome(4)}
+                        onSave={this.handleSave}
+                        onLoad={this.handleLoad}
+                        onAudit={this.handleAudit}
+                        onCancel={this.handleCancel}
+                        onCreateFolder={this.handleCreateFolder}
+                        onCreateFiles={this.handleCreateFiles}
+                        onMoveFolder={this.handleRenameFolder}
+                        onMoveFile={this.handleRenameFile}
+                        onRenameFolder={this.handleRenameFolder}
+                        onRenameFile={this.handleRenameFile}
+                        onDeleteFolder={this.handleDeleteFolder}
+                        onDeleteFile={this.handleDeleteFile}
 
-            </div>
+                        // @ts-ignore
+                        headerRenderer={PathTableHeader}
+                        fileRenderer={RawTableFile}
+                        folderRenderer={RawTableFolder}
+                    />
+
+                </div>
+            </KeyboardProvider>
         )
     }
 }

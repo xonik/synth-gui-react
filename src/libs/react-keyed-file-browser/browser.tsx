@@ -37,6 +37,7 @@ import {
 
 import './browser.scss'
 import Button from '../../controller/Button'
+import KeyboardInputModal from './input/KeyboardInputModal'
 
 const SEARCH_RESULTS_PER_PAGE = 20
 const regexForNewFolderOrFileSelection = /.*\/__new__[/]?$/gm
@@ -396,7 +397,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
             const key = selected.key
             const lastSlashIndex = key.lastIndexOf('/')
             const [path, file] = [key.slice(0, lastSlashIndex + 1), key.slice(lastSlashIndex + 1)]
-            if(path === selectedFilePath && file === selectedFileName){
+            if (path === selectedFilePath && file === selectedFileName) {
                 newPreviewFile = null
             }
         } else {
@@ -406,7 +407,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
                 const [path, file] = [key.slice(0, lastSlashIndex + 1), key.slice(lastSlashIndex + 1)]
                 newSelectedFilePath = path
                 newSelectedFileName = file
-                if(newSelection.length === 1){
+                if (newSelection.length === 1) {
                     newPreviewFile = selected
                 }
             }
@@ -432,7 +433,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
             if (selectedType === 'file') {
 
                 this.props.onSelectFile?.(selected)
-                if(this.state.autoaudit){
+                if (this.state.autoaudit) {
                     await this.handleAudit(selectedKey)
                 }
             }
@@ -474,7 +475,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
         if (!folder) return // TODO: Shouldn't fail silently?
 
         const isOpen = folderKey in this.state.openFolders
-        if(isOpen && folderKey !== this.state.selectedFilePath){
+        if (isOpen && folderKey !== this.state.selectedFilePath) {
             // If you have expanded a folder, then selected a different folder
             // and THEN want to go back to the previous one, you don't want
             // it to be closed on select.
@@ -853,19 +854,19 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
     }
 
     toggleAutoAudit = () => {
-        this.setState({autoaudit: !this.state.autoaudit},
-        async () => {
-            if(this.state.autoaudit){
-                const path = this.state.selectedFilePath
-                const name = this.state.selectedFileName
-                if (name) {
-                    const key = `${path}${name}`
-                    await this.handleAudit(key)
+        this.setState({ autoaudit: !this.state.autoaudit },
+            async () => {
+                if (this.state.autoaudit) {
+                    const path = this.state.selectedFilePath
+                    const name = this.state.selectedFileName
+                    if (name) {
+                        const key = `${path}${name}`
+                        await this.handleAudit(key)
+                    }
+                } else {
+                    await this.handleAudit('')
                 }
-            } else {
-                await this.handleAudit('')
-            }
-        })
+            })
     }
 
     render() {
@@ -1006,6 +1007,7 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
 
         return (
             <div className="rendered-react-keyed-file-browser">
+                <KeyboardInputModal />
                 {this.props.actions}
                 <div className="file-browser">
                     <div className="file-browser__files-container" ref={el => {
@@ -1030,14 +1032,16 @@ class RawFileBrowser extends Component<FileBrowserProps, RawFileBrowserState> {
                                     />
                                 </div>
                                 <div className="filename">
-                                    <Button active={true} onClick={this.handleSaveClick} disabled={disableSaveLoad}>Save</Button>
+                                    <Button active={true} onClick={this.handleSaveClick}
+                                            disabled={disableSaveLoad}>Save</Button>
                                     <Button active={true} onClick={this.handleCancelClick}>Cancel</Button>
                                 </div>
                             </React.Fragment>
                         }
                         {this.props.mode === 'load' &&
                             <div className="filename">
-                                <Button active={true} disabled={disableSaveLoad} onClick={this.handleLoadClick}>Load</Button>
+                                <Button active={true} disabled={disableSaveLoad}
+                                        onClick={this.handleLoadClick}>Load</Button>
                                 <Button active={true} onClick={this.handleCancelClick}>Cancel</Button>
                             </div>
                         }
