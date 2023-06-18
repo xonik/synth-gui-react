@@ -1,24 +1,22 @@
-import React, { useCallback, useContext } from 'react'
+import React, { InputHTMLAttributes, useCallback, useContext } from 'react'
 import { KeyboardContext } from './KeyboardProvider'
 
-const KeyboardAwareInput = ({heading}: KeyboardAwareInputProps) => {
+const KeyboardAwareInput = ({heading, ...inputElementProps}: KeyboardAwareInputProps) => {
     const { showKeyboard } = useContext(KeyboardContext);
 
     const onInputFieldClick = useCallback((event: React.MouseEvent<HTMLInputElement>) => {
-        console.log("Field clicked")
         showKeyboard(event.currentTarget, heading)
-    }, [showKeyboard])
+    }, [heading, showKeyboard])
 
     return (
         <input
-            type="search"
-            placeholder="Filter files"
             onClick={onInputFieldClick}
+            {...inputElementProps}
         />
     )
 }
 
-type KeyboardAwareInputProps = {
+interface KeyboardAwareInputProps extends InputHTMLAttributes<HTMLInputElement> {
     heading: string
 }
 

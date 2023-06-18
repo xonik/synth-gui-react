@@ -67,15 +67,24 @@ const KeyboardInputModal = (props: KeyboardInputProps) => {
         const currentValue = value
         setValue('')
         keyboard.current?.setInput('')
-        if(valueTarget) valueTarget.value = currentValue
+        if(valueTarget) {
+            // This will work by calling the native setter bypassing Reacts incorrect value change check
+            const nativeInputValueSetter =
+            Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')?.set
+            nativeInputValueSetter?.call(valueTarget, currentValue);
+
+            // This will trigger a new render wor the component
+            valueTarget.dispatchEvent(new Event('change', { bubbles: true }));
+
+        }
 
         hideKeyboard()
-    }, [props, value, hideKeyboard])
+    }, [value, valueTarget, hideKeyboard])
 
     const onCancelClick = useCallback(() => {
         console.log('Cancel')
         hideKeyboard()
-    }, [props, hideKeyboard])
+    }, [hideKeyboard])
 
     if (!keyboardVisible) {
         return null
