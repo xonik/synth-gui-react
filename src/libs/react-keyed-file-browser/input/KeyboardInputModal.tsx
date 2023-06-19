@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import Keyboard from 'react-simple-keyboard';
 import 'react-simple-keyboard/build/css/index.css';
 import './KeboardInput.scss'
@@ -11,17 +11,24 @@ const KeyboardInputModal = (props: KeyboardInputProps) => {
 
     const {
         heading,
-        keyboardVisible ,
+        keyboardVisible,
         hideKeyboard,
-        valueTarget} = useContext(KeyboardContext)
+        valueTarget,
+        initialKeyboardValue
+    } = useContext(KeyboardContext)
     const keyboard = useRef<SimpleKeyboard>()
     const [value, setValue] = useState('')
     const [layout, setLayout] = useState('default')
     const [capsLocked, setCapsLocked] = useState(false)
 
+    useEffect(() => {
+        setValue(initialKeyboardValue)
+    }, [initialKeyboardValue])
+
     // Handle changes coming from the keyboard
     const onKeyboardInputChange = useCallback((value: any) => {
         setValue(value)
+        keyboard.current?.setInput(value)
     }, [])
 
     // Handle changes to the input field (i.e. when the user enters text using a normal keyboard)
@@ -31,7 +38,7 @@ const KeyboardInputModal = (props: KeyboardInputProps) => {
             return
         }
         setValue(value)
-        keyboard.current?.setInput(value);
+        keyboard.current?.setInput(value)
     }, [])
 
     const onKeyPress = useCallback((key: string) => {
@@ -67,10 +74,10 @@ const KeyboardInputModal = (props: KeyboardInputProps) => {
         const currentValue = value
         setValue('')
         keyboard.current?.setInput('')
-        if(valueTarget) {
+        if (valueTarget) {
             // This will work by calling the native setter bypassing Reacts incorrect value change check
             const nativeInputValueSetter =
-            Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')?.set
+                Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')?.set
             nativeInputValueSetter?.call(valueTarget, currentValue);
 
             // This will trigger a new render wor the component
@@ -132,7 +139,6 @@ const kbdlayouts = {
 
 const whitelistRegex = /^[0-9a-zA-Z \\-]*$/
 
-type KeyboardInputProps = {
-}
+type KeyboardInputProps = {}
 
 export default KeyboardInputModal

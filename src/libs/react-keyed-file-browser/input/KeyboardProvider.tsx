@@ -7,6 +7,7 @@ type KeyboardContextType = {
     valueTarget: (EventTarget & HTMLInputElement) | undefined
     showKeyboard: (currentTarget: EventTarget & HTMLInputElement, heading: string) => void
     hideKeyboard: () => void
+    initialKeyboardValue: string,
 }
 export const KeyboardContext = React.createContext<KeyboardContextType>({
     keyboardVisible: false,
@@ -14,12 +15,14 @@ export const KeyboardContext = React.createContext<KeyboardContextType>({
     valueTarget: undefined,
     showKeyboard: (currentTarget: EventTarget & HTMLInputElement, heading: string) => {},
     hideKeyboard: () => {},
+    initialKeyboardValue: '',
 })
 
 // @ts-ignore
 function KeyboardProvider({ children }) {
     const [keyboardVisible, setKeyboardVisible] = useState(false)
     const [heading, setHeading] = useState('')
+    const [initialKeyboardValue, setInitialKeyboardValue] = useState('')
     const [
         valueTarget,
         setValueTarget
@@ -29,6 +32,7 @@ function KeyboardProvider({ children }) {
         setHeading(heading)
         setKeyboardVisible(true)
         setValueTarget(currentTarget)
+        setInitialKeyboardValue(currentTarget.value)
     }, [setKeyboardVisible])
 
     const hideKeyboard = useCallback(() => {
@@ -41,7 +45,9 @@ function KeyboardProvider({ children }) {
         showKeyboard,
         hideKeyboard,
         heading,
-        valueTarget }}>
+        valueTarget,
+        initialKeyboardValue
+    }}>
         {children}
     </KeyboardContext.Provider>
 }
