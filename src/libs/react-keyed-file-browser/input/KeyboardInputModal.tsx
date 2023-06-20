@@ -1,13 +1,13 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import Keyboard from 'react-simple-keyboard';
 import 'react-simple-keyboard/build/css/index.css';
-import './KeboardInput.scss'
+import './KeyboardInput.scss'
 import Button from '../../../controller/Button'
 import { SimpleKeyboard } from 'react-simple-keyboard/build/interfaces'
 import { KeyboardContext } from './KeyboardProvider'
 
 // https://hodgef.com/simple-keyboard/documentation/options/
-const KeyboardInputModal = (props: KeyboardInputProps) => {
+const KeyboardInputModal = () => {
 
     const {
         heading,
@@ -100,8 +100,12 @@ const KeyboardInputModal = (props: KeyboardInputProps) => {
         <div className="keyboard-input">
             <div className="keyboard-input_main">
                 <div className="keyboard-input_heading">{heading}</div>
-                <input className="keyboard-input_text" type="text" value={value}
-                       onChange={onInputChange}/>
+                <input className="keyboard-input_text"
+                       type="search"
+                       value={value}
+                       autoFocus={true}
+                       onChange={onInputChange}
+                />
                 <div className="keyboard-input_actions">
                     <Button active={true} onClick={onOkClick}>OK</Button>
                     <Button active={true} onClick={onCancelClick}>Cancel</Button>
@@ -138,7 +142,5 @@ const kbdlayouts = {
 }
 
 const whitelistRegex = /^[0-9a-zA-Z \\-]*$/
-
-type KeyboardInputProps = {}
 
 export default KeyboardInputModal
