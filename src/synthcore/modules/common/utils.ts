@@ -44,9 +44,9 @@ export class ControllerHandler {
 
         // setup receive midi
         if (midiFuncs && midiFuncs.receive) {
-            midiFuncs.receive(ctrl, this.setWithUiUpdate)
+            midiFuncs.receive(ctrl, this.setWithUiUpdate.bind(this))
         } else {
-            paramReceive(ctrl, this.setWithUiUpdate)
+            paramReceive(ctrl, this.setWithUiUpdate.bind(this))
         }
     }
 

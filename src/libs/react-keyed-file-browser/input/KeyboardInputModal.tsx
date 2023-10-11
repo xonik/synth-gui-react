@@ -1,10 +1,10 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { SimpleKeyboard } from 'react-simple-keyboard/build/interfaces'
 import Keyboard from 'react-simple-keyboard';
+import Button from '../../../controller/Button'
+import { KeyboardContext } from './KeyboardProvider'
 import 'react-simple-keyboard/build/css/index.css';
 import './KeyboardInput.scss'
-import Button from '../../../controller/Button'
-import { SimpleKeyboard } from 'react-simple-keyboard/build/interfaces'
-import { KeyboardContext } from './KeyboardProvider'
 
 // https://hodgef.com/simple-keyboard/documentation/options/
 const KeyboardInputModal = () => {
