@@ -104,7 +104,7 @@ const StateVariableFilter = ({ x, y }: Props) => {
                              ledPosition="sides" ledCount={10}
                              ledLabels={[
                                  '12dB LP', '24dB LP', '12dB BP', '24dB BP', 'LP + BP',
-                                 '12dB HP', '24dB HP', 'HP + BP', 'Notch', 'Notch + LP'
+                                 '12dB HP', '24dB HP', 'HP + BP', 'Notch', 'AP'
                              ]}
                              resolution={10}
                              ctrlGroup={ctrlGroup}

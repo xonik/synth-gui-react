@@ -27,6 +27,7 @@ export enum buttonRightMidiValues {
     SVF_SLOPE_HP_BP,
     SVF_SLOPE_NOTCH,
     SVF_SLOPE_NOTCH_LP,
+    SVF_SLOPE_AP,
     SVF_FM_MODE_LIN,
     SVF_FM_MODE_LOG,
     ENV_TRIGGER,

@@ -226,7 +226,7 @@ const filtersControllers: FiltersControllers = {
                 BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_24DB_HP,
                 BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_HP_BP,
                 BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_NOTCH,
-                BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_NOTCH_LP,
+                BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_AP,
             ],
         },
         FM_MODE: {
