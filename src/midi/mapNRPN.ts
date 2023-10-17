@@ -15,6 +15,11 @@ const mapNRPN = {
     LFO_BALANCE: 13,
     LFO_PHASE_OFFSET: 14,
     LFO_LEVEL_OFFSET: 15,
+    CV_RANGE_MIN: 16,
+    CV_RANGE_MAX: 17,
+    CV_RANGE_CURVE: 18,
+    CV_RANGE_SAVE: 19,
+    CV_RANGE_LOAD: 20,
 }
 
 export default mapNRPN

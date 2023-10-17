@@ -131,8 +131,8 @@ const MainPanel = () => {
                 <MainDisplay x={displayCol} y={displayRow} ref={displayRef}/>
                 <KeyboardControls x={keyCtrlCol} y={keyCtrlRow}/>
 
-                <LowPassFilter x={filterCol} y={82}/>
-                <StateVariableFilter x={filterCol} y={250}/>
+                <StateVariableFilter x={filterCol} y={82}/>
+                <LowPassFilter x={filterCol} y={275}/>
                 <PostMix x={voiceMixCol} y={5}/>
 
 

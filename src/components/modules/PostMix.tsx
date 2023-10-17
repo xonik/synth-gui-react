@@ -43,8 +43,8 @@ const PostMix = ({ x, y }: Props) => {
 
     return <svg x={x} y={y}>
         <Header label="Mix" x={0} y={0} width={40}/>
-        <VoiceMixerChannel x={offsetX} y={offsetY} label="LPF" ctrl={postMixControllers.LPF}/>
-        <VoiceMixerChannel x={offsetX} y={offsetY + rowDistance} label="SVF" ctrl={postMixControllers.SVF}/>
+        <VoiceMixerChannel x={offsetX} y={offsetY} label="SVF" ctrl={postMixControllers.SVF}/>
+        <VoiceMixerChannel x={offsetX} y={offsetY + rowDistance} label="LPF" ctrl={postMixControllers.LPF}/>
         <VoiceMixerChannel x={offsetX} y={offsetY + rowDistance * 2} label="Sine 1" ctrl={postMixControllers.SINE1}/>
         <VoiceMixerChannel x={offsetX} y={offsetY + rowDistance * 3} label="Sine 2" ctrl={postMixControllers.SINE2}/>
 
