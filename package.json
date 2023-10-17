@@ -41,7 +41,8 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "run-ts": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' node --require ts-node/register/transpile-only",
-    "generateCppFiles": "npm run run-ts utils/cppMidiConfigGenerator.ts"
+    "generateCppFiles": "npm run run-ts utils/cppMidiConfigGenerator.ts",
+    "generateMidiRPCFiles": "npm run run-ts utils/midiRPCGenerator.ts"
   },
   "eslintConfig": {
     "extends": "react-app"

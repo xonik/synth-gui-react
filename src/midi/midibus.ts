@@ -48,6 +48,10 @@ const midiConfig = {
     channel: 0,
 }
 
+export const sysexCommands = {
+    RPC: 0,
+}
+
 const MIDI_CC = 0b10110000
 
 let midiOut: MIDIOutput | undefined
@@ -159,6 +163,14 @@ const currNRPN = {
     hiValue: 0,
     midValue: 0,
     loValue: 0,
+}
+
+export const sendSysex = (command: number, data: number[]) => {
+    midiOut?.send([
+        ...midiConfig.sysexAddr,
+        command,
+        ...data
+    ])
 }
 
 export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
