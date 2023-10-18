@@ -1,7 +1,7 @@
 // js-to-midi RPC wrapper
 import logger from '../../utils/logger'
 import { jsToMidiEncoder } from './dataTypes'
-import { CommandNames } from './commandNames'
+import { FunctionNames } from './functionNames'
 import { sendSysex, sysexCommands } from '../midibus'
 
 function setCvMin(cv: number, min: number) {
@@ -10,7 +10,7 @@ function setCvMin(cv: number, min: number) {
     ...jsToMidiEncoder['uint16_t'](min)
   ]
   const data = [
-    CommandNames.setCvMin,
+    FunctionNames.setCvMin,
     ...paramBytes,
   ]
   logger.midi('RPC call to setCvMin')
@@ -23,7 +23,7 @@ function setCvMax(cv: number, max: number) {
     ...jsToMidiEncoder['uint16_t'](max)
   ]
   const data = [
-    CommandNames.setCvMax,
+    FunctionNames.setCvMax,
     ...paramBytes,
   ]
   logger.midi('RPC call to setCvMax')
@@ -36,7 +36,7 @@ function setCvCurve(cv: number, curve: number) {
     ...jsToMidiEncoder['uint8_t'](curve)
   ]
   const data = [
-    CommandNames.setCvCurve,
+    FunctionNames.setCvCurve,
     ...paramBytes,
   ]
   logger.midi('RPC call to setCvCurve')
@@ -48,7 +48,7 @@ function saveCvMapping(cv: number) {
     ...jsToMidiEncoder['uint8_t'](cv)
   ]
   const data = [
-    CommandNames.saveCvMapping,
+    FunctionNames.saveCvMapping,
     ...paramBytes,
   ]
   logger.midi('RPC call to saveCvMapping')
@@ -60,7 +60,7 @@ function loadCvMapping(cv: number) {
     ...jsToMidiEncoder['uint8_t'](cv)
   ]
   const data = [
-    CommandNames.loadCvMapping,
+    FunctionNames.loadCvMapping,
     ...paramBytes,
   ]
   logger.midi('RPC call to loadCvMapping')
@@ -72,7 +72,7 @@ function loadCvMapping2() {
     
   ]
   const data = [
-    CommandNames.loadCvMapping2,
+    FunctionNames.loadCvMapping2,
     ...paramBytes,
   ]
   logger.midi('RPC call to loadCvMapping2')

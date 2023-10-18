@@ -31,6 +31,8 @@ import {
     SRC_COUNT
 } from '../src/synthcore/modules/controllers/controllerIds'
 import { cToJsDataTypeMap, DataType, isDataType, jsToMidiEncoder, KNOWN_DATATYPES } from '../src/midi/rpc/dataTypes'
+import { generateMidiRPCFunctionIds } from './midiRPC/generateMidiRPCFunctionIds'
+import { Func } from './midiRPC/types'
 
 const fs = require('fs')
 
@@ -48,18 +50,11 @@ const readMidiRPCHeaderFile = () => {
     console.log(lines)
 }
 
-type Function = {
-    name: string,
-    returnType: DataType,
-    params: {
-        name: string,
-        type: DataType,
-    }[]
-}
+
 
 const funcRegex = new RegExp(`^\\s*(${KNOWN_DATATYPES.join('|')})\\s([a-zA-Z0-9]+)\\((.*)\\)`)
 
-let functions: Function[] = []
+let functions: Func[] = []
 
 const parseLine = (line: string) => {
     if (line.length > 0) {
@@ -94,7 +89,7 @@ const parseLine = (line: string) => {
     }
 }
 
-const getAsJsFunction = (func: Function) => {
+const getAsJsFunction = (func: Func) => {
     const params = func.params.map(({ name, type }) => `${name}: ${cToJsDataTypeMap[type]}`)
 
     const paramBytes = func.params.map(({ name, type }) => `...jsToMidiEncoder['${type}'](${name})`)
@@ -106,7 +101,7 @@ const getAsJsFunction = (func: Function) => {
     ${paramBytes.join(',\n    ')}
   ]
   const data = [
-    CommandNames.${func.name},
+    FunctionNames.${func.name},
     ...paramBytes,
   ]
   logger.midi('RPC call to ${func.name}')
@@ -136,17 +131,17 @@ console.log(functions.map(getAsJsFunction).join('\n\n'))
 const funcsTs = `// js-to-midi RPC wrapper
 import logger from '../../utils/logger'
 import { jsToMidiEncoder } from './dataTypes'
-import { CommandNames } from './commandNames'
+import { FunctionNames } from './functionNames'
 import { sendSysex, sysexCommands } from '../midibus'
 
 ${functions.map(getAsJsFunction).join('\n\n')}
 `
-const commandNamesTs = `// shared ids for RPC commands
-export enum CommandNames {
+const functionNamesTs = `// shared ids for RPC commands
+export enum FunctionNames {
   ${functions.map((func) => func.name).join(',\n  ')}
 }
 `
-
+console.log(generateMidiRPCFunctionIds(functions))
 
 writeToFile(`${jsRoot}/api.ts`, funcsTs)
-writeToFile(`${jsRoot}/commandNames.ts`, commandNamesTs)
+writeToFile(`${jsRoot}/functionNames.ts`, functionNamesTs)

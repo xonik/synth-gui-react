@@ -1,5 +1,5 @@
 // shared ids for RPC commands
-export enum CommandNames {
+export enum FunctionNames {
   setCvMin,
   setCvMax,
   setCvCurve,
