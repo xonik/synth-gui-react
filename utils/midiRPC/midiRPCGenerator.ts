@@ -1,4 +1,4 @@
-import { generateMidiRPCFunctionIds } from './generateMidiRPCFunctionIds'
+import { generateMidiRPCDeserializer } from './generateMidiRPCDeserializer'
 import { generateApiTs } from './generateApiTs'
 import { generateFunctionNamesTs } from './generateFunctionNames'
 import { parseCppHeaderFile } from './parseCppHeader'
@@ -15,12 +15,12 @@ const cppRoot = `${gitRoot}/xm8-voice-controller/xm8-voice-controller/`
 const jsRoot = `${gitRoot}/synth-gui-react`
 const scriptRoot = `${jsRoot}/utils/midiRPC`
 const jsMidiRoot = `${jsRoot}/src/midi/rpc/`
-const headerFilePath = `${cppRoot}/midiRPC.h`
+const headerFilePath = `${cppRoot}/midiRPCFunctions.h`
 
 const headerContents = fs.readFileSync(headerFilePath, { encoding: 'utf8', flag: 'r' })
 const funcs = parseCppHeaderFile(headerContents)
 
-writeToFile(`${cppRoot}/midiRPCDataParser.cpp`, generateMidiRPCFunctionIds(funcs))
+writeToFile(`${cppRoot}/midiRPCDeserializer.cpp`, generateMidiRPCDeserializer(funcs))
 writeToFile(`${jsMidiRoot}/api.ts`, generateApiTs(funcs))
 writeToFile(`${jsMidiRoot}/functionNames.ts`, generateFunctionNamesTs(funcs))
 
