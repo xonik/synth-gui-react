@@ -1,7 +1,7 @@
 // GENERATED FILE, DO NOT EDIT
 // js-to-midi RPC wrapper
 import logger from '../../utils/logger'
-import { jsToMidiEncoder } from './serializer'
+import { jsToMidiEncoder, splitTo7 } from './serializer'
 import { FunctionNames } from './functionNames'
 import { sendSysex, sysexCommands } from '../midibus'
 
@@ -11,7 +11,7 @@ export function setCvMin(cv: number, min: number) {
     ...jsToMidiEncoder['uint16_t'](min)
   ]
   const data = [
-    FunctionNames.setCvMin,
+    ...splitTo7(FunctionNames.setCvMin, 14),
     ...paramBytes,
   ]
   logger.midi('RPC call to setCvMin')
@@ -24,7 +24,7 @@ export function setCvMax(cv: number, max: number) {
     ...jsToMidiEncoder['uint16_t'](max)
   ]
   const data = [
-    FunctionNames.setCvMax,
+    ...splitTo7(FunctionNames.setCvMax, 14),
     ...paramBytes,
   ]
   logger.midi('RPC call to setCvMax')
@@ -37,7 +37,7 @@ export function setCvCurve(cv: number, curve: number) {
     ...jsToMidiEncoder['uint8_t'](curve)
   ]
   const data = [
-    FunctionNames.setCvCurve,
+    ...splitTo7(FunctionNames.setCvCurve, 14),
     ...paramBytes,
   ]
   logger.midi('RPC call to setCvCurve')
@@ -49,7 +49,7 @@ export function saveCvMapping(cv: number) {
     ...jsToMidiEncoder['uint8_t'](cv)
   ]
   const data = [
-    FunctionNames.saveCvMapping,
+    ...splitTo7(FunctionNames.saveCvMapping, 14),
     ...paramBytes,
   ]
   logger.midi('RPC call to saveCvMapping')
@@ -61,7 +61,7 @@ export function loadCvMapping(cv: number) {
     ...jsToMidiEncoder['uint8_t'](cv)
   ]
   const data = [
-    FunctionNames.loadCvMapping,
+    ...splitTo7(FunctionNames.loadCvMapping, 14),
     ...paramBytes,
   ]
   logger.midi('RPC call to loadCvMapping')
@@ -73,7 +73,7 @@ export function loadCvMapping2() {
     
   ]
   const data = [
-    FunctionNames.loadCvMapping2,
+    ...splitTo7(FunctionNames.loadCvMapping2, 14),
     ...paramBytes,
   ]
   logger.midi('RPC call to loadCvMapping2')

@@ -1,5 +1,6 @@
 import { ControllerConfigCC, ControllerConfigNRPN, MidiGroup } from './types'
 import { store } from '../synthcore/store'
+import status from './midiStatus'
 import { selectMidiChannel } from '../synthcore/modules/settings/settingsReducer'
 import CC from './mapCC'
 import logger from '../utils/logger'
@@ -52,8 +53,6 @@ export const sysexCommands = {
     RPC: 0,
 }
 
-const MIDI_CC = 0b10110000
-
 let midiOut: MIDIOutput | undefined
 let midiIn: MIDIInput | undefined
 
@@ -91,7 +90,7 @@ export const cc = {
             cc.publish(controller.cc, value)
         }
         if (midiOut) {
-            const ccForChannel = MIDI_CC + getChannel()
+            const ccForChannel = status.CC + getChannel()
             const data = [ccForChannel, controller.cc, value]
             logger.midiMsg(data)
             midiOut.send(data)
@@ -134,7 +133,7 @@ export const nrpn = {
             const midValue = (value >> 7) & 0b01111111
             const hiValue = (value >> 14) & 0b01111111
 
-            const ccForChannel = MIDI_CC + getChannel()
+            const ccForChannel = status.CC + getChannel()
 
             let data = [ccForChannel, CC.NRPN_MSB, hiAddr, ccForChannel, CC.NRPN_LSB, loAddr]
             if(value > 16383) {
@@ -166,16 +165,21 @@ const currNRPN = {
 }
 
 export const sendSysex = (command: number, data: number[]) => {
-    midiOut?.send([
+    const midiBytes = [
+        status.SYSEX_START,
         ...midiConfig.sysexAddr,
         command,
-        ...data
-    ])
+        ...data,
+        status.SYSEX_END,
+    ]
+    console.log('sending sysex', midiBytes)
+
+    midiOut?.send(midiBytes)
 }
 
 export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
     const midiData = midiEvent.data
-    const ccForChannel = MIDI_CC + getChannel()
+    const ccForChannel = status.CC + getChannel()
     if (midiData[0] === ccForChannel) {
         if(handleMpk25(midiData[1], midiData[2])){
             return

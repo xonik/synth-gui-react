@@ -1,7 +1,7 @@
 // Copied from generator, do not edit in src
 import { DataType } from './dataTypes'
 
-const splitTo7 = (value: number, bits: number) => {
+export const splitTo7 = (value: number, bits: number) => {
     const bitMask = Math.pow(2, bits) - 1
     if(value > bitMask){
         console.log(`${value} does not fit in ${bits} bits`)
@@ -14,7 +14,7 @@ const splitTo7 = (value: number, bits: number) => {
     let remainder = value & bitMask
     let bytes: number[] = []
     while(bitsLeft > 0) {
-        bytes = [ ...bytes, remainder & 0x7F] //LSB first
+        bytes = [remainder & 0x7F, ...bytes] //LSB first
         remainder = remainder >> 7
         bitsLeft -= 7
     }

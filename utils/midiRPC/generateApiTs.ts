@@ -4,7 +4,7 @@ export function generateApiTs(funcs: Func[]) {
     return `// GENERATED FILE, DO NOT EDIT
 // js-to-midi RPC wrapper
 import logger from '../../utils/logger'
-import { jsToMidiEncoder } from './serializer'
+import { jsToMidiEncoder, splitTo7 } from './serializer'
 import { FunctionNames } from './functionNames'
 import { sendSysex, sysexCommands } from '../midibus'
 
@@ -22,7 +22,7 @@ const functionMapper = (func: Func) => {
     ${paramBytes.join(',\n    ')}
   ]
   const data = [
-    FunctionNames.${func.name},
+    ...splitTo7(FunctionNames.${func.name}, 14),
     ...paramBytes,
   ]
   logger.midi('RPC call to ${func.name}')
