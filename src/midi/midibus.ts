@@ -173,6 +173,9 @@ export const sendSysex = (command: number, data: number[]) => {
         status.SYSEX_END,
     ]
     console.log('sending sysex', midiBytes)
+    if(midiBytes.length > 60) {
+        console.warn('Sysex message is more than 60 bytes, it may not work with teensy', midiBytes)
+    }
 
     midiOut?.send(midiBytes)
 }
