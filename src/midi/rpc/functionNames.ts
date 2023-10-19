@@ -1,3 +1,4 @@
+// GENERATED FILE, DO NOT EDIT
 // shared ids for RPC commands
 export enum FunctionNames {
   setCvMin,

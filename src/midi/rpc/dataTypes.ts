@@ -7,15 +7,6 @@ export function isDataType(value: string): value is DataType {
     return KNOWN_DATATYPES.includes(value as DataType)
 }
 
-export const cToJsDataTypeMap: Record<DataType, string> = {
-    'void': 'void',
-    'uint7_t': 'number',
-    'uint8_t': 'number',
-    'uint14_t': 'number',
-    'uint16_t': 'number',
-    'uint21_t': 'number',
-    'uint32_t': 'number',
-}
 
 const splitTo7 = (value: number, bits: number) => {
     const bitMask = Math.pow(2, bits) - 1

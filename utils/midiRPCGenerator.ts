@@ -1,115 +1,16 @@
-import controllers from '../src/synthcore/modules/controllers/controllers'
-import { buttonLeftMidiValues } from '../src/midi/buttonLeftMidiValues'
-import { buttonCenterMidiValues } from '../src/midi/buttonCenterMidiValues'
-import { buttonRightMidiValues } from '../src/midi/buttonRightMidiValues'
-import {
-    ControllerIdDst,
-    ControllerIdEnvDst,
-    ControllerIdEnvNonMod,
-    ControllerIdEnvStageNonMod,
-    ControllerIdIntermediate,
-    ControllerIdLfoDst,
-    ControllerIdLfoNonMod,
-    ControllerIdLfoStageNonMod,
-    ControllerIdNonMod,
-    ControllerIdNonModPots,
-    ControllerIdSrc, DST_COUNT, DST_ENV_COUNT,
-    DST_LFO_COUNT,
-    ENV_NON_MOD_COUNT,
-    ENV_STAGE_NON_MOD_COUNT,
-    FIRST_DST,
-    FIRST_ENV_DST,
-    FIRST_INTERMEDIATE,
-    FIRST_LFO_DST,
-    FIRST_NON_MOD,
-    FIRST_NON_MOD_POTS,
-    INT_COUNT,
-    LFO_NON_MOD_COUNT,
-    LFO_STAGE_NON_MOD_COUNT,
-    NON_MOD_COUNT,
-    NON_MOD_POTS_COUNT,
-    SRC_COUNT
-} from '../src/synthcore/modules/controllers/controllerIds'
-import { cToJsDataTypeMap, DataType, isDataType, jsToMidiEncoder, KNOWN_DATATYPES } from '../src/midi/rpc/dataTypes'
 import { generateMidiRPCFunctionIds } from './midiRPC/generateMidiRPCFunctionIds'
-import { Func } from './midiRPC/types'
+import { generateApiTs } from './midiRPC/generateApiTs'
+import { generateFunctionNamesTs } from './midiRPC/generateFunctionNames'
+import { parseCppHeaderFile } from './midiRPC/parseCppHeader'
 
 const fs = require('fs')
 
 const cppRoot = '/Users/joakim/git/xonik/xm8-voice-controller/xm8-voice-controller/'
 const jsRoot = '/Users/joakim/git/xonik/synth-gui-react/src/midi/rpc/'
 
-const readMidiRPCHeaderFile = () => {
-    const path = `${cppRoot}/midiRPC.h`
-    const file = fs.readFileSync(path, { encoding: 'utf8', flag: 'r' })
-    const lines = file.split('\n')
-
-    lines.forEach((line: string) => {
-        parseLine(line)
-    })
-    console.log(lines)
-}
-
-
-
-const funcRegex = new RegExp(`^\\s*(${KNOWN_DATATYPES.join('|')})\\s([a-zA-Z0-9]+)\\((.*)\\)`)
-
-let functions: Func[] = []
-
-const parseLine = (line: string) => {
-    if (line.length > 0) {
-        const trimmed = line.trim()
-        const match = trimmed.match(funcRegex)
-        if (match) {
-            const [, returnType, name, paramList] = match
-
-            if(!isDataType(returnType)){
-                throw new Error(`${name}: ${returnType} is an unknown datatype`)
-            }
-
-            let params: { type: DataType, name: string }[] = []
-            if (paramList.length > 0) {
-                params = paramList
-                    .split(',')
-                    .map((param) => {
-                        const [paramType, paramName] = param.trim().split(' ')
-                        if(!isDataType(paramType.trim())){
-                            throw new Error(`${name}: ${paramType.trim()} is an unknown datatype`)
-                        }
-                        return {
-                            type: paramType.trim() as DataType,
-                            name: paramName.trim()
-                        }
-                    })
-            }
-            functions.push({
-                name, returnType, params
-            })
-        }
-    }
-}
-
-const getAsJsFunction = (func: Func) => {
-    const params = func.params.map(({ name, type }) => `${name}: ${cToJsDataTypeMap[type]}`)
-
-    const paramBytes = func.params.map(({ name, type }) => `...jsToMidiEncoder['${type}'](${name})`)
-
-    const functionHeader = `function ${func.name}(${params.join(', ')}) {`
-
-    return `${functionHeader}
-  const paramBytes: number[] = [
-    ${paramBytes.join(',\n    ')}
-  ]
-  const data = [
-    FunctionNames.${func.name},
-    ...paramBytes,
-  ]
-  logger.midi('RPC call to ${func.name}')
-  sendSysex(sysexCommands.RPC, data)  
-}`
-}
-
-readMidiRPCHeaderFile()
+const path = `${cppRoot}/midiRPC.h`
+const headerContents = fs.readFileSync(path, { encoding: 'utf8', flag: 'r' })
+const funcs = parseCppHeaderFile(headerContents)
 
 
 /*
@@ -126,22 +27,7 @@ const writeToFile = (path: string, contents: string) => {
     console.log(`writing ${contents.length} bytes to ${path}`)
     fs.writeFileSync(path, contents)
 }
-console.log(functions.map(getAsJsFunction).join('\n\n'))
 
-const funcsTs = `// js-to-midi RPC wrapper
-import logger from '../../utils/logger'
-import { jsToMidiEncoder } from './dataTypes'
-import { FunctionNames } from './functionNames'
-import { sendSysex, sysexCommands } from '../midibus'
-
-${functions.map(getAsJsFunction).join('\n\n')}
-`
-const functionNamesTs = `// shared ids for RPC commands
-export enum FunctionNames {
-  ${functions.map((func) => func.name).join(',\n  ')}
-}
-`
-console.log(generateMidiRPCFunctionIds(functions))
-
-writeToFile(`${jsRoot}/api.ts`, funcsTs)
-writeToFile(`${jsRoot}/functionNames.ts`, functionNamesTs)
+writeToFile(`${cppRoot}/midiRPCDataParser.cpp`, generateMidiRPCFunctionIds(funcs))
+writeToFile(`${jsRoot}/api.ts`, generateApiTs(funcs))
+writeToFile(`${jsRoot}/functionNames.ts`, generateFunctionNamesTs(funcs))
