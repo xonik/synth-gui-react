@@ -1,4 +1,4 @@
-import { DataType } from '../../src/midi/rpc/dataTypes'
+import { DataType } from './dataTypes'
 
 export type Param = {
     name: string,

@@ -1,5 +1,5 @@
-import { DataType, isDataType, KNOWN_DATATYPES } from '../../src/midi/rpc/dataTypes'
 import { Func } from './types'
+import { DataType, isDataType, KNOWN_DATATYPES} from './dataTypes'
 
 export const parseCppHeaderFile = (file: string) => {
     const lines = file.split('\n')

@@ -4,7 +4,7 @@ export function generateApiTs(funcs: Func[]) {
     return `// GENERATED FILE, DO NOT EDIT
 // js-to-midi RPC wrapper
 import logger from '../../utils/logger'
-import { jsToMidiEncoder } from './dataTypes'
+import { jsToMidiEncoder } from './serializer'
 import { FunctionNames } from './functionNames'
 import { sendSysex, sysexCommands } from '../midibus'
 
