@@ -114,6 +114,8 @@ const generateAndPrintTables = (
     accuracy: number
 ) => {
     const valuesForAllFuncs = curveFuncs.map((curveFunc) => getScaledPoints(curveFunc, yScale, keypointCount))
+
+
     const slopesForAllFuncs = valuesForAllFuncs.map((scaledPoints) => getDerivated(scaledPoints, intermediatesPerKeypoint, accuracy))
 
     const valueStrings = valuesForAllFuncs.map((values, index) => {

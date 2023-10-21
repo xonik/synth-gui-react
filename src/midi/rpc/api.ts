@@ -67,15 +67,3 @@ export function loadCvMapping(cv: number) {
   logger.midi('RPC call to loadCvMapping')
   sendSysex(sysexCommands.RPC, data)  
 }
-
-export function loadCvMapping2() {
-  const paramBytes: number[] = [
-    
-  ]
-  const data = [
-    ...splitTo7(FunctionNames.loadCvMapping2, 14),
-    ...paramBytes,
-  ]
-  logger.midi('RPC call to loadCvMapping2')
-  sendSysex(sysexCommands.RPC, data)  
-}
