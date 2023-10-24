@@ -16,7 +16,7 @@ const VerticalRangeSelector = ({ setRange, defaultValue }: RangeProps) => {
 
     return <ReactSlider
         className="horizontal-slider cv-range__graph-controls__range"
-        thumbClassName="example-thumb"
+        thumbClassName="cv-range__thumb"
         trackClassName="example-track"
         orientation="vertical"
         max={65535}
@@ -32,8 +32,41 @@ const VerticalRangeSelector = ({ setRange, defaultValue }: RangeProps) => {
 type CvSelectorProps = {
     onSelect: (cv: number) => void
 }
+type CvCurveSelectorProps = {
+    onSelect: (curve: number) => void
+}
+const CV_CHANNELS = 64 // get from c++
 const CvSelector = ({onSelect}: CvSelectorProps) => {
 
+    const options: number[] = []
+    for(let i=0; i<CV_CHANNELS; i++) {
+        options.push(i)
+    }
+
+    const onOptionChangeHandler = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
+        event.preventDefault();
+        const value = event.target.value
+        console.log(value)
+        if(value) {
+            onSelect(Number.parseInt(value));
+        }
+    }, [onSelect])
+
+    return <select onChange={onOptionChangeHandler}>
+        <option value=''>CV channel</option>
+        {options.map((option, index) => {
+            return (
+                <option key={index} value={index}>
+                    {option}
+                </option>
+            );
+        })}
+    </select>
+}
+
+const CvCurveSelector = ({onSelect}: CvCurveSelectorProps) => {
+
+    // TODO: get from c++
     const options = [
         'COSINE',
         'EXP1',
@@ -57,7 +90,7 @@ const CvSelector = ({onSelect}: CvSelectorProps) => {
     }, [onSelect])
 
     return <select onChange={onOptionChangeHandler}>
-        <option value=''>Please choose one option</option>
+        <option value=''>Curve</option>
         {options.map((option, index) => {
             return (
                 <option key={index} value={index}>
@@ -75,12 +108,17 @@ type CvResponseProps = {
     curve: number
 }
 
+function getAsVolts(index: number){
+ return (Math.round(500 * (index / 65535)) / 100).toFixed(2)
+}
+
+// TODO: save to local storage
 const CvRange = () => {
     const [start, setStart] = useState<number>(0)
     const [end, setEnd] = useState<number>(65535)
     const [curve, setCurve] = useState<number>(4)
     const [cv, setCv] = useState<number>(0)
-    const [autoUpdate, setAutoUpdate] = useState<boolean>(false)
+    const [autoUpdate, setAutoUpdate] = useState<boolean>(true)
 
     const updateCv = useCallback(() => {
         setCvParams(cv, start, end, curve)
@@ -90,18 +128,18 @@ const CvRange = () => {
         if (autoUpdate) updateCv()
     }, [autoUpdate, start, end, curve])
 
-    return <>
+    return <div className="cv-range">
         <div className="cv-range__graph-controls">
             <VerticalRangeSelector setRange={setStart} defaultValue={0}/>
             <CvResponseCurve start={start} end={end} curve={curve}/>
             <VerticalRangeSelector setRange={setEnd} defaultValue={65535}/>
         </div>
-        <div>
+        <div className="cv-range__params">
+            <CvCurveSelector onSelect={setCurve}/>
             <CvSelector onSelect={setCv}/>
-            <div>Curve:</div>
-            <div>Auto update:</div>
+            <div>Voltages: {getAsVolts(start)} - {getAsVolts(end)}</div>
         </div>
-    </>
+    </div>
 }
 
 export default CvRange

@@ -21,7 +21,6 @@ const CvResponseCurve = ({ start, end, curve }: Props) => {
 
     const range = (end - start) / 65535
     const base = start / 65535
-    console.log({ base, range, points: getPoints(curveFuncs[curve]) })
     const points = getPoints(curveFuncs[curve]).map(
         (y, index): Point => ({
             y: base + range * y,

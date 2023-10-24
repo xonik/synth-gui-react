@@ -3,7 +3,6 @@ import oscControllers from './oscControllers'
 import { ButtonInputProperty, NumericInputProperty, PatchControllers } from '../common/types'
 import { setController } from '../controllers/controllersReducer'
 import { dispatch } from '../../utils'
-import { setCvCurve, setCvMax, setCvMin } from '../../../midi/rpc/api'
 
 const osc1Sync = new ControllerHandler(oscControllers.DCO1.SYNC, undefined, undefined,() => {
     // clear any osc 2 sync as we can only have either osc1->osc2 or osc2->osc1 sync
@@ -71,9 +70,6 @@ const handlers = createGroupedHandlers(
 const increment = (input: NumericInputProperty) => {
     customHandlers[input.ctrl.id]?.increment(input)
     handlers.increment(input)
-    setCvCurve(10, 2)
-    setCvMin(10, 1000)
-    setCvMax(10, 11000)
 }
 
 const toggle = (input: ButtonInputProperty) => {
