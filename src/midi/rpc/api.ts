@@ -5,29 +5,29 @@ import { jsToMidiEncoder, splitTo7 } from './serializer'
 import { FunctionNames } from './functionNames'
 import { sendSysex, sysexCommands } from '../midibus'
 
-export function setCvMin(cv: number, min: number) {
+export function setCvStart(cv: number, start: number) {
   const paramBytes: number[] = [
     ...jsToMidiEncoder['uint8_t'](cv),
-    ...jsToMidiEncoder['uint16_t'](min)
+    ...jsToMidiEncoder['uint16_t'](start)
   ]
   const data = [
-    ...splitTo7(FunctionNames.setCvMin, 14),
+    ...splitTo7(FunctionNames.setCvStart, 14),
     ...paramBytes,
   ]
-  logger.midi('RPC call to setCvMin')
+  logger.midi('RPC call to setCvStart')
   sendSysex(sysexCommands.RPC, data)  
 }
 
-export function setCvMax(cv: number, max: number) {
+export function setCvEnd(cv: number, end: number) {
   const paramBytes: number[] = [
     ...jsToMidiEncoder['uint8_t'](cv),
-    ...jsToMidiEncoder['uint16_t'](max)
+    ...jsToMidiEncoder['uint16_t'](end)
   ]
   const data = [
-    ...splitTo7(FunctionNames.setCvMax, 14),
+    ...splitTo7(FunctionNames.setCvEnd, 14),
     ...paramBytes,
   ]
-  logger.midi('RPC call to setCvMax')
+  logger.midi('RPC call to setCvEnd')
   sendSysex(sysexCommands.RPC, data)  
 }
 
@@ -41,6 +41,21 @@ export function setCvCurve(cv: number, curve: number) {
     ...paramBytes,
   ]
   logger.midi('RPC call to setCvCurve')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
+export function setCvParams(cv: number, start: number, end: number, curve: number) {
+  const paramBytes: number[] = [
+    ...jsToMidiEncoder['uint8_t'](cv),
+    ...jsToMidiEncoder['uint16_t'](start),
+    ...jsToMidiEncoder['uint16_t'](end),
+    ...jsToMidiEncoder['uint8_t'](curve)
+  ]
+  const data = [
+    ...splitTo7(FunctionNames.setCvParams, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to setCvParams')
   sendSysex(sysexCommands.RPC, data)  
 }
 

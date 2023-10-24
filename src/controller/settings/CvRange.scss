@@ -1,0 +1,19 @@
+@import '../constants';
+
+.cv-range {
+  &__graph-controls {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 90%;
+    &__range {
+      background-color: red;
+      width: 2rem;
+      height: 100%;
+    }
+  }
+  &__graph {
+    width: 100%;
+    height: 100%;
+  }
+}
