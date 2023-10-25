@@ -33,13 +33,14 @@ type CvSelectorProps = {
     onSelect: (cv: number) => void
 }
 type CvCurveSelectorProps = {
+    curve: number
     onSelect: (curve: number) => void
 }
 const CV_CHANNELS = 64 // get from c++
-const CvSelector = ({onSelect, cv}: CvSelectorProps) => {
+const CvSelector = ({ onSelect, cv }: CvSelectorProps) => {
 
     const options: number[] = []
-    for(let i=0; i<CV_CHANNELS; i++) {
+    for (let i = 0; i < CV_CHANNELS; i++) {
         options.push(i)
     }
 
@@ -47,7 +48,7 @@ const CvSelector = ({onSelect, cv}: CvSelectorProps) => {
         event.preventDefault();
         const value = event.target.value
         console.log(value)
-        if(value) {
+        if (value) {
             onSelect(Number.parseInt(value));
         }
     }, [onSelect])
@@ -64,7 +65,7 @@ const CvSelector = ({onSelect, cv}: CvSelectorProps) => {
     </select>
 }
 
-const CvCurveSelector = ({onSelect}: CvCurveSelectorProps) => {
+const CvCurveSelector = ({ onSelect, curve }: CvCurveSelectorProps) => {
 
     // TODO: get from c++
     const options = [
@@ -84,12 +85,12 @@ const CvCurveSelector = ({onSelect}: CvCurveSelectorProps) => {
         event.preventDefault();
         const value = event.target.value
         console.log(value)
-        if(value) {
+        if (value) {
             onSelect(Number.parseInt(value));
         }
     }, [onSelect])
 
-    return <select onChange={onOptionChangeHandler}>
+    return <select onChange={onOptionChangeHandler} value={curve}>
         <option value=''>Curve</option>
         {options.map((option, index) => {
             return (
@@ -102,8 +103,8 @@ const CvCurveSelector = ({onSelect}: CvCurveSelectorProps) => {
 }
 
 
-function getAsVolts(index: number){
- return (Math.round(500 * (index / 65535)) / 100).toFixed(2)
+function getAsVolts(index: number) {
+    return (Math.round(500 * (index / 65535)) / 100).toFixed(2)
 }
 
 type CvRange = {
@@ -115,16 +116,17 @@ type CvRange = {
 
 function getInitialSaved() {
     const saved: boolean[] = []
-    for(let i=0; i < CV_CHANNELS; i++){
+    for (let i = 0; i < CV_CHANNELS; i++) {
         saved.push(true)
     }
     return saved
 }
+
 const initialSaved = getInitialSaved()
 
 function getInitialCvRanges() {
     const cvRanges: CvRange[] = []
-    for(let i=0; i < CV_CHANNELS; i++){
+    for (let i = 0; i < CV_CHANNELS; i++) {
         cvRanges.push({
             cv: i,
             start: 0,
@@ -134,13 +136,14 @@ function getInitialCvRanges() {
     }
     return cvRanges
 }
+
 const initialCvRanges = getInitialCvRanges()
 
 const CV_RANGES_KEY = 'cv_ranges'
 const save = (cvRanges: CvRange[]) => localStorage.setItem('cv_ranges', JSON.stringify(cvRanges))
 const load = () => {
     const persisted = localStorage.getItem('cv_ranges')
-    if(!persisted) {
+    if (!persisted) {
         return initialCvRanges
     }
     try {
@@ -150,7 +153,7 @@ const load = () => {
     }
 }
 
-function mutate(cvRanges: CvRange[], cv: number, changes: Partial<CvRange>){
+function mutate(cvRanges: CvRange[], cv: number, changes: Partial<CvRange>) {
     const cvRange = cvRanges[cv]
     const updatedCvRange = {
         ...cvRange,
@@ -161,6 +164,17 @@ function mutate(cvRanges: CvRange[], cv: number, changes: Partial<CvRange>){
     ]
     updatedCvRanges[cv] = updatedCvRange
     return updatedCvRanges
+}
+
+function sendAll(cvRanges: CvRange[], i: number) {
+    const { cv, start, end, curve } = cvRanges[i]
+    setCvParams(cv, start, end, curve)
+
+    if(i <CV_CHANNELS-1){
+        setTimeout(() => {
+            sendAll(cvRanges, i + 1)
+        }, 50)
+    }
 }
 
 const CvRange = () => {
@@ -200,24 +214,29 @@ const CvRange = () => {
         updateSaved(true)
     }, [cv, allCvs])
 
+    const onLoadAll = useCallback(() => {
+        const persistedCvs = load()
+        sendAll(persistedCvs, 0)
+    }, [cv, allCvs])
+
     const updateStart = useCallback((start: number) => {
-        const updatedAllCvs = mutate(allCvs, cv, {start})
+        const updatedAllCvs = mutate(allCvs, cv, { start })
         setAllCvs(updatedAllCvs)
         updateSaved(false)
         sendCv(updatedAllCvs[cv])
-    }, [cv,allCvs])
+    }, [cv, allCvs])
     const updateEnd = useCallback((end: number) => {
-        const updatedAllCvs = mutate(allCvs, cv, {end})
+        const updatedAllCvs = mutate(allCvs, cv, { end })
         setAllCvs(updatedAllCvs)
         updateSaved(false)
         sendCv(updatedAllCvs[cv])
-    }, [cv,allCvs])
+    }, [cv, allCvs])
     const updateCurve = useCallback((curve: number) => {
-        const updatedAllCvs = mutate(allCvs, cv, {curve})
+        const updatedAllCvs = mutate(allCvs, cv, { curve })
         setAllCvs(updatedAllCvs)
         updateSaved(false)
         sendCv(updatedAllCvs[cv])
-    }, [cv,allCvs])
+    }, [cv, allCvs])
 
     return <div className="cv-range">
         <div className="cv-range__graph-controls">
@@ -226,10 +245,11 @@ const CvRange = () => {
             <VerticalRangeSelector setRange={updateEnd} value={allCvs[cv].end}/>
         </div>
         <div className="cv-range__params">
-            <CvCurveSelector onSelect={updateCurve}/>
+            <CvCurveSelector onSelect={updateCurve} curve={allCvs[cv].curve}/>
             <CvSelector onSelect={setCv} cv={cv}/>
             <button disabled={saved[cv]} onClick={onSave}>Save</button>
             <button disabled={saved[cv]} onClick={onReset}>Reset</button>
+            <button onClick={onLoadAll}>Load all</button>
             <div>Voltages: {getAsVolts(allCvs[cv].start)} - {getAsVolts(allCvs[cv].end)}</div>
         </div>
     </div>
