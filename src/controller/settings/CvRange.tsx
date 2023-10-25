@@ -163,8 +163,6 @@ function mutate(cvRanges: CvRange[], cv: number, changes: Partial<CvRange>){
     return updatedCvRanges
 }
 
-// TODO: save to local storage
-// TODO: Keep 'allCvs' as updated cvs, but not necessarily saved ones.
 const CvRange = () => {
 
     console.log('render')
@@ -178,10 +176,10 @@ const CvRange = () => {
         setSaved(updatedSaved)
     }, [cv, saved])
 
-    const sendCv = useCallback(() => {
-        const cvRange = allCvs[cv]
-        setCvParams(cv, cvRange.start, cvRange.end, cvRange.curve)
-    }, [cv, allCvs])
+    const sendCv = (cvRange: CvRange) => {
+        console.log(cvRange)
+        setCvParams(cvRange.cv, cvRange.start, cvRange.end, cvRange.curve)
+    }
 
     const onSave = useCallback(() => {
         const cvRange = allCvs[cv]
@@ -198,24 +196,27 @@ const CvRange = () => {
         const updatedAllCvs = [...allCvs]
         updatedAllCvs[cv] = persistedCvs[cv]
         setAllCvs(updatedAllCvs)
-        sendCv() // TODO: Will this read correctly?
+        sendCv(updatedAllCvs[cv]) // TODO: Will this read correctly? NEI!
         updateSaved(true)
     }, [cv, allCvs])
 
     const updateStart = useCallback((start: number) => {
-        setAllCvs(mutate(allCvs, cv, {start}))
+        const updatedAllCvs = mutate(allCvs, cv, {start})
+        setAllCvs(updatedAllCvs)
         updateSaved(false)
-        sendCv()
+        sendCv(updatedAllCvs[cv])
     }, [cv,allCvs])
     const updateEnd = useCallback((end: number) => {
-        setAllCvs(mutate(allCvs, cv, {end}))
+        const updatedAllCvs = mutate(allCvs, cv, {end})
+        setAllCvs(updatedAllCvs)
         updateSaved(false)
-        sendCv()
+        sendCv(updatedAllCvs[cv])
     }, [cv,allCvs])
     const updateCurve = useCallback((curve: number) => {
-        setAllCvs(mutate(allCvs, cv, {curve}))
+        const updatedAllCvs = mutate(allCvs, cv, {curve})
+        setAllCvs(updatedAllCvs)
         updateSaved(false)
-        sendCv()
+        sendCv(updatedAllCvs[cv])
     }, [cv,allCvs])
 
     return <div className="cv-range">
