@@ -7,3 +7,9 @@ export type DataType = DataTypeTuple[number];
 export function isDataType(value: string): value is DataType {
     return KNOWN_DATATYPES.includes(value as DataType)
 }
+
+export type CvDefinition = {
+    name: string
+    channel: number
+    description: string
+}

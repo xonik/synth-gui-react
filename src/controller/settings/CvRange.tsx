@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import ReactSlider from 'react-slider'
 import { setCvParams } from '../../midi/rpc/api'
 import CvResponseCurve from './CvResponseCurve'
 import './CvRange.scss'
 import '../lfos/StagesCurve.scss'
 import '../lfos/Stages.scss'
+import { CV_CHANNELS, CVs } from './CvDefinitions'
 
 type RangeProps = {
     setRange: (value: number) => void,
@@ -36,13 +37,8 @@ type CvCurveSelectorProps = {
     curve: number
     onSelect: (curve: number) => void
 }
-const CV_CHANNELS = 64 // get from c++
-const CvSelector = ({ onSelect, cv }: CvSelectorProps) => {
 
-    const options: number[] = []
-    for (let i = 0; i < CV_CHANNELS; i++) {
-        options.push(i)
-    }
+const CvSelector = ({ onSelect, cv }: CvSelectorProps) => {
 
     const onOptionChangeHandler = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
         event.preventDefault();
@@ -54,11 +50,10 @@ const CvSelector = ({ onSelect, cv }: CvSelectorProps) => {
     }, [onSelect])
 
     return <select onChange={onOptionChangeHandler} value={cv}>
-        <option value=''>CV channel</option>
-        {options.map((option, index) => {
+        {CVs.map((cv, index) => {
             return (
-                <option key={index} value={index}>
-                    {option}
+                <option key={index} value={cv.channel}>
+                    {cv.description} ({cv.channel})
                 </option>
             );
         })}
@@ -210,7 +205,7 @@ const CvRange = () => {
         const updatedAllCvs = [...allCvs]
         updatedAllCvs[cv] = persistedCvs[cv]
         setAllCvs(updatedAllCvs)
-        sendCv(updatedAllCvs[cv]) // TODO: Will this read correctly? NEI!
+        sendCv(updatedAllCvs[cv])
         updateSaved(true)
     }, [cv, allCvs])
 

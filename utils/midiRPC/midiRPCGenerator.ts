@@ -2,6 +2,9 @@ import { generateMidiRPCDeserializer } from './generateMidiRPCDeserializer'
 import { generateApiTs } from './generateApiTs'
 import { generateFunctionNamesTs } from './generateFunctionNames'
 import { parseCppHeaderFile } from './parseCppHeader'
+import { parseCvDefinitionFile } from './parseCvDefinition'
+import { generateCvDefinitionsTs } from './generateCvDefinitionsTs'
+import { parseCvConfigFile } from './parseCvConfig'
 
 const fs = require('fs')
 
@@ -16,13 +19,21 @@ const jsRoot = `${gitRoot}/synth-gui-react`
 const scriptRoot = `${jsRoot}/utils/midiRPC`
 const jsMidiRoot = `${jsRoot}/src/midi/rpc/`
 const headerFilePath = `${cppRoot}/midiRPCFunctions.h`
+const cvPinsFilePath = `${cppRoot}/cvPins.h`
+const cvConfigFilePath = `${cppRoot}/cvConfig.h`
 
 const headerContents = fs.readFileSync(headerFilePath, { encoding: 'utf8', flag: 'r' })
 const funcs = parseCppHeaderFile(headerContents)
+const cvPinsContents = fs.readFileSync(cvPinsFilePath, { encoding: 'utf8', flag: 'r' })
+const cvConfigContents = fs.readFileSync(cvConfigFilePath, { encoding: 'utf8', flag: 'r' })
+const cvs = parseCvDefinitionFile(cvPinsContents)
+const cvCount = parseCvConfigFile(cvConfigContents)
+console.log(cvs)
 
 writeToFile(`${cppRoot}/midiRPCDeserializer.cpp`, generateMidiRPCDeserializer(funcs))
 writeToFile(`${jsMidiRoot}/api.ts`, generateApiTs(funcs))
 writeToFile(`${jsMidiRoot}/functionNames.ts`, generateFunctionNamesTs(funcs))
+writeToFile(`${jsRoot}/src/controller/settings/CvDefinitions.ts`, generateCvDefinitionsTs(cvs, cvCount))
 
 fs.copyFileSync(`${scriptRoot}/serializer.ts`, `${jsMidiRoot}serializer.ts`)
 fs.copyFileSync(`${scriptRoot}/dataTypes.ts`, `${jsMidiRoot}dataTypes.ts`)
