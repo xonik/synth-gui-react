@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
 import ReactSlider from 'react-slider'
-import { setCvParams } from '../../midi/rpc/api'
+import { saveCvMapping, saveCvMappings, setCvParams } from '../../midi/rpc/api'
 import CvResponseCurve from './CvResponseCurve'
 import './CvRange.scss'
 import '../lfos/StagesCurve.scss'
@@ -165,10 +165,14 @@ function sendAll(cvRanges: CvRange[], i: number) {
     const { cv, start, end, curve } = cvRanges[i]
     setCvParams(cv, start, end, curve)
 
-    if(i <CV_CHANNELS-1){
-        setTimeout(() => {
-            sendAll(cvRanges, i + 1)
-        }, 50)
+    if(i < CV_CHANNELS){
+        if(i === CV_CHANNELS -1) {
+            saveCvMappings()
+        } else {
+            setTimeout(() => {
+                sendAll(cvRanges, i + 1)
+            }, 50)
+        }
     }
 }
 
@@ -195,9 +199,11 @@ const CvRange = () => {
         const persistedCvs = load()
         const updatedCvs = [...persistedCvs]
         updatedCvs[cv] = cvRange
+
         save(updatedCvs)
 
         updateSaved(true)
+        saveCvMapping(cv)
     }, [cv, allCvs, updateSaved])
 
     const onReset = useCallback(() => {

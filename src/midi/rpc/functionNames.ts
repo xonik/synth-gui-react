@@ -6,5 +6,7 @@ export enum FunctionNames {
   setCvCurve,
   setCvParams,
   saveCvMapping,
-  loadCvMapping
+  saveCvMappings,
+  loadCvMapping,
+  loadCvMappings
 }

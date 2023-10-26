@@ -71,6 +71,18 @@ export function saveCvMapping(cv: number) {
   sendSysex(sysexCommands.RPC, data)  
 }
 
+export function saveCvMappings() {
+  const paramBytes: number[] = [
+    
+  ]
+  const data = [
+    ...splitTo7(FunctionNames.saveCvMappings, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to saveCvMappings')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
 export function loadCvMapping(cv: number) {
   const paramBytes: number[] = [
     ...jsToMidiEncoder['uint8_t'](cv)
@@ -80,5 +92,17 @@ export function loadCvMapping(cv: number) {
     ...paramBytes,
   ]
   logger.midi('RPC call to loadCvMapping')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
+export function loadCvMappings() {
+  const paramBytes: number[] = [
+    
+  ]
+  const data = [
+    ...splitTo7(FunctionNames.loadCvMappings, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to loadCvMappings')
   sendSysex(sysexCommands.RPC, data)  
 }
