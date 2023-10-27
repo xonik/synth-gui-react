@@ -5,6 +5,7 @@ import { parseCppHeaderFile } from './parseCppHeader'
 import { parseCvDefinitionFile } from './parseCvDefinition'
 import { generateCvDefinitionsTs } from './generateCvDefinitionsTs'
 import { parseCvConfigFile } from './parseCvConfig'
+import { parseCurves } from './parseCurves'
 
 const fs = require('fs')
 
@@ -18,17 +19,18 @@ const cppRoot = `${gitRoot}/xm8-voice-controller/xm8-voice-controller/`
 const jsRoot = `${gitRoot}/synth-gui-react`
 const scriptRoot = `${jsRoot}/utils/midiRPC`
 const jsMidiRoot = `${jsRoot}/src/midi/rpc/`
-const headerFilePath = `${cppRoot}/midiRPCFunctions.h`
-const cvPinsFilePath = `${cppRoot}/cvPins.h`
-const cvConfigFilePath = `${cppRoot}/cvConfig.h`
 
-const headerContents = fs.readFileSync(headerFilePath, { encoding: 'utf8', flag: 'r' })
+const headerContents = fs.readFileSync(`${cppRoot}/midiRPCFunctions.h`, { encoding: 'utf8', flag: 'r' })
 const funcs = parseCppHeaderFile(headerContents)
-const cvPinsContents = fs.readFileSync(cvPinsFilePath, { encoding: 'utf8', flag: 'r' })
-const cvConfigContents = fs.readFileSync(cvConfigFilePath, { encoding: 'utf8', flag: 'r' })
+
+const cvPinsContents = fs.readFileSync(`${cppRoot}/cvPins.h`, { encoding: 'utf8', flag: 'r' })
 const cvs = parseCvDefinitionFile(cvPinsContents)
+
+const cvConfigContents = fs.readFileSync(`${cppRoot}/cvConfig.h`, { encoding: 'utf8', flag: 'r' })
 const cvCount = parseCvConfigFile(cvConfigContents)
-console.log(cvs)
+
+const curveContents = fs.readFileSync(`${cppRoot}/curves.h`, { encoding: 'utf8', flag: 'r' })
+const curveEnums = parseCurves(curveContents)
 
 writeToFile(`${cppRoot}/midiRPCDeserializer.cpp`, generateMidiRPCDeserializer(funcs))
 writeToFile(`${jsMidiRoot}/api.ts`, generateApiTs(funcs))
@@ -40,7 +42,6 @@ fs.copyFileSync(`${scriptRoot}/dataTypes.ts`, `${jsMidiRoot}dataTypes.ts`)
 // TODO: Generate/copy parse functions and datatypes to js/cpp
 // TODO: Find git root automatically from where script is run
 // Add validator functions to js-code to log out-of-range
-
 
 /*
 console.log(jsToMidiEncoder['void'](4294967295))
