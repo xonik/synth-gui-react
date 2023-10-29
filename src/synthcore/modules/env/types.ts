@@ -1,3 +1,6 @@
+import { Curve } from './generatedTypes'
+export { Curve } from './generatedTypes'
+
 export enum StageId {
     DELAY,
     ATTACK,
@@ -22,17 +25,6 @@ export enum LoopMode {
     GATED,
     COUNTED,
     INFINITE,
-}
-
-export enum Curve {
-    COSINE,
-    EXP1,
-    EXP2,
-    EXP3,
-    LIN,
-    LOG1,
-    LOG2,
-    LOG3,
 }
 
 export type Stage = {

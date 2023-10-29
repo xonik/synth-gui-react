@@ -25,13 +25,13 @@ export const loopModeNames = {
 
 export const curveNames = {
     [Curve.COSINE]: 'Cos',
-    [Curve.EXP3]: 'Exp 3',
-    [Curve.EXP2]: 'Exp 2',
-    [Curve.EXP1]: 'Exp 1',
+    [Curve.EXP_3]: 'Exp 3',
+    [Curve.EXP_2]: 'Exp 2',
+    [Curve.EXP_1]: 'Exp 1',
     [Curve.LIN]: 'Lin',
-    [Curve.LOG1]: 'Log 1',
-    [Curve.LOG2]: 'Log 2',
-    [Curve.LOG3]: 'Log 3',
-    [Curve.SQUARE]: 'Sqr',
-    [Curve.RANDOM]: 'Ran',
+    [Curve.LOG_1]: 'Log 1',
+    [Curve.LOG_2]: 'Log 2',
+    [Curve.LOG_3]: 'Log 3',
+    [Curve.LFO_SQUARE]: 'Sqr',
+    [Curve.LFO_RANDOM]: 'Ran',
 }

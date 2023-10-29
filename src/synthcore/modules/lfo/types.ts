@@ -1,3 +1,8 @@
+import { Curve } from './generatedTypes'
+
+export { Curve } from './generatedTypes'
+
+
 export enum StageId {
     DELAY,
     ATTACK,
@@ -7,19 +12,6 @@ export enum StageId {
 
 export const NUMBER_OF_LFOS = 4
 export const NUMBER_OF_LFO_STAGES = Object.keys(StageId).length / 2
-
-export enum Curve {
-    COSINE,
-    EXP1,
-    EXP2,
-    EXP3,
-    LIN,
-    LOG1,
-    LOG2,
-    LOG3,
-    SQUARE,
-    RANDOM
-}
 
 export enum LoopMode {
     COUNTED,

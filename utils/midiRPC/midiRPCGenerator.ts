@@ -6,6 +6,7 @@ import { parseCvDefinitionFile } from './parseCvDefinition'
 import { generateCvDefinitionsTs } from './generateCvDefinitionsTs'
 import { parseCvConfigFile } from './parseCvConfig'
 import { parseCurves } from './parseCurves'
+import { generateEnumTs } from './generateEnumTs'
 
 const fs = require('fs')
 
@@ -36,6 +37,8 @@ writeToFile(`${cppRoot}/midiRPCDeserializer.cpp`, generateMidiRPCDeserializer(fu
 writeToFile(`${jsMidiRoot}/api.ts`, generateApiTs(funcs))
 writeToFile(`${jsMidiRoot}/functionNames.ts`, generateFunctionNamesTs(funcs))
 writeToFile(`${jsRoot}/src/controller/settings/CvDefinitions.ts`, generateCvDefinitionsTs(cvs, cvCount))
+writeToFile(`${jsRoot}/src/synthcore/modules/lfo/generatedTypes.ts`, generateEnumTs(curveEnums.lfoEnum))
+writeToFile(`${jsRoot}/src/synthcore/modules/env/generatedTypes.ts`, generateEnumTs(curveEnums.envEnum))
 
 fs.copyFileSync(`${scriptRoot}/serializer.ts`, `${jsMidiRoot}serializer.ts`)
 fs.copyFileSync(`${scriptRoot}/dataTypes.ts`, `${jsMidiRoot}dataTypes.ts`)

@@ -1,4 +1,4 @@
-import { KNOWN_DATATYPES } from './dataTypes'
+import { EnumDef, EnumValue, KNOWN_DATATYPES } from './dataTypes'
 
 const splitCodeAndComment = (line: string) => {
     const split = line.split('//')
@@ -61,18 +61,6 @@ type EnumStart = {
     comment: string | undefined,
 }
 
-type EnumValue = {
-    name: string,
-    value: number | undefined,
-    comment: string | undefined,
-}
-
-type EnumDef = {
-    name: string,
-    comment: string| undefined
-    values: EnumValue[]
-}
-
 export const findEnums = (lines: string[]) => {
     let insideEnum = false;
     let enumStart;
@@ -87,6 +75,18 @@ export const findEnums = (lines: string[]) => {
             }
         } else {
             if(isEnumEnd(line)){
+
+                // update values to allow gaps
+                let enumVal = 0
+                enumValues.forEach((entry) => {
+                    if(entry.value === undefined){
+                        entry.value = enumVal;
+                    } else {
+                        enumVal = entry.value;
+                    }
+                    enumVal++;
+                })
+
                 enums = [
                     ...enums,
                     {

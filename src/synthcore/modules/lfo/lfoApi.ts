@@ -263,8 +263,8 @@ class ShapeControllerHandler extends ControllerHandler {
         [BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SQR]: {
             decayEnabled: true,
             curves: {
-                [StageId.ATTACK]: Curve.SQUARE,
-                [StageId.DECAY]: Curve.SQUARE
+                [StageId.ATTACK]: Curve.LFO_SQUARE,
+                [StageId.DECAY]: Curve.LFO_SQUARE
             }
         },
         [BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SIN]: {
@@ -277,7 +277,7 @@ class ShapeControllerHandler extends ControllerHandler {
         [BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_RANDOM]: {
             decayEnabled: false,
             curves: {
-                [StageId.ATTACK]: Curve.RANDOM
+                [StageId.ATTACK]: Curve.LFO_RANDOM
             }
         },
     }
