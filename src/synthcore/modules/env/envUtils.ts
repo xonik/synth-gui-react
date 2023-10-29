@@ -93,14 +93,14 @@ const defaultStageConfigs: Stage[] = [
     {
         id: StageId.ATTACK,
         enabled: 1,
-        curve: Curve.LOG1,
+        curve: Curve.LOG_1,
         level: 0,
         time: 0.001,
     },
     {
         id: StageId.DECAY1,
         enabled: 1,
-        curve: Curve.LOG1,
+        curve: Curve.LOG_1,
         level: 1,
         time: 0.5,
     },
@@ -121,14 +121,14 @@ const defaultStageConfigs: Stage[] = [
     {
         id: StageId.RELEASE1,
         enabled: 0,
-        curve: Curve.LOG1,
+        curve: Curve.LOG_1,
         level: 0.5,
         time: 0.001,
     },
     {
         id: StageId.RELEASE2,
         enabled: 1,
-        curve: Curve.LOG1,
+        curve: Curve.LOG_1,
         level: 0.25,
         time: 0.003,
     },

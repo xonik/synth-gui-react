@@ -5,7 +5,7 @@ import CvResponseCurve from './CvResponseCurve'
 import './CvRange.scss'
 import '../lfos/StagesCurve.scss'
 import '../lfos/Stages.scss'
-import { CV_CHANNELS, CVs } from './CvDefinitions'
+import { CV_CHANNELS, CvCurves, CVs } from './CvDefinitions'
 
 type RangeProps = {
     setRange: (value: number) => void,
@@ -62,20 +62,6 @@ const CvSelector = ({ onSelect, cv }: CvSelectorProps) => {
 
 const CvCurveSelector = ({ onSelect, curve }: CvCurveSelectorProps) => {
 
-    // TODO: get from c++
-    const options = [
-        'COSINE',
-        'EXP1',
-        'EXP2',
-        'EXP3',
-        'LIN',
-        'LOG1',
-        'LOG2',
-        'LOG3',
-        'SQUARE',
-        'RANDOM'
-    ]
-
     const onOptionChangeHandler = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
         event.preventDefault();
         const value = event.target.value
@@ -86,11 +72,10 @@ const CvCurveSelector = ({ onSelect, curve }: CvCurveSelectorProps) => {
     }, [onSelect])
 
     return <select onChange={onOptionChangeHandler} value={curve}>
-        <option value=''>Curve</option>
-        {options.map((option, index) => {
+        {CvCurves.map((curve) => {
             return (
-                <option key={index} value={index}>
-                    {option}
+                <option key={curve.value} value={curve.value}>
+                    {curve.label}
                 </option>
             );
         })}
@@ -135,9 +120,9 @@ function getInitialCvRanges() {
 const initialCvRanges = getInitialCvRanges()
 
 const CV_RANGES_KEY = 'cv_ranges'
-const save = (cvRanges: CvRange[]) => localStorage.setItem('cv_ranges', JSON.stringify(cvRanges))
+const save = (cvRanges: CvRange[]) => localStorage.setItem(CV_RANGES_KEY, JSON.stringify(cvRanges))
 const load = () => {
-    const persisted = localStorage.getItem('cv_ranges')
+    const persisted = localStorage.getItem(CV_RANGES_KEY)
     if (!persisted) {
         return initialCvRanges
     }

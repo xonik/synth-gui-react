@@ -77,6 +77,6 @@ export const parseCurves = (file: string) => {
     return {
         lfoEnum: getFilteredEnum(enumWithTargets, 'LFO'),
         envEnum: getFilteredEnum(enumWithTargets, 'ENV'),
-        cvEnum: getFilteredEnum(enumWithTargets, 'CV')
+        cvEnum: getFilteredEnum(enumWithTargets, 'CVMAPS')
     }
 }

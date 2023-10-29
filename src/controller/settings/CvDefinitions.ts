@@ -5,6 +5,18 @@ export type CvDefinition = {
   channel: number,
   description: string,
 }
+
+export const CvCurves = [
+  {label: 'Cosine', value: 0}, 
+  {label: 'Exp 3', value: 1}, 
+  {label: 'Exp 2', value: 2}, 
+  {label: 'Exp 1', value: 3}, 
+  {label: 'Linear', value: 4}, 
+  {label: 'Log 1', value: 5}, 
+  {label: 'Log 2', value: 6}, 
+  {label: 'Log 3', value: 7}                
+]
+
 export const CV_CHANNELS = 32 // get from c++
 
 export const CVs: CvDefinition[] = [

@@ -36,7 +36,7 @@ const curveEnums = parseCurves(curveContents)
 writeToFile(`${cppRoot}/midiRPCDeserializer.cpp`, generateMidiRPCDeserializer(funcs))
 writeToFile(`${jsMidiRoot}/api.ts`, generateApiTs(funcs))
 writeToFile(`${jsMidiRoot}/functionNames.ts`, generateFunctionNamesTs(funcs))
-writeToFile(`${jsRoot}/src/controller/settings/CvDefinitions.ts`, generateCvDefinitionsTs(cvs, cvCount))
+writeToFile(`${jsRoot}/src/controller/settings/CvDefinitions.ts`, generateCvDefinitionsTs(cvs, curveEnums.cvEnum, cvCount))
 writeToFile(`${jsRoot}/src/synthcore/modules/lfo/generatedTypes.ts`, generateEnumTs(curveEnums.lfoEnum))
 writeToFile(`${jsRoot}/src/synthcore/modules/env/generatedTypes.ts`, generateEnumTs(curveEnums.envEnum))
 

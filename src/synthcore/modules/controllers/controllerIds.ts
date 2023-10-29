@@ -177,11 +177,6 @@ export enum ControllerIdNonModPots {
     OUT_VOLUME,
     OUT_SPREAD,
     OUT_HEADPHONES,
-    CV_RANGE_MIN,
-    CV_RANGE_MAX,
-    CV_RANGE_CURVE,
-    CV_RANGE_SAVE,
-    CV_RANGE_LOAD,
 }
 
 export const NON_MOD_POTS_COUNT = Object.keys(ControllerIdNonModPots).filter(o => isNaN(o as any)).length
@@ -189,7 +184,7 @@ export const FIRST_NON_MOD = FIRST_NON_MOD_POTS + NON_MOD_POTS_COUNT
 
 export enum ControllerIdNonMod {
     // Non-modulatable controllers
-    DCO1_RANGE = 123,
+    DCO1_RANGE = 118,
     DCO1_SYNC,
     DCO1_MODE,
     DCO1_SUB_WAVE,
@@ -311,7 +306,7 @@ export enum ControllerIdNonMod {
 }
 
 export enum ControllerIdEnvNonMod {
-  ENV_RESET_ON_TRIGGER= 220,
+  ENV_RESET_ON_TRIGGER= 215,
   ENV_RELEASE_MODE,
   ENV_LOOP_MODE,
   ENV_MAX_LOOPS,
@@ -323,13 +318,13 @@ export enum ControllerIdEnvNonMod {
 export const ENV_NON_MOD_COUNT = Object.keys(ControllerIdEnvNonMod).filter(o => isNaN(o as any)).length
 
 export enum ControllerIdEnvStageNonMod {
-  ENV_CURVE = 228,
+  ENV_CURVE = 223,
   ENV_TOGGLE_STAGE,
 }
 export const ENV_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdEnvStageNonMod).filter(o => isNaN(o as any)).length
 
 export enum ControllerIdLfoNonMod {
-  LFO_SHAPE = 230,
+  LFO_SHAPE = 225,
   LFO_SYNC,
   LFO_RESET,
   LFO_BIPOLAR,
@@ -347,7 +342,7 @@ export enum ControllerIdLfoNonMod {
 export const LFO_NON_MOD_COUNT = Object.keys(ControllerIdLfoNonMod).filter(o => isNaN(o as any)).length
 
 export enum ControllerIdLfoStageNonMod {
-  LFO_CURVE = 244,
+  LFO_CURVE = 239,
   LFO_TOGGLE_STAGE,
 }
 export const LFO_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdLfoStageNonMod).filter(o => isNaN(o as any)).length
