@@ -1,8 +1,9 @@
-import { Curve, Envelope, LoopMode, ReleaseMode, Stage, StageId } from './types'
+import { Envelope, LoopMode, ReleaseMode, Stage, StageId } from './types'
 import { envCtrls } from './envControllers'
 import { Controllers } from '../controllers/types'
 import { mergeControllers } from '../controllers/controllersUtils'
 import { dbLevelResponseMapper, timeResponseMapper } from '../common/responseMappers'
+import { Curve } from '../../generatedTypes'
 
 
 const getStageState = (envId: number, stage: Stage): Controllers => {

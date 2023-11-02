@@ -1,5 +1,4 @@
-import { Curve } from './generatedTypes'
-export { Curve } from './generatedTypes'
+import { Curve } from '../../generatedTypes'
 
 export enum StageId {
     DELAY,

@@ -1,6 +1,6 @@
 import { getScaledPoints } from '../../components/curves/curveCalculator'
 import { Point } from '../../utils/types'
-import { Curve, LoopMode, ReleaseMode, StageId } from '../../synthcore/modules/env/types'
+import { LoopMode, ReleaseMode, StageId } from '../../synthcore/modules/env/types'
 
 export const getPoints = (
     curveFunc: (x: number) => number,
@@ -36,15 +36,4 @@ export const releaseModeNames = {
     [ReleaseMode.NORMAL.valueOf()]: 'Normal release',
     [ReleaseMode.FREE_RUN.valueOf()]: 'Free running',
     [ReleaseMode.SKIP_R1.valueOf()]: 'Skip R1',
-}
-
-export const curveNames = {
-    [Curve.COSINE]: 'Cosine',
-    [Curve.EXP_3]: 'Exp 3',
-    [Curve.EXP_2]: 'Exp 2',
-    [Curve.EXP_1]: 'Exp 1',
-    [Curve.LIN]: 'Linear',
-    [Curve.LOG_1]: 'Log 1',
-    [Curve.LOG_2]: 'Log 2',
-    [Curve.LOG_3]: 'Log 3',
 }

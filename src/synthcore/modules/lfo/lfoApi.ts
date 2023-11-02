@@ -1,4 +1,4 @@
-import { Curve, NUMBER_OF_LFOS, StageId } from './types'
+import { NUMBER_OF_LFOS, StageId } from './types'
 import {
     deselectStage,
     selectCurrGuiLfoId,
@@ -21,6 +21,7 @@ import lfoMidiApi, { lfoParamReceive, lfoParamSend } from './lfoMidiApi'
 import { curveFuncs } from '../../../components/curves/curveCalculator'
 import { BUTTONS } from '../../../midi/buttons'
 import deepmerge from 'deepmerge'
+import { Curve } from '../../generatedTypes'
 
 // helper function - we use indexOf to make sure code works even if ordering of shapes changes
 const customShapeIndex = lfoCtrls.SHAPE.values.indexOf(BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_CUSTOM)

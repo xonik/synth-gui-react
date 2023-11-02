@@ -1,8 +1,9 @@
-import { Curve, Lfo, LoopMode, Stage, StageId } from './types'
+import { Lfo, LoopMode, Stage, StageId } from './types'
 import { Controllers } from '../controllers/types'
 import { mergeControllers } from '../controllers/controllersUtils'
 import { lfoCtrls } from './lfoControllers'
 import { timeResponseMapper } from '../common/responseMappers'
+import { Curve } from '../../generatedTypes'
 
 const getStageState = (lfoId: number, stage: Stage): Controllers => {
     const { id: stageId, enabled, curve } = stage

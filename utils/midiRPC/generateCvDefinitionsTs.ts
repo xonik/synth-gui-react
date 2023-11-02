@@ -1,13 +1,6 @@
 import { CvDefinition, EnumDefWithTargets, EnumValueWithTargets } from './dataTypes'
 
-export function generateCvDefinitionsTs(cvs: CvDefinition[], curveEnum: EnumDefWithTargets, cvCount: number){
-    let curveKey = 0;
-    const curveValues = curveEnum.values.map((entry) => {
-        const value = entry.value !== undefined ? entry.value : curveKey
-        curveKey = value + 1
-        return `  {label: '${entry.description}', value: ${value}}`
-    })
-
+export function generateCvDefinitionsTs(cvs: CvDefinition[], cvCount: number){
     return `// GENERATED FILE, DO NOT EDIT
 // Cv definitions
 export type CvDefinition = {
@@ -15,10 +8,6 @@ export type CvDefinition = {
   channel: number,
   description: string,
 }
-
-export const CvCurves = [
-${curveValues.join(', \n')}                
-]
 
 export const CV_CHANNELS = ${cvCount} // get from c++
 

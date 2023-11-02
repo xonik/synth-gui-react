@@ -1,14 +1,14 @@
 // GENERATED FILE, DO NOT EDIT
-
-export enum Curve { 
-  COSINE, // Cosine
-  EXP_3, // Exp 3
-  EXP_2, // Exp 2
-  EXP_1, // Exp 1
-  LIN, // Linear
-  LOG_1, // Log 1
-  LOG_2, // Log 2
-  LOG_3, // Log 3
-  LFO_SQUARE, // Square
-  LFO_RANDOM, // Random
-}
+import { Curve } from '../../generatedTypes'
+    
+export const curveValuesUsed = [ 
+  Curve.COSINE,
+  Curve.EXP_3,
+  Curve.EXP_2,
+  Curve.LIN,
+  Curve.LOG_1,
+  Curve.LOG_2,
+  Curve.LOG_3,
+  Curve.LFO_SQUARE,
+  Curve.LFO_RANDOM,
+]

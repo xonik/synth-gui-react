@@ -4,9 +4,9 @@ import classNames from 'classnames'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectController, selectLfoStages } from '../../synthcore/modules/controllers/controllersReducer'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
-import { curveNames } from './utils'
 import { LFO_SEC_PER_UNIT } from '../../utils/constants'
 import './LfoParams.scss'
+import { shortCurveNames } from '../../components/curves/shortCurveNames'
 
 interface Props {
     className?: string
@@ -78,8 +78,8 @@ const LfoParams = ({ lfoId, className, delayLevel }: Props) => {
     const attackTime = getTime(attack, time, balance, !!decay.enabled)
     const decayTime = getTime(decay, time, balance, !!decay.enabled)
 
-    const attackCurve = curveNames[attack.curve]
-    const decayCurve = decay.enabled ? curveNames[decay.curve] : '-'
+    const attackCurve = shortCurveNames[attack.curve]
+    const decayCurve = decay.enabled ? shortCurveNames[decay.curve] : '-'
 
     const attackBalance = Math.round(balance * 100)
     const decayBalance = Math.round((1 - balance) * 100)

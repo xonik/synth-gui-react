@@ -7,6 +7,7 @@ import { generateCvDefinitionsTs } from './generateCvDefinitionsTs'
 import { parseCvConfigFile } from './parseCvConfig'
 import { parseCurves } from './parseCurves'
 import { generateEnumTs } from './generateEnumTs'
+import { generateCurveUsageList } from './generateCurveUsageList'
 
 const fs = require('fs')
 
@@ -36,9 +37,11 @@ const curveEnums = parseCurves(curveContents)
 writeToFile(`${cppRoot}/midiRPCDeserializer.cpp`, generateMidiRPCDeserializer(funcs))
 writeToFile(`${jsMidiRoot}/api.ts`, generateApiTs(funcs))
 writeToFile(`${jsMidiRoot}/functionNames.ts`, generateFunctionNamesTs(funcs))
-writeToFile(`${jsRoot}/src/controller/settings/CvDefinitions.ts`, generateCvDefinitionsTs(cvs, curveEnums.cvEnum, cvCount))
-writeToFile(`${jsRoot}/src/synthcore/modules/lfo/generatedTypes.ts`, generateEnumTs(curveEnums.lfoEnum))
-writeToFile(`${jsRoot}/src/synthcore/modules/env/generatedTypes.ts`, generateEnumTs(curveEnums.envEnum))
+writeToFile(`${jsRoot}/src/controller/settings/CvDefinitions.ts`, generateCvDefinitionsTs(cvs, cvCount))
+writeToFile(`${jsRoot}/src/synthcore/modules/lfo/generatedTypes.ts`, generateCurveUsageList(curveEnums.enum, curveEnums.lfo, '../../'))
+writeToFile(`${jsRoot}/src/synthcore/modules/env/generatedTypes.ts`, generateCurveUsageList(curveEnums.enum, curveEnums.env, '../..'))
+writeToFile(`${jsRoot}/src/controller/settings/generatedTypes.ts`, generateCurveUsageList(curveEnums.enum, curveEnums.cvmaps, '../../synthcore'))
+writeToFile(`${jsRoot}/src/synthcore/generatedTypes.ts`, generateEnumTs(curveEnums.enum))
 
 fs.copyFileSync(`${scriptRoot}/serializer.ts`, `${jsMidiRoot}serializer.ts`)
 fs.copyFileSync(`${scriptRoot}/dataTypes.ts`, `${jsMidiRoot}dataTypes.ts`)

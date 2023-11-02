@@ -5,7 +5,11 @@ import CvResponseCurve from './CvResponseCurve'
 import './CvRange.scss'
 import '../lfos/StagesCurve.scss'
 import '../lfos/Stages.scss'
-import { CV_CHANNELS, CvCurves, CVs } from './CvDefinitions'
+import { CV_CHANNELS, CVs } from './CvDefinitions'
+import { curveNames } from '../../components/curves/shortCurveNames'
+import { curveValuesUsed } from './generatedTypes'
+
+import { Curve } from '../../synthcore/generatedTypes'
 
 type RangeProps = {
     setRange: (value: number) => void,
@@ -72,10 +76,10 @@ const CvCurveSelector = ({ onSelect, curve }: CvCurveSelectorProps) => {
     }, [onSelect])
 
     return <select onChange={onOptionChangeHandler} value={curve}>
-        {CvCurves.map((curve) => {
+        {curveValuesUsed.map((curve: Curve) => {
             return (
-                <option key={curve.value} value={curve.value}>
-                    {curve.label}
+                <option key={curve} value={curve}>
+                    {curveNames[curve]}
                 </option>
             );
         })}

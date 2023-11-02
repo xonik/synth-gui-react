@@ -5,12 +5,13 @@ import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import {
     selectCurrStageId,
 } from '../../synthcore/modules/env/envReducer'
-import { curveNames, loopModeNames, releaseModeNames } from './utils'
+import { loopModeNames, releaseModeNames } from './utils'
 import './EnvOptions.scss'
 import { click } from '../../synthcore/modules/ui/uiReducer'
 import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 import { envCtrls } from '../../synthcore/modules/env/envControllers'
 import { selectController, selectEnvStageById } from '../../synthcore/modules/controllers/controllersReducer'
+import { curveNames } from '../../components/curves/shortCurveNames'
 
 interface Props {
     envId: number
