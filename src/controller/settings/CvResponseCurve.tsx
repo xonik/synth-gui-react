@@ -4,11 +4,12 @@ import { Point } from '../../utils/types'
 import { getPoints } from '../lfos/utils'
 import { curveFuncs } from '../../components/curves/curveCalculator'
 import './CvRange.scss'
+import { Curve } from '../../synthcore/generatedTypes'
 
 interface Props {
     start: number
     end: number
-    curve: number
+    curve: Curve
 }
 
 const mapToSvg = (point: Point) => ({

@@ -95,7 +95,7 @@ type CvRange = {
     cv: number,
     start: number,
     end: number,
-    curve: number // PS: This is the actual curve value, not index. In controllers, we use the index as value instead.
+    curve: Curve // PS: This is the actual curve value, not index. In controllers, we use the index as value instead.
 }
 
 function getInitialSaved() {
