@@ -6,7 +6,7 @@ import {
     ControllerConfig,
     ControllerConfigCC,
     ControllerConfigCCWithValue,
-    ControllerConfigNRPN, MidiGroup
+    ControllerConfigNRPN, MidiGroup, ControllerConfigNRPNWithValue
 } from '../../../midi/types'
 import {
     ControllerIdEnvDst,
@@ -17,6 +17,7 @@ import {
 } from '../controllers/controllerIds'
 import { dbLevelResponseMapper, timeResponseMapper } from '../common/responseMappers'
 import { StageId } from './types'
+import { curveValuesUsed } from './generatedTypes'
 
 interface EnvControllers {
     props: FuncProps
@@ -29,7 +30,7 @@ interface EnvControllers {
     DECAY2_LEVEL: ControllerConfig,
     SUSTAIN_LEVEL: ControllerConfig,
     RELEASE2_LEVEL: ControllerConfig,
-    CURVE: ControllerConfigNRPN
+    CURVE: ControllerConfigNRPNWithValue
     LEVEL: ControllerConfigNRPN
     TIME: ControllerConfigNRPN
     OFFSET: ControllerConfigNRPN
@@ -119,6 +120,7 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             label: 'Curve',
             type: 'pot',
             addr: NRPN.ENV_CURVE,
+            values: curveValuesUsed,
             legalValueIndexes: [
                 StageId.DELAY,
                 StageId.ATTACK,

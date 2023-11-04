@@ -46,14 +46,15 @@ const envSelect = (() => {
 })()
 
 const curve = (() => {
-    const curveOutputMapper = (curve: number, cfg: ControllerConfig, stageId: number = 0) => {
-        logger.midi(`Setting curve for stage ${stageId} to ${curve}`)
-        return (stageId << 7) + curve
+    const curveOutputMapper = (curveIndex: number, cfg: ControllerConfig, stageId: number = 0) => {
+        logger.midi(`Setting curve for stage ${stageId} to ${cfg.values?.[curveIndex]}`)
+        return (stageId << 7) + curveIndex
     }
     const curveInputMapper = (value: number, ctrl: ControllerConfig) => {
         const stageId = (value >> 7)
         const curve = value & 0b01111111
-        return { value: curve, valueIndex: stageId }
+        const curveIndex = ctrl.values?.indexOf(curve) || 0
+        return { value: curveIndex, valueIndex: stageId }
     }
 
     return {

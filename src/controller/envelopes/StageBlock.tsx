@@ -2,9 +2,10 @@ import React, { useMemo } from 'react'
 import AnimatedCurve from '../../components/curves/AnimatedCurve'
 import { Stage } from '../../synthcore/modules/env/types'
 import { getPoints } from './utils'
-import { curveFuncs } from '../../components/curves/curveCalculator'
+import { getCurveFunc } from '../../components/curves/curveCalculator'
 import { Point } from '../../utils/types'
 import classNames from 'classnames'
+import { envCtrls } from '../../synthcore/modules/env/envControllers'
 import './StageBlock.scss'
 
 interface Props {
@@ -33,8 +34,12 @@ const StageBlock = ({ x, y, width, height, stage, nextStage, isBipolar, offset }
     const summedOffset = startLev + offset
     const scale = endLev - startLev
 
+    const curveFunc = getCurveFunc(envCtrls.CURVE, stage.curve)
+
     const points = useMemo(
-        () => getPoints(curveFuncs[stage.curve], false, false),
+        () => {
+            return getPoints(curveFunc, false, false)
+        },
         [stage.curve]
     )
 

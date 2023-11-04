@@ -2,12 +2,12 @@ import React, { useCallback, useState } from 'react'
 import ReactSlider from 'react-slider'
 import { saveCvMapping, saveCvMappings, setCvParams } from '../../midi/rpc/api'
 import CvResponseCurve from './CvResponseCurve'
-import './CvRange.scss'
-import '../lfos/StagesCurve.scss'
-import '../lfos/Stages.scss'
 import { CV_CHANNELS, CVs } from './CvDefinitions'
 import { curveNames } from '../../components/curves/shortCurveNames'
 import { curveValuesUsed } from './generatedTypes'
+import './CvRange.scss'
+import '../lfos/StagesCurve.scss'
+import '../lfos/Stages.scss'
 
 import { Curve } from '../../synthcore/generatedTypes'
 
@@ -95,7 +95,7 @@ type CvRange = {
     cv: number,
     start: number,
     end: number,
-    curve: number
+    curve: number // PS: This is the actual curve value, not index. In controllers, we use the index as value instead.
 }
 
 function getInitialSaved() {
@@ -115,7 +115,7 @@ function getInitialCvRanges() {
             cv: i,
             start: 0,
             end: 65535,
-            curve: 4,
+            curve: Curve.LIN,
         })
     }
     return cvRanges

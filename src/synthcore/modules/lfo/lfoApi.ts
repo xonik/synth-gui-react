@@ -18,7 +18,6 @@ import { lfoCtrls } from './lfoControllers'
 import { selectController, selectLfoStages, setController } from '../controllers/controllersReducer'
 import { ButtonInputProperty, NumericInputProperty, PatchControllers } from '../common/types'
 import lfoMidiApi, { lfoParamReceive, lfoParamSend } from './lfoMidiApi'
-import { curveFuncs } from '../../../components/curves/curveCalculator'
 import { BUTTONS } from '../../../midi/buttons'
 import deepmerge from 'deepmerge'
 import { Curve } from '../../generatedTypes'
@@ -78,7 +77,7 @@ class StageCurveControllerHandler extends ControllerHandler {
         const { ctrlIndex: lfoId = 0, value: curve, valueIndex: stageId = 0, ctrl, source } = input
 
         const currentCurve = selectController(ctrl, lfoId, stageId)(store.getState())
-        const boundedCurve = getBounded(curve, 0, curveFuncs.length - 1)
+        const boundedCurve = getBounded(curve, 0, (this.ctrl.values?.length || 0) - 1)
         if (currentCurve === boundedCurve) {
             return
         }

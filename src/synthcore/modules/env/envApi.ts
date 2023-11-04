@@ -9,7 +9,6 @@ import {
 import { store } from '../../store'
 import { envParamReceive, envParamSend } from './envMidiApi'
 import envMidiApi from './envMidiApi'
-import { curveFuncs } from '../../../components/curves/curveCalculator'
 import { ApiSource } from '../../types'
 import { dispatch, getBounded, getQuantized } from '../../utils'
 import { ControllerHandler, createDefaultHandlers, groupHandlers } from '../common/utils'
@@ -189,7 +188,7 @@ class StageCurveControllerHandler extends ControllerHandler {
         const { ctrlIndex: envId = 0, value: curve, valueIndex: stageId = 0 } = input
 
         const currentCurve = selectController(this.ctrl, envId, stageId)(store.getState())
-        const boundedCurve = getBounded(curve, 0, curveFuncs.length - 1)
+        const boundedCurve = getBounded(curve, 0, (this.ctrl.values?.length || 0) - 1)
         if (currentCurve === boundedCurve) {
             return
         }

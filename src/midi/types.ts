@@ -45,6 +45,10 @@ export interface ControllerConfigNRPN extends ControllerConfig {
     readonly bipolar?: boolean
 }
 
+export interface ControllerConfigNRPNWithValue extends ControllerConfigNRPN {
+    readonly values: number[]
+}
+
 export interface FuncProps {
     label: string
     shortLabel?: string

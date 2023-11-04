@@ -1,11 +1,14 @@
 import { useAppSelector } from '../../synthcore/hooks'
-import { selectController, selectLfoStages } from '../../synthcore/modules/controllers/controllersReducer'
+import {
+    selectController,
+    selectLfoStages
+} from '../../synthcore/modules/controllers/controllersReducer'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { Stage, StageId } from '../../synthcore/modules/lfo/types'
 
 import { useMemo } from 'react'
 import { getPoints, keypoints } from './utils'
-import { curveFuncs } from '../../components/curves/curveCalculator'
+import { getCurveFunc } from '../../components/curves/curveCalculator'
 import { Point } from '../../utils/types'
 
 export type StageBackground = {
@@ -97,7 +100,8 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
             return []
         }
 
-        const yValues = getPoints(curveFuncs[stage.curve])
+        const curveFunc = getCurveFunc(lfoCtrls.CURVE, stage.curve)
+        const yValues = getPoints(curveFunc)
 
         const level = unscaledLevels[stage.id] * depth
         const nextLevel = unscaledLevels[stage.id + 1] * depth

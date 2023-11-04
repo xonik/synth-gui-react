@@ -1,5 +1,8 @@
 // All functions are rising between 0, 0 and 1, 1
 
+import { ControllerConfig } from '../../midi/types'
+import { Curve } from '../../synthcore/generatedTypes'
+
 export const exponentialFunc = (sharpness: number) => {
     const a = 1 / (Math.exp(sharpness) - 1)
 
@@ -60,6 +63,13 @@ const cosine = cosineFunc;
 const square = (x: number) => 0;
 const random = (x: number) => 0.75;
 
+
+export const getCurveFunc = (ctrl: ControllerConfig, curveIndex: number) => {
+    const curve: Curve = ctrl.values?.[curveIndex] || 0
+    return curveFuncs[curve]
+}
+
+// TODO: Needs to come from CPP to get correct order.
 export const curveFuncs = [
     cosine,
     expo3,
@@ -73,6 +83,7 @@ export const curveFuncs = [
     random
 ]
 
+// TODO: why?
 export const curveNamesForCpp = [
     'cosine',
     'expo3',

@@ -1,4 +1,10 @@
 import { Curve } from '../../synthcore/generatedTypes'
+import { ControllerConfig } from '../../midi/types'
+
+export const getCurveName = (ctrl: ControllerConfig, curveIndex: number) => {
+    const curve: Curve = ctrl.values?.[curveIndex] || 0
+    return curveNames[curve]
+}
 
 export const curveNames = {
     [Curve.COSINE]: 'Cosine',
@@ -11,6 +17,11 @@ export const curveNames = {
     [Curve.LOG_3]: 'Log 3',
     [Curve.LFO_SQUARE]: 'Square',
     [Curve.LFO_RANDOM]: 'Random',
+}
+
+export const getShortName = (ctrl: ControllerConfig, curveIndex: number) => {
+    const curve: Curve = ctrl.values?.[curveIndex] || 0
+    return shortCurveNames[curve]
 }
 
 export const shortCurveNames = {

@@ -5,6 +5,7 @@ import {
     ControllerConfig,
     ControllerConfigCCWithValue,
     ControllerConfigNRPN,
+    ControllerConfigNRPNWithValue,
     ControllerConfigCC
 } from '../../../midi/types'
 import {
@@ -16,6 +17,7 @@ import {
 import { timeResponseMapper } from '../common/responseMappers'
 import CC from '../../../midi/mapCC'
 import { StageId } from './types'
+import { curveValuesUsed } from './generatedTypes'
 
 
 interface ControllersLfo {
@@ -39,7 +41,7 @@ interface ControllersLfo {
     RESET_LEVEL_ON_CLOCK: ControllerConfigCC
     SYNC_TO_CLOCK: ControllerConfigCC
     GATED: ControllerConfigCC
-    CURVE: ControllerConfigNRPN
+    CURVE: ControllerConfigNRPNWithValue
     TOGGLE_STAGE: ControllerConfigCC
     BALANCE: ControllerConfigNRPN
     PHASE_OFFSET: ControllerConfigNRPN
@@ -228,6 +230,7 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         label: 'Curve',
         type: 'pot',
         addr: NRPN.LFO_CURVE,
+        values: curveValuesUsed,
         legalValueIndexes: [
             StageId.ATTACK,
             StageId.DECAY,

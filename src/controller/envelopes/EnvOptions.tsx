@@ -11,7 +11,7 @@ import { click } from '../../synthcore/modules/ui/uiReducer'
 import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 import { envCtrls } from '../../synthcore/modules/env/envControllers'
 import { selectController, selectEnvStageById } from '../../synthcore/modules/controllers/controllersReducer'
-import { curveNames } from '../../components/curves/shortCurveNames'
+import { getCurveName } from '../../components/curves/shortCurveNames'
 
 interface Props {
     envId: number
@@ -39,8 +39,6 @@ const EnvOptions = ({ envId }: Props) => {
     const invert = useAppSelector(selectController(envCtrls.INVERT, envId))
     const retrigger = useAppSelector(selectController(envCtrls.RESET_ON_TRIGGER, envId))
     const currStageId = useAppSelector(selectCurrStageId)
-    const curve = useAppSelector(selectEnvStageById(envId, currStageId)).curve
-
 
     const clickInvert = click({ ...action, ctrl: envCtrls.INVERT })
     const clickRetrigger = click({ ...action, ctrl: envCtrls.RESET_ON_TRIGGER })
@@ -49,7 +47,9 @@ const EnvOptions = ({ envId }: Props) => {
     const clickLoopEnabled = click({ ...action, ctrl: envCtrls.LOOP })
 
     const hasCurve = currStageId !== StageId.STOPPED && currStageId !== StageId.DELAY && currStageId !== StageId.SUSTAIN
-    const curveLabel = hasCurve ? curveNames[curve] : '-'
+    const curveIndex = useAppSelector(selectEnvStageById(envId, currStageId)).curve
+    const curveLabel = hasCurve ? getCurveName(envCtrls.CURVE, curveIndex) : '-'
+
     return <div className="env-options">
         <div className="env-ctrl__heading">Envelope {envId + 1}</div>
         <div className="env-ctrl__heading">{curveLabel}</div>
