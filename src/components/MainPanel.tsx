@@ -50,14 +50,14 @@ const MainPanel = () => {
     const lfoCol = 20
     const noiseCol = 20
     const ringModCol = noiseCol + 30
-    const bcCol = ringModCol + 30
-    const distCol = bcCol + 168
+    const bcCol = 32
+    const distCol = 85
 
     const routeCol = 20
     const clockCol = routeCol + 56
     const arpCol = clockCol + 84
 
-    const sourceMixCol = 180
+    const sourceMixCol = 200
     const displayCol = osc3Col + 85
     const keyCtrlCol = displayCol - 22
     const voiceSelCol = displayCol
@@ -73,10 +73,12 @@ const MainPanel = () => {
     const oscRow = 60
 
     const noiseRow = oscRow + 85
-    const sourceMixRow = noiseRow + 55
-    const fxRow = noiseRow
-    const lfo1Row = noiseRow + 55
-    const clockRow = lfo1Row + 90
+    const fxRow1 = oscRow + 85
+    const fxRow2 = fxRow1 + 40
+    const sourceMixRow = fxRow1
+
+    const lfo1Row = fxRow2 + 50
+    const clockRow = lfo1Row + 50
 
     const voiceSelRow = 12
     const displayRow = voiceSelRow + 58
@@ -106,7 +108,6 @@ const MainPanel = () => {
         }
     },[])
 
-
     // PS: 1 inch in svg is 96pixels, so 1cm = 96 / 2.54
     return (
         <>
@@ -117,11 +118,13 @@ const MainPanel = () => {
 
                 <Noise x={noiseCol} y={noiseRow}/>
                 <Ringmod x={ringModCol} y={noiseRow}/>
-                <BitCrusherPre x={bcCol} y={fxRow}/>
-                <Distortion x={distCol} y={fxRow}/>
+                <BitCrusherPre x={bcCol} y={fxRow2}/>
+                <Distortion x={distCol} y={fxRow1}/>
+
+
+                <SourceMixer x={sourceMixCol} y={sourceMixRow}/>
 
                 <LFO x={lfoCol} y={lfo1Row}/>
-                <SourceMixer x={sourceMixCol} y={sourceMixRow}/>
 
                 <Route x={routeCol} y={clockRow}/>
                 <Clock x={clockCol} y={clockRow}/>

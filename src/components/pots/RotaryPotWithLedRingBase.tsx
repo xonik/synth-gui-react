@@ -119,6 +119,7 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
         windowArc,
         ledArc,
     } = getRenderProps(props);
+    console.log(`Led ${props.ctrl.label}: ${ledRingRadius}`)
     // For objects centered around 0, use overflow: visible
     // For scaling, use viewBox on the outer svg and unitless the rest of the way
 

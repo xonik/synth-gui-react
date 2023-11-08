@@ -16,7 +16,7 @@ const Ringmod = ({ x, y }: Props) => {
         <Header label="Ring mod" x={x} y={y} width={26}/>
         <RoundPushButton8 x={x + 11} y={y + 38}
                           ledPosition="top" ledCount={2} ledLabels={['1->2', 'Ext->2']}
-                          label="Sources" labelPosition="bottom"
+                          label="" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={ringModControllers.SOURCE}
         />

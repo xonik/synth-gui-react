@@ -17,7 +17,7 @@ const Noise = ({ x, y }: Props) => {
         <Header label="Noise" x={x} y={y} width={25}/>
         <RoundPushButton8 x={x + 10} y={y + 38}
                           ledPosition="top" ledCount={3} ledLabels={['White', 'Pink', 'Red']}
-                          label="Colour" labelPosition="bottom"
+                          label="" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={noiseControllers.COLOUR}
         />
