@@ -41,7 +41,7 @@ const MixerChannel = ({ x, y, label, levelCtrl, outCtrl }: ChannelProps) => {
 const SourceMixer = ({ x, y }: Props) => {
     const offsetX = 20
     const offsetY = 25
-    const rowDistance = 40
+    const rowDistance = 50
     const colDistance = 50
 
     const col1 = x - 2 + offsetX

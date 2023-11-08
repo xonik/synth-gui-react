@@ -20,12 +20,13 @@ const LFO = ({ x, y }: Props) => {
     const potDistance = 40
     const buttonCol = 10
     const firstPotCol = buttonCol + 105
-    const buttonCol2 = firstPotCol + 2 * potDistance + 25
-    const buttonCol3 = buttonCol2 + 20
-    const buttonCol4 = buttonCol3 + 20
-    const buttonCol5 = buttonCol4 + 20
-    const buttonCol6 = buttonCol5 + 20
-    const buttonCol7 = buttonCol6 + 20
+    const buttonCol2 = firstPotCol + 3 * potDistance + 30
+    const buttonCol3 = buttonCol2 + 25
+    const buttonCol4 = buttonCol3 + 25
+
+    const buttonRow1 = 17
+    const buttonRow2 = 37
+
     const potRow1 = 27
 
     const lfoId = useAppSelector(selectCurrUiLfoId)
@@ -65,46 +66,52 @@ const LFO = ({ x, y }: Props) => {
                      ctrlIndex={lfoId}
         />
 
-        <RotaryPot15 ledMode="single" label="Delay" x={firstPotCol + 2 * potDistance} y={potRow1}
+        <RotaryPot15 ledMode="single" label="Balance" x={firstPotCol + 2 * potDistance} y={potRow1}
+                     ctrlGroup={ctrlGroup}
+                     ctrl={lfoCtrls.BALANCE}
+                     ctrlIndex={lfoId}
+        />
+
+        <RotaryPot15 ledMode="single" label="Delay" x={firstPotCol + 3 * potDistance} y={potRow1}
                      ctrlGroup={ctrlGroup}
                      ctrl={lfoCtrls.DELAY}
                      ctrlIndex={lfoId}
         />
 
-        <RoundLedPushButton8 label="Sync" x={buttonCol2} y={potRow1} labelPosition="bottom"
+        <RoundLedPushButton8 label="Sync" x={buttonCol2} y={buttonRow1} labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={lfoCtrls.SYNC}
                              ctrlIndex={lfoId}
         />
 
-        <RoundLedPushButton8 label="Reset" x={buttonCol3} y={potRow1} labelPosition="bottom"
+        <RoundLedPushButton8 label="Reset" x={buttonCol3} y={buttonRow1} labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={lfoCtrls.RESET}
                              ctrlIndex={lfoId}
         />
 
-        <RoundLedPushButton8 label="Loop" x={buttonCol4} y={potRow1} labelPosition="bottom"
+        <RoundLedPushButton8 label="Loop" x={buttonCol4} y={buttonRow1} labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={lfoCtrls.LOOP}
                              ctrlIndex={lfoId}
                              loop
         />
 
-        <RoundLedPushButton8 label="Invert" x={buttonCol5} y={potRow1} labelPosition="bottom"
+        <RoundLedPushButton8 label="Invert" x={buttonCol2} y={buttonRow2} labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={lfoCtrls.INVERT}
                              ctrlIndex={lfoId}
                              loop
         />
 
-        <RoundLedPushButton8 label="Bipolar" x={buttonCol6} y={potRow1} labelPosition="bottom"
+        <RoundLedPushButton8 label="Bipolar" x={buttonCol3} y={buttonRow2} labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={lfoCtrls.BIPOLAR}
                              ctrlIndex={lfoId}
                              loop
         />
 
-        <RoundLedPushButton8 label="Trigger" x={buttonCol7} y={potRow1} labelPosition="bottom"
+        <RoundLedPushButton8 label="Trigger" x={buttonCol4} y={buttonRow2} labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={lfoCtrls.INVERT}
                              ctrlIndex={lfoId}

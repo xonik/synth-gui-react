@@ -20,19 +20,13 @@ const BitCrusherPre = ({ x, y }: Props) => {
 
     const col1 = x + 7;
     const col2 = col1 + 26;
-    const col3 = col2 + 50;
+    const col3 = col2 + 40;
     const col4 = col3 + 25;
-    const col5 = col4 + 25;
+    const col5 = col3 + 40;
     const col6 = col5 + 25;
 
     return <>
-        <text
-            x={x+108}
-            y={row1 + 15}
-            className="header-label"
-            textAnchor="middle"
-            alignmentBaseline="baseline"
-        >Bit crush</text>
+        <Header label="Bit crusher" x={x} y={row1} width={143}/>
         <RoundPushButton8 x={col1} y={row2 + 3} ledPosition="top" ledCount={2} label="In" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={fxControllers.BIT_CRUSHER.IN}
@@ -48,12 +42,12 @@ const BitCrusherPre = ({ x, y }: Props) => {
                      ctrl={fxControllers.BIT_CRUSHER.RATE}
         />
 
-        <RoundLedPushButton8 x={col4} y={row2 + 3}
+        {/*        <RoundLedPushButton8 x={col4} y={row2 + 3}
                              label="Recon"
                              labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={fxControllers.BIT_CRUSHER.RECON}
-        />
+        />*/}
 
         <RotaryPot15 ledMode="multi" label="Level" x={col5} y={row2}
                      ctrlGroup={ctrlGroup}

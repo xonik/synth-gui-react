@@ -49,15 +49,15 @@ const MainPanel = () => {
 
     const lfoCol = 20
     const noiseCol = 20
-    const ringModCol = noiseCol + 30
-    const bcCol = 32
-    const distCol = 85
+    const ringModCol = noiseCol
+    const sourceMixCol = noiseCol + 30
+    const bcCol = sourceMixCol + 156
+    const distCol = bcCol
 
     const routeCol = 20
     const clockCol = routeCol + 56
     const arpCol = clockCol + 84
 
-    const sourceMixCol = 200
     const displayCol = osc3Col + 85
     const keyCtrlCol = displayCol - 22
     const voiceSelCol = displayCol
@@ -72,9 +72,8 @@ const MainPanel = () => {
 
     const oscRow = 60
 
-    const noiseRow = oscRow + 85
     const fxRow1 = oscRow + 85
-    const fxRow2 = fxRow1 + 40
+    const fxRow2 = fxRow1 + 50
     const sourceMixRow = fxRow1
 
     const lfo1Row = fxRow2 + 50
@@ -116,8 +115,8 @@ const MainPanel = () => {
                 <DCO2 x={osc2Col} y={oscRow}/>
                 <VCO x={osc3Col} y={oscRow}/>
 
-                <Noise x={noiseCol} y={noiseRow}/>
-                <Ringmod x={ringModCol} y={noiseRow}/>
+                <Noise x={noiseCol} y={fxRow1}/>
+                <Ringmod x={ringModCol} y={fxRow2}/>
                 <BitCrusherPre x={bcCol} y={fxRow2}/>
                 <Distortion x={distCol} y={fxRow1}/>
 
