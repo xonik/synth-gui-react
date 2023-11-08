@@ -28,6 +28,7 @@ const BitCrusherPre = ({ x, y }: Props) => {
     return <>
         <Header label="Bit crusher" x={x} y={row1} width={143}/>
         <RoundPushButton8 x={col1} y={row2 + 3} ledPosition="top" ledCount={2} label="In" labelPosition="bottom"
+                          ledLabels={['S','L']}
                           ctrlGroup={ctrlGroup}
                           ctrl={fxControllers.BIT_CRUSHER.IN}
         />
@@ -55,6 +56,7 @@ const BitCrusherPre = ({ x, y }: Props) => {
         />
 
         <RoundPushButton8 x={col6} y={row2 + 3} ledPosition="top" ledCount={2} label="Out" labelPosition="bottom"
+                          ledLabels={['S','L']}
                           ctrlGroup={ctrlGroup}
                           hasOff
                           ctrl={fxControllers.BIT_CRUSHER.OUT}
