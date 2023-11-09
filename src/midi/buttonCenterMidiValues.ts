@@ -16,6 +16,8 @@ export enum buttonCenterMidiValues {
     LFO_SYNC_TO_CLOCK_ON,
     LFO_GATED_OFF,
     LFO_GATED_ON,
+    LFO_TRIGGER,
+    LFO_RELEASE,
     LFO_RANDOM_PHASE_OFF,
     LFO_RANDOM_PHASE_ON,
     ARP_OFF,

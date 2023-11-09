@@ -1,15 +1,15 @@
 @import './constants';
 
 // TODO: Change !active style to something that lets the user think it's clickable
-.ctrl-button {
+.gui-ctrl-button {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   border: 0.1em solid $button-border-color;
   padding: 0.25em;
-  color: $button-inactive-color;
-  background-color: $button-active-bg-color;
+  color: $button-color;
+  background-color: $button-bg-color;
 
   &--active {
     background-color: $button-active-bg-color;
@@ -17,7 +17,7 @@
   }
 
   &--disabled {
-    background-color: unset;
-    color: $button-inactive-color;
+    background-color: $button-bg-color;
+    color: $button-disabled-color;
   }
 }

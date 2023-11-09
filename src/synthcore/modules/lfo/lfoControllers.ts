@@ -33,6 +33,7 @@ interface ControllersLfo {
     SELECT: ControllerConfigCC
     BIPOLAR: ControllerConfigCCWithValue
     INVERT: ControllerConfigCC
+    GATE: ControllerConfigCC
     LOOP: ControllerConfigCC
     LOOP_MODE: ControllerConfigCC
     MAX_LOOPS: ControllerConfigCC
@@ -145,6 +146,16 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         values: [
             BUTTONS.BUTTONS_CENTER.values.LFO_INVERT_OFF,
             BUTTONS.BUTTONS_CENTER.values.LFO_INVERT_ON,
+        ],
+    },
+    GATE: {
+        id: ControllerIdLfoNonMod.LFO_GATE,
+        label: 'Trigger',
+        type: 'button',
+        cc: BUTTONS.BUTTONS_CENTER.cc,
+        values: [
+            BUTTONS.BUTTONS_CENTER.values.LFO_TRIGGER,
+            BUTTONS.BUTTONS_CENTER.values.LFO_RELEASE,
         ],
     },
     LOOP: {
