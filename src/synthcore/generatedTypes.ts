@@ -3,8 +3,8 @@
 export enum Curve { 
   COSINE = 0, // [ENV, LFO, CVMAPS] Cosine
   EXP_3 = 1, // [ENV, LFO, CVMAPS] Exp 3
-  EXP_2 = 2, // [LFO, CVMAPS] Exp 2
-  EXP_1 = 3, // [ENV, CVMAPS] Exp 1
+  EXP_2 = 2, // [ENV, LFO, CVMAPS] Exp 2
+  EXP_1 = 3, // [ENV, LFO, CVMAPS] Exp 1
   LIN = 4, // [ENV, LFO, CVMAPS] Linear
   LOG_1 = 5, // [ENV, LFO, CVMAPS] Log 1
   LOG_2 = 6, // [ENV, LFO, CVMAPS] Log 2

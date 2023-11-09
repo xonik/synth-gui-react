@@ -38,7 +38,7 @@ writeToFile(`${cppRoot}/midiRPCDeserializer.cpp`, generateMidiRPCDeserializer(fu
 writeToFile(`${jsMidiRoot}/api.ts`, generateApiTs(funcs))
 writeToFile(`${jsMidiRoot}/functionNames.ts`, generateFunctionNamesTs(funcs))
 writeToFile(`${jsRoot}/src/controller/settings/CvDefinitions.ts`, generateCvDefinitionsTs(cvs, cvCount))
-writeToFile(`${jsRoot}/src/synthcore/modules/lfo/generatedTypes.ts`, generateCurveUsageList(curveEnums.enum, curveEnums.lfo, '../../'))
+writeToFile(`${jsRoot}/src/synthcore/modules/lfo/generatedTypes.ts`, generateCurveUsageList(curveEnums.enum, curveEnums.lfo, '../..'))
 writeToFile(`${jsRoot}/src/synthcore/modules/env/generatedTypes.ts`, generateCurveUsageList(curveEnums.enum, curveEnums.env, '../..'))
 writeToFile(`${jsRoot}/src/controller/settings/generatedTypes.ts`, generateCurveUsageList(curveEnums.enum, curveEnums.cvmaps, '../../synthcore'))
 writeToFile(`${jsRoot}/src/synthcore/generatedTypes.ts`, generateEnumTs(curveEnums.enum))
