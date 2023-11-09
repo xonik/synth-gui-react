@@ -21,6 +21,7 @@ import lfoMidiApi, { lfoParamReceive, lfoParamSend } from './lfoMidiApi'
 import { BUTTONS } from '../../../midi/buttons'
 import deepmerge from 'deepmerge'
 import { Curve } from '../../generatedTypes'
+import { paramReceive, paramSend } from '../common/commonMidiApi'
 
 // helper function - we use indexOf to make sure code works even if ordering of shapes changes
 const customShapeIndex = lfoCtrls.SHAPE.values.indexOf(BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_CUSTOM)
@@ -47,19 +48,6 @@ const setGuiLfo = (lfoId: number, source: ApiSource) => {
 
 const incrementGuiLfo = (increment: number, source: ApiSource) => {
     setGuiLfo(selectCurrGuiLfoId(store.getState()) + increment, source)
-}
-
-const setUiLfo = (id: number, source: ApiSource) => {
-    const currentUiLfoId = selectCurrUiLfoId(store.getState())
-    if (id !== currentUiLfoId && id < NUMBER_OF_LFOS && id > -1) {
-        dispatch(setUiLfoAction({ value: id }))
-    }
-}
-
-const toggleUiLfo = (source: ApiSource) => {
-    const currentId = selectCurrUiLfoId(store.getState())
-    const nextId = (currentId + 1 + NUMBER_OF_LFOS) % NUMBER_OF_LFOS // + lfo to keep modulo positive
-    setUiLfo(nextId, source)
 }
 
 const cannotDisableStage = (stage: StageId) => !lfoCtrls.TOGGLE_STAGE.legalValueIndexes?.includes(stage)
@@ -385,6 +373,41 @@ class ShapeControllerHandler extends ControllerHandler {
     }
 }
 
+class LfoControllerHandler extends ControllerHandler {
+
+    constructor() {
+        super(lfoCtrls.LFO, {
+            receive: (ctrl, apiSetValue) => paramReceive(
+                ctrl,
+                apiSetValue,
+                (midiValue: number) => ({ value: midiValue })
+            )
+        })
+    }
+
+    defaultSet(input: NumericInputProperty) {
+        const { value: id } = input
+
+        const currentUiLfoId = selectCurrUiLfoId(store.getState())
+        if (id !== currentUiLfoId && id < NUMBER_OF_LFOS && id > -1) {
+            dispatch(setUiLfoAction({ value: id }))
+            paramSend(input, (value: number) => value)
+        }
+
+        const currentLfo = selectController(this.ctrl, 0)(store.getState())
+        if (id !== currentLfo && id < NUMBER_OF_LFOS && id >= 0) {
+            dispatch(setController(input))
+            paramSend(input, (value: number) => value)
+        }
+    }
+
+    toggle(input: ButtonInputProperty) {
+        const currentId = selectCurrUiLfoId(store.getState())
+        const nextId = (currentId + 1 + NUMBER_OF_LFOS) % NUMBER_OF_LFOS // + lfo to keep modulo positive
+        this.set({ ...input, value: nextId })
+    }
+}
+
 const shapeControllerHandler = new ShapeControllerHandler()
 
 const handlers = groupHandlers({
@@ -393,6 +416,7 @@ const handlers = groupHandlers({
         [lfoCtrls.INVERT.id]: new InvertControllerHandler(),
         [lfoCtrls.MAX_LOOPS.id]: new MaxLoopsControllerHandler(),
         [lfoCtrls.SHAPE.id]: shapeControllerHandler,
+        [lfoCtrls.LFO.id]: new LfoControllerHandler(),
         ...createDefaultHandlers([
                 lfoCtrls.RATE,
                 lfoCtrls.DELAY,
@@ -434,8 +458,6 @@ const lfoApi = {
 
     setGuiLfo,
     incrementGuiLfo,
-    setUiLfo,
-    toggleUiLfo,
 
     increment: handlers.increment,
     toggle: handlers.toggle,

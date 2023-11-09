@@ -25,7 +25,7 @@ interface ControllersLfo {
     RATE: ControllerConfigNRPN
     DEPTH: ControllerConfigNRPN
     DELAY: ControllerConfigNRPN
-    LFO: ControllerConfigCCWithValue
+    LFO: ControllerConfigCC
     SHAPE: ControllerConfigCCWithValue
     SYNC: ControllerConfigCCWithValue
     RESET: ControllerConfigCCWithValue
@@ -84,12 +84,6 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         label: 'Select',
         type: 'button',
         cc: BUTTONS.BUTTONS_LEFT.cc,
-        values: [
-            BUTTONS.BUTTONS_LEFT.values.LFO1,
-            BUTTONS.BUTTONS_LEFT.values.LFO2,
-            BUTTONS.BUTTONS_LEFT.values.LFO3,
-            BUTTONS.BUTTONS_LEFT.values.LFO4,
-        ],
     },
     SHAPE: {
         id: ControllerIdLfoNonMod.LFO_SHAPE,
