@@ -42,6 +42,11 @@ type CvCurveSelectorProps = {
     onSelect: (curve: number) => void
 }
 
+type CvReverseCheckboxProps = {
+    reverse: boolean
+    onChange: (reverse: boolean) => void
+}
+
 const CvSelector = ({ onSelect, cv }: CvSelectorProps) => {
 
     const onOptionChangeHandler = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -86,6 +91,17 @@ const CvCurveSelector = ({ onSelect, curve }: CvCurveSelectorProps) => {
     </select>
 }
 
+const CvReverseCheckbox = ({ onChange, reverse }: CvReverseCheckboxProps) => {
+    const onOptionChangeHandler = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        onChange(!reverse);
+    }, [onChange, reverse])
+
+    return <label>
+        <input type="checkbox" onChange={onOptionChangeHandler} checked={reverse || false}/>
+        Reverse
+    </label>
+}
+
 
 function getAsVolts(index: number) {
     return (Math.round(500 * (index / 65535)) / 100).toFixed(2)
@@ -95,6 +111,7 @@ type CvRange = {
     cv: number,
     start: number,
     end: number,
+    reverse: boolean,
     curve: Curve // PS: This is the actual curve value, not index. In controllers, we use the index as value instead.
 }
 
@@ -116,6 +133,7 @@ function getInitialCvRanges() {
             start: 0,
             end: 65535,
             curve: Curve.LIN,
+            reverse: false,
         })
     }
     return cvRanges
@@ -151,8 +169,8 @@ function mutate(cvRanges: CvRange[], cv: number, changes: Partial<CvRange>) {
 }
 
 function sendAll(cvRanges: CvRange[], i: number) {
-    const { cv, start, end, curve } = cvRanges[i]
-    setCvParams(cv, start, end, curve)
+    const { cv, start, end, curve, reverse } = cvRanges[i]
+    setCvParams(cv, start, end, curve, reverse)
 
     if(i < CV_CHANNELS){
         if(i === CV_CHANNELS -1) {
@@ -180,7 +198,7 @@ const CvRange = () => {
 
     const sendCv = (cvRange: CvRange) => {
         console.log(cvRange)
-        setCvParams(cvRange.cv, cvRange.start, cvRange.end, cvRange.curve)
+        setCvParams(cvRange.cv, cvRange.start, cvRange.end, cvRange.curve, cvRange.reverse)
     }
 
     const onSave = useCallback(() => {
@@ -227,16 +245,23 @@ const CvRange = () => {
         updateSaved(false)
         sendCv(updatedAllCvs[cv])
     }, [cv, allCvs])
+    const updateReverse = useCallback((reverse: boolean) => {
+        const updatedAllCvs = mutate(allCvs, cv, { reverse })
+        setAllCvs(updatedAllCvs)
+        updateSaved(false)
+        sendCv(updatedAllCvs[cv])
+    }, [cv, allCvs])
 
     return <div className="cv-range">
         <div className="cv-range__graph-controls">
             <VerticalRangeSelector setRange={updateStart} value={allCvs[cv].start}/>
-            <CvResponseCurve start={allCvs[cv].start} end={allCvs[cv].end} curve={allCvs[cv].curve}/>
+            <CvResponseCurve start={allCvs[cv].start} end={allCvs[cv].end} curve={allCvs[cv].curve} reverse={allCvs[cv].reverse}/>
             <VerticalRangeSelector setRange={updateEnd} value={allCvs[cv].end}/>
         </div>
         <div className="cv-range__params">
             <CvCurveSelector onSelect={updateCurve} curve={allCvs[cv].curve}/>
             <CvSelector onSelect={setCv} cv={cv}/>
+            <CvReverseCheckbox onChange={updateReverse} reverse={allCvs[cv].reverse}/>
             <button disabled={saved[cv]} onClick={onSave}>Save</button>
             <button disabled={saved[cv]} onClick={onReset}>Reset</button>
             <button onClick={onLoadAll}>Load all</button>

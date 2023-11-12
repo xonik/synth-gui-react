@@ -28,6 +28,13 @@ export const cosineFunc = (x: number) => {
 
 export const squared = (x: number) => Math.pow(x, 2);
 
+// Reverse reverses the curve (e.g. exponential turns to
+// falling exponential) while keeping the start/end values
+// in line with the curve.
+export const reverse = (func: (x: number) => number) => {
+    return (x: number) => 1 - func(1-x)
+}
+
 export const getKeypoints = (keypointCount: number) => {
     const points = [];
     for (let point = 0; point <= 1; point += 1 / keypointCount) {
