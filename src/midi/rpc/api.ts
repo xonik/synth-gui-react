@@ -44,12 +44,13 @@ export function setCvCurve(cv: number, curve: number) {
   sendSysex(sysexCommands.RPC, data)  
 }
 
-export function setCvParams(cv: number, start: number, end: number, curve: number) {
+export function setCvParams(cv: number, start: number, end: number, curve: number, reverse: boolean) {
   const paramBytes: number[] = [
     ...jsToMidiEncoder['uint8_t'](cv),
     ...jsToMidiEncoder['uint16_t'](start),
     ...jsToMidiEncoder['uint16_t'](end),
-    ...jsToMidiEncoder['uint8_t'](curve)
+    ...jsToMidiEncoder['uint8_t'](curve),
+    ...jsToMidiEncoder['bool'](reverse)
   ]
   const data = [
     ...splitTo7(FunctionNames.setCvParams, 14),

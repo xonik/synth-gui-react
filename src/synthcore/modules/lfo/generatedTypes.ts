@@ -1,5 +1,5 @@
 // GENERATED FILE, DO NOT EDIT
-import { Curve } from '../..//generatedTypes'    
+import { Curve } from '../../generatedTypes'    
     
 export const curveValuesUsed = [ 
   Curve.COSINE,
