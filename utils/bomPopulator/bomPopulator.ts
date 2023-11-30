@@ -1,6 +1,7 @@
 import { toNumber } from 'lodash'
+import fs from 'fs'
 
-const bom = [
+const testBom = [
     "Comment,Designator,Footprint,LCSC Part #",
     "0.33uF,C13 C15,C0603,C1615",
     "5n5F,C1 C5,C0402,C1538",
@@ -16,44 +17,151 @@ const bom = [
 
 // "Description,Type,Footprint,LCSC Part #,Rotationfix",
 const lcscParts = [
-    "2.2k,resistor,R0402,C25768,0",
-    "1k,resistor,R0603,C21190,0",
-    "1.8k,resistor,R0603,C4177,0",
-    "3.9k,resistor,R0603,C23018,0",
+    "2.2R,R,R0805,C17521,0,B",
+    "2.2k,R,R0402,C25768,0,B",
+    "1k,R,R0603,C21190,0,B",
+    "1k,R,R0805,C17513,0,B",
+    "1M,R,R0805,C17514,0,B",
+    "1.2k,R,R0805,C17379,0,B",
+    "1.2M,R,R0402,C43675,0,E",
+    "1.5k,R,R0402,C25867,0,B",
+    "1.5k,R,R0805,C4310,0,B",
+    "1.5M,R,R0805,C26110,0,E",
+    "1.68k,R,R0402,C25870,0,E",
+    "1.8k,R,R0603,C4177,0,B",
+    "2k7,R,R0805,C17530,0,B",
+    "3.9k,R,R0603,C23018,0,B",
     "4CH-MIXER-3364-2,other,XM8-4CH-MIXER-3364-V,,0",
-    "5.6k,resistor,R0603,C23189,0",
-    "10k,resistor,R0603,C25804,0",
-    "12k,resistor,R0603,C22790,0",
-    "18k,resistor,R0603,C25810,0",
-    "22k,resistor,R0603,C31850,0",
-    "27k,resistor,R0603,C22967,0",
-    "33k,resistor,R0603,C4216,0",
-    "47k,resistor,R0603,C25819,0",
-    "49.9k,resistor,R0603,C23184,0",
-    "51k,resistor,R0603,C23196,0",
-    "56k,resistor,R0603,C23206,0",
-    "68k,resistor,R0603,C23231,0",
-    "75k,resistor,R0603,C23242,0",
-    "82k,resistor,R0603,C23254,0",
-    "100k,resistor,R0603,C25803,0",
-    "120k,resistor,R0603,C25808,0",
-    "510R,resistor,R0603,,0",
-    "10u,capacitor,E2,5-5,,0",
-    "22p,capacitor,C0603,C1653,0",
-    "33p,capacitor,C0603,C1663,0",
-    "100n,capacitor,C0603,C14663,0",
-    "100p,capacitor,C0603,C14858,0",
-    "DG408DJ,other,DIL16,,0",
-    "DG413-SPDT-SPST-J,other,DIL16,,0",
-    "SVF-CELL-V1.0V,other,XM8-SVF-CELL-V1.0V,,0",
-    "SVF-CV-V1.1,other,XM8-SVF-CV-V1.1V,,0",
-    "TL072JD,other,SO08,,0",
+    "5.1k,R,R0805,C27834,0,B",
+    "5.6k,R,R0603,C23189,0,B",
+    "5.6k,R,R0402,C25908,0,E",
+    "5.9k,R,R0805,C17730,0,E",
+    "6.8k,R,R0805,C17772,0,B",
+    "8.2k,R,R0402,C25946,0,E",
+    "9.1k,R,R0805,C17855,0,E",
+    "10k,R,R0603,C25804,0,B",
+    "10k,R,R0402,C25744,0,B",
+    "10k,R,R0805,C17414,0,B",
+    "11k,R,R0402,C25749,0,E",
+    "12k,R,R0603,C22790,0,B",
+    "12k,R,R0805,C17444,0,B",
+    "15k,R,R0402,C25756,0,B",
+    "15k,R,R0805,C17475,0,B",
+    "18k,R,R0603,C25810,0,B",
+    "20k,R,R0402,C25765,0,B",
+    "20k,R,R0805,C4328,0,B",
+    "22k,R,R0603,C31850,0,B",
+    "22k,R,R0402,C25768,0,B",
+    "22k,R,R0805,C17560,0,B",
+    "25k,R,R0402,C25874,0,E",
+    "27k,R,R0603,C22967,0,B",
+    "27k,R,R0805,C17593,0,B",
+    "33k,R,R0603,C4216,0,B",
+    "33k,R,R0402,C25779,0,B",
+    "47k,R,R0603,C25819,0,B",
+    "47k,R,R0402,C25792,0,B",
+    "47k,R,R0805,C17713,0,B",
+    "49.9k,R,R0603,C23184,0,B",
+    "50k,R,R0805,C63865,0,E",
+    "51k,R,R0603,C23196,0,B",
+    "51R,R,R0805,C17738,0,B",
+    "56k,R,R0603,C23206,0,B",
+    "56k,R,R0805,C17756,0,E",
+    "68k,R,R0402,C36871,0,E",
+    "68k,R,R0603,C23231,0,B",
+    "68k,R,R0805,C17801,0,B",
+    "75k,R,R0603,C23242,0,B",
+    "75k,R,R0402,C3016015,0,B",
+    "82k,R,R0603,C23254,0,B",
+    "82k,R,R0805,C17840,0,E",
+    "100R,R,R0402,C25076,0,B",
+    "100R,R,R0805,C17408,0,B",
+    "100k,R,R0402,C25741,0,B",
+    "100k,R,R0603,C25803,0,B",
+    "100k,R,R0805,C17407,0,E",
+    "105k,R,R0402,C102762,0,E",
+    "120k,R,R0603,C25808,0,B",
+    "120k,R,R0805,C17436,0,E",
+    "150k,R,R0805,C17470,0,B",
+    "180k,R,R0805,C17501,0,E",
+    "200k,R,R0805,C17539,0,B",
+    "200R,R,R0805,C17540,0,B",
+    "220k,R,R0402,C25767,0,E",
+    "270k,R,R0805,C17589,0,E",
+    "390k,R,R0402,C25557,0,E",
+    "510R,R,R0603,C23193,0,B",
+    "560R,R,R0402,C25172,0,E",
+    "560R,R,R0805,C28636,0,B",
+    "1.5n,C,C0603,C1595,0,B", //X7R
+    "5n,C,C0402,C1538,0,B", //X7R 4.7n
+    "5p,C,C0402,C1569,0,E", //C0G 4.7p
+    "10p,C,C0805,C1785,0,B", //C0G
+    "10n,C,C0603,C76710,0,E", //C0G
+    "10u,C,E2.5-5,,0",
+    "10u,O,CAPAE660X610N,C134805,0,E",
+    "22p,C,C0603,C1653,0,B", //C0G
+    "22n,C,C0805,C1729,0,B", //X7R
+    "33p,C,C0603,C1663,0,B", //C0G
+    "33p,C,C0402,C1562,0,B", //C0G
+    "47p,C,C0402,C1567,0,B", //C0G
+    "100n,C,C0603,C14663,0,B", // X7R
+    "100n,C,C0402,C307331,0,B", // X7R
+    "100p,C,C0603,C14858,0,B", //C0G
+    "100u 25V,O,CAPAE660X610N,C176675,0,E",
+    "220u,O,CAPAE660X610N,C250010,0,E", //NB: Bare 6.3V!
+    "330n,C,C0603,C1615,0,E", //X7R
+    "330p,C,C0603,C1664,0,B", //C0G
+    "390p,C,C0603,C84719,0,E", //X7R
+    "470p,C,C0603,C27694,0,E", //C0G
+    "560p,C,C0603,C55393,0,E", //C0G
+    "680p,C,C0603,C30816,0,E", //C0G
+    "DG408DJ,O,DIL16,C72130,0,E",
+    "DG413-SPDT-SPST-J,O,DIL16,C72130,0,E",
+    "DG412-J,O,DIL16,C72130,0,E",
+    "SVF-CELL-V1.0V,O,XM8-SVF-CELL-V1.0V,,0",
+    "SVF-CV-V1.1,O,XM8-SVF-CV-V1.1V,,0",
+    "TL072JD,O,SO08,C6961,0,B",
+    "TL072,O,SO08,C6961,0,B",
+    "78L09F,O,SOT89,C880736,0,E",
+    "79L09F,O,SOT89,C2880153,0,E",
+    "CH446Q,O,LQFP-44-J,C109471,0,E",
+    "AS3364D,O,DIL16,C72130,0,E",
+    "CON8,O,CON8,C706871,0,E", // 8p single angled gold
+    "CON16,O,CON16,C2894996,0,E", // 32p dual row angled
+    "TL082,O,TSSOP8,C85346,0,E",
+    "TL072JT,O,TSSOP8,C90748",
+    "TL074JT,O,TSSOP14,C2652279,0,E",
+    "TL072,O,TSSOP8,C90748,0,E",
+    "TL074D,O,SO14,C6963,0,E",
+    "1N4148,O,SOD323J,C2128,0,B",
+
+    "50k,R,R0402,C25897,0,E",
+    "MA07-1JP,O,SIP-PIN07-1J,C376125,0,E", // 7p single angled
+    "MA07-1JN,O,SIP-PIN07-1J,C376125,0,E", // 7p single angled
+    "MA08-1JP,O,SIP-PIN08-1J,C225494,0,E", // 8p single angled
+    "MA15-1JP,O,SIP-PIN15-1J,C247916,0,E", // 15p single angled
+    "1N41480805,O,D0805,C2128,0,B",
+    "2n3904,O,SOT23-BEC,C20526,0,B",
+    "6pF,C,C0805,C67560,0,E", //C0G
+    "4013D,O,SO14,C347580,0,E",
+    "MC1496DR2G,O,SOIC127P600X175-14N,C7295,0,E",
+    "BC847DS,O,SOT457,C549489,0,E", // Finnes BC847BS
+    "BC847BS,O,SOT363,C5380687,0,E",
+    "BC857BS,O,SOT363,C8654,0,E",
+    "DG403CSL,O,SO16-NARROW-J,C145284,0,E",
+    "LM13700SL,O,SO16-NARROW-J,C174050,0,E",
+    "MMBT3906LT1SMD,O,SOT23-BEC,C2143,0,E",
+    "MA11-1JP,O,SIP-PIN11-1J,C725903,0,E", // 11p single angled
+    "MCP9700TT,O,SOT23J,C127949,O,E",
+    "DAC8565,O,TSSOP16,C69596,0,E",
+    "PCA9539PW,O,TSSOP24,C2687996,0,E"
+
 
 ].map((line) => {
     const parts = line.split(',')
     return {
         value: parts[0],
-        type: parts[1],
+        type: getPartType(parts[1]),
         footprint: parts[2],
         lcscPart: parts[3],
         rotation: parts[4],
@@ -93,8 +201,23 @@ const footprintToTypeMap = {
 // Maps all variations of a footprint to a single version
 const unifiedFootprintMap = {
     'TSSOP8J': 'TSSOP8',
+    'TSSOP14J': 'TSSOP14',
+    'TSSOP24J': 'TSSOP24',
     'SO08J': 'SO08',
-    'DIL16J': 'DIL16J',
+    'LQFP-44': 'LQFP-44-J',
+    'DIL16J': 'DIL16',
+    'D0805-J': 'D0805',
+    'C0603K': 'C0603',
+    'SOT457J': 'SOT457',
+    'SOT363J': 'SOT363',
+    'SO14J': 'SO14',
+    'SOIC127P600X175-14N': 'SO14',
+}
+
+function getPartType(shortType: string): PartType {
+    if(shortType === 'R') return 'resistor'
+    if(shortType === 'C') return 'capacitor'
+    return 'other'
 }
 
 function getLcscPart(value: string, footprint: string, type: PartType) {
@@ -178,29 +301,42 @@ function getUnifiedValue(value: string, type: PartType) {
 
 // Comment,Designator,Footprint,LCSC Part #
 function parseBomLine(line: string) {
-    const [valueString, idString, footprintString, lscsPartString] = line.split(',').map((field) => field.trim())
-    if (valueString === 'Comment') {
-        return
+    if(line.trim() === '') return
+    
+    try {
+        const [valueString, idString, footprintString, lscsPartString] = line.split(',').map((field) => field.trim())
+        if (valueString === 'Comment') {
+            return
+        }
+        const footprint = getUnifiedFootprint(footprintString)
+        const ids = idString?.split(' ') || []
+        const type = getTypeFromDesignator(ids[0])
+        const value = getUnifiedValue(valueString, type)
+        const lcscPart = getLcscPart(value, footprint, type)?.lcscPart || ''
+        if (lcscPart === '') {
+            console.log(`Could not find part for "${line}"`)
+        }
+        parts.push({
+            value,
+            ids,
+            footprint,
+            type,
+            lcscPart,
+            line
+        })
+    } catch (err) {
+        console.log(`Failed to parse "${line}"`, err)
     }
-    const footprint = getUnifiedFootprint(footprintString)
-    const ids = idString.split(' ')
-    const type = getTypeFromDesignator(ids[0])
-    const value = getUnifiedValue(valueString, type)
-    const lcscPart = getLcscPart(value, footprint, type)?.lcscPart || ''
-    if (lcscPart === '') {
-        console.log(`Could not find part for "${line}"`)
-    }
-    parts.push({
-        value,
-        ids,
-        footprint,
-        type,
-        lcscPart,
-        line
-    })
 }
 
-bom.map(parseBomLine)
+const writeToFile = (path: string, contents: string) => {
+    console.log(`writing ${contents.length} bytes to ${path}`)
+    fs.writeFileSync(path, contents)
+}
+
+const bom = fs.readFileSync(process.argv[2], { encoding: 'utf8', flag: 'r' })
+
+bom.split('\n').map(parseBomLine)
 
 console.log(parts.map((part) => `${part.value},${part.ids.join(' ')},${part.footprint},${part.lcscPart}`))
 
