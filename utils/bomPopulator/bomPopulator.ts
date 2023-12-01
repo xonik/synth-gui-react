@@ -1,4 +1,3 @@
-import { toNumber } from 'lodash'
 import fs from 'fs'
 
 const testBom = [
@@ -31,7 +30,6 @@ const lcscParts = [
     "1.8k,R,R0603,C4177,0,B",
     "2k7,R,R0805,C17530,0,B",
     "3.9k,R,R0603,C23018,0,B",
-    "4CH-MIXER-3364-2,other,XM8-4CH-MIXER-3364-V,,0",
     "5.1k,R,R0805,C27834,0,B",
     "5.6k,R,R0603,C23189,0,B",
     "5.6k,R,R0402,C25908,0,E",
@@ -118,12 +116,9 @@ const lcscParts = [
     "560p,C,C0603,C55393,0,E", //C0G
     "680p,C,C0603,C30816,0,E", //C0G
     "DG408DJ,O,DIL16,C72130,0,E",
+    "DG408D-JD,O,DIL16,C72130,0,E",
     "DG413-SPDT-SPST-J,O,DIL16,C72130,0,E",
     "DG412-J,O,DIL16,C72130,0,E",
-    "SVF-CELL-V1.0V,O,XM8-SVF-CELL-V1.0V,,0",
-    "SVF-CV-V1.1,O,XM8-SVF-CV-V1.1V,,0",
-    "TL072JD,O,SO08,C6961,0,B",
-    "TL072,O,SO08,C6961,0,B",
     "78L09F,O,SOT89,C880736,0,E",
     "79L09F,O,SOT89,C2880153,0,E",
     "CH446Q,O,LQFP-44-J,C109471,0,E",
@@ -131,14 +126,18 @@ const lcscParts = [
     "CON8,O,CON8,C706871,0,E", // 8p single angled gold
     "CON16,O,CON16,C2894996,0,E", // 32p dual row angled
     "TL082,O,TSSOP8,C85346,0,E",
-    "TL072JT,O,TSSOP8,C90748",
+    "TL072JT,O,TSSOP8,C90748,0,E",
     "TL074JT,O,TSSOP14,C2652279,0,E",
     "TL072,O,TSSOP8,C90748,0,E",
+    "TL072JD,O,SO08,C6961,0,B",
+    "TL072,O,SO08,C6961,0,B",
     "TL074D,O,SO14,C6963,0,E",
     "1N4148,O,SOD323J,C2128,0,B",
+    "MA06-1JC,O,MA06-1J,C6332199,0,E", // 6p single straight
     "MA07-1JP,O,SIP-PIN07-1J,C376125,0,E", // 7p single angled
     "MA07-1JN,O,SIP-PIN07-1J,C376125,0,E", // 7p single angled
     "MA08-1JP,O,SIP-PIN08-1J,C225494,0,E", // 8p single angled
+    "MA11-1JP,O,SIP-PIN11-1J,C725903,0,E", // 11p single angled
     "MA15-1JP,O,SIP-PIN15-1J,C247916,0,E", // 15p single angled
     "1N41480805,O,D0805,C2128,0,B",
     "2n3904,O,SOT23-BEC,C20526,0,B",
@@ -150,41 +149,47 @@ const lcscParts = [
     "DG403CSL,O,SO16-NARROW-J,C145284,0,E",
     "LM13700SL,O,SO16-NARROW-J,C174050,0,E",
     "MMBT3906LT1SMD,O,SOT23-BEC,C2143,0,E",
-    "MA11-1JP,O,SIP-PIN11-1J,C725903,0,E", // 11p single angled
-    "MCP9700TT,O,SOT23J,C127949,O,E",
+    "MCP9700TT,O,SOT23J,C127949,0,E",
     "DAC8565,O,TSSOP16,C69596,0,E",
     "PCA9539PW,O,TSSOP24,C2687996,0,E",
-    "4CH-MIXER-3364-2,O,XM8-4CH-MIXER-3364-V,C2905420,O,E",
+    "4CH-MIXER-3364-2,O,XM8-4CH-MIXER-3364-V,C124407,0,E",
     "SVF-CELL-V1.0V,O,XM8-SVF-CELL-V1.XV,C2932672,0,E", // 7p x 3
     "SVF-CELL-V1.1V,O,XM8-SVF-CELL-V1.XV,C2932672,0,E",
-    "SVF-CV-V1.1,IC58,XM8-SVF-CV-V1.1V,C2932674,0,E", // 11p
-
-].map((line) => {
+    "SVF-CV-V1.1,O,XM8-SVF-CV-V1.1V,C2932674,0,E", // 11p
+].map((line): LibPart => {
     const parts = line.split(',')
     return {
         value: parts[0],
         type: getPartType(parts[1]),
         footprint: parts[2],
-        lcscPart: parts[3],
-        rotation: parts[4],
+        id: parts[3],
+        rotation: Number.parseInt(parts[4]),
     }
 })
 
 type LibPart = {
     value: string
     footprint: string
-    lcscPart: string
+    id: string
     type: PartType
-    rotation: 0
+    rotation: number
 }
 
 type Part = {
     value: string
     ids: string[]
     footprint: string
-    lcscPart?: string
+    lcscPart?: LibPart
     type: PartType
     line: string
+}
+
+type CplEntry = {
+    designator: string,
+    midX: string,
+    midY: string,
+    layer: string,
+    rotation: number
 }
 
 type PartType = 'resistor' | 'capacitor' | 'other'
@@ -217,15 +222,19 @@ const unifiedFootprintMap = {
 }
 
 function getPartType(shortType: string): PartType {
-    if(shortType === 'R') return 'resistor'
-    if(shortType === 'C') return 'capacitor'
+    if (shortType === 'R') return 'resistor'
+    if (shortType === 'C') return 'capacitor'
     return 'other'
 }
 
-function getLcscPart(value: string, footprint: string, type: PartType) {
-    return lcscParts.find((libPart) => value === libPart.value &&
-        type === libPart.type
-        && footprint === libPart.footprint
+function getLcscPart(value: string, footprint: string, type: PartType): LibPart | undefined {
+    return lcscParts.find((libPart) => {
+            const found = value === libPart.value &&
+                type === libPart.type
+                && footprint === libPart.footprint
+            //console.log(value, footprint, type, libPart, found)
+            return found
+        }
     )
 }
 
@@ -282,7 +291,7 @@ function getUnifiedValue(value: string, type: PartType) {
             const unit = fractional[2]
             const lowerUnit = getLowerUnit(unit, type)
             if (lowerUnit) {
-                const num = Math.round(toNumber(fractional[1]) * 1000)
+                const num = Math.round(Number.parseInt(fractional[1]) * 1000)
                 newVal = `${num}${lowerUnit}`
             }
         }
@@ -303,8 +312,8 @@ function getUnifiedValue(value: string, type: PartType) {
 
 // Comment,Designator,Footprint,LCSC Part #
 function parseBomLine(line: string) {
-    if(line.trim() === '') return
-    
+    if (line.trim() === '') return
+
     try {
         const [valueString, idString, footprintString, lscsPartString] = line.split(',').map((field) => field.trim())
         if (valueString === 'Comment') {
@@ -314,9 +323,12 @@ function parseBomLine(line: string) {
         const ids = idString?.split(' ') || []
         const type = getTypeFromDesignator(ids[0])
         const value = getUnifiedValue(valueString, type)
-        const lcscPart = getLcscPart(value, footprint, type)?.lcscPart || ''
-        if (lcscPart === '') {
+        const lcscPart = getLcscPart(value, footprint, type) || undefined
+        if (lcscPart === undefined) {
             console.log(`Could not find part for "${line}"`)
+        }
+        if (lcscPart.id === '') {
+            console.log(`Found no part id for "${line}"`, lcscPart)
         }
         parts.push({
             value,
@@ -331,14 +343,63 @@ function parseBomLine(line: string) {
     }
 }
 
+const cplEntries: CplEntry[] = []
+
+function parseCplLine(line: string) {
+    if (line.trim() === '') return
+
+    try {
+        const [designator, midX, midY, layer, rotation] = line.split(',').map((field) => field.trim())
+        if (designator === 'Designator') {
+            return
+        }
+        console.log(`Number ${rotation} ${Number.parseInt(rotation)}`)
+        cplEntries.push({
+            designator, midX, midY, layer, rotation: Number.parseInt(rotation)
+        })
+    } catch (err) {
+        console.log(`Failed to parse "${line}"`, err)
+    }
+}
+
 const writeToFile = (path: string, contents: string) => {
     console.log(`writing ${contents.length} bytes to ${path}`)
     fs.writeFileSync(path, contents)
 }
 
-const bom = fs.readFileSync(process.argv[2], { encoding: 'utf8', flag: 'r' })
+const bomPath = process.argv[2]
+const cplPath = bomPath.replace('_bom.csv', '_cpl.csv')
+
+const newBomPath = bomPath.replace('.csv', '_populated.csv')
+const newCplPath = cplPath.replace('.csv', '_populated.csv')
+
+const bom = fs.readFileSync(bomPath, { encoding: 'utf8', flag: 'r' })
+const cpl = fs.readFileSync(cplPath, { encoding: 'utf8', flag: 'r' })
 
 bom.split('\n').map(parseBomLine)
 
-console.log(parts.map((part) => `${part.value},${part.ids.join(' ')},${part.footprint},${part.lcscPart}`))
+console.log('BOM:')
+const bomNewLines = parts.map((part) => `${part.value},${part.ids.join(' ')},${part.footprint},${part.lcscPart?.id}`)
+const bomFileContents = `Comment,Designator,Footprint,LCSC Part #\n${bomNewLines.join('\n')}`
+console.log(bomFileContents)
+fs.writeFileSync(newBomPath, bomFileContents)
 
+cpl.split('\n').map(parseCplLine)
+
+// Correct rotations
+parts.forEach((part) => {
+    if (part.lcscPart && part.lcscPart.rotation !== 0) {
+        part.ids.forEach((designator) => {
+            const entryToRotate = cplEntries.find((cplEntry) => cplEntry.designator === designator)
+            const newRotation = entryToRotate.rotation - part.lcscPart.rotation
+            console.log(`Rotating ${entryToRotate.designator} ${part.lcscPart.rotation} from ${entryToRotate.rotation} to ${newRotation}`)
+            entryToRotate.rotation = newRotation
+        })
+    }
+})
+
+console.log('\nCPL:')
+const cplNewLines = cplEntries.map((cplEntry) => `${cplEntry.designator},${cplEntry.midX},${cplEntry.midY},${cplEntry.layer},${cplEntry.rotation}`)
+const cplFileContents = `Designator,Mid X,Mid Y,Layer,Rotation\n${cplNewLines.join('\n')}`
+console.log(cplFileContents)
+fs.writeFileSync(newCplPath, cplFileContents)
