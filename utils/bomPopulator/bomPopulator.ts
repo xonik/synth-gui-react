@@ -63,6 +63,7 @@ const lcscParts = [
     "47k,R,R0805,C17713,0,B",
     "49.9k,R,R0603,C23184,0,B",
     "50k,R,R0805,C63865,0,E",
+    "50k,R,R0402,C25897,0,E",
     "51k,R,R0603,C23196,0,B",
     "51R,R,R0805,C17738,0,B",
     "56k,R,R0603,C23206,0,B",
@@ -95,9 +96,10 @@ const lcscParts = [
     "1.5n,C,C0603,C1595,0,B", //X7R
     "5n,C,C0402,C1538,0,B", //X7R 4.7n
     "5p,C,C0402,C1569,0,E", //C0G 4.7p
+    "6pF,C,C0805,C67560,0,E", //C0G
     "10p,C,C0805,C1785,0,B", //C0G
     "10n,C,C0603,C76710,0,E", //C0G
-    "10u,C,E2.5-5,,0",
+    "10u,C,E2-5,C3002414,0,E",
     "10u,O,CAPAE660X610N,C134805,0,E",
     "22p,C,C0603,C1653,0,B", //C0G
     "22n,C,C0805,C1729,0,B", //X7R
@@ -134,15 +136,12 @@ const lcscParts = [
     "TL072,O,TSSOP8,C90748,0,E",
     "TL074D,O,SO14,C6963,0,E",
     "1N4148,O,SOD323J,C2128,0,B",
-
-    "50k,R,R0402,C25897,0,E",
     "MA07-1JP,O,SIP-PIN07-1J,C376125,0,E", // 7p single angled
     "MA07-1JN,O,SIP-PIN07-1J,C376125,0,E", // 7p single angled
     "MA08-1JP,O,SIP-PIN08-1J,C225494,0,E", // 8p single angled
     "MA15-1JP,O,SIP-PIN15-1J,C247916,0,E", // 15p single angled
     "1N41480805,O,D0805,C2128,0,B",
     "2n3904,O,SOT23-BEC,C20526,0,B",
-    "6pF,C,C0805,C67560,0,E", //C0G
     "4013D,O,SO14,C347580,0,E",
     "MC1496DR2G,O,SOIC127P600X175-14N,C7295,0,E",
     "BC847DS,O,SOT457,C549489,0,E", // Finnes BC847BS
@@ -154,8 +153,11 @@ const lcscParts = [
     "MA11-1JP,O,SIP-PIN11-1J,C725903,0,E", // 11p single angled
     "MCP9700TT,O,SOT23J,C127949,O,E",
     "DAC8565,O,TSSOP16,C69596,0,E",
-    "PCA9539PW,O,TSSOP24,C2687996,0,E"
-
+    "PCA9539PW,O,TSSOP24,C2687996,0,E",
+    "4CH-MIXER-3364-2,O,XM8-4CH-MIXER-3364-V,C2905420,O,E",
+    "SVF-CELL-V1.0V,O,XM8-SVF-CELL-V1.XV,C2932672,0,E", // 7p x 3
+    "SVF-CELL-V1.1V,O,XM8-SVF-CELL-V1.XV,C2932672,0,E",
+    "SVF-CV-V1.1,IC58,XM8-SVF-CV-V1.1V,C2932674,0,E", // 11p
 
 ].map((line) => {
     const parts = line.split(',')
