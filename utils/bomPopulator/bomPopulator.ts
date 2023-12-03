@@ -20,6 +20,7 @@ const lcscParts = [
     "2.2k,R,R0402,C25768,0,B",
     "1k,R,R0603,C21190,0,B",
     "1k,R,R0805,C17513,0,B",
+    "1k,R,R0402,C11702,0,B",
     "1M,R,R0805,C17514,0,B",
     "1.2k,R,R0805,C17379,0,B",
     "1.2M,R,R0402,C43675,0,E",
@@ -74,6 +75,7 @@ const lcscParts = [
     "82k,R,R0603,C23254,0,B",
     "82k,R,R0805,C17840,0,E",
     "100R,R,R0402,C25076,0,B",
+    "100R,R,R0603,C22775,0,B",
     "100R,R,R0805,C17408,0,B",
     "100k,R,R0402,C25741,0,B",
     "100k,R,R0603,C25803,0,B",
@@ -88,7 +90,9 @@ const lcscParts = [
     "220k,R,R0402,C25767,0,E",
     "270k,R,R0805,C17589,0,E",
     "390k,R,R0402,C25557,0,E",
+    "470R,R,R0603,C23179,0,B",
     "510R,R,R0603,C23193,0,B",
+    "510R,R,R0402,C25123,0,B",
     "560R,R,R0402,C25172,0,E",
     "560R,R,R0805,C28636,0,B",
     "1.5n,C,C0603,C1595,0,B", //X7R
@@ -126,20 +130,23 @@ const lcscParts = [
     "CON8,O,CON8,C706871,0,E", // 8p single angled gold
     "CON16,O,CON16,C2894996,0,E", // 32p dual row angled
     "TL082,O,TSSOP8,C85346,0,E",
-    "TL072JT,O,TSSOP8,C90748,0,E",
+    "TL072JT,O,TSSOP8,C90748,90,E",
     "TL074JT,O,TSSOP14,C2652279,0,E",
-    "TL072,O,TSSOP8,C90748,0,E",
+    "TL072,O,TSSOP8,C90748,90,E",
     "TL072JD,O,SO08,C6961,0,B",
     "TL072,O,SO08,C6961,0,B",
     "TL074D,O,SO14,C6963,0,E",
-    "1N4148,O,SOD323J,C2128,0,B",
     "MA06-1JC,O,MA06-1J,C6332199,0,E", // 6p single straight
     "MA07-1JP,O,SIP-PIN07-1J,C376125,0,E", // 7p single angled
     "MA07-1JN,O,SIP-PIN07-1J,C376125,0,E", // 7p single angled
     "MA07-1JN,O,MA07N-1J,C376125,0,E", // 7p single angled
-    "MA08-1JP,O,SIP-PIN08-1J,C225494,0,E", // 8p single angled
+    "MA08-1JP,O,SIP-PIN08-1J,C492416,0,E", // 8p single angled
+    "SIP-PIN08-1J,O,SIP-PIN08-1J,C492416,0,E", // 8p single angled
+    "SIP-PIN09-1J,O,SIP-PIN09-1J,C2894951,0,E", // 9p single angled
     "MA11-1JP,O,SIP-PIN11-1J,C725903,0,E", // 11p single angled
     "MA15-1JP,O,SIP-PIN15-1J,C247916,0,E", // 15p single angled
+    "1N4148,O,SOD323J,C2128,0,B",
+    "1N4148SOD323,O,SOD323J,C2128,0,B",
     "1N41480805,O,D0805,C2128,0,B",
     "2n3904,O,SOT23-BEC,C20526,0,B",
     "4013D,O,SO14,C347580,0,E",
@@ -149,6 +156,7 @@ const lcscParts = [
     "BC857BS,O,SOT363,C8654,-90,E",
     "DG403CSL,O,SO16-NARROW-J,C145284,0,E",
     "LM13700SL,O,SO16-NARROW-J,C174050,0,E",
+    "MMBT3906,O,SOT23-BEC,C2143,90,E",
     "MMBT3906LT1SMD,O,SOT23-BEC,C2143,90,E",
     "MCP9700TT,O,SOT23J,C127949,90,E",
     "DAC8565,O,TSSOP16,C69596,0,E",
@@ -157,6 +165,8 @@ const lcscParts = [
     "SVF-CELL-V1.0V,O,XM8-SVF-CELL-V1.XV,C2932672,0,E", // 7p x 3
     "SVF-CELL-V1.1V,O,XM8-SVF-CELL-V1.XV,C2932672,0,E",
     "SVF-CV-V1.1,O,XM8-SVF-CV-V1.1V,C2932674,0,E", // 11p
+    "CONN-IDC-10PA,O,CONN-IDC10P-A,C132437,0,E",
+    "WJ300V-5.0-3P,O,WJ300V-5.0-3P,C8483,0,E",
 ].map((line): LibPart => {
     const parts = line.split(',')
     return {
@@ -215,6 +225,7 @@ const unifiedFootprintMap = {
     'LQFP-44': 'LQFP-44-J',
     'DIL16J': 'DIL16',
     'D0805-J': 'D0805',
+    'C0402-J': 'C0402',
     'C0603K': 'C0603',
     'SOT457J': 'SOT457',
     'SOT363J': 'SOT363',
@@ -378,11 +389,10 @@ const cpl = fs.readFileSync(cplPath, { encoding: 'utf8', flag: 'r' })
 
 bom.split('\n').map(parseBomLine)
 
-console.log('BOM:')
 const bomNewLines = parts.map((part) => `${part.value},${part.ids.join(' ')},${part.footprint},${part.lcscPart?.id}`)
 const bomFileContents = `Comment,Designator,Footprint,LCSC Part #\n${bomNewLines.join('\n')}`
-console.log(bomFileContents)
 fs.writeFileSync(newBomPath, bomFileContents)
+console.log('BOM generated')
 
 cpl.split('\n').map(parseCplLine)
 
@@ -398,8 +408,7 @@ parts.forEach((part) => {
     })
 })
 
-console.log('\nCPL:')
 const cplNewLines = cplEntries.map((cplEntry) => `${cplEntry.designator},${cplEntry.midX},${cplEntry.midY},${cplEntry.layer},${cplEntry.rotation}`)
 const cplFileContents = `Designator,Mid X,Mid Y,Layer,Rotation\n${cplNewLines.join('\n')}`
-console.log(cplFileContents)
 fs.writeFileSync(newCplPath, cplFileContents)
+console.log('\nCPL generated')
