@@ -136,6 +136,7 @@ const lcscParts = [
     "MA06-1JC,O,MA06-1J,C6332199,0,E", // 6p single straight
     "MA07-1JP,O,SIP-PIN07-1J,C376125,0,E", // 7p single angled
     "MA07-1JN,O,SIP-PIN07-1J,C376125,0,E", // 7p single angled
+    "MA07-1JN,O,MA07N-1J,C376125,0,E", // 7p single angled
     "MA08-1JP,O,SIP-PIN08-1J,C225494,0,E", // 8p single angled
     "MA11-1JP,O,SIP-PIN11-1J,C725903,0,E", // 11p single angled
     "MA15-1JP,O,SIP-PIN15-1J,C247916,0,E", // 15p single angled
@@ -145,11 +146,11 @@ const lcscParts = [
     "MC1496DR2G,O,SOIC127P600X175-14N,C7295,0,E",
     "BC847DS,O,SOT457,C549489,0,E", // Finnes BC847BS
     "BC847BS,O,SOT363,C5380687,0,E",
-    "BC857BS,O,SOT363,C8654,0,E",
+    "BC857BS,O,SOT363,C8654,-90,E",
     "DG403CSL,O,SO16-NARROW-J,C145284,0,E",
     "LM13700SL,O,SO16-NARROW-J,C174050,0,E",
-    "MMBT3906LT1SMD,O,SOT23-BEC,C2143,0,E",
-    "MCP9700TT,O,SOT23J,C127949,0,E",
+    "MMBT3906LT1SMD,O,SOT23-BEC,C2143,90,E",
+    "MCP9700TT,O,SOT23J,C127949,90,E",
     "DAC8565,O,TSSOP16,C69596,0,E",
     "PCA9539PW,O,TSSOP24,C2687996,0,E",
     "4CH-MIXER-3364-2,O,XM8-4CH-MIXER-3364-V,C124407,0,E",
@@ -250,18 +251,18 @@ function getLowerUnit(unit: string, type: PartType) {
     return undefined
 }
 
-function getTypeFromFootprint(footprint: string): PartType {
-    return footprintToTypeMap[footprint] || 'other'
+function getTypeFromFootprint(footprint: string): PartType | undefined {
+    return footprintToTypeMap[footprint]
 }
 
-function getTypeFromDesignator(designator: string): PartType {
+function getTypeFromDesignator(designator: string): PartType | undefined {
     if (designator.match(/^R[0-9]+$/)) {
         return 'resistor'
     }
     if (designator.match(/^C[0-9]+$/)) {
         return 'capacitor'
     }
-    return 'other'
+    return undefined
 }
 
 function getUnifiedFootprint(footprint: string) {
@@ -321,7 +322,7 @@ function parseBomLine(line: string) {
         }
         const footprint = getUnifiedFootprint(footprintString)
         const ids = idString?.split(' ') || []
-        const type = getTypeFromDesignator(ids[0])
+        const type = getTypeFromDesignator(ids[0]) || getTypeFromFootprint(footprint) || 'other'
         const value = getUnifiedValue(valueString, type)
         const lcscPart = getLcscPart(value, footprint, type) || undefined
         if (lcscPart === undefined) {
@@ -353,7 +354,6 @@ function parseCplLine(line: string) {
         if (designator === 'Designator') {
             return
         }
-        console.log(`Number ${rotation} ${Number.parseInt(rotation)}`)
         cplEntries.push({
             designator, midX, midY, layer, rotation: Number.parseInt(rotation)
         })
@@ -368,7 +368,7 @@ const writeToFile = (path: string, contents: string) => {
 }
 
 const bomPath = process.argv[2]
-const cplPath = bomPath.replace('_bom.csv', '_cpl.csv')
+const cplPath = bomPath.replace('_bom', '_cpl')
 
 const newBomPath = bomPath.replace('.csv', '_populated.csv')
 const newCplPath = cplPath.replace('.csv', '_populated.csv')
@@ -388,14 +388,14 @@ cpl.split('\n').map(parseCplLine)
 
 // Correct rotations
 parts.forEach((part) => {
-    if (part.lcscPart && part.lcscPart.rotation !== 0) {
-        part.ids.forEach((designator) => {
-            const entryToRotate = cplEntries.find((cplEntry) => cplEntry.designator === designator)
+    part.ids.forEach((designator) => {
+        const entryToRotate = cplEntries.find((cplEntry) => cplEntry.designator === designator)
+        if(entryToRotate && part.lcscPart && part.lcscPart.rotation !== 0){
             const newRotation = entryToRotate.rotation - part.lcscPart.rotation
             console.log(`Rotating ${entryToRotate.designator} ${part.lcscPart.rotation} from ${entryToRotate.rotation} to ${newRotation}`)
             entryToRotate.rotation = newRotation
-        })
-    }
+        }
+    })
 })
 
 console.log('\nCPL:')
