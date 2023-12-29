@@ -22,26 +22,33 @@ const lcscParts = [
     "1k,R,R0805,C17513,0,B",
     "1k,R,R0402,C11702,0,B",
     "1M,R,R0805,C17514,0,B",
+    "1M,R,R0402,C327799,0,E",
     "1.2k,R,R0805,C17379,0,B",
+    "1.2k,R,R0402,C413082,0,E",
     "1.2M,R,R0402,C43675,0,E",
     "1.5k,R,R0402,C25867,0,B",
     "1.5k,R,R0805,C4310,0,B",
     "1.5M,R,R0805,C26110,0,E",
     "1.68k,R,R0402,C25870,0,E",
     "1.8k,R,R0603,C4177,0,B",
-    "2k7,R,R0805,C17530,0,B",
+    "2.7k,R,R0805,C17530,0,B",
+    "2.7k,R,R0402,C416505,0,E",
+    "3k,R,R0402,C278590,0,E",
+    "4.7k,R,R0402,C25900,0,B",
     "3.9k,R,R0603,C23018,0,B",
     "5.1k,R,R0805,C27834,0,B",
     "5.6k,R,R0603,C23189,0,B",
     "5.6k,R,R0402,C25908,0,E",
     "5.9k,R,R0805,C17730,0,E",
     "6.8k,R,R0805,C17772,0,B",
+    "6.8k,R,R0402,C323629,0,E",
     "8.2k,R,R0402,C25946,0,E",
     "9.1k,R,R0805,C17855,0,E",
     "10k,R,R0603,C25804,0,B",
     "10k,R,R0402,C25744,0,B",
     "10k,R,R0805,C17414,0,B",
     "11k,R,R0402,C25749,0,E",
+    "12k,R,R0402,C25752,0,B",
     "12k,R,R0603,C22790,0,B",
     "12k,R,R0805,C17444,0,B",
     "15k,R,R0402,C25756,0,B",
@@ -71,7 +78,7 @@ const lcscParts = [
     "68k,R,R0603,C23231,0,B",
     "68k,R,R0805,C17801,0,B",
     "75k,R,R0603,C23242,0,B",
-    "75k,R,R0402,C3016015,0,B",
+    "75k,R,R0402,C3016015,0,E",
     "82k,R,R0603,C23254,0,B",
     "82k,R,R0805,C17840,0,E",
     "100R,R,R0402,C25076,0,B",
@@ -85,10 +92,13 @@ const lcscParts = [
     "120k,R,R0805,C17436,0,E",
     "150k,R,R0805,C17470,0,B",
     "180k,R,R0805,C17501,0,E",
+    "180k,R,R0402,C323674,0,E",
     "200k,R,R0805,C17539,0,B",
     "200R,R,R0805,C17540,0,B",
+    "200k,R,S64W,C118942,90,E",
     "220k,R,R0402,C25767,0,E",
     "270k,R,R0805,C17589,0,E",
+    "300k,R,R0402,C413115,0,E",
     "390k,R,R0402,C25557,0,E",
     "470R,R,R0603,C23179,0,B",
     "510R,R,R0603,C23193,0,B",
@@ -96,15 +106,19 @@ const lcscParts = [
     "560R,R,R0402,C25172,0,E",
     "560R,R,R0805,C28636,0,B",
     "1.5n,C,C0603,C1595,0,B", //X7R
+    "2.2n,C,C0402,C2987940,0,E", //C0G
+    "3.3n,C,C0402,C1518207,0,E", //C0G
     "5n,C,C0402,C1538,0,B", //X7R 4.7n
     "5p,C,C0402,C1569,0,E", //C0G 4.7p
-    "6pF,C,C0805,C67560,0,E", //C0G
+    "6p,C,C0805,C67560,0,E", //C0G
     "10p,C,C0805,C1785,0,B", //C0G
     "10n,C,C0603,C76710,0,E", //C0G
-    "10u,C,E2-5,C3002414,0,E",
+    "10n,C,C0402,C3855387,0,E", //C0G
+    "10u,C,E2-5,C2960200,0,E",
     "10u,O,CAPAE660X610N,C134805,0,E",
     "22p,C,C0603,C1653,0,B", //C0G
     "22n,C,C0805,C1729,0,B", //X7R
+    "22n,C,C0402,C513667,0,E", //X7R
     "33p,C,C0603,C1663,0,B", //C0G
     "33p,C,C0402,C1562,0,B", //C0G
     "47p,C,C0402,C1567,0,B", //C0G
@@ -112,11 +126,14 @@ const lcscParts = [
     "100n,C,C0402,C307331,0,B", // X7R
     "100p,C,C0603,C14858,0,B", //C0G
     "100u 25V,O,CAPAE660X610N,C176675,0,E",
+    "100u 25V,C,UD-4X5,C2992602,180,E",
     "220u,O,CAPAE660X610N,C250010,0,E", //NB: Bare 6.3V!
+    "220n,C,C0402,C2992619,0,E", //X7R
     "330n,C,C0603,C1615,0,E", //X7R
     "330p,C,C0603,C1664,0,B", //C0G
     "390p,C,C0603,C84719,0,E", //X7R
     "470p,C,C0603,C27694,0,E", //C0G
+    "470n,C,C0402,C437527,0,E", //X7R
     "560p,C,C0603,C55393,0,E", //C0G
     "680p,C,C0603,C30816,0,E", //C0G
     "DG408DJ,O,DIL16,C72130,0,E",
@@ -136,9 +153,11 @@ const lcscParts = [
     "TL072JD,O,SO08,C6961,0,B",
     "TL072,O,SO08,C6961,0,B",
     "TL074D,O,SO14,C6963,0,E",
+    "MC1496DR2G,O,SO14,C7295,90,E",
     "MA06-1JC,O,MA06-1J,C6332199,0,E", // 6p single straight
     "MA07-1JP,O,SIP-PIN07-1J,C376125,0,E", // 7p single angled
     "MA07-1JN,O,SIP-PIN07-1J,C376125,0,E", // 7p single angled
+    "MA07-1JN,O,SIP-PIN07-REV-1J,C376125,0,E", // 7p single angled
     "MA07-1JN,O,MA07N-1J,C376125,0,E", // 7p single angled
     "MA08-1JP,O,SIP-PIN08-1J,C492416,0,E", // 8p single angled
     "SIP-PIN08-1J,O,SIP-PIN08-1J,C492416,0,E", // 8p single angled
@@ -175,6 +194,7 @@ const lcscParts = [
         footprint: parts[2],
         id: parts[3],
         rotation: Number.parseInt(parts[4]),
+        extended: parts[5] === 'E',
     }
 })
 
@@ -184,6 +204,7 @@ type LibPart = {
     id: string
     type: PartType
     rotation: number
+    extended: boolean
 }
 
 type Part = {
@@ -197,8 +218,8 @@ type Part = {
 
 type CplEntry = {
     designator: string,
-    midX: string,
-    midY: string,
+    midX: number,
+    midY: number,
     layer: string,
     rotation: number
 }
@@ -339,7 +360,7 @@ function parseBomLine(line: string) {
         if (lcscPart === undefined) {
             console.log(`Could not find part for "${line}"`)
         }
-        if (lcscPart.id === '') {
+        if (lcscPart?.id === '') {
             console.log(`Found no part id for "${line}"`, lcscPart)
         }
         parts.push({
@@ -366,10 +387,79 @@ function parseCplLine(line: string) {
             return
         }
         cplEntries.push({
-            designator, midX, midY, layer, rotation: Number.parseInt(rotation)
+            designator,
+            midX: Number.parseFloat(midX),
+            midY: Number.parseFloat(midY),
+            layer,
+            rotation: Number.parseInt(rotation)
         })
     } catch (err) {
         console.log(`Failed to parse "${line}"`, err)
+    }
+}
+
+const multiParts = {
+    'SVF-CELL-V1.1V': [{ x: -17.78, y: 0 }, { x: 17.78, y: 0 }]
+}
+type Point = { x: number, y: number }
+
+function cos(deg: number) {
+    return Math.cos((deg * Math.PI) / 180)
+}
+
+function sin(deg: number) {
+    return Math.sin((deg * Math.PI) / 180)
+}
+
+function sum(p1: Point, p2: Point) {
+    return {
+        x: p1.x + p2.x,
+        y: p1.y + p2.y
+    }
+}
+
+function rotatePoint(point: Point, rotation: number): Point {
+    return {
+        x: Math.round(100 * (point.x * cos(rotation) - point.y * sin(rotation))) / 100,
+        y: Math.round(100 * (point.y * cos(rotation) + point.x * sin(rotation))) / 100,
+    }
+}
+
+
+function placeMultiPart(stemPos: Point, stemRotation: number, offset: Point): Point {
+    if (stemRotation == 0) {
+        return sum(stemPos, offset)
+    } else {
+        console.log('rorat', rotatePoint(offset, stemRotation))
+        return sum(stemPos, rotatePoint(offset, stemRotation))
+    }
+}
+
+function addMultiParts(parts: Part[], cplEntries: CplEntry[]) {
+    for (let i = 0; i < parts.length; i++) {
+        const part = parts[i]
+        // @ts-ignore
+        const multiPart = multiParts[part.value]
+        if (multiPart) {
+            console.log('fixing multipart', part)
+            part.ids.forEach((id) => {
+                const cplEntry = cplEntries.find((entry) => entry.designator === id)
+                if (cplEntry) {
+                    const cplPos: Point = { x: cplEntry.midX, y: cplEntry.midY }
+                    multiPart.forEach((newPartPos: Point, index: number) => {
+                        const newPartPlace = placeMultiPart(cplPos, cplEntry.rotation, newPartPos)
+                        const newPartDesignator = `${cplEntry.designator}-${index}`
+                        cplEntries.push({
+                            ...cplEntry,
+                            designator: newPartDesignator,
+                            midX: newPartPlace.x,
+                            midY: newPartPlace.y
+                        })
+                        part.ids.push(newPartDesignator)
+                    })
+                }
+            })
+        }
     }
 }
 
@@ -389,18 +479,13 @@ const cpl = fs.readFileSync(cplPath, { encoding: 'utf8', flag: 'r' })
 
 bom.split('\n').map(parseBomLine)
 
-const bomNewLines = parts.map((part) => `${part.value},${part.ids.join(' ')},${part.footprint},${part.lcscPart?.id}`)
-const bomFileContents = `Comment,Designator,Footprint,LCSC Part #\n${bomNewLines.join('\n')}`
-fs.writeFileSync(newBomPath, bomFileContents)
-console.log('BOM generated')
-
 cpl.split('\n').map(parseCplLine)
 
 // Correct rotations
 parts.forEach((part) => {
     part.ids.forEach((designator) => {
         const entryToRotate = cplEntries.find((cplEntry) => cplEntry.designator === designator)
-        if(entryToRotate && part.lcscPart && part.lcscPart.rotation !== 0){
+        if (entryToRotate && part.lcscPart && part.lcscPart.rotation !== 0) {
             const newRotation = entryToRotate.rotation - part.lcscPart.rotation
             console.log(`Rotating ${entryToRotate.designator} ${part.lcscPart.rotation} from ${entryToRotate.rotation} to ${newRotation}`)
             entryToRotate.rotation = newRotation
@@ -408,7 +493,21 @@ parts.forEach((part) => {
     })
 })
 
-const cplNewLines = cplEntries.map((cplEntry) => `${cplEntry.designator},${cplEntry.midX},${cplEntry.midY},${cplEntry.layer},${cplEntry.rotation}`)
+addMultiParts(parts, cplEntries)
+
+const bomNewLines = parts.map((part) => `${part.value},${part.ids.join(' ')},${part.footprint},${part.lcscPart?.id}`)
+const bomFileContents = `Comment,Designator,Footprint,LCSC Part #\n${bomNewLines.join('\n')}`
+fs.writeFileSync(newBomPath, bomFileContents)
+console.log('BOM generated')
+
+const cplNewLines = cplEntries.map((cplEntry) =>
+    `${cplEntry.designator},${Math.round(100 * cplEntry.midX) / 100},${Math.round(100 * cplEntry.midY) / 100},${cplEntry.layer},${cplEntry.rotation}`)
 const cplFileContents = `Designator,Mid X,Mid Y,Layer,Rotation\n${cplNewLines.join('\n')}`
 fs.writeFileSync(newCplPath, cplFileContents)
 console.log('\nCPL generated')
+
+const extededParts = parts.filter((part) => part.lcscPart?.extended)
+if(extededParts){
+    console.log('Extended parts:')
+    extededParts.forEach((part) => console.log(`${part.ids.length} - ${part.line}${part.lcscPart?.id}`))
+}
