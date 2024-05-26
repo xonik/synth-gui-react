@@ -13,7 +13,22 @@ const testBom = [
     "100nF,C2 C3 C4 C6 C7 C9 C10 C11 C12 C16 C17,C0402,C307331",
     "TL072,IC1 IC2 IC3 IC4 IC30,TSSOP8J,C2652280",
 ]
-
+/*
+Could not find part for "10p,C46,R0603-J,"
+Could not find part for "22p,C69 C79,R0603-J,"
+Could not find part for "47uF,C1 C2 C3,E2-5,"
+Could not find part for "BITCRUSHER-V1.0,IC35,XM8-BITCRUSHER-V1.0,"
+Could not find part for "BUS-MIXER-V1.3,IC30,XM8-BUX-MIX-V1.3V,"
+Could not find part for "DG413-SPDT-J,IC13 IC14 IC15 IC16 IC24 IC31 IC43,DIL16J,"
+Could not find part for "JUMPER-SMT_2_NC_TRACE_SILK,JP1 JP2,SMT-JUMPER_2_NC_TRACE_SILK,"
+Could not find part for "JUMPER-SMT_2_NO_SILK,JP3 JP4,SMT-JUMPER_2_NO_SILK,"
+Could not find part for "JUNO-VCF-V1.2BD,IC44,XM8-JUNO-VCF-V1.2H-BOTTOM-DUAL,"
+Could not find part for "MOOG-VCF-V1.2,IC45,XM8-MOOG-VCF-V1.2H-TOP,"
+Could not find part for "RM-NOISE-DIST-V1.1,IC23,XM8-RM-NOISE-DIST-V1.1N,"
+Could not find part for "SVF-V2.0,IC51,XM8-SVF-V2.0R,"
+Could not find part for "VCO-V2.0,IC8,XM8-CEM3340-V2.0,"
+Could not find part for "WAVESHAPER-V2.2HR,IC10 IC11,XM8-WAVESHAPER-V2.2HR,"
+ */
 // "Description,Type,Footprint,LCSC Part #,Rotationfix",
 const lcscParts = [
     "2.2R,R,R0805,C17521,0,B",
@@ -26,6 +41,7 @@ const lcscParts = [
     "1.2k,R,R0805,C17379,0,B",
     "1.2k,R,R0402,C413082,0,E",
     "1.2M,R,R0402,C43675,0,E",
+    "1.5k,R,R0603,C22843,0,B",
     "1.5k,R,R0402,C25867,0,B",
     "1.5k,R,R0805,C4310,0,B",
     "1.5M,R,R0805,C26110,0,E",
@@ -35,6 +51,8 @@ const lcscParts = [
     "2.7k,R,R0402,C416505,0,E",
     "3k,R,R0402,C278590,0,E",
     "4.7k,R,R0402,C25900,0,B",
+    "4.7k,R,R0603,C23162,0,B",
+    "4.99k,R,R0603,C23046,0,B",
     "3.9k,R,R0603,C23018,0,B",
     "5.1k,R,R0805,C27834,0,B",
     "5.6k,R,R0603,C23189,0,B",
@@ -55,20 +73,25 @@ const lcscParts = [
     "15k,R,R0805,C17475,0,B",
     "18k,R,R0603,C25810,0,B",
     "20k,R,R0402,C25765,0,B",
+    "20k,R,R0603,C4184,0,B",
     "20k,R,R0805,C4328,0,B",
     "22k,R,R0603,C31850,0,B",
     "22k,R,R0402,C25768,0,B",
     "22k,R,R0805,C17560,0,B",
+    "24k,R,R0402,C5141071,0,E",
     "25k,R,R0402,C25874,0,E",
+    "25k,R,R0603,C2828637,0,E",
     "27k,R,R0603,C22967,0,B",
-    "27k,R,R0805,C17593,0,B",
+    "27k,R,R0805,C17593,0,B", // Finnes basic 24k i andre str.
     "33k,R,R0603,C4216,0,B",
     "33k,R,R0402,C25779,0,B",
+    "39k,R,R0603,C23153,0,B",
     "47k,R,R0603,C25819,0,B",
     "47k,R,R0402,C25792,0,B",
     "47k,R,R0805,C17713,0,B",
     "49.9k,R,R0603,C23184,0,B",
     "50k,R,R0805,C63865,0,E",
+    "50k,R,R0603,C23184,0,B", //49.9k
     "50k,R,R0402,C25897,0,E",
     "51k,R,R0603,C23196,0,B",
     "51R,R,R0805,C17738,0,B",
@@ -96,7 +119,9 @@ const lcscParts = [
     "200k,R,R0805,C17539,0,B",
     "200R,R,R0805,C17540,0,B",
     "200k,R,S64W,C118942,90,E",
+    "220R,R,R0603,C22962,0,B",
     "220k,R,R0402,C25767,0,E",
+    "220k,R,R0603,C22961,0,B",
     "270k,R,R0805,C17589,0,E",
     "300k,R,R0402,C413115,0,E",
     "390k,R,R0402,C25557,0,E",
@@ -105,6 +130,7 @@ const lcscParts = [
     "510R,R,R0402,C25123,0,B",
     "560R,R,R0402,C25172,0,E",
     "560R,R,R0805,C28636,0,B",
+    "1u,C,C0402,C52923,0,B", //X5R
     "1.5n,C,C0603,C1595,0,B", //X7R
     "2.2n,C,C0402,C2987940,0,E", //C0G
     "3.3n,C,C0402,C1518207,0,E", //C0G
@@ -112,13 +138,17 @@ const lcscParts = [
     "5p,C,C0402,C1569,0,E", //C0G 4.7p
     "6p,C,C0805,C67560,0,E", //C0G
     "10p,C,C0805,C1785,0,B", //C0G
+    "10p,C,C0603,C1648,0,B", //C0G
     "10n,C,C0603,C76710,0,E", //C0G
     "10n,C,C0402,C3855387,0,E", //C0G
+    "10u,C,C0603,C96446,0,B", //X5R, 25V
+    "10u,C,C0603,C96446,0,B", //X5R, 25V
     "10u,C,E2-5,C2960200,0,E",
     "10u,O,CAPAE660X610N,C134805,0,E",
     "22p,C,C0603,C1653,0,B", //C0G
     "22n,C,C0805,C1729,0,B", //X7R
     "22n,C,C0402,C5137627,0,E", //X7R
+    "22u,C,C0805,C45783,0,E", //X5R, 25V
     "33p,C,C0603,C1663,0,B", //C0G
     "33p,C,C0402,C1562,0,B", //C0G
     "47p,C,C0402,C1567,0,B", //C0G
@@ -138,6 +168,8 @@ const lcscParts = [
     "680p,C,C0603,C30816,0,E", //C0G
     "DG408DJ,O,DIL16,C72130,0,E",
     "DG408D-JD,O,DIL16,C72130,0,E",
+    "DG413-J,O,DIL16,C72130,0,E",
+    "DG413-SPDT-J-J,O,DIL16,C72130,0,E",
     "DG413-SPDT-SPST-J,O,DIL16,C72130,0,E",
     "DG412-J,O,DIL16,C72130,0,E",
     "78L09F,O,SOT89,C880736,0,E",
@@ -168,7 +200,9 @@ const lcscParts = [
     "1N4148SOD323,O,SOD323J,C2128,0,B",
     "1N41480805,O,D0805,C2128,0,B",
     "2n3904,O,SOT23-BEC,C20526,0,B",
+    "2n3904,O,SOT23-BEC,C20526,0,B",
     "4013D,O,SO14,C347580,0,E",
+    "4043D,O,SO16,C40131,0,E",
     "MC1496DR2G,O,SOIC127P600X175-14N,C7295,0,E",
     "BC847DS,O,SOT457,C549489,0,E", // Finnes BC847BS
     "BC847BS,O,SOT363,C5380687,0,E",
@@ -178,14 +212,21 @@ const lcscParts = [
     "MMBT3906,O,SOT23-BEC,C2143,90,E",
     "MMBT3906LT1SMD,O,SOT23-BEC,C2143,90,E",
     "MCP9700TT,O,SOT23J,C127949,90,E",
+    "ADS1115,O,MSOP10,C37593,0,E",
     "DAC8565,O,TSSOP16,C69596,0,E",
     "PCA9539PW,O,TSSOP24,C2687996,0,E",
+    "LM311D,0,SO08, C12597 ,0,E",
+    "TCA9539PW,O,TSSOP24,C2687996,0,E", // PCA is cheaper. May reconsider and use real TCA instead.
     "4CH-MIXER-3364-2,O,XM8-4CH-MIXER-3364-V,C124407,0,E",
     "SVF-CELL-V1.0V,O,XM8-SVF-CELL-V1.XV,C2932672,0,E", // 7p x 3
     "SVF-CELL-V1.1V,O,XM8-SVF-CELL-V1.XV,C2932672,0,E",
     "SVF-CV-V1.1,O,XM8-SVF-CV-V1.1V,C2932674,0,E", // 11p
     "CONN-IDC-10PA,O,CONN-IDC10P-A,C132437,0,E",
     "WJ300V-5.0-3P,O,WJ300V-5.0-3P,C8483,0,E",
+    "25k,O,RTRIM3296X_J,C111789,0,E",
+    "CHIP-LED0603,O,CHIP-LED0603,C2286,0,B",
+    "2516-5,O,PAK100/2500-5-16,C146623,0,E",
+    "MA03-2-127J,O,MA03-2-127J,C2935951,0,E",
 ].map((line): LibPart => {
     const parts = line.split(',')
     return {
@@ -247,6 +288,8 @@ const unifiedFootprintMap = {
     'DIL16J': 'DIL16',
     'D0805-J': 'D0805',
     'C0402-J': 'C0402',
+    'C0603-J': 'C0603',
+    'R0603-J': 'R0603',
     'C0603K': 'C0603',
     'SOT457J': 'SOT457',
     'SOT363J': 'SOT363',
