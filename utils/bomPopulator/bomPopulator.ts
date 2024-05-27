@@ -18,35 +18,13 @@ JP6:
 Could not find part for "MA16-1JN,U$3,MA16N-1J,"
 
 Juno:
-Could not find part for "SIP-PIN01-1J,-12V 2P4P 12V BAL- CUTOFF_CV CUTOFF_LIN_FM FB_CV GND IN N/C OUT RESO_CV TS TS_VDD VCA_IN VCA_OUT,SIP-PIN01-1J,"
 Could not find part for "230k,R22,R0603," // TODO: FINNES IKKE
 Could not find part for "560R posistor,R18,R0805,"
-Could not find part for "DG419DJD,IC5,SO08,"
 
 Moog:
-Could not find part for "SIP-PIN01-1J,12DB_BAL 24DB_BAL N/C RESO_BAL,SIP-PIN01-1J,"
-Could not find part for "SIP-PIN04-1J,SV1,SIP-PIN04-1J,"
-Could not find part for "SIP-PIN01-1J,SV2 SV3 SV4 SV5 SV6 SV8 TEMP_SENSE TS_VDD,SIP-PIN01-1J,"
 Could not find part for "1k tempco,R18,R0805,"
-Could not find part for "100uF/6.3V,C5 C20,C1206,"
-
-Dist/ringmod/noise:
-Could not find part for "500R,R32 R33,RTRIM3296X,"
-Could not find part for "MA06-1JN,X2 X3,MA06N-1J,"
-Could not find part for "NOISE-2N3904,T1,NOISE-2N3904-J,"
-
-VCO:
-Could not find part for "MA01N-1J,SV1 SV2 SV3 SV4 SV5 SV6 SV7 SV8 SV9 SV10 SV11 SV12,MA01N-1J,"
-Could not find part for "10k,R8,S64W,"
-Could not find part for "79L05F,IC1,SOT89,"
-Could not find part for "CEM3340J,IC2,DIL16J,"
-Could not find part for "JUMPER-SMT_2_NC_TRACE_SILK,JP1,SMT-JUMPER_2_NC_TRACE_SILK,"
-
-Waveshaper:
-Could not find part for "MA01N-1J,+12V -2.5V -12V DCO_IN GND INV_SAW IN_CENTER PULSE PULSE_AMP_CV PW_CV SAW SINE ST1 ST2 ST3 ST4 SUB_SAW_1 SUB_SAW_2 SUB_SQR_1 SUB_SQR_2 SYMMETRY TRIANGLE,MA01N-1J,"
-Could not find part for "4013T,IC5,TSSOP14J,"
-Could not find part for "LM311T,IC6,TSSOP8J,"
  */
+
 // "Description,Type,Footprint,LCSC Part #,Rotationfix",
 const lcscParts = [
     "2.2R,R,R0805,C17521,0,B",
@@ -95,6 +73,7 @@ const lcscParts = [
     "10k,R,R0603,C25804,0,B",
     "10k,R,R0402,C25744,0,B",
     "10k,R,R0805,C17414,0,B",
+    "10k,R,S64W,C330445,0,E",
     "11k,R,R0402,C25749,0,E",
     "12k,R,R0402,C25752,0,B",
     "12k,R,R0603,C22790,0,B",
@@ -216,6 +195,7 @@ const lcscParts = [
     "100p,C,C0603,C14858,0,B", //C0G
     "100u 25V,O,CAPAE660X610N,C176675,0,E",
     "100u 25V,C,E2-5,C47873,0,E",
+    "100uF/6.3V,C,C1206,C15008,0,E",
     "220u,O,CAPAE660X610N,C250010,0,E", //NB: Bare 6.3V!
     "220n,C,C0402,C2992619,0,E", //X7R
     "220p,C,C0402,C3831616,0,E", //C0G
@@ -234,10 +214,12 @@ const lcscParts = [
     "DG413-SPDT-J-J,O,DIL16,C72130,0,E",
     "DG413-SPDT-SPST-J,O,DIL16,C72130,0,E",
     "DG412-J,O,DIL16,C72130,0,E",
+    "DG419DJD,O,SO08,C6581,0,E",
     "78L09F,O,SOT89,C880736,0,E",
     "79L09F,O,SOT89,C2880153,0,E",
     "CH446Q,O,LQFP-44-J,C109471,0,E",
     "AS3364D,O,DIL16,C72130,0,E",
+    "CEM3340J,O,DIL16,C72130,0,E",
     "CON8,O,CON8,C706871,0,E", // 8p single angled gold
     "CON16,O,CON16,C2894996,0,E", // 32p dual row angled
     "TL082,O,TSSOP8,C85346,0,E",
@@ -264,6 +246,7 @@ const lcscParts = [
     "2n3904,O,SOT23-BEC,C20526,0,B",
     "2n3904,O,SOT23-BEC,C20526,0,B",
     "4013D,O,SO14,C347580,0,E",
+    "4013T,O,TSSOP14,C406860,0,E",
     "4043D,O,SO16,C40131,0,E",
     "MC1496DR2G,O,SOIC127P600X175-14N,C7295,0,E",
     "BC847DS,O,SOT457,C549489,0,E", // Finnes BC847BS
@@ -277,7 +260,8 @@ const lcscParts = [
     "ADS1115,O,MSOP10,C37593,0,E",
     "DAC8565,O,TSSOP16,C69596,0,E",
     "PCA9539PW,O,TSSOP24,C2687996,0,E",
-    "LM311D,0,SO08, C12597 ,0,E",
+    "LM311D,0,SO08,C12597,0,E",
+    "LM311T,TSSOP8,C2876875,0,E", // Veldig få på lager
     "TCA9539PW,O,TSSOP24,C2687996,0,E", // PCA is cheaper. May reconsider and use real TCA instead.
     "4CH-MIXER-3364-2,O,XM8-4CH-MIXER-3364-V,C124407,0,E",
     "SVF-CELL-V1.0V,O,XM8-SVF-CELL-V1.XV,C2932672,0,E", // 7p x 3
@@ -286,9 +270,11 @@ const lcscParts = [
     "CONN-IDC-10PA,O,CONN-IDC10P-A,C132437,0,E",
     "WJ300V-5.0-3P,O,WJ300V-5.0-3P,C8483,0,E",
     "25k,O,RTRIM3296X_J,C111789,180,E",
+    "500R,O,RTRIM3296X,C330441,0,E",
     "CHIP-LED0603,O,CHIP-LED0603,C2286,90,B",
     "2516-5,O,PAK100/2500-5-16,C146623,180,E",
     "MA03-2-127J,O,MA03-2-127J,C2935951,0,E",
+    "79L05F,O,SOT89, C2891834,0,E",
 ].map((line): LibPart => {
     const parts = line.split(',')
     return {
