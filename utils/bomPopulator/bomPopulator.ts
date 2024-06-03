@@ -159,6 +159,18 @@ function parseBomLine(line: string) {
         if (valueString === 'Comment') {
             return
         }
+        if(valueString.endsWith('DNM')){
+            console.log(`Removing "Do not mount" part ${idString}`)
+            idString.split(' ').forEach((id) => {
+                const cplEntry = cplEntries.find((entry) => entry.designator === id)
+                if (cplEntry) {
+                    // remove cplEntry as it has no corresponding part
+                    console.log(`Removing CPL entry for ${id}`)
+                    const index = cplEntries.indexOf(cplEntry)
+                    cplEntries.splice(index, 1)
+                }
+            })
+        }
         const footprint = getUnifiedFootprint(footprintString)
         const ids = idString?.split(' ') || []
         const type = getTypeFromDesignator(ids[0]) || getTypeFromFootprint(footprint) || 'other'
@@ -319,9 +331,10 @@ const newCplPath = cplPath.replace('.csv', '_populated.csv')
 const bom = fs.readFileSync(bomPath, { encoding: 'utf8', flag: 'r' })
 const cpl = fs.readFileSync(cplPath, { encoding: 'utf8', flag: 'r' })
 
+cpl.split('\n').map(parseCplLine)
+
 bom.split('\n').map(parseBomLine)
 
-cpl.split('\n').map(parseCplLine)
 
 // Correct rotations
 parts.forEach((part) => {
