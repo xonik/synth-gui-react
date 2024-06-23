@@ -189,7 +189,8 @@ export const lcscParts = [
     "100uF/6.3V,C,C1206,C15008,0,B",
     "220u,O,CAPAE660X610N,C250010,0,E", //NB: Bare 6.3V!
     "220n,C,C0402,C16772,0,B", //X7R
-    "220p,C,C0402,C3831616,0,E", //C0G
+    "220p,C,C0402,C1530,0,B", //X7R
+    //"220p,C,C0402,C3831616,0,E", //C0G
     "270p,C,C0402,C541426,0,E", //NP0
     "330n,C,C0603,C1615,0,E", //X7R
     "330p,C,C0603,C1664,0,B", //C0G
@@ -241,6 +242,7 @@ export const lcscParts = [
     "MA16-1JP-FEMALE-ANGLED,O,SIP-PIN16-1J,C2897398,0,E",
     "MA16-1JP,O,SIP-PIN16-1J,C7501270,0,E",
     "MA16-1JP-ANGLED,O,SIP-PIN16-1J,C2894958,0,E",
+    "MA16-1JP-FEMALE,O,SIP-PIN16-1J,C7499334,0,E",
     "MA16-1JN,O,MA16N-1J,C7501270,0,E",
     "MA22N-1J,O,MA22N-1J,C725954,0,E",
     "1N4148,O,SOD323J,C2128,0,B",
@@ -250,6 +252,7 @@ export const lcscParts = [
     "4013D,O,SO14,C347580,0,E",
     "4013T,O,TSSOP14,C406860,0,E",
     "4043D,O,SO16,C40131,0,E",
+    "74HCT4051D,O,SO16,C406862,0,E",
     "MC1496DR2G,O,SOIC127P600X175-14N,C7295,0,E",
     "BC847DS,O,SOT457,C549489,0,E", // Finnes BC847BS
     "BC847BS,O,SOT363,C5380687,180,E",
@@ -262,6 +265,7 @@ export const lcscParts = [
     "MCP9700TT,O,SOT23J,C127949,90,E",
     "ADS1115,O,MSOP10,C37593,0,E",
     "DAC8565,O,TSSOP16,C69596,0,E",
+    "DAC8565F,O,DIL16-FM-CON,MULTI,0,E",
     "PCA9539PW,O,TSSOP24,C2687996,0,E",
     "LM311D,0,SO08,C12597,0,E",
     "LM311T,0,TSSOP8,C2876875,90,E", // Veldig få på lager
@@ -302,6 +306,7 @@ export const multiParts: Record<string, MultiPart[]> = {
     'VCO-V2.0': [{ x: 0, y: -7.62, id: 'C7499326' }, { x: 0, y: 7.62, id: 'C7499326' }],
     'BUS-MIXER-V1.3': [{ x: -21.59, y: 0, id: 'C7499334' }, { x: 21.59, y: 0, id: 'C7499334' }],
     'BITCRUSHER-V1.0': [{ x: 0, y: -7.62, id: 'C52711' }, { x: 0, y: 7.62, id: 'C52711' }],
+    'DAC8565F': [{ x: 0, y: -3.81, id: 'C7499328' }, { x: 0, y: 3.81, id: 'C7499328' }]
 }
 
 function getPartType(shortType: string): PartType {
