@@ -137,6 +137,8 @@ export const lcscParts = [
     "270k,R,R0805,C17589,0,E",
     "270k,R,R0402,C416506,0,E",
     "300k,R,R0402,C413021,0,E",
+    "300k,R,R0603,C23024,0,B",
+    "330R,R,R0603,C23138,0,B",
     "330k,R,R0603,C23137,0,B",
     "390k,R,R0402,C25557,0,E",
     "470R,R,R0603,C23179,0,B",
@@ -155,7 +157,9 @@ export const lcscParts = [
     "1u,C,C0603,C15849,0,B", //X5R
     "1.5n,C,C0603,C1595,0,B", //X7R
     "2.2n,C,C0402,C2987940,0,E", //C0G
+    "2.2n,C,C0603,C1604,0,B", //X7R
     "3.3n,C,C0402,C1518207,0,E", //C0G
+    "3.3n,C,C0603,C1613,0,B", //X7R
     "3p,C,C0603,C318663,0,E", //C0G
     "5n,C,C0402,C1538,0,B", //X7R 4.7n
     "5p,C,C0402,C1569,0,E", //C0G 4.7p
@@ -164,6 +168,7 @@ export const lcscParts = [
     "6p,C,C0402,C437444,0,E", //C0G
     "10p,C,C0805,C1785,0,B", //C0G
     "10p,C,C0603,C1634,0,B", //C0G
+    "10p,C,C0402,C32949,0,B", //C0G
     "10n,C,C0603,C76710,0,E", //C0G
     "10n,C,C0402,C15195,0,B", //X7R
     "10u,C,C0603,C96446,0,B", //X5R, 25V
@@ -179,7 +184,7 @@ export const lcscParts = [
     "47p,C,C0402,C1567,0,B", //C0G
     "47p,C,C0603,C1671,0,B", //C0G
     "47p,C,C0805,C14857,0,B", //C0G
-    "47u,C,C1206,C403725,0,E", //X5R
+    "47u,C,C1206,C22367835,0,E", //X5R
     "68p,C,C0603,C1680,0,E", //C0G
     "100n,C,C0603,C14663,0,B", // X7R
     "100n,C,C0402,C307331,0,B", // X7R
@@ -197,6 +202,7 @@ export const lcscParts = [
     "390p,C,C0603,C84719,0,E", //X7R
     "470p,C,C0603,C27694,0,E", //C0G
     "470n,C,C0402,C437527,0,E", //X7R
+    "470n,C,C0603,C1623,0,B", //X7R
     "560p,C,C0603,C55393,0,E", //C0G
     "680p,C,C0603,C30816,0,E", //C0G
     "820p,C,C0603,C519567,0,E", //NP0
@@ -207,7 +213,9 @@ export const lcscParts = [
     "DG413-SPDT-SPST-J,O,DIL16,C72130,0,E",
     "DG412-J,O,DIL16,C72130,0,E",
     "DG419DJD,O,SO08,C6581,0,E",
+    "DG419-JS,O,SO08,C6581,0,E",
     "78L09F,O,SOT89,C880736,0,E",
+    "78L05F,O,SOT89,C71136,90,E",
     "79L05F,O,SOT89, C2891834,90,E",
     "79L09F,O,SOT89,C2880153,0,E",
     "CH446Q,O,LQFP-44-J,C109471,0,E",
@@ -224,6 +232,7 @@ export const lcscParts = [
     "TL074D,O,SO14,C6963,0,E",
     "MC1496DR2G,O,SO14,C7295,90,E",
     "MA03-2-127J,O,MA03-2-127J,C2935951,0,E",
+    "MA06-1JN,O,MA06N-1J,C6332199,0,E", // 6p single straight
     "MA06-1JC,O,MA06-1J,C6332199,0,E", // 6p single straight
     "MA06-1JC-ANGLED,O,MA06-1J,C7501293,0,E", // 6p single straight
     "MA07-1JC-ANGLED,O,MA07-1J,C225493,180,E", // 7p single angled
@@ -232,11 +241,15 @@ export const lcscParts = [
     "MA07-1JN,O,SIP-PIN07-REV-1J,C376125,0,E", // 7p single angled
     "MA07-1JN,O,MA07N-1J,C376125,0,E", // 7p single angled
     "MA08-1JP,O,SIP-PIN08-1J,C492416,0,E", // 8p single angled
+    "ROUND-IC-PIN,O,MA08N-1J,C2889983,0,E", // 8p single, round IC pin header
     "SIP-PIN08-1J,O,SIP-PIN08-1J,C492416,0,E", // 8p single angled
     "MA09-1JC-ANGLED,O,MA09-1J,C492417,0,E",
+    "MA07-2J-FEMALE,O,MA07-2J,C2897408,0,E",
+    "MA08-2J-FEMALE,O,MA08-2J,C30734,0,E",
     "SIP-PIN09-1J,O,SIP-PIN09-1J,C2894951,0,E", // 9p single angled
     "MA11-1JP,O,SIP-PIN11-1J,C725903,0,E", // 11p single angled
     "MA15-1JP,O,SIP-PIN15-1J,C247916,0,E", // 15p single angled
+    "MA15-2J-FEMALE,O,MA15-2J,C169818,0,E",
     "MA15-1JC-ANGLED,O,MA15-1J,C247916,0,E",
     "MA15-1JN-ANGLED,O,MA15N-1J,C247916,0,E",
     "MA16-1JP-FEMALE-ANGLED,O,SIP-PIN16-1J,C2897398,0,E",
@@ -266,6 +279,7 @@ export const lcscParts = [
     "ADS1115,O,MSOP10,C37593,0,E",
     "DAC8565,O,TSSOP16,C69596,0,E",
     "DAC8565F,O,DIL16-FM-CON,MULTI,0,E",
+    "SN74LVC2T45,O,VSSOP8,C15741,90,E",
     "PCA9539PW,O,TSSOP24,C2687996,0,E",
     "LM311D,0,SO08,C12597,0,E",
     "LM311T,0,TSSOP8,C2876875,90,E", // Veldig få på lager
@@ -277,13 +291,13 @@ export const lcscParts = [
     "CONN-IDC-10PA,O,CONN-IDC10P-A,C132437,0,E",
     "WJ300V-5.0-3P,O,WJ300V-5.0-3P,C8483,0,E",
     "25k,O,RTRIM3296X_J,C111789,180,E",
-    "500R,O,RTRIM3296X,C330441,0,E",
+    "500R,R,RTRIM3296X,C330441,0,E",
     "CHIP-LED0603,O,CHIP-LED0603,C2286,90,B",
     "2516-5,O,PAK100/2500-5-16,C146623,180,E",
     "WAVESHAPER-V2.2HR,O,XM8-WAVESHAPER-V2.2HR,C7499337,0,E",
-    "MOOG-VCF-V1.2,O,XM8-MOOG-VCF-V1.2H-TOP,C66987,0,E",
+    "MOOG-VCF-V1.2,O,XM8-MOOG-VCF-V1.2H-TOP,C7499334,0,E",
     "RM-NOISE-DIST-V1.1,O,XM8-RM-NOISE-DIST-V1.1N,MULTI,0,E",
-    "SVF-V2.0,O,XM8-SVF-V2.0R,C66987,0,E",
+    "SVF-V2.0,O,XM8-SVF-V2.0R,C7499334,0,E",
     "VCO-V2.0,O,XM8-CEM3340-V2.0,MULTI,0,E",
     "BUS-MIXER-V1.3,IC30,XM8-BUX-MIX-V1.3V,MULTI,0,E",
     "JUNO-VCF-V1.2BD,O,XM8-JUNO-VCF-V1.2H-BOTTOM-DUAL,C97095,180,E",
@@ -317,10 +331,10 @@ function getPartType(shortType: string): PartType {
 
 export function getLcscPart(value: string, footprint: string, type: PartType): LibPart | undefined {
     return lcscParts.find((libPart) => {
+
             const found = value === libPart.value &&
                 type === libPart.type
                 && footprint === libPart.footprint
-            //console.log(value, footprint, type, libPart, found)
             return found
         }
     )

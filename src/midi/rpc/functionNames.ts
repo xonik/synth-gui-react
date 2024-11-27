@@ -8,5 +8,7 @@ export enum FunctionNames {
   saveCvMapping,
   saveCvMappings,
   loadCvMapping,
-  loadCvMappings
+  loadCvMappings,
+  setTrimmerSetting,
+  saveTrimmerSettings
 }

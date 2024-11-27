@@ -63,6 +63,7 @@ const unifiedFootprintMap: Record<string, string> = {
     'TSSOP8J': 'TSSOP8',
     'TSSOP14J': 'TSSOP14',
     'TSSOP24J': 'TSSOP24',
+    'VSSOP8J': 'VSSOP8',
     'SO08J': 'SO08',
     'LQFP-44': 'LQFP-44-J',
     'DIL16J': 'DIL16',
@@ -131,7 +132,7 @@ function getUnifiedValue(value: string, type: PartType) {
             const unit = fractional[2]
             const lowerUnit = getLowerUnit(unit, type)
             if (lowerUnit) {
-                const num = Math.round(Number.parseInt(fractional[1]) * 1000)
+                const num = Math.round(Number.parseFloat(fractional[1]) * 1000)
                 newVal = `${num}${lowerUnit}`
             }
         }
@@ -159,7 +160,8 @@ function parseBomLine(line: string) {
         if (valueString === 'Comment') {
             return
         }
-        if(valueString.endsWith('DNM')){
+        const shouldNotMount = valueString.endsWith('DNM')
+        if(shouldNotMount){
             console.log(`Removing "Do not mount" part ${idString}`)
             idString.split(' ').forEach((id) => {
                 const cplEntry = cplEntries.find((entry) => entry.designator === id)
@@ -170,6 +172,7 @@ function parseBomLine(line: string) {
                     cplEntries.splice(index, 1)
                 }
             })
+            return
         }
         const footprint = getUnifiedFootprint(footprintString)
         const ids = idString?.split(' ') || []
@@ -349,7 +352,6 @@ parts.forEach((part) => {
 })
 
 updateMultiParts()
-
 const bomNewLines = parts.map((part) => `${part.value},${part.ids.join(' ')},${part.footprint},${part.lcscPart?.id}`)
 const bomFileContents = `Comment,Designator,Footprint,LCSC Part #\n${bomNewLines.join('\n')}`
 fs.writeFileSync(newBomPath, bomFileContents)

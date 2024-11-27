@@ -107,3 +107,28 @@ export function loadCvMappings() {
   logger.midi('RPC call to loadCvMappings')
   sendSysex(sysexCommands.RPC, data)  
 }
+
+export function setTrimmerSetting(trimmer: number, value: number) {
+  const paramBytes: number[] = [
+    ...jsToMidiEncoder['uint8_t'](trimmer),
+    ...jsToMidiEncoder['uint16_t'](value)
+  ]
+  const data = [
+    ...splitTo7(FunctionNames.setTrimmerSetting, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to setTrimmerSetting')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
+export function saveTrimmerSettings() {
+  const paramBytes: number[] = [
+    
+  ]
+  const data = [
+    ...splitTo7(FunctionNames.saveTrimmerSettings, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to saveTrimmerSettings')
+  sendSysex(sysexCommands.RPC, data)  
+}
