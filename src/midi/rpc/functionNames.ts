@@ -10,5 +10,8 @@ export enum FunctionNames {
   loadCvMapping,
   loadCvMappings,
   setTrimmerSetting,
-  saveTrimmerSettings
+  saveTrimmerSettings,
+  setCVOverride,
+  releaseCVOverride,
+  releaseCVOverrides
 }

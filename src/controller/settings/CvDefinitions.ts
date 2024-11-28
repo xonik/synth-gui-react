@@ -30,9 +30,19 @@ export const CVs: CvDefinition[] = [
     "description": "Distortion level"
   },
   {
+    "name": "CV_SRC_MIX_EXT_AUD",
+    "channel": 25,
+    "description": "Ext"
+  },
+  {
     "name": "CV_LPF_CUTOFF",
     "channel": 42,
     "description": "Juno Cutoff"
+  },
+  {
+    "name": "CV_VCO_LPF_FM",
+    "channel": 44,
+    "description": "Juno Lin FM TODO "
   },
   {
     "name": "CV_POST_MIX_LPF",
@@ -43,6 +53,11 @@ export const CVs: CvDefinition[] = [
     "name": "CV_LPF_RESONANCE",
     "channel": 38,
     "description": "Juno Resonance"
+  },
+  {
+    "name": "CV_LPF_DRY_LEVEL",
+    "channel": 23,
+    "description": "LPF Dry level"
   },
   {
     "name": "CV_SRC_MIX_NOISE",
@@ -80,6 +95,16 @@ export const CVs: CvDefinition[] = [
     "description": "SVF Cutoff"
   },
   {
+    "name": "CV_SVF_DRY_LEVEL",
+    "channel": 26,
+    "description": "SVF Dry level"
+  },
+  {
+    "name": "CV_SVF_FM_AMT",
+    "channel": 19,
+    "description": "SVF FM Amount TODO"
+  },
+  {
     "name": "CV_SVF_LIN_FM",
     "channel": 49,
     "description": "SVF Lin FM"
@@ -95,48 +120,43 @@ export const CVs: CvDefinition[] = [
     "description": "SVF Resonance"
   },
   {
-    "name": "CV_VCO_PITCH",
-    "channel": 10,
-    "description": "TODO"
-  },
-  {
-    "name": "CV_VCO_PW",
-    "channel": 16,
-    "description": "TODO"
+    "name": "CV_VCO_LIN_FM",
+    "channel": 14,
+    "description": "TODO VCO Lin FM"
   },
   {
     "name": "CV_VCO_FM_AMT",
     "channel": 17,
-    "description": "TODO"
+    "description": "VCO FM Amount TODO"
+  },
+  {
+    "name": "CV_VCO_PITCH",
+    "channel": 10,
+    "description": "VCO Pitch TODO"
+  },
+  {
+    "name": "CV_VCO_PW",
+    "channel": 16,
+    "description": "VCO Pulse Width TODO"
   },
   {
     "name": "CV_VCO_WAVEFORM",
     "channel": 18,
-    "description": "TODO"
-  },
-  {
-    "name": "CV_SVF_FM_AMT",
-    "channel": 19,
-    "description": "TODO"
+    "description": "VCO Waveform TODO"
   },
   {
     "name": "CV_SRC_MIX_VCO",
     "channel": 24,
-    "description": "TODO"
+    "description": "VCO level TODO"
   },
   {
-    "name": "CV_SRC_MIX_EXT_AUD",
-    "channel": 25,
-    "description": "TODO"
+    "name": "CV_VOICE_OUT_L",
+    "channel": 53,
+    "description": "Voice output L TODO"
   },
   {
-    "name": "CV_VCO_LPF_FM",
-    "channel": 44,
-    "description": "TODO Juno Lin FM"
-  },
-  {
-    "name": "CV_VCO_LIN_FM",
-    "channel": 14,
-    "description": "TODO VCO Lin FM"
+    "name": "CV_VOICE_OUT_R",
+    "channel": 51,
+    "description": "Voice output R TODO"
   }
 ]

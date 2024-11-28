@@ -15,13 +15,14 @@ type SelectorProps = {
     setValue: (trimmer: number, value: number) => void,
     trimmer: number,
     allSettings: TrimmerSetting[],
+    label: string,
 }
 
 const TRIMMER_COUNT = 7
 
-const VerticalSelector = ({ setValue, allSettings, trimmer }: SelectorProps) => {
+const VerticalSelector = ({ setValue, allSettings, trimmer, label }: SelectorProps) => {
 
-    return <ReactSlider
+    return <div className="cv-range__slider-with-label"><ReactSlider
         className="horizontal-slider cv-range__graph-controls__range"
         thumbClassName="cv-range__thumb"
         trackClassName="example-track"
@@ -31,8 +32,10 @@ const VerticalSelector = ({ setValue, allSettings, trimmer }: SelectorProps) => 
         invert
         value={allSettings[trimmer].value}
         onChange={(value) => setValue(trimmer, value)}
-        renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
+        renderThumb={(props, state) => <div {...props}>{(5 * state.valueNow/65535).toFixed(2)} V</div>}
     />
+        <div className="cv-range__slider-label">{label}</div>
+    </div>
 }
 
 
@@ -118,16 +121,15 @@ const Trimmers = () => {
         sendTrimmerSetting(updatedAllCvs[trimmer])
     }, [allTrimmerSettings, setIsSaved])
 
-
     return <div className="cv-range">
         <div className="cv-range__graph-controls">
-            <VerticalSelector setValue={updateValue} allSettings={allTrimmerSettings} trimmer={0}/>
-            <VerticalSelector setValue={updateValue} allSettings={allTrimmerSettings} trimmer={1}/>
-            <VerticalSelector setValue={updateValue} allSettings={allTrimmerSettings} trimmer={2}/>
-            <VerticalSelector setValue={updateValue} allSettings={allTrimmerSettings} trimmer={3}/>
-            <VerticalSelector setValue={updateValue} allSettings={allTrimmerSettings} trimmer={4}/>
-            <VerticalSelector setValue={updateValue} allSettings={allTrimmerSettings} trimmer={5}/>
-            <VerticalSelector setValue={updateValue} allSettings={allTrimmerSettings} trimmer={6}/>
+            <VerticalSelector label="WS A Sym" setValue={updateValue} allSettings={allTrimmerSettings} trimmer={0}/>
+            <VerticalSelector label="WS A Center" setValue={updateValue} allSettings={allTrimmerSettings} trimmer={1}/>
+            <VerticalSelector label="WS B Sym" setValue={updateValue} allSettings={allTrimmerSettings} trimmer={2}/>
+            <VerticalSelector label="WS B Center" setValue={updateValue} allSettings={allTrimmerSettings} trimmer={3}/>
+            <VerticalSelector label="Moog 4P" setValue={updateValue} allSettings={allTrimmerSettings} trimmer={4}/>
+            <VerticalSelector label="Moog Reso" setValue={updateValue} allSettings={allTrimmerSettings} trimmer={5}/>
+            <VerticalSelector label="Moog 2P" setValue={updateValue} allSettings={allTrimmerSettings} trimmer={6}/>
         </div>
         <div className="cv-range__params">
             <button disabled={isSaved} onClick={onSave}>Save</button>

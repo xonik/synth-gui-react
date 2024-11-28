@@ -36,4 +36,17 @@
     width: 100%;
     height: 95%;
   }
+
+  &__slider-with-label {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__slider-label {
+    color: white;
+    text-align: center;
+  }
+
+
 }

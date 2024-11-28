@@ -132,3 +132,40 @@ export function saveTrimmerSettings() {
   logger.midi('RPC call to saveTrimmerSettings')
   sendSysex(sysexCommands.RPC, data)  
 }
+
+export function setCVOverride(cv: number, value: number) {
+  const paramBytes: number[] = [
+    ...jsToMidiEncoder['uint8_t'](cv),
+    ...jsToMidiEncoder['uint16_t'](value)
+  ]
+  const data = [
+    ...splitTo7(FunctionNames.setCVOverride, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to setCVOverride')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
+export function releaseCVOverride(cv: number) {
+  const paramBytes: number[] = [
+    ...jsToMidiEncoder['uint8_t'](cv)
+  ]
+  const data = [
+    ...splitTo7(FunctionNames.releaseCVOverride, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to releaseCVOverride')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
+export function releaseCVOverrides() {
+  const paramBytes: number[] = [
+    
+  ]
+  const data = [
+    ...splitTo7(FunctionNames.releaseCVOverrides, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to releaseCVOverrides')
+  sendSysex(sysexCommands.RPC, data)  
+}
