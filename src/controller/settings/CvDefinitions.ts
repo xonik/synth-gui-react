@@ -35,22 +35,22 @@ export const CVs: CvDefinition[] = [
     "description": "Ext"
   },
   {
-    "name": "CV_LPF_CUTOFF",
+    "name": "CV_JUNO_CUTOFF",
     "channel": 42,
     "description": "Juno Cutoff"
   },
   {
-    "name": "CV_VCO_LPF_FM",
+    "name": "CV_VCO_JUNO_FM",
     "channel": 44,
     "description": "Juno Lin FM TODO "
   },
   {
-    "name": "CV_POST_MIX_LPF",
+    "name": "CV_POST_MIX_JUNO",
     "channel": 46,
     "description": "Juno Post mix"
   },
   {
-    "name": "CV_LPF_RESONANCE",
+    "name": "CV_JUNO_RESONANCE",
     "channel": 38,
     "description": "Juno Resonance"
   },
@@ -58,6 +58,26 @@ export const CVs: CvDefinition[] = [
     "name": "CV_LPF_DRY_LEVEL",
     "channel": 23,
     "description": "LPF Dry level"
+  },
+  {
+    "name": "CV_MOOG_CUTOFF",
+    "channel": 41,
+    "description": "Moog Cutoff TODO"
+  },
+  {
+    "name": "CV_VCO_MOOG_FM",
+    "channel": 43,
+    "description": "Moog Lin FM TODO "
+  },
+  {
+    "name": "CV_POST_MIX_MOOG",
+    "channel": 34,
+    "description": "Moog Post mix TODO"
+  },
+  {
+    "name": "CV_MOOG_RESONANCE",
+    "channel": 39,
+    "description": "Moog Resonance TODO"
   },
   {
     "name": "CV_SRC_MIX_NOISE",
@@ -75,6 +95,21 @@ export const CVs: CvDefinition[] = [
     "description": "Osc A Waveform"
   },
   {
+    "name": "CV_SRC_MIX_OSC2",
+    "channel": 21,
+    "description": "Osc A level"
+  },
+  {
+    "name": "CV_SUB_OCT1_CV_A",
+    "channel": 4,
+    "description": "Osc A sub oct 1"
+  },
+  {
+    "name": "CV_SUB_OCT2_CV_A",
+    "channel": 8,
+    "description": "Osc A sub oct 2"
+  },
+  {
     "name": "CV_PW_CV_B",
     "channel": 6,
     "description": "Osc B PW"
@@ -83,6 +118,21 @@ export const CVs: CvDefinition[] = [
     "name": "CV_WAVEFORM_CV_B",
     "channel": 13,
     "description": "Osc B Waveform"
+  },
+  {
+    "name": "CV_SRC_MIX_OSC1",
+    "channel": 20,
+    "description": "Osc B level"
+  },
+  {
+    "name": "CV_SUB_OCT1_CV_B",
+    "channel": 11,
+    "description": "Osc B sub oct 1"
+  },
+  {
+    "name": "CV_SUB_OCT2_CV_B",
+    "channel": 12,
+    "description": "Osc B sub oct 2"
   },
   {
     "name": "CV_SRC_MIX_RING_MOD",
@@ -120,6 +170,16 @@ export const CVs: CvDefinition[] = [
     "description": "SVF Resonance"
   },
   {
+    "name": "CV_POST_MIX_SINE_1",
+    "channel": 55,
+    "description": "Sine 1 Post mix"
+  },
+  {
+    "name": "CV_POST_MIX_SINE_2",
+    "channel": 54,
+    "description": "Sine 2 Post mix"
+  },
+  {
     "name": "CV_VCO_LIN_FM",
     "channel": 14,
     "description": "TODO VCO Lin FM"
@@ -148,6 +208,16 @@ export const CVs: CvDefinition[] = [
     "name": "CV_SRC_MIX_VCO",
     "channel": 24,
     "description": "VCO level TODO"
+  },
+  {
+    "name": "CV_VOICE_OUT_FX1",
+    "channel": 50,
+    "description": "Voice output FX1 TODO"
+  },
+  {
+    "name": "CV_VOICE_OUT_FX2",
+    "channel": 52,
+    "description": "Voice output FX2 TODO"
   },
   {
     "name": "CV_VOICE_OUT_L",

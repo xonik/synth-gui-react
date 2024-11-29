@@ -6,8 +6,8 @@ import Trimmers from "./Trimmers";
 import CvOverrides from "./CvOverrides";
 
 const Settings = () => {
-    /*return <Trimmers/>*/
-    return <CvOverrides/>
+    return <Trimmers/>
+    /*return <CvOverrides/>*/
     /*return <CvRange/>*/
     /*return <div className="settings">
         <SettingsButtons/>

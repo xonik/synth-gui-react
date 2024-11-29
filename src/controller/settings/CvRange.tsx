@@ -144,7 +144,7 @@ const initialCvRanges = getInitialCvRanges()
 const CV_RANGES_KEY = 'cv_ranges'
 const save = (cvRanges: CvRange[]) => localStorage.setItem(CV_RANGES_KEY, JSON.stringify(cvRanges))
 const load = () => {
-    const persisted = localStorage.getItem(CV_RANGES_KEY)
+    const persisted = false;//localStorage.getItem(CV_RANGES_KEY)
     if (!persisted) {
         return initialCvRanges
     }
