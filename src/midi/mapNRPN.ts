@@ -22,6 +22,8 @@ const mapNRPN = {
     TRIMMER_MOOG_4P: 20,
     TRIMMER_MOOG_2P: 21,
     TRIMMER_MOOG_RESO: 22,
+    SVF_WHEEL_AMT: 23,
+    LPF_WHEEL_AMT: 24,
 }
 
 export default mapNRPN

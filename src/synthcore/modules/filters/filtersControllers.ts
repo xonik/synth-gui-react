@@ -1,7 +1,8 @@
 import CC from '../../../midi/mapCC'
 import { BUTTONS } from '../../../midi/buttons'
-import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
+import {FuncProps, ControllerConfigCC, ControllerConfigCCWithValue, ControllerConfigNRPN} from '../../../midi/types'
 import { ControllerIdDst, ControllerIdIntermediate, ControllerIdNonMod } from '../controllers/controllerIds'
+import NRPN from "../../../midi/mapNRPN";
 
 
 
@@ -9,17 +10,18 @@ interface FiltersControllers {
     LPF: {
         props: FuncProps
         INPUT: ControllerConfigCC
-        DRIVE: ControllerConfigCC
         RESONANCE: ControllerConfigCC
         CUTOFF: ControllerConfigCC
         FM_AMT: ControllerConfigCC
+        WHEEL_AMT: ControllerConfigNRPN
         ENV_AMT: ControllerConfigCC
         LFO_AMT: ControllerConfigCC
         KBD_AMT: ControllerConfigCC
         EXT_CV: ControllerConfigCCWithValue
-        WHEEL: ControllerConfigCCWithValue
         SLOPE: ControllerConfigCCWithValue
         FM_MODE: ControllerConfigCCWithValue
+        FILTER_TYPE: ControllerConfigCCWithValue
+        FM_SRC: ControllerConfigCCWithValue
     },
     FILTERS: {
         props: FuncProps
@@ -29,17 +31,17 @@ interface FiltersControllers {
     SVF: {
         props: FuncProps
         INPUT: ControllerConfigCC
-        DRIVE: ControllerConfigCC
         RESONANCE: ControllerConfigCC
         CUTOFF: ControllerConfigCC
         FM_AMT: ControllerConfigCC
+        WHEEL_AMT: ControllerConfigNRPN
         ENV_AMT: ControllerConfigCC
         LFO_AMT: ControllerConfigCC
         KBD_AMT: ControllerConfigCC
         EXT_CV: ControllerConfigCCWithValue
-        WHEEL: ControllerConfigCCWithValue
         SLOPE: ControllerConfigCCWithValue
         FM_MODE: ControllerConfigCCWithValue
+        FM_SRC: ControllerConfigCCWithValue
         INVERT: ControllerConfigCCWithValue
     }
 }
@@ -53,13 +55,6 @@ const filtersControllers: FiltersControllers = {
             isDstDigi: true,
             type: 'pot',
             cc: CC.LPF_INPUT
-        },
-        DRIVE: {
-            id: ControllerIdDst.LPF_DRIVE,
-            label: 'Drive',
-            isDstDigi: true,
-            type: 'pot',
-            cc: CC.LPF_DRIVE
         },
         RESONANCE: {
             id: ControllerIdDst.LPF_RESONANCE,
@@ -80,7 +75,7 @@ const filtersControllers: FiltersControllers = {
         ENV_AMT: { id: ControllerIdIntermediate.LPF_ENV_AMT, isDstDigi: true, label: 'Env amount', shortLabel: 'Env amt', type: 'pot', cc: CC.LPF_ENV_AMT },
         LFO_AMT: { id: ControllerIdIntermediate.LPF_LFO_AMT, isDstDigi: true, label: 'LFO amount', shortLabel: 'LFO amt', type: 'pot', cc: CC.LPF_LFO_AMT },
         KBD_AMT: { id: ControllerIdIntermediate.LPF_KBD_AMT, isDstDigi: true, label: 'Keyboard track', shortLabel: 'Kbd trk', type: 'pot', cc: CC.LPF_KBD_AMT },
-
+        WHEEL_AMT: { id: ControllerIdIntermediate.LPF_WHEEL_AMT, label: 'Wheel amount', shortLabel: 'Wheel amt', isDstDigi: true, type: 'pot', addr: NRPN.LPF_WHEEL_AMT },
         EXT_CV: {
             id: ControllerIdNonMod.LPF_EXT_CV,
             label: 'Ext. CV',
@@ -89,16 +84,6 @@ const filtersControllers: FiltersControllers = {
             values: [
                 BUTTONS.BUTTONS_RIGHT.values.LPF_EXT_CV_OFF,
                 BUTTONS.BUTTONS_RIGHT.values.LPF_EXT_CV_ON,
-            ],
-        },
-        WHEEL: {
-            id: ControllerIdNonMod.LPF_WHEEL,
-            label: 'Mod wheel',
-            type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
-            values: [
-                BUTTONS.BUTTONS_RIGHT.values.LPF_WHEEL_OFF,
-                BUTTONS.BUTTONS_RIGHT.values.LPF_WHEEL_ON,
             ],
         },
         SLOPE: {
@@ -119,6 +104,26 @@ const filtersControllers: FiltersControllers = {
             values: [
                 BUTTONS.BUTTONS_RIGHT.values.LPF_FM_MODE_LIN,
                 BUTTONS.BUTTONS_RIGHT.values.LPF_FM_MODE_LOG,
+            ],
+        },
+        FILTER_TYPE: {
+            id: ControllerIdNonMod.LPF_FILTER_TYPE,
+            label: 'Filter type',
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.LPF_FILTER_TYPE_OTA,
+                BUTTONS.BUTTONS_RIGHT.values.LPF_FILTER_TYPE_LADDER,
+            ],
+        },
+        FM_SRC: {
+            id: ControllerIdNonMod.LPF_FM_SRC,
+            label: 'FM src',
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.LPF_FM_SRC_OSC_B,
+                BUTTONS.BUTTONS_RIGHT.values.LPF_FM_SRC_EXT_AUDIO,
             ],
         },
     },
@@ -154,13 +159,6 @@ const filtersControllers: FiltersControllers = {
             type: 'pot',
             cc: CC.SVF_INPUT
         },
-        DRIVE: {
-            id: ControllerIdDst.SVF_DRIVE,
-            label: 'Drive',
-            isDstDigi: true,
-            type: 'pot',
-            cc: CC.SVF_DRIVE
-        },
         RESONANCE: {
             id: ControllerIdDst.SVF_RESONANCE,
             label: 'Resonance',
@@ -177,6 +175,7 @@ const filtersControllers: FiltersControllers = {
             cc: CC.SVF_CUTOFF
         },
         FM_AMT: { id: ControllerIdIntermediate.SVF_FM_AMT, label: 'FM amount', shortLabel: 'FM amt', isDstDigi: true, type: 'pot', cc: CC.SVF_FM_AMT },
+        WHEEL_AMT: { id: ControllerIdIntermediate.SVF_WHEEL_AMT, label: 'Wheel amount', shortLabel: 'Wheel amt', isDstDigi: true, type: 'pot', addr: NRPN.SVF_WHEEL_AMT },
         ENV_AMT: { id: ControllerIdIntermediate.SVF_ENV_AMT, label: 'Env amount', shortLabel: 'Env amt', isDstDigi: true, type: 'pot', cc: CC.SVF_ENV_AMT },
         LFO_AMT: { id: ControllerIdIntermediate.SVF_LFO_AMT, label: 'LFO amount', shortLabel: 'LFO amt', isDstDigi: true, type: 'pot', cc: CC.SVF_LFO_AMT },
         KBD_AMT: { id: ControllerIdIntermediate.SVF_KBD_AMT, label: 'Keyboard track', shortLabel: 'Kbd trk', isDstDigi: true, type: 'pot', cc: CC.SVF_KBD_AMT },
@@ -189,16 +188,6 @@ const filtersControllers: FiltersControllers = {
             values: [
                 BUTTONS.BUTTONS_RIGHT.values.SVF_EXT_CV_OFF,
                 BUTTONS.BUTTONS_RIGHT.values.SVF_EXT_CV_ON,
-            ],
-        },
-        WHEEL: {
-            id: ControllerIdNonMod.SVF_WHEEL,
-            label: 'Mod wheel',
-            type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
-            values: [
-                BUTTONS.BUTTONS_RIGHT.values.SVF_WHEEL_OFF,
-                BUTTONS.BUTTONS_RIGHT.values.SVF_WHEEL_ON,
             ],
         },
         INVERT: {
@@ -237,6 +226,16 @@ const filtersControllers: FiltersControllers = {
             values: [
                 BUTTONS.BUTTONS_RIGHT.values.SVF_FM_MODE_LIN,
                 BUTTONS.BUTTONS_RIGHT.values.SVF_FM_MODE_LOG,
+            ],
+        },
+        FM_SRC: {
+            id: ControllerIdNonMod.SVF_FM_SRC,
+            label: 'FM src',
+            type: 'button',
+            cc: BUTTONS.BUTTONS_RIGHT.cc,
+            values: [
+                BUTTONS.BUTTONS_RIGHT.values.SVF_FM_SRC_OSC_B,
+                BUTTONS.BUTTONS_RIGHT.values.SVF_FM_SRC_EXT_AUDIO,
             ],
         },
     }

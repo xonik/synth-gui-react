@@ -53,15 +53,16 @@ const StateVariableFilter = ({ x, y }: Props) => {
                      ctrl={filtersControllers.SVF.INPUT}
         />
 
-        <RotaryPot15 x={x} y={topRow} ledMode="multi" label="Drive"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={filtersControllers.SVF.DRIVE}
-        />
-
-        <RotaryPot15 x={col4} y={topRow} ledMode="multi" label="Resonance"
+        <RotaryPot15 x={x} y={topRow} ledMode="multi" label="Resonance"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.SVF.RESONANCE}
         />
+
+        <RotaryPot15 x={col4} y={topRow} ledMode="multi" label="FM"
+                     ctrlGroup={ctrlGroup}
+                     ctrl={filtersControllers.SVF.FM_AMT}
+        />
+
 
         <RoundPushButton8 x={col1} y={y - 10} ledPosition="top" ledCount={2} ledLabels={['Lin', 'Log']}
                           label="FM mode" labelPosition="bottom"
@@ -69,20 +70,21 @@ const StateVariableFilter = ({ x, y }: Props) => {
                           ctrl={filtersControllers.SVF.FM_MODE}
         />
 
-        <RoundLedPushButton8 x={col4} y={y - 10} label="Invert" labelPosition="bottom"
+        <RoundPushButton8 x={col4} y={y - 10} ledPosition="top" ledCount={2} ledLabels={['Osc B', 'Ext']}
+                          label="FM src" labelPosition="bottom"
+                          ctrlGroup={ctrlGroup}
+                          ctrl={filtersControllers.SVF.FM_SRC}
+        />
+
+        <RoundLedPushButton8 x={col4} y={y + 10} label="Invert" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={filtersControllers.SVF.INVERT}
         />
 
-        <RoundLedPushButton8 x={col1} y={y + 10} label="Wheel" labelPosition="bottom"
-                             ctrlGroup={ctrlGroup}
-                             ctrl={filtersControllers.SVF.WHEEL}
-        />
-
-        <RoundLedPushButton8 x={col4} y={y + 10} label="Ext CV" labelPosition="bottom"
+        {/*<RoundLedPushButton8 x={col4} y={y + 10} label="Ext CV" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={filtersControllers.SVF.EXT_CV}
-        />
+        />*/}
 
         <RoundRotaryButton17 x={x} y={bottomRow1}
                              label="Slope" labelPosition="bottom"
@@ -96,9 +98,9 @@ const StateVariableFilter = ({ x, y }: Props) => {
                              ctrl={filtersControllers.SVF.SLOPE}
         />
 
-        <RotaryPot10 x={col1} y={bottomRow2} ledMode="multi" label="FM amt"
+        <RotaryPot10 x={col1} y={bottomRow2} ledMode="multi" label="Wheel amt"
                      ctrlGroup={ctrlGroup}
-                     ctrl={filtersControllers.SVF.FM_AMT}
+                     ctrl={filtersControllers.SVF.WHEEL_AMT}
         />
 
         <RotaryPot10 x={col2} y={bottomRow2} ledMode="multi" label="Env amt"
@@ -129,6 +131,7 @@ const StateVariableFilter = ({ x, y }: Props) => {
                           ctrlGroup={ctrlGroup}
                           ctrl={filtersControllers.FILTERS.ROUTING}
         />
+        <HorizontalLine x={x} y={bottomRow2 + 35} width={110} align="center"/>
     </>
 }
 

@@ -29,11 +29,13 @@ export enum ControllerIdIntermediate {
     // Intermediate, controllers that regulate the level of another source and then acts as the
     // modulator of a dst.
     LPF_FM_AMT = 17,
+    LPF_WHEEL_AMT ,
     LPF_ENV_AMT,
     LPF_LFO_AMT,
     LPF_KBD_AMT,
 
     SVF_FM_AMT,
+    SVF_WHEEL_AMT,
     SVF_ENV_AMT,
     SVF_LFO_AMT,
     SVF_KBD_AMT,
@@ -46,7 +48,7 @@ export const FIRST_DST = FIRST_INTERMEDIATE + INT_COUNT
 
 export enum ControllerIdDst {
     // Dsts
-    DCO1_PITCH = 25,
+    DCO1_PITCH = 27,
     DCO1_NOTE, // TODO: Not an output destination?
     DCO1_WAVEFORM,
     DCO1_SUB1,
@@ -94,12 +96,10 @@ export enum ControllerIdDst {
     KBD_UNISON_DETUNE,
 
     LPF_INPUT,
-    LPF_DRIVE,
     LPF_RESONANCE,
     LPF_CUTOFF,
 
     SVF_INPUT,
-    SVF_DRIVE,
     SVF_RESONANCE,
     SVF_CUTOFF,
 
@@ -268,18 +268,19 @@ export enum ControllerIdNonMod {
     KBD_MODE,
 
     LPF_EXT_CV,
-    LPF_WHEEL,
     LPF_SLOPE,
+    LPF_FILTER_TYPE,
     LPF_FM_MODE,
+    LPF_FM_SRC,
 
     FILTERS_LINK_CUTOFF,
     FILTERS_ROUTING,
 
     SVF_EXT_CV,
-    SVF_WHEEL,
     SVF_INVERT,
     SVF_SLOPE,
     SVF_FM_MODE,
+    SVF_FM_SRC,
 
     // TODO: Why are these here? -- they set level and time for an arbitrary stage.
     ENV_LEVEL,

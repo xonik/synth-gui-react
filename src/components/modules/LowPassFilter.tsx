@@ -7,6 +7,7 @@ import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
 import Header from '../misc/Header'
 import { ControllerGroupIds } from '../../synthcore/types'
 import filtersControllers from '../../synthcore/modules/filters/filtersControllers'
+import HorizontalLine from "../misc/HorizontalLine";
 
 interface Props {
     x: number,
@@ -17,7 +18,7 @@ const ctrlGroup = ControllerGroupIds.FILTERS
 
 const LowPassFilter = ({ x, y }: Props) => {
     const topRow = y - 50
-    const bottomRow2 = y + 45
+    const bottomRow2 = y + 50
 
     const col1 = x - 39
     const col2 = x - 13
@@ -25,7 +26,6 @@ const LowPassFilter = ({ x, y }: Props) => {
     const col4 = x + 39
 
     return <>
-        <Header label="Low pass filter" x={x} y={topRow - 27} width={110} align="center"/>
         <RotaryPot24 x={x} y={y} ledMode="single" label="Cutoff"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.LPF.CUTOFF}
@@ -36,15 +36,23 @@ const LowPassFilter = ({ x, y }: Props) => {
                      ctrl={filtersControllers.LPF.INPUT}
         />
 
-        <RotaryPot15 x={x} y={topRow} ledMode="multi" label="Drive"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={filtersControllers.LPF.DRIVE}
-        />
-
-        <RotaryPot15 x={col4} y={topRow} ledMode="multi" label="Resonance"
+        <RotaryPot15 x={x} y={topRow} ledMode="multi" label="Resonance"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.LPF.RESONANCE}
         />
+
+        <RotaryPot15 x={col4} y={topRow} ledMode="multi" label="FM"
+                     ctrlGroup={ctrlGroup}
+                     ctrl={filtersControllers.LPF.FM_AMT}
+        />
+
+        <text
+            x={x}
+            y={topRow+25}
+            className="header-label"
+            textAnchor="middle"
+            alignmentBaseline="baseline"
+        >Low pass</text>
 
         <RoundPushButton8 x={col1} y={y - 10} ledPosition="top" ledCount={2} ledLabels={['Lin', 'Log']}
                           label="FM mode" labelPosition="bottom"
@@ -52,20 +60,27 @@ const LowPassFilter = ({ x, y }: Props) => {
                           ctrl={filtersControllers.LPF.FM_MODE}
         />
 
-        <RoundPushButton8 x={col4} y={y - 10} ledPosition="top" ledCount={2} ledLabels={['12dB', '24dB']}
+        <RoundPushButton8 x={col1} y={y + 25} ledPosition="top" ledCount={2} ledLabels={['OTA', 'Ladder']}
+                          label="Filter" labelPosition="bottom"
+                          ctrlGroup={ctrlGroup}
+                          ctrl={filtersControllers.LPF.FILTER_TYPE}
+        />
+
+        <RoundPushButton8 x={col4} y={y + 25} ledPosition="top" ledCount={2} ledLabels={['12dB', '24dB']}
                           label="Slope" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={filtersControllers.LPF.SLOPE}
         />
-
+        {/*
         <RoundLedPushButton8 x={col4} y={y + 10} label="Ext CV" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={filtersControllers.LPF.EXT_CV}
-        />
+        />*/}
 
-        <RoundLedPushButton8 x={col1} y={y + 10} label="Wheel" labelPosition="bottom"
-                             ctrlGroup={ctrlGroup}
-                             ctrl={filtersControllers.LPF.WHEEL}
+        <RoundPushButton8 x={col4} y={y - 10} ledPosition="top" ledCount={2} ledLabels={['Osc B', 'Ext']}
+                          label="FM src" labelPosition="bottom"
+                          ctrlGroup={ctrlGroup}
+                          ctrl={filtersControllers.SVF.FM_SRC}
         />
 
         <RotaryPot10 x={col1} y={bottomRow2} ledMode="multi" label="FM amt"
