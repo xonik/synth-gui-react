@@ -80,7 +80,7 @@ const LowPassFilter = ({ x, y }: Props) => {
         <RoundPushButton8 x={col4} y={y - 10} ledPosition="top" ledCount={2} ledLabels={['Osc B', 'Ext']}
                           label="FM src" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
-                          ctrl={filtersControllers.SVF.FM_SRC}
+                          ctrl={filtersControllers.LPF.FM_SRC}
         />
 
         <RotaryPot10 x={col1} y={bottomRow2} ledMode="multi" label="FM amt"

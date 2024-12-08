@@ -130,6 +130,7 @@ const Trimmers = () => {
             <VerticalSelector label="Moog 4P" setValue={updateValue} allSettings={allTrimmerSettings} trimmer={4}/>
             <VerticalSelector label="Moog Reso" setValue={updateValue} allSettings={allTrimmerSettings} trimmer={5}/>
             <VerticalSelector label="Moog 2P" setValue={updateValue} allSettings={allTrimmerSettings} trimmer={6}/>
+            <VerticalSelector label="Calibrate" setValue={updateValue} allSettings={allTrimmerSettings} trimmer={7}/>
         </div>
         <div className="cv-range__params">
             <button disabled={isSaved} onClick={onSave}>Save</button>
