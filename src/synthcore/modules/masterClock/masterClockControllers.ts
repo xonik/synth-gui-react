@@ -22,11 +22,11 @@ const masterClockControllers: MasterClockControllers = {
         id: ControllerIdNonMod.MASTER_CLOCK_SOURCE,
         label: 'Source',
         type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
+            cc: BUTTONS.BUTTONS_CENTER.cc,
             values: [
-            BUTTONS.BUTTONS_LEFT.values.MASTER_CLOCK_SRC_MASTER,
-            BUTTONS.BUTTONS_LEFT.values.MASTER_CLOCK_SRC_MIDI,
-            BUTTONS.BUTTONS_LEFT.values.MASTER_CLOCK_SRC_EXT,
+            BUTTONS.BUTTONS_CENTER.values.MASTER_CLOCK_SRC_MASTER,
+            BUTTONS.BUTTONS_CENTER.values.MASTER_CLOCK_SRC_MIDI,
+            BUTTONS.BUTTONS_CENTER.values.MASTER_CLOCK_SRC_EXT,
         ],
     },
 }

@@ -24,11 +24,11 @@ const modsControllers: ModsControllers = {
         id: ControllerIdNonMod.MOD_DST,
         label: 'From-To',
         type: 'button',
-        cc: BUTTONS.BUTTONS_LEFT.cc,
+        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
-            BUTTONS.BUTTONS_LEFT.values.ROUTE_OFF,
-            BUTTONS.BUTTONS_LEFT.values.ROUTE_FROM_ON,
-            BUTTONS.BUTTONS_LEFT.values.ROUTE_TO_ON,
+            BUTTONS.BUTTONS_CENTER.values.ROUTE_OFF,
+            BUTTONS.BUTTONS_CENTER.values.ROUTE_FROM_ON,
+            BUTTONS.BUTTONS_CENTER.values.ROUTE_TO_ON,
         ],
     },
 

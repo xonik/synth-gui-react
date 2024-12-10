@@ -1,4 +1,11 @@
 export enum buttonCenterMidiValues {
+    ROUTE_OFF,
+    ROUTE_FROM_ON,
+    ROUTE_TO_ON,
+    MASTER_CLOCK_SRC_MASTER,
+    MASTER_CLOCK_SRC_MIDI,
+    MASTER_CLOCK_SRC_EXT,
+
     LFO_INVERT_OFF,
     LFO_INVERT_ON,
     LFO_LOOP_OFF,

@@ -53,6 +53,7 @@ interface OscControllers {
         CROSS_MOD: ControllerConfigCC
         PW: ControllerConfigCC
         SYNC: ControllerConfigCCWithValue
+        SYNC_SRC: ControllerConfigCCWithValue
         CROSS_MOD_SRC: ControllerConfigCCWithValue
         EXT_CV: ControllerConfigCCWithValue
         WHEEL: ControllerConfigCCWithValue
@@ -417,6 +418,16 @@ const oscControllers: OscControllers = {
                 BUTTONS.BUTTONS_LEFT.values.OSC3_SYNC_HARD,
                 BUTTONS.BUTTONS_LEFT.values.OSC3_SYNC_CEM_HARD,
                 BUTTONS.BUTTONS_LEFT.values.OSC3_SYNC_CEM_SOFT,
+            ],
+        },
+        SYNC_SRC: {
+            id: ControllerIdNonMod.VCO_SYNC_SRC,
+            label: 'Sync',
+            type: 'button',
+            cc: BUTTONS.BUTTONS_LEFT.cc,
+            values: [
+                BUTTONS.BUTTONS_LEFT.values.OSC3_SYNC_SRC_OSC_1,
+                BUTTONS.BUTTONS_LEFT.values.OSC3_SYNC_SRC_OSC_2,
             ],
         },
         CROSS_MOD_SRC: {

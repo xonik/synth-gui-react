@@ -205,6 +205,7 @@ export enum ControllerIdNonMod {
     DCO2_PRE_FILTER_SINE,
 
     VCO_SYNC,
+    VCO_SYNC_SRC,
     VCO_CROSS_MOD_SRC,
     VCO_EXT_CV,
     VCO_WHEEL,
