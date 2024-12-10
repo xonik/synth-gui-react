@@ -18,6 +18,7 @@ const ringModControllers: RingModControllers = {
             values: [
             BUTTONS.BUTTONS_LEFT.values.RING_MOD_SOURCE_1_2,
             BUTTONS.BUTTONS_LEFT.values.RING_MOD_SOURCE_EXT_2,
+            BUTTONS.BUTTONS_LEFT.values.RING_MOD_SOURCE_VCO_2,
         ],
     }
 }

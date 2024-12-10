@@ -60,6 +60,7 @@ export enum buttonLeftMidiValues {
     NOISE_COLOUR_RED,
     RING_MOD_SOURCE_1_2,
     RING_MOD_SOURCE_EXT_2,
+    RING_MOD_SOURCE_VCO_2,
     DISTORTION_IN_OFF,
     DISTORTION_IN_A,
     DISTORTION_IN_B,
