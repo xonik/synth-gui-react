@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
 import { getDefaultVoice } from './voicesUtils'
 import { Voice } from './types'
+import {selectedVoiceGroup, setSelectedVoiceGroup} from "../../selectedVoiceGroup";
 
 type VoicesState = {
     voices: Voice[],
@@ -17,7 +18,7 @@ export const initialState: VoicesState = {
         getDefaultVoice(5),
         getDefaultVoice(6),
         getDefaultVoice(7),
-    ]
+    ],
 }
 
 export type VoiceStatePayload = {
@@ -31,6 +32,7 @@ export const voicesSlice = createSlice({
     reducers: {
         setVoiceState: (state, { payload }: PayloadAction<VoiceStatePayload>) => {
             state.voices[payload.voice].state = payload.value
+            setSelectedVoiceGroup(payload.voice)
         },
     }
 })

@@ -1,29 +1,41 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
+import { selectedVoiceGroup } from "../../selectedVoiceGroup";
 
 type SettingsState = {
     midiChannel: number
-}
-
-const initialState: SettingsState = {
-    midiChannel: 0,
 }
 
 type MidiChannelPayload = {
     channel: number;
 }
 
+const initialStateCreator = () => ({
+    midiChannel: 0,
+})
+
+const initialState: SettingsState[] = [
+    initialStateCreator(),
+    initialStateCreator(),
+    initialStateCreator(),
+    initialStateCreator(),
+    initialStateCreator(),
+    initialStateCreator(),
+    initialStateCreator(),
+    initialStateCreator(),
+]
+
 export const uiSlice = createSlice({
     name: 'settings',
     initialState,
     reducers: {
         setMidiChannel: (state, {payload}: PayloadAction<MidiChannelPayload>) => {
-            state.midiChannel = payload.channel
+            state[selectedVoiceGroup].midiChannel = payload.channel
         },
     }
 })
 
-export const selectMidiChannel = (state: RootState) => state.settings.midiChannel
+export const selectMidiChannel = (state: RootState) => state.settings[selectedVoiceGroup].midiChannel
 
 export const {
     setMidiChannel,

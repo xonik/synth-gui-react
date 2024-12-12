@@ -3,6 +3,7 @@ import { StageId } from './types'
 import { RootState } from '../../store'
 import { NumericPayload } from '../common/types'
 import { Curve } from '../../generatedTypes'
+import { selectedVoiceGroup } from "../../selectedVoiceGroup";
 
 type CustomParams = {
     decayEnabled: boolean;
@@ -30,7 +31,7 @@ type LfosState = {
     }
 }
 
-export const initialState: LfosState = {
+const initialStateCreator = () => ({
     gui: {
         currLfoId: 0,
         currStageId: StageId.STOPPED,
@@ -47,7 +48,18 @@ export const initialState: LfosState = {
             getDefaultCustomShapeParams(),
         ]
     }
-}
+})
+
+export const initialState: LfosState[] = [
+    initialStateCreator(),
+    initialStateCreator(),
+    initialStateCreator(),
+    initialStateCreator(),
+    initialStateCreator(),
+    initialStateCreator(),
+    initialStateCreator(),
+    initialStateCreator(),
+]
 
 type StagePayload = {
     lfo: number;
@@ -68,19 +80,19 @@ export const lfosSlice = createSlice({
     initialState,
     reducers: {
         selectStage: (state, { payload }: PayloadAction<StagePayload>) => {
-            state.gui.currStageId = payload.stage
+            state[selectedVoiceGroup].gui.currStageId = payload.stage
         },
         deselectStage: (state, { payload }: PayloadAction<StagePayload>) => {
-            state.gui.currStageId = StageId.STOPPED
+            state[selectedVoiceGroup].gui.currStageId = StageId.STOPPED
         },
         setGuiLfo: (state, { payload }: PayloadAction<LfoPayload>) => {
-            state.gui.currLfoId = payload.lfo
+            state[selectedVoiceGroup].gui.currLfoId = payload.lfo
         },
         setUiLfo: (state, { payload }: PayloadAction<NumericPayload>) => {
-            state.ui.currLfoId = payload.value
+            state[selectedVoiceGroup].ui.currLfoId = payload.value
         },
         setCurrDelayLevel: (state, { payload }: PayloadAction<NumericPayload>) => {
-            state.gui.currDelayLevel = payload.value
+            state[selectedVoiceGroup].gui.currDelayLevel = payload.value
         },
 
         // actions only consumed by api
@@ -88,7 +100,7 @@ export const lfosSlice = createSlice({
         },
 
         setCustomShapeParams: (state, { payload }: PayloadAction<CustomShapeParamsPayload>) => {
-            state.misc.customShapeParams[payload.lfoId] = payload.params
+            state[selectedVoiceGroup].misc.customShapeParams[payload.lfoId] = payload.params
         },
     }
 })
@@ -107,10 +119,10 @@ export const {
 } = lfosSlice.actions
 
 export const selectLfos = (state: RootState) => state.lfos
-export const selectCurrGuiStageId = (state: RootState) => state.lfos.gui.currStageId
-export const selectCurrGuiLfoId = (state: RootState) => state.lfos.gui.currLfoId
-export const selectCurrGuiDelayLevel = (state: RootState) => state.lfos.gui.currDelayLevel
-export const selectCurrUiLfoId = (state: RootState) => state.lfos.ui.currLfoId
-export const selectCustomShapeParams = (state: RootState) => (lfoId: number) => state.lfos.misc.customShapeParams[lfoId]
+export const selectCurrGuiStageId = (state: RootState) => state.lfos[selectedVoiceGroup].gui.currStageId
+export const selectCurrGuiLfoId = (state: RootState) => state.lfos[selectedVoiceGroup].gui.currLfoId
+export const selectCurrGuiDelayLevel = (state: RootState) => state.lfos[selectedVoiceGroup].gui.currDelayLevel
+export const selectCurrUiLfoId = (state: RootState) => state.lfos[selectedVoiceGroup].ui.currLfoId
+export const selectCustomShapeParams = (state: RootState) => (lfoId: number) => state.lfos[selectedVoiceGroup].misc.customShapeParams[lfoId]
 
 export default lfosSlice.reducer

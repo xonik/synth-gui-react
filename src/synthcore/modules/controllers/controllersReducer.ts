@@ -15,6 +15,7 @@ import { getDefaultFiltersState } from '../filters/filtersUtils'
 import { getDefaultSrcMixState, getDefaultSrcMixUiState } from '../srcMix/srcMixUtils'
 import { getDefaultPreFxState } from "../fx/fxUtils";
 import { lfoCtrls } from '../lfo/lfoControllers'
+import { selectedVoiceGroup } from "../../selectedVoiceGroup";
 
 type ControllersState = {
 
@@ -37,56 +38,47 @@ type ControllersState = {
     uiControllers: Controllers
 }
 
-export const initialState: ControllersState = {
-    controllers: mergeControllers([
-        getDefaultEnv(0),
-        getDefaultEnv(1),
-        getDefaultEnv(2),
-        getDefaultEnv(3),
-        getDefaultEnv(4),
-        getDefaultController(envCtrls.SELECT_ENV3_ID, 2),
+export const initialStateCreator =
+    () => {
 
-        getDefaultLfo(0),
-        getDefaultLfo(1),
-        getDefaultLfo(2),
-        getDefaultLfo(3),
-
-        getDefaultEnvStages(0),
-        getDefaultEnvStages(1),
-        getDefaultEnvStages(2),
-        getDefaultEnvStages(3),
-        getDefaultEnvStages(4),
-
-        getDefaultLfoStages(0),
-        getDefaultLfoStages(1),
-        getDefaultLfoStages(2),
-        getDefaultLfoStages(3),
-
-        getDefaultOscState(),
-
-        getDefaultSrcMixState(),
-
-        getDefaultFiltersState(),
-
-        getDefaultPreFxState(),
-    ]),
-    uiControllers: mergeControllers(
-        [
-            getDefaultEnvUiStages(0),
-            getDefaultEnvUiStages(1),
-            getDefaultEnvUiStages(2),
-            getDefaultEnvUiStages(3),
-            getDefaultEnvUiStages(4),
-
-            getDefaultUiLfoStages(0),
-            getDefaultUiLfoStages(1),
-            getDefaultUiLfoStages(2),
-            getDefaultUiLfoStages(3),
-
-            getDefaultSrcMixUiState(),
+        const controllers = [
+            getDefaultOscState(),
+            getDefaultSrcMixState(),
+            getDefaultFiltersState(),
+            getDefaultPreFxState(),
+            getDefaultController(envCtrls.SELECT_ENV3_ID, 2)
         ]
-    ),
-}
+        const uiControllers = [
+            getDefaultSrcMixUiState()
+        ]
+        for (let envId = 0; envId < 5; envId++) {
+            controllers.push(getDefaultEnv(envId))
+            controllers.push(getDefaultEnvStages(envId))
+            uiControllers.push(getDefaultEnvUiStages(envId))
+        }
+        for (let lfoId = 0; lfoId < 4; lfoId++) {
+            controllers.push(getDefaultLfo(lfoId))
+            controllers.push(getDefaultLfoStages(lfoId))
+            uiControllers.push(getDefaultUiLfoStages(lfoId))
+        }
+
+        return {
+            controllers: mergeControllers(controllers),
+            uiControllers: mergeControllers(uiControllers)
+        }
+    }
+
+const initialState = [
+    initialStateCreator(),
+    initialStateCreator(),
+    initialStateCreator(),
+    initialStateCreator(),
+    initialStateCreator(),
+    initialStateCreator(),
+    initialStateCreator(),
+    initialStateCreator(),
+]
+
 
 export const controllersSlice = createSlice({
     name: 'controllers',
@@ -94,13 +86,12 @@ export const controllersSlice = createSlice({
     reducers: {
         // Multiple payloads may be sent as one chunk so that only one update
         // is triggered
-        setController: (state, { payload }: PayloadAction<NumericControllerPayload | NumericControllerPayload[]>) => {
-
+        setController: (state, {payload}: PayloadAction<NumericControllerPayload | NumericControllerPayload[]>) => {
             const payloads = Array.isArray(payload) ? payload : [payload]
             payloads.forEach((aPayload) => {
-                controllerState.set(state, aPayload)
-                if(aPayload.uiValue !== undefined) {
-                    uiControllerState.set(state, aPayload, aPayload.uiValue)
+                controllerState.set(state[selectedVoiceGroup], aPayload)
+                if (aPayload.uiValue !== undefined) {
+                    uiControllerState.set(state[selectedVoiceGroup], aPayload, aPayload.uiValue)
                 }
             })
         },
@@ -114,37 +105,37 @@ export const {
 
 const controllerState = {
     set: (state: Draft<ControllersState>, payload: NumericControllerPayload) => {
-        const { ctrlIndex = 0, ctrl, valueIndex = 0, value } = payload
+        const {ctrlIndex = 0, ctrl, valueIndex = 0, value} = payload
         if (state.controllers[ctrlIndex] === undefined) {
             state.controllers[ctrlIndex] = []
         }
         const indexedCtrls = state.controllers[ctrlIndex]
         if (indexedCtrls[ctrl.id] === undefined) {
-            state.controllers[ctrlIndex][ctrl.id] = { [valueIndex]: value }
+            state.controllers[ctrlIndex][ctrl.id] = {[valueIndex]: value}
         } else {
             state.controllers[ctrlIndex][ctrl.id][valueIndex] = value
         }
     },
     get: (state: RootState, ctrl: ControllerConfig, ctrlIndex: number = 0, valueIndex: number = 0) => {
-        const ctrlValue = state.controllers.controllers[ctrlIndex]
+        const ctrlValue = state.controllers[selectedVoiceGroup].controllers[ctrlIndex]
         if (ctrlValue === undefined || ctrlValue[ctrl.id] === undefined) {
             return 0
         } else {
-            return state.controllers.controllers[ctrlIndex][ctrl.id][valueIndex] || 0
+            return state.controllers[selectedVoiceGroup].controllers[ctrlIndex][ctrl.id][valueIndex] || 0
         }
     },
     getValueIndexValues: (state: RootState, ctrl: ControllerConfig, ctrlIndex: number = 0): PatchControllerValues => {
-        const ctrlValue = state.controllers.controllers[ctrlIndex]
+        const ctrlValue = state.controllers[selectedVoiceGroup].controllers[ctrlIndex]
         if (ctrlValue === undefined || ctrlValue[ctrl.id] === undefined) {
             return {0: 0}
         } else {
             let valueIndexValues: PatchControllerValues = {}
-            if(ctrl.legalValueIndexes) {
+            if (ctrl.legalValueIndexes) {
                 ctrl.legalValueIndexes?.forEach((valueIndex) => {
-                    valueIndexValues[valueIndex] = state.controllers.controllers[ctrlIndex][ctrl.id][valueIndex] || 0
+                    valueIndexValues[valueIndex] = state.controllers[selectedVoiceGroup].controllers[ctrlIndex][ctrl.id][valueIndex] || 0
                 })
             } else {
-                valueIndexValues[0] = state.controllers.controllers[ctrlIndex][ctrl.id][0] || 0
+                valueIndexValues[0] = state.controllers[selectedVoiceGroup].controllers[ctrlIndex][ctrl.id][0] || 0
             }
             return valueIndexValues
         }
@@ -153,23 +144,23 @@ const controllerState = {
 
 const uiControllerState = {
     set: (state: Draft<ControllersState>, payload: NumericControllerPayload, value: number) => {
-        const { ctrlIndex = 0, ctrl, valueIndex = 0 } = payload
+        const {ctrlIndex = 0, ctrl, valueIndex = 0} = payload
         if (state.uiControllers[ctrlIndex] === undefined) {
             state.uiControllers[ctrlIndex] = []
         }
         const indexedCtrls = state.uiControllers[ctrlIndex]
         if (indexedCtrls[ctrl.id] === undefined) {
-            state.uiControllers[ctrlIndex][ctrl.id] = { [valueIndex]: value }
+            state.uiControllers[ctrlIndex][ctrl.id] = {[valueIndex]: value}
         } else {
             state.uiControllers[ctrlIndex][ctrl.id][valueIndex] = value
         }
     },
     get: (state: RootState, ctrl: ControllerConfig, ctrlIndex: number = 0, valueIndex: number = 0) => {
-        const ctrlValue = state.controllers.uiControllers[ctrlIndex]
+        const ctrlValue = state.controllers[selectedVoiceGroup].uiControllers[ctrlIndex]
         if (ctrlValue === undefined || ctrlValue[ctrl.id] === undefined) {
             return 0
         } else {
-            return state.controllers.uiControllers[ctrlIndex][ctrl.id][valueIndex] || 0
+            return state.controllers[selectedVoiceGroup].uiControllers[ctrlIndex][ctrl.id][valueIndex] || 0
         }
     }
 }
