@@ -2,12 +2,12 @@ const mapCC = {
     MIDI_BANK_SELECT: 0, // N/I
     MIDI_MOD_WHEEL: 1, // N/I
     MIDI_BREATH_CTRL: 2, // N/I
-    BUTTONS_LEFT: 3,
+    BUTTONS_1: 3,
     MIDI_FOOT_CTRL: 4, // N/I
     KBD_PORTAMENTO: 5,
     DATA_ENTRY_MSB:6,
-    BUTTONS_CENTER: 7,
-    BUTTONS_RIGHT: 8,
+    BUTTONS_2: 7,
+    BUTTONS_3: 8,
     DCO1_NOTE: 9,
     DCO1_SUPER_SAW: 10,
     DCO1_WAVEFORM: 11,
@@ -121,5 +121,7 @@ const mapCC = {
     MAIN_POT7: 119,
     // 120 - 127 reserved for channel mode messages
 }
+
+export const buttonCCs = [mapCC.BUTTONS_1, mapCC.BUTTONS_2, mapCC.BUTTONS_3]
 
 export default mapCC

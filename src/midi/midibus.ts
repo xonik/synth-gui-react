@@ -7,7 +7,7 @@ import {
 import { store } from '../synthcore/store'
 import status from './midiStatus'
 import { selectMidiChannel } from '../synthcore/modules/settings/settingsReducer'
-import CC from './mapCC'
+import CC, { buttonCCs } from './mapCC'
 import logger from '../utils/logger'
 import { handleMpk25 } from './mpk25translator'
 
@@ -62,12 +62,6 @@ const midiConfig = {
     channel: 0,
 }
 
-const buttonCCs = [
-    CC.BUTTONS_LEFT,
-    CC.BUTTONS_CENTER,
-    CC.BUTTONS_RIGHT,
-]
-
 export const sysexCommands = {
     RPC: 0,
 }
@@ -76,17 +70,17 @@ let midiOut: MIDIOutput | undefined
 let midiIn: MIDIInput | undefined
 
 let idPool = 0
-let buttonSubscribers: ButtonSubscriber[]  = []
+let buttonSubscribers: ButtonSubscriber[] = []
 const ccSubscribers: { [key: number]: CCSubscriber[] } = {}
 const nrpnSubscribers: { [key: number]: NRPNSubscriber[] } = {}
 
 const getChannel = () => selectMidiChannel(store.getState())
 
 export const button = {
-    subscribe: (callback: (value: number) => void, { values }: ControllerConfigButton) => {
+    subscribe: (callback: (value: number) => void, {values}: ControllerConfigButton) => {
         const id = idPool++
         buttonSubscribers = [
-            ...(buttonSubscribers || []), { id, values, callback }
+            ...(buttonSubscribers || []), {id, values, callback}
         ]
         return id
     },
@@ -113,8 +107,7 @@ export const button = {
         if (true || midiOut) {
             // serialize value - button value is split across multiple CCs so
             // we need to pick the correct one.
-            // TODO: Make this a bit less smart by generating mapping tables
-            const buttonMidiCC = buttonCCs[Math.floor(value / 128)]
+            const buttonMidiCC = Math.floor(value / 128)
             const buttonMidiValue = value % 128
 
             const ccForChannel = status.CC + getChannel()
@@ -126,9 +119,9 @@ export const button = {
 }
 
 export const cc = {
-    subscribe: (callback: (value: number) => void, { cc, values }: ControllerConfigCC) => {
+    subscribe: (callback: (value: number) => void, {cc, values}: ControllerConfigCC) => {
         const id = idPool++
-        ccSubscribers[cc] = [...(ccSubscribers[cc] || []), { id, values, callback }]
+        ccSubscribers[cc] = [...(ccSubscribers[cc] || []), {id, values, callback}]
         return id
     },
     unsubscribe: (controller: ControllerConfigCC, id: number) => {
@@ -162,9 +155,9 @@ export const cc = {
 }
 
 export const nrpn = {
-    subscribe: (callback: (value: number) => void, { addr, values }: ControllerConfigNRPN) => {
+    subscribe: (callback: (value: number) => void, {addr, values}: ControllerConfigNRPN) => {
         const id = idPool++
-        nrpnSubscribers[addr] = [...(nrpnSubscribers[addr] || []), { id, values, callback }]
+        nrpnSubscribers[addr] = [...(nrpnSubscribers[addr] || []), {id, values, callback}]
         return id
     },
     unsubscribe: (controller: ControllerConfigNRPN, id: number) => {
@@ -199,12 +192,12 @@ export const nrpn = {
             const ccForChannel = status.CC + getChannel()
 
             let data = [ccForChannel, CC.NRPN_MSB, hiAddr, ccForChannel, CC.NRPN_LSB, loAddr]
-            if(value > 16383) {
+            if (value > 16383) {
                 data.push(ccForChannel)
                 data.push(CC.DATA_ENTRY_HSB)
                 data.push(hiValue)
             }
-            if(value > 127) {
+            if (value > 127) {
                 data.push(ccForChannel)
                 data.push(CC.DATA_ENTRY_MSB)
                 data.push(midValue)
@@ -236,7 +229,7 @@ export const sendSysex = (command: number, data: number[]) => {
         status.SYSEX_END,
     ]
     console.log('sending sysex', midiBytes)
-    if(midiBytes.length > 60) {
+    if (midiBytes.length > 60) {
         console.warn('Sysex message is more than 60 bytes, it may not work with teensy', midiBytes)
     }
 
@@ -247,35 +240,37 @@ export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
     const midiData = midiEvent.data
     const ccForChannel = status.CC + getChannel()
     if (midiData[0] === ccForChannel) {
-        if(handleMpk25(midiData[1], midiData[2])){
+
+        const ccKey = midiData[1]
+        const ccValue = midiData[2]
+
+        if (handleMpk25(ccKey, ccValue)) {
             return
         }
-        if (midiData[1] === CC.NRPN_MSB) {
-            currNRPN.hiAddr = midiData[2]
-        } else if(midiData[1] === CC.NRPN_LSB) {
-            currNRPN.loAddr = midiData[2]
-        } else if(midiData[1] === CC.DATA_ENTRY_HSB) {
-            currNRPN.hiValue = midiData[2]
-        } else if(midiData[1] === CC.DATA_ENTRY_MSB) {
-            currNRPN.midValue = midiData[2]
-        } else if(midiData[1] === CC.DATA_ENTRY_LSB) {
+        if (ccKey === CC.NRPN_MSB) {
+            currNRPN.hiAddr = ccValue
+        } else if (ccKey === CC.NRPN_LSB) {
+            currNRPN.loAddr = ccValue
+        } else if (ccKey === CC.DATA_ENTRY_HSB) {
+            currNRPN.hiValue = ccValue
+        } else if (ccKey === CC.DATA_ENTRY_MSB) {
+            currNRPN.midValue = ccValue
+        } else if (ccKey === CC.DATA_ENTRY_LSB) {
             // triggering an update on lsb means we don't have to send hsb and msb if we
             // don't want to
-            currNRPN.loValue = midiData[2]
+            currNRPN.loValue = ccValue
             const addr = (currNRPN.hiAddr << 7) + currNRPN.loAddr
             const value = (currNRPN.midValue << 14) + (currNRPN.midValue << 7) + currNRPN.loValue
             nrpn.publish(addr, value)
             currNRPN.hiValue = 0
             currNRPN.midValue = 0
             currNRPN.loValue = 0
-        } else if (buttonCCs.indexOf(midiData[1]) > -1){
-            // Deserialize button value index, buttons are automatically split across multiple
-            // CC values.
-            // TODO: Make this a bit less smart by generating mapping tables
-            const multiplier = buttonCCs.indexOf(midiData[1])
-            button.publish(multiplier * 128 + midiData[2])
+        } else if (ccKey == CC.BUTTONS_1 || ccKey == CC.BUTTONS_2 || ccKey == CC.BUTTONS_3) {
+            const multiplier = buttonCCs.indexOf(ccKey)
+            const buttonValue = multiplier * 128 + ccValue
+            button.publish(buttonValue)
         } else {
-            cc.publish(midiData[1], midiData[2])
+            cc.publish(ccKey, ccValue)
         }
     } else {
         midiOut?.send(midiData)
@@ -284,8 +279,8 @@ export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
 
 const updateSelectedMidi = async (midiAccess: MIDIAccess) => {
     console.log('UPDATING MIDI CONFIG')
-    midiAccess.inputs.forEach((value, key) => console.log({ key, value }))
-    midiAccess.outputs.forEach((value, key) => console.log({ key, value }))
+    midiAccess.inputs.forEach((value, key) => console.log({key, value}))
+    midiAccess.outputs.forEach((value, key) => console.log({key, value}))
 
     const foundInputId = midiConfig.inputIds.find(id => midiAccess.inputs.has(id))
     const foundOutputId = midiConfig.outputIds.find(id => midiAccess.outputs.has(id))
@@ -329,7 +324,7 @@ const onMIDIFailure = () => {
 }
 
 if (navigator.requestMIDIAccess) {
-    navigator.requestMIDIAccess({ sysex: true }).then(onMIDISuccess, onMIDIFailure)
+    navigator.requestMIDIAccess({sysex: true}).then(onMIDISuccess, onMIDIFailure)
 }
 
 //TODO: Close midi connection on app close!
