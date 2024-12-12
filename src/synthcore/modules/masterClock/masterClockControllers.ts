@@ -16,7 +16,8 @@ const masterClockControllers: MasterClockControllers = {
         label: 'Rate',
         isDstDigi: true,
         type: 'pot',
-        cc: CC.MASTER_CLOCK_RATE
+        cc: CC.MASTER_CLOCK_RATE,
+        global: true
     },
     SOURCE: {
         id: ControllerIdNonMod.MASTER_CLOCK_SOURCE,
@@ -27,6 +28,7 @@ const masterClockControllers: MasterClockControllers = {
             buttonMidiValues.MASTER_CLOCK_SRC_MIDI,
             buttonMidiValues.MASTER_CLOCK_SRC_EXT,
         ],
+        global: true
     },
 }
 

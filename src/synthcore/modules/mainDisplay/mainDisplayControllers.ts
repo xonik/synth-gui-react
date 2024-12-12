@@ -47,6 +47,7 @@ const mainDisplayControllers: MainDisplayControllers = {
             buttonMidiValues.MENU_FX,
             //TODO: ARP-meny?
         ],
+        global: true,
     },
 
     FUNC_HOME: {
@@ -56,6 +57,7 @@ const mainDisplayControllers: MainDisplayControllers = {
         values: [
             buttonMidiValues.FUNC_HOME,
         ],
+        global: true,
     },
     FUNC_SETTINGS: {
         id: ControllerIdNonMod.MAIN_DISP_FUNC_SETTINGS,
@@ -64,6 +66,7 @@ const mainDisplayControllers: MainDisplayControllers = {
         values: [
             buttonMidiValues.FUNC_SETTINGS,
         ],
+        global: true,
     },
     FUNC_SHIFT: {
         id: ControllerIdNonMod.MAIN_DISP_FUNC_SHIFT,
@@ -73,6 +76,7 @@ const mainDisplayControllers: MainDisplayControllers = {
             buttonMidiValues.FUNC_SHIFT_OFF,
             buttonMidiValues.FUNC_SHIFT_ON,
         ],
+        global: true,
     },
     FUNC_PERFORM: {
         id: ControllerIdNonMod.MAIN_DISP_FUNC_PERFORM,
@@ -81,6 +85,7 @@ const mainDisplayControllers: MainDisplayControllers = {
         values: [
             buttonMidiValues.FUNC_PERFORM,
         ],
+        global: true,
     },
     FUNC_LOAD: {
         id: ControllerIdNonMod.MAIN_DISP_FUNC_LOAD,
@@ -89,6 +94,7 @@ const mainDisplayControllers: MainDisplayControllers = {
         values: [
             buttonMidiValues.FUNC_LOAD,
         ],
+        global: true,
     },
     FUNC_SAVE: {
         id: ControllerIdNonMod.MAIN_DISP_FUNC_SAVE,
@@ -97,6 +103,7 @@ const mainDisplayControllers: MainDisplayControllers = {
         values: [
             buttonMidiValues.FUNC_SAVE,
         ],
+        global: true,
     },
     FUNC_COMPARE: {
         id: ControllerIdNonMod.MAIN_DISP_FUNC_COMPARE,
@@ -105,6 +112,7 @@ const mainDisplayControllers: MainDisplayControllers = {
         values: [
             buttonMidiValues.FUNC_COMPARE,
         ],
+        global: true,
     },
     FUNC_ROUTE: {
         id: ControllerIdNonMod.MAIN_DISP_FUNC_ROUTE,
@@ -113,6 +121,7 @@ const mainDisplayControllers: MainDisplayControllers = {
         values: [
             buttonMidiValues.FUNC_ROUTE,
         ],
+        global: true,
     },
 }
 

@@ -30,6 +30,9 @@ export interface ControllerConfig {
     readonly midiGroup?: MidiGroup
 
     readonly legalValueIndexes?: number[]
+
+    // If global, the controller does not follow the voice group, only a single value is used across voices.
+    readonly global?: boolean
 }
 
 export interface ControllerConfigButton extends ControllerConfig {

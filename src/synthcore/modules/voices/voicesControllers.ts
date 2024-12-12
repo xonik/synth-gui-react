@@ -25,6 +25,7 @@ const voicesControllers: VoicesControllers = {
             buttonMidiValues.VOICE1_OFF,
             buttonMidiValues.VOICE1_ON,
         ],
+        global: true,
     },
     VOICE2: {
         id: ControllerIdNonMod.VOICE_SELECTOR_2,
@@ -34,6 +35,7 @@ const voicesControllers: VoicesControllers = {
             buttonMidiValues.VOICE2_OFF,
             buttonMidiValues.VOICE2_ON,
         ],
+        global: true,
     },
     VOICE3: {
         id: ControllerIdNonMod.VOICE_SELECTOR_3,
@@ -43,6 +45,7 @@ const voicesControllers: VoicesControllers = {
             buttonMidiValues.VOICE3_OFF,
             buttonMidiValues.VOICE3_ON,
         ],
+        global: true,
     },
     VOICE4: {
         id: ControllerIdNonMod.VOICE_SELECTOR_4,
@@ -52,6 +55,7 @@ const voicesControllers: VoicesControllers = {
             buttonMidiValues.VOICE4_OFF,
             buttonMidiValues.VOICE4_ON,
         ],
+        global: true,
     },
     VOICE5: {
         id: ControllerIdNonMod.VOICE_SELECTOR_5,
@@ -61,6 +65,7 @@ const voicesControllers: VoicesControllers = {
             buttonMidiValues.VOICE5_OFF,
             buttonMidiValues.VOICE5_ON,
         ],
+        global: true,
     },
     VOICE6: {
         id: ControllerIdNonMod.VOICE_SELECTOR_6,
@@ -70,6 +75,7 @@ const voicesControllers: VoicesControllers = {
             buttonMidiValues.VOICE6_OFF,
             buttonMidiValues.VOICE6_ON,
         ],
+        global: true,
     },
     VOICE7: {
         id: ControllerIdNonMod.VOICE_SELECTOR_7,
@@ -79,6 +85,7 @@ const voicesControllers: VoicesControllers = {
             buttonMidiValues.VOICE7_OFF,
             buttonMidiValues.VOICE7_ON,
         ],
+        global: true,
     },
     VOICE8: {
         id: ControllerIdNonMod.VOICE_SELECTOR_8,
@@ -88,6 +95,7 @@ const voicesControllers: VoicesControllers = {
             buttonMidiValues.VOICE8_OFF,
             buttonMidiValues.VOICE8_ON,
         ],
+        global: true,
     },
 }
 
