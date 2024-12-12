@@ -1,8 +1,8 @@
 import CC from '../../../midi/mapCC'
-import { BUTTONS } from '../../../midi/buttons'
-import {FuncProps, ControllerConfigCC, ControllerConfigCCWithValue, ControllerConfigNRPN} from '../../../midi/types'
+import {FuncProps, ControllerConfigCC, ControllerConfigButton, ControllerConfigNRPN} from '../../../midi/types'
 import { ControllerIdDst, ControllerIdIntermediate, ControllerIdNonMod } from '../controllers/controllerIds'
 import NRPN from "../../../midi/mapNRPN";
+import {buttonMidiValues} from "../../../midi/buttonMidiValues";
 
 
 
@@ -17,16 +17,16 @@ interface FiltersControllers {
         ENV_AMT: ControllerConfigCC
         LFO_AMT: ControllerConfigCC
         KBD_AMT: ControllerConfigCC
-        EXT_CV: ControllerConfigCCWithValue
-        SLOPE: ControllerConfigCCWithValue
-        FM_MODE: ControllerConfigCCWithValue
-        FILTER_TYPE: ControllerConfigCCWithValue
-        FM_SRC: ControllerConfigCCWithValue
+        EXT_CV: ControllerConfigButton
+        SLOPE: ControllerConfigButton
+        FM_MODE: ControllerConfigButton
+        FILTER_TYPE: ControllerConfigButton
+        FM_SRC: ControllerConfigButton
     },
     FILTERS: {
         props: FuncProps
-        LINK_CUTOFF: ControllerConfigCCWithValue
-        ROUTING: ControllerConfigCCWithValue
+        LINK_CUTOFF: ControllerConfigButton
+        ROUTING: ControllerConfigButton
     },
     SVF: {
         props: FuncProps
@@ -38,11 +38,11 @@ interface FiltersControllers {
         ENV_AMT: ControllerConfigCC
         LFO_AMT: ControllerConfigCC
         KBD_AMT: ControllerConfigCC
-        EXT_CV: ControllerConfigCCWithValue
-        SLOPE: ControllerConfigCCWithValue
-        FM_MODE: ControllerConfigCCWithValue
-        FM_SRC: ControllerConfigCCWithValue
-        INVERT: ControllerConfigCCWithValue
+        EXT_CV: ControllerConfigButton
+        SLOPE: ControllerConfigButton
+        FM_MODE: ControllerConfigButton
+        FM_SRC: ControllerConfigButton
+        INVERT: ControllerConfigButton
     }
 }
 
@@ -80,50 +80,45 @@ const filtersControllers: FiltersControllers = {
             id: ControllerIdNonMod.LPF_EXT_CV,
             label: 'Ext. CV',
             type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.LPF_EXT_CV_OFF,
-                BUTTONS.BUTTONS_RIGHT.values.LPF_EXT_CV_ON,
+                buttonMidiValues.LPF_EXT_CV_OFF,
+                buttonMidiValues.LPF_EXT_CV_ON,
             ],
         },
         SLOPE: {
             id: ControllerIdNonMod.LPF_SLOPE,
             label: 'Slope',
             type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.LPF_SLOPE_12DB,
-                BUTTONS.BUTTONS_RIGHT.values.LPF_SLOPE_24DB,
+                buttonMidiValues.LPF_SLOPE_12DB,
+                buttonMidiValues.LPF_SLOPE_24DB,
             ],
         },
         FM_MODE: {
             id: ControllerIdNonMod.LPF_FM_MODE,
             label: 'FM mode',
             type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.LPF_FM_MODE_LIN,
-                BUTTONS.BUTTONS_RIGHT.values.LPF_FM_MODE_LOG,
+                buttonMidiValues.LPF_FM_MODE_LIN,
+                buttonMidiValues.LPF_FM_MODE_LOG,
             ],
         },
         FILTER_TYPE: {
             id: ControllerIdNonMod.LPF_FILTER_TYPE,
             label: 'Filter type',
             type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.LPF_FILTER_TYPE_OTA,
-                BUTTONS.BUTTONS_RIGHT.values.LPF_FILTER_TYPE_LADDER,
+                buttonMidiValues.LPF_FILTER_TYPE_OTA,
+                buttonMidiValues.LPF_FILTER_TYPE_LADDER,
             ],
         },
         FM_SRC: {
             id: ControllerIdNonMod.LPF_FM_SRC,
             label: 'FM src',
             type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.LPF_FM_SRC_OSC_B,
-                BUTTONS.BUTTONS_RIGHT.values.LPF_FM_SRC_EXT_AUDIO,
+                buttonMidiValues.LPF_FM_SRC_OSC_B,
+                buttonMidiValues.LPF_FM_SRC_EXT_AUDIO,
             ],
         },
     },
@@ -133,20 +128,18 @@ const filtersControllers: FiltersControllers = {
             id: ControllerIdNonMod.FILTERS_LINK_CUTOFF,
             label: 'Link cutoff',
             type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.FILTER_LINK_CUTOFF_OFF,
-                BUTTONS.BUTTONS_RIGHT.values.FILTER_LINK_CUTOFF_ON,
+                buttonMidiValues.FILTER_LINK_CUTOFF_OFF,
+                buttonMidiValues.FILTER_LINK_CUTOFF_ON,
             ],
         },
         ROUTING: {
             id: ControllerIdNonMod.FILTERS_ROUTING,
             label: 'Routing',
             type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.FILTER_ROUTING_SERIES,
-                BUTTONS.BUTTONS_RIGHT.values.FILTER_ROUTING_PARALLEL,
+                buttonMidiValues.FILTER_ROUTING_SERIES,
+                buttonMidiValues.FILTER_ROUTING_PARALLEL,
             ],
         },
     },
@@ -184,58 +177,53 @@ const filtersControllers: FiltersControllers = {
             id: ControllerIdNonMod.SVF_EXT_CV,
             label: 'Ext. CV',
             type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.SVF_EXT_CV_OFF,
-                BUTTONS.BUTTONS_RIGHT.values.SVF_EXT_CV_ON,
+                buttonMidiValues.SVF_EXT_CV_OFF,
+                buttonMidiValues.SVF_EXT_CV_ON,
             ],
         },
         INVERT: {
             id: ControllerIdNonMod.SVF_INVERT,
             label: 'Invert',
             type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.SVF_INVERT_OFF,
-                BUTTONS.BUTTONS_RIGHT.values.SVF_INVERT_ON,
+                buttonMidiValues.SVF_INVERT_OFF,
+                buttonMidiValues.SVF_INVERT_ON,
             ],
         },
         SLOPE: {
             id: ControllerIdNonMod.SVF_SLOPE,
             label: 'Slope',
             type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_12DB_LP,
-                BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_24DB_LP,
-                BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_12DB_BP,
-                BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_24DB_BP,
-                BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_LP_BP,
-                BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_12DB_HP,
-                BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_24DB_HP,
-                BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_HP_BP,
-                BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_NOTCH,
-                BUTTONS.BUTTONS_RIGHT.values.SVF_SLOPE_AP,
+                buttonMidiValues.SVF_SLOPE_12DB_LP,
+                buttonMidiValues.SVF_SLOPE_24DB_LP,
+                buttonMidiValues.SVF_SLOPE_12DB_BP,
+                buttonMidiValues.SVF_SLOPE_24DB_BP,
+                buttonMidiValues.SVF_SLOPE_LP_BP,
+                buttonMidiValues.SVF_SLOPE_12DB_HP,
+                buttonMidiValues.SVF_SLOPE_24DB_HP,
+                buttonMidiValues.SVF_SLOPE_HP_BP,
+                buttonMidiValues.SVF_SLOPE_NOTCH,
+                buttonMidiValues.SVF_SLOPE_AP,
             ],
         },
         FM_MODE: {
             id: ControllerIdNonMod.SVF_FM_MODE,
             label: 'FM mode',
             type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.SVF_FM_MODE_LIN,
-                BUTTONS.BUTTONS_RIGHT.values.SVF_FM_MODE_LOG,
+                buttonMidiValues.SVF_FM_MODE_LIN,
+                buttonMidiValues.SVF_FM_MODE_LOG,
             ],
         },
         FM_SRC: {
             id: ControllerIdNonMod.SVF_FM_SRC,
             label: 'FM src',
             type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.SVF_FM_SRC_OSC_B,
-                BUTTONS.BUTTONS_RIGHT.values.SVF_FM_SRC_EXT_AUDIO,
+                buttonMidiValues.SVF_FM_SRC_OSC_B,
+                buttonMidiValues.SVF_FM_SRC_EXT_AUDIO,
             ],
         },
     }

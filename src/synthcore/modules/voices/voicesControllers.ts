@@ -1,18 +1,18 @@
-import { BUTTONS } from '../../../midi/buttons'
-import { ControllerConfigCCWithValue, FuncProps } from '../../../midi/types'
+import { ControllerConfigButton, FuncProps } from '../../../midi/types'
 import { ControllerIdNonMod } from '../controllers/controllerIds'
+import {buttonMidiValues} from "../../../midi/buttonMidiValues";
 
 
 interface VoicesControllers {
     props: FuncProps
-    VOICE1: ControllerConfigCCWithValue
-    VOICE2: ControllerConfigCCWithValue
-    VOICE3: ControllerConfigCCWithValue
-    VOICE4: ControllerConfigCCWithValue
-    VOICE5: ControllerConfigCCWithValue
-    VOICE6: ControllerConfigCCWithValue
-    VOICE7: ControllerConfigCCWithValue
-    VOICE8: ControllerConfigCCWithValue
+    VOICE1: ControllerConfigButton
+    VOICE2: ControllerConfigButton
+    VOICE3: ControllerConfigButton
+    VOICE4: ControllerConfigButton
+    VOICE5: ControllerConfigButton
+    VOICE6: ControllerConfigButton
+    VOICE7: ControllerConfigButton
+    VOICE8: ControllerConfigButton
 }
 
 const voicesControllers: VoicesControllers = {
@@ -21,80 +21,72 @@ const voicesControllers: VoicesControllers = {
         id: ControllerIdNonMod.VOICE_SELECTOR_1,
         label: 'Voice 1',
         type: 'button',
-        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
-            BUTTONS.BUTTONS_CENTER.values.VOICE1_OFF,
-            BUTTONS.BUTTONS_CENTER.values.VOICE1_ON,
+            buttonMidiValues.VOICE1_OFF,
+            buttonMidiValues.VOICE1_ON,
         ],
     },
     VOICE2: {
         id: ControllerIdNonMod.VOICE_SELECTOR_2,
         label: 'Voice 2',
         type: 'button',
-        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
-            BUTTONS.BUTTONS_CENTER.values.VOICE2_OFF,
-            BUTTONS.BUTTONS_CENTER.values.VOICE2_ON,
+            buttonMidiValues.VOICE2_OFF,
+            buttonMidiValues.VOICE2_ON,
         ],
     },
     VOICE3: {
         id: ControllerIdNonMod.VOICE_SELECTOR_3,
         label: 'Voice 3',
         type: 'button',
-        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
-            BUTTONS.BUTTONS_CENTER.values.VOICE3_OFF,
-            BUTTONS.BUTTONS_CENTER.values.VOICE3_ON,
+            buttonMidiValues.VOICE3_OFF,
+            buttonMidiValues.VOICE3_ON,
         ],
     },
     VOICE4: {
         id: ControllerIdNonMod.VOICE_SELECTOR_4,
         label: 'Voice 4',
         type: 'button',
-        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
-            BUTTONS.BUTTONS_CENTER.values.VOICE4_OFF,
-            BUTTONS.BUTTONS_CENTER.values.VOICE4_ON,
+            buttonMidiValues.VOICE4_OFF,
+            buttonMidiValues.VOICE4_ON,
         ],
     },
     VOICE5: {
         id: ControllerIdNonMod.VOICE_SELECTOR_5,
         label: 'Voice 5',
         type: 'button',
-        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
-            BUTTONS.BUTTONS_CENTER.values.VOICE5_OFF,
-            BUTTONS.BUTTONS_CENTER.values.VOICE5_ON,
+            buttonMidiValues.VOICE5_OFF,
+            buttonMidiValues.VOICE5_ON,
         ],
     },
     VOICE6: {
         id: ControllerIdNonMod.VOICE_SELECTOR_6,
         label: 'Voice 6',
         type: 'button',
-        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
-            BUTTONS.BUTTONS_CENTER.values.VOICE6_OFF,
-            BUTTONS.BUTTONS_CENTER.values.VOICE6_ON,
+            buttonMidiValues.VOICE6_OFF,
+            buttonMidiValues.VOICE6_ON,
         ],
     },
     VOICE7: {
         id: ControllerIdNonMod.VOICE_SELECTOR_7,
         label: 'Voice 7',
         type: 'button',
-        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
-            BUTTONS.BUTTONS_CENTER.values.VOICE7_OFF,
-            BUTTONS.BUTTONS_CENTER.values.VOICE7_ON,
+            buttonMidiValues.VOICE7_OFF,
+            buttonMidiValues.VOICE7_ON,
         ],
     },
     VOICE8: {
         id: ControllerIdNonMod.VOICE_SELECTOR_8,
         label: 'Voice 8',
         type: 'button',
-        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
-            BUTTONS.BUTTONS_CENTER.values.VOICE8_OFF,
-            BUTTONS.BUTTONS_CENTER.values.VOICE8_ON,
+            buttonMidiValues.VOICE8_OFF,
+            buttonMidiValues.VOICE8_ON,
         ],
     },
 }

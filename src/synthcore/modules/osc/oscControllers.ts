@@ -1,13 +1,18 @@
 import CC from '../../../midi/mapCC'
-import { BUTTONS } from '../../../midi/buttons'
-import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue, ControllerConfigNRPN } from '../../../midi/types'
+import {
+    FuncProps,
+    ControllerConfigCC,
+    ControllerConfigButton,
+    ControllerConfigNRPN,
+} from '../../../midi/types'
 import NRPN from '../../../midi/mapNRPN'
-import { ControllerIdDst, ControllerIdNonMod } from '../controllers/controllerIds'
+import {ControllerIdDst, ControllerIdNonMod} from '../controllers/controllerIds'
+import {buttonMidiValues} from "../../../midi/buttonMidiValues";
 
 interface OscControllers {
     DCO1: {
         props: FuncProps
-        RANGE: ControllerConfigCCWithValue
+        RANGE: ControllerConfigButton
         PITCH: ControllerConfigNRPN
         NOTE: ControllerConfigCC
         SUPER_SAW: ControllerConfigCC
@@ -15,18 +20,18 @@ interface OscControllers {
         SUB1: ControllerConfigCC
         SUB2: ControllerConfigCC
         PW: ControllerConfigCC
-        SYNC: ControllerConfigCCWithValue
-        MODE: ControllerConfigCCWithValue
-        SUB_WAVE: ControllerConfigCCWithValue
-        WHEEL: ControllerConfigCCWithValue
-        LFO: ControllerConfigCCWithValue
-        KBD: ControllerConfigCCWithValue
-        SAW_INV: ControllerConfigCCWithValue
-        PRE_FILTER_SINE: ControllerConfigCCWithValue
+        SYNC: ControllerConfigButton
+        MODE: ControllerConfigButton
+        SUB_WAVE: ControllerConfigButton
+        WHEEL: ControllerConfigButton
+        LFO: ControllerConfigButton
+        KBD: ControllerConfigButton
+        SAW_INV: ControllerConfigButton
+        PRE_FILTER_SINE: ControllerConfigButton
     },
     DCO2: {
         props: FuncProps
-        RANGE: ControllerConfigCCWithValue
+        RANGE: ControllerConfigButton
         PITCH: ControllerConfigNRPN
         NOTE: ControllerConfigCC
         DETUNE: ControllerConfigCC
@@ -35,14 +40,14 @@ interface OscControllers {
         SUB1: ControllerConfigCC
         SUB2: ControllerConfigCC
         PW: ControllerConfigCC
-        SYNC: ControllerConfigCCWithValue
-        MODE: ControllerConfigCCWithValue
-        SUB_WAVE: ControllerConfigCCWithValue
-        WHEEL: ControllerConfigCCWithValue
-        LFO: ControllerConfigCCWithValue
-        KBD: ControllerConfigCCWithValue
-        SAW_INV: ControllerConfigCCWithValue
-        PRE_FILTER_SINE: ControllerConfigCCWithValue
+        SYNC: ControllerConfigButton
+        MODE: ControllerConfigButton
+        SUB_WAVE: ControllerConfigButton
+        WHEEL: ControllerConfigButton
+        LFO: ControllerConfigButton
+        KBD: ControllerConfigButton
+        SAW_INV: ControllerConfigButton
+        PRE_FILTER_SINE: ControllerConfigButton
     },
     VCO: {
         props: FuncProps
@@ -52,19 +57,19 @@ interface OscControllers {
         WAVEFORM: ControllerConfigCC
         CROSS_MOD: ControllerConfigCC
         PW: ControllerConfigCC
-        SYNC: ControllerConfigCCWithValue
-        SYNC_SRC: ControllerConfigCCWithValue
-        CROSS_MOD_SRC: ControllerConfigCCWithValue
-        EXT_CV: ControllerConfigCCWithValue
-        WHEEL: ControllerConfigCCWithValue
-        LFO: ControllerConfigCCWithValue
-        KBD: ControllerConfigCCWithValue
+        SYNC: ControllerConfigButton
+        SYNC_SRC: ControllerConfigButton
+        CROSS_MOD_SRC: ControllerConfigButton
+        EXT_CV: ControllerConfigButton
+        WHEEL: ControllerConfigButton
+        LFO: ControllerConfigButton
+        KBD: ControllerConfigButton
     }
 }
 
 const oscControllers: OscControllers = {
     DCO1: {
-        props: { label: 'Osc 1' },
+        props: {label: 'Osc 1'},
         // pots
         PITCH: {
             id: ControllerIdDst.DCO1_PITCH,
@@ -84,10 +89,9 @@ const oscControllers: OscControllers = {
             id: ControllerIdNonMod.DCO1_RANGE,
             label: 'Range',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.OSC1_RANGE_LOW,
-                BUTTONS.BUTTONS_LEFT.values.OSC1_RANGE_HIGH,
+                buttonMidiValues.OSC1_RANGE_LOW,
+                buttonMidiValues.OSC1_RANGE_HIGH,
             ],
         },
         SUPER_SAW: {
@@ -130,87 +134,79 @@ const oscControllers: OscControllers = {
             id: ControllerIdNonMod.DCO1_SYNC,
             label: 'Sync DCO 1',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.OSC1_SYNC_OFF,
-                BUTTONS.BUTTONS_LEFT.values.OSC1_SYNC_HARD,
-                BUTTONS.BUTTONS_LEFT.values.OSC1_SYNC_METAL,
+                buttonMidiValues.OSC1_SYNC_OFF,
+                buttonMidiValues.OSC1_SYNC_HARD,
+                buttonMidiValues.OSC1_SYNC_METAL,
             ],
         },
         MODE: {
             id: ControllerIdNonMod.DCO1_MODE,
             label: 'Mode',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.OSC1_MODE_DCO,
-                BUTTONS.BUTTONS_LEFT.values.OSC1_MODE_WT,
-                BUTTONS.BUTTONS_LEFT.values.OSC1_MODE_PCM,
+                buttonMidiValues.OSC1_MODE_DCO,
+                buttonMidiValues.OSC1_MODE_WT,
+                buttonMidiValues.OSC1_MODE_PCM,
             ],
         },
         SUB_WAVE: {
             id: ControllerIdNonMod.DCO1_SUB_WAVE,
             label: 'Sub wave',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.OSC1_SUB_WAVE_SQR,
-                BUTTONS.BUTTONS_LEFT.values.OSC1_SUB_WAVE_SAW,
+                buttonMidiValues.OSC1_SUB_WAVE_SQR,
+                buttonMidiValues.OSC1_SUB_WAVE_SAW,
             ],
         },
         WHEEL: {
             id: ControllerIdNonMod.DCO1_WHEEL,
             label: 'Mod wheel',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.OSC1_WHEEL_OFF,
-                BUTTONS.BUTTONS_LEFT.values.OSC1_WHEEL_ON,
+                buttonMidiValues.OSC1_WHEEL_OFF,
+                buttonMidiValues.OSC1_WHEEL_ON,
             ],
         },
         LFO: {
             id: ControllerIdNonMod.DCO1_LFO,
             label: 'LFO mod',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.OSC1_LFO_OFF,
-                BUTTONS.BUTTONS_LEFT.values.OSC1_LFO_ON,
+                buttonMidiValues.OSC1_LFO_OFF,
+                buttonMidiValues.OSC1_LFO_ON,
             ],
         },
         KBD: {
             id: ControllerIdNonMod.DCO1_KBD,
             label: 'Keyboard track',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.OSC1_KBD_OFF,
-                BUTTONS.BUTTONS_LEFT.values.OSC1_KBD_ON,
+                buttonMidiValues.OSC1_KBD_OFF,
+                buttonMidiValues.OSC1_KBD_ON,
             ],
         },
         SAW_INV: {
             id: ControllerIdNonMod.DCO1_SAW_INV,
             label: 'Saw invert',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.OSC1_SAW_INV_OFF,
-                BUTTONS.BUTTONS_LEFT.values.OSC1_SAW_INV_ON,
+                buttonMidiValues.OSC1_SAW_INV_OFF,
+                buttonMidiValues.OSC1_SAW_INV_ON,
             ],
         },
         PRE_FILTER_SINE: {
             id: ControllerIdNonMod.DCO1_PRE_FILTER_SINE,
             label: 'Saw invert',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.OSC1_PRE_FILTER_SINE_OFF,
-                BUTTONS.BUTTONS_LEFT.values.OSC1_PRE_FILTER_SINE_ON,
+                buttonMidiValues.OSC1_PRE_FILTER_SINE_OFF,
+                buttonMidiValues.OSC1_PRE_FILTER_SINE_ON,
             ],
         },
     },
     DCO2: {
-        props: { label: 'Osc 2' },
+        props: {label: 'Osc 2'},
         // pots
         PITCH: {
             id: ControllerIdDst.DCO2_PITCH,
@@ -230,10 +226,9 @@ const oscControllers: OscControllers = {
             id: ControllerIdNonMod.DCO2_RANGE,
             label: 'Range',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.OSC2_RANGE_LOW,
-                BUTTONS.BUTTONS_LEFT.values.OSC2_RANGE_HIGH,
+                buttonMidiValues.OSC2_RANGE_LOW,
+                buttonMidiValues.OSC2_RANGE_HIGH,
             ],
         },
         DETUNE: {
@@ -283,87 +278,79 @@ const oscControllers: OscControllers = {
             id: ControllerIdNonMod.DCO2_SYNC,
             label: 'Sync DCO 2',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.OSC2_SYNC_OFF,
-                BUTTONS.BUTTONS_LEFT.values.OSC2_SYNC_HARD,
-                BUTTONS.BUTTONS_LEFT.values.OSC2_SYNC_METAL,
+                buttonMidiValues.OSC2_SYNC_OFF,
+                buttonMidiValues.OSC2_SYNC_HARD,
+                buttonMidiValues.OSC2_SYNC_METAL,
             ],
         },
         MODE: {
             id: ControllerIdNonMod.DCO2_MODE,
             label: 'Mode',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.OSC2_MODE_DCO,
-                BUTTONS.BUTTONS_LEFT.values.OSC2_MODE_WT,
-                BUTTONS.BUTTONS_LEFT.values.OSC2_MODE_PCM,
+                buttonMidiValues.OSC2_MODE_DCO,
+                buttonMidiValues.OSC2_MODE_WT,
+                buttonMidiValues.OSC2_MODE_PCM,
             ],
         },
         SUB_WAVE: {
             id: ControllerIdNonMod.DCO2_SUB_WAVE,
             label: 'Sub wave',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.OSC2_SUB_WAVE_SQR,
-                BUTTONS.BUTTONS_LEFT.values.OSC2_SUB_WAVE_SAW,
+                buttonMidiValues.OSC2_SUB_WAVE_SQR,
+                buttonMidiValues.OSC2_SUB_WAVE_SAW,
             ],
         },
         WHEEL: {
             id: ControllerIdNonMod.DCO2_WHEEL,
             label: 'Mod wheel',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.OSC2_WHEEL_OFF,
-                BUTTONS.BUTTONS_LEFT.values.OSC2_WHEEL_ON,
+                buttonMidiValues.OSC2_WHEEL_OFF,
+                buttonMidiValues.OSC2_WHEEL_ON,
             ],
         },
         LFO: {
             id: ControllerIdNonMod.DCO2_LFO,
             label: 'LFO mod',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.OSC2_LFO_OFF,
-                BUTTONS.BUTTONS_LEFT.values.OSC2_LFO_ON,
+                buttonMidiValues.OSC2_LFO_OFF,
+                buttonMidiValues.OSC2_LFO_ON,
             ],
         },
         KBD: {
             id: ControllerIdNonMod.DCO2_KBD,
             label: 'Keyboard track',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.OSC2_KBD_OFF,
-                BUTTONS.BUTTONS_LEFT.values.OSC2_KBD_ON,
+                buttonMidiValues.OSC2_KBD_OFF,
+                buttonMidiValues.OSC2_KBD_ON,
             ],
         },
         SAW_INV: {
             id: ControllerIdNonMod.DCO2_SAW_INV,
             label: 'Saw invert',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.OSC2_SAW_INV_OFF,
-                BUTTONS.BUTTONS_LEFT.values.OSC2_SAW_INV_ON,
+                buttonMidiValues.OSC2_SAW_INV_OFF,
+                buttonMidiValues.OSC2_SAW_INV_ON,
             ],
         },
         PRE_FILTER_SINE: {
             id: ControllerIdNonMod.DCO2_PRE_FILTER_SINE,
             label: 'Saw invert',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.OSC2_PRE_FILTER_SINE_OFF,
-                BUTTONS.BUTTONS_LEFT.values.OSC2_PRE_FILTER_SINE_ON,
+                buttonMidiValues.OSC2_PRE_FILTER_SINE_OFF,
+                buttonMidiValues.OSC2_PRE_FILTER_SINE_ON,
             ],
         },
     },
     VCO: {
-        props: { label: 'Osc 3' },
+        props: {label: 'Osc 3'},
         // pots
         PITCH: {
             id: ControllerIdDst.VCO_PITCH,
@@ -412,72 +399,65 @@ const oscControllers: OscControllers = {
             id: ControllerIdNonMod.VCO_SYNC,
             label: 'Sync',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.OSC3_SYNC_OFF,
-                BUTTONS.BUTTONS_LEFT.values.OSC3_SYNC_HARD,
-                BUTTONS.BUTTONS_LEFT.values.OSC3_SYNC_CEM_HARD,
-                BUTTONS.BUTTONS_LEFT.values.OSC3_SYNC_CEM_SOFT,
+                buttonMidiValues.OSC3_SYNC_OFF,
+                buttonMidiValues.OSC3_SYNC_HARD,
+                buttonMidiValues.OSC3_SYNC_CEM_HARD,
+                buttonMidiValues.OSC3_SYNC_CEM_SOFT,
             ],
         },
         SYNC_SRC: {
             id: ControllerIdNonMod.VCO_SYNC_SRC,
             label: 'Sync',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.OSC3_SYNC_SRC_OSC_1,
-                BUTTONS.BUTTONS_LEFT.values.OSC3_SYNC_SRC_OSC_2,
+                buttonMidiValues.OSC3_SYNC_SRC_OSC_1,
+                buttonMidiValues.OSC3_SYNC_SRC_OSC_2,
             ],
         },
         CROSS_MOD_SRC: {
             id: ControllerIdNonMod.VCO_CROSS_MOD_SRC,
             label: 'Cross mod source',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.OSC3_CROSS_MOD_SRC_OSC1,
-                BUTTONS.BUTTONS_LEFT.values.OSC3_CROSS_MOD_SRC_EXT,
+                buttonMidiValues.OSC3_CROSS_MOD_SRC_OSC1,
+                buttonMidiValues.OSC3_CROSS_MOD_SRC_EXT,
             ],
         },
         EXT_CV: {
             id: ControllerIdNonMod.VCO_EXT_CV,
             label: 'Ext. CV',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.OSC3_EXT_CV_OFF,
-                BUTTONS.BUTTONS_LEFT.values.OSC3_EXT_CV_ON,
+                buttonMidiValues.OSC3_EXT_CV_OFF,
+                buttonMidiValues.OSC3_EXT_CV_ON,
             ],
         },
         WHEEL: {
             id: ControllerIdNonMod.VCO_WHEEL,
             label: 'Mod wheel',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.OSC3_WHEEL_OFF,
-                BUTTONS.BUTTONS_LEFT.values.OSC3_WHEEL_ON,
+                buttonMidiValues.OSC3_WHEEL_OFF,
+                buttonMidiValues.OSC3_WHEEL_ON,
             ],
         },
         LFO: {
             id: ControllerIdNonMod.VCO_LFO,
             label: 'LFO mod',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.OSC3_LFO_OFF,
-                BUTTONS.BUTTONS_LEFT.values.OSC3_LFO_ON,
+                buttonMidiValues.OSC3_LFO_OFF,
+                buttonMidiValues.OSC3_LFO_ON,
             ],
         },
         KBD: {
             id: ControllerIdNonMod.VCO_KBD,
             label: 'Keyboard track',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.OSC3_KBD_OFF,
-                BUTTONS.BUTTONS_LEFT.values.OSC3_KBD_ON,
+                buttonMidiValues.OSC3_KBD_OFF,
+                buttonMidiValues.OSC3_KBD_ON,
             ],
         },
     }

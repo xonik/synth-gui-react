@@ -1,7 +1,7 @@
 import CC from '../../../midi/mapCC'
-import { BUTTONS } from '../../../midi/buttons'
-import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
+import { FuncProps, ControllerConfigCC, ControllerConfigButton } from '../../../midi/types'
 import { ControllerIdDst, ControllerIdNonMod } from '../controllers/controllerIds'
+import {buttonMidiValues} from "../../../midi/buttonMidiValues";
 
 interface CommonFxControllers {
     DSP1: {
@@ -10,7 +10,7 @@ interface CommonFxControllers {
         PARAM2: ControllerConfigCC,
         PARAM3: ControllerConfigCC,
         EFFECT: ControllerConfigCC,
-        SOURCE: ControllerConfigCCWithValue,
+        SOURCE: ControllerConfigButton,
     },
     DSP2: {
         props: FuncProps
@@ -18,21 +18,21 @@ interface CommonFxControllers {
         PARAM2: ControllerConfigCC,
         PARAM3: ControllerConfigCC,
         EFFECT: ControllerConfigCC,
-        SOURCE: ControllerConfigCCWithValue,
-        CHAIN: ControllerConfigCCWithValue,
+        SOURCE: ControllerConfigButton,
+        CHAIN: ControllerConfigButton,
     },
     CHORUS: {
         props: FuncProps
         RATE: ControllerConfigCC,
         DEPTH: ControllerConfigCC,
-        SOURCE: ControllerConfigCCWithValue,
-        MODE: ControllerConfigCCWithValue,
+        SOURCE: ControllerConfigButton,
+        MODE: ControllerConfigButton,
     },
     FX_BIT_CRUSHER: {
         props: FuncProps
         BITS: ControllerConfigCC,
         RATE: ControllerConfigCC,
-        SOURCE: ControllerConfigCCWithValue,
+        SOURCE: ControllerConfigButton,
     },
     FX_MIX: {
         props: FuncProps
@@ -73,10 +73,9 @@ const commonFxControllers: CommonFxControllers = {
             id: ControllerIdNonMod.DSP1_SOURCE,
             label: 'Source bus',
             type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.DSP1_SRC1,
-                BUTTONS.BUTTONS_RIGHT.values.DSP1_SRC2,
+                buttonMidiValues.DSP1_SRC1,
+                buttonMidiValues.DSP1_SRC2,
             ],
         },
     },
@@ -109,10 +108,9 @@ const commonFxControllers: CommonFxControllers = {
             id: ControllerIdNonMod.DSP2_SOURCE,
             label: 'Source bus',
             type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.DSP2_SRC1,
-                BUTTONS.BUTTONS_RIGHT.values.DSP2_SRC2,
+                buttonMidiValues.DSP2_SRC1,
+                buttonMidiValues.DSP2_SRC2,
             ],
         },
 
@@ -120,10 +118,9 @@ const commonFxControllers: CommonFxControllers = {
             id: ControllerIdNonMod.DSP2_CHAIN,
             label: 'Chain effects',
             type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.DSP_CHAIN_OFF,
-                BUTTONS.BUTTONS_RIGHT.values.DSP_CHAIN_ON,
+                buttonMidiValues.DSP_CHAIN_OFF,
+                buttonMidiValues.DSP_CHAIN_ON,
             ],
         },
     },
@@ -147,20 +144,18 @@ const commonFxControllers: CommonFxControllers = {
             id: ControllerIdNonMod.CHORUS_SOURCE,
             label: 'Source bus',
             type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.CHORUS_SRC1,
-                BUTTONS.BUTTONS_RIGHT.values.CHORUS_SRC2,
+                buttonMidiValues.CHORUS_SRC1,
+                buttonMidiValues.CHORUS_SRC2,
             ],
         },
         MODE: {
             id: ControllerIdNonMod.CHORUS_MODE,
             label: 'Mode',
             type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.CHORUS_MODE_CHORUS,
-                BUTTONS.BUTTONS_RIGHT.values.CHORUS_MODE_VIBRATO,
+                buttonMidiValues.CHORUS_MODE_CHORUS,
+                buttonMidiValues.CHORUS_MODE_VIBRATO,
             ],
         },
     },
@@ -184,10 +179,9 @@ const commonFxControllers: CommonFxControllers = {
             id: ControllerIdNonMod.FX_BIT_CRUSHER_SOURCE,
             label: 'Source bus',
             type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.FX_BIT_CRUSHER_SRC1,
-                BUTTONS.BUTTONS_RIGHT.values.FX_BIT_CRUSHER_SRC2,
+                buttonMidiValues.FX_BIT_CRUSHER_SRC1,
+                buttonMidiValues.FX_BIT_CRUSHER_SRC2,
             ],
         },
     },

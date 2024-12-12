@@ -1,11 +1,10 @@
 import CC from '../../../midi/mapCC'
 import NRPN from '../../../midi/mapNRPN'
-import { BUTTONS } from '../../../midi/buttons'
 import {
     FuncProps,
     ControllerConfig,
     ControllerConfigCC,
-    ControllerConfigCCWithValue,
+    ControllerConfigButton,
     ControllerConfigNRPN, MidiGroup, ControllerConfigNRPNWithValue
 } from '../../../midi/types'
 import {
@@ -18,6 +17,7 @@ import {
 import { dbLevelResponseMapper, timeResponseMapper } from '../common/responseMappers'
 import { StageId } from './types'
 import { curveValuesUsed } from './generatedTypes'
+import {buttonMidiValues} from "../../../midi/buttonMidiValues";
 
 interface EnvControllers {
     props: FuncProps
@@ -38,13 +38,13 @@ interface EnvControllers {
     TOGGLE_STAGE: ControllerConfigCC
     SELECT: ControllerConfigCC
     SELECT_ENV3_ID: ControllerConfigCC
-    ENV_GATE: ControllerConfigCCWithValue
-    LOOP: ControllerConfigCCWithValue
-    INVERT: ControllerConfigCCWithValue
-    RESET_ON_TRIGGER: ControllerConfigCCWithValue
-    RELEASE_MODE: ControllerConfigCCWithValue
-    LOOP_MODE: ControllerConfigCCWithValue
-    BIPOLAR: ControllerConfigCCWithValue
+    ENV_GATE: ControllerConfigButton
+    LOOP: ControllerConfigButton
+    INVERT: ControllerConfigButton
+    RESET_ON_TRIGGER: ControllerConfigButton
+    RELEASE_MODE: ControllerConfigButton
+    LOOP_MODE: ControllerConfigButton
+    BIPOLAR: ControllerConfigButton
     OUTPUT: ControllerConfig
 }
 
@@ -192,72 +192,65 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             id: ControllerIdNonMod.ENV_GATE,
             label: 'Env gate',
             type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.ENV_TRIGGER,
-                BUTTONS.BUTTONS_RIGHT.values.ENV_RELEASE,
+                buttonMidiValues.ENV_TRIGGER,
+                buttonMidiValues.ENV_RELEASE,
             ],
         },
         INVERT: {
             id: ControllerIdEnvNonMod.ENV_INVERT,
             label: 'Invert',
             type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.ENV_INVERT_OFF,
-                BUTTONS.BUTTONS_RIGHT.values.ENV_INVERT_ON,
+                buttonMidiValues.ENV_INVERT_OFF,
+                buttonMidiValues.ENV_INVERT_ON,
             ],
         },
         RESET_ON_TRIGGER: {
             id: ControllerIdEnvNonMod.ENV_RESET_ON_TRIGGER,
             label: 'Reset on trigger',
             type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.ENV_RESET_ON_TRIGGER_OFF,
-                BUTTONS.BUTTONS_RIGHT.values.ENV_RESET_ON_TRIGGER_ON,
+                buttonMidiValues.ENV_RESET_ON_TRIGGER_OFF,
+                buttonMidiValues.ENV_RESET_ON_TRIGGER_ON,
             ],
         },
         RELEASE_MODE: {
             id: ControllerIdEnvNonMod.ENV_RELEASE_MODE,
             label: 'Release mode',
             type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.ENV_RELEASE_MODE_NORMAL,
-                BUTTONS.BUTTONS_RIGHT.values.ENV_RELEASE_MODE_SKIP_R1,
-                BUTTONS.BUTTONS_RIGHT.values.ENV_RELEASE_MODE_FREE_RUN,
+                buttonMidiValues.ENV_RELEASE_MODE_NORMAL,
+                buttonMidiValues.ENV_RELEASE_MODE_SKIP_R1,
+                buttonMidiValues.ENV_RELEASE_MODE_FREE_RUN,
             ],
         },
         LOOP: {
             id: ControllerIdEnvNonMod.ENV_LOOP,
             label: 'Loop on/off',
             type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.ENV_LOOP_OFF,
-                BUTTONS.BUTTONS_RIGHT.values.ENV_LOOP_ON,
+                buttonMidiValues.ENV_LOOP_OFF,
+                buttonMidiValues.ENV_LOOP_ON,
             ],
         },
         LOOP_MODE: {
             id: ControllerIdEnvNonMod.ENV_LOOP_MODE,
             label: 'Loop mode',
             type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.ENV_LOOP_MODE_GATED,
-                BUTTONS.BUTTONS_RIGHT.values.ENV_LOOP_MODE_COUNTED,
-                BUTTONS.BUTTONS_RIGHT.values.ENV_LOOP_MODE_INFINITE,
+                buttonMidiValues.ENV_LOOP_MODE_GATED,
+                buttonMidiValues.ENV_LOOP_MODE_COUNTED,
+                buttonMidiValues.ENV_LOOP_MODE_INFINITE,
             ],
         },
         BIPOLAR: {
             id: ControllerIdEnvNonMod.ENV_BIPOLAR,
             label: 'Bipolar',
             type: 'button',
-            cc: BUTTONS.BUTTONS_RIGHT.cc,
             values: [
-                BUTTONS.BUTTONS_RIGHT.values.ENV_BIPOLAR_OFF,
-                BUTTONS.BUTTONS_RIGHT.values.ENV_BIPOLAR_ON,
+                buttonMidiValues.ENV_BIPOLAR_OFF,
+                buttonMidiValues.ENV_BIPOLAR_ON,
             ],
         },
         OUTPUT: {

@@ -18,13 +18,13 @@ import { lfoCtrls } from './lfoControllers'
 import { selectController, selectLfoStages, setController } from '../controllers/controllersReducer'
 import { ButtonInputProperty, NumericInputProperty, PatchControllers } from '../common/types'
 import lfoMidiApi, { lfoParamReceive, lfoParamSend } from './lfoMidiApi'
-import { BUTTONS } from '../../../midi/buttons'
 import deepmerge from 'deepmerge'
 import { Curve } from '../../generatedTypes'
 import { paramReceive, paramSend } from '../common/commonMidiApi'
+import {buttonMidiValues} from "../../../midi/buttonMidiValues";
 
 // helper function - we use indexOf to make sure code works even if ordering of shapes changes
-const customShapeIndex = lfoCtrls.SHAPE.values.indexOf(BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_CUSTOM)
+const customShapeIndex = lfoCtrls.SHAPE.values.indexOf(buttonMidiValues.LFO_SHAPE_CUSTOM)
 
 const selectShape = (lfoId: number) => selectController(
     lfoCtrls.SHAPE,
@@ -233,36 +233,36 @@ class ShapeControllerHandler extends ControllerHandler {
     }
 
     // Shapes are indexed on the button MIDI VALUE, not button value  (e.g. not 0-indexed but from whatever
-    // BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SAW is
+    // buttonMidiValues.LFO_SHAPE_SAW is
     private shapes: { [key: number]: ShapeParams } = {
-        [BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SAW]: {
+        [buttonMidiValues.LFO_SHAPE_SAW]: {
             decayEnabled: false,
             curves: {
                 [StageId.ATTACK]: Curve.LIN
             }
         },
-        [BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_TRI]: {
+        [buttonMidiValues.LFO_SHAPE_TRI]: {
             decayEnabled: true,
             curves: {
                 [StageId.ATTACK]: Curve.LIN,
                 [StageId.DECAY]: Curve.LIN
             }
         },
-        [BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SQR]: {
+        [buttonMidiValues.LFO_SHAPE_SQR]: {
             decayEnabled: true,
             curves: {
                 [StageId.ATTACK]: Curve.LFO_SQUARE,
                 [StageId.DECAY]: Curve.LFO_SQUARE
             }
         },
-        [BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SIN]: {
+        [buttonMidiValues.LFO_SHAPE_SIN]: {
             decayEnabled: true,
             curves: {
                 [StageId.ATTACK]: Curve.COSINE,
                 [StageId.DECAY]: Curve.COSINE
             }
         },
-        [BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_RANDOM]: {
+        [buttonMidiValues.LFO_SHAPE_RANDOM]: {
             decayEnabled: false,
             curves: {
                 [StageId.ATTACK]: Curve.LFO_RANDOM

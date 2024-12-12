@@ -30,6 +30,7 @@ import {
     NON_MOD_POTS_COUNT,
     SRC_COUNT
 } from '../src/synthcore/modules/controllers/controllerIds'
+import CC from "../src/midi/mapCC";
 
 const fs = require('fs')
 
@@ -215,12 +216,35 @@ const generateCppFiles = () => {
     const potNrpnEnum: string[] = []
     const potNrpn: string[] = []
 
+    let currentButtonCCIndex = 0
+    const buttonCCs = [CC.BUTTONS_LEFT, CC.BUTTONS_CENTER, CC.BUTTONS_RIGHT]
+    const buttonValues: number[][] = []
+
     Object.entries(controllers)
         .forEach(([controllerGroupKey, controllersList]) => {
             Object.entries(controllersList)
                 .filter(([controllerKey, controller]) => controller.cc !== undefined)
                 .forEach(([controllerKey, controller]) => {
                     if (controller.type === 'button') {
+                        if (buttonValues[currentButtonCCIndex] && buttonValues[currentButtonCCIndex].length + controller.values.length > 128) {
+                            currentButtonCCIndex++
+                        }
+
+                        if(buttonValues[currentButtonCCIndex] === undefined){
+                            buttonValues[currentButtonCCIndex] = []
+                        }
+
+                        buttonValues[currentButtonCCIndex] = [
+                            buttonValues[currentButtonCCIndex],
+                            ...controller.values.length
+                        ]
+
+                        // TODO: generate
+                        // - mapping from button value to button cc
+                        // - midi receive-code that triggers correct ctrl method
+                        // - in other words, mapping from value/cc to correct non mod controller
+                        // - fix midi send and receive code.
+
                         buttonEnum.push(`BUTTON_${controllerGroupKey}_${controllerKey}`)
                         buttonCC.push(controller.cc)
                         buttonFirstValue.push(controller.values ? controller.values[0] : 0)

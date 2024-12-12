@@ -1,4 +1,9 @@
-import { ControllerConfigCC, ControllerConfigNRPN, MidiGroup } from './types'
+import {
+    ControllerConfigButton,
+    ControllerConfigCC,
+    ControllerConfigNRPN,
+    MidiGroup
+} from './types'
 import { store } from '../synthcore/store'
 import status from './midiStatus'
 import { selectMidiChannel } from '../synthcore/modules/settings/settingsReducer'
@@ -14,6 +19,12 @@ type MIDIAccess = WebMidi.MIDIAccess
 export let lastSentMidiGroup: MidiGroup | undefined;
 
 type CCSubscriber = {
+    id: number;
+    values: number[] | undefined;
+    callback: (value: number) => void;
+}
+
+type ButtonSubscriber = {
     id: number;
     values: number[] | undefined;
     callback: (value: number) => void;
@@ -51,6 +62,12 @@ const midiConfig = {
     channel: 0,
 }
 
+const buttonCCs = [
+    CC.BUTTONS_LEFT,
+    CC.BUTTONS_CENTER,
+    CC.BUTTONS_RIGHT,
+]
+
 export const sysexCommands = {
     RPC: 0,
 }
@@ -59,10 +76,54 @@ let midiOut: MIDIOutput | undefined
 let midiIn: MIDIInput | undefined
 
 let idPool = 0
+let buttonSubscribers: ButtonSubscriber[]  = []
 const ccSubscribers: { [key: number]: CCSubscriber[] } = {}
 const nrpnSubscribers: { [key: number]: NRPNSubscriber[] } = {}
 
 const getChannel = () => selectMidiChannel(store.getState())
+
+export const button = {
+    subscribe: (callback: (value: number) => void, { values }: ControllerConfigButton) => {
+        const id = idPool++
+        buttonSubscribers = [
+            ...(buttonSubscribers || []), { id, values, callback }
+        ]
+        return id
+    },
+    unsubscribe: (controller: ControllerConfigButton, id: number) => {
+        const index = buttonSubscribers.map(sub => sub.id).indexOf(id)
+        if (index > -1) {
+            buttonSubscribers = [...buttonSubscribers.slice(0, index), ...buttonSubscribers.slice(index + 1)]
+        }
+    },
+    publish: (value: number) => {
+        if (buttonSubscribers) {
+            buttonSubscribers.forEach((subscriber) => {
+                if (!subscriber.values || subscriber.values.includes(value)) {
+                    subscriber.callback(value)
+                }
+            })
+        }
+    },
+    send: (controller: ControllerConfigButton, value: number, loopback = false) => {
+
+        if (loopback) {
+            button.publish(value)
+        }
+        if (true || midiOut) {
+            // serialize value - button value is split across multiple CCs so
+            // we need to pick the correct one.
+            // TODO: Make this a bit less smart by generating mapping tables
+            const buttonMidiCC = buttonCCs[Math.floor(value / 128)]
+            const buttonMidiValue = value % 128
+
+            const ccForChannel = status.CC + getChannel()
+            const data = [ccForChannel, buttonMidiCC, buttonMidiValue]
+            logger.midiMsg(data)
+            midiOut?.send(data)
+        }
+    }
+}
 
 export const cc = {
     subscribe: (callback: (value: number) => void, { cc, values }: ControllerConfigCC) => {
@@ -207,6 +268,12 @@ export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
             currNRPN.hiValue = 0
             currNRPN.midValue = 0
             currNRPN.loValue = 0
+        } else if (buttonCCs.indexOf(midiData[1]) > -1){
+            // Deserialize button value index, buttons are automatically split across multiple
+            // CC values.
+            // TODO: Make this a bit less smart by generating mapping tables
+            const multiplier = buttonCCs.indexOf(midiData[1])
+            button.publish(multiplier * 128 + midiData[2])
         } else {
             cc.publish(midiData[1], midiData[2])
         }

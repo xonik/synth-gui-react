@@ -1,14 +1,14 @@
 import CC from '../../../midi/mapCC'
-import { BUTTONS } from '../../../midi/buttons'
-import { ControllerConfigCC, ControllerConfigCCWithValue, ControllerConfigNRPN, FuncProps } from '../../../midi/types'
+import { ControllerConfigCC, ControllerConfigButton, ControllerConfigNRPN, FuncProps } from '../../../midi/types'
 import { ControllerIdNonMod, ControllerIdNonModPots } from '../controllers/controllerIds'
 import NRPN from '../../../midi/mapNRPN'
+import {buttonMidiValues} from "../../../midi/buttonMidiValues";
 
 interface ModsControllers {
     props: FuncProps
     AMOUNT: ControllerConfigNRPN
     UI_AMOUNT: ControllerConfigNRPN
-    ROUTE_BUTTON: ControllerConfigCCWithValue
+    ROUTE_BUTTON: ControllerConfigButton
     SET_SRC_ID: ControllerConfigCC
     SET_DST_ID: ControllerConfigCC
     SET_DST_INDEX: ControllerConfigCC
@@ -24,11 +24,10 @@ const modsControllers: ModsControllers = {
         id: ControllerIdNonMod.MOD_DST,
         label: 'From-To',
         type: 'button',
-        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
-            BUTTONS.BUTTONS_CENTER.values.ROUTE_OFF,
-            BUTTONS.BUTTONS_CENTER.values.ROUTE_FROM_ON,
-            BUTTONS.BUTTONS_CENTER.values.ROUTE_TO_ON,
+            buttonMidiValues.ROUTE_OFF,
+            buttonMidiValues.ROUTE_FROM_ON,
+            buttonMidiValues.ROUTE_TO_ON,
         ],
     },
 

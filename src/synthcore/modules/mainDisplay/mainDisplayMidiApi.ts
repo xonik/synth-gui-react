@@ -1,6 +1,6 @@
 import { mainDisplayApi } from '../../synthcoreApi'
 import controllers from '../controllers/controllers'
-import { cc } from '../../../midi/midibus'
+import {button, cc} from '../../../midi/midibus'
 import { ApiSource } from '../../types'
 import { shouldSend } from '../../../midi/utils'
 import { boolParamReceive, boolParamSend, buttonParamReceive, buttonParamSend, } from '../common/commonMidiApi'
@@ -16,10 +16,10 @@ const currentScreen = (() => {
             if (!shouldSend(source)) {
                 return
             }
-            cc.send(cfg, cfg.values[id])
+            button.send(cfg, cfg.values[id])
         },
         receive: () => {
-            cc.subscribe((value: number) => {
+            button.subscribe((value: number) => {
                 const id = cfg.values.indexOf(value)
                 mainDisplayApi.setCurrentScreen(id, ApiSource.MIDI)
             }, cfg)

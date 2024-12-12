@@ -21,7 +21,7 @@ export interface ControllerConfig {
     // Funcs to use if pots should behave differently from stored/midi value
     readonly uiResponse?: { output: (val: number, bipolar?: boolean) => number, input: (val: number, bipolar?: boolean) => number}
 
-    // TODO: Only for ControllerConfigCC but here because TS complains!
+    // TODO: Only for ControllerConfigCC and ControllerConfigButton but here because TS complains!
     readonly values?: number[]
     readonly bipolar?: boolean
 
@@ -32,12 +32,13 @@ export interface ControllerConfig {
     readonly legalValueIndexes?: number[]
 }
 
-export interface ControllerConfigCC extends ControllerConfig {
-    readonly cc: number
+export interface ControllerConfigButton extends ControllerConfig {
+    readonly values: number[]
 }
 
-export interface ControllerConfigCCWithValue extends ControllerConfigCC {
-    readonly values: number[]
+
+export interface ControllerConfigCC extends ControllerConfig {
+    readonly cc: number
 }
 
 export interface ControllerConfigNRPN extends ControllerConfig {

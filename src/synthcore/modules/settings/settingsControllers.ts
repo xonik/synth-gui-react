@@ -1,12 +1,12 @@
-import { BUTTONS } from '../../../midi/buttons'
-import { FuncProps, ControllerConfigCCWithValue, ControllerConfigNRPN } from '../../../midi/types'
+import { FuncProps, ControllerConfigButton, ControllerConfigNRPN } from '../../../midi/types'
 import { ControllerIdNonMod, ControllerIdNonModPots } from '../controllers/controllerIds'
+import {buttonMidiValues} from "../../../midi/buttonMidiValues";
 
 
 interface SettingsControllers {
     props: FuncProps
-    CALIBRATE_DCO1: ControllerConfigCCWithValue
-    CALIBRATE_DCO2: ControllerConfigCCWithValue
+    CALIBRATE_DCO1: ControllerConfigButton
+    CALIBRATE_DCO2: ControllerConfigButton
 }
 
 const settingsControllers: SettingsControllers = {
@@ -15,18 +15,16 @@ const settingsControllers: SettingsControllers = {
         id: ControllerIdNonMod.CALIBRATE_DCO1,
         label: 'Calibrate DCO 1',
         type: 'button',
-        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
-            BUTTONS.BUTTONS_CENTER.values.CALIBRATE_DCO1,
+            buttonMidiValues.CALIBRATE_DCO1,
         ],
     },
     CALIBRATE_DCO2: {
         id: ControllerIdNonMod.CALIBRATE_DCO2,
         label: 'Calibrate DCO 2',
         type: 'button',
-        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
-            BUTTONS.BUTTONS_CENTER.values.CALIBRATE_DCO2,
+            buttonMidiValues.CALIBRATE_DCO2,
         ],
     },
 
@@ -35,11 +33,10 @@ const settingsControllers: SettingsControllers = {
         id: ControllerIdNonMod.DCO_CALIBRATE,
         label: 'Note priority',
         type: 'button',
-        cc: BUTTONS.BUTTONS_LEFT.cc,
         values: [
-            BUTTONS.BUTTONS_CENTER.values.NOTE_PRIORITY_LOW,
-            BUTTONS.BUTTONS_CENTER.values.NOTE_PRIORITY_HIGH,
-            BUTTONS.BUTTONS_CENTER.values.NOTE_PRIORITY_LAST,
+            buttonMidiValues.NOTE_PRIORITY_LOW,
+            buttonMidiValues.NOTE_PRIORITY_HIGH,
+            buttonMidiValues.NOTE_PRIORITY_LAST,
         ],
     },*/
 }

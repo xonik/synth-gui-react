@@ -1,10 +1,10 @@
-import { BUTTONS } from '../../../midi/buttons'
-import { FuncProps, ControllerConfigCCWithValue } from '../../../midi/types'
+import { FuncProps, ControllerConfigButton } from '../../../midi/types'
 import { ControllerIdNonMod } from '../controllers/controllerIds'
+import {buttonMidiValues} from "../../../midi/buttonMidiValues";
 
 interface NoiseControllers {
     props: FuncProps
-    COLOUR: ControllerConfigCCWithValue
+    COLOUR: ControllerConfigButton
 }
 
 const noiseControllers: NoiseControllers = {
@@ -13,11 +13,10 @@ const noiseControllers: NoiseControllers = {
         id: ControllerIdNonMod.NOISE_COLOUR,
         label: 'Colour',
         type: 'button',
-        cc: BUTTONS.BUTTONS_LEFT.cc,
         values: [
-            BUTTONS.BUTTONS_LEFT.values.NOISE_COLOUR_WHITE,
-            BUTTONS.BUTTONS_LEFT.values.NOISE_COLOUR_PINK,
-            BUTTONS.BUTTONS_LEFT.values.NOISE_COLOUR_RED,
+            buttonMidiValues.NOISE_COLOUR_WHITE,
+            buttonMidiValues.NOISE_COLOUR_PINK,
+            buttonMidiValues.NOISE_COLOUR_RED,
         ],
     }
 }

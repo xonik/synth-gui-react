@@ -5,7 +5,7 @@ import { ApiSource } from '../../types'
 import { shouldSend } from '../../../midi/utils'
 import logger from '../../../utils/logger'
 import { NumericInputProperty } from '../common/types'
-import { ControllerConfig, ControllerConfigCC, ControllerConfigCCWithValue, MidiGroup } from '../../../midi/types'
+import {ControllerConfig, ControllerConfigButton, ControllerConfigCC, MidiGroup} from '../../../midi/types'
 import { paramReceive, ParamReceiveFunc, paramSend, ParamSendFunc } from '../common/commonMidiApi'
 
 let currentReceivedLfoId = -1
@@ -92,7 +92,7 @@ export const lfoParamSend: ParamSendFunc = (
 }
 
 export const lfoParamReceive: ParamReceiveFunc = (
-    ctrl: ControllerConfig | ControllerConfigCC | ControllerConfigCCWithValue,
+    ctrl: ControllerConfig | ControllerConfigCC | ControllerConfigButton,
     apiSetValue: (input: NumericInputProperty) => void,
     inputMapper?: (midiValue: number, ctrl: ControllerConfig) => ({ value: number, valueIndex?: number }),
 ) => {
