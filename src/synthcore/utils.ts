@@ -1,5 +1,13 @@
 import { AnyAction, Dispatch } from '@reduxjs/toolkit'
 import { store } from './store'
+import { getDefaultController, mergeControllers } from "./modules/controllers/controllersUtils";
+import { getDefaultEnv, getDefaultEnvStages, getDefaultEnvUiStages } from "./modules/env/envUtils";
+import { envCtrls } from "./modules/env/envControllers";
+import { getDefaultLfo, getDefaultLfoStages, getDefaultUiLfoStages } from "./modules/lfo/lfoUtils";
+import { getDefaultOscState } from "./modules/osc/oscUtils";
+import { getDefaultSrcMixState, getDefaultSrcMixUiState } from "./modules/srcMix/srcMixUtils";
+import { getDefaultFiltersState } from "./modules/filters/filtersUtils";
+import { getDefaultPreFxState } from "./modules/fx/fxUtils";
 
 let storeDispatch: Dispatch | undefined
 
