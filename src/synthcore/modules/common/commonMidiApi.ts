@@ -31,7 +31,7 @@ export const toggleParamSend = (
     if (!shouldSend(source)) {
         return
     }
-    logger.midi(`Setting value for ${cfg.label} to ${value}`)
+    logger.midi(`Setting button param value for ${cfg.label} to ${value}`)
     button.send(cfg, cfg.values[value])
 }
 
@@ -105,17 +105,18 @@ export const paramSend: ParamSendFunc = (
         return
     }
 
+    console.log('Sending ctrl', ctrl)
     if (ctrl.type === 'button') {
-        logger.midi(`Setting value for ${ctrl.label} to ${value}`)
+        logger.midi(`Setting paramSend button value for ${ctrl.label} to ${value}`)
         const buttonValue = (ccWithValueMapper.output)(value, ctrl)
         button.send(ctrl as ControllerConfigButton, buttonValue)
     } else if (ctrl.hasOwnProperty('cc')) {
         const midiValue = (outputMapper || ccMapper.output)(value, ctrl)
-        logger.midi(`Setting value for ${ctrl.label} to ${value} (${midiValue})`)
+        logger.midi(`Setting paramSend cc value for ${ctrl.label} to ${value} (${midiValue})`)
         cc.send(ctrl as ControllerConfigCC, midiValue)
     } else if (ctrl.hasOwnProperty('addr')) {
         const midiValue = (outputMapper || nrpnMapper.output)(value, ctrl, valueIndex)
-        logger.midi(`Setting value for ${ctrl.label} to ${value} (${midiValue})`)
+        logger.midi(`Setting paramSend nrpn value for ${ctrl.label} to ${value} (${midiValue})`)
         nrpn.send(ctrl as ControllerConfigNRPN, midiValue)
     }
 }
@@ -160,7 +161,7 @@ export const boolParamSend = (
     }
 
     const index = on ? 1 : 0
-    logger.midi(`Setting value for ${cfg.label} to ${index}`)
+    logger.midi(`Setting boolParam value for ${cfg.label} to ${index}`)
     button.send(cfg, cfg.values[index])
 }
 

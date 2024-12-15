@@ -107,10 +107,11 @@ export const button = {
         if (true || midiOut) {
             // serialize value - button value is split across multiple CCs so
             // we need to pick the correct one.
-            const buttonMidiCC = Math.floor(value / 128)
+            const buttonMidiCC = buttonCCs[Math.floor(value / 128)]
             const buttonMidiValue = value % 128
 
             const ccForChannel = status.CC + getChannel()
+            console.log(`Sending CC ${buttonMidiCC}`)
             const data = [ccForChannel, buttonMidiCC, buttonMidiValue]
             logger.midiMsg(data)
             midiOut?.send(data)
