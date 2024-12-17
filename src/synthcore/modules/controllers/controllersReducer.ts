@@ -119,7 +119,7 @@ function getControllersState(controllersStates: ControllersStates, ctrl: Control
     if(ctrl.global){
         return controllersStates.globalControllers
     } else {
-        return controllersStates.voiceGroupControllers[getVoiceGroupId(ctrl)]
+        return controllersStates.voiceGroupControllers[getVoiceGroupId()]
     }
 }
 

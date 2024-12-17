@@ -10,10 +10,6 @@ export function setSelectedVoiceGroup(voiceGroup: number) {
     selectedVoiceGroup = voiceGroup
 }
 
-export function getVoiceGroupId(ctrl?: ControllerConfig): number {
-    if(ctrl?.global){
-        return globalGroup
-    } else {
-        return selectedVoiceGroup
-    }
+export function getVoiceGroupId(): number {
+    return selectedVoiceGroup
 }
