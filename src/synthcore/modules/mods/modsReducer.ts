@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
 import { ApiSource } from '../../types'
 import { NumericPayload } from '../common/types'
-import { selectedVoiceGroup } from "../../selectedVoiceGroup";
+import { getVoiceGroupId } from "../../selectedVoiceGroup";
 
 type ModsState = {
     gui: {
@@ -16,10 +16,10 @@ type ModsState = {
         amount: number,
         routeButton: number,
     }
-    modValues: number[][][];
+    modValues: number[][][][]; // [voicegroup, sourceId, dstId, dstCtrIndex]
 }
 
-const initialStateCreator = () => ({
+const initialState: ModsState = {
     gui: {
         source: 0,
         dstGroup: 0,
@@ -31,19 +31,8 @@ const initialStateCreator = () => ({
         amount: 0,
         routeButton: 0,
     },
-    modValues: [],
-})
-
-export const initialState: ModsState[] = [
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-]
+    modValues: [[],[],[],[],[],[],[],[]], // TODO: Needs to match the number of voiceGroups
+}
 
 type GuiSourcePayload = {
     source: ApiSource;
@@ -84,8 +73,9 @@ type ModValuePayload = {
 
 }
 
+// TODO: Make modValues easier to read by using a map.
 type ModValuesPayload = {
-    modValues: number[][][];
+    modValues: number[][][];  // [sourceId, dstId, dstCtrIndex] = value
     source: ApiSource
 }
 
@@ -94,44 +84,45 @@ export const modsSlice = createSlice({
     initialState,
     reducers: {
         setGuiSource: (state, { payload }: PayloadAction<GuiSourcePayload>) => {
-            state[selectedVoiceGroup].gui.lastModSelectSource = payload.source;
-            state[selectedVoiceGroup].gui.source = payload.guiSource
+            state.gui.lastModSelectSource = payload.source;
+            state.gui.source = payload.guiSource
 
         },
         setGuiDstGroup: (state, { payload }: PayloadAction<GuiDstGroupPayload>) => {
-            state[selectedVoiceGroup].gui.lastModSelectSource = payload.source;
-            state[selectedVoiceGroup].gui.dstGroup = payload.guiDstGroup
+            state.gui.lastModSelectSource = payload.source;
+            state.gui.dstGroup = payload.guiDstGroup
         },
         setGuiDstFunc: (state, { payload }: PayloadAction<GuiDstFuncPayload>) => {
-            state[selectedVoiceGroup].gui.lastModSelectSource = payload.source;
-            state[selectedVoiceGroup].gui.dstFunc = payload.guiDstFunc
+            state.gui.lastModSelectSource = payload.source;
+            state.gui.dstFunc = payload.guiDstFunc
         },
         setGuiDstParam: (state, { payload }: PayloadAction<GuiDstParamPayload>) => {
-            state[selectedVoiceGroup].gui.lastModSelectSource = payload.source;
-            state[selectedVoiceGroup].gui.dstParam = payload.guiDstParam
+            state.gui.lastModSelectSource = payload.source;
+            state.gui.dstParam = payload.guiDstParam
         },
         setLastModSelectSource: (state, { payload }: PayloadAction<GuiLastModSelectSourcePayload>) => {
-            state[selectedVoiceGroup].gui.lastModSelectSource = payload.source;
-            state[selectedVoiceGroup].gui.lastModSelectSource = payload.source
+            state.gui.lastModSelectSource = payload.source;
+            state.gui.lastModSelectSource = payload.source
         },
         setModValue: (state, { payload }: PayloadAction<ModValuePayload>) => {
             const {sourceId, dstId, dstCtrlIndex = 0, modValue} = payload;
-            if (!state[selectedVoiceGroup].modValues[sourceId]) {
-                state[selectedVoiceGroup].modValues[sourceId] = []
+            const selectedVoiceGroup = getVoiceGroupId()
+            if (!state.modValues[selectedVoiceGroup][sourceId]) {
+                state.modValues[selectedVoiceGroup][sourceId] = []
             }
-            if (!state[selectedVoiceGroup].modValues[sourceId][dstId]) {
-                state[selectedVoiceGroup].modValues[sourceId][dstId] = []
+            if (!state.modValues[selectedVoiceGroup][sourceId][dstId]) {
+                state.modValues[selectedVoiceGroup][sourceId][dstId] = []
             }
-            state[selectedVoiceGroup].modValues[sourceId][dstId][dstCtrlIndex] = modValue
+            state.modValues[selectedVoiceGroup][sourceId][dstId][dstCtrlIndex] = modValue
         },
         setModValues: (state, { payload }: PayloadAction<ModValuesPayload>) => {
-            state[selectedVoiceGroup].modValues = payload.modValues
+            state.modValues[getVoiceGroupId()] = payload.modValues
         },
         setUiRouteButton: (state, { payload }: PayloadAction<NumericPayload>) => {
-            state[selectedVoiceGroup].ui.routeButton = payload.value;
+            state.ui.routeButton = payload.value;
         },
         setUiAmount: (state, { payload }: PayloadAction<NumericPayload>) => {
-            state[selectedVoiceGroup].ui.amount = payload.value;
+            state.ui.amount = payload.value;
         },
 
         // actions only consumed by api
@@ -154,17 +145,17 @@ export const {
     setUiRouteButton,
 } = modsSlice.actions
 
-export const selectGuiSource = (state: RootState) => state.mods[selectedVoiceGroup].gui.source
-export const selectModsUi = (state: RootState) => state.mods[selectedVoiceGroup].ui
-export const selectGuiDstGroup = (state: RootState) => state.mods[selectedVoiceGroup].gui.dstGroup
-export const selectGuiDstFunc = (state: RootState) => state.mods[selectedVoiceGroup].gui.dstFunc
-export const selectGuiDstParam = (state: RootState) => state.mods[selectedVoiceGroup].gui.dstParam
-export const selectGuiLastModSelectSource = (state: RootState) => state.mods[selectedVoiceGroup].gui.lastModSelectSource
+export const selectGuiSource = (state: RootState) => state.mods.gui.source
+export const selectModsUi = (state: RootState) => state.mods.ui
+export const selectGuiDstGroup = (state: RootState) => state.mods.gui.dstGroup
+export const selectGuiDstFunc = (state: RootState) => state.mods.gui.dstFunc
+export const selectGuiDstParam = (state: RootState) => state.mods.gui.dstParam
+export const selectGuiLastModSelectSource = (state: RootState) => state.mods.gui.lastModSelectSource
 export const selectModValue = (sourceId: number, dstId: number, dstCtrlIndex: number) => (state: RootState) => {
-    return state.mods[selectedVoiceGroup].modValues?.[sourceId]?.[dstId]?.[dstCtrlIndex] || 0
+    return state.mods.modValues?.[getVoiceGroupId()]?.[sourceId]?.[dstId]?.[dstCtrlIndex] || 0
 }
 export const selectModValues = () => (state: RootState) => {
-    return state.mods[selectedVoiceGroup].modValues
+    return state.mods.modValues[getVoiceGroupId()]
 }
 
 export default modsSlice.reducer

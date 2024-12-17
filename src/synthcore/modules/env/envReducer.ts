@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { StageId } from './types'
 import { RootState } from '../../store'
-import { selectedVoiceGroup } from "../../selectedVoiceGroup";
+import { getVoiceGroupId } from "../../selectedVoiceGroup";
 
 type EnvelopesState = {
     gui: {
@@ -42,13 +42,13 @@ export const envelopesSlice = createSlice({
     initialState,
     reducers: {
         selectStage: (state, { payload }: PayloadAction<StagePayload>) => {
-            state[selectedVoiceGroup].gui.currStageId = payload.stage
+            state[getVoiceGroupId()].gui.currStageId = payload.stage
         },
         deselectStage: (state, { payload }: PayloadAction<StagePayload>) => {
-            state[selectedVoiceGroup].gui.currStageId = StageId.STOPPED
+            state[getVoiceGroupId()].gui.currStageId = StageId.STOPPED
         },
         selectGuiEnv: (state, { payload }: PayloadAction<EnvPayload>) => {
-            state[selectedVoiceGroup].gui.currEnvId = payload.env
+            state[getVoiceGroupId()].gui.currEnvId = payload.env
         },
 
         // actions only consumed by api
@@ -64,7 +64,7 @@ export const {
     toggleStageSelected,
 } = envelopesSlice.actions
 
-export const selectCurrStageId = (state: RootState) => state.envelopes[selectedVoiceGroup].gui.currStageId
-export const selectCurrEnvId = (state: RootState) => state.envelopes[selectedVoiceGroup].gui.currEnvId
+export const selectCurrStageId = (state: RootState) => state.envelopes[getVoiceGroupId()].gui.currStageId
+export const selectCurrEnvId = (state: RootState) => state.envelopes[getVoiceGroupId()].gui.currEnvId
 
 export default envelopesSlice.reducer
