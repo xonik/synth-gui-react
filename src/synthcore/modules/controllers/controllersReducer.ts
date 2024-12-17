@@ -38,8 +38,13 @@ type ControllersState = {
     uiControllers: Controllers
 }
 
+type ControllersStates = {
+    globalControllers: ControllersState,
+    voiceGroupControllers: ControllersState[]
+}
+
 export const initialStateCreator =
-    () => {
+    (): ControllersState => {
 
         const controllers = [
             getDefaultOscState(),
@@ -68,17 +73,20 @@ export const initialStateCreator =
         }
     }
 
-const initialState = [
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(), // The last group is used for storing global params (params that affect all/no voices)
-]
+const initialState = {
+    globalControllers: initialStateCreator(), // TODO: Remove non global controllers
+    voiceGroupControllers: [
+        initialStateCreator(),
+        initialStateCreator(),
+        initialStateCreator(),
+        initialStateCreator(),
+        initialStateCreator(),
+        initialStateCreator(),
+        initialStateCreator(),
+        initialStateCreator(),
+        initialStateCreator(), // The last group is used for storing global params (params that affect all/no voices)
+    ]
+}
 
 
 export const controllersSlice = createSlice({
@@ -90,9 +98,11 @@ export const controllersSlice = createSlice({
         setController: (state, {payload}: PayloadAction<NumericControllerPayload | NumericControllerPayload[]>) => {
             const payloads = Array.isArray(payload) ? payload : [payload]
             payloads.forEach((aPayload) => {
-                controllerState.set(state[getVoiceGroupId(aPayload.ctrl)], aPayload)
+                const existingControllersState = getControllersState(state, aPayload.ctrl)
+                controllerState.set(existingControllersState, aPayload)
+
                 if (aPayload.uiValue !== undefined) {
-                    uiControllerState.set(state[getVoiceGroupId(aPayload.ctrl)], aPayload, aPayload.uiValue)
+                    uiControllerState.set(existingControllersState, aPayload, aPayload.uiValue)
                 }
             })
         },
@@ -103,6 +113,15 @@ export const {
     setController,
 } = controllersSlice.actions
 
+// Selects the correct placement for controllers, as we have separate controllers per voice group and
+// another for global controllers that should not be affected by changing the current voice group.
+function getControllersState(controllersStates: ControllersStates, ctrl: ControllerConfig){
+    if(ctrl.global){
+        return controllersStates.globalControllers
+    } else {
+        return controllersStates.voiceGroupControllers[getVoiceGroupId(ctrl)]
+    }
+}
 
 const controllerState = {
     set: (state: Draft<ControllersState>, payload: NumericControllerPayload) => {
@@ -118,25 +137,21 @@ const controllerState = {
         }
     },
     get: (state: RootState, ctrl: ControllerConfig, ctrlIndex: number = 0, valueIndex: number = 0) => {
-        const ctrlValue = state.controllers[getVoiceGroupId(ctrl)].controllers[ctrlIndex]
-        if (ctrlValue === undefined || ctrlValue[ctrl.id] === undefined) {
-            return 0
-        } else {
-            return state.controllers[getVoiceGroupId(ctrl)].controllers[ctrlIndex][ctrl.id][valueIndex] || 0
-        }
+        const ctrlValue = getControllersState(state.controllers, ctrl).controllers[ctrlIndex]
+        return ctrlValue?.[ctrl.id]?.[valueIndex] || 0
     },
     getValueIndexValues: (state: RootState, ctrl: ControllerConfig, ctrlIndex: number = 0): PatchControllerValues => {
-        const ctrlValue = state.controllers[getVoiceGroupId(ctrl)].controllers[ctrlIndex]
+        const ctrlValue = getControllersState(state.controllers, ctrl).controllers[ctrlIndex]
         if (ctrlValue === undefined || ctrlValue[ctrl.id] === undefined) {
             return {0: 0}
         } else {
             let valueIndexValues: PatchControllerValues = {}
             if (ctrl.legalValueIndexes) {
                 ctrl.legalValueIndexes?.forEach((valueIndex) => {
-                    valueIndexValues[valueIndex] = state.controllers[getVoiceGroupId(ctrl)].controllers[ctrlIndex][ctrl.id][valueIndex] || 0
+                    valueIndexValues[valueIndex] = ctrlValue[ctrl.id][valueIndex] || 0
                 })
             } else {
-                valueIndexValues[0] = state.controllers[getVoiceGroupId(ctrl)].controllers[ctrlIndex][ctrl.id][0] || 0
+                valueIndexValues[0] = ctrlValue[ctrl.id][0] || 0
             }
             return valueIndexValues
         }
@@ -157,12 +172,8 @@ const uiControllerState = {
         }
     },
     get: (state: RootState, ctrl: ControllerConfig, ctrlIndex: number = 0, valueIndex: number = 0) => {
-        const ctrlValue = state.controllers[getVoiceGroupId(ctrl)].uiControllers[ctrlIndex]
-        if (ctrlValue === undefined || ctrlValue[ctrl.id] === undefined) {
-            return 0
-        } else {
-            return state.controllers[getVoiceGroupId(ctrl)].uiControllers[ctrlIndex][ctrl.id][valueIndex] || 0
-        }
+        const ctrlValue = getControllersState(state.controllers, ctrl).uiControllers[ctrlIndex]
+        return ctrlValue?.[ctrl.id]?.[valueIndex] || 0
     }
 }
 
