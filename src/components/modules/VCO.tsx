@@ -59,14 +59,14 @@ const VCO = ({ x, y }: Props) => {
 
         <RoundPushButton8 x={col1} y={bottomRow1}
                           ledPosition="top" ledCount={2} ledLabels={['Osc 1', 'Ext']}
-                          label="X-mod src" labelPosition="bottom"
+                          label="FM src" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
-                          ctrl={oscControllers.VCO.CROSS_MOD_SRC}
+                          ctrl={oscControllers.VCO.FM_SRC}
         />
 
-        <RotaryPot10 x={col2} y={bottomRow1} ledMode="multi" label="X-mod amt"
+        <RotaryPot10 x={col2} y={bottomRow1} ledMode="multi" label="FM"
                      ctrlGroup={ctrlGroup}
-                     ctrl={oscControllers.VCO.CROSS_MOD}
+                     ctrl={oscControllers.VCO.FM_AMT}
         />
 
         <RotaryPot10 x={col4} y={bottomRow1} ledMode="single" label="PW"

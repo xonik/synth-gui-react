@@ -71,7 +71,7 @@ export enum ControllerIdDst {
     VCO_NOTE,
     VCO_DETUNE,
     VCO_WAVEFORM,
-    VCO_CROSS_MOD,
+    VCO_FM_AMT,
     VCO_PW,
     //(Ext CV, Wheel amt, Lfo amt, Kbd amt?)
 
@@ -206,7 +206,7 @@ export enum ControllerIdNonMod {
 
     VCO_SYNC,
     VCO_SYNC_SRC,
-    VCO_CROSS_MOD_SRC,
+    VCO_FM_SRC,
     VCO_EXT_CV,
     VCO_WHEEL,
     VCO_LFO,

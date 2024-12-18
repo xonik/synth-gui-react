@@ -24,7 +24,7 @@ const mapCC = {
     VCO_NOTE: 22,
     VCO_DETUNE: 23,
     VCO_WAVEFORM: 24,
-    VCO_CROSS_MOD: 25,
+    VCO_FM_AMT: 25,
     VCO_PW: 26,
     DISTORTION_DRIVE: 27,
     DISTORTION_LEVEL: 28,

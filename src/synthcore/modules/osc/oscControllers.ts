@@ -55,11 +55,11 @@ interface OscControllers {
         NOTE: ControllerConfigCC
         DETUNE: ControllerConfigCC
         WAVEFORM: ControllerConfigCC
-        CROSS_MOD: ControllerConfigCC
+        FM_AMT: ControllerConfigCC
         PW: ControllerConfigCC
         SYNC: ControllerConfigButton
         SYNC_SRC: ControllerConfigButton
-        CROSS_MOD_SRC: ControllerConfigButton
+        FM_SRC: ControllerConfigButton
         EXT_CV: ControllerConfigButton
         WHEEL: ControllerConfigButton
         LFO: ControllerConfigButton
@@ -379,12 +379,12 @@ const oscControllers: OscControllers = {
             isDstDigi: true,
             type: 'pot', cc: CC.VCO_WAVEFORM
         },
-        CROSS_MOD: {
-            id: ControllerIdDst.VCO_CROSS_MOD,
-            label: 'Cross mod',
-            shortLabel: 'X-mod',
+        FM_AMT: {
+            id: ControllerIdDst.VCO_FM_AMT,
+            label: 'FM Amt',
+            shortLabel: 'FM',
             isDstDigi: true,
-            type: 'pot', cc: CC.VCO_CROSS_MOD
+            type: 'pot', cc: CC.VCO_FM_AMT
         },
         PW: {
             id: ControllerIdDst.VCO_PW,
@@ -415,13 +415,13 @@ const oscControllers: OscControllers = {
                 buttonMidiValues.OSC3_SYNC_SRC_OSC_2,
             ],
         },
-        CROSS_MOD_SRC: {
-            id: ControllerIdNonMod.VCO_CROSS_MOD_SRC,
+        FM_SRC: {
+            id: ControllerIdNonMod.VCO_FM_SRC,
             label: 'Cross mod source',
             type: 'button',
             values: [
-                buttonMidiValues.OSC3_CROSS_MOD_SRC_OSC1,
-                buttonMidiValues.OSC3_CROSS_MOD_SRC_EXT,
+                buttonMidiValues.OSC3_FM_SRC_OSC1,
+                buttonMidiValues.OSC3_FM_SRC_EXT,
             ],
         },
         EXT_CV: {
