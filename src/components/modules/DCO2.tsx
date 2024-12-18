@@ -60,7 +60,7 @@ const DCO2 = ({ x, y }: Props) => {
                              ctrl={oscControllers.DCO2.PRE_FILTER_SINE}
         />
 
-        <RoundPushButton8 x={col4} y={y + 11}
+        <RoundPushButton8 x={col4} y={y + 7.5}
                           ledPosition="top" ledCount={3} ledLabels={['DCO', 'WT', 'PCM']}
                           label="Mode" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}

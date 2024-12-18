@@ -50,11 +50,18 @@ const VCO = ({ x, y }: Props) => {
                           ctrl={oscControllers.VCO.SYNC}
         />
 
-        <RoundPushButton8 x={col4} y={y + 11}
+        <RoundPushButton8 x={col4} y={y + 7.5}
                           ledPosition="top" ledCount={2} ledLabels={['1', '2']}
                           label="Sync src" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={oscControllers.VCO.SYNC_SRC}
+        />
+
+        <RoundPushButton8 x={col1} y={y + 7.5}
+                          ledPosition="top" ledCount={2} ledLabels={['Lin', 'Log']}
+                          label="FM mode" labelPosition="bottom"
+                          ctrlGroup={ctrlGroup}
+                          ctrl={oscControllers.VCO.FM_MODE}
         />
 
         <RoundPushButton8 x={col1} y={bottomRow1}

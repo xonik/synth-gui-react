@@ -62,6 +62,7 @@ const handlers = createGroupedHandlers(
         oscControllers.VCO.SYNC,
         oscControllers.VCO.SYNC_SRC,
         oscControllers.VCO.FM_SRC,
+        oscControllers.VCO.FM_MODE,
         oscControllers.VCO.EXT_CV,
         oscControllers.VCO.WHEEL,
         oscControllers.VCO.LFO,

@@ -60,6 +60,7 @@ interface OscControllers {
         SYNC: ControllerConfigButton
         SYNC_SRC: ControllerConfigButton
         FM_SRC: ControllerConfigButton
+        FM_MODE: ControllerConfigButton
         EXT_CV: ControllerConfigButton
         WHEEL: ControllerConfigButton
         LFO: ControllerConfigButton
@@ -403,7 +404,6 @@ const oscControllers: OscControllers = {
                 buttonMidiValues.OSC3_SYNC_OFF,
                 buttonMidiValues.OSC3_SYNC_HARD,
                 buttonMidiValues.OSC3_SYNC_CEM_HARD,
-                buttonMidiValues.OSC3_SYNC_CEM_SOFT,
             ],
         },
         SYNC_SRC: {
@@ -422,6 +422,15 @@ const oscControllers: OscControllers = {
             values: [
                 buttonMidiValues.OSC3_FM_SRC_OSC1,
                 buttonMidiValues.OSC3_FM_SRC_EXT,
+            ],
+        },
+        FM_MODE: {
+            id: ControllerIdNonMod.VCO_FM_MODE,
+            label: 'Cross mod source',
+            type: 'button',
+            values: [
+                buttonMidiValues.OSC3_FM_MODE_LIN,
+                buttonMidiValues.OSC3_FM_MODE_LOG,
             ],
         },
         EXT_CV: {

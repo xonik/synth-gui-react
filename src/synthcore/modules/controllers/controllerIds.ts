@@ -207,6 +207,7 @@ export enum ControllerIdNonMod {
     VCO_SYNC,
     VCO_SYNC_SRC,
     VCO_FM_SRC,
+    VCO_FM_MODE,
     VCO_EXT_CV,
     VCO_WHEEL,
     VCO_LFO,
