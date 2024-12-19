@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { StageId } from './types'
 import { RootState } from '../../store'
 import { getVoiceGroupId } from "../../selectedVoiceGroup";
+import { VOICE_GROUPS } from "../../../utils/constants";
 
 type EnvelopesState = {
     gui: {
@@ -26,16 +27,13 @@ type EnvPayload = {
     },
 })
 
-export const initialState: EnvelopesState[] = [
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-]
+export const initialState = (() => {
+    const state: EnvelopesState[] = []
+    for (let i = 0; i < VOICE_GROUPS; i++) {
+        state.push(initialStateCreator())
+    }
+    return state
+})()
 
 export const envelopesSlice = createSlice({
     name: 'envelopes',

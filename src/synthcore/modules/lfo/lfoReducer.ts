@@ -4,6 +4,7 @@ import { RootState } from '../../store'
 import { NumericPayload } from '../common/types'
 import { Curve } from '../../generatedTypes'
 import { getVoiceGroupId, selectedVoiceGroup } from "../../selectedVoiceGroup";
+import { VOICE_GROUPS } from "../../../utils/constants";
 
 type CustomParams = {
     decayEnabled: boolean;
@@ -50,16 +51,14 @@ const initialStateCreator = () => ({
     }
 })
 
-export const initialState: LfosState[] = [
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-]
+export const initialState = (() => {
+    const state: LfosState[] = []
+    for (let i = 0; i < VOICE_GROUPS; i++) {
+        state.push(initialStateCreator())
+    }
+    return state
+})()
+
 
 type StagePayload = {
     lfo: number;

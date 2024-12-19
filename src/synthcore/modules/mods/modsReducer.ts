@@ -3,6 +3,7 @@ import { RootState } from '../../store'
 import { ApiSource } from '../../types'
 import { NumericPayload } from '../common/types'
 import { getVoiceGroupId } from "../../selectedVoiceGroup";
+import { VOICE_GROUPS } from "../../../utils/constants";
 
 type ModsState = {
     gui: {
@@ -19,20 +20,27 @@ type ModsState = {
     modValues: number[][][][]; // [voicegroup, sourceId, dstId, dstCtrIndex]
 }
 
-const initialState: ModsState = {
-    gui: {
-        source: 0,
-        dstGroup: 0,
-        dstFunc: 0,
-        dstParam: 0,
-        lastModSelectSource: undefined
-    },
-    ui: {
-        amount: 0,
-        routeButton: 0,
-    },
-    modValues: [[],[],[],[],[],[],[],[]], // TODO: Needs to match the number of voiceGroups
-}
+export const initialState = (() => {
+    const state: ModsState = {
+        gui: {
+            source: 0,
+                dstGroup: 0,
+                dstFunc: 0,
+                dstParam: 0,
+                lastModSelectSource: undefined
+        },
+        ui: {
+            amount: 0,
+                routeButton: 0,
+        },
+        modValues: [],
+    }
+    for (let i = 0; i < VOICE_GROUPS; i++) {
+        state.modValues.push([])
+    }
+    return state
+})()
+
 
 type GuiSourcePayload = {
     source: ApiSource;

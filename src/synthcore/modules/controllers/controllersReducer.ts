@@ -16,6 +16,7 @@ import { getDefaultSrcMixState, getDefaultSrcMixUiState } from '../srcMix/srcMix
 import { getDefaultPreFxState } from "../fx/fxUtils";
 import { lfoCtrls } from '../lfo/lfoControllers'
 import { getVoiceGroupId } from "../../selectedVoiceGroup";
+import { VOICE_GROUPS } from "../../../utils/constants";
 
 type ControllersState = {
 
@@ -73,21 +74,16 @@ export const initialStateCreator =
         }
     }
 
-const initialState = {
-    globalControllers: initialStateCreator(), // TODO: Remove non global controllers
-    voiceGroupControllers: [
-        initialStateCreator(),
-        initialStateCreator(),
-        initialStateCreator(),
-        initialStateCreator(),
-        initialStateCreator(),
-        initialStateCreator(),
-        initialStateCreator(),
-        initialStateCreator(),
-        initialStateCreator(), // The last group is used for storing global params (params that affect all/no voices)
-    ]
-}
-
+const initialState = (() => {
+    const state: ControllersStates = {
+        globalControllers: initialStateCreator(), // TODO: Remove non global controllers
+        voiceGroupControllers: []
+    }
+    for (let i = 0; i < VOICE_GROUPS; i++) {
+        state.voiceGroupControllers.push(initialStateCreator())
+    }
+    return state
+})()
 
 export const controllersSlice = createSlice({
     name: 'controllers',
@@ -115,8 +111,8 @@ export const {
 
 // Selects the correct placement for controllers, as we have separate controllers per voice group and
 // another for global controllers that should not be affected by changing the current voice group.
-function getControllersState(controllersStates: ControllersStates, ctrl: ControllerConfig){
-    if(ctrl.global){
+function getControllersState(controllersStates: ControllersStates, ctrl: ControllerConfig) {
+    if (ctrl.global) {
         return controllersStates.globalControllers
     } else {
         return controllersStates.voiceGroupControllers[getVoiceGroupId()]

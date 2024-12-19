@@ -5,7 +5,6 @@
 import { ControllerConfig } from "../midi/types";
 
 export let selectedVoiceGroup: number = 0
-export const globalGroup: number = 8
 export function setSelectedVoiceGroup(voiceGroup: number) {
     selectedVoiceGroup = voiceGroup
 }

@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
 import { getVoiceGroupId } from "../../selectedVoiceGroup";
+import { VOICE_GROUPS } from "../../../utils/constants";
 
 type SettingsState = {
     midiChannel: number
@@ -14,16 +15,15 @@ const initialStateCreator = () => ({
     midiChannel: 0,
 })
 
-const initialState: SettingsState[] = [
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-    initialStateCreator(),
-]
+export const initialState = (() => {
+    const state: SettingsState[] = []
+    for (let i = 0; i < VOICE_GROUPS; i++) {
+        state.push(initialStateCreator())
+    }
+    return state
+})()
+
+
 
 export const uiSlice = createSlice({
     name: 'settings',
