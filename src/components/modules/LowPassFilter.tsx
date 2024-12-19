@@ -83,9 +83,9 @@ const LowPassFilter = ({ x, y }: Props) => {
                           ctrl={filtersControllers.LPF.FM_SRC}
         />
 
-        <RotaryPot10 x={col1} y={bottomRow2} ledMode="multi" label="FM amt"
+        <RotaryPot10 x={col1} y={bottomRow2} ledMode="multi" label="Wheel amt"
                      ctrlGroup={ctrlGroup}
-                     ctrl={filtersControllers.LPF.FM_AMT}
+                     ctrl={filtersControllers.LPF.WHEEL_AMT}
         />
 
         <RotaryPot10 x={col2} y={bottomRow2} ledMode="multi" label="Env amt"
