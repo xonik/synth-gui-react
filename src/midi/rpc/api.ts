@@ -169,3 +169,15 @@ export function releaseCVOverrides() {
   logger.midi('RPC call to releaseCVOverrides')
   sendSysex(sysexCommands.RPC, data)  
 }
+
+export function toggleSvfInSummedToCalibrateMix(on: boolean) {
+  const paramBytes: number[] = [
+    ...jsToMidiEncoder['bool'](on)
+  ]
+  const data = [
+    ...splitTo7(FunctionNames.toggleSvfInSummedToCalibrateMix, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to toggleSvfInSummedToCalibrateMix')
+  sendSysex(sysexCommands.RPC, data)  
+}

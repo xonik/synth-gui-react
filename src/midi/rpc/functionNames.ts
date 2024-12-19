@@ -13,5 +13,6 @@ export enum FunctionNames {
   saveTrimmerSettings,
   setCVOverride,
   releaseCVOverride,
-  releaseCVOverrides
+  releaseCVOverrides,
+  toggleSvfInSummedToCalibrateMix
 }
