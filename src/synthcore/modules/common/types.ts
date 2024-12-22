@@ -15,13 +15,17 @@ export type NumericInputProperty = {
     // May be used for stages etc. Can only be sent with nrpn and must be in range 0-31
     valueIndex?: number;
 
+    voiceGroupIndex: number;
+
     source: ApiSource
 }
+
 export type ButtonInputProperty = {
     ctrlGroup?: ControllerGroupIds;
     ctrl: ControllerConfig;
     ctrlIndex?: number;
     valueIndex?: number;
+    voiceGroupIndex: number;
 
     // Allows multiple buttons to be part of a radio button. RadioButtonIndex will
     // be used instead of incrementing value, and we can also use it to turn OFF
@@ -47,12 +51,20 @@ export type NumericControllerPayload = {
     value: number
     valueIndex?: number
     uiValue?: number
+    voiceGroupIndex: number;
+}
+
+export type MultipleControllersPayload = {
+    payloads: NumericControllerPayload[]
+    voiceGroupIndex: number;
 }
 
 export type NumericPayload = {
+    voiceGroupIndex: number;
     value: number;
 }
 export type BooleanPayload = {
+    voiceGroupIndex: number;
     value: boolean;
 }
 

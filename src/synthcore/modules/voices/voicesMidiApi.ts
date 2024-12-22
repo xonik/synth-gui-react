@@ -4,7 +4,7 @@ import { ApiSource } from '../../types'
 import { voicesApi } from '../../synthcoreApi'
 import { shouldSend } from '../../../midi/utils'
 import logger from '../../../utils/logger'
-import {button} from '../../../midi/midibus'
+import { button } from '../../../midi/midibus'
 import voicesControllers from './voicesControllers'
 
 const voiceState = (() => {
@@ -32,11 +32,11 @@ const voiceState = (() => {
             const cfg = voiceCfgs[id]
 
             logger.midi(`Setting value for ${cfg.label} to ${value}`)
-            button.send(cfg, cfg.values[value])
+            button.send(-1, cfg, cfg.values[value])
         },
         receive: () => {
             voiceCfgs.forEach((cfg, index) => {
-                button.subscribe((midiValue: number) => {
+                button.subscribe((voiceGroupIndex, midiValue: number) => {
                     const value = cfg.values.indexOf(midiValue) || 0
                     voicesApi.setVoiceState(index, value, ApiSource.MIDI)
                 }, cfg)

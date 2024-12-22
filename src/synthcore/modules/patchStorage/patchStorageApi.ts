@@ -19,6 +19,7 @@ import { Patch } from './types'
 import { dispatch } from '../../utils'
 import { selectIsAuditing, selectPreviousPatch, setAuditing, setPreviousPatch } from './patchStorageReducer'
 import { store } from '../../store'
+import { getVoiceGroupIndex } from "../../selectedVoiceGroup";
 
 const patchApis = [
     arpApi,
@@ -36,18 +37,19 @@ const patchApis = [
 ]
 
 function getCurrentPatch() {
+    const voiceGroupIndex = getVoiceGroupIndex()
     const patchControllers = patchApis.reduce((
         mergedControllers: PatchControllers,
         api
     ) => {
-        const patchControllers = api.getForSave()
+        const patchControllers = api.getForSave(voiceGroupIndex)
         return {
             ...mergedControllers,
             ...patchControllers
         }
     }, {})
 
-    const mods = modsApi.getForSave()
+    const mods = modsApi.getForSave(voiceGroupIndex)
     const patch: Patch = {
         controllers: patchControllers,
         mods,
@@ -56,15 +58,16 @@ function getCurrentPatch() {
 }
 
 function setCurrentPatch(patch: Patch) {
+    const voiceGroupIndex = getVoiceGroupIndex()
     console.log('Setting patch', patch)
-    patchApis.forEach((source) => source.setFromLoad(patch.controllers))
-    modsApi.setFromLoad(patch.mods)
+    patchApis.forEach((source) => source.setFromLoad(voiceGroupIndex, patch.controllers))
+    modsApi.setFromLoad(voiceGroupIndex, patch.mods)
 }
 
 async function savePatch(key: string) {
     const previousPatch = selectPreviousPatch(store.getState())
     const isAuditing = selectIsAuditing(store.getState())
-    if(isAuditing && previousPatch){
+    if (isAuditing && previousPatch) {
         console.log('Reverting before save')
         patchStorageApi.revertToCurrentPatch()
     }
@@ -73,13 +76,15 @@ async function savePatch(key: string) {
 
 async function loadPatch(key: string, version?: string) {
     try {
+        const voiceGroupIndex = getVoiceGroupIndex()
+
         const patch = await patchFileServerFacade.loadPatch(key, version)
         console.log('Received', patch)
-        patchApis.forEach((source) => source.setFromLoad(patch.controllers))
-        modsApi.setFromLoad(patch.mods)
+        patchApis.forEach((source) => source.setFromLoad(voiceGroupIndex, patch.controllers))
+        modsApi.setFromLoad(voiceGroupIndex, patch.mods)
 
-        dispatch(setPreviousPatch({patch: undefined}))
-        dispatch(setAuditing({value: false}))
+        dispatch(setPreviousPatch({ patch: undefined }))
+        dispatch(setAuditing({ voiceGroupIndex: -1, value: false }))
     } catch (err) {
         console.log('Could not load file')
         return
@@ -91,10 +96,10 @@ async function auditPatch(key: string, version?: string) {
         // Store the current patch - but only if it has not yet been set, to be able to run
         // this function multiple times without losing state.
         const isAuditing = selectIsAuditing(store.getState())
-        if(!isAuditing) {
-            dispatch(setAuditing({value: true}))
+        if (!isAuditing) {
+            dispatch(setAuditing({ voiceGroupIndex: -1, value: true }))
             const previousPatch = getCurrentPatch()
-            dispatch(setPreviousPatch({patch: previousPatch}))
+            dispatch(setPreviousPatch({ patch: previousPatch }))
             console.log('Stored current patch as ', previousPatch)
         }
 
@@ -113,11 +118,11 @@ function revertToCurrentPatch() {
         const previousPatch = selectPreviousPatch(store.getState())
         const isAuditing = selectIsAuditing(store.getState())
         console.log('Reverting to current patch', isAuditing, previousPatch)
-        if(isAuditing && previousPatch) {
+        if (isAuditing && previousPatch) {
             setCurrentPatch(previousPatch)
-            dispatch(setPreviousPatch({patch: undefined}))
+            dispatch(setPreviousPatch({ patch: undefined }))
         }
-        dispatch(setAuditing({value: false}))
+        dispatch(setAuditing({ voiceGroupIndex: -1, value: false }))
     } catch (err) {
         console.log('Could not revert to current patch')
         return

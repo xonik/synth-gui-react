@@ -52,7 +52,7 @@ const handleSettingsClick = (source: ApiSource) => {
     mainDisplayMidiApi.settingsClick(source)
 }
 const handleShift = (on: boolean, source: ApiSource) => {
-    dispatch(setShiftOn({ value: on }))
+    dispatch(setShiftOn({ voiceGroupIndex: -1, value: on }))
     mainDisplayMidiApi.shift(source, on)
 }
 const handlePerformClick = (source: ApiSource) => {
@@ -74,26 +74,26 @@ const handleRouteClick = (source: ApiSource) => {
     mainDisplayMidiApi.routeClick(source)
 }
 
-const handleMainDisplayController = (ctrlId: number, value: number, source: ApiSource) => {
+const handleMainDisplayController = (voiceGroupIndex: number, ctrlId: number, value: number, source: ApiSource) => {
     const currScreenId = selectCurrScreen(store.getState())
     if (currScreenId === MainDisplayScreenId.MOD) {
-        mainDisplayModsApi.handleMainDisplayController(ctrlId, value)
+        mainDisplayModsApi.handleMainDisplayController(voiceGroupIndex, ctrlId, value)
     } else if (currScreenId === MainDisplayScreenId.ENV) {
-        mainDisplayEnvApi.handleMainDisplayController(ctrlId, value)
+        mainDisplayEnvApi.handleMainDisplayController(voiceGroupIndex, ctrlId, value)
     } else if (currScreenId === MainDisplayScreenId.LFO) {
-        mainDisplayLfoApi.handleMainDisplayController(ctrlId, value)
+        mainDisplayLfoApi.handleMainDisplayController(voiceGroupIndex, ctrlId, value)
     } else if (currScreenId === MainDisplayScreenId.SETTINGS) {
-        mainDisplaySettingsApi.handleMainDisplayController(ctrlId, value)
+        mainDisplaySettingsApi.handleMainDisplayController(voiceGroupIndex, ctrlId, value)
     }
 
-    if(ctrlId >= mainDisplayControllers.POT1.id && ctrlId <= mainDisplayControllers.POT6.id){
+    if (ctrlId >= mainDisplayControllers.POT1.id && ctrlId <= mainDisplayControllers.POT6.id) {
         mainDisplayMidiApi.pot(source, ctrlId, value)
     }
 }
 
 const setCurrentScreen = (id: number, source: ApiSource) => {
     const currentId = selectCurrScreen(store.getState())
-    if(!modalScreens.includes(currentId)){
+    if (!modalScreens.includes(currentId)) {
         dispatch(setPreviousScreenAction({ id: currentId }))
     }
     dispatch(setCurrentScreenAction({ id }))
@@ -101,17 +101,16 @@ const setCurrentScreen = (id: number, source: ApiSource) => {
 }
 
 const toggle = createClickMapper([
-    [mainDisplayControllers.FUNC_HOME, ({source}) => handleHomeClick(source)],
-    [mainDisplayControllers.FUNC_SETTINGS, ({source}) => handleSettingsClick(source)],
-    [mainDisplayControllers.FUNC_SHIFT, ({source}) => handleShift(true, source)],
-    [mainDisplayControllers.FUNC_PERFORM, ({source}) => handlePerformClick(source)],
-    [mainDisplayControllers.FUNC_LOAD, ({source}) => handleLoadClick(source)],
-    [mainDisplayControllers.FUNC_SAVE, ({source}) => handleSaveClick(source)],
-    [mainDisplayControllers.FUNC_COMPARE, ({source}) => handleCompareClick(source)],
-    [mainDisplayControllers.FUNC_ROUTE, ({source}) => handleRouteClick(source)],
+    [mainDisplayControllers.FUNC_HOME, ({ source }) => handleHomeClick(source)],
+    [mainDisplayControllers.FUNC_SETTINGS, ({ source }) => handleSettingsClick(source)],
+    [mainDisplayControllers.FUNC_SHIFT, ({ source }) => handleShift(true, source)],
+    [mainDisplayControllers.FUNC_PERFORM, ({ source }) => handlePerformClick(source)],
+    [mainDisplayControllers.FUNC_LOAD, ({ source }) => handleLoadClick(source)],
+    [mainDisplayControllers.FUNC_SAVE, ({ source }) => handleSaveClick(source)],
+    [mainDisplayControllers.FUNC_COMPARE, ({ source }) => handleCompareClick(source)],
+    [mainDisplayControllers.FUNC_ROUTE, ({ source }) => handleRouteClick(source)],
 ])
-const increment = createIncrementMapper([
-])
+const increment = createIncrementMapper([])
 
 const mainDisplayApi = {
     handleMainDisplayController,

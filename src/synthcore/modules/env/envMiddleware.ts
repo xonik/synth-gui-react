@@ -5,6 +5,7 @@ import { PayloadAction } from '@reduxjs/toolkit'
 
 export const envMiddleware = (action: PayloadAction): void => {
     if (toggleStageSelected.match(action)) {
-        envApi.toggleStageSelected(action.payload.env, action.payload.stage, ApiSource.GUI)
+        const { voiceGroupIndex, env, stage } = action.payload
+        envApi.toggleStageSelected(voiceGroupIndex, env, stage, ApiSource.GUI)
     }
 }

@@ -4,19 +4,22 @@ import { mainDisplayApi } from '../../synthcoreApi'
 import { ApiSource } from '../../types'
 import mainDisplayControllers from './mainDisplayControllers'
 import { MainDisplayScreenId } from './types'
+import { getVoiceGroupIndex } from "../../selectedVoiceGroup";
 
 export const mainDisplayMiddleware = (action: PayloadAction): void => {
     if (increment.match(action)) {
-        mainDisplayApi.handleMainDisplayController(action.payload.ctrl.id, action.payload.value, ApiSource.UI)
+        const voiceGroupIndex = getVoiceGroupIndex()
+        const { ctrl, value } = action.payload
+        mainDisplayApi.handleMainDisplayController(voiceGroupIndex, ctrl.id, value, ApiSource.UI)
     } else if (click.match(action)) {
         // NB: Click is also handled in default click handler in synthcoreMiddleware
-        if(action.payload.ctrl === mainDisplayControllers.GROUP_MENU) {
+        if (action.payload.ctrl === mainDisplayControllers.GROUP_MENU) {
             mainDisplayApi.setCurrentScreen(action.payload.radioButtonIndex || 0, ApiSource.UI)
-        } else if(action.payload.ctrl === mainDisplayControllers.FUNC_SETTINGS){
+        } else if (action.payload.ctrl === mainDisplayControllers.FUNC_SETTINGS) {
             mainDisplayApi.setCurrentScreen(MainDisplayScreenId.SETTINGS, ApiSource.UI)
-        } else if(action.payload.ctrl === mainDisplayControllers.FUNC_LOAD){
+        } else if (action.payload.ctrl === mainDisplayControllers.FUNC_LOAD) {
             mainDisplayApi.setCurrentScreen(MainDisplayScreenId.LOAD, ApiSource.UI)
-        } else if(action.payload.ctrl === mainDisplayControllers.FUNC_SAVE){
+        } else if (action.payload.ctrl === mainDisplayControllers.FUNC_SAVE) {
             mainDisplayApi.setCurrentScreen(MainDisplayScreenId.SAVE, ApiSource.UI)
         }
     } else if (release.match(action)) {

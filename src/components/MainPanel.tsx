@@ -25,8 +25,8 @@ import VoiceSelector from './modules/VoiceSelector'
 import Controller from '../controller/Controller'
 import { useAppSelector } from '../synthcore/hooks'
 import { envCtrls } from '../synthcore/modules/env/envControllers'
-import './MainPanel.scss'
 import { selectController } from '../synthcore/modules/controllers/controllersReducer'
+import './MainPanel.scss'
 
 /**
  * TODO:
@@ -105,7 +105,7 @@ const MainPanel = () => {
                 height: bound.height,
             })
         }
-    },[])
+    }, [])
 
     // PS: 1 inch in svg is 96pixels, so 1cm = 96 / 2.54
     return (
@@ -154,7 +154,7 @@ const MainPanel = () => {
                 width: dispRect.width,
                 height: dispRect.height,
             }}>
-              <Controller/>
+                <Controller/>
             </div>}
         </>
     )

@@ -22,7 +22,7 @@ const envSelect = (() => {
     const cfg = controllers.ENV.SELECT
 
     return {
-        send: (source: ApiSource, envId: number) => {
+        send: (voiceGroupIndex: number, source: ApiSource, envId: number) => {
             if (!shouldSend(source)) {
                 return
             }
@@ -38,11 +38,11 @@ const envSelect = (() => {
                 currentSentEnvId = envId
                 lastSentEnvIdTimestamp = Date.now()
                 logger.midi(`Setting env id to ${envId}`)
-                cc.send(cfg, envId)
+                cc.send(voiceGroupIndex, cfg, envId)
             }
         },
         receive: () => {
-            cc.subscribe((value: number) => {
+            cc.subscribe((voiceGroupIndex, value: number) => {
                 currentReceivedEnvId = value
             }, cfg)
 
@@ -93,7 +93,7 @@ export const envParamSend: ParamSendFunc = (
     input: NumericInputProperty,
     outputMapper?: (value: number, ctrl: ControllerConfig, valueIndex?: number) => number
 ) => {
-    envSelect.send(input.source, input.ctrlIndex || 0)
+    envSelect.send(input.voiceGroupIndex, input.source, input.ctrlIndex || 0)
     paramSend(input, outputMapper)
 }
 

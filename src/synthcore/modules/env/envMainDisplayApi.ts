@@ -19,50 +19,58 @@ export const mainDisplayEnvPotResolutions = {
 }
 
 export const mainDisplayEnvApi = {
-    handleMainDisplayController: (ctrlId: number, increment: number) => {
+    handleMainDisplayController: (voiceGroupIndex: number, ctrlId: number, increment: number) => {
         //TODO Check current display page here
-        const envId = selectCurrEnvId(store.getState())
+        const envId = selectCurrEnvId(store.getState(), voiceGroupIndex)
         if (ctrlId === mainDisplayControllers.POT1.id) {
-            envApi.incrementCurrentEnvelope(step(increment), ApiSource.UI)
+            envApi.incrementCurrentEnvelope(voiceGroupIndex, step(increment), ApiSource.UI)
         } else if (ctrlId === mainDisplayControllers.POT2.id) {
-            const stageId = selectCurrStageId(store.getState())
+            const stageId = selectCurrStageId(store.getState(), voiceGroupIndex)
             if (stageId !== StageId.STOPPED) {
                 envApi.increment({
                     ctrl: envCtrls.TIME,
                     ctrlIndex: envId,
                     valueIndex: stageId,
                     value: increment,
-                    source: ApiSource.UI})
+                    voiceGroupIndex,
+                    source: ApiSource.UI
+                })
             }
         } else if (ctrlId === mainDisplayControllers.POT3.id) {
-            const stageId = selectCurrStageId(store.getState())
+            const stageId = selectCurrStageId(store.getState(), voiceGroupIndex)
             if (stageId !== StageId.STOPPED) {
                 envApi.increment({
                     ctrl: envCtrls.LEVEL,
                     ctrlIndex: envId,
                     valueIndex: stageId,
                     value: increment,
-                    source: ApiSource.UI})
+                    voiceGroupIndex,
+                    source: ApiSource.UI
+                })
             }
         } else if (ctrlId === mainDisplayControllers.POT4.id) {
-            const stageId = selectCurrStageId(store.getState())
+            const stageId = selectCurrStageId(store.getState(), voiceGroupIndex)
             if (stageId !== StageId.STOPPED) {
                 envApi.increment({
                     ctrl: envCtrls.CURVE,
                     ctrlIndex: envId,
                     valueIndex: stageId,
                     value: step(increment),
-                    source: ApiSource.UI})
+                    voiceGroupIndex,
+                    source: ApiSource.UI
+                })
             }
         } else if (ctrlId === mainDisplayControllers.POT5.id) {
-            console.log('inc', )
+            console.log('inc',)
             envApi.increment({
                 ctrl: envCtrls.OFFSET,
                 ctrlIndex: envId,
                 value: increment,
-                source: ApiSource.UI})
+                voiceGroupIndex,
+                source: ApiSource.UI
+            })
         } else if (ctrlId === mainDisplayControllers.POT6.id) {
-            const loopMode = selectController(envCtrls.LOOP_MODE, envId)(store.getState())
+            const loopMode = selectController(envCtrls.LOOP_MODE, envId)(store.getState(), voiceGroupIndex)
             if (loopMode !== LoopMode.COUNTED) {
                 return
             }
@@ -70,7 +78,9 @@ export const mainDisplayEnvApi = {
                 ctrl: envCtrls.MAX_LOOPS,
                 ctrlIndex: envId,
                 value: step(increment),
-                source: ApiSource.UI})
+                voiceGroupIndex,
+                source: ApiSource.UI
+            })
         } else if (ctrlId === mainDisplayControllers.POT7.id) {
 
         }

@@ -1,6 +1,12 @@
 import React from 'react'
 import { useAppSelector } from '../../synthcore/hooks'
-import { selectGuiSource, selectGuiDstFunc, selectGuiDstGroup, selectGuiDstParam, selectModValue } from '../../synthcore/modules/mods/modsReducer'
+import {
+    selectGuiSource,
+    selectGuiDstFunc,
+    selectGuiDstGroup,
+    selectGuiDstParam,
+    selectModValue
+} from '../../synthcore/modules/mods/modsReducer'
 import { digitalModSources, modDst } from '../../synthcore/modules/mods/utils'
 import './ModValues.scss'
 

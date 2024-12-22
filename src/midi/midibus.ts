@@ -6,7 +6,11 @@ import {
 } from './types'
 import { store } from '../synthcore/store'
 import status from './midiStatus'
-import { selectMidiChannel } from '../synthcore/modules/settings/settingsReducer'
+import {
+    getVoiceGroupIdFromMidiChannel,
+    selectGlobalMidiChannel,
+    selectVoiceGroupMidiChannel
+} from '../synthcore/modules/settings/settingsReducer'
 import CC, { buttonCCs } from './mapCC'
 import logger from '../utils/logger'
 import { handleMpk25 } from './mpk25translator'
@@ -21,19 +25,19 @@ export let lastSentMidiGroup: MidiGroup | undefined;
 type CCSubscriber = {
     id: number;
     values: number[] | undefined;
-    callback: (value: number) => void;
+    callback: (voiceGroupIndex: number, value: number) => void;
 }
 
 type ButtonSubscriber = {
     id: number;
     values: number[] | undefined;
-    callback: (value: number) => void;
+    callback: (voiceGroupIndex: number, value: number) => void;
 }
 
 type NRPNSubscriber = {
     id: number;
     values: number[] | undefined;
-    callback: (value: number) => void;
+    callback: (voiceGroupIndex: number, value: number) => void;
 }
 
 /*
@@ -74,13 +78,19 @@ let buttonSubscribers: ButtonSubscriber[] = []
 const ccSubscribers: { [key: number]: CCSubscriber[] } = {}
 const nrpnSubscribers: { [key: number]: NRPNSubscriber[] } = {}
 
-const getChannel = () => selectMidiChannel(store.getState())
+const getChannel = (global: boolean, voiceGroupIndex: number) => {
+    if (global) {
+        return selectGlobalMidiChannel(store.getState())
+    } else {
+        return selectVoiceGroupMidiChannel(store.getState(), voiceGroupIndex)
+    }
+}
 
 export const button = {
-    subscribe: (callback: (value: number) => void, {values}: ControllerConfigButton) => {
+    subscribe: (callback: (voiceGroupIndex: number, value: number) => void, { values }: ControllerConfigButton) => {
         const id = idPool++
         buttonSubscribers = [
-            ...(buttonSubscribers || []), {id, values, callback}
+            ...(buttonSubscribers || []), { id, values, callback }
         ]
         return id
     },
@@ -90,19 +100,21 @@ export const button = {
             buttonSubscribers = [...buttonSubscribers.slice(0, index), ...buttonSubscribers.slice(index + 1)]
         }
     },
-    publish: (value: number) => {
+    publish: (voiceGroupIndex: number, value: number) => {
         if (buttonSubscribers) {
             buttonSubscribers.forEach((subscriber) => {
                 if (!subscriber.values || subscriber.values.includes(value)) {
-                    subscriber.callback(value)
+                    subscriber.callback(voiceGroupIndex, value)
                 }
             })
         }
     },
-    send: (controller: ControllerConfigButton, value: number, loopback = false) => {
+    send: (voiceGroupIndex: number, controller: ControllerConfigButton, value: number, loopback = false) => {
+
+        const midiChannel = getChannel(Boolean(controller.global), voiceGroupIndex)
 
         if (loopback) {
-            button.publish(value)
+            button.publish(voiceGroupIndex, value)
         }
         if (true || midiOut) {
             // serialize value - button value is split across multiple CCs so
@@ -110,7 +122,7 @@ export const button = {
             const buttonMidiCC = buttonCCs[Math.floor(value / 128)]
             const buttonMidiValue = value % 128
 
-            const ccForChannel = status.CC + getChannel()
+            const ccForChannel = status.CC + midiChannel
             console.log(`Sending CC ${buttonMidiCC}`)
             const data = [ccForChannel, buttonMidiCC, buttonMidiValue]
             logger.midiMsg(data)
@@ -120,9 +132,9 @@ export const button = {
 }
 
 export const cc = {
-    subscribe: (callback: (value: number) => void, {cc, values}: ControllerConfigCC) => {
+    subscribe: (callback: (voiceGroupIndex: number, value: number) => void, { cc, values }: ControllerConfigCC) => {
         const id = idPool++
-        ccSubscribers[cc] = [...(ccSubscribers[cc] || []), {id, values, callback}]
+        ccSubscribers[cc] = [...(ccSubscribers[cc] || []), { id, values, callback }]
         return id
     },
     unsubscribe: (controller: ControllerConfigCC, id: number) => {
@@ -132,22 +144,23 @@ export const cc = {
             ccSubscribers[controller.cc] = [...subscribersForCC.slice(0, index), ...subscribersForCC.slice(index + 1)]
         }
     },
-    publish: (cc: number, value: number) => {
+    publish: (voiceGroupIndex: number, cc: number, value: number) => {
         if (ccSubscribers[cc]) {
             ccSubscribers[cc].forEach((subscriber) => {
                 if (!subscriber.values || subscriber.values.includes(value)) {
-                    subscriber.callback(value)
+                    subscriber.callback(voiceGroupIndex, value)
                 }
             })
         }
     },
-    send: (controller: ControllerConfigCC, value: number, loopback = false) => {
+    send: (voiceGroupIndex: number, controller: ControllerConfigCC, value: number, loopback = false) => {
         lastSentMidiGroup = controller.midiGroup
+        const midiChannel = getChannel(Boolean(controller.global), voiceGroupIndex)
         if (loopback) {
-            cc.publish(controller.cc, value)
+            cc.publish(voiceGroupIndex, controller.cc, value)
         }
         if (midiOut) {
-            const ccForChannel = status.CC + getChannel()
+            const ccForChannel = status.CC + midiChannel
             const data = [ccForChannel, controller.cc, value]
             logger.midiMsg(data)
             midiOut.send(data)
@@ -156,9 +169,9 @@ export const cc = {
 }
 
 export const nrpn = {
-    subscribe: (callback: (value: number) => void, {addr, values}: ControllerConfigNRPN) => {
+    subscribe: (callback: (voiceGroupIndex: number, value: number) => void, { addr, values }: ControllerConfigNRPN) => {
         const id = idPool++
-        nrpnSubscribers[addr] = [...(nrpnSubscribers[addr] || []), {id, values, callback}]
+        nrpnSubscribers[addr] = [...(nrpnSubscribers[addr] || []), { id, values, callback }]
         return id
     },
     unsubscribe: (controller: ControllerConfigNRPN, id: number) => {
@@ -168,19 +181,21 @@ export const nrpn = {
             nrpnSubscribers[controller.addr] = [...subscribersForNRPN.slice(0, index), ...subscribersForNRPN.slice(index + 1)]
         }
     },
-    publish: (addr: number, value: number) => {
+    publish: (voiceGroupIndex: number, addr: number, value: number) => {
         if (nrpnSubscribers[addr]) {
             nrpnSubscribers[addr].forEach((subscriber) => {
                 if (!subscriber.values || subscriber.values.includes(value)) {
-                    subscriber.callback(value)
+                    subscriber.callback(voiceGroupIndex, value)
                 }
             })
         }
     },
-    send: (controller: ControllerConfigNRPN, value: number, loopback = false) => {
+    send: (voiceGroupIndex: number, controller: ControllerConfigNRPN, value: number, loopback = false) => {
         lastSentMidiGroup = controller.midiGroup
+        const midiChannel = getChannel(Boolean(controller.global), voiceGroupIndex)
+
         if (loopback) {
-            nrpn.publish(controller.addr, value)
+            nrpn.publish(voiceGroupIndex, controller.addr, value)
         }
         if (midiOut) {
             const loAddr = controller.addr & 0b01111111
@@ -190,7 +205,7 @@ export const nrpn = {
             const midValue = (value >> 7) & 0b01111111
             const hiValue = (value >> 14) & 0b01111111
 
-            const ccForChannel = status.CC + getChannel()
+            const ccForChannel = status.CC + midiChannel
 
             let data = [ccForChannel, CC.NRPN_MSB, hiAddr, ccForChannel, CC.NRPN_LSB, loAddr]
             if (value > 16383) {
@@ -239,8 +254,14 @@ export const sendSysex = (command: number, data: number[]) => {
 
 export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
     const midiData = midiEvent.data
-    const ccForChannel = status.CC + getChannel()
-    if (midiData[0] === ccForChannel) {
+    const channel = midiData[0] & 0x0F;
+
+    const voiceGroupId = getVoiceGroupIdFromMidiChannel(store.getState(), channel)
+    const isGlobal = channel === selectGlobalMidiChannel(store.getState())
+
+    // TODO: Currently reception won't care about midi channel, it will publish messages and use the currently
+    // selected voice group. This is not ideal.
+    if (isGlobal || voiceGroupId > -1) {
 
         const ccKey = midiData[1]
         const ccValue = midiData[2]
@@ -262,16 +283,16 @@ export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
             currNRPN.loValue = ccValue
             const addr = (currNRPN.hiAddr << 7) + currNRPN.loAddr
             const value = (currNRPN.midValue << 14) + (currNRPN.midValue << 7) + currNRPN.loValue
-            nrpn.publish(addr, value)
+            nrpn.publish(voiceGroupId, addr, value)
             currNRPN.hiValue = 0
             currNRPN.midValue = 0
             currNRPN.loValue = 0
         } else if (ccKey == CC.BUTTONS_1 || ccKey == CC.BUTTONS_2 || ccKey == CC.BUTTONS_3) {
             const multiplier = buttonCCs.indexOf(ccKey)
             const buttonValue = multiplier * 128 + ccValue
-            button.publish(buttonValue)
+            button.publish(voiceGroupId, buttonValue)
         } else {
-            cc.publish(ccKey, ccValue)
+            cc.publish(voiceGroupId, ccKey, ccValue)
         }
     } else {
         midiOut?.send(midiData)
@@ -280,8 +301,8 @@ export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
 
 const updateSelectedMidi = async (midiAccess: MIDIAccess) => {
     console.log('UPDATING MIDI CONFIG')
-    midiAccess.inputs.forEach((value, key) => console.log({key, value}))
-    midiAccess.outputs.forEach((value, key) => console.log({key, value}))
+    midiAccess.inputs.forEach((value, key) => console.log({ key, value }))
+    midiAccess.outputs.forEach((value, key) => console.log({ key, value }))
 
     const foundInputId = midiConfig.inputIds.find(id => midiAccess.inputs.has(id))
     const foundOutputId = midiConfig.outputIds.find(id => midiAccess.outputs.has(id))
@@ -325,7 +346,7 @@ const onMIDIFailure = () => {
 }
 
 if (navigator.requestMIDIAccess) {
-    navigator.requestMIDIAccess({sysex: true}).then(onMIDISuccess, onMIDIFailure)
+    navigator.requestMIDIAccess({ sysex: true }).then(onMIDISuccess, onMIDIFailure)
 }
 
 //TODO: Close midi connection on app close!

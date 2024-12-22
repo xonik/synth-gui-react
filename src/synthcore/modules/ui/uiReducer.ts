@@ -12,7 +12,7 @@ const initialState: UiState = {
     controller: {},
 }
 
-type NumericControllerPayload = {
+export type UiNumericControllerPayload = {
     ctrlGroup: ControllerGroupIds;
     ctrl: ControllerConfig;
     ctrlIndex?: number;
@@ -21,7 +21,7 @@ type NumericControllerPayload = {
     source: ApiSource
 }
 
-type ButtonControllerPayload = {
+export type UiButtonControllerPayload = {
     ctrlGroup: ControllerGroupIds;
     ctrl: ControllerConfig;
     ctrlIndex?: number;
@@ -37,13 +37,13 @@ export const uiSlice = createSlice({
     name: 'ui',
     initialState,
     reducers: {
-        increment: (state, { payload }: PayloadAction<NumericControllerPayload>) => {
+        increment: (state, { payload }: PayloadAction<UiNumericControllerPayload>) => {
             //Not doing anything yet, just needed to create the action.
         },
-        click: (state, { payload }: PayloadAction<ButtonControllerPayload>) => {
+        click: (state, { payload }: PayloadAction<UiButtonControllerPayload>) => {
             //Not doing anything yet, just needed to create the action.
         },
-        release: (state, { payload }: PayloadAction<ButtonControllerPayload>) => {
+        release: (state, { payload }: PayloadAction<UiButtonControllerPayload>) => {
             //Not doing anything yet, just needed to create the action.
         },
     }

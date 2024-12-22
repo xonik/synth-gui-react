@@ -7,17 +7,17 @@ import {
 } from '../../../midi/types'
 import { shouldSend } from '../../../midi/utils'
 import logger from '../../../utils/logger'
-import {button, cc, nrpn} from '../../../midi/midibus'
+import { button, cc, nrpn } from '../../../midi/midibus'
 import { NumericInputProperty } from './types'
 
 // Send signature
-export type ParamSendFunc  = (
+export type ParamSendFunc = (
     input: NumericInputProperty,
     outputMapper?: (value: number, ctrl: ControllerConfig, valueIndex?: number) => number
 ) => void
 
 // Receive signature
-export type ParamReceiveFunc  = (
+export type ParamReceiveFunc = (
     ctrl: ControllerConfig | ControllerConfigCC | ControllerConfigButton,
     apiSetValue: (input: NumericInputProperty) => void,
     inputMapper?: (midiValue: number, ctrl: ControllerConfig) => ({ value: number, valueIndex?: number }),
@@ -27,21 +27,22 @@ export const toggleParamSend = (
     source: ApiSource,
     value: number,
     cfg: ControllerConfigButton,
+    voiceGroupIndex: number,
 ) => {
     if (!shouldSend(source)) {
         return
     }
     logger.midi(`Setting button param value for ${cfg.label} to ${value}`)
-    button.send(cfg, cfg.values[value])
+    button.send(voiceGroupIndex, cfg, cfg.values[value])
 }
 
 export const toggleParamReceive = (
     cfg: ControllerConfigButton,
-    apiSetValue: (value: number, source: ApiSource) => void
+    apiSetValue: (value: number, source: ApiSource, voiceGroupIndex: number) => void
 ) => {
-    button.subscribe((midiValue: number) => {
+    button.subscribe((voiceGroupIndex: number, midiValue: number) => {
         const value = cfg.values.indexOf(midiValue) || 0
-        apiSetValue(value, ApiSource.MIDI)
+        apiSetValue(value, ApiSource.MIDI, voiceGroupIndex)
     }, cfg)
 }
 
@@ -99,6 +100,7 @@ export const paramSend: ParamSendFunc = (
         ctrl,
         value,
         valueIndex,
+        voiceGroupIndex,
     } = input
 
     if (!shouldSend(source)) {
@@ -109,15 +111,15 @@ export const paramSend: ParamSendFunc = (
     if (ctrl.type === 'button') {
         logger.midi(`Setting paramSend button value for ${ctrl.label} to ${value}`)
         const buttonValue = (ccWithValueMapper.output)(value, ctrl)
-        button.send(ctrl as ControllerConfigButton, buttonValue)
+        button.send(voiceGroupIndex, ctrl as ControllerConfigButton, buttonValue)
     } else if (ctrl.hasOwnProperty('cc')) {
         const midiValue = (outputMapper || ccMapper.output)(value, ctrl)
         logger.midi(`Setting paramSend cc value for ${ctrl.label} to ${value} (${midiValue})`)
-        cc.send(ctrl as ControllerConfigCC, midiValue)
+        cc.send(voiceGroupIndex, ctrl as ControllerConfigCC, midiValue)
     } else if (ctrl.hasOwnProperty('addr')) {
         const midiValue = (outputMapper || nrpnMapper.output)(value, ctrl, valueIndex)
         logger.midi(`Setting paramSend nrpn value for ${ctrl.label} to ${value} (${midiValue})`)
-        nrpn.send(ctrl as ControllerConfigNRPN, midiValue)
+        nrpn.send(voiceGroupIndex, ctrl as ControllerConfigNRPN, midiValue)
     }
 }
 
@@ -127,26 +129,26 @@ export const paramReceive: ParamReceiveFunc = (
     inputMapper?: (midiValue: number, ctrl: ControllerConfig) => ({ value: number, valueIndex?: number }),
 ) => {
     if (ctrl.type === 'button') {
-        button.subscribe((midiValue: number) => {
+        button.subscribe((voiceGroupIndex: number, midiValue: number) => {
             if (ctrl.values) {
                 const { value } = (inputMapper || ccWithValueMapper.input)(midiValue, ctrl)
-                apiSetValue({ ctrl, value, source: ApiSource.MIDI })
+                apiSetValue({ ctrl, value, source: ApiSource.MIDI, voiceGroupIndex })
             }
         }, ctrl as ControllerConfigButton)
     } else if (ctrl.hasOwnProperty('cc')) {
-        cc.subscribe((midiValue: number) => {
+        cc.subscribe((voiceGroupIndex: number, midiValue: number) => {
             if (ctrl.values) {
                 const { value } = (inputMapper || ccWithValueMapper.input)(midiValue, ctrl)
-                apiSetValue({ ctrl, value, source: ApiSource.MIDI })
+                apiSetValue({ ctrl, value, source: ApiSource.MIDI, voiceGroupIndex })
             } else {
                 const { value } = (inputMapper || ccMapper.input)(midiValue, ctrl)
-                apiSetValue({ ctrl, value, source: ApiSource.MIDI })
+                apiSetValue({ ctrl, value, source: ApiSource.MIDI, voiceGroupIndex })
             }
         }, ctrl as ControllerConfigCC)
     } else if (ctrl.hasOwnProperty('addr')) {
-        nrpn.subscribe((midiValue: number) => {
+        nrpn.subscribe((voiceGroupIndex: number, midiValue: number) => {
             const { value, valueIndex } = (inputMapper || nrpnMapper.input)(midiValue, ctrl)
-            apiSetValue({ ctrl, value, valueIndex, source: ApiSource.MIDI })
+            apiSetValue({ ctrl, value, valueIndex, source: ApiSource.MIDI, voiceGroupIndex })
         }, ctrl as ControllerConfigNRPN)
     }
 }
@@ -155,6 +157,7 @@ export const boolParamSend = (
     source: ApiSource,
     on: boolean,
     cfg: ControllerConfigButton,
+    voiceGroupIndex: number,
 ) => {
     if (!shouldSend(source)) {
         return
@@ -162,36 +165,37 @@ export const boolParamSend = (
 
     const index = on ? 1 : 0
     logger.midi(`Setting boolParam value for ${cfg.label} to ${index}`)
-    button.send(cfg, cfg.values[index])
+    button.send(voiceGroupIndex, cfg, cfg.values[index])
 }
 
 export const boolParamReceive = (
     cfg: ControllerConfigButton,
-    apiSetValue: (on: boolean, source: ApiSource) => void
+    apiSetValue: (on: boolean, source: ApiSource, voiceGroupIndex: number) => void
 ) => {
-    button.subscribe((midiValue: number) => {
+    button.subscribe((voiceGroupIndex: number, midiValue: number) => {
         const value = cfg.values.indexOf(midiValue) || 0
         const on = value === 1
-        apiSetValue(on, ApiSource.MIDI)
+        apiSetValue(on, ApiSource.MIDI, voiceGroupIndex)
     }, cfg)
 }
 
 export const buttonParamSend = (
     source: ApiSource,
     cfg: ControllerConfigButton,
+    voiceGroupIndex: number,
 ) => {
     if (!shouldSend(source)) {
         return
     }
     logger.midi(`Sending ${cfg.label}`)
-    button.send(cfg, cfg.values[0])
+    button.send(voiceGroupIndex, cfg, cfg.values[0])
 }
 
 export const buttonParamReceive = (
     cfg: ControllerConfigButton,
-    apiSetValue: (source: ApiSource) => void
+    apiSetValue: (voiceGroupIndex: number, source: ApiSource) => void
 ) => {
-    button.subscribe((midiValue: number) => {
-        apiSetValue(ApiSource.MIDI)
+    button.subscribe((voiceGroupIndex: number, midiValue: number) => {
+        apiSetValue(voiceGroupIndex, ApiSource.MIDI)
     }, cfg)
 }

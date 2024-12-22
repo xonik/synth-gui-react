@@ -2,7 +2,15 @@ import { digitalModSources, modDst } from '../../synthcore/modules/mods/utils'
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { DraggableElementProps } from './types'
 import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
-import { setGuiMod, selectGuiSource, selectGuiDstFunc, selectGuiDstGroup, selectGuiDstParam, selectModValue, selectGuiLastModSelectSource } from '../../synthcore/modules/mods/modsReducer'
+import {
+    setGuiMod,
+    selectGuiSource,
+    selectGuiDstFunc,
+    selectGuiDstGroup,
+    selectGuiDstParam,
+    selectGuiLastModSelectSource,
+    selectModValue
+} from '../../synthcore/modules/mods/modsReducer'
 import classNames from 'classnames'
 import AmountBar from './AmountBar'
 import { Point } from '../../utils/types'
@@ -127,14 +135,14 @@ const AmountsRow = ({ sourceId, sourceIndex }: RowProps) => {
         <div className="mod-ctrl__dsts" ref={ref}>
             {dstGroup.map((func, funcIndex) => <React.Fragment key={funcIndex}>
                     {func.map((dstParam, paramIndex) => <AmountCell
-                                    key={paramIndex}
-                                    sourceIndex={sourceIndex}
-                                    funcIndex={funcIndex}
-                                    funcCtrlIndex={modDst.funcProps[dstGroupId][funcIndex].ctrlIndex || 0}
-                                    paramIndex={paramIndex}
-                                    sourceId={sourceId}
-                                    dstId={dstParam.id}
-                                    onSelected={onSelected}
+                            key={paramIndex}
+                            sourceIndex={sourceIndex}
+                            funcIndex={funcIndex}
+                            funcCtrlIndex={modDst.funcProps[dstGroupId][funcIndex].ctrlIndex || 0}
+                            paramIndex={paramIndex}
+                            sourceId={sourceId}
+                            dstId={dstParam.id}
+                            onSelected={onSelected}
                         />
                     )}
                 </React.Fragment>

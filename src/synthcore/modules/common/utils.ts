@@ -9,9 +9,10 @@ import {
     PatchControllers,
 } from './types'
 import {
-    selectController, selectControllerValueIndexValues,
+    selectControllerValueIndexValues,
     selectUiController,
-    setController
+    setController,
+    selectController
 } from '../controllers/controllersReducer'
 import { ApiSource } from '../../types'
 
@@ -54,7 +55,7 @@ export class ControllerHandler {
         const { ctrl, ctrlIndex, valueIndex, value } = input
 
         const boundedValue = getBoundedController(ctrl, value)
-        const currentValue = selectController(ctrl, ctrlIndex || 0)(store.getState())
+        const currentValue = selectController(ctrl, ctrlIndex || 0)(store.getState(), input.voiceGroupIndex)
 
         if (boundedValue === currentValue && !forceSet) {
             return
@@ -67,7 +68,6 @@ export class ControllerHandler {
 
         dispatch(setController(boundedInput))
         if (this.onSetCompleted) this.onSetCompleted(boundedInput)
-
         // send over midi
         if (this.midiFuncs && this.midiFuncs.send) {
             this.midiFuncs.send(boundedInput)
@@ -76,23 +76,24 @@ export class ControllerHandler {
         }
     }
 
-    setFromLoad(value: number, ctrlIndex = 0, valueIndex = 0) {
+    setFromLoad(voiceGroupIndex: number, value: number, ctrlIndex = 0, valueIndex = 0) {
         const uiValue = this.ctrl.uiResponse?.input ? this.ctrl.uiResponse?.input(value) : undefined
         this.set({
             ctrl: this.ctrl,
             ctrlIndex,
             valueIndex,
             value,
+            voiceGroupIndex,
             source: ApiSource.LOAD
         }, false, uiValue)
     }
 
-    get(ctrlIndex = 0) {
-        return selectControllerValueIndexValues(this.ctrl, ctrlIndex)(store.getState());
+    get(voiceGroupIndex: number, ctrlIndex = 0) {
+        return selectControllerValueIndexValues(this.ctrl, ctrlIndex)(store.getState(), voiceGroupIndex);
     }
 
     toggle(input: ButtonInputProperty) {
-        const currentValue = selectController(this.ctrl, input.ctrlIndex || 0)(store.getState())
+        const currentValue = selectController(this.ctrl, input.ctrlIndex || 0)(store.getState(), input.voiceGroupIndex)
         const values = this.ctrl.values?.length || 1;
 
         // Single value buttons, click only, no toggle
@@ -130,20 +131,20 @@ export class ControllerHandler {
     }
 
     increment(input: NumericInputProperty) {
-        const { ctrlIndex, valueIndex, value: inc } = input
+        const { ctrlIndex, valueIndex, value: inc, voiceGroupIndex } = input
         if (this.ctrl.uiResponse && selectUiController) {
-            let currentValue = selectUiController(this.ctrl, ctrlIndex, valueIndex)(store.getState())
+            let currentValue = selectUiController(this.ctrl, ctrlIndex, valueIndex)(store.getState(), voiceGroupIndex)
             let uiValue = getBoundedController(this.ctrl, currentValue + inc)
             const updatedValue = this.ctrl.uiResponse.output(uiValue)
             this.set({ ...input, value: updatedValue }, false, uiValue)
         } else {
-            let currentValue = selectController(this.ctrl, ctrlIndex, valueIndex)(store.getState())
+            let currentValue = selectController(this.ctrl, ctrlIndex, valueIndex)(store.getState(), voiceGroupIndex)
             this.set({ ...input, value: currentValue + inc })
         }
     }
 
     setWithUiUpdate(input: NumericInputProperty) {
-        if(this.ctrl.uiResponse){
+        if (this.ctrl.uiResponse) {
             const updatedValue = this.ctrl.uiResponse?.input(input.value) || 0
             const uiValue = getBoundedController(this.ctrl, updatedValue)
             this.set(input, false, uiValue)
@@ -154,7 +155,7 @@ export class ControllerHandler {
     }
 }
 
-export const groupHandlers = (handlers: {[id: string]: ControllerHandler}) => {
+export const groupHandlers = (handlers: { [id: string]: ControllerHandler }) => {
     const set = (input: NumericInputProperty, forceSet = false, uiValue?: number) => {
         if (handlers[input.ctrl.id]) {
             handlers[input.ctrl.id].set(input, forceSet, uiValue)
@@ -176,30 +177,30 @@ export const groupHandlers = (handlers: {[id: string]: ControllerHandler}) => {
         }
     }
 
-    const getForSave = (ctrlIndex = 0): PatchControllers => {
+    const getForSave = (voiceGroupIndex: number, ctrlIndex = 0): PatchControllers => {
         const patchControllers: PatchControllers = {}
 
         Object.entries(handlers).forEach(([key, handler]) => {
             const ctrlId = Number.parseInt(key)
-            if(!patchControllers[ctrlId]) patchControllers[ctrlId] = {
+            if (!patchControllers[ctrlId]) patchControllers[ctrlId] = {
                 label: handler.ctrl.label,
                 instances: {}
             }
-            patchControllers[ctrlId].instances[ctrlIndex] = handler.get(ctrlIndex)
+            patchControllers[ctrlId].instances[ctrlIndex] = handler.get(voiceGroupIndex, ctrlIndex)
         })
 
         return patchControllers
     }
 
-    const setFromLoad = (patchControllers: PatchControllers) => {
+    const setFromLoad = (voiceGroupIndex: number, patchControllers: PatchControllers) => {
         Object.entries(patchControllers).forEach(([ctrlId, ctrl]) => {
             const handler = handlers[ctrlId]
             if (handler) {
                 //console.log(`Loading ${ctrl.label}`)
                 Object.entries(ctrl.instances).forEach(([ctrlIndex, valueIndexValues]) => {
                     Object.entries(valueIndexValues).forEach(([valueIndex, value]) => {
-                  //      console.log(`Setting ctrlIndex ${ctrlIndex}, valueIndex ${valueIndex} to ${value}`)
-                        handler.setFromLoad(value, Number.parseInt(ctrlIndex), Number.parseInt(valueIndex))
+                        //      console.log(`Setting ctrlIndex ${ctrlIndex}, valueIndex ${valueIndex} to ${value}`)
+                        handler.setFromLoad(voiceGroupIndex, value, Number.parseInt(ctrlIndex), Number.parseInt(valueIndex))
                     })
                 })
             }

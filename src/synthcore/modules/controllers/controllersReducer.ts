@@ -7,7 +7,7 @@ import { envCtrls } from '../env/envControllers'
 import { mergeControllers } from './controllersUtils'
 import { Stage, NUMBER_OF_ENVELOPE_STAGES } from '../env/types'
 import { Stage as LfoStage, NUMBER_OF_LFO_STAGES as LFO_STAGES } from '../lfo/types'
-import { NumericControllerPayload, PatchControllerValues } from '../common/types'
+import { MultipleControllersPayload, NumericControllerPayload, PatchControllerValues } from '../common/types'
 import { getDefaultLfo, getDefaultLfoStages, getDefaultUiLfoStages } from '../lfo/lfoUtils'
 import { getDefaultController } from './controllersUtils'
 import { getDefaultOscState } from '../osc/oscUtils'
@@ -15,8 +15,8 @@ import { getDefaultFiltersState } from '../filters/filtersUtils'
 import { getDefaultSrcMixState, getDefaultSrcMixUiState } from '../srcMix/srcMixUtils'
 import { getDefaultPreFxState } from "../fx/fxUtils";
 import { lfoCtrls } from '../lfo/lfoControllers'
-import { getVoiceGroupId } from "../../selectedVoiceGroup";
 import { VOICE_GROUPS } from "../../../utils/constants";
+import { getVoiceGroupIndex } from "../../selectedVoiceGroup";
 
 type ControllersState = {
 
@@ -89,12 +89,21 @@ export const controllersSlice = createSlice({
     name: 'controllers',
     initialState,
     reducers: {
+        setController: (state, { payload }: PayloadAction<NumericControllerPayload>) => {
+            const existingControllersState = getControllersState(payload.voiceGroupIndex, state, payload.ctrl)
+            controllerState.set(existingControllersState, payload)
+
+            if (payload.uiValue !== undefined) {
+                uiControllerState.set(existingControllersState, payload, payload.uiValue)
+            }
+        },
+
         // Multiple payloads may be sent as one chunk so that only one update
         // is triggered
-        setController: (state, {payload}: PayloadAction<NumericControllerPayload | NumericControllerPayload[]>) => {
-            const payloads = Array.isArray(payload) ? payload : [payload]
+        setControllers: (state, { payload }: PayloadAction<MultipleControllersPayload>) => {
+            const payloads = payload.payloads
             payloads.forEach((aPayload) => {
-                const existingControllersState = getControllersState(state, aPayload.ctrl)
+                const existingControllersState = getControllersState(payload.voiceGroupIndex, state, aPayload.ctrl)
                 controllerState.set(existingControllersState, aPayload)
 
                 if (aPayload.uiValue !== undefined) {
@@ -107,39 +116,40 @@ export const controllersSlice = createSlice({
 
 export const {
     setController,
+    setControllers,
 } = controllersSlice.actions
 
 // Selects the correct placement for controllers, as we have separate controllers per voice group and
 // another for global controllers that should not be affected by changing the current voice group.
-function getControllersState(controllersStates: ControllersStates, ctrl: ControllerConfig) {
+function getControllersState(voiceGroupIndex: number, controllersStates: ControllersStates, ctrl: ControllerConfig) {
     if (ctrl.global) {
         return controllersStates.globalControllers
     } else {
-        return controllersStates.voiceGroupControllers[getVoiceGroupId()]
+        return controllersStates.voiceGroupControllers[voiceGroupIndex]
     }
 }
 
 const controllerState = {
     set: (state: Draft<ControllersState>, payload: NumericControllerPayload) => {
-        const {ctrlIndex = 0, ctrl, valueIndex = 0, value} = payload
+        const { ctrlIndex = 0, ctrl, valueIndex = 0, value } = payload
         if (state.controllers[ctrlIndex] === undefined) {
             state.controllers[ctrlIndex] = []
         }
         const indexedCtrls = state.controllers[ctrlIndex]
         if (indexedCtrls[ctrl.id] === undefined) {
-            state.controllers[ctrlIndex][ctrl.id] = {[valueIndex]: value}
+            state.controllers[ctrlIndex][ctrl.id] = { [valueIndex]: value }
         } else {
             state.controllers[ctrlIndex][ctrl.id][valueIndex] = value
         }
     },
-    get: (state: RootState, ctrl: ControllerConfig, ctrlIndex: number = 0, valueIndex: number = 0) => {
-        const ctrlValue = getControllersState(state.controllers, ctrl).controllers[ctrlIndex]
+    get: (voiceGroupIndex: number, state: RootState, ctrl: ControllerConfig, ctrlIndex: number = 0, valueIndex: number = 0) => {
+        const ctrlValue = getControllersState(voiceGroupIndex, state.controllers, ctrl).controllers[ctrlIndex]
         return ctrlValue?.[ctrl.id]?.[valueIndex] || 0
     },
-    getValueIndexValues: (state: RootState, ctrl: ControllerConfig, ctrlIndex: number = 0): PatchControllerValues => {
-        const ctrlValue = getControllersState(state.controllers, ctrl).controllers[ctrlIndex]
+    getValueIndexValues: (voiceGroupIndex: number, state: RootState, ctrl: ControllerConfig, ctrlIndex: number = 0): PatchControllerValues => {
+        const ctrlValue = getControllersState(voiceGroupIndex, state.controllers, ctrl).controllers[ctrlIndex]
         if (ctrlValue === undefined || ctrlValue[ctrl.id] === undefined) {
-            return {0: 0}
+            return { 0: 0 }
         } else {
             let valueIndexValues: PatchControllerValues = {}
             if (ctrl.legalValueIndexes) {
@@ -156,47 +166,49 @@ const controllerState = {
 
 const uiControllerState = {
     set: (state: Draft<ControllersState>, payload: NumericControllerPayload, value: number) => {
-        const {ctrlIndex = 0, ctrl, valueIndex = 0} = payload
+        const { ctrlIndex = 0, ctrl, valueIndex = 0 } = payload
         if (state.uiControllers[ctrlIndex] === undefined) {
             state.uiControllers[ctrlIndex] = []
         }
         const indexedCtrls = state.uiControllers[ctrlIndex]
         if (indexedCtrls[ctrl.id] === undefined) {
-            state.uiControllers[ctrlIndex][ctrl.id] = {[valueIndex]: value}
+            state.uiControllers[ctrlIndex][ctrl.id] = { [valueIndex]: value }
         } else {
             state.uiControllers[ctrlIndex][ctrl.id][valueIndex] = value
         }
     },
-    get: (state: RootState, ctrl: ControllerConfig, ctrlIndex: number = 0, valueIndex: number = 0) => {
-        const ctrlValue = getControllersState(state.controllers, ctrl).uiControllers[ctrlIndex]
+    get: (voiceGroupIndex: number, state: RootState, ctrl: ControllerConfig, ctrlIndex: number = 0, valueIndex: number = 0) => {
+        const ctrlValue = getControllersState(voiceGroupIndex, state.controllers, ctrl).uiControllers[ctrlIndex]
         return ctrlValue?.[ctrl.id]?.[valueIndex] || 0
     }
 }
 
-export const selectController = (ctrl: ControllerConfig, ctrlIndex: number = 0, valueIndex: number = 0) => (state: RootState): number => {
-    return controllerState.get(state, ctrl, ctrlIndex, valueIndex)
-}
-
-export const selectControllerValueIndexValues = (ctrl: ControllerConfig, ctrlIndex: number = 0) => (state: RootState): PatchControllerValues => {
-    return controllerState.getValueIndexValues(state, ctrl, ctrlIndex)
-}
-
-export const selectUiController = (ctrl: ControllerConfig, ctrlIndex: number = 0, valueIndex: number = 0) => (state: RootState): number => {
-    if (ctrl.uiResponse) {
-        return uiControllerState.get(state, ctrl, ctrlIndex, valueIndex)
-    } else {
-        return controllerState.get(state, ctrl, ctrlIndex, valueIndex)
+export const selectController = (ctrl: ControllerConfig, ctrlIndex: number = 0, valueIndex: number = 0) =>
+    (state: RootState, voiceGroupIndex = getVoiceGroupIndex()): number => {
+        return controllerState.get(voiceGroupIndex, state, ctrl, ctrlIndex, valueIndex)
     }
+
+export const selectControllerValueIndexValues = (ctrl: ControllerConfig, ctrlIndex: number = 0) => (state: RootState, voiceGroupIndex: number): PatchControllerValues => {
+    return controllerState.getValueIndexValues(voiceGroupIndex, state, ctrl, ctrlIndex)
 }
 
-export const selectEnvStageById = (envId: number, stageId: number) => (state: RootState): Stage => {
+export const selectUiController = (ctrl: ControllerConfig, ctrlIndex: number = 0, valueIndex: number = 0) =>
+    (state: RootState, voiceGroupIndex = getVoiceGroupIndex()): number => {
+        if (ctrl.uiResponse) {
+            return uiControllerState.get(voiceGroupIndex, state, ctrl, ctrlIndex, valueIndex)
+        } else {
+            return controllerState.get(voiceGroupIndex, state, ctrl, ctrlIndex, valueIndex)
+        }
+    }
+
+export const selectEnvStageById = (envId: number, stageId: number) => (state: RootState, voiceGroupIndex = getVoiceGroupIndex()): Stage => {
 
     return {
         id: stageId,
-        enabled: controllerState.get(state, envCtrls.TOGGLE_STAGE, envId, stageId),
-        curve: controllerState.get(state, envCtrls.CURVE, envId, stageId),
-        level: controllerState.get(state, envCtrls.LEVEL, envId, stageId),
-        time: controllerState.get(state, envCtrls.TIME, envId, stageId),
+        enabled: controllerState.get(voiceGroupIndex, state, envCtrls.TOGGLE_STAGE, envId, stageId),
+        curve: controllerState.get(voiceGroupIndex, state, envCtrls.CURVE, envId, stageId),
+        level: controllerState.get(voiceGroupIndex, state, envCtrls.LEVEL, envId, stageId),
+        time: controllerState.get(voiceGroupIndex, state, envCtrls.TIME, envId, stageId),
     }
 }
 
@@ -208,12 +220,12 @@ export const selectEnvStages = (envId: number) => (state: RootState): Stage[] =>
     return stages
 }
 
-export const selectLfoStageById = (lfoId: number, stageId: number) => (state: RootState): LfoStage => {
+export const selectLfoStageById = (lfoId: number, stageId: number) => (state: RootState, voiceGroupIndex = getVoiceGroupIndex()): LfoStage => {
 
     return {
         id: stageId,
-        enabled: controllerState.get(state, lfoCtrls.TOGGLE_STAGE, lfoId, stageId),
-        curve: controllerState.get(state, lfoCtrls.CURVE, lfoId, stageId),
+        enabled: controllerState.get(voiceGroupIndex, state, lfoCtrls.TOGGLE_STAGE, lfoId, stageId),
+        curve: controllerState.get(voiceGroupIndex, state, lfoCtrls.CURVE, lfoId, stageId),
 
         // TODO: FIX, is used for delay time?
         time: 0.5//controllerState.get(state, lfoCtrls.CURVE, lfoId, stageId),

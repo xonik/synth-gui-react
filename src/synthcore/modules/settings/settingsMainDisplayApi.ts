@@ -10,7 +10,7 @@ export const mainDisplaySettingsPotResolutions = {
 }
 
 export const mainDisplaySettingsApi = {
-    handleMainDisplayController: (ctrlId: number, increment: number) => {
+    handleMainDisplayController: (voiceGroupIndex: number, ctrlId: number, increment: number) => {
         if (ctrlId === mainDisplayControllers.POT1.id) {
         } else if (ctrlId === mainDisplayControllers.POT2.id) {
         } else if (ctrlId === mainDisplayControllers.POT3.id) {

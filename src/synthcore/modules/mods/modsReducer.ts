@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../store'
 import { ApiSource } from '../../types'
 import { NumericPayload } from '../common/types'
-import { getVoiceGroupId } from "../../selectedVoiceGroup";
+import { getVoiceGroupIndex } from "../../selectedVoiceGroup";
 import { VOICE_GROUPS } from "../../../utils/constants";
 
 type ModsState = {
@@ -24,14 +24,14 @@ export const initialState = (() => {
     const state: ModsState = {
         gui: {
             source: 0,
-                dstGroup: 0,
-                dstFunc: 0,
-                dstParam: 0,
-                lastModSelectSource: undefined
+            dstGroup: 0,
+            dstFunc: 0,
+            dstParam: 0,
+            lastModSelectSource: undefined
         },
         ui: {
             amount: 0,
-                routeButton: 0,
+            routeButton: 0,
         },
         modValues: [],
     }
@@ -73,6 +73,7 @@ type GuiLastModSelectSourcePayload = {
 }
 
 type ModValuePayload = {
+    voiceGroupIndex: number;
     sourceId: number;
     dstId: number;
     dstCtrlIndex: number;
@@ -83,6 +84,7 @@ type ModValuePayload = {
 
 // TODO: Make modValues easier to read by using a map.
 type ModValuesPayload = {
+    voiceGroupIndex: number;
     modValues: number[][][];  // [sourceId, dstId, dstCtrIndex] = value
     source: ApiSource
 }
@@ -113,18 +115,18 @@ export const modsSlice = createSlice({
             state.gui.lastModSelectSource = payload.source
         },
         setModValue: (state, { payload }: PayloadAction<ModValuePayload>) => {
-            const {sourceId, dstId, dstCtrlIndex = 0, modValue} = payload;
-            const selectedVoiceGroup = getVoiceGroupId()
-            if (!state.modValues[selectedVoiceGroup][sourceId]) {
-                state.modValues[selectedVoiceGroup][sourceId] = []
+            const { voiceGroupIndex, sourceId, dstId, dstCtrlIndex = 0, modValue } = payload;
+
+            if (!state.modValues[voiceGroupIndex][sourceId]) {
+                state.modValues[voiceGroupIndex][sourceId] = []
             }
-            if (!state.modValues[selectedVoiceGroup][sourceId][dstId]) {
-                state.modValues[selectedVoiceGroup][sourceId][dstId] = []
+            if (!state.modValues[voiceGroupIndex][sourceId][dstId]) {
+                state.modValues[voiceGroupIndex][sourceId][dstId] = []
             }
-            state.modValues[selectedVoiceGroup][sourceId][dstId][dstCtrlIndex] = modValue
+            state.modValues[voiceGroupIndex][sourceId][dstId][dstCtrlIndex] = modValue
         },
         setModValues: (state, { payload }: PayloadAction<ModValuesPayload>) => {
-            state.modValues[getVoiceGroupId()] = payload.modValues
+            state.modValues[payload.voiceGroupIndex] = payload.modValues
         },
         setUiRouteButton: (state, { payload }: PayloadAction<NumericPayload>) => {
             state.ui.routeButton = payload.value;
@@ -159,11 +161,12 @@ export const selectGuiDstGroup = (state: RootState) => state.mods.gui.dstGroup
 export const selectGuiDstFunc = (state: RootState) => state.mods.gui.dstFunc
 export const selectGuiDstParam = (state: RootState) => state.mods.gui.dstParam
 export const selectGuiLastModSelectSource = (state: RootState) => state.mods.gui.lastModSelectSource
-export const selectModValue = (sourceId: number, dstId: number, dstCtrlIndex: number) => (state: RootState) => {
-    return state.mods.modValues?.[getVoiceGroupId()]?.[sourceId]?.[dstId]?.[dstCtrlIndex] || 0
+
+export const selectModValue = (sourceId: number, dstId: number, dstCtrlIndex: number) => (state: RootState, voiceGroupIndex = getVoiceGroupIndex()) => {
+    return state.mods.modValues?.[voiceGroupIndex]?.[sourceId]?.[dstId]?.[dstCtrlIndex] || 0
 }
-export const selectModValues = () => (state: RootState) => {
-    return state.mods.modValues[getVoiceGroupId()]
+export const selectModValues = () => (state: RootState, voiceGroupIndex: number) => {
+    return state.mods.modValues[voiceGroupIndex]
 }
 
 export default modsSlice.reducer
