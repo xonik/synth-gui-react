@@ -19,7 +19,7 @@ import { Patch } from './types'
 import { dispatch } from '../../utils'
 import { selectIsAuditing, selectPreviousPatch, setAuditing, setPreviousPatch } from './patchStorageReducer'
 import { store } from '../../store'
-import { getVoiceGroupIndex } from "../../selectedVoiceGroup";
+import { getVoiceGroupIndex } from "../voices/currentVoiceGroupIndex"
 
 const patchApis = [
     arpApi,
