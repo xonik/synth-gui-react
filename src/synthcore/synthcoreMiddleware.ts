@@ -26,7 +26,7 @@ import {
 import { click, increment, release } from './modules/ui/uiReducer'
 import settingsApi from './modules/settings/settingsApi'
 import { ButtonInputProperty, NumericInputProperty } from './modules/common/types'
-import { getVoiceGroupIndex } from "./selectedVoiceGroup";
+import { getVoiceGroupIndex } from "./modules/voices/currentVoiceGroupIndex";
 
 const forApi = (action: AnyAction, ctrlGroup: number, path: string): boolean => {
     return action.payload.ctrlGroup === ctrlGroup || action.type.indexOf(`${path}/`) > -1

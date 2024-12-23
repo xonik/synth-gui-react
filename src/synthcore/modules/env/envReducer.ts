@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { StageId } from './types'
 import { RootState } from '../../store'
-import { getVoiceGroupIndex } from "../../selectedVoiceGroup";
 import { VOICE_GROUPS } from "../../../utils/constants";
+import { getVoiceGroupIndex } from "../voices/currentVoiceGroupIndex";
 
 type EnvelopesState = {
     gui: {

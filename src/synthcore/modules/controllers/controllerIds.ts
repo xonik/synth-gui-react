@@ -246,14 +246,7 @@ export enum ControllerIdNonMod {
     ARP_RANGE,
     ARP_MODE,
 
-    VOICE_SELECTOR_1,
-    VOICE_SELECTOR_2,
-    VOICE_SELECTOR_3,
-    VOICE_SELECTOR_4,
-    VOICE_SELECTOR_5,
-    VOICE_SELECTOR_6,
-    VOICE_SELECTOR_7,
-    VOICE_SELECTOR_8,
+    VOICE_SELECTOR,
     MAIN_DISP_GROUP_MENU,
     MAIN_DISP_FUNC_HOME,
     MAIN_DISP_FUNC_SETTINGS,
@@ -309,7 +302,7 @@ export enum ControllerIdNonMod {
 }
 
 export enum ControllerIdEnvNonMod {
-  ENV_RESET_ON_TRIGGER= 215,
+  ENV_RESET_ON_TRIGGER= 211,
   ENV_RELEASE_MODE,
   ENV_LOOP_MODE,
   ENV_MAX_LOOPS,
@@ -321,13 +314,13 @@ export enum ControllerIdEnvNonMod {
 export const ENV_NON_MOD_COUNT = Object.keys(ControllerIdEnvNonMod).filter(o => isNaN(o as any)).length
 
 export enum ControllerIdEnvStageNonMod {
-  ENV_CURVE = 223,
+  ENV_CURVE = 219,
   ENV_TOGGLE_STAGE,
 }
 export const ENV_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdEnvStageNonMod).filter(o => isNaN(o as any)).length
 
 export enum ControllerIdLfoNonMod {
-  LFO_SHAPE = 225,
+  LFO_SHAPE = 221,
   LFO_SYNC,
   LFO_RESET,
   LFO_BIPOLAR,
@@ -346,7 +339,7 @@ export enum ControllerIdLfoNonMod {
 export const LFO_NON_MOD_COUNT = Object.keys(ControllerIdLfoNonMod).filter(o => isNaN(o as any)).length
 
 export enum ControllerIdLfoStageNonMod {
-  LFO_CURVE = 240,
+  LFO_CURVE = 236,
   LFO_TOGGLE_STAGE,
 }
 export const LFO_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdLfoStageNonMod).filter(o => isNaN(o as any)).length

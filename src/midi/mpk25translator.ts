@@ -4,7 +4,7 @@ import mapNRPN from './mapNRPN'
 import { StageId } from '../synthcore/modules/env/types'
 import { envCtrls } from '../synthcore/modules/env/envControllers'
 import { ControllerConfig } from './types'
-import { getVoiceGroupIndex } from "../synthcore/selectedVoiceGroup";
+import { getVoiceGroupIndex } from "../synthcore/modules/voices/currentVoiceGroupIndex";
 
 const getNprnStageTime = (stageId: number, midiTime: number) => {
     const mappedMidiTime = envCtrls.TIME.uiResponse?.output(midiTime / 127) || 0

@@ -1,5 +1,5 @@
 import { createSlice, Draft, PayloadAction } from '@reduxjs/toolkit'
-import { RootState } from '../../store'
+import { RootState, store } from '../../store'
 import { ControllerConfig } from '../../../midi/types'
 import { Controllers } from './types'
 import { getDefaultEnv, getDefaultEnvStages, getDefaultEnvUiStages } from '../env/envUtils'
@@ -16,7 +16,7 @@ import { getDefaultSrcMixState, getDefaultSrcMixUiState } from '../srcMix/srcMix
 import { getDefaultPreFxState } from "../fx/fxUtils";
 import { lfoCtrls } from '../lfo/lfoControllers'
 import { VOICE_GROUPS } from "../../../utils/constants";
-import { getVoiceGroupIndex } from "../../selectedVoiceGroup";
+import { getVoiceGroupIndex } from "../voices/currentVoiceGroupIndex";
 
 type ControllersState = {
 
@@ -125,11 +125,11 @@ function getControllersState(voiceGroupIndex: number, controllersStates: Control
     if (ctrl.global) {
         return controllersStates.globalControllers
     } else {
-        return controllersStates.voiceGroupControllers[voiceGroupIndex]
+        return controllersStates?.voiceGroupControllers[voiceGroupIndex] || -1
     }
 }
 
-const controllerState = {
+export const controllerState = {
     set: (state: Draft<ControllersState>, payload: NumericControllerPayload) => {
         const { ctrlIndex = 0, ctrl, valueIndex = 0, value } = payload
         if (state.controllers[ctrlIndex] === undefined) {
@@ -239,6 +239,5 @@ export const selectLfoStages = (lfoId: number) => (state: RootState): LfoStage[]
     }
     return stages
 }
-
 
 export default controllersSlice.reducer

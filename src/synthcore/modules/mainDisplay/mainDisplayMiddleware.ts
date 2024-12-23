@@ -4,7 +4,7 @@ import { mainDisplayApi } from '../../synthcoreApi'
 import { ApiSource } from '../../types'
 import mainDisplayControllers from './mainDisplayControllers'
 import { MainDisplayScreenId } from './types'
-import { getVoiceGroupIndex } from "../../selectedVoiceGroup";
+import { getVoiceGroupIndex } from "../voices/currentVoiceGroupIndex"
 
 export const mainDisplayMiddleware = (action: PayloadAction): void => {
     if (increment.match(action)) {

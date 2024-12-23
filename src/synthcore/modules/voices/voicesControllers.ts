@@ -5,95 +5,24 @@ import {buttonMidiValues} from "../../../midi/buttonMidiValues";
 
 interface VoicesControllers {
     props: FuncProps
-    VOICE1: ControllerConfigButton
-    VOICE2: ControllerConfigButton
-    VOICE3: ControllerConfigButton
-    VOICE4: ControllerConfigButton
-    VOICE5: ControllerConfigButton
-    VOICE6: ControllerConfigButton
-    VOICE7: ControllerConfigButton
-    VOICE8: ControllerConfigButton
+    VOICE: ControllerConfigButton
 }
 
 const voicesControllers: VoicesControllers = {
     props: { label: 'Voice selector' },
-    VOICE1: {
-        id: ControllerIdNonMod.VOICE_SELECTOR_1,
+    VOICE: {
+        id: ControllerIdNonMod.VOICE_SELECTOR,
         label: 'Voice 1',
         type: 'button',
         values: [
-            buttonMidiValues.VOICE1_OFF,
-            buttonMidiValues.VOICE1_ON,
-        ],
-        global: true,
-    },
-    VOICE2: {
-        id: ControllerIdNonMod.VOICE_SELECTOR_2,
-        label: 'Voice 2',
-        type: 'button',
-        values: [
-            buttonMidiValues.VOICE2_OFF,
-            buttonMidiValues.VOICE2_ON,
-        ],
-        global: true,
-    },
-    VOICE3: {
-        id: ControllerIdNonMod.VOICE_SELECTOR_3,
-        label: 'Voice 3',
-        type: 'button',
-        values: [
-            buttonMidiValues.VOICE3_OFF,
-            buttonMidiValues.VOICE3_ON,
-        ],
-        global: true,
-    },
-    VOICE4: {
-        id: ControllerIdNonMod.VOICE_SELECTOR_4,
-        label: 'Voice 4',
-        type: 'button',
-        values: [
-            buttonMidiValues.VOICE4_OFF,
-            buttonMidiValues.VOICE4_ON,
-        ],
-        global: true,
-    },
-    VOICE5: {
-        id: ControllerIdNonMod.VOICE_SELECTOR_5,
-        label: 'Voice 5',
-        type: 'button',
-        values: [
-            buttonMidiValues.VOICE5_OFF,
-            buttonMidiValues.VOICE5_ON,
-        ],
-        global: true,
-    },
-    VOICE6: {
-        id: ControllerIdNonMod.VOICE_SELECTOR_6,
-        label: 'Voice 6',
-        type: 'button',
-        values: [
-            buttonMidiValues.VOICE6_OFF,
-            buttonMidiValues.VOICE6_ON,
-        ],
-        global: true,
-    },
-    VOICE7: {
-        id: ControllerIdNonMod.VOICE_SELECTOR_7,
-        label: 'Voice 7',
-        type: 'button',
-        values: [
-            buttonMidiValues.VOICE7_OFF,
-            buttonMidiValues.VOICE7_ON,
-        ],
-        global: true,
-    },
-    VOICE8: {
-        id: ControllerIdNonMod.VOICE_SELECTOR_8,
-        label: 'Voice 8',
-        type: 'button',
-        values: [
-            buttonMidiValues.VOICE8_OFF,
-            buttonMidiValues.VOICE8_ON,
+            buttonMidiValues.VOICE1,
+            buttonMidiValues.VOICE2,
+            buttonMidiValues.VOICE3,
+            buttonMidiValues.VOICE4,
+            buttonMidiValues.VOICE5,
+            buttonMidiValues.VOICE6,
+            buttonMidiValues.VOICE7,
+            buttonMidiValues.VOICE8,
         ],
         global: true,
     },

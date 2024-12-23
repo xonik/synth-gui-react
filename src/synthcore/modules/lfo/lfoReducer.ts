@@ -3,8 +3,8 @@ import { StageId } from './types'
 import { RootState } from '../../store'
 import { NumericPayload } from '../common/types'
 import { Curve } from '../../generatedTypes'
-import { getVoiceGroupIndex } from "../../selectedVoiceGroup";
 import { VOICE_GROUPS } from "../../../utils/constants";
+import { getVoiceGroupIndex } from "../voices/currentVoiceGroupIndex"
 
 type CustomParams = {
     decayEnabled: boolean;

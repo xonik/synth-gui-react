@@ -4,7 +4,7 @@ import { setGuiMod } from './modsReducer'
 import modsApi from './modsApi'
 import { click, increment, UiButtonControllerPayload, UiNumericControllerPayload } from '../ui/uiReducer'
 import modsControllers from './modsControllers'
-import { getVoiceGroupIndex } from "../../selectedVoiceGroup";
+import { getVoiceGroupIndex } from "../voices/currentVoiceGroupIndex"
 
 export const modsMiddleware = (action: PayloadAction<UiNumericControllerPayload | UiButtonControllerPayload>): void => {
     const voiceGroupIndex = getVoiceGroupIndex()
