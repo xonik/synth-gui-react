@@ -57,6 +57,7 @@ interface OscControllers {
         WAVEFORM: ControllerConfigCC
         FM_AMT: ControllerConfigCC
         PW: ControllerConfigCC
+        LIN_FM: ControllerConfigCC
         SYNC: ControllerConfigButton
         SYNC_SRC: ControllerConfigButton
         FM_SRC: ControllerConfigButton
@@ -394,6 +395,13 @@ const oscControllers: OscControllers = {
             type: 'pot',
             cc: CC.VCO_PW
         },
+        LIN_FM: {
+            id: ControllerIdDst.VCO_LIN_FM,
+            label: 'Lin FM',
+            isDstDigi: true,
+            type: 'pot',
+            cc: CC.VCO_LIN_FM
+        },
 
         //buttons
         SYNC: {
@@ -420,7 +428,7 @@ const oscControllers: OscControllers = {
             label: 'Cross mod source',
             type: 'button',
             values: [
-                buttonMidiValues.OSC3_FM_SRC_OSC1,
+                buttonMidiValues.OSC3_FM_SRC_OSC2,
                 buttonMidiValues.OSC3_FM_SRC_EXT,
             ],
         },

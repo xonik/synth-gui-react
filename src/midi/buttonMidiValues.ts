@@ -46,7 +46,7 @@ export enum buttonMidiValues {
     OSC3_SYNC_CEM_HARD,
     OSC3_SYNC_SRC_OSC_1,
     OSC3_SYNC_SRC_OSC_2,
-    OSC3_FM_SRC_OSC1,
+    OSC3_FM_SRC_OSC2,
     OSC3_FM_SRC_EXT,
     OSC3_FM_MODE_LIN,
     OSC3_FM_MODE_LOG,

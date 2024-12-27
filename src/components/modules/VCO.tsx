@@ -65,7 +65,7 @@ const VCO = ({ x, y }: Props) => {
         />
 
         <RoundPushButton8 x={col1} y={bottomRow1}
-                          ledPosition="top" ledCount={2} ledLabels={['Osc 1', 'Ext']}
+                          ledPosition="top" ledCount={2} ledLabels={['Osc 2', 'Ext']}
                           label="FM src" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={oscControllers.VCO.FM_SRC}

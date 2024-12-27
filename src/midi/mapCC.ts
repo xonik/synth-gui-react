@@ -50,7 +50,7 @@ const mapCC = {
     LEVEL_NOISE: 45,
     LEVEL_RING_MOD: 46,
     LEVEL_EXT_AUDIO: 47,
-    //ROUTE_AMOUNT: 48,
+    VCO_LIN_FM: 48,
     MASTER_CLOCK_RATE: 49,
     ARP_TEMPO: 50,
     MAIN_POT1: 51,
