@@ -1,58 +1,37 @@
-import {
-    setVoiceState as setVoiceStateAction,
-    selectVoices,
-} from './voicesReducer'
-import { store } from '../../store'
-import { ApiSource } from '../../types'
-import { dispatch, getBounded } from '../../utils'
 import voicesControllers from './voicesControllers'
-import voicesMidiApi from './voicesMidiApi'
-import { createClickMapper, createIncrementMapper } from '../common/utils'
+import { ControllerHandler, groupHandlers } from '../common/utils'
+import { NumericInputProperty } from "../common/types";
+import { setVoiceGroupIndex } from "./currentVoiceGroupIndex";
+import { dispatch } from "../../utils";
+import modsControllers from "../mods/modsControllers";
+import { setController } from "../controllers/controllersReducer";
+import modsApi from '../mods/modsApi';
+import { ApiSource } from "../../types";
 
-const setVoiceState = (id: number, value: number, source: ApiSource) => {
-    const voices = selectVoices(store.getState())
-    if(id >= voices.length){
-        return
+// TODO: This is a bit hackish, the current voiceGroupIndex is kept outside of the reducer.
+// I had problems initializing the reducers when the getVoiceGroupIndex function resided inside the controllersReducer,
+// probably due to a circular dependency - I got nullpointers in the state.
+class VoiceGroupSelectHandler extends ControllerHandler {
+    constructor() {
+        super(voicesControllers.VOICE)
     }
-    const currentValue = voices[id].state;
-    // all voices have same length
-    const boundedValue = getBounded(value, 0, voicesControllers.VOICE1.values.length - 1)
 
-    if (boundedValue === currentValue) {
-        return
+    defaultSet(input: NumericInputProperty, forceSet?: boolean, uiValue?: number) {
+        setVoiceGroupIndex(input.value)
+
+        // Reset routing switches on voice group change to lessen the confusion
+        super.defaultSet(input, forceSet, uiValue)
+
+        modsApi.setRouteButton(0, ApiSource.UI)
     }
-
-    dispatch(setVoiceStateAction({voice: id, value: boundedValue }))
-    voicesMidiApi.setVoiceState(source, id, boundedValue)
 }
 
-const toggleVoiceState = (id: number, source: ApiSource) => {
-    const voices = selectVoices(store.getState())
-    if(id >= voices.length){
-        return
-    }
-    const currentValue = voices[id].state;
-    const possibleStates = voicesControllers.VOICE1.values.length;
-    setVoiceState(id,(currentValue + 1 + possibleStates) % possibleStates, source)
-}
+const handlers = groupHandlers({
+    [voicesControllers.VOICE.id]: new VoiceGroupSelectHandler(),
+})
 
-
-const toggle = createClickMapper([
-    [voicesControllers.VOICE1, ({source}) => toggleVoiceState(0, source)],
-    [voicesControllers.VOICE2, ({source}) => toggleVoiceState(1, source)],
-    [voicesControllers.VOICE3, ({source}) => toggleVoiceState(2, source)],
-    [voicesControllers.VOICE4, ({source}) => toggleVoiceState(3, source)],
-    [voicesControllers.VOICE5, ({source}) => toggleVoiceState(4, source)],
-    [voicesControllers.VOICE6, ({source}) => toggleVoiceState(5, source)],
-    [voicesControllers.VOICE7, ({source}) => toggleVoiceState(6, source)],
-    [voicesControllers.VOICE8, ({source}) => toggleVoiceState(7, source)],
-])
-const increment = createIncrementMapper([
-])
 const voicesApi = {
-    setVoiceState,
-    toggle,
-    increment,
+    ...handlers
 }
 
 export default voicesApi

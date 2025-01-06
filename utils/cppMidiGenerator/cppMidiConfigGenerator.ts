@@ -1,7 +1,4 @@
-import controllers from '../src/synthcore/modules/controllers/controllers'
-import { buttonLeftMidiValues } from '../src/midi/buttonLeftMidiValues'
-import { buttonCenterMidiValues } from '../src/midi/buttonCenterMidiValues'
-import { buttonRightMidiValues } from '../src/midi/buttonRightMidiValues'
+import controllers from '../../src/synthcore/modules/controllers/controllers'
 import {
     ControllerIdDst,
     ControllerIdEnvDst,
@@ -29,9 +26,10 @@ import {
     NON_MOD_COUNT,
     NON_MOD_POTS_COUNT,
     SRC_COUNT
-} from '../src/synthcore/modules/controllers/controllerIds'
-
-const fs = require('fs')
+} from '../../src/synthcore/modules/controllers/controllerIds'
+import CC from "../../src/midi/mapCC";
+import { writeToFile } from "./utils";
+import { buttonMidiValues } from "../../src/midi/buttonMidiValues";
 
 const outputRoot = '/Users/joakim/git/xonik/xm8-voice-controller/xm8-voice-controller/'
 
@@ -201,11 +199,6 @@ namespace paramIO {
 }
 
 const generateCppFiles = () => {
-    const buttonEnum: string[] = []
-    const buttonCC: number[] = []
-    const buttonFirstValue: number[] = []
-    const buttonNumberOfValues: number[] = []
-
     const potEnum: string[] = []
     const potCC: string[] = []
 
@@ -221,10 +214,7 @@ const generateCppFiles = () => {
                 .filter(([controllerKey, controller]) => controller.cc !== undefined)
                 .forEach(([controllerKey, controller]) => {
                     if (controller.type === 'button') {
-                        buttonEnum.push(`BUTTON_${controllerGroupKey}_${controllerKey}`)
-                        buttonCC.push(controller.cc)
-                        buttonFirstValue.push(controller.values ? controller.values[0] : 0)
-                        buttonNumberOfValues.push(controller.values?.length || 0)
+                        // do nothing
                     } else if (controller.type === 'pot') {
                         potEnum.push(`POT_${controllerGroupKey}_${controllerKey}`)
                         potCC.push(`${controller.cc} /* ${controllerGroupKey}_${controllerKey} */`)
@@ -251,11 +241,6 @@ const generateCppFiles = () => {
                 })
         })
 
-    const buttonEnumFileContents = `enum Button: char {\n  ${buttonEnum.join(',\n  ')}\n};`
-    const buttonCCFileContents = `const char buttonCC[${buttonCC.length}] = {\n  ${buttonCC.join(',\n  ')}\n};`
-    const buttonFirstValueFileContents = `// First value in the button values array.\n// Values are sequential\nconst char buttonFirstValue[${buttonFirstValue.length}] = {\n  ${buttonFirstValue.join(',\n  ')}\n};`
-    const buttonNumberOfValuesFileContents = `// Number of values for button\nconst char buttonNumberOfValues[${buttonNumberOfValues.length}] = {\n  ${buttonNumberOfValues.join(',\n  ')}\n};`
-
     const comEnumFileContents = `enum Com: char {\n  ${comEnum.join(',\n  ')}\n};`
     const comCCFileContents = `const char comCC[${comCC.length}] = {\n  ${comCC.join(',\n  ')}\n};`
 
@@ -265,39 +250,22 @@ const generateCppFiles = () => {
     const potEnumNrpnFileContents = `enum PotNrpn: char {\n  ${potNrpnEnum.join(',\n  ')}\n};`
     const potNrpnFileContents = `const char potNrpn[${potCC.length}] = {\n  ${potNrpn.join(',\n  ')}\n};`
 
-    const buttonLeftMidiKeys = Object.keys(buttonLeftMidiValues)
+    const buttonMidiKeys = Object.keys(buttonMidiValues)
         .filter(o => isNaN(o as any))
-        .map(key => `BL_${key}`)
-    const buttonCenterMidiKeys = Object.keys(buttonCenterMidiValues)
-        .filter(o => isNaN(o as any))
-        .map(key => `BC_${key}`)
-    const buttonRightMidiKeys = Object.keys(buttonRightMidiValues)
-        .filter(o => isNaN(o as any))
-        .map(key => `BR_${key}`)
+        .map(key => `BT_${key}`)
+    const buttonEnumFileContents = `enum ButtonMidiValues {\n  ${buttonMidiKeys.join(',\n  ')}\n};`
 
-    const midiButtonLeftValues = `enum ButtonLeftMidiValues {\n  ${buttonLeftMidiKeys.join(',\n  ')}\n};`
-    const midiButtonCenterValues = `enum ButtonCenterMidiValues {\n  ${buttonCenterMidiKeys.join(',\n  ')}\n};`
-    const midiButtonRightValues = `enum ButtonRightMidiValues {\n  ${buttonRightMidiKeys.join(',\n  ')}\n};`
 
     writeToFile(`${outputRoot}paramIO.h`, generateParamIO())
-    writeToFile(`${outputRoot}midiButtons.h`, buttonEnumFileContents)
-    writeToFile(`${outputRoot}midiButtonsCC.h`, buttonCCFileContents)
-    writeToFile(`${outputRoot}midiButtonsFirstValue.h`, buttonFirstValueFileContents)
-    writeToFile(`${outputRoot}midiButtonsNumberOfValues.h`, buttonNumberOfValuesFileContents)
+    writeToFile(`${outputRoot}midiButtonValues.h`, buttonEnumFileContents)
     writeToFile(`${outputRoot}midiPots.h`, potEnumFileContents)
     writeToFile(`${outputRoot}midiPotsCC.h`, potCCFileContents)
     writeToFile(`${outputRoot}midiCom.h`, comEnumFileContents)
     writeToFile(`${outputRoot}midiComCC.h`, comCCFileContents)
     writeToFile(`${outputRoot}midiPotsNrpnEnum.h`, potEnumNrpnFileContents)
     writeToFile(`${outputRoot}midiPotsNrpn.h`, potNrpnFileContents)
-    writeToFile(`${outputRoot}midiButtonLeftValues.h`, midiButtonLeftValues)
-    writeToFile(`${outputRoot}midiButtonCenterValues.h`, midiButtonCenterValues)
-    writeToFile(`${outputRoot}midiButtonRightValues.h`, midiButtonRightValues)
-}
 
-const writeToFile = (path: string, contents: string) => {
-    console.log(`writing ${contents.length} bytes to ${path}`)
-    fs.writeFileSync(path, contents)
+
 }
 
 generateCppFiles()

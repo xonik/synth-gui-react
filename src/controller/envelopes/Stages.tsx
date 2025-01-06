@@ -43,17 +43,16 @@ const Stages = ({ envId }: Props) => {
     const currStageId = select(selectCurrStageId);
 
     const onSvgClicked = useCallback((stageId: number) => {
-        dispatch(toggleStageSelected({env: envId, stage: stageId}))
+        dispatch(toggleStageSelected({ voiceGroupIndex: -1, env: envId, stage: stageId }))
     }, [envId, dispatch])
-
 
 
     return <svg x={0} y={0}>
         {
             bipolar && <line
-              x1={0} y1={graphCenter}
-              x2={1} y2={graphCenter}
-              className={'stages-center-line'}
+                x1={0} y1={graphCenter}
+                x2={1} y2={graphCenter}
+                className={'stages-center-line'}
             />
         }
         {
@@ -66,21 +65,21 @@ const Stages = ({ envId }: Props) => {
                 const enabled = stage.enabled
                 const content = <React.Fragment key={stage.id}>
                     {enabled &&
-                    <>
-                      <rect x={startX} y={0} width={stageWidth} height={1} onClick={() => onSvgClicked(stage.id)}
-                            className={classNames('stages-background', {'stages-background--selected': currStageId === stage.id})}
+                        <>
+                            <rect x={startX} y={0} width={stageWidth} height={1} onClick={() => onSvgClicked(stage.id)}
+                                  className={classNames('stages-background', { 'stages-background--selected': currStageId === stage.id })}
 
-                      />
-                      <line
-                        x1={startX} y1={0}
-                        x2={startX} y2={1}
-                        className={'stages-divider'}
-                      />
-                    </>}
+                            />
+                            <line
+                                x1={startX} y1={0}
+                                x2={startX} y2={1}
+                                className={'stages-divider'}
+                            />
+                        </>}
                     {isLast && <line
-                      x1={startX + stageWidth} y1={0}
-                      x2={startX + stageWidth} y2={1}
-                      className={'stages-divider'}
+                        x1={startX + stageWidth} y1={0}
+                        x2={startX + stageWidth} y2={1}
+                        className={'stages-divider'}
                     />}
                     <StageBlock
                         x={startX}

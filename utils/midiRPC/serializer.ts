@@ -21,12 +21,21 @@ export const splitTo7 = (value: number, bits: number) => {
     return bytes
 }
 
-export const jsToMidiEncoder: Record<DataType, (value: number) => number[]> = {
-    'void': (value: number) => [], // should not be used
-    'uint7_t': (value: number) => splitTo7(value, 7),
-    'uint8_t': (value: number) => splitTo7(value, 8),
-    'uint14_t': (value: number) => splitTo7(value, 14),
-    'uint16_t': (value: number) => splitTo7(value, 16),
-    'uint21_t': (value: number) => splitTo7(value, 21),
-    'uint32_t': (value: number) => splitTo7(value, 32),
+export const getBoolArray = (value: boolean): number[] => {
+    if(value){
+        return [1]
+    } else {
+        return [0]
+    }
+}
+
+export const jsToMidiEncoder: Record<DataType, (value: unknown) => number[]> = {
+    'void': (value: unknown) => [], // should not be used
+    'uint7_t': (value: unknown) => splitTo7(value as number, 7),
+    'uint8_t': (value: unknown) => splitTo7(value as number, 8),
+    'uint14_t': (value: unknown) => splitTo7(value as number, 14),
+    'uint16_t': (value: unknown) => splitTo7(value as number, 16),
+    'uint21_t': (value: unknown) => splitTo7(value as number, 21),
+    'uint32_t': (value: unknown) => splitTo7(value as number, 32),
+    'bool': (value: unknown) => getBoolArray(value as boolean),
 }

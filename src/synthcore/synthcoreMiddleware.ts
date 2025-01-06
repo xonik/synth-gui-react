@@ -26,6 +26,7 @@ import {
 import { click, increment, release } from './modules/ui/uiReducer'
 import settingsApi from './modules/settings/settingsApi'
 import { ButtonInputProperty, NumericInputProperty } from './modules/common/types'
+import { getVoiceGroupIndex } from "./modules/voices/currentVoiceGroupIndex";
 
 const forApi = (action: AnyAction, ctrlGroup: number, path: string): boolean => {
     return action.payload.ctrlGroup === ctrlGroup || action.type.indexOf(`${path}/`) > -1
@@ -77,13 +78,21 @@ const getApi = (action: AnyAction): CtrlApi | undefined => {
     }
 }
 
-export const synthcoreMiddleware: Middleware<{}, any> = storeAPI => next => action => {
+export const synthcoreMiddleware: Middleware<{}, any> = storeAPI => next => originalAction => {
+
+    // Sets currently selected voice group as target for actions
+    const voiceGroupIndex = getVoiceGroupIndex()
+    const action = { ...originalAction, payload: { ...originalAction.payload, voiceGroupIndex } }
+
     if (increment.match(action)) {
-        getApi(action)?.increment(action.payload)
+        // necessary to build the input value here as TS gets confused and thinks we're passing an action without voiceGroupIndex
+        getApi(action)?.increment({ ...originalAction.payload, voiceGroupIndex })
     } else if (click.match(action)) {
-        getApi(action)?.toggle(action.payload)
+        // necessary to build the input value here as TS gets confused and thinks we're passing an action without voiceGroupIndex
+        getApi(action)?.toggle({ ...originalAction.payload, voiceGroupIndex })
     } else if (release.match(action)) {
-        getApi(action)?.release?.(action.payload)
+        // necessary to build the input value here as TS gets confused and thinks we're passing an action without voiceGroupIndex
+        getApi(action)?.release?.({ ...originalAction.payload, voiceGroupIndex })
     }
 
     if (action.payload.ctrlGroup === ControllerGroupIds.ENV || action.type.indexOf('envelopes/') > -1) {

@@ -1,24 +1,24 @@
 import CC from '../../../midi/mapCC'
-import { BUTTONS } from '../../../midi/buttons'
-import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
+import { FuncProps, ControllerConfigCC, ControllerConfigButton } from '../../../midi/types'
 import { ControllerIdDst, ControllerIdNonMod } from '../controllers/controllerIds'
+import {buttonMidiValues} from "../../../midi/buttonMidiValues";
 
 interface FxControllers {
     DISTORTION: {
         props: FuncProps
         DRIVE: ControllerConfigCC
         LEVEL: ControllerConfigCC
-        IN: ControllerConfigCCWithValue
-        OUT: ControllerConfigCCWithValue
+        IN: ControllerConfigButton
+        OUT: ControllerConfigButton
     },
     BIT_CRUSHER: {
         props: FuncProps
         BITS: ControllerConfigCC
         RATE: ControllerConfigCC
-        RECON: ControllerConfigCCWithValue
+        RECON: ControllerConfigButton
         LEVEL: ControllerConfigCC
-        IN: ControllerConfigCCWithValue
-        OUT: ControllerConfigCCWithValue
+        IN: ControllerConfigButton
+        OUT: ControllerConfigButton
     }
 }
 
@@ -45,24 +45,22 @@ const fxControllers: FxControllers = {
             id: ControllerIdNonMod.DISTORTION_IN,
             label: 'In',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                //BUTTONS.BUTTONS_LEFT.values.DISTORTION_IN_OFF,
-                BUTTONS.BUTTONS_LEFT.values.DISTORTION_IN_A,
-                BUTTONS.BUTTONS_LEFT.values.DISTORTION_IN_B,
-                //BUTTONS.BUTTONS_LEFT.values.DISTORTION_IN_BOTH,
+                //buttonMidiValues.DISTORTION_IN_OFF,
+                buttonMidiValues.DISTORTION_IN_A,
+                buttonMidiValues.DISTORTION_IN_B,
+                //buttonMidiValues.DISTORTION_IN_BOTH,
             ],
         },
         OUT: {
             id: ControllerIdNonMod.DISTORTION_OUT,
             label: 'Out',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.DISTORTION_OUT_OFF,
-                BUTTONS.BUTTONS_LEFT.values.DISTORTION_OUT_A,
-                BUTTONS.BUTTONS_LEFT.values.DISTORTION_OUT_B,
-                BUTTONS.BUTTONS_LEFT.values.DISTORTION_OUT_BOTH,
+                buttonMidiValues.DISTORTION_OUT_OFF,
+                buttonMidiValues.DISTORTION_OUT_A,
+                buttonMidiValues.DISTORTION_OUT_B,
+                buttonMidiValues.DISTORTION_OUT_BOTH,
             ],
         },
     },
@@ -86,10 +84,9 @@ const fxControllers: FxControllers = {
             id: ControllerIdNonMod.BIT_CRUSHER_RECON,
             label: 'Clip',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_RECON_OFF,
-                BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_RECON_ON,
+                buttonMidiValues.BIT_CRUSHER_RECON_OFF,
+                buttonMidiValues.BIT_CRUSHER_RECON_ON,
             ],
         },
         LEVEL: {
@@ -104,24 +101,22 @@ const fxControllers: FxControllers = {
             id: ControllerIdNonMod.BIT_CRUSHER_IN,
             label: 'In',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                //BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_IN_OFF,
-                BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_IN_A,
-                BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_IN_B,
-                //BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_IN_BOTH,
+                //buttonMidiValues.BIT_CRUSHER_IN_OFF,
+                buttonMidiValues.BIT_CRUSHER_IN_A,
+                buttonMidiValues.BIT_CRUSHER_IN_B,
+                //buttonMidiValues.BIT_CRUSHER_IN_BOTH,
             ],
         },
         OUT: {
             id: ControllerIdNonMod.BIT_CRUSHER_OUT,
             label: 'Out',
             type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
             values: [
-                BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_OUT_OFF,
-                BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_OUT_A,
-                BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_OUT_B,
-                BUTTONS.BUTTONS_LEFT.values.BIT_CRUSHER_OUT_BOTH,
+                buttonMidiValues.BIT_CRUSHER_OUT_OFF,
+                buttonMidiValues.BIT_CRUSHER_OUT_A,
+                buttonMidiValues.BIT_CRUSHER_OUT_B,
+                buttonMidiValues.BIT_CRUSHER_OUT_BOTH,
             ],
         },
     }

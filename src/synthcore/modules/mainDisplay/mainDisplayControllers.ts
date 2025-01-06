@@ -1,7 +1,7 @@
 import CC from '../../../midi/mapCC'
-import { BUTTONS } from '../../../midi/buttons'
-import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
+import { FuncProps, ControllerConfigCC, ControllerConfigButton } from '../../../midi/types'
 import { ControllerIdNonMod, ControllerIdNonModPots } from '../controllers/controllerIds'
+import {buttonMidiValues} from "../../../midi/buttonMidiValues";
 
 interface MainDisplayControllers {
     props: FuncProps
@@ -13,15 +13,15 @@ interface MainDisplayControllers {
     POT6: ControllerConfigCC,
     POT7: ControllerConfigCC,
 
-    GROUP_MENU: ControllerConfigCCWithValue
-    FUNC_HOME: ControllerConfigCCWithValue
-    FUNC_SETTINGS: ControllerConfigCCWithValue
-    FUNC_SHIFT: ControllerConfigCCWithValue
-    FUNC_PERFORM: ControllerConfigCCWithValue
-    FUNC_LOAD: ControllerConfigCCWithValue
-    FUNC_SAVE: ControllerConfigCCWithValue
-    FUNC_COMPARE: ControllerConfigCCWithValue
-    FUNC_ROUTE: ControllerConfigCCWithValue
+    GROUP_MENU: ControllerConfigButton
+    FUNC_HOME: ControllerConfigButton
+    FUNC_SETTINGS: ControllerConfigButton
+    FUNC_SHIFT: ControllerConfigButton
+    FUNC_PERFORM: ControllerConfigButton
+    FUNC_LOAD: ControllerConfigButton
+    FUNC_SAVE: ControllerConfigButton
+    FUNC_COMPARE: ControllerConfigButton
+    FUNC_ROUTE: ControllerConfigButton
 }
 
 const mainDisplayControllers: MainDisplayControllers = {
@@ -38,90 +38,90 @@ const mainDisplayControllers: MainDisplayControllers = {
         id: ControllerIdNonMod.MAIN_DISP_GROUP_MENU,
         label: 'Screen select',
         type: 'button',
-        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
-            BUTTONS.BUTTONS_CENTER.values.MENU_LFO,
-            BUTTONS.BUTTONS_CENTER.values.MENU_OSC,
-            BUTTONS.BUTTONS_CENTER.values.MENU_FILTER,
-            BUTTONS.BUTTONS_CENTER.values.MENU_ENV,
-            BUTTONS.BUTTONS_CENTER.values.MENU_MOD,
-            BUTTONS.BUTTONS_CENTER.values.MENU_FX,
+            buttonMidiValues.MENU_LFO,
+            buttonMidiValues.MENU_OSC,
+            buttonMidiValues.MENU_FILTER,
+            buttonMidiValues.MENU_ENV,
+            buttonMidiValues.MENU_MOD,
+            buttonMidiValues.MENU_FX,
             //TODO: ARP-meny?
         ],
+        global: true,
     },
 
     FUNC_HOME: {
         id: ControllerIdNonMod.MAIN_DISP_FUNC_HOME,
         label: 'Home',
         type: 'button',
-        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
-            BUTTONS.BUTTONS_CENTER.values.FUNC_HOME,
+            buttonMidiValues.FUNC_HOME,
         ],
+        global: true,
     },
     FUNC_SETTINGS: {
         id: ControllerIdNonMod.MAIN_DISP_FUNC_SETTINGS,
         label: 'Setup',
         type: 'button',
-        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
-            BUTTONS.BUTTONS_CENTER.values.FUNC_SETTINGS,
+            buttonMidiValues.FUNC_SETTINGS,
         ],
+        global: true,
     },
     FUNC_SHIFT: {
         id: ControllerIdNonMod.MAIN_DISP_FUNC_SHIFT,
         label: 'Shift',
         type: 'button',
-        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
-            BUTTONS.BUTTONS_CENTER.values.FUNC_SHIFT_OFF,
-            BUTTONS.BUTTONS_CENTER.values.FUNC_SHIFT_ON,
+            buttonMidiValues.FUNC_SHIFT_OFF,
+            buttonMidiValues.FUNC_SHIFT_ON,
         ],
+        global: true,
     },
     FUNC_PERFORM: {
         id: ControllerIdNonMod.MAIN_DISP_FUNC_PERFORM,
         label: 'Perform',
         type: 'button',
-        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
-            BUTTONS.BUTTONS_CENTER.values.FUNC_PERFORM,
+            buttonMidiValues.FUNC_PERFORM,
         ],
+        global: true,
     },
     FUNC_LOAD: {
         id: ControllerIdNonMod.MAIN_DISP_FUNC_LOAD,
         label: 'Load',
         type: 'button',
-        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
-            BUTTONS.BUTTONS_CENTER.values.FUNC_LOAD,
+            buttonMidiValues.FUNC_LOAD,
         ],
+        global: true,
     },
     FUNC_SAVE: {
         id: ControllerIdNonMod.MAIN_DISP_FUNC_SAVE,
         label: 'Save',
         type: 'button',
-        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
-            BUTTONS.BUTTONS_CENTER.values.FUNC_SAVE,
+            buttonMidiValues.FUNC_SAVE,
         ],
+        global: true,
     },
     FUNC_COMPARE: {
         id: ControllerIdNonMod.MAIN_DISP_FUNC_COMPARE,
         label: 'Compare',
         type: 'button',
-        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
-            BUTTONS.BUTTONS_CENTER.values.FUNC_COMPARE,
+            buttonMidiValues.FUNC_COMPARE,
         ],
+        global: true,
     },
     FUNC_ROUTE: {
         id: ControllerIdNonMod.MAIN_DISP_FUNC_ROUTE,
         label: 'Route',
         type: 'button',
-        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
-            BUTTONS.BUTTONS_CENTER.values.FUNC_ROUTE,
+            buttonMidiValues.FUNC_ROUTE,
         ],
+        global: true,
     },
 }
 

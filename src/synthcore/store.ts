@@ -6,7 +6,6 @@ import settingsReducer from './modules/settings/settingsReducer'
 import mainDisplayReducer from './modules/mainDisplay/mainDisplayReducer'
 import modsReducer from './modules/mods/modsReducer'
 import lfoReducer from './modules/lfo/lfoReducer'
-import voicesReducer from './modules/voices/voicesReducer'
 import controllersReducer from './modules/controllers/controllersReducer'
 import patchStorageReducer from './modules/patchStorage/patchStorageReducer'
 
@@ -19,7 +18,6 @@ export const store = configureStore({
         settings: settingsReducer,
         ui: uiReducer,
         mainDisplay: mainDisplayReducer,
-        voices: voicesReducer,
         patchStorage: patchStorageReducer
     },
     middleware: (getDefaultMiddleware) =>

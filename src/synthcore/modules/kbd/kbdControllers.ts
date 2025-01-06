@@ -1,16 +1,16 @@
 import CC from '../../../midi/mapCC'
-import { BUTTONS } from '../../../midi/buttons'
-import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
+import { FuncProps, ControllerConfigCC, ControllerConfigButton } from '../../../midi/types'
 import { ControllerIdDst, ControllerIdNonMod } from '../controllers/controllerIds'
+import {buttonMidiValues} from "../../../midi/buttonMidiValues";
 
 interface KbdControllers {
     props: FuncProps
     PORTAMENTO: ControllerConfigCC
     UNISON_DETUNE: ControllerConfigCC
-    HOLD: ControllerConfigCCWithValue
-    CHORD: ControllerConfigCCWithValue
-    MODE: ControllerConfigCCWithValue
-    TRANSPOSE: ControllerConfigCCWithValue
+    HOLD: ControllerConfigButton
+    CHORD: ControllerConfigButton
+    MODE: ControllerConfigButton
+    TRANSPOSE: ControllerConfigButton
 }
 
 const kbdControllers: KbdControllers = {
@@ -33,44 +33,40 @@ const kbdControllers: KbdControllers = {
         id: ControllerIdNonMod.KBD_HOLD,
         label: 'Hold',
         type: 'button',
-        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
-            BUTTONS.BUTTONS_CENTER.values.KBD_HOLD_OFF,
-            BUTTONS.BUTTONS_CENTER.values.KBD_HOLD_ON,
+            buttonMidiValues.KBD_HOLD_OFF,
+            buttonMidiValues.KBD_HOLD_ON,
         ],
     },
     CHORD: {
         id: ControllerIdNonMod.KBD_CHORD,
         label: 'Chord',
         type: 'button',
-        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
-            BUTTONS.BUTTONS_CENTER.values.KBD_CHORD_OFF,
-            BUTTONS.BUTTONS_CENTER.values.KBD_CHORD_ON,
+            buttonMidiValues.KBD_CHORD_OFF,
+            buttonMidiValues.KBD_CHORD_ON,
         ],
     },
     MODE: {
         id: ControllerIdNonMod.KBD_MODE,
         label: 'Mode',
         type: 'button',
-        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
-            BUTTONS.BUTTONS_CENTER.values.KBD_MODE_SOLO,
-            BUTTONS.BUTTONS_CENTER.values.KBD_MODE_UNISON,
-            BUTTONS.BUTTONS_CENTER.values.KBD_MODE_POLY,
+            buttonMidiValues.KBD_MODE_SOLO,
+            buttonMidiValues.KBD_MODE_UNISON,
+            buttonMidiValues.KBD_MODE_POLY,
         ],
     },
     TRANSPOSE: {
         id: ControllerIdNonMod.KBD_TRANSPOSE,
         label: 'Up/down',
         type: 'button',
-        cc: BUTTONS.BUTTONS_CENTER.cc,
         values: [
-            BUTTONS.BUTTONS_CENTER.values.TRANSPOSE_NEG_2,
-            BUTTONS.BUTTONS_CENTER.values.TRANSPOSE_NEG_1,
-            BUTTONS.BUTTONS_CENTER.values.TRANSPOSE_0,
-            BUTTONS.BUTTONS_CENTER.values.TRANSPOSE_POS_1,
-            BUTTONS.BUTTONS_CENTER.values.TRANSPOSE_POS_2,
+            buttonMidiValues.TRANSPOSE_NEG_2,
+            buttonMidiValues.TRANSPOSE_NEG_1,
+            buttonMidiValues.TRANSPOSE_0,
+            buttonMidiValues.TRANSPOSE_POS_1,
+            buttonMidiValues.TRANSPOSE_POS_2,
         ],
     },
 }

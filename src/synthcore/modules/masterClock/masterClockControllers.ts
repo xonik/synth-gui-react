@@ -1,12 +1,12 @@
 import CC from '../../../midi/mapCC'
-import { BUTTONS } from '../../../midi/buttons'
-import { FuncProps, ControllerConfigCC, ControllerConfigCCWithValue } from '../../../midi/types'
+import { FuncProps, ControllerConfigCC, ControllerConfigButton } from '../../../midi/types'
 import { ControllerIdDst, ControllerIdNonMod } from '../controllers/controllerIds'
+import {buttonMidiValues} from "../../../midi/buttonMidiValues";
 
 interface MasterClockControllers {
     props: FuncProps
     RATE: ControllerConfigCC,
-    SOURCE: ControllerConfigCCWithValue
+    SOURCE: ControllerConfigButton
 }
 
 const masterClockControllers: MasterClockControllers = {
@@ -16,18 +16,19 @@ const masterClockControllers: MasterClockControllers = {
         label: 'Rate',
         isDstDigi: true,
         type: 'pot',
-        cc: CC.MASTER_CLOCK_RATE
+        cc: CC.MASTER_CLOCK_RATE,
+        global: true
     },
     SOURCE: {
         id: ControllerIdNonMod.MASTER_CLOCK_SOURCE,
         label: 'Source',
         type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
-            values: [
-            BUTTONS.BUTTONS_LEFT.values.MASTER_CLOCK_SRC_MASTER,
-            BUTTONS.BUTTONS_LEFT.values.MASTER_CLOCK_SRC_MIDI,
-            BUTTONS.BUTTONS_LEFT.values.MASTER_CLOCK_SRC_EXT,
+        values: [
+            buttonMidiValues.MASTER_CLOCK_SRC_MASTER,
+            buttonMidiValues.MASTER_CLOCK_SRC_MIDI,
+            buttonMidiValues.MASTER_CLOCK_SRC_EXT,
         ],
+        global: true
     },
 }
 

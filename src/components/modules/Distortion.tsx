@@ -15,16 +15,20 @@ const ctrlGroup = ControllerGroupIds.FX
 const Distortion = ({ x, y }: Props) => {
 
     const row1 = y
-    const row2 = row1 + 30
+    const row2 = row1 + 27
 
-    const col1 = x + 5
+    const col1 = x + 7
     const col2 = col1 + 25
-    const col5 = col2 + 40
+    const col5 = col2 + 80
     const col6 = col5 + 25
 
     return <>
-        <Header label="Distortion" x={x} y={row1} width={105}/>
-        <RoundPushButton8 x={col1} y={row2 + 8} ledPosition="top" ledCount={2} label="In" labelPosition="bottom"
+        <Header label="Distortion" x={x} y={row1} width={143}/>
+        <RoundPushButton8 x={col1} y={row2 + 3}
+                          ledPosition="top"
+                          ledCount={2}
+                          ledLabels={['S','L']}
+                          label="In" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={fxControllers.DISTORTION.IN}
         />
@@ -39,7 +43,11 @@ const Distortion = ({ x, y }: Props) => {
                      ctrl={fxControllers.DISTORTION.LEVEL}
         />
 
-        <RoundPushButton8 x={col6} y={row2 + 8} ledPosition="top" ledCount={2} label="Out" labelPosition="bottom"
+        <RoundPushButton8 x={col6} y={row2 + 3}
+                          ledPosition="top"
+                          ledCount={2}
+                          ledLabels={['S','L']}
+                          label="Out" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           hasOff
                           ctrl={fxControllers.DISTORTION.OUT}

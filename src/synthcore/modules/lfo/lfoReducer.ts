@@ -3,6 +3,8 @@ import { StageId } from './types'
 import { RootState } from '../../store'
 import { NumericPayload } from '../common/types'
 import { Curve } from '../../generatedTypes'
+import { VOICE_GROUPS } from "../../../utils/constants";
+import { getVoiceGroupIndex } from "../voices/currentVoiceGroupIndex"
 
 type CustomParams = {
     decayEnabled: boolean;
@@ -30,7 +32,7 @@ type LfosState = {
     }
 }
 
-export const initialState: LfosState = {
+const initialStateCreator = () => ({
     gui: {
         currLfoId: 0,
         currStageId: StageId.STOPPED,
@@ -47,18 +49,30 @@ export const initialState: LfosState = {
             getDefaultCustomShapeParams(),
         ]
     }
-}
+})
+
+export const initialState = (() => {
+    const state: LfosState[] = []
+    for (let i = 0; i < VOICE_GROUPS; i++) {
+        state.push(initialStateCreator())
+    }
+    return state
+})()
+
 
 type StagePayload = {
+    voiceGroupIndex: number;
     lfo: number;
     stage: StageId;
 }
 
 type LfoPayload = {
+    voiceGroupIndex: number;
     lfo: number;
 }
 
 type CustomShapeParamsPayload = {
+    voiceGroupIndex: number;
     lfoId: number,
     params: CustomParams
 }
@@ -68,19 +82,19 @@ export const lfosSlice = createSlice({
     initialState,
     reducers: {
         selectStage: (state, { payload }: PayloadAction<StagePayload>) => {
-            state.gui.currStageId = payload.stage
+            state[payload.voiceGroupIndex].gui.currStageId = payload.stage
         },
         deselectStage: (state, { payload }: PayloadAction<StagePayload>) => {
-            state.gui.currStageId = StageId.STOPPED
+            state[payload.voiceGroupIndex].gui.currStageId = StageId.STOPPED
         },
         setGuiLfo: (state, { payload }: PayloadAction<LfoPayload>) => {
-            state.gui.currLfoId = payload.lfo
+            state[payload.voiceGroupIndex].gui.currLfoId = payload.lfo
         },
         setUiLfo: (state, { payload }: PayloadAction<NumericPayload>) => {
-            state.ui.currLfoId = payload.value
+            state[payload.voiceGroupIndex].ui.currLfoId = payload.value
         },
         setCurrDelayLevel: (state, { payload }: PayloadAction<NumericPayload>) => {
-            state.gui.currDelayLevel = payload.value
+            state[payload.voiceGroupIndex].gui.currDelayLevel = payload.value
         },
 
         // actions only consumed by api
@@ -88,7 +102,7 @@ export const lfosSlice = createSlice({
         },
 
         setCustomShapeParams: (state, { payload }: PayloadAction<CustomShapeParamsPayload>) => {
-            state.misc.customShapeParams[payload.lfoId] = payload.params
+            state[payload.voiceGroupIndex].misc.customShapeParams[payload.lfoId] = payload.params
         },
     }
 })
@@ -107,10 +121,10 @@ export const {
 } = lfosSlice.actions
 
 export const selectLfos = (state: RootState) => state.lfos
-export const selectCurrGuiStageId = (state: RootState) => state.lfos.gui.currStageId
-export const selectCurrGuiLfoId = (state: RootState) => state.lfos.gui.currLfoId
-export const selectCurrGuiDelayLevel = (state: RootState) => state.lfos.gui.currDelayLevel
-export const selectCurrUiLfoId = (state: RootState) => state.lfos.ui.currLfoId
-export const selectCustomShapeParams = (state: RootState) => (lfoId: number) => state.lfos.misc.customShapeParams[lfoId]
+export const selectCurrGuiStageId = (state: RootState, voiceGroupIndex = getVoiceGroupIndex()) => state.lfos[voiceGroupIndex].gui.currStageId
+export const selectCurrGuiLfoId = (state: RootState, voiceGroupIndex = getVoiceGroupIndex()) => state.lfos[voiceGroupIndex].gui.currLfoId
+export const selectCurrGuiDelayLevel = (state: RootState, voiceGroupIndex: number) => state.lfos[voiceGroupIndex].gui.currDelayLevel
+export const selectCurrUiLfoId = (state: RootState, voiceGroupIndex = getVoiceGroupIndex()) => state.lfos[voiceGroupIndex].ui.currLfoId
+export const selectCustomShapeParams = (state: RootState, voiceGroupIndex: number) => (lfoId: number) => state.lfos[voiceGroupIndex].misc.customShapeParams[lfoId]
 
 export default lfosSlice.reducer

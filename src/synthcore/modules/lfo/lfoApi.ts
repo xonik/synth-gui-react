@@ -15,51 +15,39 @@ import { ApiSource, ControllerGroupIds } from '../../types'
 import { dispatch, getBounded } from '../../utils'
 import { ControllerHandler, createDefaultHandlers, groupHandlers } from '../common/utils'
 import { lfoCtrls } from './lfoControllers'
-import { selectController, selectLfoStages, setController } from '../controllers/controllersReducer'
+import { selectLfoStages, setController, selectController } from '../controllers/controllersReducer'
 import { ButtonInputProperty, NumericInputProperty, PatchControllers } from '../common/types'
 import lfoMidiApi, { lfoParamReceive, lfoParamSend } from './lfoMidiApi'
-import { BUTTONS } from '../../../midi/buttons'
 import deepmerge from 'deepmerge'
 import { Curve } from '../../generatedTypes'
+import { paramReceive, paramSend } from '../common/commonMidiApi'
+import { buttonMidiValues } from "../../../midi/buttonMidiValues";
 
 // helper function - we use indexOf to make sure code works even if ordering of shapes changes
-const customShapeIndex = lfoCtrls.SHAPE.values.indexOf(BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_CUSTOM)
+const customShapeIndex = lfoCtrls.SHAPE.values.indexOf(buttonMidiValues.LFO_SHAPE_CUSTOM)
 
-const selectShape = (lfoId: number) => selectController(
+const selectShape = (voiceGroupIndex: number, lfoId: number) => selectController(
     lfoCtrls.SHAPE,
-    lfoId)(store.getState())
+    lfoId)(store.getState(), voiceGroupIndex)
 
-const toggleStageSelected = (lfoId: number, stageId: StageId, source: ApiSource) => {
-    const currStageId = selectCurrGuiStageId(store.getState())
+const toggleStageSelected = (voiceGroupIndex: number, lfoId: number, stageId: StageId, source: ApiSource) => {
+    const currStageId = selectCurrGuiStageId(store.getState(), voiceGroupIndex)
     if (currStageId === stageId) {
-        dispatch(deselectStage({ lfo: -1, stage: stageId }))
+        dispatch(deselectStage({ lfo: -1, stage: stageId, voiceGroupIndex }))
     } else {
-        dispatch(selectStage({ lfo: -1, stage: stageId }))
+        dispatch(selectStage({ lfo: -1, stage: stageId, voiceGroupIndex }))
     }
 }
 
-const setGuiLfo = (lfoId: number, source: ApiSource) => {
+const setGuiLfo = (voiceGroupIndex: number, lfoId: number, source: ApiSource) => {
     const boundedLfo = getBounded(lfoId, 0, NUMBER_OF_LFOS - 1)
-    if (selectCurrGuiLfoId(store.getState()) !== boundedLfo) {
-        dispatch(setGuiLfoAction({ lfo: boundedLfo }))
+    if (selectCurrGuiLfoId(store.getState(), voiceGroupIndex) !== boundedLfo) {
+        dispatch(setGuiLfoAction({ lfo: boundedLfo, voiceGroupIndex }))
     }
 }
 
-const incrementGuiLfo = (increment: number, source: ApiSource) => {
-    setGuiLfo(selectCurrGuiLfoId(store.getState()) + increment, source)
-}
-
-const setUiLfo = (id: number, source: ApiSource) => {
-    const currentUiLfoId = selectCurrUiLfoId(store.getState())
-    if (id !== currentUiLfoId && id < NUMBER_OF_LFOS && id > -1) {
-        dispatch(setUiLfoAction({ value: id }))
-    }
-}
-
-const toggleUiLfo = (source: ApiSource) => {
-    const currentId = selectCurrUiLfoId(store.getState())
-    const nextId = (currentId + 1 + NUMBER_OF_LFOS) % NUMBER_OF_LFOS // + lfo to keep modulo positive
-    setUiLfo(nextId, source)
+const incrementGuiLfo = (voiceGroupIndex: number, increment: number, source: ApiSource) => {
+    setGuiLfo(voiceGroupIndex, selectCurrGuiLfoId(store.getState(), voiceGroupIndex) + increment, source)
 }
 
 const cannotDisableStage = (stage: StageId) => !lfoCtrls.TOGGLE_STAGE.legalValueIndexes?.includes(stage)
@@ -74,9 +62,9 @@ class StageCurveControllerHandler extends ControllerHandler {
 
     defaultSet(input: NumericInputProperty) {
 
-        const { ctrlIndex: lfoId = 0, value: curve, valueIndex: stageId = 0, ctrl, source } = input
+        const { voiceGroupIndex, ctrlIndex: lfoId = 0, value: curve, valueIndex: stageId = 0, ctrl, source } = input
 
-        const currentCurve = selectController(ctrl, lfoId, stageId)(store.getState())
+        const currentCurve = selectController(ctrl, lfoId, stageId)(store.getState(), voiceGroupIndex)
         const boundedCurve = getBounded(curve, 0, (this.ctrl.values?.length || 0) - 1)
         if (currentCurve === boundedCurve) {
             return
@@ -88,9 +76,9 @@ class StageCurveControllerHandler extends ControllerHandler {
         if (source !== ApiSource.INTERNAL) {
             const detectedShape = shapeControllerHandler.detectCurrent(lfoId)
             if (detectedShape) {
-                shapeControllerHandler.setInStoreIfChanged(lfoId, detectedShape)
+                shapeControllerHandler.setInStoreIfChanged(voiceGroupIndex, lfoId, detectedShape)
             }
-            shapeControllerHandler.saveCustomShapeParams(lfoId)
+            shapeControllerHandler.saveCustomShapeParams(voiceGroupIndex, lfoId)
             lfoMidiApi.curve.send(boundedInput)
         }
     }
@@ -102,6 +90,7 @@ class StageCurveControllerHandler extends ControllerHandler {
             ctrlIndex: input.ctrlIndex,
             valueIndex: stageId,
             value: curve,
+            voiceGroupIndex: input.voiceGroupIndex,
             source: ApiSource.INTERNAL
         })
     }
@@ -118,13 +107,13 @@ class StageEnabledControllerHandler extends ControllerHandler {
     }
 
     defaultSet(input: NumericInputProperty) {
-        const { ctrlIndex: lfoId = 0, value: enabled, valueIndex: stageId = 0, source } = input
+        const { voiceGroupIndex, ctrlIndex: lfoId = 0, value: enabled, valueIndex: stageId = 0, source } = input
 
         if (cannotDisableStage(stageId)) {
             return
         }
 
-        const currentEnabled = selectController(this.ctrl, lfoId, stageId)(store.getState())
+        const currentEnabled = selectController(this.ctrl, lfoId, stageId)(store.getState(), voiceGroupIndex)
         if (currentEnabled === enabled) {
             return
         }
@@ -135,10 +124,10 @@ class StageEnabledControllerHandler extends ControllerHandler {
         if (source !== ApiSource.INTERNAL) {
             const detectedShape = shapeControllerHandler.detectCurrent(lfoId)
             if (detectedShape) {
-                shapeControllerHandler.setInStoreIfChanged(lfoId, detectedShape)
+                shapeControllerHandler.setInStoreIfChanged(voiceGroupIndex, lfoId, detectedShape)
             }
 
-            shapeControllerHandler.saveCustomShapeParams(lfoId)
+            shapeControllerHandler.saveCustomShapeParams(voiceGroupIndex, lfoId)
             lfoMidiApi.stageEnabled.send(input)
         }
 
@@ -151,16 +140,17 @@ class StageEnabledControllerHandler extends ControllerHandler {
             ctrlIndex: input.ctrlIndex,
             valueIndex: stageId,
             value: enabled ? 1 : 0,
-            source: ApiSource.INTERNAL
+            voiceGroupIndex: input.voiceGroupIndex,
+            source: ApiSource.INTERNAL,
         })
     }
 
     // Increment ok samme som global
     // TODO: som global men må sette loop på button
     toggle(input: ButtonInputProperty) {
-        const { ctrlIndex: lfoId = 0, valueIndex: stageId = 0 } = input
+        const { ctrlIndex: lfoId = 0, valueIndex: stageId = 0, voiceGroupIndex } = input
 
-        const currentEnabled = selectController(this.ctrl, lfoId, stageId)(store.getState())
+        const currentEnabled = selectController(this.ctrl, lfoId, stageId)(store.getState(), voiceGroupIndex)
         const enabled = (currentEnabled + 1) % 2
         this.set({ ...input, value: enabled })
     }
@@ -177,10 +167,10 @@ class InvertControllerHandler extends ControllerHandler {
     }
 
     defaultSet(input: NumericInputProperty) {
-        const { ctrlIndex: lfoId = 0, value } = input
+        const { ctrlIndex: lfoId = 0, value, voiceGroupIndex } = input
         const currInvert = selectController(
             this.ctrl,
-            lfoId)(store.getState())
+            lfoId)(store.getState(), voiceGroupIndex)
 
         const boundedInvert = getBounded(value, 0, this.ctrl.values?.length || 1)
         console.log('inv', boundedInvert)
@@ -194,9 +184,9 @@ class InvertControllerHandler extends ControllerHandler {
     }
 
     toggle(input: ButtonInputProperty) {
-        const { ctrlIndex: lfoId = 0 } = input
+        const { ctrlIndex: lfoId = 0, voiceGroupIndex } = input
 
-        const currentEnabled = selectController(this.ctrl, lfoId)(store.getState())
+        const currentEnabled = selectController(this.ctrl, lfoId)(store.getState(), voiceGroupIndex)
         const enabled = (currentEnabled + 1) % (this.ctrl.values?.length || 1)
         this.set({ ...input, value: enabled })
     }
@@ -213,10 +203,10 @@ class MaxLoopsControllerHandler extends ControllerHandler {
     }
 
     defaultSet(input: NumericInputProperty) {
-        const { ctrlIndex: lfoId = 0, value } = input
+        const { ctrlIndex: lfoId = 0, value, voiceGroupIndex } = input
         const currMaxLoops = selectController(
             this.ctrl,
-            lfoId)(store.getState())
+            lfoId)(store.getState(), voiceGroupIndex)
 
         const boundedMaxLoops = getBounded(value, 1, 127)
         if (boundedMaxLoops === currMaxLoops) {
@@ -245,36 +235,36 @@ class ShapeControllerHandler extends ControllerHandler {
     }
 
     // Shapes are indexed on the button MIDI VALUE, not button value  (e.g. not 0-indexed but from whatever
-    // BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SAW is
+    // buttonMidiValues.LFO_SHAPE_SAW is
     private shapes: { [key: number]: ShapeParams } = {
-        [BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SAW]: {
+        [buttonMidiValues.LFO_SHAPE_SAW]: {
             decayEnabled: false,
             curves: {
                 [StageId.ATTACK]: Curve.LIN
             }
         },
-        [BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_TRI]: {
+        [buttonMidiValues.LFO_SHAPE_TRI]: {
             decayEnabled: true,
             curves: {
                 [StageId.ATTACK]: Curve.LIN,
                 [StageId.DECAY]: Curve.LIN
             }
         },
-        [BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SQR]: {
+        [buttonMidiValues.LFO_SHAPE_SQR]: {
             decayEnabled: true,
             curves: {
                 [StageId.ATTACK]: Curve.LFO_SQUARE,
                 [StageId.DECAY]: Curve.LFO_SQUARE
             }
         },
-        [BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_SIN]: {
+        [buttonMidiValues.LFO_SHAPE_SIN]: {
             decayEnabled: true,
             curves: {
                 [StageId.ATTACK]: Curve.COSINE,
                 [StageId.DECAY]: Curve.COSINE
             }
         },
-        [BUTTONS.BUTTONS_LEFT.values.LFO_SHAPE_RANDOM]: {
+        [buttonMidiValues.LFO_SHAPE_RANDOM]: {
             decayEnabled: false,
             curves: {
                 [StageId.ATTACK]: Curve.LFO_RANDOM
@@ -284,7 +274,7 @@ class ShapeControllerHandler extends ControllerHandler {
 
     private dispatchShapeActions(input: NumericInputProperty, boundedShape: number) {
         if (boundedShape === customShapeIndex) {
-            const customShapeParams = selectCustomShapeParams(store.getState())(input.ctrlIndex || 0)
+            const customShapeParams = selectCustomShapeParams(store.getState(), input.voiceGroupIndex)(input.ctrlIndex || 0)
             stagesEnabledControllerHandler.setFromOtherAction(input, StageId.DECAY, customShapeParams.decayEnabled);
             stagesCurveControllerHandler.setFromOtherAction(input, StageId.ATTACK, customShapeParams.attackCurve)
             stagesCurveControllerHandler.setFromOtherAction(input, StageId.DECAY, customShapeParams.decayCurve)
@@ -327,19 +317,20 @@ class ShapeControllerHandler extends ControllerHandler {
         return shapeId
     }
 
-    setInStoreIfChanged(lfoId: number, shapeId: number) {
-        const currShape = selectShape(lfoId)
+    setInStoreIfChanged(voiceGroupIndex: number, lfoId: number, shapeId: number) {
+        const currShape = selectShape(voiceGroupIndex, lfoId)
 
         if (currShape !== shapeId) {
             dispatch(setController({
                 ctrl: this.ctrl,
                 ctrlIndex: lfoId,
                 value: shapeId,
+                voiceGroupIndex,
             }))
         }
     }
 
-    saveCustomShapeParams(lfoId: number) {
+    saveCustomShapeParams(voiceGroupIndex: number, lfoId: number) {
         const lfoStages = selectLfoStages(lfoId)(store.getState())
 
         const decayEnabled = lfoStages[StageId.DECAY].enabled === 1
@@ -351,7 +342,8 @@ class ShapeControllerHandler extends ControllerHandler {
                 decayEnabled,
                 decayCurve,
                 attackCurve,
-            }
+            },
+            voiceGroupIndex
         })
         console.log(action)
         dispatch(action)
@@ -359,8 +351,8 @@ class ShapeControllerHandler extends ControllerHandler {
 
     // TODO: CHECK
     defaultSet(input: NumericInputProperty) {
-        const { ctrlIndex: lfoId = 0, value } = input
-        const currShape = selectShape(lfoId)
+        const { ctrlIndex: lfoId = 0, value, voiceGroupIndex } = input
+        const currShape = selectShape(voiceGroupIndex, lfoId)
 
         const boundedShape = getBounded(value, 0, (this.ctrl.values?.length || 0) - 1)
         if (boundedShape === currShape) {
@@ -377,11 +369,46 @@ class ShapeControllerHandler extends ControllerHandler {
     }
 
     toggle(input: ButtonInputProperty) {
-        const { ctrlIndex: lfoId = 0 } = input
+        const { ctrlIndex: lfoId = 0, voiceGroupIndex } = input
 
-        const currentShape = selectController(this.ctrl, lfoId)(store.getState())
+        const currentShape = selectController(this.ctrl, lfoId)(store.getState(), voiceGroupIndex)
         const shape = (currentShape + 1) % (this.ctrl.values?.length || 1)
         this.set({ ...input, value: shape })
+    }
+}
+
+class LfoControllerHandler extends ControllerHandler {
+
+    constructor() {
+        super(lfoCtrls.LFO, {
+            receive: (ctrl, apiSetValue) => paramReceive(
+                ctrl,
+                apiSetValue,
+                (midiValue: number) => ({ value: midiValue })
+            )
+        })
+    }
+
+    defaultSet(input: NumericInputProperty) {
+        const { value: id, voiceGroupIndex } = input
+
+        const currentUiLfoId = selectCurrUiLfoId(store.getState(), input.voiceGroupIndex)
+        if (id !== currentUiLfoId && id < NUMBER_OF_LFOS && id > -1) {
+            dispatch(setUiLfoAction({ value: id, voiceGroupIndex: input.voiceGroupIndex }))
+            paramSend(input, (value: number) => value)
+        }
+
+        const currentLfo = selectController(this.ctrl, 0)(store.getState(), voiceGroupIndex)
+        if (id !== currentLfo && id < NUMBER_OF_LFOS && id >= 0) {
+            dispatch(setController(input))
+            paramSend(input, (value: number) => value)
+        }
+    }
+
+    toggle(input: ButtonInputProperty) {
+        const currentId = selectCurrUiLfoId(store.getState(), input.voiceGroupIndex)
+        const nextId = (currentId + 1 + NUMBER_OF_LFOS) % NUMBER_OF_LFOS // + lfo to keep modulo positive
+        this.set({ ...input, value: nextId })
     }
 }
 
@@ -393,6 +420,7 @@ const handlers = groupHandlers({
         [lfoCtrls.INVERT.id]: new InvertControllerHandler(),
         [lfoCtrls.MAX_LOOPS.id]: new MaxLoopsControllerHandler(),
         [lfoCtrls.SHAPE.id]: shapeControllerHandler,
+        [lfoCtrls.LFO.id]: new LfoControllerHandler(),
         ...createDefaultHandlers([
                 lfoCtrls.RATE,
                 lfoCtrls.DELAY,
@@ -434,8 +462,6 @@ const lfoApi = {
 
     setGuiLfo,
     incrementGuiLfo,
-    setUiLfo,
-    toggleUiLfo,
 
     increment: handlers.increment,
     toggle: handlers.toggle,

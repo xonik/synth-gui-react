@@ -36,12 +36,12 @@ For ENV: ekstra pot for offset etter
  */
 
 
-const Stages = ({ lfoId , stageBackgrounds, points}: Props) => {
+const Stages = ({ lfoId, stageBackgrounds, points }: Props) => {
 
     const currStageId = useAppSelector(selectCurrGuiStageId);
 
     const onSvgClicked = useCallback((stageId: number) => {
-        dispatch(toggleStageSelected({ lfo: lfoId, stage: stageId }))
+        dispatch(toggleStageSelected({ voiceGroupIndex: -1, lfo: lfoId, stage: stageId }))
     }, [lfoId])
 
 
@@ -77,7 +77,7 @@ const Stages = ({ lfoId , stageBackgrounds, points}: Props) => {
             })
         }
 
-        <StagesCurve points={points} />
+        <StagesCurve points={points}/>
     </svg>
 }
 

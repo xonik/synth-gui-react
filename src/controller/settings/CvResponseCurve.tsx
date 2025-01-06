@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import AnimatedCurve from '../../components/curves/AnimatedCurve'
 import { Point } from '../../utils/types'
 import { getPoints } from '../lfos/utils'
-import { curveFuncs } from '../../components/curves/curveCalculator'
+import { curveFuncs, reverse as reverseCurve } from '../../components/curves/curveCalculator'
 import './CvRange.scss'
 import { Curve } from '../../synthcore/generatedTypes'
 
@@ -10,6 +10,7 @@ interface Props {
     start: number
     end: number
     curve: Curve
+    reverse: boolean
 }
 
 const mapToSvg = (point: Point) => ({
@@ -18,11 +19,12 @@ const mapToSvg = (point: Point) => ({
 })
 
 // Draw points in a 1 x 1 square.
-const CvResponseCurve = ({ start, end, curve }: Props) => {
+const CvResponseCurve = ({ start, end, curve, reverse}: Props) => {
 
     const range = (end - start) / 65535
     const base = start / 65535
-    const points = getPoints(curveFuncs[curve]).map(
+    const curveFunc = reverse ? reverseCurve(curveFuncs[curve]) : curveFuncs[curve]
+    const points = getPoints(curveFunc).map(
         (y, index): Point => ({
             y: base + range * y,
             x: index / 64

@@ -1,6 +1,6 @@
 import { mainDisplayApi } from '../../synthcoreApi'
 import controllers from '../controllers/controllers'
-import { cc } from '../../../midi/midibus'
+import { button, cc } from '../../../midi/midibus'
 import { ApiSource } from '../../types'
 import { shouldSend } from '../../../midi/utils'
 import { boolParamReceive, boolParamSend, buttonParamReceive, buttonParamSend, } from '../common/commonMidiApi'
@@ -16,10 +16,10 @@ const currentScreen = (() => {
             if (!shouldSend(source)) {
                 return
             }
-            cc.send(cfg, cfg.values[id])
+            button.send(-1, cfg, cfg.values[id])
         },
         receive: () => {
-            cc.subscribe((value: number) => {
+            button.subscribe((value: number) => {
                 const id = cfg.values.indexOf(value)
                 mainDisplayApi.setCurrentScreen(id, ApiSource.MIDI)
             }, cfg)
@@ -30,56 +30,56 @@ const currentScreen = (() => {
 const homeClick = (() => {
     const cfg = controllers.MAIN_DISPLAY.FUNC_HOME
     return {
-        send: (source: ApiSource) => buttonParamSend(source, cfg),
+        send: (source: ApiSource) => buttonParamSend(source, cfg, -1),
         receive: () => buttonParamReceive(cfg, mainDisplayApi.handleHomeClick)
     }
 })()
 const settingsClick = (() => {
     const cfg = controllers.MAIN_DISPLAY.FUNC_SETTINGS
     return {
-        send: (source: ApiSource) => buttonParamSend(source, cfg),
+        send: (source: ApiSource) => buttonParamSend(source, cfg, -1),
         receive: () => buttonParamReceive(cfg, mainDisplayApi.handleSettingsClick)
     }
 })()
 const performClick = (() => {
     const cfg = controllers.MAIN_DISPLAY.FUNC_PERFORM
     return {
-        send: (source: ApiSource) => buttonParamSend(source, cfg),
+        send: (source: ApiSource) => buttonParamSend(source, cfg, -1),
         receive: () => buttonParamReceive(cfg, mainDisplayApi.handlePerformClick)
     }
 })()
 const loadClick = (() => {
     const cfg = controllers.MAIN_DISPLAY.FUNC_LOAD
     return {
-        send: (source: ApiSource) => buttonParamSend(source, cfg),
+        send: (source: ApiSource) => buttonParamSend(source, cfg, -1),
         receive: () => buttonParamReceive(cfg, mainDisplayApi.handleLoadClick)
     }
 })()
 const saveClick = (() => {
     const cfg = controllers.MAIN_DISPLAY.FUNC_SAVE
     return {
-        send: (source: ApiSource) => buttonParamSend(source, cfg),
+        send: (source: ApiSource) => buttonParamSend(source, cfg, -1),
         receive: () => buttonParamReceive(cfg, mainDisplayApi.handleSaveClick)
     }
 })()
 const compareClick = (() => {
     const cfg = controllers.MAIN_DISPLAY.FUNC_COMPARE
     return {
-        send: (source: ApiSource) => buttonParamSend(source, cfg),
+        send: (source: ApiSource) => buttonParamSend(source, cfg, -1),
         receive: () => buttonParamReceive(cfg, mainDisplayApi.handleCompareClick)
     }
 })()
 const routeClick = (() => {
     const cfg = controllers.MAIN_DISPLAY.FUNC_ROUTE
     return {
-        send: (source: ApiSource) => buttonParamSend(source, cfg),
+        send: (source: ApiSource) => buttonParamSend(source, cfg, -1),
         receive: () => buttonParamReceive(cfg, mainDisplayApi.handleRouteClick)
     }
 })()
 const shift = (() => {
     const cfg = controllers.MAIN_DISPLAY.FUNC_SHIFT
     return {
-        send: (source: ApiSource, on: boolean) => boolParamSend(source, on, cfg),
+        send: (source: ApiSource, on: boolean) => boolParamSend(source, on, cfg, -1),
         receive: () => boolParamReceive(cfg, mainDisplayApi.handleShift)
     }
 })()
@@ -111,14 +111,14 @@ const pot = (() => {
             // way of falling back..
             const midiValue = Math.floor(getBounded(value * 1000 + 64, 0, 127));
 
-            logger.midi(`Incrementing ${cfg.label} by ${midiValue-64}/1000`)
-            cc.send(cfg, midiValue)
+            logger.midi(`Incrementing ${cfg.label} by ${midiValue - 64}/1000`)
+            cc.send(-1, cfg, midiValue)
         },
         receive: () => {
             potCfgs.forEach((cfg, index) => {
                 cc.subscribe((midiValue: number) => {
                     const value = (midiValue - 64) / 1000;
-                    mainDisplayApi.handleMainDisplayController(mainDisplayControllers.POT1.id + index, value, ApiSource.MIDI)
+                    mainDisplayApi.handleMainDisplayController(-1, mainDisplayControllers.POT1.id + index, value, ApiSource.MIDI)
                 }, cfg)
             })
         }

@@ -2,12 +2,12 @@ const mapCC = {
     MIDI_BANK_SELECT: 0, // N/I
     MIDI_MOD_WHEEL: 1, // N/I
     MIDI_BREATH_CTRL: 2, // N/I
-    BUTTONS_LEFT: 3,
+    BUTTONS_1: 3,
     MIDI_FOOT_CTRL: 4, // N/I
     KBD_PORTAMENTO: 5,
     DATA_ENTRY_MSB:6,
-    BUTTONS_CENTER: 7,
-    BUTTONS_RIGHT: 8,
+    BUTTONS_2: 7,
+    BUTTONS_3: 8,
     DCO1_NOTE: 9,
     DCO1_SUPER_SAW: 10,
     DCO1_WAVEFORM: 11,
@@ -24,7 +24,7 @@ const mapCC = {
     VCO_NOTE: 22,
     VCO_DETUNE: 23,
     VCO_WAVEFORM: 24,
-    VCO_CROSS_MOD: 25,
+    VCO_FM_AMT: 25,
     VCO_PW: 26,
     DISTORTION_DRIVE: 27,
     DISTORTION_LEVEL: 28,
@@ -50,7 +50,7 @@ const mapCC = {
     LEVEL_NOISE: 45,
     LEVEL_RING_MOD: 46,
     LEVEL_EXT_AUDIO: 47,
-    //ROUTE_AMOUNT: 48,
+    VCO_LIN_FM: 48,
     MASTER_CLOCK_RATE: 49,
     ARP_TEMPO: 50,
     MAIN_POT1: 51,
@@ -61,7 +61,6 @@ const mapCC = {
     MAIN_POT6: 56,
     KBD_UNISON_DETUNE: 57,
     LPF_INPUT: 58,
-    LPF_DRIVE: 59,
     LPF_RESONANCE: 60,
     LPF_CUTOFF: 61,
     LPF_FM_AMT: 62,
@@ -72,7 +71,6 @@ const mapCC = {
     LPF_LFO_AMT: 70,
     LPF_KBD_AMT: 71,
     SVF_INPUT: 72,
-    SVF_DRIVE: 73,
     SVF_RESONANCE: 74,
     SVF_CUTOFF: 75,
     SVF_FM_AMT: 76,
@@ -123,5 +121,7 @@ const mapCC = {
     MAIN_POT7: 119,
     // 120 - 127 reserved for channel mode messages
 }
+
+export const buttonCCs = [mapCC.BUTTONS_1, mapCC.BUTTONS_2, mapCC.BUTTONS_3]
 
 export default mapCC

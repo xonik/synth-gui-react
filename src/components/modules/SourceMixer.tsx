@@ -30,6 +30,7 @@ const MixerChannel = ({ x, y, label, levelCtrl, outCtrl }: ChannelProps) => {
 
         <RoundPushButton8 x={x + 25} y={y + 3}
                           ledPosition="top" ledCount={2}
+                          ledLabels={['S','L']}
                           hasOff
                           ctrlGroup={ctrlGroup}
                           ctrl={outCtrl}
@@ -40,8 +41,8 @@ const MixerChannel = ({ x, y, label, levelCtrl, outCtrl }: ChannelProps) => {
 const SourceMixer = ({ x, y }: Props) => {
     const offsetX = 20
     const offsetY = 25
-    const rowDistance = 40
-    const colDistance = 60
+    const rowDistance = 50
+    const colDistance = 50
 
     const col1 = x - 2 + offsetX
     const col2 = col1 + colDistance
@@ -51,7 +52,7 @@ const SourceMixer = ({ x, y }: Props) => {
     const row2 = row1 + rowDistance
 
     return <>
-        <Header label="Source mix" x={x} y={y} width={170}/>
+        <Header label="Source mix" x={x} y={y} width={150}/>
         <MixerChannel x={col1} y={row1} label="Osc 1"
                       levelCtrl={srcMixControllers.LEVEL_OSC1}
                       outCtrl={srcMixControllers.OUT_OSC1}

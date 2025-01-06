@@ -59,4 +59,10 @@ export const dataTypeMap:Record<DataType, {
         deserializer: 'getUint32',
         byteLength: 5,
     },
+    'bool': {
+        cppType: 'bool',
+        jsType: 'boolean',
+        deserializer: 'getBool',
+        byteLength: 1,
+    },
 }

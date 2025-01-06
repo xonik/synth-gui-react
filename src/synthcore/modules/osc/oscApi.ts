@@ -4,19 +4,29 @@ import { ButtonInputProperty, NumericInputProperty, PatchControllers } from '../
 import { setController } from '../controllers/controllersReducer'
 import { dispatch } from '../../utils'
 
-const osc1Sync = new ControllerHandler(oscControllers.DCO1.SYNC, undefined, undefined,() => {
-    // clear any osc 2 sync as we can only have either osc1->osc2 or osc2->osc1 sync
-    dispatch(setController({
-        ctrl: oscControllers.DCO2.SYNC, value: 0
-    }))
-})
+const osc1Sync = new ControllerHandler(
+    oscControllers.DCO1.SYNC,
+    undefined,
+    undefined,
+    (payload) => {
+        // clear any osc 2 sync as we can only have either osc1->osc2 or osc2->osc1 sync
+        dispatch(setController({
+            ctrl: oscControllers.DCO2.SYNC, value: 0,
+            voiceGroupIndex: payload.voiceGroupIndex,
+        }))
+    })
 
-const osc2Sync = new ControllerHandler(oscControllers.DCO2.SYNC, undefined, undefined,() => {
-    // clear any osc 1 sync as we can only have either osc1->osc2 or osc2->osc1 sync
-    dispatch(setController({
-        ctrl: oscControllers.DCO1.SYNC, value: 0
-    }))
-})
+const osc2Sync = new ControllerHandler(
+    oscControllers.DCO2.SYNC,
+    undefined,
+    undefined,
+    (payload) => {
+        // clear any osc 1 sync as we can only have either osc1->osc2 or osc2->osc1 sync
+        dispatch(setController({
+            ctrl: oscControllers.DCO1.SYNC, value: 0,
+            voiceGroupIndex: payload.voiceGroupIndex,
+        }))
+    })
 
 const customHandlers = {
     [oscControllers.DCO1.SYNC.id]: osc1Sync,
@@ -57,10 +67,12 @@ const handlers = createGroupedHandlers(
         oscControllers.VCO.NOTE,
         oscControllers.VCO.DETUNE,
         oscControllers.VCO.WAVEFORM,
-        oscControllers.VCO.CROSS_MOD,
+        oscControllers.VCO.FM_AMT,
         oscControllers.VCO.PW,
         oscControllers.VCO.SYNC,
-        oscControllers.VCO.CROSS_MOD_SRC,
+        oscControllers.VCO.SYNC_SRC,
+        oscControllers.VCO.FM_SRC,
+        oscControllers.VCO.FM_MODE,
         oscControllers.VCO.EXT_CV,
         oscControllers.VCO.WHEEL,
         oscControllers.VCO.LFO,
@@ -82,30 +94,30 @@ const set = (input: NumericInputProperty) => {
     handlers.set(input)
 }
 
-const getForSave = (): PatchControllers => {
+const getForSave = (voiceGroupIndex: number): PatchControllers => {
     return {
-        ...handlers.getForSave(),
+        ...handlers.getForSave(voiceGroupIndex),
         ...{
             [osc1Sync.ctrl.id]: {
-                label: osc1Sync.ctrl.label, 
-                instances: {0: osc1Sync.get()}
+                label: osc1Sync.ctrl.label,
+                instances: { 0: osc1Sync.get(voiceGroupIndex) }
             },
             [osc2Sync.ctrl.id]: {
-                label: osc2Sync.ctrl.label, 
-                instances: {0: osc2Sync.get()}
+                label: osc2Sync.ctrl.label,
+                instances: { 0: osc2Sync.get(voiceGroupIndex) }
             },
         }
     }
 }
 
-const setFromLoad = (patchController: PatchControllers) => {
-    if(patchController[osc1Sync.ctrl.id]){
-        osc1Sync.setFromLoad(patchController[osc1Sync.ctrl.id].instances[0][0])
+const setFromLoad = (voiceGroupIndex: number, patchController: PatchControllers) => {
+    if (patchController[osc1Sync.ctrl.id]) {
+        osc1Sync.setFromLoad(voiceGroupIndex, patchController[osc1Sync.ctrl.id].instances[0][0])
     }
-    if(patchController[osc2Sync.ctrl.id]){
-        osc2Sync.setFromLoad(patchController[osc2Sync.ctrl.id].instances[0][0])
+    if (patchController[osc2Sync.ctrl.id]) {
+        osc2Sync.setFromLoad(voiceGroupIndex, patchController[osc2Sync.ctrl.id].instances[0][0])
     }
-    handlers.setFromLoad(patchController)
+    handlers.setFromLoad(voiceGroupIndex, patchController)
 }
 
 const api = {

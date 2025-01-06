@@ -5,7 +5,12 @@ import { ApiSource } from '../../types'
 import { shouldSend } from '../../../midi/utils'
 import logger from '../../../utils/logger'
 import { NumericInputProperty } from '../common/types'
-import { ControllerConfig, ControllerConfigCC, ControllerConfigCCWithValue, MidiGroup } from '../../../midi/types'
+import {
+    ControllerConfig,
+    ControllerConfigButton,
+    ControllerConfigCC,
+    MidiGroup
+} from '../../../midi/types'
 import { paramReceive, ParamReceiveFunc, paramSend, ParamSendFunc } from '../common/commonMidiApi'
 
 let currentReceivedEnvId = -1
@@ -17,7 +22,7 @@ const envSelect = (() => {
     const cfg = controllers.ENV.SELECT
 
     return {
-        send: (source: ApiSource, envId: number) => {
+        send: (voiceGroupIndex: number, source: ApiSource, envId: number) => {
             if (!shouldSend(source)) {
                 return
             }
@@ -33,11 +38,11 @@ const envSelect = (() => {
                 currentSentEnvId = envId
                 lastSentEnvIdTimestamp = Date.now()
                 logger.midi(`Setting env id to ${envId}`)
-                cc.send(cfg, envId)
+                cc.send(voiceGroupIndex, cfg, envId)
             }
         },
         receive: () => {
-            cc.subscribe((value: number) => {
+            cc.subscribe((voiceGroupIndex, value: number) => {
                 currentReceivedEnvId = value
             }, cfg)
 
@@ -88,12 +93,12 @@ export const envParamSend: ParamSendFunc = (
     input: NumericInputProperty,
     outputMapper?: (value: number, ctrl: ControllerConfig, valueIndex?: number) => number
 ) => {
-    envSelect.send(input.source, input.ctrlIndex || 0)
+    envSelect.send(input.voiceGroupIndex, input.source, input.ctrlIndex || 0)
     paramSend(input, outputMapper)
 }
 
 export const envParamReceive: ParamReceiveFunc = (
-    ctrl: ControllerConfig | ControllerConfigCC | ControllerConfigCCWithValue,
+    ctrl: ControllerConfig | ControllerConfigCC | ControllerConfigButton,
     apiSetValue: (input: NumericInputProperty) => void,
     inputMapper?: (midiValue: number, ctrl: ControllerConfig) => ({ value: number, valueIndex?: number }),
 ) => {

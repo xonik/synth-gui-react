@@ -95,15 +95,15 @@ const incrementGuiDstParam = (inc: -1 | 1, source: ApiSource) => {
 
     const lastGuiDstParam = modDst.dsts[currDstGroup][currDstFunc].length - 1
     const requestedGuiDstParam = currDstParam + inc
-    if(requestedGuiDstParam < 0){
-        if(currDstFunc > 0){
+    if (requestedGuiDstParam < 0) {
+        if (currDstFunc > 0) {
             const prevDstFunc = currDstFunc - 1
             setGuiDstFunc(prevDstFunc, source)
             const lastDstParam = modDst.dsts[currDstGroup][prevDstFunc].length - 1
             setGuiDstParam(lastDstParam, source)
         }
-    } else if(requestedGuiDstParam > lastGuiDstParam){
-        if(currDstFunc < modDst.dsts[currDstGroup].length -1){
+    } else if (requestedGuiDstParam > lastGuiDstParam) {
+        if (currDstFunc < modDst.dsts[currDstGroup].length - 1) {
             setGuiDstFunc(currDstFunc + 1, source)
         }
 
@@ -112,21 +112,23 @@ const incrementGuiDstParam = (inc: -1 | 1, source: ApiSource) => {
     }
 }
 
-const setModValue = (sourceId: number, dstId: number, dstCtrlIndex: number, modValue: number, source: ApiSource) => {
+const setModValue = (voiceGroupIndex: number, sourceId: number, dstId: number, dstCtrlIndex: number, modValue: number, source: ApiSource) => {
     const quantizedValue = getQuantized(modValue, 32767)
-    const currModValue = selectModValue(sourceId, dstId, dstCtrlIndex)(store.getState())
+    const currModValue = selectModValue(sourceId, dstId, dstCtrlIndex)(store.getState(), voiceGroupIndex)
 
     if (quantizedValue === currModValue) {
         return
     }
 
-    dispatch(setModValueAction({ sourceId, dstId, dstCtrlIndex, modValue: quantizedValue, source }))
-    midiApi.setSourceId(source, sourceId)
-    midiApi.setDstId(source, dstId, dstCtrlIndex)
-    midiApi.setAmount(source, modValue)
+    dispatch(setModValueAction({ voiceGroupIndex, sourceId, dstId, dstCtrlIndex, modValue: quantizedValue, source }))
+
+    // TODO: These should really be converted into ONE!
+    midiApi.setSourceId(voiceGroupIndex, source, sourceId)
+    midiApi.setDstId(voiceGroupIndex, source, dstId, dstCtrlIndex)
+    midiApi.setAmount(voiceGroupIndex, source, modValue)
 }
 
-const incrementGuiModValue = (inc: number, source: ApiSource) => {
+const incrementGuiModValue = (voiceGroupIndex: number, inc: number, source: ApiSource) => {
     const sourceIndex = selectGuiSource(store.getState())
     const dstGroupIndex = selectGuiDstGroup(store.getState())
     const dstFuncIndex = selectGuiDstFunc(store.getState())
@@ -136,9 +138,9 @@ const incrementGuiModValue = (inc: number, source: ApiSource) => {
     const dstId = modDst.dsts[dstGroupIndex][dstFuncIndex][dstParamIndex].id
     const dstCtrlIndex = modDst.funcProps[dstGroupIndex][dstFuncIndex].ctrlIndex || 0
 
-    const currModValue = selectModValue(sourceId, dstId, dstCtrlIndex)(store.getState())
+    const currModValue = selectModValue(sourceId, dstId, dstCtrlIndex)(store.getState(), voiceGroupIndex)
     const nextModValue = getBounded(currModValue + inc, -1, 1)
-    setModValue(sourceId, dstId, dstCtrlIndex, nextModValue, source)
+    setModValue(voiceGroupIndex, sourceId, dstId, dstCtrlIndex, nextModValue, source)
 }
 
 const setRouteButton = (value: number, source: ApiSource) => {
@@ -148,13 +150,13 @@ const setRouteButton = (value: number, source: ApiSource) => {
     if (value === currentValue) {
         return
     }
-    dispatch(setUiRouteButton({ value: boundedValue }))
+    dispatch(setUiRouteButton({ voiceGroupIndex: -1, value: boundedValue }))
     modsMidiApi.setUiRouteButton(source, boundedValue)
 }
 
 const toggleRouteButton = (value: number, source: ApiSource) => {
     const currentValue = selectModsUi(store.getState()).routeButton
-    if(value === currentValue) {
+    if (value === currentValue) {
         setRouteButton(0, source)
     } else {
         setRouteButton(value, source)
@@ -170,7 +172,7 @@ export const uiAmount = (() => {
             return
         }
 
-        const boundedInput = {...input, value: boundedValue}
+        const boundedInput = { ...input, value: boundedValue }
         dispatch(setUiAmount(boundedInput))
 
         // send over midi
@@ -179,7 +181,7 @@ export const uiAmount = (() => {
 
     const increment = (input: NumericInputProperty) => {
         const currentValue = selectModsUi(store.getState()).amount
-        set({...input, value: currentValue + input.value / 2})
+        set({ ...input, value: currentValue + input.value / 2 })
     }
 
     paramReceive(modsControllers.UI_AMOUNT, set)
@@ -187,7 +189,8 @@ export const uiAmount = (() => {
     return {
         set,
         increment,
-        toggle: (input: ButtonInputProperty) => {}
+        toggle: (input: ButtonInputProperty) => {
+        }
     }
 })()
 
@@ -209,8 +212,8 @@ export const isZero = (A: number) => {
     return (Math.abs(A) < epsilon);
 }
 
-const getForSave = () => {
-    const mods = selectModValues()(store.getState())
+const getForSave = (voiceGroupIndex: number) => {
+    const mods = selectModValues()(store.getState(), voiceGroupIndex)
 
     // remove empty entries to make patch smaller.
     return mods.map((destinations) => {
@@ -220,8 +223,9 @@ const getForSave = () => {
     }).filter((destinations) => destinations.length > 0)
 }
 
-const setFromLoad = (modValues: number[][][]) => {
+const setFromLoad = (voiceGroupIndex: number, modValues: number[][][]) => {
     dispatch(setModValuesAction({
+        voiceGroupIndex,
         modValues,
         source: ApiSource.LOAD
     }))

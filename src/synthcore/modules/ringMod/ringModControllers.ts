@@ -1,11 +1,11 @@
-import { BUTTONS } from '../../../midi/buttons'
-import { FuncProps, ControllerConfigCCWithValue } from '../../../midi/types'
+import { FuncProps, ControllerConfigButton } from '../../../midi/types'
 import { ControllerIdNonMod } from '../controllers/controllerIds'
+import {buttonMidiValues} from "../../../midi/buttonMidiValues";
 
 
 interface RingModControllers {
     props: FuncProps
-    SOURCE: ControllerConfigCCWithValue
+    SOURCE: ControllerConfigButton
 }
 
 const ringModControllers: RingModControllers = {
@@ -14,10 +14,10 @@ const ringModControllers: RingModControllers = {
         id: ControllerIdNonMod.RING_MOD_SOURCE,
         label: 'Sources',
         type: 'button',
-            cc: BUTTONS.BUTTONS_LEFT.cc,
-            values: [
-            BUTTONS.BUTTONS_LEFT.values.RING_MOD_SOURCE_1_2,
-            BUTTONS.BUTTONS_LEFT.values.RING_MOD_SOURCE_EXT_2,
+        values: [
+            buttonMidiValues.RING_MOD_SOURCE_1_2,
+            buttonMidiValues.RING_MOD_SOURCE_EXT_2,
+            buttonMidiValues.RING_MOD_SOURCE_VCO_2,
         ],
     }
 }

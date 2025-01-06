@@ -1,0 +1,1 @@
+Støtte EXT_CV for LPF og SVF i ui. Fjernet fra selve filteret.

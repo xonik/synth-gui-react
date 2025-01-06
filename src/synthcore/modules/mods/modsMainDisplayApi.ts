@@ -14,7 +14,7 @@ export const mainDisplayModsPotResolutions = {
 }
 
 export const mainDisplayModsApi = {
-    handleMainDisplayController: (ctrlId: number, increment: number) => {
+    handleMainDisplayController: (voiceGroupIndex: number, ctrlId: number, increment: number) => {
         if (ctrlId === mainDisplayControllers.POT1.id) {
             modsApi.incrementGuiDstGroup(step(increment), ApiSource.UI)
         } else if (ctrlId === mainDisplayControllers.POT2.id) {
@@ -24,7 +24,7 @@ export const mainDisplayModsApi = {
         } else if (ctrlId === mainDisplayControllers.POT4.id) {
             modsApi.incrementGuiDstParam(step(increment), ApiSource.UI)
         } else if (ctrlId === mainDisplayControllers.POT5.id) {
-            modsApi.incrementGuiModValue(increment, ApiSource.UI)
+            modsApi.incrementGuiModValue(voiceGroupIndex, increment, ApiSource.UI)
         } else if (ctrlId === mainDisplayControllers.POT6.id) {
         } else if (ctrlId === mainDisplayControllers.POT7.id) {
 
