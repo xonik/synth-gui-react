@@ -255,13 +255,14 @@ export const sendSysex = (command: number, data: number[]) => {
 export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
     const midiData = midiEvent.data
     const channel = midiData[0] & 0x0F;
+    const midiStatus = midiData[0] & 0xF0;
 
     const voiceGroupId = getVoiceGroupIdFromMidiChannel(store.getState(), channel)
     const isGlobal = channel === selectGlobalMidiChannel(store.getState())
 
     // TODO: Currently reception won't care about midi channel, it will publish messages and use the currently
     // selected voice group. This is not ideal.
-    if (isGlobal || voiceGroupId > -1) {
+    if (midiStatus === status.CC && (isGlobal || voiceGroupId > -1)) {
 
         const ccKey = midiData[1]
         const ccValue = midiData[2]
