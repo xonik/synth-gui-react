@@ -8,4 +8,5 @@ export const getDefaultFiltersState = (): Controllers => mergeControllers([
     getDefaultController(filtersControllers.LPF.CUTOFF, 1),
     getDefaultController(filtersControllers.SVF.ENV_AMT, 0.33),
     getDefaultController(filtersControllers.SVF.ENV_AMT, 0.33),
+    getDefaultController(filtersControllers.FILTERS.ROUTING, 1),
 ])

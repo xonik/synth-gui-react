@@ -60,6 +60,7 @@ const VCO = ({ x, y }: Props) => {
         <RoundPushButton8 x={col1} y={y + 7.5}
                           ledPosition="top" ledCount={2} ledLabels={['Lin', 'Log']}
                           label="FM mode" labelPosition="bottom"
+                          hasOff
                           ctrlGroup={ctrlGroup}
                           ctrl={oscControllers.VCO.FM_MODE}
         />

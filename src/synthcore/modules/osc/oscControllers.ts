@@ -437,6 +437,7 @@ const oscControllers: OscControllers = {
             label: 'Cross mod source',
             type: 'button',
             values: [
+                buttonMidiValues.OSC3_FM_MODE_OFF,
                 buttonMidiValues.OSC3_FM_MODE_LIN,
                 buttonMidiValues.OSC3_FM_MODE_LOG,
             ],

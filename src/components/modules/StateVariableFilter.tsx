@@ -66,6 +66,7 @@ const StateVariableFilter = ({ x, y }: Props) => {
 
         <RoundPushButton8 x={col1} y={y - 10} ledPosition="top" ledCount={2} ledLabels={['Lin', 'Log']}
                           label="FM mode" labelPosition="bottom"
+                          hasOff
                           ctrlGroup={ctrlGroup}
                           ctrl={filtersControllers.SVF.FM_MODE}
         />

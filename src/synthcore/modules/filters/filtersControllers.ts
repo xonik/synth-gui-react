@@ -99,6 +99,7 @@ const filtersControllers: FiltersControllers = {
             label: 'FM mode',
             type: 'button',
             values: [
+                buttonMidiValues.LPF_FM_MODE_OFF,
                 buttonMidiValues.LPF_FM_MODE_LIN,
                 buttonMidiValues.LPF_FM_MODE_LOG,
             ],
@@ -213,6 +214,7 @@ const filtersControllers: FiltersControllers = {
             label: 'FM mode',
             type: 'button',
             values: [
+                buttonMidiValues.SVF_FM_MODE_OFF,
                 buttonMidiValues.SVF_FM_MODE_LIN,
                 buttonMidiValues.SVF_FM_MODE_LOG,
             ],
