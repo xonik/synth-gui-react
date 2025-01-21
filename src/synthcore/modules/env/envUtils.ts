@@ -141,14 +141,73 @@ const defaultStageConfigs: Stage[] = [
         time: 0,
     }
 ]
+const filterEnvStageConfigs: Stage[] = [
+    {
+        id: StageId.DELAY,
+        enabled: 0,
+        curve: Curve.LIN,
+        level: 0,
+        time: 0,
+    },
+    {
+        id: StageId.ATTACK,
+        enabled: 1,
+        curve: Curve.LIN,
+        level: 0,
+        time: 0.001,
+    },
+    {
+        id: StageId.DECAY1,
+        enabled: 1,
+        curve: Curve.LIN,
+        level: 1,
+        time: 0.5,
+    },
+    {
+        id: StageId.DECAY2,
+        enabled: 0,
+        curve: Curve.LIN,
+        level: 0.5,
+        time: 0.001,
+    },
+    {
+        id: StageId.SUSTAIN,
+        enabled: 1,
+        curve: Curve.LIN,
+        level: 0.5,
+        time: 0,
+    },
+    {
+        id: StageId.RELEASE1,
+        enabled: 0,
+        curve: Curve.LIN,
+        level: 0.5,
+        time: 0.001,
+    },
+    {
+        id: StageId.RELEASE2,
+        enabled: 1,
+        curve: Curve.LIN,
+        level: 0.25,
+        time: 0.003,
+    },
+    {
+        id: StageId.STOPPED,
+        enabled: 1,
+        curve: Curve.LIN,
+        level: 0,
+        time: 0,
+    }
+]
 
 export const getDefaultEnvStages = (envId: number): Controllers => {
-    const stages: Controllers[] = defaultStageConfigs.map(conf => getStageState(envId, conf))
+    const stageConfig = envId == 1 ? filterEnvStageConfigs : defaultStageConfigs
+    const stages: Controllers[] = stageConfig.map(conf => getStageState(envId, conf))
     const controllers = mergeControllers(stages)
 
     // TODO: Duplicated in reducer, fix!
     // Update release levels
-    if (defaultStageConfigs[StageId.RELEASE1].enabled) {
+    if (stageConfig[StageId.RELEASE1].enabled) {
         controllers[envId][envCtrls.LEVEL.id][StageId.RELEASE1] = controllers[envId][envCtrls.LEVEL.id][StageId.SUSTAIN]
     } else {
         controllers[envId][envCtrls.LEVEL.id][StageId.RELEASE2] = controllers[envId][envCtrls.LEVEL.id][StageId.SUSTAIN]
@@ -158,12 +217,13 @@ export const getDefaultEnvStages = (envId: number): Controllers => {
 }
 
 export const getDefaultEnvUiStages = (envId: number): Controllers => {
-    const stages: Controllers[] = defaultStageConfigs.map(conf => getUiStageState(envId, conf))
+    const stageConfig = envId == 1 ? filterEnvStageConfigs : defaultStageConfigs
+    const stages: Controllers[] = stageConfig.map(conf => getUiStageState(envId, conf))
     const controllers = mergeControllers(stages)
 
     // TODO: Duplicated in reducer, fix!
     // Update release levels
-    if (defaultStageConfigs[StageId.RELEASE1].enabled) {
+    if (stageConfig[StageId.RELEASE1].enabled) {
         controllers[envId][envCtrls.LEVEL.id][StageId.RELEASE1] = controllers[envId][envCtrls.LEVEL.id][StageId.SUSTAIN]
     } else {
         controllers[envId][envCtrls.LEVEL.id][StageId.RELEASE2] = controllers[envId][envCtrls.LEVEL.id][StageId.SUSTAIN]
