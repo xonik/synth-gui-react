@@ -1,11 +1,11 @@
 import React from 'react'
 import RotaryPotWithLedRingBase, { Props } from './RotaryPotWithLedRingBase';
 
-const RotaryPot24 = (props: Props) => <RotaryPotWithLedRingBase
-    knobRadius={15}
+const RotaryPot21 = (props: Props) => <RotaryPotWithLedRingBase
+    knobRadius={10.5}
     ledCount={47}
     windowToKnobMargin={1.5}
     {...props}
 />
 
-export default RotaryPot24
+export default RotaryPot21

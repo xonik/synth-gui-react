@@ -1,5 +1,5 @@
 import React from 'react';
-import RotaryPot10 from '../pots/RotaryPot10';
+import RotaryPot12 from '../pots/RotaryPot12';
 import Header from '../misc/Header';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
 import { ControllerGroupIds } from '../../synthcore/types'
@@ -28,12 +28,12 @@ const BitCrusher = ({ x, y }: Props) => {
                           ctrl={commonFxControllers.FX_BIT_CRUSHER.SOURCE}
         />
 
-        <RotaryPot10 ledMode="single" label="Bits" x={col2} y={row2}
+        <RotaryPot12 ledMode="single" label="Bits" x={col2} y={row2}
                      ctrlGroup={ctrlGroup}
                      ctrl={commonFxControllers.FX_BIT_CRUSHER.BITS}
         />
 
-        <RotaryPot10 ledMode="single" label="Rate" x={col3} y={row2}
+        <RotaryPot12 ledMode="single" label="Rate" x={col3} y={row2}
                      ctrlGroup={ctrlGroup}
                      ctrl={commonFxControllers.FX_BIT_CRUSHER.RATE}
         />

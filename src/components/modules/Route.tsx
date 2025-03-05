@@ -1,7 +1,7 @@
 import React from 'react';
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
 import Header from '../misc/Header';
-import RotaryPot15 from '../pots/RotaryPot15';
+import RotaryPot12 from '../pots/RotaryPot12';
 import { ControllerGroupIds } from '../../synthcore/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectModsUi } from '../../synthcore/modules/mods/modsReducer'
@@ -26,13 +26,13 @@ const Route = ({ x, y }: Props) => {
                              value={route.routeButton}
         />
 
-        <RoundLedPushButton8 labelPosition="bottom" x={10} y={37.5} label="To" hasOff radioButtonIndex={1}
+        <RoundLedPushButton8 labelPosition="bottom" x={10} y={35} label="To" hasOff radioButtonIndex={1}
                              ctrlGroup={ctrlGroup}
                              ctrl={modsControllers.ROUTE_BUTTON}
                              value={route.routeButton}
         />
 
-        <RotaryPot15 ledMode="single" potMode="pan" label="Amount" x={35} y={30}
+        <RotaryPot12 ledMode="single" potMode="pan" label="Amount" x={35} y={25}
                      ctrlGroup={ctrlGroup}
                      ctrl={modsControllers.UI_AMOUNT}
                      value={route.amount}

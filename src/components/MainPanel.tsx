@@ -50,7 +50,7 @@ const MainPanel = () => {
     const lfoCol = 20
     const noiseCol = 20
     const ringModCol = noiseCol
-    const sourceMixCol = noiseCol + 30
+    const sourceMixCol = noiseCol + 45
     const bcCol = sourceMixCol + 156
     const distCol = bcCol
 
@@ -72,12 +72,12 @@ const MainPanel = () => {
 
     const oscRow = 60
 
-    const fxRow1 = oscRow + 85
-    const fxRow2 = fxRow1 + 50
+    const fxRow1 = oscRow + 82
+    const fxRow2 = fxRow1 + 35
     const sourceMixRow = fxRow1
 
-    const lfo1Row = fxRow2 + 50
-    const clockRow = lfo1Row + 50
+    const lfo1Row = fxRow2 + 40
+    const clockRow = lfo1Row + 42
 
     const voiceSelRow = 12
     const displayRow = voiceSelRow + 58
@@ -110,7 +110,7 @@ const MainPanel = () => {
     // PS: 1 inch in svg is 96pixels, so 1cm = 96 / 2.54
     return (
         <>
-            <svg width="105cm" height="35cm" viewBox="0 0 1050 350" className="panel">
+            <svg width="105cm" height="30cm" viewBox="0 0 1050 300" className="panel">
                 <DCO1 x={osc1Col} y={oscRow}/>
                 <DCO2 x={osc2Col} y={oscRow}/>
                 <VCO x={osc3Col} y={oscRow}/>
@@ -133,8 +133,8 @@ const MainPanel = () => {
                 <MainDisplay x={displayCol} y={displayRow} ref={displayRef}/>
                 <KeyboardControls x={keyCtrlCol} y={keyCtrlRow}/>
 
-                <StateVariableFilter x={filterCol} y={82}/>
-                <LowPassFilter x={filterCol} y={270}/>
+                <StateVariableFilter x={filterCol} y={77}/>
+                <LowPassFilter x={filterCol} y={240}/>
                 <PostMix x={voiceMixCol} y={5}/>
 
 

@@ -1,6 +1,6 @@
 import React from 'react'
-import RotaryPot24 from '../pots/RotaryPot24'
-import RotaryPot10 from '../pots/RotaryPot10'
+import RotaryPot21 from '../pots/RotaryPot21'
+import RotaryPot12 from '../pots/RotaryPot12'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import Header from '../misc/Header'
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
@@ -16,8 +16,8 @@ const ctrlGroup = ControllerGroupIds.OSC
 
 const DCO2 = ({ x, y }: Props) => {
     const topRow = y - 35
-    const bottomRow1 = y + 40
-    const bottomRow2 = bottomRow1 + 25
+    const bottomRow1 = y + 35
+    const bottomRow2 = bottomRow1 + 30
 
     const col1 = x - 39
     const col2 = x - 13
@@ -26,12 +26,12 @@ const DCO2 = ({ x, y }: Props) => {
 
     return <>
         <Header label="Oscillator 2" x={x} y={topRow - 20} width={100} align="center"/>
-        <RotaryPot24 x={x} y={y} ledMode="single" label="Waveform"
+        <RotaryPot21 x={x} y={y-2.5} ledMode="single" label="Waveform"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.DCO2.WAVEFORM}
         />
 
-        <RotaryPot10 x={col1} y={topRow} ledMode="single" label="Note"
+        <RotaryPot12 x={col1} y={topRow} ledMode="single" label="Note"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.DCO2.NOTE}
         />
@@ -44,23 +44,23 @@ const DCO2 = ({ x, y }: Props) => {
                           ctrl={oscControllers.DCO2.SYNC}
         />
 
-        <RotaryPot10 x={col4} y={topRow} ledMode="single" label="Detune"
+        <RotaryPot12 x={col4} y={topRow} ledMode="single" label="Detune"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.DCO2.DETUNE}
         />
 
-        {/*<RotaryPot10 x={col4} y={topRow} ledMode="multi" label="Super saw"/>*/}
-        <RoundLedPushButton8 x={col1} y={y-10} label="Saw inv" labelPosition="bottom"
+        {/*<RotaryPot12 x={col4} y={topRow} ledMode="multi" label="Super saw"/>*/}
+        <RoundLedPushButton8 x={col1} y={y-12.5} label="Saw inv" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={oscControllers.DCO2.SAW_INV}
         />
 
-        <RoundLedPushButton8 x={col1} y={y+7.5} label="Sine" labelPosition="bottom"
+        <RoundLedPushButton8 x={col1} y={y+5} label="Sine" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={oscControllers.DCO2.PRE_FILTER_SINE}
         />
 
-        <RoundPushButton8 x={col4} y={y + 7.5}
+        <RoundPushButton8 x={col4} y={y + 5}
                           ledPosition="top" ledCount={3} ledLabels={['DCO', 'WT', 'PCM']}
                           label="Mode" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
@@ -75,32 +75,32 @@ const DCO2 = ({ x, y }: Props) => {
                           ctrl={oscControllers.DCO2.SUB_WAVE}
         />
 
-        <RotaryPot10 x={col2} y={bottomRow1} ledMode="multi" label="Sub -1"
+        <RotaryPot12 x={col2} y={bottomRow1} ledMode="multi" label="Sub -1"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.DCO2.SUB1}
         />
 
-        <RotaryPot10 x={col3} y={bottomRow1} ledMode="multi" label="Sub -2"
+        <RotaryPot12 x={col3} y={bottomRow1} ledMode="multi" label="Sub -2"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.DCO2.SUB2}
         />
 
-        <RotaryPot10 x={col4} y={bottomRow1} ledMode="single" label="PW"
+        <RotaryPot12 x={col4} y={bottomRow1} ledMode="single" label="PW"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.DCO2.PW}
         />
 
-        <RoundLedPushButton8 x={col2} y={bottomRow2} label="Wheel" labelPosition="bottom"
+        <RotaryPot12 x={col2} y={bottomRow2} label="Wheel"
                              ctrlGroup={ctrlGroup}
                              ctrl={oscControllers.DCO2.WHEEL}
         />
 
-        <RoundLedPushButton8 x={col3} y={bottomRow2} label="LFO" labelPosition="bottom"
+        <RotaryPot12 x={col3} y={bottomRow2} label="LFO"
                              ctrlGroup={ctrlGroup}
                              ctrl={oscControllers.DCO2.LFO}
         />
 
-        <RoundLedPushButton8 x={col4} y={bottomRow2} label="Kbd" labelPosition="bottom"
+        <RotaryPot12 x={col4} y={bottomRow2} label="Kbd"
                              ctrlGroup={ctrlGroup}
                              ctrl={oscControllers.DCO2.KBD}
         />

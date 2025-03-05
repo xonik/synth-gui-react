@@ -1,5 +1,5 @@
 import React from 'react'
-import RotaryPot15 from '../pots/RotaryPot15'
+import RotaryPot12 from '../pots/RotaryPot12'
 import Header from '../misc/Header'
 import { LedMode, PotMode } from '../pots/RotaryPotWithLedRingBase'
 import { ControllerGroupIds } from '../../synthcore/types'
@@ -28,7 +28,7 @@ const ctrlGroup = ControllerGroupIds.POST_MIX
 const VoiceMixerChannel = ({ x, y, label, potMode = 'normal', ledMode = 'multi', ctrl }: ChannelProps) => {
 
     return <>
-        <RotaryPot15 label={label} x={x} y={y} potMode={potMode} ledMode={ledMode}
+        <RotaryPot12 label={label} x={x} y={y} potMode={potMode} ledMode={ledMode}
                      ctrlGroup={ctrlGroup}
                      ctrl={ctrl}
         />

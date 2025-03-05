@@ -1,7 +1,6 @@
 import React from 'react'
-import RotaryPot24 from '../pots/RotaryPot24'
-import RotaryPot10 from '../pots/RotaryPot10'
-import RotaryPot15 from '../pots/RotaryPot15'
+import RotaryPot21 from '../pots/RotaryPot21'
+import RotaryPot12 from '../pots/RotaryPot12'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
 import Header from '../misc/Header'
@@ -19,8 +18,8 @@ const ctrlGroup = ControllerGroupIds.FILTERS
 
 const StateVariableFilter = ({ x, y }: Props) => {
     const topRow = y - 50
-    const bottomRow1 = y + 45
-    const bottomRow2 = y + 75
+    const bottomRow1 = y + 22
+    const bottomRow2 = y + 55
 
     const col1 = x - 39
     const col2 = x - 13
@@ -42,23 +41,23 @@ const StateVariableFilter = ({ x, y }: Props) => {
      */
 
     return <>
-        <Header label="State variable filter" x={x} y={topRow - 27} width={110} align="center"/>
-        <RotaryPot24 x={x} y={y} ledMode="single" label="Cutoff"
+        <Header label="Filters" x={x} y={topRow - 22} width={110} align="center"/>
+        <RotaryPot21 x={x} y={y-15} ledMode="single" label="Cutoff"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.SVF.CUTOFF}
         />
 
-        <RotaryPot15 x={col1} y={topRow} ledMode="multi" label="Input"
+        <RotaryPot12 x={col1} y={topRow} ledMode="multi" label="Input"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.SVF.INPUT}
         />
 
-        <RotaryPot15 x={x} y={topRow} ledMode="multi" label="Resonance"
+        <RotaryPot12 x={x} y={topRow} ledMode="multi" label="Resonance"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.SVF.RESONANCE}
         />
 
-        <RotaryPot15 x={col4} y={topRow} ledMode="multi" label="FM"
+        <RotaryPot12 x={col4} y={topRow} ledMode="multi" label="FM"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.SVF.FM_AMT}
         />
@@ -99,22 +98,22 @@ const StateVariableFilter = ({ x, y }: Props) => {
                              ctrl={filtersControllers.SVF.SLOPE}
         />
 
-        <RotaryPot10 x={col1} y={bottomRow2} ledMode="multi" label="Wheel amt"
+        <RotaryPot12 x={col1} y={bottomRow2} ledMode="multi" label="Wheel amt"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.SVF.WHEEL_AMT}
         />
 
-        <RotaryPot10 x={col2} y={bottomRow2} ledMode="multi" label="Env amt"
+        <RotaryPot12 x={col2} y={bottomRow2} ledMode="multi" label="Env amt"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.SVF.ENV_AMT}
         />
 
-        <RotaryPot10 x={col3} y={bottomRow2} ledMode="multi" label="LFO amt"
+        <RotaryPot12 x={col3} y={bottomRow2} ledMode="multi" label="LFO amt"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.SVF.LFO_AMT}
         />
 
-        <RotaryPot10 x={col4} y={bottomRow2} ledMode="multi" label="Kbd amt"
+        <RotaryPot12 x={col4} y={bottomRow2} ledMode="multi" label="Kbd amt"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.SVF.KBD_AMT}
         />

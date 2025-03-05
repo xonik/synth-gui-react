@@ -1,10 +1,10 @@
 import React from 'react'
-import RotaryPot15 from '../pots/RotaryPot15'
 import Header from '../misc/Header'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import { ControllerGroupIds } from '../../synthcore/types'
 import srcMixControllers from '../../synthcore/modules/srcMix/srcMixControllers'
 import { ControllerConfig } from '../../midi/types'
+import RotaryPot12 from "../pots/RotaryPot12";
 
 interface Props {
     x: number,
@@ -23,12 +23,12 @@ const ctrlGroup = ControllerGroupIds.SRC_MIX
 
 const MixerChannel = ({ x, y, label, levelCtrl, outCtrl }: ChannelProps) => {
     return <>
-        <RotaryPot15 ledMode="multi" label={label} x={x} y={y}
+        <RotaryPot12 ledMode="multi" label={label} x={x} y={y-5}
                      ctrlGroup={ctrlGroup}
                      ctrl={levelCtrl}
         />
 
-        <RoundPushButton8 x={x + 25} y={y + 3}
+        <RoundPushButton8 x={x + 20} y={y + 3}
                           ledPosition="top" ledCount={2}
                           ledLabels={['S','L']}
                           hasOff
@@ -41,7 +41,7 @@ const MixerChannel = ({ x, y, label, levelCtrl, outCtrl }: ChannelProps) => {
 const SourceMixer = ({ x, y }: Props) => {
     const offsetX = 20
     const offsetY = 25
-    const rowDistance = 50
+    const rowDistance = 35
     const colDistance = 50
 
     const col1 = x - 2 + offsetX

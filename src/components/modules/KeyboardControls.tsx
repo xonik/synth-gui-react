@@ -1,5 +1,5 @@
 import Header from '../misc/Header'
-import RotaryPot10 from '../pots/RotaryPot10'
+import RotaryPot12 from '../pots/RotaryPot12'
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import Led from '../leds/Led'
@@ -80,7 +80,7 @@ const KeyboardControls = ({ x, y }: Props) => {
         <Header label="Transpose" x={0} y={row1} width={80}/>
         <Header label="Keyboard" x={85} y={row1} width={140}/>
         <Transpose row2={row2}/>
-        <RotaryPot10 x={col8} y={row2} ledMode="single" label="Portamento"
+        <RotaryPot12 x={col8} y={row2} ledMode="single" label="Portamento"
                      ctrlGroup={ctrlGroup}
                      ctrl={kbdControllers.PORTAMENTO}
         />
@@ -101,7 +101,7 @@ const KeyboardControls = ({ x, y }: Props) => {
                           ctrl={kbdControllers.MODE}
         />
 
-        <RotaryPot10 x={col12} y={row2} ledMode="single" label="Unison detune"
+        <RotaryPot12 x={col12} y={row2} ledMode="single" label="Unison detune"
                      ctrlGroup={ctrlGroup}
                      ctrl={kbdControllers.UNISON_DETUNE}
         />

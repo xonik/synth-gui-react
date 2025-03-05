@@ -1,6 +1,5 @@
 import React from 'react'
-import RotaryPot15 from '../pots/RotaryPot15'
-import RotaryPot10 from '../pots/RotaryPot10'
+import RotaryPot12 from '../pots/RotaryPot12'
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import Header from '../misc/Header'
@@ -37,27 +36,27 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
 
     return <>
         <Header align="left" label={label} x={x} y={y} width={255}/>
-        <RotaryPot15 ledMode="single" label="Attack" x={firstPotX} y={potY}
+        <RotaryPot12 ledMode="single" label="Attack" x={firstPotX} y={potY}
                      ctrlGroup={ctrlGroup}
                      ctrl={envCtrls.TIME}
                      ctrlIndex={envId}
                      valueIndex={StageId.ATTACK}
         />
-        <RotaryPot15 ledMode="single" label="Decay 1" x={firstPotX + potDistance} y={potY}
+        <RotaryPot12 ledMode="single" label="Decay 1" x={firstPotX + potDistance} y={potY}
                      ctrlGroup={ctrlGroup}
                      ctrl={envCtrls.TIME}
                      ctrlIndex={envId}
                      valueIndex={StageId.DECAY1}
                      disabled={decay1Disabled}
         />
-        <RotaryPot15 ledMode="single" label="Decay 2" x={firstPotX + potDistance * 2} y={potY}
+        <RotaryPot12 ledMode="single" label="Decay 2" x={firstPotX + potDistance * 2} y={potY}
                      ctrlGroup={ctrlGroup}
                      ctrl={envCtrls.TIME}
                      ctrlIndex={envId}
                      valueIndex={StageId.DECAY2}
                      disabled={decay2Disabled}
         />
-        <RotaryPot15 ledMode="multi" label="Sustain" x={firstPotX + potDistance * 3} y={potY}
+        <RotaryPot12 ledMode="multi" label="Sustain" x={firstPotX + potDistance * 3} y={potY}
                      ctrlGroup={ctrlGroup}
                      ctrl={envCtrls.LEVEL}
                      ctrlIndex={envId}
@@ -65,7 +64,7 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
                      valueIndex={StageId.SUSTAIN}
                      disabled={sustainDisabled}
         />
-        <RotaryPot15 ledMode="single" label="Release 1" x={firstPotX + potDistance * 4} y={potY}
+        <RotaryPot12 ledMode="single" label="Release 1" x={firstPotX + potDistance * 4} y={potY}
                      ctrlGroup={ctrlGroup}
                      ctrl={envCtrls.TIME}
                      ctrlIndex={envId}
@@ -73,7 +72,7 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
                      disabled={release1Disabled}
 
         />
-        <RotaryPot15 ledMode="single" label="Release 2" x={firstPotX + potDistance * 5} y={potY}
+        <RotaryPot12 ledMode="single" label="Release 2" x={firstPotX + potDistance * 5} y={potY}
                      ctrlGroup={ctrlGroup}
                      ctrl={envCtrls.TIME}
                      ctrlIndex={envId}
@@ -90,14 +89,14 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
           ctrlIndex={0}
           value={env3Id -2}
         />}
-        <RotaryPot10 ledMode="single" label="Delay" x={firstPotX + potDistance * 0.5} y={topRowY}
+        <RotaryPot12 ledMode="single" label="Delay" x={firstPotX + potDistance * 0.5} y={topRowY}
                      ctrlGroup={ctrlGroup}
                      ctrl={envCtrls.TIME}
                      ctrlIndex={envId}
                      valueIndex={StageId.DELAY}
                      disabled={delayDisabled}
         />
-        <RotaryPot10 ledMode="multi" label="D2 Level" x={firstPotX + potDistance * 1.5} y={topRowY}
+        <RotaryPot12 ledMode="multi" label="D2 Level" x={firstPotX + potDistance * 1.5} y={topRowY}
                      ctrlGroup={ctrlGroup}
                      ctrl={envCtrls.LEVEL}
                      ctrlIndex={envId}
@@ -117,7 +116,7 @@ const Envelope = ({ x, y, label, showSelect = false, envId }: Props) => {
                              ctrl={envCtrls.LOOP}
                              ctrlIndex={envId}
         />
-        <RotaryPot10 ledMode="multi" label="R2 Level" x={firstPotX + potDistance * 4.5} y={topRowY}
+        <RotaryPot12 ledMode="multi" label="R2 Level" x={firstPotX + potDistance * 4.5} y={topRowY}
                      ctrlGroup={ctrlGroup}
                      ctrl={envCtrls.LEVEL}
                      ctrlIndex={envId}
