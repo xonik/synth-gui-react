@@ -40,7 +40,7 @@ const getRenderProps = (props: Props & Config) => {
     const ledCount = props.ledCount || 31
     const ledArc = props.ledArc || 270
     const windowToKnobMargin = props.windowToKnobMargin || 2
-    const windowWidth = props.windowWidth || 4
+    const windowWidth = props.windowWidth || 3
 
     const ledRadius = 0.4
     const centerLed = (ledCount - 1) / 2

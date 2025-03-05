@@ -17,13 +17,13 @@ const Distortion = ({ x, y }: Props) => {
     const row1 = y
     const row2 = row1 + 22
 
-    const col1 = x + 7
+    const col1 = x + 10
     const col2 = col1 + 25
     const col5 = col2 + 60
     const col6 = col5 + 25
 
     return <>
-        <Header label="Distortion" x={x} y={row1} width={128}/>
+        <Header label="Distortion" x={x} y={row1} width={130}/>
         <RoundPushButton8 x={col1} y={row2 + 8}
                           ledPosition="top"
                           ledCount={2}

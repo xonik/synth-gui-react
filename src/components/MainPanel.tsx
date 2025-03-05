@@ -27,6 +27,7 @@ import { useAppSelector } from '../synthcore/hooks'
 import { envCtrls } from '../synthcore/modules/env/envControllers'
 import { selectController } from '../synthcore/modules/controllers/controllersReducer'
 import './MainPanel.scss'
+import Grid from "./Grid";
 
 /**
  * TODO:
@@ -40,8 +41,8 @@ import './MainPanel.scss'
 const MainPanel = () => {
 
     const env3Id = useAppSelector(selectController(envCtrls.SELECT_ENV3_ID))
-    //const panelHeight = 350;
-    //const panelWidth = 1050;
+    const panelHeight = 290;
+    const panelWidth = 1000;
 
     const osc1Col = 70
     const osc2Col = osc1Col + 115
@@ -51,26 +52,26 @@ const MainPanel = () => {
     const noiseCol = 20
     const ringModCol = noiseCol
     const sourceMixCol = noiseCol + 45
-    const bcCol = sourceMixCol + 156
+    const bcCol = sourceMixCol + 155
     const distCol = bcCol
 
     const routeCol = 20
     const clockCol = routeCol + 56
     const arpCol = clockCol + 84
 
-    const displayCol = osc3Col + 85
+    const displayCol = osc3Col + 80
     const keyCtrlCol = displayCol - 22
     const voiceSelCol = displayCol
 
-    const filterCol = displayCol + 270
-    const voiceMixCol = filterCol + 70
+    const filterCol = displayCol + 265
+    const voiceMixCol = filterCol + 65
 
-    const envCol = voiceMixCol + 55
+    const envCol = voiceMixCol + 40
     const outFx1Col = envCol
     const outFx2Col = outFx1Col + 130
     const outputMixerCol = envCol + 5
 
-    const oscRow = 60
+    const oscRow = 65
 
     const fxRow1 = oscRow + 82
     const fxRow2 = fxRow1 + 35
@@ -83,7 +84,7 @@ const MainPanel = () => {
     const displayRow = voiceSelRow + 58
     const keyCtrlRow = displayRow + 233
 
-    const outputFxRow = 210
+    const outputFxRow = 175
     const arpRow = clockRow
 
     const outputMixerRow = outputFxRow + 85
@@ -107,10 +108,14 @@ const MainPanel = () => {
         }
     }, [])
 
+
     // PS: 1 inch in svg is 96pixels, so 1cm = 96 / 2.54
     return (
         <>
-            <svg width="105cm" height="30cm" viewBox="0 0 1050 300" className="panel">
+            <svg width={`${panelWidth/10}cm`} height={`${panelHeight/10}cm`} viewBox={`0 0 ${panelWidth} ${panelHeight}`} className="panel">
+
+                <Grid panelWidth={panelWidth} panelHeight={panelHeight}/>
+
                 <DCO1 x={osc1Col} y={oscRow}/>
                 <DCO2 x={osc2Col} y={oscRow}/>
                 <VCO x={osc3Col} y={oscRow}/>
@@ -133,14 +138,14 @@ const MainPanel = () => {
                 <MainDisplay x={displayCol} y={displayRow} ref={displayRef}/>
                 <KeyboardControls x={keyCtrlCol} y={keyCtrlRow}/>
 
-                <StateVariableFilter x={filterCol} y={77}/>
+                <StateVariableFilter x={filterCol} y={80}/>
                 <LowPassFilter x={filterCol} y={240}/>
-                <PostMix x={voiceMixCol} y={5}/>
+                <PostMix x={voiceMixCol} y={8}/>
 
 
-                <Envelope x={envCol} y={5} label="Env 1 / VCA" envId={0}/>
-                <Envelope x={envCol} y={75} label="Env 2 / VCF" envId={1}/>
-                <Envelope x={envCol} y={145} label="Env 3 - 5" showSelect={true} envId={env3Id}/>
+                <Envelope header="Envelopes" x={envCol} y={10} label="VCA" envId={0}/>
+                <Envelope x={envCol} y={65} label="VCF" envId={1}/>
+                <Envelope x={envCol} y={120} label="" showSelect={true} envId={env3Id}/>
 
                 <DigitalFX x={outFx1Col} y={outputFxRow}/>
                 <Chorus x={outFx2Col} y={outputFxRow + 10}/>

@@ -21,7 +21,7 @@ interface ChannelProps {
     y: number
 }
 
-const rowDistance = 40
+const rowDistance = 30
 
 const ctrlGroup = ControllerGroupIds.POST_MIX
 
@@ -37,18 +37,18 @@ const VoiceMixerChannel = ({ x, y, label, potMode = 'normal', ledMode = 'multi',
 }
 
 const PostMix = ({ x, y }: Props) => {
-    const offsetX = 20
-    const offsetY = 27
-    const offsetY2 = 195
+    const offsetX = 15
+    const offsetY = 22
+    const offsetY2 = 175
 
     return <svg x={x} y={y}>
-        <Header label="Mix" x={0} y={0} width={40}/>
+        <Header label="Mix" x={0} y={0} width={30}/>
         <VoiceMixerChannel x={offsetX} y={offsetY} label="SVF" ctrl={postMixControllers.SVF}/>
         <VoiceMixerChannel x={offsetX} y={offsetY + rowDistance} label="LPF" ctrl={postMixControllers.LPF}/>
         <VoiceMixerChannel x={offsetX} y={offsetY + rowDistance * 2} label="Sine 1" ctrl={postMixControllers.SINE1}/>
         <VoiceMixerChannel x={offsetX} y={offsetY + rowDistance * 3} label="Sine 2" ctrl={postMixControllers.SINE2}/>
 
-        <Header label="Voice out" x={0} y={offsetY2 - 27} width={40}/>
+        <Header label="Voice out" x={0} y={offsetY2 - 27} width={30}/>
         <VoiceMixerChannel x={offsetX} y={offsetY2} label="Pan" potMode="pan" ledMode="single"
                            ctrl={postMixControllers.PAN}/>
         <VoiceMixerChannel x={offsetX} y={offsetY2 + rowDistance} label="Amt" ctrl={postMixControllers.AMOUNT}/>

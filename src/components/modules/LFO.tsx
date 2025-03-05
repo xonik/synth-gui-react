@@ -17,15 +17,17 @@ const ctrlGroup = ControllerGroupIds.LFO
 
 
 const LFO = ({ x, y }: Props) => {
-    const potDistance = 40
+    const potDistance = 30
     const buttonCol = 10
-    const firstPotCol = buttonCol + 105
-    const buttonCol2 = firstPotCol + 3 * potDistance + 30
-    const buttonCol3 = buttonCol2 + 25
-    const buttonCol4 = buttonCol3 + 25
+    const firstPotCol = buttonCol + 95
+    const buttonCol2 = firstPotCol + 3 * potDistance + 25
+    const buttonCol3 = buttonCol2 + 20
+    const buttonCol4 = buttonCol3 + 20
+    const buttonCol5 = buttonCol4 + 20
+    const buttonCol6 = buttonCol5 + 20
+    const buttonCol7 = buttonCol6 + 20
 
-    const buttonRow1 = 17
-    const buttonRow2 = 34.5
+    const buttonRow1 = 22
 
     const potRow1 = 22
 
@@ -44,7 +46,7 @@ const LFO = ({ x, y }: Props) => {
                           value={lfoId}
         />
 
-        <RoundPushButton8 x={buttonCol + 55} y={potRow1}
+        <RoundPushButton8 x={buttonCol + 50} y={potRow1}
                           label="Shape" labelPosition="bottom"
                           ledPosition="sides" ledCount={6}
                           ledLabels={['Saw', 'Tri', 'Sqr', 'Sin', 'Rand', 'Custom']}
@@ -97,21 +99,21 @@ const LFO = ({ x, y }: Props) => {
                              loop
         />
 
-        <RoundLedPushButton8 label="Invert" x={buttonCol2} y={buttonRow2} labelPosition="bottom"
+        <RoundLedPushButton8 label="Invert" x={buttonCol5} y={buttonRow1} labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={lfoCtrls.INVERT}
                              ctrlIndex={lfoId}
                              loop
         />
 
-        <RoundLedPushButton8 label="Bipolar" x={buttonCol3} y={buttonRow2} labelPosition="bottom"
+        <RoundLedPushButton8 label="Bipolar" x={buttonCol6} y={buttonRow1} labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={lfoCtrls.BIPOLAR}
                              ctrlIndex={lfoId}
                              loop
         />
 
-        <RoundPushButton8 label="Trigger" x={buttonCol4} y={buttonRow2} labelPosition="bottom"
+        <RoundPushButton8 label="Trigger" x={buttonCol7} y={buttonRow1} labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={lfoCtrls.GATE}
                              ctrlIndex={lfoId}

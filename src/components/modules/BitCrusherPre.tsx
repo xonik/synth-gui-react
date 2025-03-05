@@ -17,7 +17,7 @@ const BitCrusherPre = ({ x, y }: Props) => {
     const row1 = y;
     const row2 = row1+22;
 
-    const col1 = x + 7;
+    const col1 = x + 10;
     const col2 = col1 + 26;
     const col3 = col2 + 30;
     const col4 = col3 + 25;
@@ -25,7 +25,7 @@ const BitCrusherPre = ({ x, y }: Props) => {
     const col6 = col5 + 25;
 
     return <>
-        <Header label="Bit crusher" x={x} y={row1} width={128}/>
+        <Header label="Bit crusher" x={x} y={row1} width={130}/>
         <RoundPushButton8 x={col1} y={row2 + 8} ledPosition="top" ledCount={2} label="In" labelPosition="bottom"
                           ledLabels={['S','L']}
                           ctrlGroup={ctrlGroup}

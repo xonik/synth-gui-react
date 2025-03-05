@@ -19,7 +19,7 @@ const Chorus = ({ x, y }: Props) => {
     const row3 = 30;
     const col1 = 10;
     const col2 = col1 + 25;
-    const col3 = col2 + 30;
+    const col3 = col2 + 27.5;
     const col4 = col3 + 20;
 
     return <svg x={x} y={y}>

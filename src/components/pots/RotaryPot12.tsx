@@ -5,7 +5,7 @@ const RotaryPot12 = (props: Props) => <RotaryPotWithLedRingBase
     knobRadius={6}
     ledCount={19}
     windowToKnobMargin={1.5}
-    windowWidth={3}
+    windowWidth={2.5    }
     {...props} />
 
 export default RotaryPot12

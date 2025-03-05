@@ -19,7 +19,7 @@ const BitCrusher = ({ x, y }: Props) => {
     const row3 = 40;
     const col1 = 10;
     const col2 = col1 + 25;
-    const col3 = col2 + 30;
+    const col3 = col2 + 27.5;
 
     return <svg x={x} y={y}>
         <Header label="Bit crusher" x={25} y={row1} width={50}/>

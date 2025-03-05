@@ -22,7 +22,7 @@ interface ChannelProps {
 }
 
 const rowDistance = 40
-const colDistance = 40
+const colDistance = 30
 
 const OutputMixerChannel = ({ x, y, label, potMode = 'normal', ctrlGroup, ctrl }: ChannelProps) => {
     return <>
@@ -39,7 +39,7 @@ const ctrlGroupOut = ControllerGroupIds.OUT
 const OutputMixer = ({ x, y }: Props) => {
     const offsetX = 20
     const offsetX2 = 195
-    const offsetY = 25
+    const offsetY = 15
 
     return <svg x={x} y={y}>
         <Header label="FX mix" x={0} y={+offsetY + rowDistance * 4 - 27} width={40}/>
@@ -73,7 +73,7 @@ const OutputMixer = ({ x, y }: Props) => {
                             ctrl={outControllers.VOLUME}
         />
 
-        <OutputMixerChannel x={offsetX2 + colDistance} y={offsetY - 40} label="Headphones"
+        <OutputMixerChannel x={offsetX2 + colDistance} y={offsetY - 30} label="Headphones"
                             ctrlGroup={ctrlGroupOut}
                             ctrl={outControllers.HEADPHONES}
         />

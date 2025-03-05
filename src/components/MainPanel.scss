@@ -9,4 +9,20 @@
   &-main-display {
     position: absolute;
   }
+
+  &-grid-50 {
+    stroke: white;
+    stroke-width: 0.2;
+  }
+
+  &-grid-5 {
+    stroke: grey;
+    stroke-width: 0.2;
+  }
+
+  &-grid-1 {
+    stroke: #666;
+    stroke-width: 0.1;
+  }
+
 }
