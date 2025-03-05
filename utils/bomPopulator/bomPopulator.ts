@@ -62,6 +62,7 @@ const footprintToTypeMap: Record<string, PartType> = {
 const unifiedFootprintMap: Record<string, string> = {
     'TSSOP8J': 'TSSOP8',
     'TSSOP14J': 'TSSOP14',
+    'TSSOP16J': 'TSSOP16',
     'TSSOP24J': 'TSSOP24',
     'VSSOP8J': 'VSSOP8',
     'SO08J': 'SO08',

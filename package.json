@@ -45,7 +45,8 @@
     "run-ts": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' node --require ts-node/register/transpile-only",
     "generateCppFiles": "npm run run-ts utils/cppMidiGenerator/cppMidiConfigGenerator.ts",
     "generateMidiRPCFiles": "npm run run-ts utils/midiRPC/midiRPCGenerator.ts",
-    "bomPopulator": "npm run run-ts utils/bomPopulator/bomPopulator.ts"
+    "bomPopulator": "npm run run-ts utils/bomPopulator/bomPopulator.ts",
+    "softClippingCalculator": "npm run run-ts utils/softClippingCalculator/calculateClipping.ts"
   },
   "eslintConfig": {
     "extends": "react-app"
