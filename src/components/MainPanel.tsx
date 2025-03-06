@@ -41,7 +41,7 @@ import Grid from "./Grid";
 const MainPanel = () => {
 
     const env3Id = useAppSelector(selectController(envCtrls.SELECT_ENV3_ID))
-    const panelHeight = 290;
+    const panelHeight = 300;
     const panelWidth = 1000;
 
     const osc1Col = 70
@@ -139,7 +139,7 @@ const MainPanel = () => {
                 <KeyboardControls x={keyCtrlCol} y={keyCtrlRow}/>
 
                 <StateVariableFilter x={filterCol} y={80}/>
-                <LowPassFilter x={filterCol} y={240}/>
+                <LowPassFilter x={filterCol} y={235}/>
                 <PostMix x={voiceMixCol} y={8}/>
 
 

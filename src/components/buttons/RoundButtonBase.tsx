@@ -312,7 +312,7 @@ export const RoundButtonBase = (props: Props & Config) => {
                     className={classNames('button-led', { 'button-led__on': ledOn.length > index && ledOn[index] })}/>
                 {ledLabels[index] && <text
                     x={position.labelX}
-                    y={position.y}
+                    y={position.y + 1.5}
                     className="button-led-label"
                     textAnchor={position.textAnchor}
                     alignmentBaseline="middle"

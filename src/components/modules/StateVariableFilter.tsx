@@ -18,8 +18,8 @@ const ctrlGroup = ControllerGroupIds.FILTERS
 
 const StateVariableFilter = ({ x, y }: Props) => {
     const topRow = y - 50
-    const bottomRow1 = y + 22
-    const bottomRow2 = y + 55
+    const bottomRow1 = y + 20
+    const bottomRow2 = y + 50
 
     const col1 = x - 39
     const col2 = x - 13
@@ -41,8 +41,8 @@ const StateVariableFilter = ({ x, y }: Props) => {
      */
 
     return <>
-        <Header label="Filters" x={x} y={topRow - 22} width={110} align="center"/>
-        <RotaryPot21 x={x} y={y-15} ledMode="single" label="Cutoff"
+        <Header label="Filters" x={x} y={topRow - 20} width={110} align="center"/>
+        <RotaryPot21 x={x} y={y-17.5} ledMode="single" label="Cutoff"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.SVF.CUTOFF}
         />
@@ -74,11 +74,6 @@ const StateVariableFilter = ({ x, y }: Props) => {
                           label="FM src" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={filtersControllers.SVF.FM_SRC}
-        />
-
-        <RoundLedPushButton8 x={col4} y={y + 10} label="Invert" labelPosition="bottom"
-                             ctrlGroup={ctrlGroup}
-                             ctrl={filtersControllers.SVF.INVERT}
         />
 
         {/*<RoundLedPushButton8 x={col4} y={y + 10} label="Ext CV" labelPosition="bottom"
@@ -118,20 +113,26 @@ const StateVariableFilter = ({ x, y }: Props) => {
                      ctrl={filtersControllers.SVF.KBD_AMT}
         />
         <HorizontalLine x={x} y={bottomRow2 + 10} width={110} align="center"/>
-        <RoundLedPushButton8 x={col2} y={bottomRow2 + 27}
+
+        <RoundLedPushButton8 x={col1} y={bottomRow2 + 25} label="Invert SVF" labelPosition="bottom"
+                             ctrlGroup={ctrlGroup}
+                             ctrl={filtersControllers.SVF.INVERT}
+        />
+
+        <RoundLedPushButton8 x={col2} y={bottomRow2 + 25}
                              label="Link cutoff" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={filtersControllers.FILTERS.LINK_CUTOFF}
         />
 
-        <RoundPushButton8 x={col3} y={bottomRow2 + 27}
+        <RoundPushButton8 x={col3} y={bottomRow2 + 25}
                           ledPosition="right"
                           ledCount={2}
                           ledLabels={['Series', 'Parallel']} label="Routing" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={filtersControllers.FILTERS.ROUTING}
         />
-        <HorizontalLine x={x} y={bottomRow2 + 35} width={110} align="center"/>
+        <HorizontalLine x={x} y={bottomRow2 + 30} width={110} align="center"/>
     </>
 }
 

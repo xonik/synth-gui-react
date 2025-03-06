@@ -37,7 +37,7 @@ const Envelope = ({ x, y, label, header, showSelect = false, envId }: Props) => 
 
 
     return <>
-        { header &&  <Header align="left" label={header} x={x} y={y-2} width={235}/> }
+        { header &&  <Header align="left" label={header} x={x} y={y} width={235}/> }
         <line x1={x} y1={potY + 17.5} x2={x+235} y2={potY + 17.5} className="header-underline" />
         <text
             x={firstPotX - potDistance * 0.5}

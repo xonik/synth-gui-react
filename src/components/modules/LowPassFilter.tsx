@@ -16,8 +16,8 @@ interface Props {
 const ctrlGroup = ControllerGroupIds.FILTERS
 
 const LowPassFilter = ({ x, y }: Props) => {
-    const topRow = y - 50
-    const bottomRow2 = y + 50
+    const topRow = y - 55
+    const bottomRow2 = y + 35
 
     const col1 = x - 39
     const col2 = x - 13
@@ -25,7 +25,7 @@ const LowPassFilter = ({ x, y }: Props) => {
     const col4 = x + 39
 
     return <>
-        <RotaryPot21 x={x} y={y} ledMode="single" label="Cutoff"
+        <RotaryPot21 x={x} y={y-20} ledMode="single" label="Cutoff"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.LPF.CUTOFF}
         />
@@ -45,20 +45,20 @@ const LowPassFilter = ({ x, y }: Props) => {
                      ctrl={filtersControllers.LPF.FM_AMT}
         />
 
-        <RoundPushButton8 x={col1} y={y - 12.5} ledPosition="top" ledCount={2} ledLabels={['Lin', 'Log']}
+        <RoundPushButton8 x={col1} y={y - 17.5} ledPosition="top" ledCount={2} ledLabels={['Lin', 'Log']}
                           label="FM mode" labelPosition="bottom"
                           hasOff
                           ctrlGroup={ctrlGroup}
                           ctrl={filtersControllers.LPF.FM_MODE}
         />
 
-        <RoundPushButton8 x={col1} y={y + 20} ledPosition="top" ledCount={2} ledLabels={['OTA', 'Ladder']}
+        <RoundPushButton8 x={col1} y={y + 10} ledPosition="right" ledCount={2} ledLabels={['OTA', 'Ladder']}
                           label="Filter" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={filtersControllers.LPF.FILTER_TYPE}
         />
 
-        <RoundPushButton8 x={col4} y={y + 20} ledPosition="top" ledCount={2} ledLabels={['12dB', '24dB']}
+        <RoundPushButton8 x={col3} y={y + 10} ledPosition="right" ledCount={2} ledLabels={['12dB', '24dB']}
                           label="Slope" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={filtersControllers.LPF.SLOPE}
@@ -69,7 +69,7 @@ const LowPassFilter = ({ x, y }: Props) => {
                              ctrl={filtersControllers.LPF.EXT_CV}
         />*/}
 
-        <RoundPushButton8 x={col4} y={y - 12.5} ledPosition="top" ledCount={2} ledLabels={['Osc B', 'Ext']}
+        <RoundPushButton8 x={col4} y={y - 17.5} ledPosition="top" ledCount={2} ledLabels={['Osc B', 'Ext']}
                           label="FM src" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={filtersControllers.LPF.FM_SRC}
