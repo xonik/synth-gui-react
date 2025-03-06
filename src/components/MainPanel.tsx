@@ -44,22 +44,22 @@ const MainPanel = () => {
     const panelHeight = 300;
     const panelWidth = 1000;
 
-    const osc1Col = 70
-    const osc2Col = osc1Col + 115
-    const osc3Col = osc2Col + 115
+    const osc1Col = 67.5
+    const osc2Col = osc1Col + 120
+    const osc3Col = osc2Col + 120
 
     const lfoCol = 20
     const noiseCol = 20
     const ringModCol = noiseCol
     const sourceMixCol = noiseCol + 45
-    const bcCol = sourceMixCol + 155
+    const bcCol = sourceMixCol + 160
     const distCol = bcCol
 
     const routeCol = 20
-    const clockCol = routeCol + 56
-    const arpCol = clockCol + 84
+    const clockCol = routeCol + 50
+    const arpCol = clockCol + 75
 
-    const displayCol = osc3Col + 80
+    const displayCol = osc3Col + 77.5
     const keyCtrlCol = displayCol - 22
     const voiceSelCol = displayCol
 
@@ -73,16 +73,16 @@ const MainPanel = () => {
 
     const oscRow = 65
 
-    const fxRow1 = oscRow + 82
+    const fxRow1 = oscRow + 75
     const fxRow2 = fxRow1 + 35
     const sourceMixRow = fxRow1
 
-    const lfo1Row = fxRow2 + 40
-    const clockRow = lfo1Row + 42
+    const lfo1Row = fxRow2 + 35
+    const clockRow = lfo1Row + 35
 
-    const voiceSelRow = 12
-    const displayRow = voiceSelRow + 58
-    const keyCtrlRow = displayRow + 233
+    const voiceSelRow = 25
+    const displayRow = voiceSelRow + 55
+    const keyCtrlRow = displayRow + 220
 
     const outputFxRow = 175
     const arpRow = clockRow
@@ -134,8 +134,8 @@ const MainPanel = () => {
                 <Clock x={clockCol} y={clockRow}/>
                 <Arpeggiator x={arpCol} y={arpRow}/>
 
-                <VoiceSelector x={voiceSelCol} y={voiceSelRow}/>
                 <MainDisplay x={displayCol} y={displayRow} ref={displayRef}/>
+                <VoiceSelector x={voiceSelCol} y={voiceSelRow}/>
                 <KeyboardControls x={keyCtrlCol} y={keyCtrlRow}/>
 
                 <StateVariableFilter x={filterCol} y={80}/>

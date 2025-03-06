@@ -19,7 +19,7 @@ const ctrlGroup = ControllerGroupIds.LFO
 const LFO = ({ x, y }: Props) => {
     const potDistance = 30
     const buttonCol = 10
-    const firstPotCol = buttonCol + 95
+    const firstPotCol = buttonCol + 97.5
     const buttonCol2 = firstPotCol + 3 * potDistance + 25
     const buttonCol3 = buttonCol2 + 20
     const buttonCol4 = buttonCol3 + 20
@@ -34,7 +34,7 @@ const LFO = ({ x, y }: Props) => {
     const lfoId = useAppSelector(selectCurrUiLfoId)
 
     return <svg x={x} y={y}>
-        <Header align="left" label="LFOs" x={0} y={0} width={330}/>
+        <Header align="left" label="LFOs" x={0} y={0} width={335}/>
 
         <RoundPushButton8 x={buttonCol} y={potRow1}
                           label="LFO" labelPosition="bottom"

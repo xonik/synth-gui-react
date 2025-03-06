@@ -4,7 +4,7 @@ import './Keyboard.scss';
 const Keyboard = () => {
 
     const panelHeight = 200;
-    const panelWidth = 1050;
+    const panelWidth = 1000;
 
     const keyboardWidth = 849;
     const keyboardHeight = 140;
@@ -18,7 +18,7 @@ const Keyboard = () => {
     const kbdY = panelHeight - keyboardHeight - bottomThickness;
 
     return (
-        <svg width="105cm" height="20cm" viewBox="0 0 1050 200" className="keyboard">
+        <svg width="100cm" height="20cm" viewBox="0 0 1000 200" className="keyboard">
             <rect
                 x={kbdX}
                 y={kbdY}

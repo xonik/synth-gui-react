@@ -18,7 +18,7 @@ const BitCrusherPre = ({ x, y }: Props) => {
     const row2 = row1+22;
 
     const col1 = x + 10;
-    const col2 = col1 + 26;
+    const col2 = col1 + 25;
     const col3 = col2 + 30;
     const col4 = col3 + 25;
     const col5 = col3 + 30;

@@ -20,13 +20,13 @@ const DCO1 = ({ x, y }: Props) => {
     const bottomRow1 = y +35
     const bottomRow2 = bottomRow1 + 30
 
-    const col1 = x - 39
-    const col2 = x - 13
-    const col3 = x + 13
-    const col4 = x + 39
+    const col1 = x - 37.5
+    const col2 = x - 12.5
+    const col3 = x + 12.5
+    const col4 = x + 37.5
 
     return <>
-        <Header label="Oscillator 1" x={x} y={topRow - 20} width={100} align="center"/>
+        <Header label="Oscillator 1" x={x} y={topRow - 20} width={105} align="center"/>
         <RotaryPot21 x={x} y={y-2.5} ledMode="single" label="Waveform"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.DCO1.WAVEFORM}

@@ -17,10 +17,10 @@ const Clock = ({ x, y }: Props) => {
     const row1 = 0;
     const row2 = 25;
     const col1 = 10;
-    const col2 = col1 + 50;
+    const col2 = col1 + 47.5;
 
     return <svg x={x} y={y}>
-        <Header label="Master clock" x={0} y={row1} width={77}/>
+        <Header label="Master clock" x={0} y={row1} width={70}/>
         <RoundPushButton8 labelPosition="bottom" x={col1} y={row2} label="Source" ledCount={3} ledPosition="right" ledLabels={['Master', 'Midi', 'Ext']}
                           ctrlGroup={ctrlGroup}
                           ctrl={masterClockControllers.SOURCE}

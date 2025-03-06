@@ -35,14 +35,14 @@ const MainDisplay = React.forwardRef<SVGRectElement, Props>(({ x, y }, displayRe
     const bezelLRMargin = 20
     const bezelTopMargin = 40
     //const bezelBottomMargin = 60;
-    const bezelBottomMargin = 120
+    const bezelBottomMargin = 90
 
     const buttonSpacing = 30
     const buttonRow = y - 25
 
     const potSpacing = 30
-    const potRow = y + displayHeight + 30
-    const masterPotRow = potRow + 55
+    const potRow = y + displayHeight + 20
+    const masterPotRow = potRow + 30
     const ctrlSwitchesRow1 = masterPotRow - 10
     const ctrlSwitchesRow2 = masterPotRow + 10
 

@@ -25,15 +25,15 @@ const Arpeggiator = ({ x, y }: Props) => {
 
     const row1 = 0;
     const row2 = 25;
-    const col1 = 10;
-    const col2 = col1 + 20;
-    const col3 = col2 + 25;
+    const col1 = 12.5;
+    const col2 = col1 + 30;
+    const col3 = col2 + 30;
     const col4 = col3 + 25;
     const col5 = col4 + 35;
     const col6 = col5 + 35;
 
     return <svg x={x} y={y}>
-        <Header label="Arpeggiator" x={0} y={row1} width={190}/>
+        <Header label="Arpeggiator" x={0} y={row1} width={210}/>
         <RoundLedPushButton8 labelPosition="bottom" x={col1} y={row2} label="On/Off"
                              ctrlGroup={ctrlGroup}
                              ctrl={arpControllers.ON_OFF}
