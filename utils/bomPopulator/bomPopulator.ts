@@ -67,6 +67,8 @@ const unifiedFootprintMap: Record<string, string> = {
     'SO08J': 'SO08',
     'LQFP-44': 'LQFP-44-J',
     'DIL16J': 'DIL16',
+    'DIL08J': 'DIL08',
+    'DIL06J': 'DIL06',
     'D0805-J': 'D0805',
     'C0402-J': 'C0402',
     'C0603-J': 'C0603',

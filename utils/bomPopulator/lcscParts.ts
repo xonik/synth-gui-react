@@ -40,6 +40,7 @@ export const lcscParts = [
     "1.68k,R,R0402,C25870,0,E",
     "1.8k,R,R0603,C4177,0,B",
     "1.8k,R,R0402,C25871,0,E",
+    "2.2k,R,R0603,C4190,0,B",
     "2.7k,R,R0805,C17530,0,B",
     "2.7k,R,R0603,C13167,0,B",
     "2.7k,R,R0402,C416505,0,E",
@@ -232,6 +233,9 @@ export const lcscParts = [
     "TL074D,O,SO14,C6963,0,E",
     "MC1496DR2G,O,SO14,C7295,90,E",
     "MA03-2-127J,O,MA03-2-127J,C2935951,0,E",
+    "MA03-2J,O,MA03-2J,C124384,0,E",
+    "MA02-1JC,O,MA02-1J,C124375,0,E",
+    "MA03-1J,O,MA03-1J,C49257,0,E",
     "MA06-1JN,O,MA06N-1J,C6332199,0,E", // 6p single straight
     "MA06-1JC,O,MA06-1J,C6332199,0,E", // 6p single straight
     "MA06-1JC-ANGLED,O,MA06-1J,C7501293,0,E", // 6p single straight
@@ -241,9 +245,10 @@ export const lcscParts = [
     "MA07-1JN,O,SIP-PIN07-REV-1J,C376125,0,E", // 7p single angled
     "MA07-1JN,O,MA07N-1J,C376125,0,E", // 7p single angled
     "MA08-1JP,O,SIP-PIN08-1J,C492416,0,E", // 8p single angled
+    "MA09-1JC-ANGLED,O,MA09-1J,C492417,0,E",
     "ROUND-IC-PIN,O,MA08N-1J,C2889983,0,E", // 8p single, round IC pin header
     "SIP-PIN08-1J,O,SIP-PIN08-1J,C492416,0,E", // 8p single angled
-    "MA09-1JC-ANGLED,O,MA09-1J,C492417,0,E",
+    "MA09-1J-FEMALE',O,MA09-1J,C225506,0,E",
     "MA07-2J-FEMALE,O,MA07-2J,C2897408,0,E",
     "MA08-2J-FEMALE,O,MA08-2J,C30734,0,E",
     "SIP-PIN09-1J,O,SIP-PIN09-1J,C2894951,0,E", // 9p single angled
@@ -281,8 +286,11 @@ export const lcscParts = [
     "DAC8565F,O,DIL16-FM-CON,MULTI,0,E",
     "SN74LVC2T45,O,VSSOP8,C15741,90,E",
     "PCA9539PW,O,TSSOP24,C2687996,0,E",
-    "LM311D,0,SO08,C12597,0,E",
-    "LM311T,0,TSSOP8,C2876875,90,E", // Veldig få på lager
+    "REF03Z,O,DIL08,C305904,0,E",
+    "H11L1M,O,DIL06,C146584,0,E",
+    "FLASH-W25Q128JVP,O,DIL08,0,E",
+    "LM311D,O,SO08,C12597,0,E",
+    "LM311T,O,TSSOP8,C2876875,90,E", // Veldig få på lager
     "TCA9539PW,O,TSSOP24,C2687996,0,E", // PCA is cheaper. May reconsider and use real TCA instead.
     "4CH-MIXER-3364-2,O,XM8-4CH-MIXER-3364-V,C124407,0,E",
     "SVF-CELL-V1.0V,O,XM8-SVF-CELL-V1.XV,C2932672,0,E", // 7p x 3
@@ -299,9 +307,12 @@ export const lcscParts = [
     "RM-NOISE-DIST-V1.1,O,XM8-RM-NOISE-DIST-V1.1N,MULTI,0,E",
     "SVF-V2.0,O,XM8-SVF-V2.0R,C7499334,0,E",
     "VCO-V2.0,O,XM8-CEM3340-V2.0,MULTI,0,E",
+    "DCO-V1.4,O,XM8-DCO-V1.4,MULTI,0,E",
     "BUS-MIXER-V1.3,IC30,XM8-BUX-MIX-V1.3V,MULTI,0,E",
     "JUNO-VCF-V1.2BD,O,XM8-JUNO-VCF-V1.2H-BOTTOM-DUAL,C97095,180,E",
-    "BITCRUSHER-V1.0,O,XM8-BITCRUSHER-V1.0,MULTI,0,E"
+    "BITCRUSHER-V1.0,O,XM8-BITCRUSHER-V1.0,MULTI,0,E",
+    "RECON-FILTER-V1.1,O,XM8-RECON-FILTER-V1.1,MULTI,0,E",
+    "TEENSY4.0-BARE,O,TEENSY4.0-BARE,MULTI,0,E",
 ].map((line): LibPart => {
     const parts = line.split(',')
     return {
@@ -315,12 +326,15 @@ export const lcscParts = [
 })
 
 export const multiParts: Record<string, MultiPart[]> = {
-    'SVF-CELL-V1.1V': [{ x: -17.78, y: 0, id: 'C2932672' }, { x: 17.78, y: 0, id: 'C2932672' }],
-    'RM-NOISE-DIST-V1.1': [{ x: 0, y: -7.62, id: 'C7499326' }, { x: 0, y: 7.62, id: 'C7499326' }],
-    'VCO-V2.0': [{ x: 0, y: -7.62, id: 'C7499326' }, { x: 0, y: 7.62, id: 'C7499326' }],
-    'BUS-MIXER-V1.3': [{ x: -21.59, y: 0, id: 'C7499334' }, { x: 21.59, y: 0, id: 'C7499334' }],
-    'BITCRUSHER-V1.0': [{ x: 0, y: -7.62, id: 'C52711' }, { x: 0, y: 7.62, id: 'C52711' }],
-    'DAC8565F': [{ x: 0, y: -3.81, id: 'C7499328' }, { x: 0, y: 3.81, id: 'C7499328' }]
+    'SVF-CELL-V1.1V': [{ x: -17.78, y: 0, id: 'C2932672' }, { x: 17.78, y: 0, id: 'C2932672' }], // 7p
+    'RM-NOISE-DIST-V1.1': [{ x: 0, y: -7.62, id: 'C7499326' }, { x: 0, y: 7.62, id: 'C7499326' }], // 6p
+    'VCO-V2.0': [{ x: 0, y: -7.62, id: 'C7499326' }, { x: 0, y: 7.62, id: 'C7499326' }], // 6p
+    'BUS-MIXER-V1.3': [{ x: -21.59, y: 0, id: 'C7499334' }, { x: 21.59, y: 0, id: 'C7499334' }], //16p
+    'BITCRUSHER-V1.0': [{ x: 0, y: -7.62, id: 'C52711' }, { x: 0, y: 7.62, id: 'C52711' }], //14p
+    'DAC8565F': [{ x: 0, y: -3.81, id: 'C7499328' }, { x: 0, y: 3.81, id: 'C7499328' }], // 8p
+    'RECON-FILTER-V1.1': [{ x: 0, y: -3.81, id: 'C7499328' }, { x: 0, y: 3.81, id: 'C7499328' }], // 8p
+    'DCO-V1.4': [{ x: 0, y: -7.62, id: 'C52711' }, { x: 0, y: 7.62, id: 'C52711' }], //14p
+    'TEENSY4.0-BARE': [{ x: 0, y: -7.62, id: 'C52711' }, { x: 0, y: 7.62, id: 'C52711' }], //14p
 }
 
 function getPartType(shortType: string): PartType {
