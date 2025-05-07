@@ -51,6 +51,7 @@ const midiConfig = {
         '-213316575', // Akai MPK25 Port 1/A
         '1211529875', // Steinberg UR22C Port 1
         '505084812', // Steinberg UR22C Port 1
+        '-1515485747', // Steinberg UR22C Port 1
         'vdYvBfG28aCbHM9U6S3RAB8EwW4YMLWpA6pdZ0Eq9tM=', // Steinberg UR22C Port 1 Firefox
         //'-762163153', // Steinberg UR22C Port 2
 
@@ -59,6 +60,7 @@ const midiConfig = {
         '-259958146',
         '437363294', // Steinberg UR22C Port 1
         '-746118775', // Steinberg UR22C Port 1
+        '979568398', // Steinberg UR22C Port 1
         'vdYvBfG28aCbHM9U6S3RAB8EwW4YMLWpA6pdZ0Eq9tM=', // Steinberg UR22C Port 1 Firefox
         // '298365873', // Steinberg UR22C Port 2
     ],
@@ -316,7 +318,7 @@ const updateSelectedMidi = async (midiAccess: MIDIAccess) => {
         console.log('Selected midi input', midiIn?.name)
     } else {
         midiIn = undefined
-        console.log('Desired midi input not found')
+        console.log('Desired midi input not found', midiConfig.inputIds)
         console.log(midiConfig)
     }
 
@@ -325,7 +327,7 @@ const updateSelectedMidi = async (midiAccess: MIDIAccess) => {
         console.log('Selected midi output', midiOut?.name)
     } else {
         midiOut = undefined
-        console.log('Desired midi output not found')
+        console.log('Desired midi output not found', midiConfig.outputIds)
     }
 
 }
