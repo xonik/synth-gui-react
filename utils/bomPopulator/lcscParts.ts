@@ -239,16 +239,16 @@ export const lcscParts = [
     "MA06-1JN,O,MA06N-1J,C6332199,0,E", // 6p single straight
     "MA06-1JC,O,MA06-1J,C6332199,0,E", // 6p single straight
     "MA06-1JC-ANGLED,O,MA06-1J,C7501293,0,E", // 6p single straight
-    "MA07-1JC-ANGLED,O,MA07-1J,C225493,180,E", // 7p single angled
+    "MA07-1JC-ANGLED,O,MA07-1J,C706870,180,E", // 7p single angled
     "MA07-1JP,O,SIP-PIN07-1J,C376125,0,E", // 7p single angled
     "MA07-1JN,O,SIP-PIN07-1J,C376125,0,E", // 7p single angled
     "MA07-1JN,O,SIP-PIN07-REV-1J,C376125,0,E", // 7p single angled
     "MA07-1JN,O,MA07N-1J,C376125,0,E", // 7p single angled
     "MA08-1JP,O,SIP-PIN08-1J,C492416,0,E", // 8p single angled
-    "MA09-1JC-ANGLED,O,MA09-1J,C492417,0,E",
+    "MA09-1JC-ANGLED,O,MA09-1J,C492417,180,E",
     "ROUND-IC-PIN,O,MA08N-1J,C2889983,0,E", // 8p single, round IC pin header
     "SIP-PIN08-1J,O,SIP-PIN08-1J,C492416,0,E", // 8p single angled
-    "MA09-1J-FEMALE',O,MA09-1J,C225506,0,E",
+    "MA09-1J-FEMALE,O,MA09-1J,C225506,0,E",
     "MA07-2J-FEMALE,O,MA07-2J,C2897408,0,E",
     "MA08-2J-FEMALE,O,MA08-2J,C30734,0,E",
     "SIP-PIN09-1J,O,SIP-PIN09-1J,C2894951,0,E", // 9p single angled
@@ -288,7 +288,7 @@ export const lcscParts = [
     "PCA9539PW,O,TSSOP24,C2687996,0,E",
     "REF03Z,O,DIL08,C305904,0,E",
     "H11L1M,O,DIL06,C146584,0,E",
-    "FLASH-W25Q128JVP,O,DIL08,0,E",
+    "FLASH-W25Q128JVP,O,DIL08,C305904,0,E",
     "LM311D,O,SO08,C12597,0,E",
     "LM311T,O,TSSOP8,C2876875,90,E", // Veldig få på lager
     "TCA9539PW,O,TSSOP24,C2687996,0,E", // PCA is cheaper. May reconsider and use real TCA instead.
@@ -313,8 +313,12 @@ export const lcscParts = [
     "BITCRUSHER-V1.0,O,XM8-BITCRUSHER-V1.0,MULTI,0,E",
     "RECON-FILTER-V1.1,O,XM8-RECON-FILTER-V1.1,MULTI,0,E",
     "TEENSY4.0-BARE,O,TEENSY4.0-BARE,MULTI,0,E",
+    "PJ-320B-STEREO-JACK,O,PJ-320B-JACK,C2689690,0,E",
 ].map((line): LibPart => {
     const parts = line.split(',')
+    if(parts.length <6){
+        console.log(`Error, parts length is ${parts.length}: ${line}`)
+    }
     return {
         value: parts[0],
         type: getPartType(parts[1]),
@@ -330,11 +334,11 @@ export const multiParts: Record<string, MultiPart[]> = {
     'RM-NOISE-DIST-V1.1': [{ x: 0, y: -7.62, id: 'C7499326' }, { x: 0, y: 7.62, id: 'C7499326' }], // 6p
     'VCO-V2.0': [{ x: 0, y: -7.62, id: 'C7499326' }, { x: 0, y: 7.62, id: 'C7499326' }], // 6p
     'BUS-MIXER-V1.3': [{ x: -21.59, y: 0, id: 'C7499334' }, { x: 21.59, y: 0, id: 'C7499334' }], //16p
-    'BITCRUSHER-V1.0': [{ x: 0, y: -7.62, id: 'C52711' }, { x: 0, y: 7.62, id: 'C52711' }], //14p
+    'BITCRUSHER-V1.0': [{ x: 0, y: -7.62, id: 'C25503120' }, { x: 0, y: 7.62, id: 'C25503120' }], //14p
     'DAC8565F': [{ x: 0, y: -3.81, id: 'C7499328' }, { x: 0, y: 3.81, id: 'C7499328' }], // 8p
     'RECON-FILTER-V1.1': [{ x: 0, y: -3.81, id: 'C7499328' }, { x: 0, y: 3.81, id: 'C7499328' }], // 8p
-    'DCO-V1.4': [{ x: 0, y: -7.62, id: 'C52711' }, { x: 0, y: 7.62, id: 'C52711' }], //14p
-    'TEENSY4.0-BARE': [{ x: 0, y: -7.62, id: 'C52711' }, { x: 0, y: 7.62, id: 'C52711' }], //14p
+    'DCO-V1.4': [{ x: 0, y: -7.62, id: 'C25503120' }, { x: 0, y: 7.62, id: 'C25503120' }], //14p
+    'TEENSY4.0-BARE': [{ x: 0, y: -7.62, id: 'C25503120' }, { x: 0, y: 7.62, id: 'C25503120' }], //14p
 }
 
 function getPartType(shortType: string): PartType {
