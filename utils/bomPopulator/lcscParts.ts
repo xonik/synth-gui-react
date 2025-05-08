@@ -251,6 +251,7 @@ export const lcscParts = [
     "MA09-1J-FEMALE,O,MA09-1J,C225506,0,E",
     "MA07-2J-FEMALE,O,MA07-2J,C2897408,0,E",
     "MA08-2J-FEMALE,O,MA08-2J,C30734,0,E",
+    "MA08-2J-ANGLED,O,MA08-2J,C239339,180,E",
     "SIP-PIN09-1J,O,SIP-PIN09-1J,C2894951,0,E", // 9p single angled
     "MA11-1JP,O,SIP-PIN11-1J,C725903,0,E", // 11p single angled
     "MA15-1JP,O,SIP-PIN15-1J,C247916,0,E", // 15p single angled
@@ -313,7 +314,7 @@ export const lcscParts = [
     "BITCRUSHER-V1.0,O,XM8-BITCRUSHER-V1.0,MULTI,0,E",
     "RECON-FILTER-V1.1,O,XM8-RECON-FILTER-V1.1,MULTI,0,E",
     "TEENSY4.0-BARE,O,TEENSY4.0-BARE,MULTI,0,E",
-    "PJ-320B-STEREO-JACK,O,PJ-320B-JACK,C2689690,0,E",
+    "PJ-3200-STEREO-JACK,O,PJ-3200-JACK,MULTI,0,E",
 ].map((line): LibPart => {
     const parts = line.split(',')
     if(parts.length <6){
@@ -339,6 +340,7 @@ export const multiParts: Record<string, MultiPart[]> = {
     'RECON-FILTER-V1.1': [{ x: 0, y: -3.81, id: 'C7499328' }, { x: 0, y: 3.81, id: 'C7499328' }], // 8p
     'DCO-V1.4': [{ x: 0, y: -7.62, id: 'C25503120' }, { x: 0, y: 7.62, id: 'C25503120' }], //14p
     'TEENSY4.0-BARE': [{ x: 0, y: -7.62, id: 'C25503120' }, { x: 0, y: 7.62, id: 'C25503120' }], //14p
+    'PJ-3200-STEREO-JACK': [{ x: 5.5, y: 0, id: 'C2689690' }], // Offset only
 }
 
 function getPartType(shortType: string): PartType {

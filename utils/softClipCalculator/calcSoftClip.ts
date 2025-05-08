@@ -52,14 +52,14 @@ function testForXY(x: number, y: number) {
     return g*x - k * Math.exp((y-x)/T)
 }
 
-let y_value = 0.20;
+let y_value = 0.2;
 
 console.log(`Finding input voltage that will give an output of ${y_value}V:`)
 const x_solution = solveForX(y_value)
 
 console.log(`  input = ${x_solution}V`);
-console.log(`  output test: ${y_value} = ${testForXY(x_solution, y_value)} (requested vs found`)
+console.log(`  output test: ${y_value} = ${testForXY(x_solution, y_value)} (requested vs found)`)
 console.log('\n')
 console.log('Gains:')
 console.log(`  Linear........: ${g}`)
-console.log(`  For this input: ${y_value/x_solution}`)
+console.log(`  For this input: ${(y_value/x_solution).toFixed(2)}`)
