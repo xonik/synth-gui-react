@@ -15,6 +15,7 @@ export type MultiPart = {
     y: number,
     // lcsc part num
     id: string,
+    rotation?: number,
 }
 
 // "Description,Type,Footprint,LCSC Part #,Rotationfix",
@@ -317,7 +318,7 @@ export const lcscParts = [
     "PJ-3200-STEREO-JACK,O,PJ-3200-JACK,MULTI,0,E",
 ].map((line): LibPart => {
     const parts = line.split(',')
-    if(parts.length <6){
+    if (parts.length < 6) {
         console.log(`Error, parts length is ${parts.length}: ${line}`)
     }
     return {
@@ -339,7 +340,12 @@ export const multiParts: Record<string, MultiPart[]> = {
     'DAC8565F': [{ x: 0, y: -3.81, id: 'C7499328' }, { x: 0, y: 3.81, id: 'C7499328' }], // 8p
     'RECON-FILTER-V1.1': [{ x: 0, y: -3.81, id: 'C7499328' }, { x: 0, y: 3.81, id: 'C7499328' }], // 8p
     'DCO-V1.4': [{ x: 0, y: -7.62, id: 'C25503120' }, { x: 0, y: 7.62, id: 'C25503120' }], //14p
-    'TEENSY4.0-BARE': [{ x: 0, y: -7.62, id: 'C25503120' }, { x: 0, y: 7.62, id: 'C25503120' }], //14p
+    'TEENSY4.0-BARE': [{ x: 0, y: -7.62, id: 'C25503120' }, { x: 0, y: 7.62, id: 'C25503120' }, {
+        x: 10.16,
+        y: 0,
+        rotation: 90,
+        id: 'C2682198'
+    }], //14p
     'PJ-3200-STEREO-JACK': [{ x: 5.5, y: 0, id: 'C2689690' }], // Offset only
 }
 

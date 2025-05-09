@@ -279,14 +279,15 @@ function updateMultiParts() {
                     cplEntries.splice(index, 1)
 
                     const cplPos: Point = { x: cplEntry.midX, y: cplEntry.midY }
-                    multiPart.forEach(({ x, y, id }: MultiPart, index: number) => {
+                    multiPart.forEach(({ x, y, id, rotation }: MultiPart, index: number) => {
                         const newPartPlace = placeMultiPart(cplPos, cplEntry.rotation, { x, y })
                         const newPartDesignator = `${cplEntry.designator}-${index}`
                         cplEntries.push({
                             ...cplEntry,
                             designator: newPartDesignator,
                             midX: newPartPlace.x,
-                            midY: newPartPlace.y
+                            midY: newPartPlace.y,
+                            rotation: (rotation ?? 0) + cplEntry.rotation,
                         })
 
                         if(!newMultiParts[id]){
