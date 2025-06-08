@@ -46,6 +46,7 @@
     "generateCppFiles": "npm run run-ts utils/cppMidiGenerator/cppMidiConfigGenerator.ts",
     "generateMidiRPCFiles": "npm run run-ts utils/midiRPC/midiRPCGenerator.ts",
     "bomPopulator": "npm run run-ts utils/bomPopulator/bomPopulator.ts",
+    "convertToFrequency": "npm run run-ts utils/frequencyChecker/convertToFrequency.ts",
     "calcSoftClip": "npm run run-ts utils/softClipCalculator/calcSoftClip.ts"
   },
   "eslintConfig": {
