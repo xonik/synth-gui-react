@@ -1,10 +1,14 @@
 import fs from 'fs'
 import readline from 'readline'
 import { isNaN } from "lodash";
+import * as process from "node:process";
 
-const threshold = 2.5 // Threshold for rising edge detection
+const defaultThreshold = 2.5 // Threshold for rising edge detection
 const logic2OutputFilePath = process.argv[2]
+const threshold = (process.argv[3] ?? Number.parseFloat(process.argv[3])) || defaultThreshold
+
 type FrequencyEntry = { time: number, frequency: number }
+type RateOfChangeEntry = { time: number, frequencyDifference: number, ratePercent: number }
 type Sample = { time: number, value: number }
 
 const { processSample, frequencyList } = createFrequencyProcessor()
@@ -72,16 +76,17 @@ function createFrequencyProcessor() {
     return { processSample, frequencyList }
 }
 
-
-
-function calculateFrequencyRateOfChangePercent(frequencies: FrequencyEntry[]): { time: number, ratePercent: number }[] {
-    const rates: { time: number, ratePercent: number }[] = []
+function calculateFrequencyRateOfChangePercent(frequencies: FrequencyEntry[]): RateOfChangeEntry[] {
+    const rates: RateOfChangeEntry[] = []
     for (let i = 1; i < frequencies.length; i++) {
         const prev = frequencies[i - 1]
         const curr = frequencies[i]
         const dt = curr.time - prev.time
         if (dt !== 0 && prev.frequency !== 0) {
             const frequencyDifference = curr.frequency - prev.frequency
+
+            // There is something here that may be improved. The ratePercent does not take into account the spacing
+            // of the samples, not sure if that makes stuff
             const ratePercent = (frequencyDifference / prev.frequency) * 100
             rates.push({ time: curr.time, frequencyDifference, ratePercent })
             console.log({ time: curr.time, frequencyDifference, ratePercent })
