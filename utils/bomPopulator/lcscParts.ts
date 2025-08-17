@@ -244,12 +244,13 @@ export const lcscParts = [
     "MA03-2-127J,O,MA03-2-127J,C2935951,0,E",
     "MA03-2J,O,MA03-2J,C124384,0,E",
     "MA02-1JC,O,MA02-1J,C124375,0,E",
+    "MA02-1JC-ANGLED,O,MA02-1J,C376120,180,E",
     "MA03-1J,O,MA03-1J,C49257,0,E",
     "MA06-1JN,O,MA06N-1J,C6332199,0,E", // 6p single straight
     "MA06-1JC,O,MA06-1J,C6332199,0,E", // 6p single straight
     "MA06-1JC-ANGLED,O,MA06-1J,C7501293,0,E", // 6p single straight
     "MA07-1JC-ANGLED,O,MA07-1J,C706870,180,E", // 7p single angled
-    "MA07-1JC-FEMALE-ANGLED,O,MA07-1J,C5333436,180,E", // 7p single angled female
+    "MA07-1JC-FEMALE-ANGLED,O,MA07-1J,C2935997,0,E", // 7p single angled female
     "MA07-1JP,O,SIP-PIN07-1J,C376125,0,E", // 7p single angled
     "MA07-1JN,O,SIP-PIN07-1J,C376125,0,E", // 7p single angled
     "MA07-1JN,O,SIP-PIN07-REV-1J,C376125,0,E", // 7p single angled
@@ -310,8 +311,8 @@ export const lcscParts = [
     "SVF-CELL-V1.1V,O,XM8-SVF-CELL-V1.XV,MULTI,0,E",
     "SVF-CV-V1.1,O,XM8-SVF-CV-V1.1V,C2932674,0,E", // 11p
     "CONN-IDC-10PA,O,CONN-IDC10P-A,C132437,0,E",
-    "22-23-2031,O,22-23-2031,C843331,0,E", // Molex KK style 2.54mm 3p connector
-    "22-27-2021-02,O,6410-02,C45011,0,E", // Molex KK style 2.54mm 2p connector
+    "22-23-2031,O,22-23-2031,C132505,0,E", // Molex KK style 2.54mm 3p connector
+    "22-27-2021-02,O,6410-02,C843331,0,E", // Molex KK style 2.54mm 2p connector
     "WJ300V-5.0-3P,O,WJ300V-5.0-3P,C8483,0,E",
     "25k,O,RTRIM3296X_J,C111789,180,E",
     "500R,R,RTRIM3296X,C118913,90,E",
