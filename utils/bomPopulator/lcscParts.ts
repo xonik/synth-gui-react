@@ -27,7 +27,7 @@ export const lcscParts = [
     "1k,R,R0402,C11702,0,B",
     "1M,R,R0805,C17514,0,B",
     "1M,R,R0603,C22935,0,B",
-    "1M,R,R0402,C327799,0,E",
+    "1M,R,R0402,C26083,0,B",
     "1.2k,R,R0805,C17379,0,B",
     "1.2k,R,R0603,C22765,0,B",
     "1.2k,R,R0402,C413082,0,E",
@@ -169,7 +169,7 @@ export const lcscParts = [
     "2.2n,C,C0603,C1604,0,B", //X7R
     "3.3n,C,C0402,C1518207,0,E", //C0G
     "3.3n,C,C0603,C1613,0,B", //X7R
-    "3p,C,C0603,C318663,0,E", //C0G
+    "3p,C,C0603,C46219,0,E", //C0G
     "5n,C,C0402,C1538,0,B", //X7R 4.7n
     "5p,C,C0402,C1569,0,E", //C0G 4.7p
     "5p,C,C0603,C313086,0,E", //C0G 4.7p
@@ -197,6 +197,7 @@ export const lcscParts = [
     "68p,C,C0603,C1680,0,E", //C0G
     "100n,C,C0603,C14663,0,B", // X7R
     "100n,C,C0402,C307331,0,B", // X7R
+    "100n,C,C1206,C338082,0,E", // C0G
     "100p,C,C0603,C14858,0,B", //C0G
     "100u 25V,O,CAPAE660X610N,C176675,0,E",
     "100u 25V,C,E2-5,C47873,0,E",
@@ -248,12 +249,14 @@ export const lcscParts = [
     "MA06-1JC,O,MA06-1J,C6332199,0,E", // 6p single straight
     "MA06-1JC-ANGLED,O,MA06-1J,C7501293,0,E", // 6p single straight
     "MA07-1JC-ANGLED,O,MA07-1J,C706870,180,E", // 7p single angled
+    "MA07-1JC-FEMALE-ANGLED,O,MA07-1J,C5333436,180,E", // 7p single angled female
     "MA07-1JP,O,SIP-PIN07-1J,C376125,0,E", // 7p single angled
     "MA07-1JN,O,SIP-PIN07-1J,C376125,0,E", // 7p single angled
     "MA07-1JN,O,SIP-PIN07-REV-1J,C376125,0,E", // 7p single angled
     "MA07-1JN,O,MA07N-1J,C376125,0,E", // 7p single angled
     "MA08-1JP,O,SIP-PIN08-1J,C492416,0,E", // 8p single angled
     "MA09-1JC-ANGLED,O,MA09-1J,C492417,180,E",
+    "MA09-1JC-FEMALE-ANGLED,O,MA09-1J,C2897391,180,E",
     "ROUND-IC-PIN,O,MA08N-1J,C2889983,0,E", // 8p single, round IC pin header
     "SIP-PIN08-1J,O,SIP-PIN08-1J,C492416,0,E", // 8p single angled
     "MA09-1J-FEMALE,O,MA09-1J,C225506,0,E",
@@ -298,7 +301,7 @@ export const lcscParts = [
     "PCA9539PW,O,TSSOP24,C2687996,0,E",
     "REF03Z,O,DIL08,C305904,0,E",
     "H11L1M,O,DIL06,C146584,0,E",
-    "FLASH-W25Q128JVP,O,DIL08,C305904,0,E",
+    "FLASH-W25Q128JVF,O,DIL08J-FLAT,C305904,0,E",
     "LM311D,O,SO08,C12597,0,E",
     "LM311T,O,TSSOP8,C2876875,90,E", // Veldig få på lager
     "TCA9539PW,O,TSSOP24,C2687996,0,E", // PCA is cheaper. May reconsider and use real TCA instead.
@@ -307,9 +310,11 @@ export const lcscParts = [
     "SVF-CELL-V1.1V,O,XM8-SVF-CELL-V1.XV,MULTI,0,E",
     "SVF-CV-V1.1,O,XM8-SVF-CV-V1.1V,C2932674,0,E", // 11p
     "CONN-IDC-10PA,O,CONN-IDC10P-A,C132437,0,E",
+    "22-23-2031,O,22-23-2031,C843331,0,E", // Molex KK style 2.54mm 3p connector
+    "22-27-2021-02,O,6410-02,C45011,0,E", // Molex KK style 2.54mm 2p connector
     "WJ300V-5.0-3P,O,WJ300V-5.0-3P,C8483,0,E",
     "25k,O,RTRIM3296X_J,C111789,180,E",
-    "500R,R,RTRIM3296X,C330441,0,E",
+    "500R,R,RTRIM3296X,C118913,90,E",
     "CHIP-LED0603,O,CHIP-LED0603,C2286,90,B",
     "2516-5,O,PAK100/2500-5-16,C146623,180,E",
     "WAVESHAPER-V2.2HR,O,XM8-WAVESHAPER-V2.2HR,C7499337,0,E",
