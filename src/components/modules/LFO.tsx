@@ -2,11 +2,11 @@ import React from 'react'
 import RotaryPot12 from '../pots/RotaryPot12'
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
-import Header from '../misc/Header'
 import { ControllerGroupIds } from '../../synthcore/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { selectCurrUiLfoId } from '../../synthcore/modules/lfo/lfoReducer'
+import SubHeader from "../misc/SubHeader";
 
 interface Props {
     x: number,
@@ -27,14 +27,14 @@ const LFO = ({ x, y }: Props) => {
     const buttonCol6 = buttonCol5 + 20
     const buttonCol7 = buttonCol6 + 20
 
-    const buttonRow1 = 22
+    const buttonRow1 = 17.5
 
-    const potRow1 = 22
+    const potRow1 = 17.5
 
     const lfoId = useAppSelector(selectCurrUiLfoId)
 
     return <svg x={x} y={y}>
-        <Header align="left" label="LFOs" x={0} y={0} width={335}/>
+        <SubHeader align="left" label="LFOs" x={0} y={0} width={335}/>
 
         <RoundPushButton8 x={buttonCol} y={potRow1}
                           label="LFO" labelPosition="bottom"

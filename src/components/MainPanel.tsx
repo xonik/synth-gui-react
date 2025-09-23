@@ -41,7 +41,7 @@ import Grid from "./Grid";
 const MainPanel = () => {
 
     const env3Id = useAppSelector(selectController(envCtrls.SELECT_ENV3_ID))
-    const panelHeight = 300;
+    const panelHeight = 290;
     const panelWidth = 1000;
 
     const osc1Col = 67.5
@@ -52,7 +52,7 @@ const MainPanel = () => {
     const noiseCol = 20
     const ringModCol = noiseCol
     const sourceMixCol = noiseCol + 45
-    const bcCol = sourceMixCol + 160
+    const bcCol = sourceMixCol + 170
     const distCol = bcCol
 
     const routeCol = 20
@@ -71,13 +71,13 @@ const MainPanel = () => {
     const outFx2Col = outFx1Col + 130
     const outputMixerCol = envCol + 5
 
-    const oscRow = 65
+    const oscRow = 15
 
-    const fxRow1 = oscRow + 75
-    const fxRow2 = fxRow1 + 35
+    const fxRow1 = oscRow + 130
+    const fxRow2 = fxRow1 + 30
     const sourceMixRow = fxRow1
 
-    const lfo1Row = fxRow2 + 35
+    const lfo1Row = fxRow2 + 32.5
     const clockRow = lfo1Row + 35
 
     const voiceSelRow = 25
@@ -122,8 +122,8 @@ const MainPanel = () => {
 
                 <Noise x={noiseCol} y={fxRow1}/>
                 <Ringmod x={ringModCol} y={fxRow2}/>
-                <BitCrusherPre x={bcCol} y={fxRow2}/>
                 <Distortion x={distCol} y={fxRow1}/>
+                <BitCrusherPre x={bcCol} y={fxRow2}/>
 
 
                 <SourceMixer x={sourceMixCol} y={sourceMixRow}/>
@@ -140,7 +140,7 @@ const MainPanel = () => {
 
                 <StateVariableFilter x={filterCol} y={80}/>
                 <LowPassFilter x={filterCol} y={235}/>
-                <PostMix x={voiceMixCol} y={8}/>
+                <PostMix x={voiceMixCol} y={7.5}/>
 
 
                 <Envelope header="Envelopes" x={envCol} y={10} label="VCA" envId={0}/>

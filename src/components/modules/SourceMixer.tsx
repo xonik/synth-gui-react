@@ -1,10 +1,10 @@
 import React from 'react'
-import Header from '../misc/Header'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import { ControllerGroupIds } from '../../synthcore/types'
 import srcMixControllers from '../../synthcore/modules/srcMix/srcMixControllers'
 import { ControllerConfig } from '../../midi/types'
 import RotaryPot12 from "../pots/RotaryPot12";
+import SubHeader from "../misc/SubHeader";
 
 interface Props {
     x: number,
@@ -41,18 +41,18 @@ const MixerChannel = ({ x, y, label, levelCtrl, outCtrl }: ChannelProps) => {
 const SourceMixer = ({ x, y }: Props) => {
     const offsetX = 15
     const offsetY = 25
-    const rowDistance = 35
+    const rowDistance = 30
     const colDistance = 47.5
 
     const col1 = x + offsetX
     const col2 = col1 + colDistance
     const col3 = col1 + colDistance * 2
 
-    const row1 = y + 2 + offsetY
+    const row1 = y + offsetY - 5
     const row2 = row1 + rowDistance
 
     return <>
-        <Header label="Source mix" x={x} y={y} width={150}/>
+        <SubHeader label="Mix" x={x} y={y} width={150}/>
         <MixerChannel x={col1} y={row1} label="Osc 1"
                       levelCtrl={srcMixControllers.LEVEL_OSC1}
                       outCtrl={srcMixControllers.OUT_OSC1}

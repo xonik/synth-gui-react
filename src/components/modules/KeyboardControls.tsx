@@ -68,7 +68,7 @@ const KeyboardControls = ({ x, y }: Props) => {
      */
 
     const row1 = 0
-    const row2 = 22
+    const row2 = 22.5
 
     const col8 = 100
     const col9 = col8 + 25

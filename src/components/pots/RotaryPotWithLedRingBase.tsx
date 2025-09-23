@@ -48,7 +48,7 @@ const getRenderProps = (props: Props & Config) => {
 
     // TODO: Dynamically calculate this based on window
     // TODO: Set font size in relative units...
-    const labelY = ledRingRadius + 5
+    const labelY = ledRingRadius + 4
 
     const degreesBetweenLeds = ledArc / (ledCount - 1)
     const ledAngles = []

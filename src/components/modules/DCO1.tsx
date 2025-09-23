@@ -3,9 +3,9 @@ import RotaryPot21 from '../pots/RotaryPot21'
 import RotaryPot12 from '../pots/RotaryPot12'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
-import Header from '../misc/Header'
 import { ControllerGroupIds } from '../../synthcore/types'
 import oscControllers from '../../synthcore/modules/osc/oscControllers'
+import SubHeader from "../misc/SubHeader";
 
 interface Props {
     x: number,
@@ -16,8 +16,11 @@ const ctrlGroup = ControllerGroupIds.OSC
 
 const DCO1 = ({ x, y }: Props) => {
 
-    const topRow = y - 35
-    const bottomRow1 = y +35
+    const topRow = y + 15
+    const buttonRow1 = topRow + 22.5
+    const buttonRow2 = topRow + 40
+    const centerRow = topRow + 32.5
+    const bottomRow1 = y + 82.5
     const bottomRow2 = bottomRow1 + 30
 
     const col1 = x - 37.5
@@ -26,8 +29,8 @@ const DCO1 = ({ x, y }: Props) => {
     const col4 = x + 37.5
 
     return <>
-        <Header label="Oscillator 1" x={x} y={topRow - 20} width={105} align="center"/>
-        <RotaryPot21 x={x} y={y-2.5} ledMode="single" label="Waveform"
+        <SubHeader label="Oscillator 1" x={x} y={y} width={105} align="center"/>
+        <RotaryPot21 x={x} y={centerRow} ledMode="single" label="Waveform"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.DCO1.WAVEFORM}
         />
@@ -46,24 +49,24 @@ const DCO1 = ({ x, y }: Props) => {
         />
 
         {/*<RotaryPot12 x={col4} y={topRow} ledMode="multi" label="Super saw"/>*/}
-        <RoundLedPushButton8 x={col1} y={y-12.5} label="Saw inv" labelPosition="bottom"
+        <RoundLedPushButton8 x={col1} y={buttonRow1} label="Saw inv" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={oscControllers.DCO1.SAW_INV}
         />
 
-        <RoundLedPushButton8 x={col1} y={y+4.5} label="Sine" labelPosition="bottom"
+        <RoundLedPushButton8 x={col1} y={buttonRow2} label="Sine" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={oscControllers.DCO1.PRE_FILTER_SINE}
         />
 
-        <RoundPushButton8 x={col4} y={y + 5}
+        <RoundPushButton8 x={col4} y={buttonRow2}
                           ledPosition="top" ledCount={3} ledLabels={['DCO', 'WT', 'PCM']}
                           label="Mode" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={oscControllers.DCO1.MODE}
         />
 
-        <RoundPushButton8 x={col1} y={bottomRow1}
+        <RoundPushButton8 x={col1} y={bottomRow1 + 3.75}
                           ledPosition="top" ledCount={2} ledLabels={['Sqr', 'Saw']}
                           label="Sub wave" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}

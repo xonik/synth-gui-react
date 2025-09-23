@@ -38,11 +38,11 @@ const VoiceMixerChannel = ({ x, y, label, potMode = 'normal', ledMode = 'multi',
 
 const PostMix = ({ x, y }: Props) => {
     const offsetX = 15
-    const offsetY = 22
-    const offsetY2 = 172
+    const offsetY = 22.5
+    const offsetY2 = 172.5
 
     return <svg x={x} y={y}>
-        <Header label="Mix" x={0} y={2} width={30}/>
+        <Header label="Mix" x={0} y={2.5} width={30}/>
         <VoiceMixerChannel x={offsetX} y={offsetY} label="SVF" ctrl={postMixControllers.SVF}/>
         <VoiceMixerChannel x={offsetX} y={offsetY + rowDistance} label="LPF" ctrl={postMixControllers.LPF}/>
         <VoiceMixerChannel x={offsetX} y={offsetY + rowDistance * 2} label="Sine 1" ctrl={postMixControllers.SINE1}/>

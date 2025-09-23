@@ -15,18 +15,16 @@ const ctrlGroup = ControllerGroupIds.FX
 const BitCrusherPre = ({ x, y }: Props) => {
 
     const row1 = y;
-    const row2 = row1+22;
+    const row2 = row1+15;
 
     const col1 = x + 10;
     const col2 = col1 + 25;
-    const col3 = col2 + 30;
-    const col4 = col3 + 25;
-    const col5 = col3 + 30;
+    const col3 = col2 + 25;
+    const col5 = col3 + 25;
     const col6 = col5 + 25;
 
     return <>
-        <Header label="Bit crusher" x={x} y={row1} width={130}/>
-        <RoundPushButton8 x={col1} y={row2 + 8} ledPosition="top" ledCount={2} label="In" labelPosition="bottom"
+        <RoundPushButton8 x={col1} y={row2 + 8} ledPosition="top" ledCount={2}
                           ledLabels={['S','L']}
                           ctrlGroup={ctrlGroup}
                           ctrl={fxControllers.BIT_CRUSHER.IN}
@@ -54,7 +52,7 @@ const BitCrusherPre = ({ x, y }: Props) => {
                      ctrl={fxControllers.BIT_CRUSHER.LEVEL}
         />
 
-        <RoundPushButton8 x={col6} y={row2 + 8} ledPosition="top" ledCount={2} label="Out" labelPosition="bottom"
+        <RoundPushButton8 x={col6} y={row2 + 8} ledPosition="top" ledCount={2}
                           ledLabels={['S','L']}
                           ctrlGroup={ctrlGroup}
                           hasOff
