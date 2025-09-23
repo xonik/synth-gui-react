@@ -1,11 +1,11 @@
 import React from 'react';
-import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
 import RotaryPot12 from '../pots/RotaryPot12';
 import { ControllerGroupIds } from '../../synthcore/types'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectModsUi } from '../../synthcore/modules/mods/modsReducer'
 import modsControllers from '../../synthcore/modules/mods/modsControllers'
 import SubHeader from "../misc/SubHeader";
+import RoundLedPushButton8 from "../buttons/RoundLedPushButton8";
 
 interface Props {
     x: number,
@@ -19,14 +19,9 @@ const Route = ({ x, y }: Props) => {
     const route = useAppSelector(selectModsUi)
 
     return <svg x={x} y={y}>
-        <SubHeader label="Route" x={0} y={0} width={45}/>
-        <RoundLedPushButton8 labelPosition="bottom" x={10} y={7.5} label="From" hasOff radioButtonIndex={0}
-                             ctrlGroup={ctrlGroup}
-                             ctrl={modsControllers.ROUTE_BUTTON}
-                             value={route.routeButton}
-        />
+        <SubHeader label="Route" x={0} y={0} width={45} labelPosition="left"/>
 
-        <RoundLedPushButton8 labelPosition="bottom" x={10} y={25} label="To" hasOff radioButtonIndex={1}
+        <RoundLedPushButton8 labelPosition="bottom" x={10} y={17.5} hasOff
                              ctrlGroup={ctrlGroup}
                              ctrl={modsControllers.ROUTE_BUTTON}
                              value={route.routeButton}

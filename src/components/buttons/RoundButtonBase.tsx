@@ -10,7 +10,7 @@ import { useAppSelector } from '../../synthcore/hooks'
 import { selectUiController } from '../../synthcore/modules/controllers/controllersReducer'
 import './RoundButton.scss'
 
-type LedPosition = 'left' | 'right' | 'sides' | 'top' | 'bottom' | undefined;
+type LedPosition = 'left' | 'right' | 'sides' | 'top' | 'top-horizontal' | 'bottom' | undefined;
 type LabelPosition = 'left' | 'right' | 'top' | 'bottom' | undefined;
 type ButtonMode = 'push' | 'rotate';
 
@@ -72,6 +72,7 @@ type LedPos = {
     x: number;
     y: number;
     labelX: number;
+    labelY?: number;
     textAnchor: string;
 }
 
@@ -173,6 +174,16 @@ const positionLeds = (
                     x: 0,
                     y: -((ledCount - 1 - i) * yDist + buttonRadius + ledMargin + ledRadius),
                     labelX: ledRadius + ledTolabelMargin,
+                    textAnchor: 'start'
+                })
+                break
+            case 'top-horizontal':
+                let startX = -((ledCount - 1) * yDist)/ 2
+                ledPositions.push({
+                    x: startX + i * yDist,
+                    y: -yDist / 2 - buttonRadius - ledMargin - ledRadius,
+                    labelX: startX + i * yDist,
+                    labelY:  - buttonRadius - 2,
                     textAnchor: 'start'
                 })
                 break
@@ -312,7 +323,7 @@ export const RoundButtonBase = (props: Props & Config) => {
                     className={classNames('button-led', { 'button-led__on': ledOn.length > index && ledOn[index] })}/>
                 {ledLabels[index] && <text
                     x={position.labelX}
-                    y={position.y + 1.5}
+                    y={position.labelY ?? position.y + 1.2}
                     className="button-led-label"
                     textAnchor={position.textAnchor}
                     alignmentBaseline="middle"

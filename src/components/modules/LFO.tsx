@@ -34,10 +34,9 @@ const LFO = ({ x, y }: Props) => {
     const lfoId = useAppSelector(selectCurrUiLfoId)
 
     return <svg x={x} y={y}>
-        <SubHeader align="left" label="LFOs" x={0} y={0} width={335}/>
+        <SubHeader align="left" label="LFO" labelPosition="left" x={0} y={0} width={335}/>
 
         <RoundPushButton8 x={buttonCol} y={potRow1}
-                          label="LFO" labelPosition="bottom"
                           ledPosition="right" ledCount={4}
                           ledLabels={['1','2', '3', '4']}
                           ctrlGroup={ctrlGroup}
