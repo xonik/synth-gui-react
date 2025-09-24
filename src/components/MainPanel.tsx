@@ -116,15 +116,20 @@ const MainPanel = () => {
     }, [])
 
 
-    // PS: 1 inch in svg is 96pixels, so 1cm = 96 / 2.54
+    // PS: 1 inch in svg is 96pixels, so 1cm = 96 / 2.54 = 37.795276px
+    // In Illustrator, one inch is 72 pt. 1pt is 0,0352778, so one inch is
+    // 72 * 0,0352778
     return (
         <>
             <svg width={`${panelWidth / 10}cm`} height={`${panelHeight / 10}cm`}
                  viewBox={`0 0 ${panelWidth} ${panelHeight}`}
-                 className="panel">
+                 className={
+                     classNames("panel", {
+                         'cut': SHOW_CUT
+                     })}>
                 {SHOW_GRID && <Grid panelWidth={panelWidth} panelHeight={panelHeight}/>}
                 {SHOW_LEFT && <>
-                    {SHOW_CUT && <rect x={0} y={0} width="365" height={panelHeight} fill="red" className="panel-outline"/>}
+                    {SHOW_CUT && <rect x={0} y={0} width="365" height={panelHeight} className="panel-outline"/>}
                     <DCO1 x={osc1Col} y={oscRow}/>
                     <DCO2 x={osc2Col} y={oscRow}/>
                     <VCO x={osc3Col} y={oscRow}/>

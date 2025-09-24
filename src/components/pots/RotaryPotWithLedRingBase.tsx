@@ -177,7 +177,7 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
 
                 return <circle
                     key={led}
-                    cx={0} cy={-ledRingRadius} r={SHOW_CUT ? ledRadius * 2 : ledRadius} stroke="black" fill="red"
+                    cx={0} cy={-ledRingRadius} r={SHOW_CUT ? ledRadius * 2 : ledRadius}
                     transform={`rotate(${angle})`}
                     className={classNames('pot-ring-led', { 'pot-ring-led__on': ledOn })}/>
             })}

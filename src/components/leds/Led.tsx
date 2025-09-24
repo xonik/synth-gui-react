@@ -59,7 +59,7 @@ const Led = (props: Props & Config) => {
     return (
         <svg x={x} y={y} className="button">
             <circle
-                cx={0} cy={0} r={radius} stroke="black" fill="red"
+                cx={0} cy={0} r={radius}
                 className={classNames('led', { 'led__on': on })}/>
 
             {label && <text

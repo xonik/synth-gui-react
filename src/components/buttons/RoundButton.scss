@@ -17,6 +17,9 @@
   }
 
   &-led {
+    stroke: #500000;
+    fill: #500000;
+
     &__on {
       stroke: red;
       fill: red;
@@ -40,13 +43,13 @@
   .button {
 
     &-cap {
-      stroke-width: 0.024mm;
+      stroke-width: 0.024;
       stroke: black;
       fill: none;
     }
 
     &-led {
-      stroke-width: 0.024mm;
+      stroke-width: 0.024;
       stroke: black;
       fill: none;
 

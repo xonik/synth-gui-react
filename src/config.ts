@@ -1,4 +1,4 @@
-export const SHOW_CUT = true
+export const SHOW_CUT = false
 
 export const SHOW_MAIN_PANEL = true
 export const SHOW_KEYBOARD = false

@@ -124,7 +124,7 @@ const RotaryPot = ({ knobRadius, onClick, onIncrement, arc = 360, resolution = 1
         <circle ref={svgRef} cx={0} cy={0} onClick={onClick} onMouseDown={onMouseDown}
                 r={SHOW_CUT ? 6.9 / 2 : knobRadius}
                 className={silver ? 'pot-knob-silver' : 'pot-knob'}/>
-        {SHOW_CUT && <rect x={6.5} y={-2.7/2} width="3" height="2.7" fill="red" className="pot-key"/>}
+        {SHOW_CUT && <rect x={6.5} y={-2.7/2} width="3" height="2.7" className="pot-key"/>}
     </>
 };
 
