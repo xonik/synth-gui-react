@@ -28,7 +28,7 @@ import { envCtrls } from '../synthcore/modules/env/envControllers'
 import { selectController } from '../synthcore/modules/controllers/controllersReducer'
 import './MainPanel.scss'
 import Grid from "./Grid";
-import { ROW_HEIGHT } from "../constants";
+import { PADDING_LEFT, POT_DISTANCE_L, POT_DISTANCE_M, POT_DISTANCE_S, ROW_HEIGHT } from "../constants";
 
 /**
  * TODO:
@@ -45,22 +45,22 @@ const MainPanel = () => {
     const panelHeight = 290;
     const panelWidth = 1000;
 
-    const osc1Col = 67.5
-    const osc2Col = osc1Col + 120
-    const osc3Col = osc2Col + 120
+    const osc1Col = 71.125
+    const osc2Col = osc1Col + 110
+    const osc3Col = osc2Col + 110
 
     const lfoCol = 20
     const noiseCol = 20
     const ringModCol = noiseCol
-    const sourceMixCol = noiseCol + 45
-    const bcCol = sourceMixCol + 170
+    const sourceMixCol = noiseCol + 50
+    const bcCol = sourceMixCol + 142.5
     const distCol = bcCol
 
     const routeCol = 20
-    const clockCol = routeCol + 50
-    const arpCol = clockCol + 75
+    const clockCol = routeCol + 55
+    const arpCol = routeCol + PADDING_LEFT + 4.25 * POT_DISTANCE_M
 
-    const displayCol = osc3Col + 77.5
+    const displayCol = osc3Col + 87.5
     const keyCtrlCol = displayCol - 22
     const voiceSelCol = displayCol
 

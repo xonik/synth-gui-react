@@ -14,7 +14,7 @@ const ctrlGroup = ControllerGroupIds.RING_MOD
 
 const Ringmod = ({ x, y }: Props) => {
     return <>
-        <SubHeader label="Ring" labelPosition="left" x={x} y={y} width={40}/>
+        <SubHeader label="Ring" labelPosition="left" x={x} y={y} width={45}/>
         <RoundPushButton8 x={x + PADDING_LEFT} y={y + POT_OFFSET_Y}
                           ledPosition="right" ledCount={3} ledLabels={['1 -> 2', 'E -> 2', '3 -> 2']}
                           label="" labelPosition="bottom"

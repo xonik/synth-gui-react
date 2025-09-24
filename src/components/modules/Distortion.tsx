@@ -6,7 +6,7 @@ import RotaryPot12 from "../pots/RotaryPot12";
 import SubHeader from "../misc/SubHeader";
 import {
     DUAL_LED_BUTTON_NO_LABEL_OFFSET_Y,
-    POT_DISTANCE_S,
+    POT_DISTANCE_M,
     POT_OFFSET_Y
 } from "../../constants";
 
@@ -24,12 +24,12 @@ const Distortion = ({ x, y }: Props) => {
     const row3 = row2 + DUAL_LED_BUTTON_NO_LABEL_OFFSET_Y
 
     const col1 = x + 10
-    const col2 = col1 + POT_DISTANCE_S
-    const col3 = col2 + 2 * POT_DISTANCE_S
-    const col4 = col3 + POT_DISTANCE_S
+    const col2 = col1 + POT_DISTANCE_M
+    const col3 = col2 + 2 * POT_DISTANCE_M
+    const col4 = col3 + POT_DISTANCE_M
 
     return <>
-        <SubHeader x={x} y={row1} width={120} label="Effects"/>
+        <SubHeader x={x} y={row1} width={131} label="Effects"/>
         <RoundPushButton8 x={col1} y={row3}
                           ledPosition="top"
                           ledCount={2}

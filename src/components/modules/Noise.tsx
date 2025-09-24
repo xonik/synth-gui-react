@@ -15,7 +15,7 @@ const ctrlGroup = ControllerGroupIds.NOISE
 const Noise = ({ x, y }: Props) => {
 
     return <>
-        <SubHeader label="Noise" labelPosition="left" x={x} y={y} width={40}/>
+        <SubHeader label="Noise" labelPosition="left" x={x} y={y} width={45}/>
         <RoundPushButton8 x={x + PADDING_LEFT} y={y + POT_OFFSET_Y}
                           ledPosition="right" ledCount={3} ledLabels={['White', 'Pink', 'Red']}
                           label="" labelPosition="bottom"

@@ -6,7 +6,7 @@ import fxControllers from '../../synthcore/modules/fx/fxControllers'
 import RotaryPot12 from "../pots/RotaryPot12";
 import {
     DUAL_LED_BUTTON_NO_LABEL_OFFSET_Y,
-    POT_DISTANCE_S,
+    POT_DISTANCE_M,
     POT_OFFSET_Y
 } from "../../constants";
 
@@ -24,10 +24,10 @@ const BitCrusherPre = ({ x, y }: Props) => {
     const row3 = row2 + DUAL_LED_BUTTON_NO_LABEL_OFFSET_Y
 
     const col1 = x + 10
-    const col2 = col1 + POT_DISTANCE_S
-    const col3 = col2 + POT_DISTANCE_S
-    const col4 = col3 + POT_DISTANCE_S
-    const col5 = col4 + POT_DISTANCE_S
+    const col2 = col1 + POT_DISTANCE_M
+    const col3 = col2 + POT_DISTANCE_M
+    const col4 = col3 + POT_DISTANCE_M
+    const col5 = col4 + POT_DISTANCE_M
 
     return <>
         <RoundPushButton8 x={col1} y={row3} ledPosition="top" ledCount={2}

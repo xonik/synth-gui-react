@@ -13,7 +13,7 @@ import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
 import { ControllerGroupIds } from '../../synthcore/types'
 import arpControllers from '../../synthcore/modules/arp/arpControllers'
 import SubHeader from "../misc/SubHeader";
-import { BUTTON_DISTANCE_S, POT_DISTANCE_M } from "../../constants";
+import { BUTTON_DISTANCE_S, PADDING_LEFT, POT_DISTANCE_M, POT_OFFSET_Y } from "../../constants";
 
 interface Props {
     x: number,
@@ -25,20 +25,17 @@ const ctrlGroup = ControllerGroupIds.ARP
 const Arpeggiator = ({ x, y }: Props) => {
 
     const row1 = 0;
-    const row2 = 17.5;
-    const col1 = 12.5;
-    const col2 = col1 + POT_DISTANCE_M;
+    const row2 = POT_OFFSET_Y
+    const col1 = POT_DISTANCE_M
+    const col2 = POT_DISTANCE_M * 0.75;
     const col3 = col2 + POT_DISTANCE_M;
-    const col4 = col3 + 35;
-    const col5 = col4 + 50;
-    const col6 = col5 + BUTTON_DISTANCE_S * 2;
+    const col7 = col2 + POT_DISTANCE_M * 6
+    const col6 = col7 - BUTTON_DISTANCE_S
+    const col5 = col6 - 2 * BUTTON_DISTANCE_S;
+    const col4 = col3 + 2 * BUTTON_DISTANCE_S;
 
     return <svg x={x} y={y}>
-        <SubHeader label="Arpeggiator" x={0} y={row1} width={210}/>
-        <RoundLedPushButton8 labelPosition="bottom-pot" x={col1} y={row2} label="On"
-                             ctrlGroup={ctrlGroup}
-                             ctrl={arpControllers.ON_OFF}
-        />
+        <SubHeader label="Arp" x={0} y={row1} width={197} labelPosition="left"/>
 
         <RotaryPot12 ledMode="single" label="Rate" x={col2} y={row2}
                      ctrlGroup={ctrlGroup}
@@ -60,7 +57,12 @@ const Arpeggiator = ({ x, y }: Props) => {
                           ctrl={arpControllers.MODE}
         />
 
-        <RoundLedPushButton8 labelPosition="bottom-pot" x={col6} y={row2} label="Trigger"
+        <RoundLedPushButton8 labelPosition="bottom-pot" x={col6} y={row2} label="On"
+                             ctrlGroup={ctrlGroup}
+                             ctrl={arpControllers.ON_OFF}
+        />
+
+        <RoundLedPushButton8 labelPosition="bottom-pot" x={col7} y={row2} label="Trigger"
                              ctrlGroup={ctrlGroup}
                              ctrl={arpControllers.TRIGGER}
         />

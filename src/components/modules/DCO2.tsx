@@ -6,7 +6,7 @@ import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
 import { ControllerGroupIds } from '../../synthcore/types'
 import oscControllers from '../../synthcore/modules/osc/oscControllers'
 import SubHeader from "../misc/SubHeader";
-import { DUAL_LED_BUTTON_W_LABEL_OFFSET_Y, POT_DISTANCE_S, POT_OFFSET_Y, ROW_HEIGHT } from "../../constants";
+import { DUAL_LED_BUTTON_W_LABEL_OFFSET_Y, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from "../../constants";
 
 interface Props {
     x: number,
@@ -24,10 +24,10 @@ const DCO2 = ({ x, y }: Props) => {
     const bottomRow1 = centerRow + ROW_HEIGHT
     const bottomRow2 = bottomRow1 + ROW_HEIGHT
 
-    const col1 = x - 1.5 * POT_DISTANCE_S
-    const col2 = x - 0.5 * POT_DISTANCE_S
-    const col3 = x + 0.5 * POT_DISTANCE_S
-    const col4 = x + 1.5 * POT_DISTANCE_S
+    const col1 = x - 1.5 * POT_DISTANCE_M
+    const col2 = x - 0.5 * POT_DISTANCE_M
+    const col3 = x + 0.5 * POT_DISTANCE_M
+    const col4 = x + 1.5 * POT_DISTANCE_M
 
     return <>
         <SubHeader label="Oscillator 2" x={x} y={y} width={105} align="center"/>
