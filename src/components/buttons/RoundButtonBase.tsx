@@ -9,6 +9,7 @@ import { dispatch } from '../../synthcore/utils'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectUiController } from '../../synthcore/modules/controllers/controllersReducer'
 import './RoundButton.scss'
+import { SHOW_CUT } from "../../config";
 
 type LedPosition = 'left' | 'right' | 'sides' | 'top' | 'top-horizontal' | 'bottom' | undefined;
 type LabelPosition = 'left' | 'right' | 'top' | 'bottom' | 'bottom-pot' | undefined;
@@ -78,6 +79,7 @@ type LedPos = {
 
 type RenderProps = {
     buttonRadius: number;
+    cutRadius: number,
     buttonMode: ButtonMode;
     ledRadius: number;
     labelPos: LabelPos;
@@ -184,12 +186,12 @@ const positionLeds = (
                 })
                 break
             case 'top-horizontal':
-                let startX = -((ledCount - 1) * yDist)/ 2
+                let startX = -((ledCount - 1) * yDist) / 2
                 ledPositions.push({
                     x: startX + i * yDist,
                     y: -yDist / 2 - buttonRadius - ledMargin - ledRadius,
                     labelX: startX + i * yDist,
-                    labelY:  - buttonRadius - 2,
+                    labelY: -buttonRadius - 2,
                     textAnchor: 'start'
                 })
                 break
@@ -210,6 +212,7 @@ const positionLeds = (
 
 const getRenderProps = (props: Props & Config): RenderProps => {
     const buttonRadius = props.buttonRadius
+    const cutRadius = 6.9 / 2
 
     const labelMargin = props.labelMargin || 2
     const labelPosition = props.labelPosition || 'left'
@@ -224,6 +227,7 @@ const getRenderProps = (props: Props & Config): RenderProps => {
     return {
         ledRadius,
         buttonRadius,
+        cutRadius,
         labelPos: positionLabel(buttonRadius, labelPosition, labelMargin),
         ledPos: positionLeds(buttonRadius, ledRadius, ledCount, ledPosition, ledMargin, ledToLedMargin, ledTolabelMargin, props.buttonMode),
         ledLabels: props.ledLabels || [],
@@ -241,7 +245,7 @@ export const RoundButtonBase = (props: Props & Config) => {
     } = props
 
     const storeValue = useAppSelector(selectUiController(ctrl, ctrlIndex || 0))
-    const currentValue = value !== undefined ? value :  storeValue
+    const currentValue = value !== undefined ? value : storeValue
 
     // off is always the first element in the midi config values list, so when a radio
     // button has an off state we need to offset our index by one.
@@ -250,8 +254,8 @@ export const RoundButtonBase = (props: Props & Config) => {
     const ledOnIndex = hasOffValue ? currentValue - 1 : currentValue
 
     const onIncrement = useCallback((steps: number) => {
-        for(let i=0; i<Math.abs(steps); i++){
-            if(steps > 0){
+        for (let i = 0; i < Math.abs(steps); i++) {
+            if (steps > 0) {
                 dispatch(click({ ctrlGroup, ctrl, loop, valueIndex, source: ApiSource.UI }))
             } else {
                 dispatch(click({ ctrlGroup, ctrl, loop, valueIndex, reverse: true, source: ApiSource.UI }))
@@ -260,7 +264,16 @@ export const RoundButtonBase = (props: Props & Config) => {
     }, [ctrlGroup, ctrl, loop, valueIndex])
 
     const handleOnClick = useCallback(() => {
-        dispatch(click({ ctrlGroup, ctrl, ctrlIndex, radioButtonIndex, reverse, loop, momentary, source: ApiSource.UI }))
+        dispatch(click({
+            ctrlGroup,
+            ctrl,
+            ctrlIndex,
+            radioButtonIndex,
+            reverse,
+            loop,
+            momentary,
+            source: ApiSource.UI
+        }))
     }, [ctrlGroup, ctrl, ctrlIndex, radioButtonIndex, reverse, loop, momentary])
 
     const handleOnRelease = useCallback(() => {
@@ -294,6 +307,7 @@ export const RoundButtonBase = (props: Props & Config) => {
     const {
         buttonRadius,
         buttonMode,
+        cutRadius,
         ledRadius,
         labelPos,
         ledPos,
@@ -304,6 +318,7 @@ export const RoundButtonBase = (props: Props & Config) => {
         <svg x={x} y={y} className="button">
             {buttonMode === 'push'
                 ? <RoundPushButtonBase buttonRadius={buttonRadius}
+                                       cutRadius={cutRadius}
                                        onClick={handleOnClick}
                                        onRelease={handleOnRelease}
                                        className={classNames('button-cap', {
@@ -325,8 +340,15 @@ export const RoundButtonBase = (props: Props & Config) => {
             >{label}</text>}
             {ledPos.map((position, index) => <React.Fragment key={index}>
                 <circle
-                    cx={position.x} cy={position.y} r={ledRadius} stroke="black" fill="red"
-                    className={classNames('button-led', { 'button-led__on': ledOn.length > index && ledOn[index] })}/>
+                    cx={position.x} cy={position.y} r={ledRadius}
+                    className={
+                        classNames(
+                            'button-led',
+                            {
+                                'button-led__on': ledOn.length > index && ledOn[index]
+                            })
+                    }
+                />
                 {ledLabels[index] && <text
                     x={position.labelX}
                     y={position.labelY ?? position.y + 1.2}

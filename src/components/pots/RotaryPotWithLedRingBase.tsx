@@ -8,6 +8,7 @@ import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 import { ControllerConfig } from '../../midi/types'
 import { selectUiController } from '../../synthcore/modules/controllers/controllersReducer'
 import './RotaryPot.scss'
+import { SHOW_CUT } from "../../config";
 
 export type LedMode = 'single' | 'multi';
 export type PotMode = 'normal' | 'pan' | 'spread';
@@ -150,7 +151,7 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
                 silver={silver}
             />
             <path d={windowArc} className="pot-ring-window" strokeWidth={windowWidth}/>
-            {ledAngles.map((angle, led) => {
+            {!SHOW_CUT && ledAngles.map((angle, led) => {
                 const ledOn =
                     !disabled && (
                     // pointer should always be on
@@ -176,7 +177,7 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
 
                 return <circle
                     key={led}
-                    cx={0} cy={-ledRingRadius} r={ledRadius} stroke="black" fill="red"
+                    cx={0} cy={-ledRingRadius} r={SHOW_CUT ? ledRadius * 2 : ledRadius} stroke="black" fill="red"
                     transform={`rotate(${angle})`}
                     className={classNames('pot-ring-led', { 'pot-ring-led__on': ledOn })}/>
             })}

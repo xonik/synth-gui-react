@@ -42,7 +42,7 @@ const Arpeggiator = ({ x, y }: Props) => {
                      ctrl={arpControllers.TEMPO}
         />
 
-        <RoundPushButton8 labelPosition="bottom-pot" x={col3} y={row2} label="Sync" ledCount={3} ledPosition="right" ledLabels={['Master', 'LFO1', 'Ext']} hasOff
+        <RoundPushButton8 labelPosition="bottom-pot" x={col3} y={row2} label="Sync" ledCount={3} ledPosition="right" ledLabels={['Clock', 'LFO1', 'Ext']} hasOff
                           ctrlGroup={ctrlGroup}
                           ctrl={arpControllers.SYNC}
         />

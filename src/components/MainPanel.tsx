@@ -29,6 +29,12 @@ import { selectController } from '../synthcore/modules/controllers/controllersRe
 import './MainPanel.scss'
 import Grid from "./Grid";
 import { PADDING_LEFT, POT_DISTANCE_M, ROW_HEIGHT } from "../constants";
+import { PanelScrew } from "./misc/PanelScrew";
+import RoundPushButton8 from "./buttons/RoundPushButton8";
+import { lfoCtrls } from "../synthcore/modules/lfo/lfoControllers";
+import { ControllerGroupIds } from "../synthcore/types";
+import { SHOW_CENTER, SHOW_CUT, SHOW_GRID, SHOW_LEFT, SHOW_RIGHT } from "../config";
+import classNames from "classnames";
 
 /**
  * TODO:
@@ -110,58 +116,74 @@ const MainPanel = () => {
     }, [])
 
 
-                // <Grid panelWidth={panelWidth} panelHeight={panelHeight}/>
     // PS: 1 inch in svg is 96pixels, so 1cm = 96 / 2.54
     return (
         <>
-            <svg width={`${panelWidth/10}cm`} height={`${panelHeight/10}cm`} viewBox={`0 0 ${panelWidth} ${panelHeight}`} className="panel">
+            <svg width={`${panelWidth / 10}cm`} height={`${panelHeight / 10}cm`}
+                 viewBox={`0 0 ${panelWidth} ${panelHeight}`}
+                 className="panel">
+                {SHOW_GRID && <Grid panelWidth={panelWidth} panelHeight={panelHeight}/>}
+                {SHOW_LEFT && <>
+                    {SHOW_CUT && <rect x={0} y={0} width="365" height={panelHeight} fill="red" className="panel-outline"/>}
+                    <DCO1 x={osc1Col} y={oscRow}/>
+                    <DCO2 x={osc2Col} y={oscRow}/>
+                    <VCO x={osc3Col} y={oscRow}/>
+
+                    <Noise x={noiseCol} y={fxRow1}/>
+                    <Ringmod x={ringModCol} y={fxRow2}/>
+                    <Distortion x={distCol} y={fxRow1}/>
+                    <BitCrusherPre x={bcCol} y={fxRow2}/>
 
 
-                <DCO1 x={osc1Col} y={oscRow}/>
-                <DCO2 x={osc2Col} y={oscRow}/>
-                <VCO x={osc3Col} y={oscRow}/>
+                    <SourceMixer x={sourceMixCol} y={sourceMixRow}/>
 
-                <Noise x={noiseCol} y={fxRow1}/>
-                <Ringmod x={ringModCol} y={fxRow2}/>
-                <Distortion x={distCol} y={fxRow1}/>
-                <BitCrusherPre x={bcCol} y={fxRow2}/>
+                    <LFO x={lfoCol} y={lfo1Row}/>
+
+                    <Route x={routeCol} y={clockRow}/>
+                    <Clock x={clockCol} y={clockRow}/>
+                    <Arpeggiator x={arpCol} y={arpRow}/>
+
+                    <PanelScrew x={10} y={10}/>
+                    <PanelScrew x={10} y={145}/>
+                    <PanelScrew x={20 + PADDING_LEFT + 5.5 * POT_DISTANCE_M} y={10}/>
+                    <PanelScrew x={355} y={10}/>
+                    <PanelScrew x={10} y={280}/>
+                    <PanelScrew x={20 + PADDING_LEFT + 5.5 * POT_DISTANCE_M} y={280}/>
+                    <PanelScrew x={355} y={145}/>
+                    <PanelScrew x={355} y={280}/>
+                </>}
+                {SHOW_CENTER && <>
+                    <MainDisplay x={displayCol} y={displayRow} ref={displayRef}/>
+                    <VoiceSelector x={voiceSelCol} y={voiceSelRow}/>
+                    <KeyboardControls x={keyCtrlCol} y={keyCtrlRow}/>
+                </>}
+                {SHOW_RIGHT && <>
+                    <StateVariableFilter x={filterCol} y={80}/>
+                    <LowPassFilter x={filterCol} y={235}/>
+                    <PostMix x={voiceMixCol} y={7.5}/>
 
 
-                <SourceMixer x={sourceMixCol} y={sourceMixRow}/>
+                    <Envelope header="Envelopes" x={envCol} y={10} label="VCA" envId={0}/>
+                    <Envelope x={envCol} y={65} label="VCF" envId={1}/>
+                    <Envelope x={envCol} y={120} label="" showSelect={true} envId={env3Id}/>
 
-                <LFO x={lfoCol} y={lfo1Row}/>
+                    <DigitalFX x={outFx1Col} y={outputFxRow}/>
+                    <Chorus x={outFx2Col} y={outputFxRow + 10}/>
+                    <BitCrusher x={outFx2Col} y={outputFxRow + 40}/>
 
-                <Route x={routeCol} y={clockRow}/>
-                <Clock x={clockCol} y={clockRow}/>
-                <Arpeggiator x={arpCol} y={arpRow}/>
-
-                <MainDisplay x={displayCol} y={displayRow} ref={displayRef}/>
-                <VoiceSelector x={voiceSelCol} y={voiceSelRow}/>
-                <KeyboardControls x={keyCtrlCol} y={keyCtrlRow}/>
-
-                <StateVariableFilter x={filterCol} y={80}/>
-                <LowPassFilter x={filterCol} y={235}/>
-                <PostMix x={voiceMixCol} y={7.5}/>
-
-
-                <Envelope header="Envelopes" x={envCol} y={10} label="VCA" envId={0}/>
-                <Envelope x={envCol} y={65} label="VCF" envId={1}/>
-                <Envelope x={envCol} y={120} label="" showSelect={true} envId={env3Id}/>
-
-                <DigitalFX x={outFx1Col} y={outputFxRow}/>
-                <Chorus x={outFx2Col} y={outputFxRow + 10}/>
-                <BitCrusher x={outFx2Col} y={outputFxRow + 40}/>
-
-                <OutputMixer x={outputMixerCol} y={outputMixerRow}/>
+                    <OutputMixer x={outputMixerCol} y={outputMixerRow}/>
+                </>}
             </svg>
-            {dispRect && <div className="panel-main-display" style={{
-                top: dispRect.y,
-                left: dispRect.x,
-                width: dispRect.width,
-                height: dispRect.height,
-            }}>
-                <Controller/>
-            </div>}
+            {!SHOW_CENTER && <>
+                {dispRect && <div className="panel-main-display" style={{
+                    top: dispRect.y,
+                    left: dispRect.x,
+                    width: dispRect.width,
+                    height: dispRect.height,
+                }}>
+                    <Controller/>
+                </div>}
+            </>}
         </>
     )
 }

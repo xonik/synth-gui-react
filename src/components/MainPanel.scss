@@ -26,3 +26,16 @@
   }
 
 }
+
+.cut {
+  .panel {
+    background: none;
+
+    &-outline {
+      background: none;
+      fill: none;
+      stroke: black;
+      stroke-width: 0.024mm;
+    }
+  }
+}

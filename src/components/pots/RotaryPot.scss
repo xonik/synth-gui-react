@@ -31,3 +31,35 @@
     //text-transform: uppercase;
   }
 }
+
+.cut {
+  .pot {
+    &-knob {
+      stroke-width: 0.024mm;
+      stroke: black;
+      fill: none;
+    }
+
+    &-ring {
+      &-led {
+        stroke-width: 0.024mm;
+        stroke: black;
+        fill: none;
+      }
+      &-window {
+        stroke: black;
+        fill: none;
+      }
+    }
+    &-label {
+      fill: black;
+      stroke: none;
+    }
+
+    &-key {
+      stroke-width: 0.024mm;
+      stroke: black;
+      fill: none;
+    }
+  }
+}

@@ -1,5 +1,4 @@
 import React from 'react';
-import './Header.scss';
 import './SubHeader.scss';
 
 type PositionAlign = 'center' | 'left' | 'right';
@@ -36,7 +35,7 @@ const SubHeader = ({ x, y, width, align = 'left', label, labelPosition = 'center
             textAnchor={labelPosition === 'center' ? "middle" : "left"}
             alignmentBaseline="baseline"
         >{label}</text>}
-        <line x1={center - width / 2} y1={y} x2={center + width / 2} y2={y} className="header-underline"/>
+        <line x1={center - width / 2} y1={y} x2={center + width / 2} y2={y} className="subheader-underline"/>
     </>;
 };
 

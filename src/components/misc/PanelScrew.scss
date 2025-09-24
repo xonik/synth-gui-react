@@ -1,0 +1,12 @@
+.panel-screw {
+  stroke: none;
+  fill: black;
+}
+
+.cut {
+  .panel-screw {
+    stroke-width: 0.024mm;
+    stroke: black;
+    fill: none;
+  }
+}

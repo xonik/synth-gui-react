@@ -8,3 +8,15 @@
     stroke: white;
   }
 }
+
+.cut {
+  .subheader {
+    &-label {
+      fill: black;
+    }
+
+    &-underline {
+      stroke: black;
+    }
+  }
+}
