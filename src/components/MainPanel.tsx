@@ -28,7 +28,7 @@ import { envCtrls } from '../synthcore/modules/env/envControllers'
 import { selectController } from '../synthcore/modules/controllers/controllersReducer'
 import './MainPanel.scss'
 import Grid from "./Grid";
-import { PADDING_LEFT, POT_DISTANCE_L, POT_DISTANCE_M, POT_DISTANCE_S, ROW_HEIGHT } from "../constants";
+import { PADDING_LEFT, POT_DISTANCE_M, ROW_HEIGHT } from "../constants";
 
 /**
  * TODO:
@@ -110,12 +110,12 @@ const MainPanel = () => {
     }, [])
 
 
+                // <Grid panelWidth={panelWidth} panelHeight={panelHeight}/>
     // PS: 1 inch in svg is 96pixels, so 1cm = 96 / 2.54
     return (
         <>
             <svg width={`${panelWidth/10}cm`} height={`${panelHeight/10}cm`} viewBox={`0 0 ${panelWidth} ${panelHeight}`} className="panel">
 
-                <Grid panelWidth={panelWidth} panelHeight={panelHeight}/>
 
                 <DCO1 x={osc1Col} y={oscRow}/>
                 <DCO2 x={osc2Col} y={oscRow}/>
