@@ -7,6 +7,7 @@ import { useAppSelector } from '../../synthcore/hooks'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { selectCurrUiLfoId } from '../../synthcore/modules/lfo/lfoReducer'
 import SubHeader from "../misc/SubHeader";
+import { BUTTON_DISTANCE_S, PADDING_LEFT, POT_DISTANCE_M, POT_OFFSET_Y } from "../../constants";
 
 interface Props {
     x: number,
@@ -17,19 +18,19 @@ const ctrlGroup = ControllerGroupIds.LFO
 
 
 const LFO = ({ x, y }: Props) => {
-    const potDistance = 30
-    const buttonCol = 10
+    const potDistance = POT_DISTANCE_M
+    const buttonCol = PADDING_LEFT
     const firstPotCol = buttonCol + 97.5
     const buttonCol2 = firstPotCol + 3 * potDistance + 25
-    const buttonCol3 = buttonCol2 + 20
-    const buttonCol4 = buttonCol3 + 20
-    const buttonCol5 = buttonCol4 + 20
-    const buttonCol6 = buttonCol5 + 20
-    const buttonCol7 = buttonCol6 + 20
+    const buttonCol3 = buttonCol2 + BUTTON_DISTANCE_S
+    const buttonCol4 = buttonCol3 + BUTTON_DISTANCE_S
+    const buttonCol5 = buttonCol4 + BUTTON_DISTANCE_S
+    const buttonCol6 = buttonCol5 + BUTTON_DISTANCE_S
+    const buttonCol7 = buttonCol6 + BUTTON_DISTANCE_S
 
-    const buttonRow1 = 17.5
+    const buttonRow1 = POT_OFFSET_Y
 
-    const potRow1 = 17.5
+    const potRow1 = POT_OFFSET_Y
 
     const lfoId = useAppSelector(selectCurrUiLfoId)
 
@@ -46,7 +47,7 @@ const LFO = ({ x, y }: Props) => {
         />
 
         <RoundPushButton8 x={buttonCol + 50} y={potRow1}
-                          label="Shape" labelPosition="bottom"
+                          label="Shape" labelPosition="bottom-pot"
                           ledPosition="sides" ledCount={6}
                           ledLabels={['Saw', 'Tri', 'Sqr', 'Sin', 'Rand', 'Custom']}
                           ctrlGroup={ctrlGroup}
@@ -79,40 +80,40 @@ const LFO = ({ x, y }: Props) => {
                      ctrlIndex={lfoId}
         />
 
-        <RoundLedPushButton8 label="Sync" x={buttonCol2} y={buttonRow1} labelPosition="bottom"
+        <RoundLedPushButton8 label="Sync" x={buttonCol2} y={buttonRow1} labelPosition="bottom-pot"
                              ctrlGroup={ctrlGroup}
                              ctrl={lfoCtrls.SYNC}
                              ctrlIndex={lfoId}
         />
 
-        <RoundLedPushButton8 label="Reset" x={buttonCol3} y={buttonRow1} labelPosition="bottom"
+        <RoundLedPushButton8 label="Reset" x={buttonCol3} y={buttonRow1} labelPosition="bottom-pot"
                              ctrlGroup={ctrlGroup}
                              ctrl={lfoCtrls.RESET}
                              ctrlIndex={lfoId}
         />
 
-        <RoundLedPushButton8 label="Loop" x={buttonCol4} y={buttonRow1} labelPosition="bottom"
+        <RoundLedPushButton8 label="Loop" x={buttonCol4} y={buttonRow1} labelPosition="bottom-pot"
                              ctrlGroup={ctrlGroup}
                              ctrl={lfoCtrls.LOOP}
                              ctrlIndex={lfoId}
                              loop
         />
 
-        <RoundLedPushButton8 label="Invert" x={buttonCol5} y={buttonRow1} labelPosition="bottom"
+        <RoundLedPushButton8 label="Invert" x={buttonCol5} y={buttonRow1} labelPosition="bottom-pot"
                              ctrlGroup={ctrlGroup}
                              ctrl={lfoCtrls.INVERT}
                              ctrlIndex={lfoId}
                              loop
         />
 
-        <RoundLedPushButton8 label="Bipolar" x={buttonCol6} y={buttonRow1} labelPosition="bottom"
+        <RoundLedPushButton8 label="Bipolar" x={buttonCol6} y={buttonRow1} labelPosition="bottom-pot"
                              ctrlGroup={ctrlGroup}
                              ctrl={lfoCtrls.BIPOLAR}
                              ctrlIndex={lfoId}
                              loop
         />
 
-        <RoundPushButton8 label="Trigger" x={buttonCol7} y={buttonRow1} labelPosition="bottom"
+        <RoundPushButton8 label="Trigger" x={buttonCol7} y={buttonRow1} labelPosition="bottom-pot"
                              ctrlGroup={ctrlGroup}
                              ctrl={lfoCtrls.GATE}
                              ctrlIndex={lfoId}

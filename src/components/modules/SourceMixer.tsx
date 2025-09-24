@@ -5,6 +5,11 @@ import srcMixControllers from '../../synthcore/modules/srcMix/srcMixControllers'
 import { ControllerConfig } from '../../midi/types'
 import RotaryPot12 from "../pots/RotaryPot12";
 import SubHeader from "../misc/SubHeader";
+import {
+    DUAL_LED_BUTTON_NO_LABEL_OFFSET_Y,
+    POT_OFFSET_Y,
+    ROW_HEIGHT
+} from "../../constants";
 
 interface Props {
     x: number,
@@ -23,14 +28,14 @@ const ctrlGroup = ControllerGroupIds.SRC_MIX
 
 const MixerChannel = ({ x, y, label, levelCtrl, outCtrl }: ChannelProps) => {
     return <>
-        <RotaryPot12 ledMode="multi" label={label} x={x} y={y-5}
+        <RotaryPot12 ledMode="multi" label={label} x={x} y={y}
                      ctrlGroup={ctrlGroup}
                      ctrl={levelCtrl}
         />
 
-        <RoundPushButton8 x={x + 20} y={y + 3}
+        <RoundPushButton8 x={x + 20} y={y + (DUAL_LED_BUTTON_NO_LABEL_OFFSET_Y)}
                           ledPosition="top" ledCount={2}
-                          ledLabels={['S','L']}
+                          ledLabels={['S', 'L']}
                           hasOff
                           ctrlGroup={ctrlGroup}
                           ctrl={outCtrl}
@@ -40,16 +45,15 @@ const MixerChannel = ({ x, y, label, levelCtrl, outCtrl }: ChannelProps) => {
 
 const SourceMixer = ({ x, y }: Props) => {
     const offsetX = 15
-    const offsetY = 25
-    const rowDistance = 30
     const colDistance = 47.5
 
     const col1 = x + offsetX
     const col2 = col1 + colDistance
     const col3 = col1 + colDistance * 2
 
-    const row1 = y + offsetY - 5
-    const row2 = row1 + rowDistance
+    const row1 = y + POT_OFFSET_Y
+    const row2 = row1 + ROW_HEIGHT
+
 
     return <>
         <SubHeader label="Mix" x={x} y={y} width={150}/>

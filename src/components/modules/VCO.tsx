@@ -6,6 +6,7 @@ import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
 import { ControllerGroupIds } from '../../synthcore/types'
 import oscControllers from '../../synthcore/modules/osc/oscControllers'
 import SubHeader from "../misc/SubHeader";
+import { DUAL_LED_BUTTON_W_LABEL_OFFSET_Y, POT_DISTANCE_S, POT_OFFSET_Y, ROW_HEIGHT } from "../../constants";
 
 interface Props {
     x: number,
@@ -15,16 +16,16 @@ interface Props {
 const ctrlGroup = ControllerGroupIds.OSC
 
 const VCO = ({ x, y }: Props) => {
-    const topRow = y + 15
+    const topRow = y + POT_OFFSET_Y
     const buttonRow = topRow + 40
-    const centerRow = topRow + 32.5
-    const bottomRow1 = y + 82.5
-    const bottomRow2 = bottomRow1 + 30
+    const centerRow = topRow + ROW_HEIGHT
+    const bottomRow1 = centerRow + ROW_HEIGHT
+    const bottomRow2 = bottomRow1 + ROW_HEIGHT
 
-    const col1 = x - 37.5
-    const col2 = x - 12.5
-    const col3 = x + 12.5
-    const col4 = x + 37.5
+    const col1 = x - 1.5 * POT_DISTANCE_S
+    const col2 = x - 0.5 * POT_DISTANCE_S
+    const col3 = x + 0.5 * POT_DISTANCE_S
+    const col4 = x + 1.5 * POT_DISTANCE_S
 
     return <>
         <SubHeader label="Oscillator 3" x={x} y={y} width={105} align="center"/>
@@ -67,7 +68,7 @@ const VCO = ({ x, y }: Props) => {
                           ctrl={oscControllers.VCO.FM_MODE}
         />
 
-        <RoundPushButton8 x={col1} y={bottomRow1 + 3.75}
+        <RoundPushButton8 x={col1} y={bottomRow1 + DUAL_LED_BUTTON_W_LABEL_OFFSET_Y}
                           ledPosition="top" ledCount={2} ledLabels={['Osc 2', 'Ext']}
                           label="FM src" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
@@ -84,7 +85,7 @@ const VCO = ({ x, y }: Props) => {
                      ctrl={oscControllers.VCO.PW}
         />
 
-        <RoundLedPushButton8 x={col1} y={bottomRow2} label="Ext CV" labelPosition="bottom"
+        <RoundLedPushButton8 x={col1} y={bottomRow2} label="Ext CV" labelPosition="bottom-pot"
                              ctrlGroup={ctrlGroup}
                              ctrl={oscControllers.VCO.EXT_CV}
         />

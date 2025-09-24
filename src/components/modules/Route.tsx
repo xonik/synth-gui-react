@@ -21,7 +21,7 @@ const Route = ({ x, y }: Props) => {
     return <svg x={x} y={y}>
         <SubHeader label="Route" x={0} y={0} width={45} labelPosition="left"/>
 
-        <RoundLedPushButton8 labelPosition="bottom" x={10} y={17.5} hasOff
+        <RoundLedPushButton8 labelPosition="bottom-pot" x={10} y={17.5} hasOff
                              ctrlGroup={ctrlGroup}
                              ctrl={modsControllers.ROUTE_BUTTON}
                              value={route.routeButton}

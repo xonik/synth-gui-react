@@ -28,6 +28,7 @@ import { envCtrls } from '../synthcore/modules/env/envControllers'
 import { selectController } from '../synthcore/modules/controllers/controllersReducer'
 import './MainPanel.scss'
 import Grid from "./Grid";
+import { ROW_HEIGHT } from "../constants";
 
 /**
  * TODO:
@@ -74,11 +75,11 @@ const MainPanel = () => {
     const oscRow = 15
 
     const fxRow1 = oscRow + 130
-    const fxRow2 = fxRow1 + 30
+    const fxRow2 = fxRow1 + ROW_HEIGHT
     const sourceMixRow = fxRow1
 
-    const lfo1Row = fxRow2 + 32.5
-    const clockRow = lfo1Row + 35
+    const lfo1Row = fxRow2 + ROW_HEIGHT
+    const clockRow = lfo1Row + ROW_HEIGHT
 
     const voiceSelRow = 25
     const displayRow = voiceSelRow + 55

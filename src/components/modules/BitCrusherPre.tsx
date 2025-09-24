@@ -4,6 +4,11 @@ import RoundPushButton8 from '../buttons/RoundPushButton8';
 import { ControllerGroupIds } from '../../synthcore/types'
 import fxControllers from '../../synthcore/modules/fx/fxControllers'
 import RotaryPot12 from "../pots/RotaryPot12";
+import {
+    DUAL_LED_BUTTON_NO_LABEL_OFFSET_Y,
+    POT_DISTANCE_S,
+    POT_OFFSET_Y
+} from "../../constants";
 
 interface Props {
     x: number,
@@ -14,18 +19,19 @@ const ctrlGroup = ControllerGroupIds.FX
 
 const BitCrusherPre = ({ x, y }: Props) => {
 
-    const row1 = y;
-    const row2 = row1+15;
+    const row1 = y
+    const row2 = row1 + POT_OFFSET_Y
+    const row3 = row2 + DUAL_LED_BUTTON_NO_LABEL_OFFSET_Y
 
-    const col1 = x + 10;
-    const col2 = col1 + 25;
-    const col3 = col2 + 25;
-    const col5 = col3 + 25;
-    const col6 = col5 + 25;
+    const col1 = x + 10
+    const col2 = col1 + POT_DISTANCE_S
+    const col3 = col2 + POT_DISTANCE_S
+    const col4 = col3 + POT_DISTANCE_S
+    const col5 = col4 + POT_DISTANCE_S
 
     return <>
-        <RoundPushButton8 x={col1} y={row2 + 8} ledPosition="top" ledCount={2}
-                          ledLabels={['S','L']}
+        <RoundPushButton8 x={col1} y={row3} ledPosition="top" ledCount={2}
+                          ledLabels={['S', 'L']}
                           ctrlGroup={ctrlGroup}
                           ctrl={fxControllers.BIT_CRUSHER.IN}
         />
@@ -47,13 +53,13 @@ const BitCrusherPre = ({ x, y }: Props) => {
                              ctrl={fxControllers.BIT_CRUSHER.RECON}
         />*/}
 
-        <RotaryPot12 ledMode="multi" label="Level" x={col5} y={row2}
+        <RotaryPot12 ledMode="multi" label="Level" x={col4} y={row2}
                      ctrlGroup={ctrlGroup}
                      ctrl={fxControllers.BIT_CRUSHER.LEVEL}
         />
 
-        <RoundPushButton8 x={col6} y={row2 + 8} ledPosition="top" ledCount={2}
-                          ledLabels={['S','L']}
+        <RoundPushButton8 x={col5} y={row3} ledPosition="top" ledCount={2}
+                          ledLabels={['S', 'L']}
                           ctrlGroup={ctrlGroup}
                           hasOff
                           ctrl={fxControllers.BIT_CRUSHER.OUT}

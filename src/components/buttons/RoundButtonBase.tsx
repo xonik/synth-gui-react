@@ -11,7 +11,7 @@ import { selectUiController } from '../../synthcore/modules/controllers/controll
 import './RoundButton.scss'
 
 type LedPosition = 'left' | 'right' | 'sides' | 'top' | 'top-horizontal' | 'bottom' | undefined;
-type LabelPosition = 'left' | 'right' | 'top' | 'bottom' | undefined;
+type LabelPosition = 'left' | 'right' | 'top' | 'bottom' | 'bottom-pot' | undefined;
 type ButtonMode = 'push' | 'rotate';
 
 // Stuff that is special for a particular kind of button, used in wrapper functions.
@@ -109,6 +109,12 @@ const positionLabel = (buttonRadius: number, labelPosition: LabelPosition, label
             return {
                 x: 0,
                 y: buttonRadius + labelMargin + 3,
+                textAnchor: 'middle'
+            }
+        case 'bottom-pot':
+            return {
+                x: 0,
+                y: buttonRadius + labelMargin + 7,
                 textAnchor: 'middle'
             }
         default:

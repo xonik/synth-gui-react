@@ -21,7 +21,7 @@ const Clock = ({ x, y }: Props) => {
 
     return <svg x={x} y={y}>
         <SubHeader label="Master clock" x={0} y={row1} width={70}/>
-        <RoundPushButton8 labelPosition="bottom" x={col1} y={row2} label="Source" ledCount={3} ledPosition="right" ledLabels={['Master', 'Midi', 'Ext']}
+        <RoundPushButton8 labelPosition="bottom-pot" x={col1} y={row2} label="Source" ledCount={3} ledPosition="right" ledLabels={['Master', 'Midi', 'Ext']}
                           ctrlGroup={ctrlGroup}
                           ctrl={masterClockControllers.SOURCE}
         />
