@@ -7,11 +7,11 @@ import { ControllerGroupIds } from '../../synthcore/types'
 import oscControllers from '../../synthcore/modules/osc/oscControllers'
 import SubHeader from "../misc/SubHeader";
 import {
-    DUAL_LED_BUTTON_NO_LABEL_OFFSET_Y,
     DUAL_LED_BUTTON_W_LABEL_OFFSET_Y,
     POT_DISTANCE_M, POT_OFFSET_Y,
-    ROW_HEIGHT
+    ROW_HEIGHT, ROW_SPACING
 } from "../../constants";
+import { SHOW_CUT } from "../../config";
 
 interface Props {
     x: number,
@@ -35,8 +35,8 @@ const DCO1 = ({ x, y }: Props) => {
     const col4 = x + 1.5 * POT_DISTANCE_M
 
     return <>
+        <rect x={x-52.5} y={y} width="105" height={130 - ROW_SPACING} className="module-background"/>
         <SubHeader label="Oscillator 1" x={x} y={y} width={105} align="center"/>
-
         <RotaryPot12 x={col1} y={topRow} ledMode="single" label="Note"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.DCO1.NOTE}

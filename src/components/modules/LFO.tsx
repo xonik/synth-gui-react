@@ -7,7 +7,15 @@ import { useAppSelector } from '../../synthcore/hooks'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { selectCurrUiLfoId } from '../../synthcore/modules/lfo/lfoReducer'
 import SubHeader from "../misc/SubHeader";
-import { BUTTON_DISTANCE_S, PADDING_LEFT, POT_DISTANCE_M, POT_DISTANCE_S, POT_OFFSET_Y } from "../../constants";
+import {
+    BUTTON_DISTANCE_S,
+    PADDING_LEFT,
+    POT_DISTANCE_M,
+    POT_DISTANCE_S,
+    POT_OFFSET_Y,
+    ROW_HEIGHT,
+    ROW_SPACING,
+} from "../../constants";
 
 interface Props {
     x: number,
@@ -35,6 +43,7 @@ const LFO = ({ x, y }: Props) => {
     const lfoId = useAppSelector(selectCurrUiLfoId)
 
     return <svg x={x} y={y}>
+        <rect x={0} y={0} width={323} height={ROW_HEIGHT - ROW_SPACING} className="module-background"/>
         <SubHeader align="left" label="LFO" labelPosition="left" x={0} y={0} width={323}/>
 
         <RoundPushButton8 x={buttonCol} y={potRow1}

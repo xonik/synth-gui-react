@@ -13,7 +13,13 @@ import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
 import { ControllerGroupIds } from '../../synthcore/types'
 import arpControllers from '../../synthcore/modules/arp/arpControllers'
 import SubHeader from "../misc/SubHeader";
-import { BUTTON_DISTANCE_S, PADDING_LEFT, POT_DISTANCE_M, POT_OFFSET_Y } from "../../constants";
+import {
+    BUTTON_DISTANCE_S,
+    POT_DISTANCE_M,
+    POT_OFFSET_Y,
+    ROW_HEIGHT,
+    ROW_SPACING
+} from "../../constants";
 
 interface Props {
     x: number,
@@ -35,6 +41,7 @@ const Arpeggiator = ({ x, y }: Props) => {
     const col4 = col3 + 2 * BUTTON_DISTANCE_S;
 
     return <svg x={x} y={y}>
+        <rect x={0} y={0} width={197} height={ROW_HEIGHT - ROW_SPACING} className="module-background"/>
         <SubHeader label="Arp" x={0} y={row1} width={197} labelPosition="left"/>
 
         <RotaryPot12 ledMode="single" label="Rate" x={col2} y={row2}

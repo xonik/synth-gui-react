@@ -4,6 +4,20 @@
 
 npm run generateCppFiles
 
+## Exporting SVG for laser cutting
+
+create a new, empty svg file.
+
+in config.ts, change SHOW_CUT to true and toggle the parts of the UI you want to cut.
+
+run npm run start
+
+inspect the svg element in the browser dev tools, 'view as SVG' and copy contents into the file
+
+run npm run build
+
+copy the contents of build/static/main.....css into a <style> tag in the svg file
+
 # Konsepter
 
 ## uiResponse

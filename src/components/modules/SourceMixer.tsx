@@ -8,7 +8,7 @@ import SubHeader from "../misc/SubHeader";
 import {
     DUAL_LED_BUTTON_NO_LABEL_OFFSET_Y, POT_DISTANCE_L, POT_DISTANCE_S,
     POT_OFFSET_Y,
-    ROW_HEIGHT
+    ROW_HEIGHT, ROW_SPACING
 } from "../../constants";
 
 interface Props {
@@ -57,6 +57,7 @@ const SourceMixer = ({ x, y }: Props) => {
 
 
     return <>
+        <rect x={x} y={y} width="135" height={2 * ROW_HEIGHT - ROW_SPACING} className="module-background"/>
         <SubHeader label="Mix" x={x} y={y} width={135}/>
         <MixerChannel x={col1} y={row1} label="Noise"
                       levelCtrl={srcMixControllers.LEVEL_NOISE}

@@ -6,7 +6,13 @@ import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
 import { ControllerGroupIds } from '../../synthcore/types'
 import oscControllers from '../../synthcore/modules/osc/oscControllers'
 import SubHeader from "../misc/SubHeader";
-import { DUAL_LED_BUTTON_W_LABEL_OFFSET_Y, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from "../../constants";
+import {
+    DUAL_LED_BUTTON_W_LABEL_OFFSET_Y,
+    POT_DISTANCE_M,
+    POT_OFFSET_Y,
+    ROW_HEIGHT,
+    ROW_SPACING
+} from "../../constants";
 
 interface Props {
     x: number,
@@ -30,6 +36,7 @@ const DCO2 = ({ x, y }: Props) => {
     const col4 = x + 1.5 * POT_DISTANCE_M
 
     return <>
+        <rect x={x-52.5} y={y} width="105" height={130 - ROW_SPACING} className="module-background"/>
         <SubHeader label="Oscillator 2" x={x} y={y} width={105} align="center"/>
         <RotaryPot21 x={x} y={centerRow} ledMode="single" label="Waveform"
                      ctrlGroup={ctrlGroup}

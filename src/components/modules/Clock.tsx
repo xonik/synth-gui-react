@@ -4,7 +4,7 @@ import RoundPushButton8 from '../buttons/RoundPushButton8';
 import { ControllerGroupIds } from '../../synthcore/types'
 import masterClockControllers from '../../synthcore/modules/masterClock/masterClockControllers'
 import SubHeader from "../misc/SubHeader";
-import { POT_DISTANCE_L, POT_OFFSET_Y } from "../../constants";
+import { POT_DISTANCE_L, POT_OFFSET_Y, ROW_HEIGHT, ROW_SPACING } from "../../constants";
 
 interface Props {
     x: number,
@@ -21,6 +21,7 @@ const Clock = ({ x, y }: Props) => {
     const col2 = col1 + POT_DISTANCE_L;
 
     return <svg x={x} y={y}>
+        <rect x={0} y={0} width={64} height={ROW_HEIGHT - ROW_SPACING} className="module-background"/>
         <SubHeader label="Clock" x={0} y={row1} width={64} labelPosition="left"/>
         <RoundPushButton8 labelPosition="bottom-pot" x={col1} y={row2} label="Source" ledCount={3} ledPosition="right" ledLabels={['Int', 'Midi', 'Ext']}
                           ctrlGroup={ctrlGroup}

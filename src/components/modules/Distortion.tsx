@@ -7,7 +7,7 @@ import SubHeader from "../misc/SubHeader";
 import {
     DUAL_LED_BUTTON_NO_LABEL_OFFSET_Y,
     POT_DISTANCE_M,
-    POT_OFFSET_Y
+    POT_OFFSET_Y, ROW_HEIGHT, ROW_SPACING
 } from "../../constants";
 
 interface Props {
@@ -29,6 +29,7 @@ const Distortion = ({ x, y }: Props) => {
     const col4 = col3 + POT_DISTANCE_M
 
     return <>
+        <rect x={x} y={y} width="131" height={2 * ROW_HEIGHT - ROW_SPACING} className="module-background"/>
         <SubHeader x={x} y={row1} width={131} label="Effects"/>
         <RoundPushButton8 x={col1} y={row3}
                           ledPosition="top"

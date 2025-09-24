@@ -1,4 +1,5 @@
 export const ROW_HEIGHT = 32.5
+export const ROW_SPACING = 2
 export const POT_DISTANCE_M = 27.5
 export const POT_DISTANCE_L = 1.5 * POT_DISTANCE_M
 export const POT_DISTANCE_S = POT_DISTANCE_M * 0.75
