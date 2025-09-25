@@ -163,7 +163,7 @@ const MainPanel = () => {
                     <KeyboardControls x={keyCtrlCol} y={keyCtrlRow}/>
                 </>}
                 {SHOW_RIGHT && <>
-                    <StateVariableFilter x={filterCol} y={80}/>
+                    <StateVariableFilter x={filterCol} y={oscRow}/>
                     <LowPassFilter x={filterCol} y={235}/>
                     <PostMix x={voiceMixCol} y={7.5}/>
 
@@ -179,7 +179,7 @@ const MainPanel = () => {
                     <OutputMixer x={outputMixerCol} y={outputMixerRow}/>
                 </>}
             </svg>
-            {!SHOW_CENTER && <>
+            {SHOW_CENTER && <>
                 {dispRect && <div className="panel-main-display" style={{
                     top: dispRect.y,
                     left: dispRect.x,

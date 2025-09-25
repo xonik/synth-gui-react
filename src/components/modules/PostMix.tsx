@@ -5,6 +5,8 @@ import { LedMode, PotMode } from '../pots/RotaryPotWithLedRingBase'
 import { ControllerGroupIds } from '../../synthcore/types'
 import postMixControllers from '../../synthcore/modules/postMix/postMixControllers'
 import { ControllerConfig } from '../../midi/types'
+import { ROW_HEIGHT, ROW_SPACING } from "../../constants";
+import SubHeader from "../misc/SubHeader";
 
 
 interface Props {
@@ -21,7 +23,7 @@ interface ChannelProps {
     y: number
 }
 
-const rowDistance = 30
+const rowDistance = ROW_HEIGHT
 
 const ctrlGroup = ControllerGroupIds.POST_MIX
 
@@ -42,13 +44,13 @@ const PostMix = ({ x, y }: Props) => {
     const offsetY2 = 172.5
 
     return <svg x={x} y={y}>
-        <Header label="Mix" x={0} y={2.5} width={30}/>
+        <SubHeader label="Mix" x={0} y={2.5} width={30}/>
         <VoiceMixerChannel x={offsetX} y={offsetY} label="SVF" ctrl={postMixControllers.SVF}/>
         <VoiceMixerChannel x={offsetX} y={offsetY + rowDistance} label="LPF" ctrl={postMixControllers.LPF}/>
         <VoiceMixerChannel x={offsetX} y={offsetY + rowDistance * 2} label="Sine 1" ctrl={postMixControllers.SINE1}/>
         <VoiceMixerChannel x={offsetX} y={offsetY + rowDistance * 3} label="Sine 2" ctrl={postMixControllers.SINE2}/>
 
-        <Header label="Voice out" x={0} y={offsetY2 - 20} width={30}/>
+        <SubHeader label="Voice out" x={0} y={offsetY2 - 20} width={30}/>
         <VoiceMixerChannel x={offsetX} y={offsetY2} label="Pan" potMode="pan" ledMode="single"
                            ctrl={postMixControllers.PAN}/>
         <VoiceMixerChannel x={offsetX} y={offsetY2 + rowDistance} label="Amt" ctrl={postMixControllers.AMOUNT}/>

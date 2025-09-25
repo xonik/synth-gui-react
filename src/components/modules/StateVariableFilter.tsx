@@ -8,6 +8,8 @@ import HorizontalLine from '../misc/HorizontalLine'
 import RoundRotaryButton17 from '../buttons/RoundRotaryButton17'
 import { ControllerGroupIds } from '../../synthcore/types'
 import filtersControllers from '../../synthcore/modules/filters/filtersControllers'
+import SubHeader from "../misc/SubHeader";
+import { POT_OFFSET_Y, ROW_HEIGHT } from "../../constants";
 
 interface Props {
     x: number,
@@ -17,9 +19,11 @@ interface Props {
 const ctrlGroup = ControllerGroupIds.FILTERS
 
 const StateVariableFilter = ({ x, y }: Props) => {
-    const topRow = y - 50
-    const bottomRow1 = y + 20
-    const bottomRow2 = y + 50
+    const topRow = y + POT_OFFSET_Y
+    const fmRow = topRow + 40
+    const centerRow = topRow + ROW_HEIGHT
+    const bottomRow1 = centerRow + ROW_HEIGHT
+    const bottomRow2 = bottomRow1 + ROW_HEIGHT
 
     const col1 = x - 39
     const col2 = x - 13
@@ -41,8 +45,8 @@ const StateVariableFilter = ({ x, y }: Props) => {
      */
 
     return <>
-        <Header label="Filters" x={x} y={topRow - 20} width={110} align="center"/>
-        <RotaryPot21 x={x} y={y-17.5} ledMode="single" label="Cutoff"
+        <SubHeader label="Filters" x={x} y={y} width={110} align="center"/>
+        <RotaryPot21 x={x} y={centerRow} ledMode="single" label="Cutoff"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.SVF.CUTOFF}
         />
@@ -63,14 +67,14 @@ const StateVariableFilter = ({ x, y }: Props) => {
         />
 
 
-        <RoundPushButton8 x={col1} y={y - 10} ledPosition="top" ledCount={2} ledLabels={['Lin', 'Log']}
+        <RoundPushButton8 x={col1} y={fmRow} ledPosition="top" ledCount={2} ledLabels={['Lin', 'Log']}
                           label="FM mode" labelPosition="bottom"
                           hasOff
                           ctrlGroup={ctrlGroup}
                           ctrl={filtersControllers.SVF.FM_MODE}
         />
 
-        <RoundPushButton8 x={col4} y={y - 10} ledPosition="top" ledCount={2} ledLabels={['Osc B', 'Ext']}
+        <RoundPushButton8 x={col4} y={fmRow} ledPosition="top" ledCount={2} ledLabels={['Osc B', 'Ext']}
                           label="FM src" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={filtersControllers.SVF.FM_SRC}

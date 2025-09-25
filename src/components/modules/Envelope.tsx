@@ -8,6 +8,7 @@ import { useAppSelector } from '../../synthcore/hooks'
 import { ControllerGroupIds } from '../../synthcore/types'
 import { envCtrls } from '../../synthcore/modules/env/envControllers'
 import { selectController } from '../../synthcore/modules/controllers/controllersReducer'
+import SubHeader from "../misc/SubHeader";
 
 interface Props {
     x: number,
@@ -37,7 +38,7 @@ const Envelope = ({ x, y, label, header, showSelect = false, envId }: Props) => 
 
 
     return <>
-        { header &&  <Header align="left" label={header} x={x} y={y} width={235}/> }
+        { header &&  <SubHeader align="left" label={header} x={x} y={y} width={235}/> }
         <line x1={x} y1={potY + 17.5} x2={x+235} y2={potY + 17.5} className="header-underline" />
         <text
             x={firstPotX - potDistance * 0.5}
