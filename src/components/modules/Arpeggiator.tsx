@@ -20,6 +20,7 @@ import {
     ROW_HEIGHT,
     ROW_SPACING
 } from "../../constants";
+import { SHOW_CUT } from "../../config";
 
 interface Props {
     x: number,
@@ -41,7 +42,7 @@ const Arpeggiator = ({ x, y }: Props) => {
     const col4 = col3 + 2 * BUTTON_DISTANCE_S;
 
     return <svg x={x} y={y}>
-        <rect x={0} y={0} width={197} height={ROW_HEIGHT - ROW_SPACING} className="module-background"/>
+        {!SHOW_CUT && <rect x={0} y={0} width={197} height={ROW_HEIGHT - ROW_SPACING} className="module-background"/>}
         <SubHeader label="Arp" x={0} y={row1} width={197} labelPosition="left"/>
 
         <RotaryPot12 ledMode="single" label="Rate" x={col2} y={row2}

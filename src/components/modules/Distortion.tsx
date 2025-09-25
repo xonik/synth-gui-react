@@ -9,6 +9,7 @@ import {
     POT_DISTANCE_M,
     POT_OFFSET_Y, ROW_HEIGHT, ROW_SPACING
 } from "../../constants";
+import { SHOW_CUT } from "../../config";
 
 interface Props {
     x: number,
@@ -29,7 +30,7 @@ const Distortion = ({ x, y }: Props) => {
     const col4 = col3 + POT_DISTANCE_M
 
     return <>
-        <rect x={x} y={y} width="131" height={2 * ROW_HEIGHT - ROW_SPACING} className="module-background"/>
+        {!SHOW_CUT && <rect x={x} y={y} width="131" height={2 * ROW_HEIGHT - ROW_SPACING} className="module-background"/>}
         <SubHeader x={x} y={row1} width={131} label="Effects"/>
         <RoundPushButton8 x={col1} y={row3}
                           ledPosition="top"

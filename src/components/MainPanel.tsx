@@ -164,7 +164,7 @@ const MainPanel = () => {
                 </>}
                 {SHOW_RIGHT && <>
                     <StateVariableFilter x={filterCol} y={oscRow}/>
-                    <LowPassFilter x={filterCol} y={235}/>
+                    <LowPassFilter x={filterCol} y={180}/>
                     <PostMix x={voiceMixCol} y={7.5}/>
 
 

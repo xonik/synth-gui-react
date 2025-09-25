@@ -9,7 +9,7 @@ import RoundRotaryButton17 from '../buttons/RoundRotaryButton17'
 import { ControllerGroupIds } from '../../synthcore/types'
 import filtersControllers from '../../synthcore/modules/filters/filtersControllers'
 import SubHeader from "../misc/SubHeader";
-import { POT_OFFSET_Y, ROW_HEIGHT } from "../../constants";
+import { POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from "../../constants";
 
 interface Props {
     x: number,
@@ -25,11 +25,10 @@ const StateVariableFilter = ({ x, y }: Props) => {
     const bottomRow1 = centerRow + ROW_HEIGHT
     const bottomRow2 = bottomRow1 + ROW_HEIGHT
 
-    const col1 = x - 39
-    const col2 = x - 13
-    const col3 = x + 13
-    const col4 = x + 39
-
+    const col1 = x - 1.5 * POT_DISTANCE_M
+    const col2 = x - 0.5 * POT_DISTANCE_M
+    const col3 = x + 0.5 * POT_DISTANCE_M
+    const col4 = x + 1.5 * POT_DISTANCE_M
     // modes:
     /*
     2p LP
@@ -136,7 +135,6 @@ const StateVariableFilter = ({ x, y }: Props) => {
                           ctrlGroup={ctrlGroup}
                           ctrl={filtersControllers.FILTERS.ROUTING}
         />
-        <HorizontalLine x={x} y={bottomRow2 + 30} width={110} align="center"/>
     </>
 }
 

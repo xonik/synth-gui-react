@@ -217,7 +217,7 @@ const getRenderProps = (props: Props & Config): RenderProps => {
     const labelMargin = props.labelMargin || 2
     const labelPosition = props.labelPosition || 'left'
 
-    const ledRadius = 1.5
+    const ledRadius = SHOW_CUT ? 2.9 / 2 : 1.5
     const ledCount = props.ledCount || 0
     const ledToLedMargin = props.ledToLedMargin || 3
     const ledMargin = props.ledMargin || 4

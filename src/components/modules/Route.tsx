@@ -7,6 +7,7 @@ import modsControllers from '../../synthcore/modules/mods/modsControllers'
 import SubHeader from "../misc/SubHeader";
 import RoundLedPushButton8 from "../buttons/RoundLedPushButton8";
 import { PADDING_LEFT, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT, ROW_SPACING } from "../../constants";
+import { SHOW_CUT } from "../../config";
 
 interface Props {
     x: number,
@@ -20,7 +21,7 @@ const Route = ({ x, y }: Props) => {
     const route = useAppSelector(selectModsUi)
 
     return <svg x={x} y={y}>
-        <rect x={0} y={0} width={50} height={ROW_HEIGHT - ROW_SPACING} className="module-background"/>
+        {!SHOW_CUT && <rect x={0} y={0} width={50} height={ROW_HEIGHT - ROW_SPACING} className="module-background"/>}
         <SubHeader label="Route" x={0} y={0} width={50} labelPosition="left"/>
 
         <RoundLedPushButton8 labelPosition="bottom-pot" x={PADDING_LEFT} y={POT_OFFSET_Y} hasOff

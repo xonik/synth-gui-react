@@ -10,6 +10,7 @@ import {
     POT_OFFSET_Y,
     ROW_HEIGHT, ROW_SPACING
 } from "../../constants";
+import { SHOW_CUT } from "../../config";
 
 interface Props {
     x: number,
@@ -57,7 +58,7 @@ const SourceMixer = ({ x, y }: Props) => {
 
 
     return <>
-        <rect x={x} y={y} width="135" height={2 * ROW_HEIGHT - ROW_SPACING} className="module-background"/>
+        {!SHOW_CUT && <rect x={x} y={y} width="135" height={2 * ROW_HEIGHT - ROW_SPACING} className="module-background"/> }
         <SubHeader label="Mix" x={x} y={y} width={135}/>
         <MixerChannel x={col1} y={row1} label="Noise"
                       levelCtrl={srcMixControllers.LEVEL_NOISE}

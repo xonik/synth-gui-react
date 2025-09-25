@@ -16,6 +16,7 @@ import {
     ROW_HEIGHT,
     ROW_SPACING,
 } from "../../constants";
+import { SHOW_CUT } from "../../config";
 
 interface Props {
     x: number,
@@ -43,7 +44,7 @@ const LFO = ({ x, y }: Props) => {
     const lfoId = useAppSelector(selectCurrUiLfoId)
 
     return <svg x={x} y={y}>
-        <rect x={0} y={0} width={323} height={ROW_HEIGHT - ROW_SPACING} className="module-background"/>
+        {!SHOW_CUT && <rect x={0} y={0} width={323} height={ROW_HEIGHT - ROW_SPACING} className="module-background"/>}
         <SubHeader align="left" label="LFO" labelPosition="left" x={0} y={0} width={323}/>
 
         <RoundPushButton8 x={buttonCol} y={potRow1}

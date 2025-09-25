@@ -4,6 +4,7 @@ import { ControllerGroupIds } from '../../synthcore/types'
 import noiseControllers from '../../synthcore/modules/noise/noiseControllers'
 import SubHeader from "../misc/SubHeader";
 import { PADDING_LEFT, POT_OFFSET_Y, ROW_HEIGHT, ROW_SPACING } from "../../constants";
+import { SHOW_CUT } from "../../config";
 
 interface Props {
     x: number,
@@ -15,8 +16,8 @@ const ctrlGroup = ControllerGroupIds.NOISE
 const Noise = ({ x, y }: Props) => {
 
     return <>
-        <rect x={x} y={y} width={45} height={ROW_HEIGHT - ROW_SPACING} className="module-background"/>
-        <SubHeader label="Noise" labelPosition="left" x={x} y={y} width={45}/>
+        {!SHOW_CUT &&
+            <SubHeader label="Noise" labelPosition="left" x={x} y={y} width={45}/> }
         <RoundPushButton8 x={x + PADDING_LEFT} y={y + POT_OFFSET_Y}
                           ledPosition="right" ledCount={3} ledLabels={['White', 'Pink', 'Red']}
                           label="" labelPosition="bottom"

@@ -13,6 +13,7 @@ import {
     ROW_HEIGHT,
     ROW_SPACING
 } from "../../constants";
+import { SHOW_CUT } from "../../config";
 
 interface Props {
     x: number,
@@ -34,7 +35,7 @@ const VCO = ({ x, y }: Props) => {
     const col4 = x + 1.5 * POT_DISTANCE_M
 
     return <>
-        <rect x={x-52.5} y={y} width="105" height={130 - ROW_SPACING} className="module-background"/>
+        {!SHOW_CUT && <rect x={x-52.5} y={y} width="105" height={130 - ROW_SPACING} className="module-background"/> }
         <SubHeader label="Oscillator 3" x={x} y={y} width={105} align="center"/>
         <RotaryPot21 x={x} y={centerRow} ledMode="single" label="Waveform"
                      ctrlGroup={ctrlGroup}
