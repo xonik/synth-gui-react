@@ -4,6 +4,8 @@ import Header from '../misc/Header';
 import RoundPushButton8 from '../buttons/RoundPushButton8';
 import { ControllerGroupIds } from '../../synthcore/types'
 import commonFxControllers from '../../synthcore/modules/commonFx/commonFxControllers'
+import { POT_DISTANCE_L, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from "../../constants";
+import SubHeader from "../misc/SubHeader";
 
 interface Props {
     x: number,
@@ -14,37 +16,34 @@ const ctrlGroup = ControllerGroupIds.COMMON_FX
 
 const Chorus = ({ x, y }: Props) => {
 
-    const row1 = 0;
-    const row2 = 20;
-    const row3 = 30;
-    const col1 = 10;
-    const col2 = col1 + 25;
-    const col3 = col2 + 27.5;
-    const col4 = col3 + 20;
+    const row1 = y + POT_OFFSET_Y;
+    const row2 = row1 + ROW_HEIGHT;
+    const col1 = x + 10;
+    const col2 = col1 + POT_DISTANCE_L;
 
-    return <svg x={x} y={y}>
-        <Header label="Chorus" x={25} y={row1} width={50}/>
-        <RoundPushButton8 x={col1} y={row3} ledCount={2} ledPosition="top" ledLabels={['FX1', 'FX2']}
+    return <>
+        <SubHeader label="Chorus" x={x} y={y} width={68}/>
+        <RoundPushButton8 label="Source" labelPosition="bottom" x={col1} y={row1} ledCount={2} ledPosition="right" ledLabels={['FX1', 'FX2']}
                           ctrlGroup={ctrlGroup}
                           ctrl={commonFxControllers.CHORUS.SOURCE}
         />
 
-        <RotaryPot12 ledMode="single" label="Rate" x={col2} y={row2}
-                     ctrlGroup={ctrlGroup}
-                     ctrl={commonFxControllers.CHORUS.RATE}
-        />
-
-        <RotaryPot12 ledMode="single" label="Depth" x={col3} y={row2}
-                     ctrlGroup={ctrlGroup}
-                     ctrl={commonFxControllers.CHORUS.DEPTH}
-        />
-
-        <RoundPushButton8 x={col4} y={row3} ledCount={2} ledPosition="top" ledLabels={['Chorus', 'Vibrato']}
+        <RoundPushButton8 label="Mode" labelPosition="bottom"
+                          x={col1} y={row2} ledCount={2} ledPosition="right" ledLabels={['Chorus', 'Vibrato']}
                           ctrlGroup={ctrlGroup}
                           ctrl={commonFxControllers.CHORUS.MODE}
         />
 
-    </svg>;
+        <RotaryPot12 ledMode="single" label="Rate" x={col2} y={row1}
+                     ctrlGroup={ctrlGroup}
+                     ctrl={commonFxControllers.CHORUS.RATE}
+        />
+
+        <RotaryPot12 ledMode="single" label="Depth" x={col2} y={row2}
+                     ctrlGroup={ctrlGroup}
+                     ctrl={commonFxControllers.CHORUS.DEPTH}
+        />
+    </>;
 };
 
 export default Chorus;

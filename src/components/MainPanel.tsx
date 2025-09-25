@@ -76,7 +76,7 @@ const MainPanel = () => {
     const envCol = voiceMixCol + 40
     const outFx1Col = envCol
     const outFx2Col = outFx1Col + 130
-    const outputMixerCol = envCol + 5
+    const outputMixerCol = envCol + 190
 
     const oscRow = 15
 
@@ -91,7 +91,8 @@ const MainPanel = () => {
     const displayRow = voiceSelRow + 55
     const keyCtrlRow = displayRow + 220
 
-    const outputFxRow = 175
+    const outputFxRow = 200
+    const chorusRow = lfo1Row
     const arpRow = clockRow
 
     const outputMixerRow = outputFxRow + 85
@@ -168,15 +169,15 @@ const MainPanel = () => {
                     <PostMix x={voiceMixCol} y={oscRow}/>
 
 
-                    <Envelope header="Envelopes" x={envCol} y={oscRow} label="VCA" envId={0}/>
-                    <Envelope x={envCol} y={oscRow + 65} label="VCF" envId={1}/>
-                    <Envelope x={envCol} y={oscRow + 120} label="" showSelect={true} envId={env3Id}/>
+                    <Envelope header="VCA Env" x={envCol} y={oscRow} label="" envId={0}/>
+                    <Envelope header="VCF Env" x={envCol} y={oscRow + ROW_HEIGHT * 2} label="" envId={1}/>
+                    <Envelope x={envCol} y={oscRow + ROW_HEIGHT * 4} label="" showSelect={true} envId={env3Id}/>
 
                     <DigitalFX x={outFx1Col} y={outputFxRow}/>
-                    <Chorus x={outFx2Col} y={outputFxRow + 10}/>
+                    <Chorus x={outFx2Col} y={chorusRow}/>
                     {/*<BitCrusher x={outFx2Col} y={outputFxRow + 40}/>*/ }
 
-                    <OutputMixer x={outputMixerCol} y={outputMixerRow}/>
+                    <OutputMixer x={outputMixerCol} y={oscRow}/>
                 </>}
             </svg>
             {SHOW_CENTER && <>
