@@ -117,7 +117,7 @@ const StateVariableFilter = ({ x, y }: Props) => {
         />
 
 
-        <RoundLedPushButton8 x={col4} y={bottomRow1} label="Invert" labelPosition="bottom"
+        <RoundLedPushButton8 x={col4} y={bottomRow1 + 5} label="Invert" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={filtersControllers.SVF.INVERT}
         />
