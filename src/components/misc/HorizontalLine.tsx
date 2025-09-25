@@ -26,7 +26,7 @@ const Line = ({ x, y, width, align = 'left' }: Props) => {
   const center = getCenter(x, y, width, align);
 
   return <>
-    <line x1={center - width / 2} y1={y+7} x2={center + width / 2} y2={y+7} className="line" />
+    <line x1={center - width / 2} y1={y} x2={center + width / 2} y2={y} className="line" />
   </>;
 };
 

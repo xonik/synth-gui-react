@@ -5,7 +5,7 @@ import { LedMode, PotMode } from '../pots/RotaryPotWithLedRingBase'
 import { ControllerGroupIds } from '../../synthcore/types'
 import postMixControllers from '../../synthcore/modules/postMix/postMixControllers'
 import { ControllerConfig } from '../../midi/types'
-import { ROW_HEIGHT, ROW_SPACING } from "../../constants";
+import { POT_OFFSET_Y, ROW_HEIGHT, ROW_SPACING } from "../../constants";
 import SubHeader from "../misc/SubHeader";
 
 
@@ -40,23 +40,23 @@ const VoiceMixerChannel = ({ x, y, label, potMode = 'normal', ledMode = 'multi',
 
 const PostMix = ({ x, y }: Props) => {
     const offsetX = 15
-    const offsetY = 22.5
-    const offsetY2 = 172.5
+    const offsetY = POT_OFFSET_Y
+    const offsetY2 = 130
 
     return <svg x={x} y={y}>
-        <SubHeader label="Mix" x={0} y={2.5} width={30}/>
+        <SubHeader label="Mix" x={0} y={0} width={30}/>
         <VoiceMixerChannel x={offsetX} y={offsetY} label="SVF" ctrl={postMixControllers.SVF}/>
         <VoiceMixerChannel x={offsetX} y={offsetY + rowDistance} label="LPF" ctrl={postMixControllers.LPF}/>
         <VoiceMixerChannel x={offsetX} y={offsetY + rowDistance * 2} label="Sine 1" ctrl={postMixControllers.SINE1}/>
         <VoiceMixerChannel x={offsetX} y={offsetY + rowDistance * 3} label="Sine 2" ctrl={postMixControllers.SINE2}/>
 
-        <SubHeader label="Voice out" x={0} y={offsetY2 - 20} width={30}/>
-        <VoiceMixerChannel x={offsetX} y={offsetY2} label="Pan" potMode="pan" ledMode="single"
+        <SubHeader label="" x={0} y={offsetY2} width={30}/>
+        <VoiceMixerChannel x={offsetX} y={offsetY2 + POT_OFFSET_Y} label="Pan" potMode="pan" ledMode="single"
                            ctrl={postMixControllers.PAN}/>
-        <VoiceMixerChannel x={offsetX} y={offsetY2 + rowDistance} label="Amt" ctrl={postMixControllers.AMOUNT}/>
-        <VoiceMixerChannel x={offsetX} y={offsetY2 + rowDistance * 2} label="FX1 send"
+        <VoiceMixerChannel x={offsetX} y={offsetY2 + POT_OFFSET_Y + rowDistance} label="Amt" ctrl={postMixControllers.AMOUNT}/>
+        <VoiceMixerChannel x={offsetX} y={offsetY2 + POT_OFFSET_Y + rowDistance * 2} label="FX1 send"
                            ctrl={postMixControllers.FX1_SEND}/>
-        <VoiceMixerChannel x={offsetX} y={offsetY2 + rowDistance * 3} label="FX2 send"
+        <VoiceMixerChannel x={offsetX} y={offsetY2 + POT_OFFSET_Y + rowDistance * 3} label="FX2 send"
                            ctrl={postMixControllers.FX2_SEND}/>
     </svg>
 }

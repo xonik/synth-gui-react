@@ -50,7 +50,7 @@ const StateVariableFilter = ({ x, y }: Props) => {
                      ctrl={filtersControllers.SVF.CUTOFF}
         />
 
-        <RotaryPot12 x={col1} y={topRow} ledMode="multi" label="Input"
+        <RotaryPot12 x={col1} y={topRow} ledMode="multi" label="In dry/wet"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.SVF.INPUT}
         />
@@ -73,7 +73,7 @@ const StateVariableFilter = ({ x, y }: Props) => {
                           ctrl={filtersControllers.SVF.FM_MODE}
         />
 
-        <RoundPushButton8 x={col4} y={fmRow} ledPosition="top" ledCount={2} ledLabels={['Osc B', 'Ext']}
+        <RoundPushButton8 x={col4} y={fmRow} ledPosition="top" ledCount={2} ledLabels={['2', 'Ext']}
                           label="FM src" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={filtersControllers.SVF.FM_SRC}
@@ -115,26 +115,13 @@ const StateVariableFilter = ({ x, y }: Props) => {
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.SVF.KBD_AMT}
         />
-        <HorizontalLine x={x} y={bottomRow2 + 10} width={110} align="center"/>
 
-        <RoundLedPushButton8 x={col1} y={bottomRow2 + 25} label="Invert SVF" labelPosition="bottom"
+
+        <RoundLedPushButton8 x={col4} y={bottomRow1} label="Invert" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={filtersControllers.SVF.INVERT}
         />
 
-        <RoundLedPushButton8 x={col2} y={bottomRow2 + 25}
-                             label="Link cutoff" labelPosition="bottom"
-                             ctrlGroup={ctrlGroup}
-                             ctrl={filtersControllers.FILTERS.LINK_CUTOFF}
-        />
-
-        <RoundPushButton8 x={col3} y={bottomRow2 + 25}
-                          ledPosition="right"
-                          ledCount={2}
-                          ledLabels={['Series', 'Parallel']} label="Routing" labelPosition="bottom"
-                          ctrlGroup={ctrlGroup}
-                          ctrl={filtersControllers.FILTERS.ROUTING}
-        />
     </>
 }
 

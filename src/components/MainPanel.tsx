@@ -164,17 +164,17 @@ const MainPanel = () => {
                 </>}
                 {SHOW_RIGHT && <>
                     <StateVariableFilter x={filterCol} y={oscRow}/>
-                    <LowPassFilter x={filterCol} y={180}/>
-                    <PostMix x={voiceMixCol} y={7.5}/>
+                    <LowPassFilter x={filterCol} y={oscRow + 130}/>
+                    <PostMix x={voiceMixCol} y={oscRow}/>
 
 
-                    <Envelope header="Envelopes" x={envCol} y={10} label="VCA" envId={0}/>
-                    <Envelope x={envCol} y={65} label="VCF" envId={1}/>
-                    <Envelope x={envCol} y={120} label="" showSelect={true} envId={env3Id}/>
+                    <Envelope header="Envelopes" x={envCol} y={oscRow} label="VCA" envId={0}/>
+                    <Envelope x={envCol} y={oscRow + 65} label="VCF" envId={1}/>
+                    <Envelope x={envCol} y={oscRow + 120} label="" showSelect={true} envId={env3Id}/>
 
                     <DigitalFX x={outFx1Col} y={outputFxRow}/>
                     <Chorus x={outFx2Col} y={outputFxRow + 10}/>
-                    <BitCrusher x={outFx2Col} y={outputFxRow + 40}/>
+                    {/*<BitCrusher x={outFx2Col} y={outputFxRow + 40}/>*/ }
 
                     <OutputMixer x={outputMixerCol} y={outputMixerRow}/>
                 </>}
