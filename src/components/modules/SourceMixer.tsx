@@ -60,26 +60,27 @@ const SourceMixer = ({ x, y }: Props) => {
     return <>
         {!SHOW_CUT && <rect x={x} y={y} width="135" height={2 * ROW_HEIGHT - ROW_SPACING} className="module-background"/> }
         <SubHeader label="Mix" x={x} y={y} width={135}/>
-        <MixerChannel x={col1} y={row1} label="Noise"
-                      levelCtrl={srcMixControllers.LEVEL_NOISE}
-                      outCtrl={srcMixControllers.OUT_NOISE}
-        />
-        <MixerChannel x={col1} y={row2} label="Ring mod"
-                      levelCtrl={srcMixControllers.LEVEL_RING_MOD}
-                      outCtrl={srcMixControllers.OUT_RING_MOD}
-        />
 
-        <MixerChannel x={col2} y={row1} label="Osc 1"
+        <MixerChannel x={col1} y={row1} label="Osc 1"
                       levelCtrl={srcMixControllers.LEVEL_OSC1}
                       outCtrl={srcMixControllers.OUT_OSC1}
         />
-        <MixerChannel x={col3} y={row1} label="Osc 2"
+        <MixerChannel x={col2} y={row1} label="Osc 2"
                       levelCtrl={srcMixControllers.LEVEL_OSC2}
                       outCtrl={srcMixControllers.OUT_OSC2}
         />
-        <MixerChannel x={col2} y={row2} label="Osc 3"
+        <MixerChannel x={col3} y={row1} label="Osc 3"
                       levelCtrl={srcMixControllers.LEVEL_OSC3}
                       outCtrl={srcMixControllers.OUT_OSC3}
+        />
+
+        <MixerChannel x={col1} y={row2} label="Noise"
+                      levelCtrl={srcMixControllers.LEVEL_NOISE}
+                      outCtrl={srcMixControllers.OUT_NOISE}
+        />
+        <MixerChannel x={col2} y={row2} label="Ring mod"
+                      levelCtrl={srcMixControllers.LEVEL_RING_MOD}
+                      outCtrl={srcMixControllers.OUT_RING_MOD}
         />
         <MixerChannel x={col3} y={row2} label="Ext audio"
                       levelCtrl={srcMixControllers.LEVEL_EXT_AUDIO}
