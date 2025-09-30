@@ -1,10 +1,10 @@
 import React from 'react'
-import RoundPushButton8 from '../buttons/RoundPushButton8'
-import { ControllerGroupIds } from '../../synthcore/types'
-import noiseControllers from '../../synthcore/modules/noise/noiseControllers'
-import SubHeader from "../misc/SubHeader";
-import { PADDING_LEFT, POT_OFFSET_Y, ROW_HEIGHT, ROW_SPACING } from "../../constants";
-import { SHOW_CUT } from "../../config";
+import RoundPushButton8 from '../../buttons/RoundPushButton8'
+import { ControllerGroupIds } from '../../../synthcore/types'
+import noiseControllers from '../../../synthcore/modules/noise/noiseControllers'
+import SubHeader from "../../misc/SubHeader";
+import { PADDING_LEFT, POT_OFFSET_Y, ROW_HEIGHT, ROW_SPACING } from "../../../constants";
+import { SHOW_CUT } from "../../../config";
 
 interface Props {
     x: number,

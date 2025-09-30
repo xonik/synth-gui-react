@@ -1,11 +1,11 @@
 import React from 'react';
-import RotaryPot12 from '../pots/RotaryPot12';
-import RoundPushButton8 from '../buttons/RoundPushButton8';
-import { ControllerGroupIds } from '../../synthcore/types'
-import masterClockControllers from '../../synthcore/modules/masterClock/masterClockControllers'
-import SubHeader from "../misc/SubHeader";
-import { POT_DISTANCE_L, POT_OFFSET_Y, ROW_HEIGHT, ROW_SPACING } from "../../constants";
-import { SHOW_CUT } from "../../config";
+import RotaryPot12 from '../../pots/RotaryPot12';
+import RoundPushButton8 from '../../buttons/RoundPushButton8';
+import { ControllerGroupIds } from '../../../synthcore/types'
+import masterClockControllers from '../../../synthcore/modules/masterClock/masterClockControllers'
+import SubHeader from "../../misc/SubHeader";
+import { POT_DISTANCE_L, POT_OFFSET_Y, ROW_HEIGHT, ROW_SPACING } from "../../../constants";
+import { SHOW_CUT } from "../../../config";
 
 interface Props {
     x: number,

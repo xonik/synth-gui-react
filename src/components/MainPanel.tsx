@@ -1,24 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react'
-import DCO1 from './modules/DCO1'
-import DCO2 from './modules/DCO2'
-import VCO from './modules/VCO'
-import SourceMixer from './modules/SourceMixer'
+import DCO1 from './modules/left/DCO1'
+import DCO2 from './modules/left/DCO2'
+import VCO from './modules/left/VCO'
+import SourceMixer from './modules/left/SourceMixer'
 import PostMix from './modules/PostMix'
-import Noise from './modules/Noise'
-import Ringmod from './modules/Ringmod'
-import Distortion from './modules/Distortion'
+import Noise from './modules/left/Noise'
+import Ringmod from './modules/left/Ringmod'
+import Distortion from './modules/left/Distortion'
 import LowPassFilter from './modules/LowPassFilter'
 import StateVariableFilter from './modules/StateVariableFilter'
 import Envelope from './modules/Envelope'
-import LFO from './modules/LFO'
+import LFO from './modules/left/LFO'
 import DigitalFX from './modules/DigitalFX'
 import OutputMixer from './modules/OutputMixer'
 import Chorus from './modules/Chorus'
 import BitCrusher from './modules/BitCrusher'
-import Arpeggiator from './modules/Arpeggiator'
+import Arpeggiator from './modules/left/Arpeggiator'
 import MainDisplay from './modules/MainDisplay'
-import Clock from './modules/Clock'
-import BitCrusherPre from './modules/BitCrusherPre'
+import Clock from './modules/left/Clock'
+import BitCrusherPre from './modules/left/BitCrusherPre'
 import Route from './modules/Route'
 import KeyboardControls from './modules/KeyboardControls'
 import VoiceSelector from './modules/VoiceSelector'
@@ -33,8 +33,10 @@ import { PanelScrew } from "./misc/PanelScrew";
 import RoundPushButton8 from "./buttons/RoundPushButton8";
 import { lfoCtrls } from "../synthcore/modules/lfo/lfoControllers";
 import { ControllerGroupIds } from "../synthcore/types";
-import { SHOW_CENTER, SHOW_CUT, SHOW_GRID, SHOW_LEFT, SHOW_RIGHT } from "../config";
+import { SHOW_CENTER, SHOW_CUT, SHOW_GRID, SHOW_LEFT, SHOW_LEFT_2, SHOW_RIGHT } from "../config";
 import classNames from "classnames";
+import { LeftPanel } from "./modules/left/LeftPanel";
+import { LeftPanel2 } from "./modules/left2/LeftPanel2";
 
 /**
  * TODO:
@@ -55,17 +57,6 @@ const MainPanel = () => {
     const osc2Col = osc1Col + 110
     const osc3Col = osc2Col + 110
 
-    const lfoCol = 20
-    const noiseCol = 20
-    const ringModCol = noiseCol
-    const sourceMixCol = noiseCol + 50
-    const bcCol = sourceMixCol + 142.5
-    const distCol = bcCol
-
-    const routeCol = 20
-    const clockCol = routeCol + 55
-    const arpCol = routeCol + PADDING_LEFT + 4.25 * POT_DISTANCE_M
-
     const displayCol = osc3Col + 87.5
     const keyCtrlCol = displayCol - 22
     const voiceSelCol = displayCol
@@ -80,20 +71,17 @@ const MainPanel = () => {
 
     const oscRow = 15
 
-    const fxRow1 = oscRow + 130
-    const fxRow2 = fxRow1 + ROW_HEIGHT
-    const sourceMixRow = fxRow1
-
-    const lfo1Row = fxRow2 + ROW_HEIGHT
-    const clockRow = lfo1Row + ROW_HEIGHT
+    const row5 = oscRow + 130
+    const row6 = row5 + ROW_HEIGHT
+    const row7 = row6 + ROW_HEIGHT
+    const row8 = row7 + ROW_HEIGHT
 
     const voiceSelRow = 25
     const displayRow = voiceSelRow + 55
     const keyCtrlRow = displayRow + 220
 
     const outputFxRow = 200
-    const chorusRow = lfo1Row
-    const arpRow = clockRow
+    const chorusRow = row7
 
     const outputMixerRow = outputFxRow + 85
 
@@ -129,35 +117,8 @@ const MainPanel = () => {
                          'cut': SHOW_CUT
                      })}>
                 {SHOW_GRID && <Grid panelWidth={panelWidth} panelHeight={panelHeight}/>}
-                {SHOW_LEFT && <>
-                    {SHOW_CUT && <rect x={0} y={0} width="365" height={panelHeight} className="panel-outline"/>}
-                    <DCO1 x={osc1Col} y={oscRow}/>
-                    <DCO2 x={osc2Col} y={oscRow}/>
-                    <VCO x={osc3Col} y={oscRow}/>
-
-                    <Noise x={noiseCol} y={fxRow1}/>
-                    <Ringmod x={ringModCol} y={fxRow2}/>
-                    <Distortion x={distCol} y={fxRow1}/>
-                    <BitCrusherPre x={bcCol} y={fxRow2}/>
-
-
-                    <SourceMixer x={sourceMixCol} y={sourceMixRow}/>
-
-                    <LFO x={lfoCol} y={lfo1Row}/>
-
-                    <Route x={routeCol} y={clockRow}/>
-                    <Clock x={clockCol} y={clockRow}/>
-                    <Arpeggiator x={arpCol} y={arpRow}/>
-
-                    <PanelScrew x={10} y={10}/>
-                    <PanelScrew x={10} y={145}/>
-                    <PanelScrew x={20 + PADDING_LEFT + 5.5 * POT_DISTANCE_M} y={10}/>
-                    <PanelScrew x={355} y={10}/>
-                    <PanelScrew x={10} y={280}/>
-                    <PanelScrew x={20 + PADDING_LEFT + 5.5 * POT_DISTANCE_M} y={280}/>
-                    <PanelScrew x={355} y={145}/>
-                    <PanelScrew x={355} y={280}/>
-                </>}
+                {SHOW_LEFT && <LeftPanel panelHeight={panelHeight} oscRow={oscRow}/>}
+                {SHOW_LEFT_2 && <LeftPanel2 panelHeight={panelHeight} oscRow={oscRow}/>}
                 {SHOW_CENTER && <>
                     <MainDisplay x={displayCol} y={displayRow} ref={displayRef}/>
                     <VoiceSelector x={voiceSelCol} y={voiceSelRow}/>
@@ -175,7 +136,7 @@ const MainPanel = () => {
 
                     <DigitalFX x={outFx1Col} y={outputFxRow}/>
                     <Chorus x={outFx2Col} y={chorusRow}/>
-                    {/*<BitCrusher x={outFx2Col} y={outputFxRow + 40}/>*/ }
+                    {/*<BitCrusher x={outFx2Col} y={outputFxRow + 40}/>*/}
 
                     <OutputMixer x={outputMixerCol} y={oscRow}/>
                 </>}

@@ -1,15 +1,15 @@
 import React from 'react'
-import RoundPushButton8 from '../buttons/RoundPushButton8'
-import { ControllerGroupIds } from '../../synthcore/types'
-import fxControllers from '../../synthcore/modules/fx/fxControllers'
-import RotaryPot12 from "../pots/RotaryPot12";
-import SubHeader from "../misc/SubHeader";
+import RoundPushButton8 from '../../buttons/RoundPushButton8'
+import { ControllerGroupIds } from '../../../synthcore/types'
+import fxControllers from '../../../synthcore/modules/fx/fxControllers'
+import RotaryPot12 from "../../pots/RotaryPot12";
+import SubHeader from "../../misc/SubHeader";
 import {
     DUAL_LED_BUTTON_NO_LABEL_OFFSET_Y,
     POT_DISTANCE_M,
     POT_OFFSET_Y, ROW_HEIGHT, ROW_SPACING
-} from "../../constants";
-import { SHOW_CUT } from "../../config";
+} from "../../../constants";
+import { SHOW_CUT } from "../../../config";
 
 interface Props {
     x: number,

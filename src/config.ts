@@ -5,5 +5,6 @@ export const SHOW_KEYBOARD = false
 
 export const SHOW_GRID = false
 export const SHOW_LEFT = true
+export const SHOW_LEFT_2 = true
 export const SHOW_CENTER = true
 export const SHOW_RIGHT = true

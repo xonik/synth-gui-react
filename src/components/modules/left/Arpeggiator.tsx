@@ -7,20 +7,20 @@
 - Button - Sync (button) - int clock, Lfo, ext clock
  */
 import React from 'react';
-import RotaryPot12 from '../pots/RotaryPot12';
-import RoundPushButton8 from '../buttons/RoundPushButton8';
-import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
-import { ControllerGroupIds } from '../../synthcore/types'
-import arpControllers from '../../synthcore/modules/arp/arpControllers'
-import SubHeader from "../misc/SubHeader";
+import RotaryPot12 from '../../pots/RotaryPot12';
+import RoundPushButton8 from '../../buttons/RoundPushButton8';
+import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8';
+import { ControllerGroupIds } from '../../../synthcore/types'
+import arpControllers from '../../../synthcore/modules/arp/arpControllers'
+import SubHeader from "../../misc/SubHeader";
 import {
     BUTTON_DISTANCE_S,
     POT_DISTANCE_M,
     POT_OFFSET_Y,
     ROW_HEIGHT,
     ROW_SPACING
-} from "../../constants";
-import { SHOW_CUT } from "../../config";
+} from "../../../constants";
+import { SHOW_CUT } from "../../../config";
 
 interface Props {
     x: number,
