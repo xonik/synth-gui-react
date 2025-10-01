@@ -186,11 +186,11 @@ const positionLeds = (
                 })
                 break
             case 'top-horizontal':
-                let startX = -((ledCount - 1) * yDist) / 2
+                let startX = -((ledCount - 1) * 1.25 * yDist) / 2
                 ledPositions.push({
-                    x: startX + i * yDist,
+                    x: startX + 1.25 * i * yDist,
                     y: -yDist / 2 - buttonRadius - ledMargin - ledRadius,
-                    labelX: startX + i * yDist,
+                    labelX: startX + i * 1.25 * yDist,
                     labelY: -buttonRadius - 2,
                     textAnchor: 'middle'
                 })

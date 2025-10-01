@@ -25,10 +25,7 @@ const DCO1 = ({ x, y }: Props) => {
     const topRow = y + POT_OFFSET_Y
     const bottomRow = topRow + ROW_HEIGHT
     const buttonRow1 = topRow - 5
-    const buttonRow2 = topRow + 40
     const centerRow = topRow + ROW_HEIGHT * 0.5
-    const bottomRow1 = centerRow + ROW_HEIGHT
-    const bottomRow2 = bottomRow1 + ROW_HEIGHT
 
     const col1 = x + PADDING_LEFT
     const col2 = col1 + POT_DISTANCE_L
@@ -101,14 +98,14 @@ const DCO1 = ({ x, y }: Props) => {
                              ctrl={oscControllers.DCO1.PRE_FILTER_SINE}
         />
 
-        <RoundPushButton8 x={col8} y={topRow + DUAL_LED_BUTTON_W_LABEL_OFFSET_Y}
+        <RoundPushButton8 x={col9} y={bottomRow + DUAL_LED_BUTTON_W_LABEL_OFFSET_Y}
                           ledPosition="top-horizontal" ledCount={2} ledLabels={['Sq', 'Sw']}
                           label="Sub wave" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={oscControllers.DCO1.SUB_WAVE}
         />
 
-        <RotaryPot12 x={col9} y={topRow} ledMode="multi" label="Sub -1"
+        <RotaryPot12 x={col8} y={topRow} ledMode="multi" label="Sub -1"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.DCO1.SUB1}
         />
@@ -118,7 +115,7 @@ const DCO1 = ({ x, y }: Props) => {
                      ctrl={oscControllers.DCO1.PW}
         />
 
-        <RotaryPot12 x={col9} y={bottomRow} ledMode="multi" label="Sub -2"
+        <RotaryPot12 x={col9} y={topRow} ledMode="multi" label="Sub -2"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.DCO1.SUB2}
         />

@@ -45,10 +45,9 @@ export const LeftPanel2 = ({panelHeight, oscRow }: Props) => {
     return <>
         {SHOW_CUT && <rect x={0} y={0} width="365" height={panelHeight} className="panel-outline"/>}
         <DCO1 x={osc1Col} y={oscRow}/>
+        <DCO2 x={osc1Col} y={oscRow + 2 * ROW_HEIGHT}/>
+        <VCO x={osc1Col} y={oscRow + 4 * ROW_HEIGHT}/>
         {/*
-        <DCO2 x={osc2Col} y={oscRow}/>
-        <VCO x={osc3Col} y={oscRow}/>
-    */}
         <Noise x={noiseCol} y={row5}/>
         <Ringmod x={ringModCol} y={row6}/>
         <Distortion x={distCol} y={row5}/>
@@ -56,7 +55,7 @@ export const LeftPanel2 = ({panelHeight, oscRow }: Props) => {
 
 
         <SourceMixer x={sourceMixCol} y={row5}/>
-
+*/}
         <LFO x={lfoCol} y={row7}/>
 
         <Route x={routeCol} y={row8}/>

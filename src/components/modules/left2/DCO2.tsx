@@ -7,8 +7,8 @@ import { ControllerGroupIds } from '../../../synthcore/types'
 import oscControllers from '../../../synthcore/modules/osc/oscControllers'
 import SubHeader from "../../misc/SubHeader";
 import {
-    DUAL_LED_BUTTON_W_LABEL_OFFSET_Y,
-    POT_DISTANCE_M,
+    DUAL_LED_BUTTON_W_LABEL_OFFSET_Y, PADDING_LEFT, POT_DISTANCE_L,
+    POT_DISTANCE_M, POT_DISTANCE_S,
     POT_OFFSET_Y,
     ROW_HEIGHT,
     ROW_SPACING
@@ -25,31 +25,57 @@ const ctrlGroup = ControllerGroupIds.OSC
 const DCO2 = ({ x, y }: Props) => {
 
     const topRow = y + POT_OFFSET_Y
-    const buttonRow1 = topRow + 22.5
-    const buttonRow2 = topRow + 40
-    const centerRow = topRow + ROW_HEIGHT
-    const bottomRow1 = centerRow + ROW_HEIGHT
-    const bottomRow2 = bottomRow1 + ROW_HEIGHT
+    const bottomRow = topRow + ROW_HEIGHT
+    const buttonRow1 = topRow - 5
+    const centerRow = topRow + ROW_HEIGHT * 0.5
 
-    const col1 = x - 1.5 * POT_DISTANCE_M
-    const col2 = x - 0.5 * POT_DISTANCE_M
-    const col3 = x + 0.5 * POT_DISTANCE_M
-    const col4 = x + 1.5 * POT_DISTANCE_M
+    const col1 = x + PADDING_LEFT
+    const col2 = col1 + POT_DISTANCE_L
+    const col3 = col2 +  POT_DISTANCE_M
+    const col4 = col3 +  POT_DISTANCE_M
+    const col5 = col4 + POT_DISTANCE_S
+    const col6 = col5 + POT_DISTANCE_S
+    const col7 = col6 + POT_DISTANCE_S
+    const col8 = col7 + POT_DISTANCE_S
+    const col9 = col8 + POT_DISTANCE_M
+
+    const moduleWidth = col9 + PADDING_LEFT - x
 
     return <>
-        {!SHOW_CUT && <rect x={x-52.5} y={y} width="105" height={130 - ROW_SPACING} className="module-background"/> }
-        <SubHeader label="Oscillator 2" x={x} y={y} width={105} align="center"/>
-        <RotaryPot21 x={x} y={centerRow} ledMode="single" label="Waveform"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={oscControllers.DCO2.WAVEFORM}
+        {/*!SHOW_CUT && <rect x={x-52.5} y={y} width="105" height={130 - ROW_SPACING} className="module-background"/>*/}
+
+        <rect x={col2 - POT_DISTANCE_M / 2} y={topRow - 0.5 * ROW_HEIGHT} width={2 * POT_DISTANCE_M} height={2 * ROW_HEIGHT} className="highlight-background"/>
+
+        <SubHeader label="Oscillator 2" x={x} y={y} width={moduleWidth} labelPosition="left"/>
+
+        <RoundPushButton8 x={col1} y={topRow}
+                          ledPosition="right" ledCount={3} ledLabels={['DCO', 'WT', 'PCM']}
+                          label="Mode" labelPosition="bottom"
+                          ctrlGroup={ctrlGroup}
+                          ctrl={oscControllers.DCO2.MODE}
         />
 
-        <RotaryPot12 x={col1} y={topRow} ledMode="single" label="Note"
+        <RotaryPot12 x={col2} y={topRow} label="Kbd"
+                     ctrlGroup={ctrlGroup}
+                     ctrl={oscControllers.DCO2.KBD}
+        />
+
+        <RotaryPot12 x={col3} y={topRow} label="LFO"
+                     ctrlGroup={ctrlGroup}
+                     ctrl={oscControllers.DCO2.LFO}
+        />
+
+        <RotaryPot12 x={col4} y={topRow} ledMode="single" label="Note"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.DCO2.NOTE}
         />
 
-        <RoundPushButton8 x={col2} y={topRow}
+        <RotaryPot12 x={col4} y={bottomRow} ledMode="single" label="Detune"
+                     ctrlGroup={ctrlGroup}
+                     ctrl={oscControllers.DCO2.DETUNE}
+        />
+
+        <RoundPushButton8 x={col1} y={bottomRow}
                           ledPosition="right" ledCount={2} ledLabels={['Hard', 'Metal']}
                           label="Sync" labelPosition="bottom"
                           hasOff
@@ -57,65 +83,46 @@ const DCO2 = ({ x, y }: Props) => {
                           ctrl={oscControllers.DCO2.SYNC}
         />
 
-        <RotaryPot12 x={col4} y={topRow} ledMode="single" label="Detune"
+        <RotaryPot12 x={col3} y={bottomRow} label="Wheel"
                      ctrlGroup={ctrlGroup}
-                     ctrl={oscControllers.DCO2.DETUNE}
+                     ctrl={oscControllers.DCO2.WHEEL}
         />
 
-        {/*<RotaryPot12 x={col4} y={topRow} ledMode="multi" label="Super saw"/>*/}
-        <RoundLedPushButton8 x={col1} y={buttonRow1} label="Saw inv" labelPosition="bottom"
+        <RoundLedPushButton8 x={col5} y={buttonRow1} label="Saw inv" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={oscControllers.DCO2.SAW_INV}
         />
 
-        <RoundLedPushButton8 x={col1} y={buttonRow2} label="Sine" labelPosition="bottom"
+        <RotaryPot21 x={col6} y={centerRow} ledMode="single" label="Waveform"
+                     ctrlGroup={ctrlGroup}
+                     ctrl={oscControllers.DCO2.WAVEFORM}
+        />
+
+        <RoundLedPushButton8 x={col7} y={buttonRow1} label="Sine" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={oscControllers.DCO2.PRE_FILTER_SINE}
         />
 
-        <RoundPushButton8 x={col4} y={buttonRow2}
-                          ledPosition="top" ledCount={3} ledLabels={['DCO', 'WT', 'PCM']}
-                          label="Mode" labelPosition="bottom"
-                          ctrlGroup={ctrlGroup}
-                          ctrl={oscControllers.DCO2.MODE}
-        />
-
-
-        <RoundPushButton8 x={col1} y={bottomRow1 + DUAL_LED_BUTTON_W_LABEL_OFFSET_Y}
-                          ledPosition="top" ledCount={2} ledLabels={['Sqr', 'Saw']}
+        <RoundPushButton8 x={col9} y={bottomRow + DUAL_LED_BUTTON_W_LABEL_OFFSET_Y}
+                          ledPosition="top-horizontal" ledCount={2} ledLabels={['Sq', 'Sw']}
                           label="Sub wave" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={oscControllers.DCO2.SUB_WAVE}
         />
 
-        <RotaryPot12 x={col2} y={bottomRow1} ledMode="multi" label="Sub -1"
+        <RotaryPot12 x={col8} y={topRow} ledMode="multi" label="Sub -1"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.DCO2.SUB1}
         />
 
-        <RotaryPot12 x={col3} y={bottomRow1} ledMode="multi" label="Sub -2"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={oscControllers.DCO2.SUB2}
-        />
-
-        <RotaryPot12 x={col4} y={bottomRow1} ledMode="single" label="PW"
+        <RotaryPot12 x={col8} y={bottomRow} ledMode="single" label="PW"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.DCO2.PW}
         />
 
-        <RotaryPot12 x={col2} y={bottomRow2} label="Wheel"
+        <RotaryPot12 x={col9} y={topRow} ledMode="multi" label="Sub -2"
                      ctrlGroup={ctrlGroup}
-                     ctrl={oscControllers.DCO2.WHEEL}
-        />
-
-        <RotaryPot12 x={col3} y={bottomRow2} label="LFO"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={oscControllers.DCO2.LFO}
-        />
-
-        <RotaryPot12 x={col4} y={bottomRow2} label="Kbd"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={oscControllers.DCO2.KBD}
+                     ctrl={oscControllers.DCO2.SUB2}
         />
 
     </>
