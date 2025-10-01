@@ -192,7 +192,7 @@ const positionLeds = (
                     y: -yDist / 2 - buttonRadius - ledMargin - ledRadius,
                     labelX: startX + i * yDist,
                     labelY: -buttonRadius - 2,
-                    textAnchor: 'start'
+                    textAnchor: 'middle'
                 })
                 break
             case 'bottom':
