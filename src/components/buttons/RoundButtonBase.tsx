@@ -11,7 +11,17 @@ import { selectUiController } from '../../synthcore/modules/controllers/controll
 import './RoundButton.scss'
 import { SHOW_CUT } from "../../config";
 
-type LedPosition = 'left' | 'right' | 'right2' | 'right-two-cols' | 'sides' | 'top' | 'top-horizontal' | 'bottom' | undefined;
+type LedPosition =
+    'left'
+    | 'right'
+    | 'right2'
+    | 'right-two-cols'
+    | 'sides'
+    | 'top'
+    | 'top-horizontal'
+    | 'top-horizontal-no-label'
+    | 'bottom'
+    | undefined;
 type LabelPosition = 'left' | 'right' | 'top' | 'bottom' | 'bottom-pot' | undefined;
 type ButtonMode = 'push' | 'rotate';
 
@@ -34,6 +44,7 @@ export interface Props {
     labelPosition?: LabelPosition;
     ledLabels?: string[];
     ledPosition?: LedPosition;
+    ledRingColors?: string [];
 
     // Number of leds AROUND the button. If this is undefined but ledButton is true, the button itself is a led.
     ledCount?: number;
@@ -214,6 +225,16 @@ const positionLeds = (
                     textAnchor: 'middle'
                 })
                 break
+            case 'top-horizontal-no-label':
+                let startX2 = -((ledCount - 1) * 1.25 * yDist) / 2
+                ledPositions.push({
+                    x: startX2 + 1.25 * i * yDist,
+                    y: -buttonRadius - ledMargin - ledRadius,
+                    labelX: startX2 + i * 1.25 * yDist,
+                    labelY: -buttonRadius - 2,
+                    textAnchor: 'middle'
+                })
+                break
             case 'bottom':
                 ledPositions.push({
                     x: 0,
@@ -260,7 +281,8 @@ export const RoundButtonBase = (props: Props & Config) => {
         x, y, label, radioButtonIndex,
         hasOff, ledCount, ledButton, reverse, loop = true,
         momentary,
-        ctrlGroup, ctrl, ctrlIndex, value, valueIndex, resolution
+        ctrlGroup, ctrl, ctrlIndex, value, valueIndex, resolution,
+        ledRingColors,
     } = props
 
     const storeValue = useAppSelector(selectUiController(ctrl, ctrlIndex || 0))
@@ -358,6 +380,11 @@ export const RoundButtonBase = (props: Props & Config) => {
                 alignmentBaseline="middle"
             >{label}</text>}
             {ledPos.map((position, index) => <React.Fragment key={index}>
+                {ledRingColors && ledRingColors.length > index && <circle
+                    cx={position.x} cy={position.y} r={ledRadius + 1}
+                    fill={ledRingColors[index]}
+                />}
+
                 <circle
                     cx={position.x} cy={position.y} r={ledRadius}
                     className={
@@ -368,9 +395,10 @@ export const RoundButtonBase = (props: Props & Config) => {
                             })
                     }
                 />
+
                 {ledLabels[index] && <text
                     x={position.labelX}
-                    y={position.labelY ?? position.y + 1.2}
+                    y={position.labelY ?? position.y + 1.07}
                     className="button-led-label"
                     textAnchor={position.textAnchor}
                     alignmentBaseline="middle"

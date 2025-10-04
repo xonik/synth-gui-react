@@ -33,8 +33,10 @@ const MixerChannel = ({ x, y, label, levelCtrl, outCtrl }: ChannelProps) => {
         />
 
         <RoundPushButton8 x={x + POT_DISTANCE_S} y={y + (DUAL_LED_BUTTON_W_LABEL_OFFSET_Y)}
-                          ledPosition="top-horizontal" ledCount={2}
-                          ledLabels={['S', 'L']}
+                          ledPosition="top-horizontal-no-label" ledCount={2}
+                          ledRingColors={['#00bfa6', '#ff8700']}
+                          label="To"
+                          labelPosition="bottom"
                           hasOff
                           ctrlGroup={ctrlGroup}
                           ctrl={outCtrl}

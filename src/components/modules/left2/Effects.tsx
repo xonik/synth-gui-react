@@ -51,10 +51,10 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
         />
 
         <RoundPushButton8 x={col2} y={row2 + DUAL_LED_BUTTON_W_LABEL_OFFSET_Y}
-                          ledPosition="top-horizontal"
+                          ledPosition="top-horizontal-no-label"
                           ledCount={2}
-                          ledLabels={['S', 'L']}
-                          label="In"
+                          ledRingColors={['#00bfa6', '#ff8700']}
+                          label="From"
                           labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={fxControllers.DISTORTION.IN}
@@ -66,10 +66,10 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
         />
 
         <RoundPushButton8 x={col2} y={row3 + DUAL_LED_BUTTON_W_LABEL_OFFSET_Y}
-                          ledPosition="top-horizontal"
+                          ledPosition="top-horizontal-no-label"
                           ledCount={2}
-                          ledLabels={['S', 'L']}
-                          label="Out"
+                          ledRingColors={['#00bfa6', '#ff8700']}
+                          label="To"
                           labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           hasOff
@@ -83,10 +83,10 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
         />
 
         <RoundPushButton8 x={col4} y={row2 + DUAL_LED_BUTTON_W_LABEL_OFFSET_Y}
-                          ledPosition="top-horizontal"
+                          ledPosition="top-horizontal-no-label"
                           ledCount={2}
-                          ledLabels={['S', 'L']}
-                          label="In"
+                          ledRingColors={['#00bfa6', '#ff8700']}
+                          label="From"
                           labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={fxControllers.BIT_CRUSHER.IN}
@@ -109,9 +109,11 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
                      ctrl={fxControllers.BIT_CRUSHER.LEVEL}
         />*/}
 
-        <RoundPushButton8 x={col4} y={row3 + DUAL_LED_BUTTON_W_LABEL_OFFSET_Y} ledPosition="top-horizontal" ledCount={2}
-                          ledLabels={['S', 'L']}
-                          label="Out"
+        <RoundPushButton8 x={col4} y={row3 + DUAL_LED_BUTTON_W_LABEL_OFFSET_Y}
+                          ledPosition="top-horizontal-no-label"
+                          ledCount={2}
+                          ledRingColors={['#00bfa6', '#ff8700']}
+                          label="To"
                           labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           hasOff
