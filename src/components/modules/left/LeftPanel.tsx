@@ -9,7 +9,7 @@ import Distortion from "./Distortion";
 import BitCrusherPre from "./BitCrusherPre";
 import SourceMixer from "./SourceMixer";
 import LFO from "./LFO";
-import Route from "../Route";
+import Route from "./Route";
 import Clock from "./Clock";
 import Arpeggiator from "./Arpeggiator";
 import { PanelScrew } from "../../misc/PanelScrew";

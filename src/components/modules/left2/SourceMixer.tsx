@@ -6,7 +6,8 @@ import { ControllerConfig } from '../../../midi/types'
 import RotaryPot12 from "../../pots/RotaryPot12";
 import SubHeader from "../../misc/SubHeader";
 import {
-    DUAL_LED_BUTTON_NO_LABEL_OFFSET_Y, POT_DISTANCE_L, POT_DISTANCE_S,
+    BUTTON_DISTANCE_S,
+    DUAL_LED_BUTTON_NO_LABEL_OFFSET_Y, DUAL_LED_BUTTON_W_LABEL_OFFSET_Y, POT_DISTANCE_L, POT_DISTANCE_M, POT_DISTANCE_S,
     POT_OFFSET_Y,
     ROW_HEIGHT, ROW_SPACING
 } from "../../../constants";
@@ -34,8 +35,8 @@ const MixerChannel = ({ x, y, label, levelCtrl, outCtrl }: ChannelProps) => {
                      ctrl={levelCtrl}
         />
 
-        <RoundPushButton8 x={x + POT_DISTANCE_S} y={y + (DUAL_LED_BUTTON_NO_LABEL_OFFSET_Y)}
-                          ledPosition="top" ledCount={2}
+        <RoundPushButton8 x={x + POT_DISTANCE_S} y={y + (DUAL_LED_BUTTON_W_LABEL_OFFSET_Y)}
+                          ledPosition="top-horizontal" ledCount={2}
                           ledLabels={['S', 'L']}
                           hasOff
                           ctrlGroup={ctrlGroup}
@@ -45,36 +46,35 @@ const MixerChannel = ({ x, y, label, levelCtrl, outCtrl }: ChannelProps) => {
 }
 
 const SourceMixer = ({ x, y }: Props) => {
-    const offsetX = 15
     const colDistance = POT_DISTANCE_L
 
 
-    const col1 = x + offsetX
+    const col1 = x + POT_DISTANCE_M / 2
     const col2 = col1 + colDistance
-    const col3 = col1 + colDistance * 2
 
     const row1 = y + POT_OFFSET_Y
     const row2 = row1 + ROW_HEIGHT
+    const row3 = row2 + ROW_HEIGHT
 
 
     return <>
-        {!SHOW_CUT && <rect x={x} y={y} width="135" height={2 * ROW_HEIGHT - ROW_SPACING} className="module-background"/> }
-        <SubHeader label="Mix" x={x} y={y} width={135}/>
+        {/*!SHOW_CUT && <rect x={x} y={y} width="135" height={2 * ROW_HEIGHT - ROW_SPACING} className="module-background"/> */ }
+        <SubHeader label="Mix" x={x} y={y} width={2 * POT_DISTANCE_L  + 5} labelPosition="left" />
 
         <MixerChannel x={col1} y={row1} label="Osc 1"
                       levelCtrl={srcMixControllers.LEVEL_OSC1}
                       outCtrl={srcMixControllers.OUT_OSC1}
         />
-        <MixerChannel x={col2} y={row1} label="Osc 2"
+        <MixerChannel x={col1} y={row2} label="Osc 2"
                       levelCtrl={srcMixControllers.LEVEL_OSC2}
                       outCtrl={srcMixControllers.OUT_OSC2}
         />
-        <MixerChannel x={col3} y={row1} label="Osc 3"
+        <MixerChannel x={col1} y={row3} label="Osc 3"
                       levelCtrl={srcMixControllers.LEVEL_OSC3}
                       outCtrl={srcMixControllers.OUT_OSC3}
         />
 
-        <MixerChannel x={col1} y={row2} label="Noise"
+        <MixerChannel x={col2} y={row1} label="Noise"
                       levelCtrl={srcMixControllers.LEVEL_NOISE}
                       outCtrl={srcMixControllers.OUT_NOISE}
         />
@@ -82,7 +82,7 @@ const SourceMixer = ({ x, y }: Props) => {
                       levelCtrl={srcMixControllers.LEVEL_RING_MOD}
                       outCtrl={srcMixControllers.OUT_RING_MOD}
         />
-        <MixerChannel x={col3} y={row2} label="Ext audio"
+        <MixerChannel x={col2} y={row3} label="Ext audio"
                       levelCtrl={srcMixControllers.LEVEL_EXT_AUDIO}
                       outCtrl={srcMixControllers.OUT_EXT_AUDIO}
         />

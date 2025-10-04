@@ -17,12 +17,13 @@ import { SHOW_CUT } from "../../../config";
 
 interface Props {
     x: number,
-    y: number
+    y: number,
+    width: number
 }
 
 const ctrlGroup = ControllerGroupIds.OSC
 
-const DCO2 = ({ x, y }: Props) => {
+const DCO2 = ({ x, y, width }: Props) => {
 
     const topRow = y + POT_OFFSET_Y
     const bottomRow = topRow + ROW_HEIGHT
@@ -39,14 +40,12 @@ const DCO2 = ({ x, y }: Props) => {
     const col8 = col7 + POT_DISTANCE_S
     const col9 = col8 + POT_DISTANCE_M
 
-    const moduleWidth = col9 + PADDING_LEFT - x
-
     return <>
         {/*!SHOW_CUT && <rect x={x-52.5} y={y} width="105" height={130 - ROW_SPACING} className="module-background"/>*/}
 
         <rect x={col2 - POT_DISTANCE_M / 2} y={topRow - 0.5 * ROW_HEIGHT} width={2 * POT_DISTANCE_M} height={2 * ROW_HEIGHT} className="highlight-background"/>
 
-        <SubHeader label="Oscillator 2" x={x} y={y} width={moduleWidth} labelPosition="left"/>
+        <SubHeader label="Oscillator 2" x={x} y={y} width={width} labelPosition="left"/>
 
         <RoundPushButton8 x={col1} y={topRow}
                           ledPosition="right" ledCount={3} ledLabels={['DCO', 'WT', 'PCM']}

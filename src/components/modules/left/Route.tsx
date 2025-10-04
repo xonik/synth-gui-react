@@ -1,13 +1,13 @@
 import React from 'react';
-import RotaryPot12 from '../pots/RotaryPot12';
-import { ControllerGroupIds } from '../../synthcore/types'
-import { useAppSelector } from '../../synthcore/hooks'
-import { selectModsUi } from '../../synthcore/modules/mods/modsReducer'
-import modsControllers from '../../synthcore/modules/mods/modsControllers'
-import SubHeader from "../misc/SubHeader";
-import RoundLedPushButton8 from "../buttons/RoundLedPushButton8";
-import { PADDING_LEFT, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT, ROW_SPACING } from "../../constants";
-import { SHOW_CUT } from "../../config";
+import RotaryPot12 from '../../pots/RotaryPot12';
+import { ControllerGroupIds } from '../../../synthcore/types'
+import { useAppSelector } from '../../../synthcore/hooks'
+import { selectModsUi } from '../../../synthcore/modules/mods/modsReducer'
+import modsControllers from '../../../synthcore/modules/mods/modsControllers'
+import SubHeader from "../../misc/SubHeader";
+import RoundLedPushButton8 from "../../buttons/RoundLedPushButton8";
+import { PADDING_LEFT, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT, ROW_SPACING } from "../../../constants";
+import { SHOW_CUT } from "../../../config";
 
 interface Props {
     x: number,

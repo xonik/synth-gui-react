@@ -29,8 +29,8 @@ const SubHeader = ({ x, y, width, align = 'left', label, labelPosition = 'center
 
     return <>
         {label && <text
-            x={labelPosition === 'center' ? center : x + 1}
-            y={y + 5.5}
+            x={labelPosition === 'center' ? center : x + 3}
+            y={y + 4.5}
             className="subheader-label"
             textAnchor={labelPosition === 'center' ? "middle" : "left"}
             alignmentBaseline="baseline"

@@ -16,14 +16,14 @@ const ctrlGroup = ControllerGroupIds.MASTER_CLOCK
 
 const Clock = ({ x, y }: Props) => {
 
-    const row1 = 0;
-    const row2 = POT_OFFSET_Y
-    const col1 = 10;
+    const row1 = y;
+    const row2 = y + POT_OFFSET_Y
+    const col1 = x + 10;
     const col2 = col1 + POT_DISTANCE_L;
 
-    return <svg x={x} y={y}>
-        {!SHOW_CUT && <rect x={0} y={0} width={64} height={ROW_HEIGHT - ROW_SPACING} className="module-background"/>}
-        <SubHeader label="Clock" x={0} y={row1} width={64} labelPosition="left"/>
+    return <>
+        {/*!SHOW_CUT && <rect x={0} y={0} width={64} height={ROW_HEIGHT - ROW_SPACING} className="module-background"/>*/}
+        <SubHeader label="Clock" x={x} y={row1} width={64} labelPosition="left"/>
         <RoundPushButton8 labelPosition="bottom-pot" x={col1} y={row2} label="Source" ledCount={3} ledPosition="right" ledLabels={['Int', 'Midi', 'Ext']}
                           ctrlGroup={ctrlGroup}
                           ctrl={masterClockControllers.SOURCE}
@@ -34,7 +34,7 @@ const Clock = ({ x, y }: Props) => {
                      ctrl={masterClockControllers.RATE}
         />
 
-    </svg>;
+    </>;
 };
 
 export default Clock;

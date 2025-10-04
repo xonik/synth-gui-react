@@ -58,7 +58,7 @@ const SourceMixer = ({ x, y }: Props) => {
 
 
     return <>
-        {!SHOW_CUT && <rect x={x} y={y} width="135" height={2 * ROW_HEIGHT - ROW_SPACING} className="module-background"/> }
+        {/*!SHOW_CUT && <rect x={x} y={y} width="135" height={2 * ROW_HEIGHT - ROW_SPACING} className="module-background"/> */}
         <SubHeader label="Mix" x={x} y={y} width={135}/>
 
         <MixerChannel x={col1} y={row1} label="Osc 1"

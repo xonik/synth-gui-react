@@ -1,0 +1,10 @@
+.vertical-divider-line {
+  stroke: white;
+  stroke-width: 0.5;
+}
+
+.cut {
+  .vertical-divider-line {
+    stroke: black;
+  }
+}

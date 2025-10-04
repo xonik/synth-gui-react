@@ -11,7 +11,7 @@ import { selectUiController } from '../../synthcore/modules/controllers/controll
 import './RoundButton.scss'
 import { SHOW_CUT } from "../../config";
 
-type LedPosition = 'left' | 'right' | 'sides' | 'top' | 'top-horizontal' | 'bottom' | undefined;
+type LedPosition = 'left' | 'right' | 'right2' | 'right-two-cols' | 'sides' | 'top' | 'top-horizontal' | 'bottom' | undefined;
 type LabelPosition = 'left' | 'right' | 'top' | 'bottom' | 'bottom-pot' | undefined;
 type ButtonMode = 'push' | 'rotate';
 
@@ -157,6 +157,17 @@ const positionLeds = (
             }
         }
 
+        if (ledPosition === 'right-two-cols') {
+            if (i < leftLeds) {
+                adjustedPosition = 'right'
+                adjustedLedCount = leftLeds
+            } else {
+                adjustedPosition = 'right2'
+                adjustedLedCount = ledCount - leftLeds
+                adjustedI = i - leftLeds
+            }
+        }
+
         // left column should start at the bottom if we have a rotational button.
         const directionMultiplier = buttonMode === 'push' ? 1 : -1
 
@@ -174,6 +185,14 @@ const positionLeds = (
                     x: buttonRadius + ledMargin + 2 + ledRadius,
                     y: (adjustedI - (adjustedLedCount - 1) / 2) * yDist,
                     labelX: buttonRadius + ledMargin + 2 + ledTolabelMargin + 2 * ledRadius,
+                    textAnchor: 'start'
+                })
+                break
+            case 'right2':
+                ledPositions.push({
+                    x: buttonRadius + 5 * ledMargin + 2 + ledRadius,
+                    y: (adjustedI - (adjustedLedCount - 1) / 2) * yDist,
+                    labelX: buttonRadius + 5 * ledMargin + 2 + ledTolabelMargin + 2 * ledRadius,
                     textAnchor: 'start'
                 })
                 break
