@@ -1,37 +1,35 @@
 import React from 'react'
-import RotaryPot21 from '../pots/RotaryPot21'
-import RotaryPot12 from '../pots/RotaryPot12'
-import RoundPushButton8 from '../buttons/RoundPushButton8'
-import { ControllerGroupIds } from '../../synthcore/types'
-import filtersControllers from '../../synthcore/modules/filters/filtersControllers'
-import HorizontalLine from "../misc/HorizontalLine";
-import { POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from "../../constants";
-import RoundLedPushButton8 from "../buttons/RoundLedPushButton8";
-
-interface Props {
-    x: number,
-    y: number
-}
+import RotaryPot21 from '../../pots/RotaryPot21'
+import RotaryPot12 from '../../pots/RotaryPot12'
+import RoundPushButton8 from '../../buttons/RoundPushButton8'
+import { ControllerGroupIds } from '../../../synthcore/types'
+import filtersControllers from '../../../synthcore/modules/filters/filtersControllers'
+import { POT_DISTANCE_L, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from "../../../constants";
+import RoundLedPushButton8 from "../../buttons/RoundLedPushButton8";
+import { ModuleBorder } from "../../misc/ModuleBorder";
+import SubHeader from "../../misc/SubHeader";
+import { ModuleProps } from "../types";
 
 const ctrlGroup = ControllerGroupIds.FILTERS
 
-const LowPassFilter = ({ x, y }: Props) => {
+const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
     const topRow = y + POT_OFFSET_Y
     const fmRow = topRow + 40
     const centerRow = topRow + ROW_HEIGHT
     const bottomRow1 = centerRow + ROW_HEIGHT + 7.5
     const bottomRow2 = bottomRow1 + ROW_HEIGHT - 7.5
 
-    const col1 = x - 1.5 * POT_DISTANCE_M
-    const col2 = x - 0.5 * POT_DISTANCE_M
-    const col2_5 = x
-    const col3 = x + 0.5 * POT_DISTANCE_M
-    const col4 = x + 1.5 * POT_DISTANCE_M
+    const col1 = x + POT_DISTANCE_L / 2;
+    const col2 = col1 + POT_DISTANCE_M
+    const col3 = col2 + POT_DISTANCE_M / 2
+    const col4 = col2 + POT_DISTANCE_M
+    const col5 = col4 + POT_DISTANCE_M
 
     return <>
-        {/* TODO: Horizontal line has an offset!!!!*/}
-        <HorizontalLine x={x} y={y} width={110} align="center"/>
-        <RotaryPot21 x={x} y={centerRow} ledMode="single" label="Cutoff"
+        <ModuleBorder x={x} y={y} height={height} width={width}/>
+        <SubHeader label="LFP" x={x} y={y} width={width} labelPosition="center" labelWidth={15}/>
+
+        <RotaryPot21 x={col3} y={centerRow} ledMode="single" label="Cutoff"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.LPF.CUTOFF}
         />
@@ -41,12 +39,12 @@ const LowPassFilter = ({ x, y }: Props) => {
                      ctrl={filtersControllers.LPF.INPUT}
         />
 
-        <RotaryPot12 x={x} y={topRow} ledMode="multi" label="Resonance"
+        <RotaryPot12 x={col3} y={topRow} ledMode="multi" label="Resonance"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.LPF.RESONANCE}
         />
 
-        <RotaryPot12 x={col4} y={topRow} ledMode="multi" label="FM"
+        <RotaryPot12 x={col5} y={topRow} ledMode="multi" label="FM"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.LPF.FM_AMT}
         />
@@ -70,7 +68,7 @@ const LowPassFilter = ({ x, y }: Props) => {
                           ctrl={filtersControllers.LPF.SLOPE}
         />
 
-        <RoundPushButton8 x={col3} y={bottomRow1}
+        <RoundPushButton8 x={col4} y={bottomRow1}
                           ledPosition="top"
                           ledCount={2}
                           ledLabels={['Series', 'Parallel']} label="Routing" labelPosition="bottom"
@@ -78,7 +76,7 @@ const LowPassFilter = ({ x, y }: Props) => {
                           ctrl={filtersControllers.FILTERS.ROUTING}
         />
 
-        <RoundLedPushButton8 x={col4} y={bottomRow1}
+        <RoundLedPushButton8 x={col5} y={bottomRow1}
                              label="Link cutoff" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={filtersControllers.FILTERS.LINK_CUTOFF}
@@ -90,7 +88,7 @@ const LowPassFilter = ({ x, y }: Props) => {
                              ctrl={filtersControllers.LPF.EXT_CV}
         />*/}
 
-        <RoundPushButton8 x={col4} y={fmRow} ledPosition="top" ledCount={2} ledLabels={['2', 'Ext']}
+        <RoundPushButton8 x={col5} y={fmRow} ledPosition="top" ledCount={2} ledLabels={['2', 'Ext']}
                           label="FM src" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={filtersControllers.LPF.FM_SRC}
@@ -106,12 +104,12 @@ const LowPassFilter = ({ x, y }: Props) => {
                      ctrl={filtersControllers.LPF.ENV_AMT}
         />
 
-        <RotaryPot12 x={col3} y={bottomRow2} ledMode="multi" label="LFO amt"
+        <RotaryPot12 x={col4} y={bottomRow2} ledMode="multi" label="LFO amt"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.LPF.LFO_AMT}
         />
 
-        <RotaryPot12 x={col4} y={bottomRow2} ledMode="multi" label="Kbd amt"
+        <RotaryPot12 x={col5} y={bottomRow2} ledMode="multi" label="Kbd amt"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.LPF.KBD_AMT}
         />

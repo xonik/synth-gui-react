@@ -17,23 +17,13 @@ import {
     POT_DISTANCE_M,
     ROW_HEIGHT
 } from "../../../constants";
-import { ModuleBorder } from "../../misc/ModuleBorder";
 
 type Props = {
     panelHeight: number,
-    oscRow: number
+    rows: number[]
 }
 
-export const LeftPanel2 = ({ panelHeight, oscRow }: Props) => {
-
-    const row1 = oscRow
-    const row2 = row1 + ROW_HEIGHT
-    const row3 = row2 + ROW_HEIGHT
-    const row4 = row3 + ROW_HEIGHT
-    const row5 = row4 + ROW_HEIGHT
-    const row6 = row5 + ROW_HEIGHT
-    const row7 = row6 + ROW_HEIGHT
-    const row8 = row7 + ROW_HEIGHT
+export const LeftPanel2 = ({ panelHeight, rows }: Props) => {
 
     const oscCol = 20
     const oscWidth = POT_DISTANCE_L + POT_DISTANCE_M * 7
@@ -45,20 +35,20 @@ export const LeftPanel2 = ({ panelHeight, oscRow }: Props) => {
 
     return <>
         {SHOW_CUT && <rect x={0} y={0} width="365" height={panelHeight} className="panel-outline"/>}
-        <DCO1 x={oscCol} y={row1} height={2 * ROW_HEIGHT} width={oscWidth}/>
-        <DCO2 x={oscCol} y={row3} height={2 * ROW_HEIGHT} width={oscWidth}/>
-        <VCO x={oscCol} y={row5} height={2 * ROW_HEIGHT} width={oscWidth}/>
+        <DCO1 x={oscCol} y={rows[0]} height={2 * ROW_HEIGHT} width={oscWidth}/>
+        <DCO2 x={oscCol} y={rows[2]} height={2 * ROW_HEIGHT} width={oscWidth}/>
+        <VCO x={oscCol} y={rows[4]} height={2 * ROW_HEIGHT} width={oscWidth}/>
 
-        <Clock x={oscCol} y={row7} height={ROW_HEIGHT} width={POT_DISTANCE_L + POT_DISTANCE_M}/>
-        <Route x={oscCol} y={row8} height={ROW_HEIGHT} width={POT_DISTANCE_L + POT_DISTANCE_M}/>
+        <Clock x={oscCol} y={rows[6]} height={ROW_HEIGHT} width={POT_DISTANCE_L + POT_DISTANCE_M}/>
+        <Route x={oscCol} y={rows[7]} height={ROW_HEIGHT} width={POT_DISTANCE_L + POT_DISTANCE_M}/>
 
-        <LFO x={lfoCol} y={row7} height={2 * ROW_HEIGHT} width={6 * POT_DISTANCE_M}/>
-        <NoiseAndRing x={noiseCol} y={row1} height={ROW_HEIGHT} width={mixWidth}/>
+        <LFO x={lfoCol} y={rows[6]} height={2 * ROW_HEIGHT} width={6 * POT_DISTANCE_M}/>
+        <NoiseAndRing x={noiseCol} y={rows[0]} height={ROW_HEIGHT} width={mixWidth}/>
 
-        <SourceMixer x={noiseCol} y={row2} height={3 * ROW_HEIGHT} width={mixWidth}/>
-        <Effects x={noiseCol} y={row5} height={2 * ROW_HEIGHT} width={mixWidth}/>
+        <SourceMixer x={noiseCol} y={rows[1]} height={3 * ROW_HEIGHT} width={mixWidth}/>
+        <Effects x={noiseCol} y={rows[4]} height={2 * ROW_HEIGHT} width={mixWidth}/>
 
-        <Arpeggiator x={noiseCol} y={row7} height={2 * ROW_HEIGHT} width={mixWidth}/>
+        <Arpeggiator x={noiseCol} y={rows[6]} height={2 * ROW_HEIGHT} width={mixWidth}/>
 
         <PanelScrew x={10} y={10}/>
         <PanelScrew x={10} y={145}/>

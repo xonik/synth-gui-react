@@ -3,17 +3,17 @@ import DCO1 from './modules/left/DCO1'
 import DCO2 from './modules/left/DCO2'
 import VCO from './modules/left/VCO'
 import SourceMixer from './modules/left/SourceMixer'
-import PostMix from './modules/PostMix'
+import PostMix from './modules/right/PostMix'
 import Noise from './modules/left/Noise'
 import Ringmod from './modules/left/Ringmod'
 import Distortion from './modules/left/Distortion'
-import LowPassFilter from './modules/LowPassFilter'
-import StateVariableFilter from './modules/StateVariableFilter'
-import Envelope from './modules/Envelope'
+import LowPassFilter from './modules/right/LowPassFilter'
+import StateVariableFilter from './modules/right/StateVariableFilter'
+import Envelope from './modules/right/Envelope'
 import LFO from './modules/left/LFO'
-import DigitalFX from './modules/DigitalFX'
-import OutputMixer from './modules/OutputMixer'
-import Chorus from './modules/Chorus'
+import DigitalFX from './modules/right/DigitalFX'
+import OutputMixer from './modules/right/OutputMixer'
+import Chorus from './modules/right/Chorus'
 import BitCrusher from './modules/BitCrusher'
 import Arpeggiator from './modules/left/Arpeggiator'
 import MainDisplay from './modules/MainDisplay'
@@ -37,6 +37,7 @@ import { SHOW_CENTER, SHOW_CUT, SHOW_GRID, SHOW_LEFT, SHOW_LEFT_2, SHOW_RIGHT } 
 import classNames from "classnames";
 import { LeftPanel } from "./modules/left/LeftPanel";
 import { LeftPanel2 } from "./modules/left2/LeftPanel2";
+import { RightPanel } from "./modules/right/RightPanel";
 
 /**
  * TODO:
@@ -49,7 +50,7 @@ import { LeftPanel2 } from "./modules/left2/LeftPanel2";
  */
 const MainPanel = () => {
 
-    const env3Id = useAppSelector(selectController(envCtrls.SELECT_ENV3_ID))
+
     const panelHeight = 290;
     const panelWidth = 1000;
 
@@ -61,29 +62,15 @@ const MainPanel = () => {
     const keyCtrlCol = displayCol - 22
     const voiceSelCol = displayCol
 
-    const filterCol = displayCol + 265
-    const voiceMixCol = filterCol + 65
 
-    const envCol = voiceMixCol + 40
-    const outFx1Col = envCol
-    const outFx2Col = outFx1Col + 130
-    const outputMixerCol = envCol + 190
-
-    const oscRow = 15
-
-    const row5 = oscRow + 130
-    const row6 = row5 + ROW_HEIGHT
-    const row7 = row6 + ROW_HEIGHT
-    const row8 = row7 + ROW_HEIGHT
+    const rows = []
+    for (let i = 0; i < 8; i++) {
+        rows.push(15 + i * ROW_HEIGHT)
+    }
 
     const voiceSelRow = 25
     const displayRow = voiceSelRow + 55
     const keyCtrlRow = displayRow + 220
-
-    const outputFxRow = 200
-    const chorusRow = row7
-
-    const outputMixerRow = outputFxRow + 85
 
     // Gets the svg placeholder for the display and extracts size and position,
     // this is used to create an overlay div in the same position further down
@@ -117,29 +104,14 @@ const MainPanel = () => {
                          'cut': SHOW_CUT
                      })}>
                 {SHOW_GRID && <Grid panelWidth={panelWidth} panelHeight={panelHeight}/>}
-                {SHOW_LEFT && <LeftPanel panelHeight={panelHeight} oscRow={oscRow}/>}
-                {SHOW_LEFT_2 && <LeftPanel2 panelHeight={panelHeight} oscRow={oscRow}/>}
+                {SHOW_LEFT && <LeftPanel panelHeight={panelHeight} topRow={rows[0]}/>}
+                {SHOW_LEFT_2 && <LeftPanel2 panelHeight={panelHeight} rows={rows}/>}
                 {SHOW_CENTER && <>
                     <MainDisplay x={displayCol} y={displayRow} ref={displayRef}/>
                     <VoiceSelector x={voiceSelCol} y={voiceSelRow}/>
                     <KeyboardControls x={keyCtrlCol} y={keyCtrlRow}/>
                 </>}
-                {SHOW_RIGHT && <>
-                    <StateVariableFilter x={filterCol} y={oscRow}/>
-                    <LowPassFilter x={filterCol} y={oscRow + 130}/>
-                    <PostMix x={voiceMixCol} y={oscRow}/>
-
-
-                    <Envelope header="VCA Env" x={envCol} y={oscRow} label="" envId={0}/>
-                    <Envelope header="VCF Env" x={envCol} y={oscRow + ROW_HEIGHT * 2} label="" envId={1}/>
-                    <Envelope x={envCol} y={oscRow + ROW_HEIGHT * 4} label="" showSelect={true} envId={env3Id}/>
-
-                    <DigitalFX x={outFx1Col} y={outputFxRow}/>
-                    <Chorus x={outFx2Col} y={chorusRow}/>
-                    {/*<BitCrusher x={outFx2Col} y={outputFxRow + 40}/>*/}
-
-                    <OutputMixer x={outputMixerCol} y={oscRow}/>
-                </>}
+                {SHOW_RIGHT && <RightPanel displayCol={displayCol} panelHeight={panelHeight} rows={rows}/>}
             </svg>
             {SHOW_CENTER && <>
                 {dispRect && <div className="panel-main-display" style={{

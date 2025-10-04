@@ -1,14 +1,14 @@
 import React from 'react'
-import RotaryPot12 from '../pots/RotaryPot12'
-import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
-import RoundPushButton8 from '../buttons/RoundPushButton8'
-import Header from '../misc/Header'
-import { StageId } from '../../synthcore/modules/env/types'
-import { useAppSelector } from '../../synthcore/hooks'
-import { ControllerGroupIds } from '../../synthcore/types'
-import { envCtrls } from '../../synthcore/modules/env/envControllers'
-import { selectController } from '../../synthcore/modules/controllers/controllersReducer'
-import SubHeader from "../misc/SubHeader";
+import RotaryPot12 from '../../pots/RotaryPot12'
+import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
+import RoundPushButton8 from '../../buttons/RoundPushButton8'
+import Header from '../../misc/Header'
+import { StageId } from '../../../synthcore/modules/env/types'
+import { useAppSelector } from '../../../synthcore/hooks'
+import { ControllerGroupIds } from '../../../synthcore/types'
+import { envCtrls } from '../../../synthcore/modules/env/envControllers'
+import { selectController } from '../../../synthcore/modules/controllers/controllersReducer'
+import SubHeader from "../../misc/SubHeader";
 import {
     BUTTON_DISTANCE_S, PADDING_LEFT,
     POT_DISTANCE_L,
@@ -16,9 +16,11 @@ import {
     POT_DISTANCE_S,
     POT_OFFSET_Y,
     ROW_HEIGHT
-} from "../../constants";
+} from "../../../constants";
+import { ModuleBorder } from "../../misc/ModuleBorder";
+import { ModuleProps } from "../types";
 
-interface Props {
+type Props = ModuleProps & {
     x: number,
     y: number
     label: string,
@@ -29,8 +31,8 @@ interface Props {
 
 const ctrlGroup = ControllerGroupIds.ENV
 
-const Envelope = ({ x, y, label, header, showSelect = false, envId }: Props) => {
-    const firstPotX = x + 15
+const Envelope = ({ x, y, height, width, label, header, showSelect = false, envId }: Props) => {
+    const firstPotX = x + POT_DISTANCE_L / 2
     const topRowY = y + POT_OFFSET_Y
     const bottomRowY = topRowY + ROW_HEIGHT
     const potDistance = POT_DISTANCE_M
@@ -46,7 +48,8 @@ const Envelope = ({ x, y, label, header, showSelect = false, envId }: Props) => 
 
 
     return <>
-        <SubHeader align="left" labelPosition="left" label={header} x={x} y={y} width={185}/>
+        <ModuleBorder x={x} y={y} height={height} width={width}/>
+        <SubHeader label={header} x={x} y={y} width={width} labelPosition="center" labelWidth={25}/>
         <text
             x={firstPotX - potDistance * 0.5}
             y={topRowY-2.5}
@@ -132,19 +135,19 @@ const Envelope = ({ x, y, label, header, showSelect = false, envId }: Props) => 
                      valueIndex={StageId.RELEASE2}
         />
 
-        <RoundLedPushButton8 label="Loop" x={firstPotX + potDistance * 5} y={topRowY} labelPosition="bottom"
+        <RoundLedPushButton8 label="Loop" x={firstPotX + potDistance * 5} y={topRowY} labelPosition="bottom-pot"
                              ctrlGroup={ctrlGroup}
                              ctrl={envCtrls.LOOP}
                              ctrlIndex={envId}
         />
         <RoundLedPushButton8
             label="Invert" x={firstPotX + potDistance * 5 + BUTTON_DISTANCE_S} y={topRowY}
-            labelPosition="bottom"
+            labelPosition="bottom-pot"
             ctrlGroup={ctrlGroup}
             ctrl={envCtrls.INVERT}
             ctrlIndex={envId}
         />
-        <RoundPushButton8 label="Trigger" x={firstPotX + potDistance * 5 + BUTTON_DISTANCE_S} y={bottomRowY} labelPosition="bottom"
+        <RoundPushButton8 label="Trigger" x={firstPotX + potDistance * 5 + BUTTON_DISTANCE_S} y={bottomRowY} labelPosition="bottom-pot"
                           ctrlGroup={ctrlGroup}
                           ctrl={envCtrls.ENV_GATE}
                           ctrlIndex={envId}

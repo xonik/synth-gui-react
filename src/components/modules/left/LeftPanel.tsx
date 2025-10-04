@@ -17,12 +17,12 @@ import { PADDING_LEFT, POT_DISTANCE_M, ROW_HEIGHT } from "../../../constants";
 
 type Props = {
     panelHeight: number,
-    oscRow: number
+    topRow: number
 }
 
-export const LeftPanel = ({panelHeight, oscRow }: Props) => {
+export const LeftPanel = ({panelHeight, topRow }: Props) => {
 
-    const row5 = oscRow + 130
+    const row5 = topRow + 130
     const row6 = row5 + ROW_HEIGHT
     const row7 = row6 + ROW_HEIGHT
     const row8 = row7 + ROW_HEIGHT
@@ -44,9 +44,9 @@ export const LeftPanel = ({panelHeight, oscRow }: Props) => {
 
     return <>
         {SHOW_CUT && <rect x={0} y={0} width="365" height={panelHeight} className="panel-outline"/>}
-        <DCO1 x={osc1Col} y={oscRow}/>
-        <DCO2 x={osc2Col} y={oscRow}/>
-        <VCO x={osc3Col} y={oscRow}/>
+        <DCO1 x={osc1Col} y={topRow}/>
+        <DCO2 x={osc2Col} y={topRow}/>
+        <VCO x={osc3Col} y={topRow}/>
 
         <Noise x={noiseCol} y={row5}/>
         <Ringmod x={ringModCol} y={row6}/>
