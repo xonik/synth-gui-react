@@ -48,14 +48,14 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
         {/* TODO: Make this 'binary' style so multiple can be selected. Let Other default be random */}
         <RoundPushButton8 x={col3} y={row2}
                           label="Mode" labelPosition="bottom-pot"
-                          ledCount={3} ledPosition="right" ledLabels={['U', 'D', '+']}
+                          ledCount={3} ledPosition="right" ledLabels={['Up', 'Down', 'Other']}
                           ctrlGroup={ctrlGroup}
                           ctrl={arpControllers.MODE}
         />
 
         <RoundPushButton8 x={col3} y={row3}
                           label="Range" labelPosition="bottom-pot"
-                          ledCount={3} ledPosition="right" ledLabels={['1', '2', '3']}
+                          ledCount={3} ledPosition="right" ledLabels={['1 oct', '2 oct', '3 oct']}
                           ctrlGroup={ctrlGroup}
                           ctrl={arpControllers.RANGE}
         />
