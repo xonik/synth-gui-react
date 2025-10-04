@@ -5,22 +5,20 @@ import fxControllers from '../../../synthcore/modules/fx/fxControllers'
 import RotaryPot12 from "../../pots/RotaryPot12";
 import SubHeader from "../../misc/SubHeader";
 import {
-    BUTTON_DISTANCE_S,
-    DUAL_LED_BUTTON_NO_LABEL_OFFSET_Y, DUAL_LED_BUTTON_W_LABEL_OFFSET_Y, POT_DISTANCE_L,
-    POT_DISTANCE_M, POT_DISTANCE_S,
-    POT_OFFSET_Y, ROW_HEIGHT, ROW_SPACING
+    DUAL_LED_BUTTON_W_LABEL_OFFSET_Y,
+    POT_DISTANCE_L,
+    POT_DISTANCE_M,
+    POT_DISTANCE_S,
+    POT_OFFSET_Y,
+    ROW_HEIGHT,
 } from "../../../constants";
 import { SHOW_CUT } from "../../../config";
-import { VerticalDividerLine } from "../../misc/VerticalDividerLine";
-
-interface Props {
-    x: number,
-    y: number
-}
+import { ModuleProps } from "../types";
+import { ModuleBorder } from "../../misc/ModuleBorder";
 
 const ctrlGroup = ControllerGroupIds.FX
 
-const Effects = ({ x, y }: Props) => {
+const Effects = ({ x, y, height, width }: ModuleProps) => {
 
     const row1 = y
     const row2 = row1 + POT_OFFSET_Y
@@ -35,8 +33,17 @@ const Effects = ({ x, y }: Props) => {
 
     return <>
         {/*!SHOW_CUT && <rect x={x} y={y} width="131" height={2 * ROW_HEIGHT} className="module-background"/>*/}
-        <SubHeader x={x} y={row1} width={POT_DISTANCE_L} label="Distort" labelPosition="left" />
-        <SubHeader x={x+POT_DISTANCE_L} y={row1} width={POT_DISTANCE_L} label="Crush" labelPosition="left" />
+        <ModuleBorder x={x} y={y} height={height} width={width} />
+        <SubHeader
+            x={x} y={row1}
+            width={width / 2}
+            label="Distort" labelWidth={20} labelPosition="center" padding="left"/>
+
+
+        <SubHeader
+            x={x + width / 2} y={row1}
+            width={width / 2}
+            label="Crush" labelWidth={20} labelPosition="center" padding="right"/>
 
         <RotaryPot12 ledMode="multi" label="Drive" x={col1} y={row2}
                      ctrlGroup={ctrlGroup}
@@ -46,7 +53,7 @@ const Effects = ({ x, y }: Props) => {
         <RoundPushButton8 x={col2} y={row2 + DUAL_LED_BUTTON_W_LABEL_OFFSET_Y}
                           ledPosition="top-horizontal"
                           ledCount={2}
-                          ledLabels={['S','L']}
+                          ledLabels={['S', 'L']}
                           label="In"
                           labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
@@ -61,7 +68,7 @@ const Effects = ({ x, y }: Props) => {
         <RoundPushButton8 x={col2} y={row3 + DUAL_LED_BUTTON_W_LABEL_OFFSET_Y}
                           ledPosition="top-horizontal"
                           ledCount={2}
-                          ledLabels={['S','L']}
+                          ledLabels={['S', 'L']}
                           label="Out"
                           labelPosition="bottom"
                           ctrlGroup={ctrlGroup}

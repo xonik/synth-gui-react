@@ -1,11 +1,3 @@
-/*
-- Button - Mode
-- Button w/multiple leds Range (octaves)
-- Button - On/off
-- Button - trigger (triggers on first key press?)
-- 17mm pot - Tempo (or separate clock and clock sunc)
-- Button - Sync (button) - int clock, Lfo, ext clock
- */
 import React from 'react';
 import RotaryPot12 from '../../pots/RotaryPot12';
 import RoundPushButton8 from '../../buttons/RoundPushButton8';
@@ -14,23 +6,19 @@ import { ControllerGroupIds } from '../../../synthcore/types'
 import arpControllers from '../../../synthcore/modules/arp/arpControllers'
 import SubHeader from "../../misc/SubHeader";
 import {
-    BUTTON_DISTANCE_S,
     POT_DISTANCE_M,
     POT_DISTANCE_L,
     POT_OFFSET_Y,
     ROW_HEIGHT,
-    ROW_SPACING, POT_DISTANCE_S
+    POT_DISTANCE_S
 } from "../../../constants";
 import { SHOW_CUT } from "../../../config";
-
-interface Props {
-    x: number,
-    y: number
-}
+import { ModuleBorder } from "../../misc/ModuleBorder";
+import { ModuleProps } from "../types";
 
 const ctrlGroup = ControllerGroupIds.ARP
 
-const Arpeggiator = ({ x, y }: Props) => {
+const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
 
     const row1 = y;
     const row2 = y + POT_OFFSET_Y
@@ -39,11 +27,11 @@ const Arpeggiator = ({ x, y }: Props) => {
     const col1 = x + POT_DISTANCE_M  / 2
     const col2 = col1 + POT_DISTANCE_S
     const col3 = col1 + POT_DISTANCE_L
-    const col4 = col1 + POT_DISTANCE_L + BUTTON_DISTANCE_S / 2
 
     return <>
         {/*!SHOW_CUT && <rect x={x} y={y} width={197} height={ROW_HEIGHT - ROW_SPACING} className="module-background"/>*/}
-        <SubHeader label="Arp" x={x} y={row1} width={2 * POT_DISTANCE_L} labelPosition="left"/>
+        <ModuleBorder x={x} y={y} height={height} width={width} />
+        <SubHeader label="Arp" x={x} y={row1} width={width} labelPosition="center" labelWidth={15} />
 
         <RotaryPot12 ledMode="single" label="Rate" x={col2} y={row2}
                      ctrlGroup={ctrlGroup}

@@ -1,7 +1,9 @@
+@import './constants';
+
 .panel{
   float: left;
   stroke-width: 0.5;
-  background: #555555;
+  background: $panel-background;
 
   // positioning div as overlay on top of display svg to be able to use
   // normal tsx inside display.

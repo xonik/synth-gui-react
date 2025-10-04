@@ -9,40 +9,23 @@ import { selectCurrUiLfoId } from '../../../synthcore/modules/lfo/lfoReducer'
 import SubHeader from "../../misc/SubHeader";
 import {
     BUTTON_DISTANCE_S,
-    PADDING_LEFT,
     POT_DISTANCE_M,
-    POT_DISTANCE_S,
     POT_OFFSET_Y,
     ROW_HEIGHT,
-    ROW_SPACING,
 } from "../../../constants";
 import { SHOW_CUT } from "../../../config";
-
-interface Props {
-    x: number,
-    y: number
-}
+import { ModuleBorder } from "../../misc/ModuleBorder";
+import { ModuleProps } from "../types";
 
 const ctrlGroup = ControllerGroupIds.LFO
 
 
-const LFO = ({ x, y }: Props) => {
-    const potDistance = POT_DISTANCE_M
+const LFO = ({ x, y, height, width }: ModuleProps) => {
     const col1 = x + POT_DISTANCE_M / 2
     const col2 = col1 + POT_DISTANCE_M
     const col3 = col2 + POT_DISTANCE_M
     const col4 = col3 + POT_DISTANCE_M
     const col5 = col4 + POT_DISTANCE_M
-    const col6 = col5 + BUTTON_DISTANCE_S / 2
-    const firstPotCol = col1 + POT_DISTANCE_M
-    const buttonCol2 = firstPotCol + POT_DISTANCE_M * 7.5 - BUTTON_DISTANCE_S * 5
-    const buttonCol3 = buttonCol2 + BUTTON_DISTANCE_S
-    const buttonCol4 = buttonCol3 + BUTTON_DISTANCE_S
-    const buttonCol5 = buttonCol4 + BUTTON_DISTANCE_S
-    const buttonCol6 = buttonCol5 + BUTTON_DISTANCE_S
-    const buttonCol7 = buttonCol6 + BUTTON_DISTANCE_S
-
-    const buttonRow1 = POT_OFFSET_Y
 
     const row1 = y + POT_OFFSET_Y
     const row2 = row1 + ROW_HEIGHT
@@ -51,7 +34,8 @@ const LFO = ({ x, y }: Props) => {
 
     return <>
         {/*!SHOW_CUT && <rect x={x} y={y} width={323} height={ROW_HEIGHT * 2- ROW_SPACING} className="module-background"/>*/}
-        <SubHeader align="left" label="LFO" labelPosition="left" x={x} y={y} width={160}/>
+        <ModuleBorder x={x} y={y} height={height} width={width}/>
+        <SubHeader align="left" label="LFO" labelPosition="left" x={x} y={y} width={width} labelWidth={15}/>
 
         <RoundLedPushButton8 label="Sync" x={col1} y={row1} labelPosition="bottom-pot"
                              ctrlGroup={ctrlGroup}
@@ -64,7 +48,7 @@ const LFO = ({ x, y }: Props) => {
                           label="LFO"
                           labelPosition="bottom-pot"
                           ledPosition="right" ledCount={3}
-                          ledLabels={['1','2', '3']}
+                          ledLabels={['1', '2', '3']}
                           ctrlGroup={ctrlGroup}
                           ctrl={lfoCtrls.LFO}
                           ctrlIndex={0}
@@ -110,21 +94,21 @@ const LFO = ({ x, y }: Props) => {
                              loop
         />
 
-        <RoundLedPushButton8 label="Loop" x={col2 + BUTTON_DISTANCE_S *2} y={row2} labelPosition="bottom-pot"
+        <RoundLedPushButton8 label="Loop" x={col2 + BUTTON_DISTANCE_S * 2} y={row2} labelPosition="bottom-pot"
                              ctrlGroup={ctrlGroup}
                              ctrl={lfoCtrls.LOOP}
                              ctrlIndex={lfoId}
                              loop
         />
 
-        <RoundLedPushButton8 label="Reset" x={col2+ BUTTON_DISTANCE_S * 3} y={row2} labelPosition="bottom-pot"
+        <RoundLedPushButton8 label="Reset" x={col2 + BUTTON_DISTANCE_S * 3} y={row2} labelPosition="bottom-pot"
                              ctrlGroup={ctrlGroup}
                              ctrl={lfoCtrls.RESET}
                              ctrlIndex={lfoId}
         />
 
 
-        <RoundPushButton8 x={col2+ BUTTON_DISTANCE_S * 4} y={row2}
+        <RoundPushButton8 x={col2 + BUTTON_DISTANCE_S * 4} y={row2}
                           label="Shape" labelPosition="bottom-pot"
                           ledPosition="right-two-cols" ledCount={6}
                           ledLabels={['Saw', 'Tri', 'Sqr', 'Sin', 'Rand', 'Other']}

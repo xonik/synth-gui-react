@@ -8,3 +8,5 @@ export const POT_OFFSET_Y = ROW_HEIGHT / 2
 export const DUAL_LED_BUTTON_NO_LABEL_OFFSET_Y = 7.5
 export const DUAL_LED_BUTTON_W_LABEL_OFFSET_Y = 3.75
 export const PADDING_LEFT = 10
+
+export const BORDER_MARGIN = 1

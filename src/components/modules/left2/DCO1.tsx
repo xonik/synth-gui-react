@@ -7,11 +7,12 @@ import { ControllerGroupIds } from '../../../synthcore/types'
 import oscControllers from '../../../synthcore/modules/osc/oscControllers'
 import SubHeader from "../../misc/SubHeader";
 import {
-    DUAL_LED_BUTTON_W_LABEL_OFFSET_Y, PADDING_LEFT, POT_DISTANCE_L,
+    DUAL_LED_BUTTON_W_LABEL_OFFSET_Y, POT_DISTANCE_L,
     POT_DISTANCE_M, POT_DISTANCE_S, POT_OFFSET_Y,
-    ROW_HEIGHT, ROW_SPACING
+    ROW_HEIGHT,
 } from "../../../constants";
 import { SHOW_CUT } from "../../../config";
+import { VerticalDividerLine } from "../../misc/VerticalDividerLine";
 
 interface Props {
     x: number,
@@ -28,10 +29,10 @@ const DCO1 = ({ x, y, width }: Props) => {
     const buttonRow1 = topRow - 5
     const centerRow = topRow + ROW_HEIGHT * 0.5
 
-    const col1 = x + PADDING_LEFT
+    const col1 = x + POT_DISTANCE_M / 2;
     const col2 = col1 + POT_DISTANCE_L
-    const col3 = col2 +  POT_DISTANCE_M
-    const col4 = col3 +  POT_DISTANCE_M
+    const col3 = col2 + POT_DISTANCE_M
+    const col4 = col3 + POT_DISTANCE_M
     const col5 = col4 + POT_DISTANCE_S
     const col6 = col5 + POT_DISTANCE_S
     const col7 = col6 + POT_DISTANCE_S
@@ -41,16 +42,17 @@ const DCO1 = ({ x, y, width }: Props) => {
     return <>
         {/*!SHOW_CUT && <rect x={x-52.5} y={y} width="105" height={130 - ROW_SPACING} className="module-background"/>*/}
 
-        <rect x={col2 - POT_DISTANCE_M / 2} y={topRow - 0.5 * ROW_HEIGHT} width={2 * POT_DISTANCE_M} height={2 * ROW_HEIGHT} className="highlight-background"/>
-
-        <SubHeader label="Oscillator 1" x={x} y={y} width={width} labelPosition="left"/>
+        <SubHeader label="Osc 1" x={x} y={y} width={width} labelPosition="left" labelWidth={15}/>
+        <VerticalDividerLine x={col1 + POT_DISTANCE_L - POT_DISTANCE_M / 2} y={y} length={2 * ROW_HEIGHT}/>
+        <VerticalDividerLine x={col3 + POT_DISTANCE_M / 2} y={y} length={2 * ROW_HEIGHT}/>
 
         <RoundPushButton8 x={col1} y={topRow}
                           ledPosition="right" ledCount={3} ledLabels={['DCO', 'WT', 'PCM']}
-                          label="Mode" labelPosition="bottom"
+                          label="Mode" labelPosition="bottom-pot"
                           ctrlGroup={ctrlGroup}
                           ctrl={oscControllers.DCO1.MODE}
         />
+
 
         <RotaryPot12 x={col2} y={topRow} label="Kbd"
                      ctrlGroup={ctrlGroup}
@@ -62,6 +64,7 @@ const DCO1 = ({ x, y, width }: Props) => {
                      ctrl={oscControllers.DCO1.LFO}
         />
 
+
         <RotaryPot12 x={col4} y={topRow} ledMode="single" label="Note"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.DCO1.NOTE}
@@ -71,7 +74,7 @@ const DCO1 = ({ x, y, width }: Props) => {
 
         <RoundPushButton8 x={col1} y={bottomRow}
                           ledPosition="right" ledCount={2} ledLabels={['Hard', 'Metal']}
-                          label="Sync" labelPosition="bottom"
+                          label="Sync" labelPosition="bottom-pot"
                           hasOff
                           ctrlGroup={ctrlGroup}
                           ctrl={oscControllers.DCO1.SYNC}
@@ -120,12 +123,7 @@ const DCO1 = ({ x, y, width }: Props) => {
         />
 
 
-
         {/*<RotaryPot12 x={col4} y={topRow} ledMode="multi" label="Super saw"/>*/}
-
-
-
-
 
 
     </>

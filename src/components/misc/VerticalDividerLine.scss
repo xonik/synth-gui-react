@@ -1,6 +1,8 @@
+
+@import '../constants';
 .vertical-divider-line {
-  stroke: white;
-  stroke-width: 0.5;
+  stroke: $module-border-color;
+  stroke-width: 0.25;
 }
 
 .cut {

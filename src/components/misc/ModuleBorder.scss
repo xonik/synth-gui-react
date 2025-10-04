@@ -1,0 +1,8 @@
+@import '../constants';
+
+.module-border {
+  stroke-width: 0.5;
+  stroke: $module-border-color;
+  fill: $module-background-color;
+
+}

@@ -1,3 +1,5 @@
+@import '../constants';
+
 .pot {
   &-knob {
     stroke: black;
@@ -26,9 +28,8 @@
   }
 
   &-label {
-    fill: white;
-    font-size: 3.5px;
-    //text-transform: uppercase;
+    fill: $function-label-color;
+    font-size: $function-label-font-size;
   }
 }
 

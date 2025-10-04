@@ -1,12 +1,21 @@
+@import '../constants';
+
 .subheader {
   &-label {
-    fill: white;
-    font-size: 4.5px;
+    fill: $module-label-color;
+    font-size: 3.5px;
+    text-transform: uppercase;
   }
 
   &-underline {
-    stroke: white;
+    stroke: $module-border-color;
     stroke-width: 1;
+  }
+
+  &-border {
+    stroke: $module-border-color;
+    fill: $module-border-color;
+    stroke-width: 0.5;
   }
 }
 

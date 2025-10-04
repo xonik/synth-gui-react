@@ -15,37 +15,39 @@ import {
     ROW_SPACING
 } from "../../../constants";
 import { SHOW_CUT } from "../../../config";
-
-interface Props {
-    x: number,
-    y: number
-}
+import { ModuleProps } from "../types";
+import { ModuleBorder } from "../../misc/ModuleBorder";
 
 const ctrlGroup = ControllerGroupIds.MODS
 
-const Route = ({ x, y }: Props) => {
+const Route = ({ x, y, height, width }: ModuleProps) => {
 
     const route = useAppSelector(selectModsUi)
 
+    const col1 = x + POT_DISTANCE_M / 2
+    const col2 = col1 + BUTTON_DISTANCE_S
+    const col3 = col1 + POT_DISTANCE_L
+
     return <>
         {/*!SHOW_CUT && <rect x={x} y={y} width={64} height={ROW_HEIGHT - ROW_SPACING} className="module-background"/>*/}
-        <SubHeader label="Route" x={x} y={y} width={64} labelPosition="left"/>
+        <ModuleBorder x={x} y={y} height={height} width={width}/>
+        <SubHeader label="Route" x={x} y={y} width={width} labelPosition="left" labelWidth={15}/>
 
-        <RoundLedPushButton8 labelPosition="bottom-pot" x={x + PADDING_LEFT} y={y + POT_OFFSET_Y} hasOff
+        <RoundLedPushButton8 labelPosition="bottom-pot" x={col1} y={y + POT_OFFSET_Y} hasOff
                              label="Source"
                              ctrlGroup={ctrlGroup}
                              ctrl={modsControllers.ROUTE_BUTTON}
                              value={route.routeButton}
         />
 
-        <RoundLedPushButton8 labelPosition="bottom-pot" x={x + PADDING_LEFT + BUTTON_DISTANCE_S} y={y + POT_OFFSET_Y} hasOff
+        <RoundLedPushButton8 labelPosition="bottom-pot" x={col2} y={y + POT_OFFSET_Y} hasOff
                              label="Dest"
                              ctrlGroup={ctrlGroup}
                              ctrl={modsControllers.ROUTE_BUTTON}
                              value={route.routeButton}
         />
 
-        <RotaryPot12 ledMode="single" potMode="pan" label="Amount" x={x + PADDING_LEFT + POT_DISTANCE_L}
+        <RotaryPot12 ledMode="single" potMode="pan" label="Amount" x={col3}
                      y={y + POT_OFFSET_Y}
                      ctrlGroup={ctrlGroup}
                      ctrl={modsControllers.UI_AMOUNT}

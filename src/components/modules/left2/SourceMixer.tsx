@@ -12,11 +12,8 @@ import {
     ROW_HEIGHT, ROW_SPACING
 } from "../../../constants";
 import { SHOW_CUT } from "../../../config";
-
-interface Props {
-    x: number,
-    y: number
-}
+import { ModuleBorder } from "../../misc/ModuleBorder";
+import { ModuleProps } from "../types";
 
 interface ChannelProps {
     label: string,
@@ -45,7 +42,7 @@ const MixerChannel = ({ x, y, label, levelCtrl, outCtrl }: ChannelProps) => {
     </>
 }
 
-const SourceMixer = ({ x, y }: Props) => {
+const SourceMixer = ({ x, y, height, width }: ModuleProps) => {
     const colDistance = POT_DISTANCE_L
 
 
@@ -59,7 +56,8 @@ const SourceMixer = ({ x, y }: Props) => {
 
     return <>
         {/*!SHOW_CUT && <rect x={x} y={y} width="135" height={2 * ROW_HEIGHT - ROW_SPACING} className="module-background"/> */ }
-        <SubHeader label="Mix" x={x} y={y} width={2 * POT_DISTANCE_L  + 5} labelPosition="left" />
+        <ModuleBorder x={x} y={y} height={height} width={width} />
+        <SubHeader label="Mix" x={x} y={y} width={width} labelWidth={15} labelPosition="center"/>
 
         <MixerChannel x={col1} y={row1} label="Osc 1"
                       levelCtrl={srcMixControllers.LEVEL_OSC1}
