@@ -45,10 +45,9 @@ export const LeftPanel2 = ({ panelHeight, oscRow }: Props) => {
 
     return <>
         {SHOW_CUT && <rect x={0} y={0} width="365" height={panelHeight} className="panel-outline"/>}
-        <ModuleBorder x={oscCol} y={row1} height={6 * ROW_HEIGHT} width={oscWidth}/>
-        <DCO1 x={oscCol} y={row1} width={oscWidth}/>
-        <DCO2 x={oscCol} y={row3} width={oscWidth}/>
-        <VCO x={oscCol} y={row5} width={oscWidth}/>
+        <DCO1 x={oscCol} y={row1} height={2 * ROW_HEIGHT} width={oscWidth}/>
+        <DCO2 x={oscCol} y={row3} height={2 * ROW_HEIGHT} width={oscWidth}/>
+        <VCO x={oscCol} y={row5} height={2 * ROW_HEIGHT} width={oscWidth}/>
 
         <Clock x={oscCol} y={row7} height={ROW_HEIGHT} width={POT_DISTANCE_L + POT_DISTANCE_M}/>
         <Route x={oscCol} y={row8} height={ROW_HEIGHT} width={POT_DISTANCE_L + POT_DISTANCE_M}/>

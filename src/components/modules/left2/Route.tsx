@@ -31,7 +31,7 @@ const Route = ({ x, y, height, width }: ModuleProps) => {
     return <>
         {/*!SHOW_CUT && <rect x={x} y={y} width={64} height={ROW_HEIGHT - ROW_SPACING} className="module-background"/>*/}
         <ModuleBorder x={x} y={y} height={height} width={width}/>
-        <SubHeader label="Route" x={x} y={y} width={width} labelPosition="left" labelWidth={15}/>
+        <SubHeader label="Route" x={x} y={y} width={width} labelPosition="center" labelWidth={15}/>
 
         <RoundLedPushButton8 labelPosition="bottom-pot" x={col1} y={y + POT_OFFSET_Y} hasOff
                              label="Source"

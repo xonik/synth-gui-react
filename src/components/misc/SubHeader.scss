@@ -2,19 +2,19 @@
 
 .subheader {
   &-label {
-    fill: $module-label-color;
+    fill: $header-label-color;
     font-size: 3.5px;
     text-transform: uppercase;
   }
 
   &-underline {
-    stroke: $module-border-color;
+    stroke: $header-border-color;
     stroke-width: 1;
   }
 
   &-border {
-    stroke: $module-border-color;
-    fill: $module-border-color;
+    stroke: $header-border-color;
+    fill: $header-border-color;
     stroke-width: 0.5;
   }
 }

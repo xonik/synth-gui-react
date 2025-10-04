@@ -35,7 +35,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
     return <>
         {/*!SHOW_CUT && <rect x={x} y={y} width={323} height={ROW_HEIGHT * 2- ROW_SPACING} className="module-background"/>*/}
         <ModuleBorder x={x} y={y} height={height} width={width}/>
-        <SubHeader align="left" label="LFO" labelPosition="left" x={x} y={y} width={width} labelWidth={15}/>
+        <SubHeader align="left" label="LFO" labelPosition="center" x={x} y={y} width={width} labelWidth={15}/>
 
         <RoundLedPushButton8 label="Sync" x={col1} y={row1} labelPosition="bottom-pot"
                              ctrlGroup={ctrlGroup}

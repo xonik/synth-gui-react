@@ -9,7 +9,7 @@ interface Props {
     y: number,
     width: number,
     align?: PositionAlign,
-    labelPosition?: PositionAlign
+    labelPosition?: PositionAlign | number
     label?: string,
     labelWidth?: number,
     padding?: 'left' | 'right' | 'both'
@@ -26,12 +26,23 @@ const getCenter = (x: number, y: number, width: number, align: PositionAlign) =>
     }
 }
 
-const SubHeader = ({ x, y, width, align = 'left', label, labelWidth, labelPosition = 'center', padding = 'both' }: Props) => {
+const SubHeader = ({ x, y, width, align = 'left', label, labelWidth, labelPosition: inputLabelPos = 'center', padding = 'both' }: Props) => {
 
     const center = getCenter(x, y, width, align);
 
     const paddingLeft = padding != 'right' ? BORDER_MARGIN : 0
     const paddingRight = padding != 'left' ? BORDER_MARGIN : 0
+
+    let labelPosition: PositionAlign
+    let labelCenter
+
+    if(isNumeric(inputLabelPos)){
+        labelPosition = 'center'
+        labelCenter = inputLabelPos
+    } else {
+        labelPosition = inputLabelPos
+        labelCenter = center
+    }
 
     return <>
         <rect
@@ -40,9 +51,9 @@ const SubHeader = ({ x, y, width, align = 'left', label, labelWidth, labelPositi
             className="subheader-border"
         />
 
-        <polygon points={getLabelBackground(x, y, labelWidth ?? 30, width, labelPosition)} className="subheader-border"/>
+        <polygon points={getLabelBackground(x, y, labelWidth ?? 30, labelCenter, labelPosition)} className="subheader-border"/>
         {label && <text
-            x={labelPosition === 'center' ? center : x + 3}
+            x={labelPosition === 'center' ? labelCenter : x + 3}
             y={y + 3.85}
             className="subheader-label"
             textAnchor={labelPosition === 'center' ? "middle" : "left"}
@@ -51,7 +62,7 @@ const SubHeader = ({ x, y, width, align = 'left', label, labelWidth, labelPositi
     </>;
 };
 
-const getLabelBackground = (x: number, y: number, labelWidth: number, width: number, labelPosition: PositionAlign) => {
+const getLabelBackground = (x: number, y: number, labelWidth: number, center: number, labelPosition: PositionAlign) => {
     const height = 3.5
     const offset = 1.5
 
@@ -62,7 +73,7 @@ const getLabelBackground = (x: number, y: number, labelWidth: number, width: num
     if(labelPosition == 'left'){
         mapper = ([x0, y0]: Array<number>) => [x + BORDER_MARGIN + x0, y + BORDER_MARGIN + y0]
     } else {
-        mapper = ([x0, y0]: Array<number>) => [x + width / 2 - labelWidth  / 2 + x0, y + BORDER_MARGIN + y0]
+        mapper = ([x0, y0]: Array<number>) => [center - labelWidth  / 2 + x0, y + BORDER_MARGIN + y0]
     }
 
     return [
@@ -76,5 +87,8 @@ const getLabelBackground = (x: number, y: number, labelWidth: number, width: num
         .join(' ')
 }
 
+function isNumeric(number: PositionAlign | number): number is number {
+    return !isNaN(Number(number))
+}
 
 export default SubHeader;
