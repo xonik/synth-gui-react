@@ -1,3 +1,5 @@
- .bezel{
-  fill: #242424;
+@import '../constants';
+
+.bezel{
+  fill: $center-panel-background;
 }
