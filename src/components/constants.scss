@@ -1,12 +1,21 @@
-//$panel-background: #00293c;
+// Scheme 3 - lighter modules
+$panel-background: #1e1e1e;
+$center-panel-background: #101010;
+$module-border-color: #3e3e3e;
+$module-background-color: #3e3e3e;
+
+// Scheme 1 - darker modules
 $panel-background: #3e3e3e;
 $center-panel-background: #101010;
-
-//$module-border-color: #535357;
-//$module-background-color: #535357;
-
 $module-border-color: #1e1e1e;
 $module-background-color: #1e1e1e;
+
+// Scheme 2 - blueish
+$panel-background: #00293c;
+$center-panel-background: #101010;
+$module-border-color: #535357;
+$module-background-color: #535357;
+
 
 $divider-color: none;
 

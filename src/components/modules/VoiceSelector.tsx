@@ -14,49 +14,49 @@ const VoiceSelector = ({ x, y, width, height }: ModuleProps) => {
     //const voices = useAppSelector(selectController(voicesControllers.VOICE))
 
     return <>
-        <RoundLedPushButton8 labelPosition="bottom" x={offsetX} y={buttonRow} label="1"
+        <RoundLedPushButton8 labelPosition="right" x={offsetX} y={buttonRow} label="1"
                              ctrlGroup={ctrlGroup}
                              ctrl={voicesControllers.VOICE}
                              radioButtonIndex={0}
         />
 
-        <RoundLedPushButton8 labelPosition="bottom" x={offsetX + buttonDistance} y={buttonRow} label="2"
+        <RoundLedPushButton8 labelPosition="right" x={offsetX + buttonDistance} y={buttonRow} label="2"
                              ctrlGroup={ctrlGroup}
                              ctrl={voicesControllers.VOICE}
                              radioButtonIndex={1}
         />
 
-        <RoundLedPushButton8 labelPosition="bottom" x={offsetX + buttonDistance * 2} y={buttonRow} label="3"
+        <RoundLedPushButton8 labelPosition="right" x={offsetX + buttonDistance * 2} y={buttonRow} label="3"
                              ctrlGroup={ctrlGroup}
                              ctrl={voicesControllers.VOICE}
                              radioButtonIndex={2}
         />
 
-        <RoundLedPushButton8 labelPosition="bottom" x={offsetX + buttonDistance * 3} y={buttonRow} label="4"
+        <RoundLedPushButton8 labelPosition="right" x={offsetX + buttonDistance * 3} y={buttonRow} label="4"
                              ctrlGroup={ctrlGroup}
                              ctrl={voicesControllers.VOICE}
                              radioButtonIndex={3}
         />
 
-        <RoundLedPushButton8 labelPosition="bottom" x={offsetX + buttonDistance * 4} y={buttonRow} label="5"
+        <RoundLedPushButton8 labelPosition="right" x={offsetX + buttonDistance * 4} y={buttonRow} label="5"
                              ctrlGroup={ctrlGroup}
                              ctrl={voicesControllers.VOICE}
                              radioButtonIndex={4}
         />
 
-        <RoundLedPushButton8 labelPosition="bottom" x={offsetX + buttonDistance * 5} y={buttonRow} label="6"
+        <RoundLedPushButton8 labelPosition="right" x={offsetX + buttonDistance * 5} y={buttonRow} label="6"
                              ctrlGroup={ctrlGroup}
                              ctrl={voicesControllers.VOICE}
                              radioButtonIndex={5}
         />
 
-        <RoundLedPushButton8 labelPosition="bottom" x={offsetX + buttonDistance * 6} y={buttonRow} label="7"
+        <RoundLedPushButton8 labelPosition="right" x={offsetX + buttonDistance * 6} y={buttonRow} label="7"
                              ctrlGroup={ctrlGroup}
                              ctrl={voicesControllers.VOICE}
                              radioButtonIndex={6}
         />
 
-        <RoundLedPushButton8 labelPosition="bottom" x={offsetX + buttonDistance * 7} y={buttonRow} label="8"
+        <RoundLedPushButton8 labelPosition="right" x={offsetX + buttonDistance * 7} y={buttonRow} label="8"
                              ctrlGroup={ctrlGroup}
                              ctrl={voicesControllers.VOICE}
                              radioButtonIndex={7}
