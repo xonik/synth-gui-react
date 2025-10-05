@@ -45,7 +45,7 @@ const PostMix = ({ x, y, height, width }: ModuleProps) => {
 
     return <>
         <ModuleBorder x={x} y={y} height={height / 2} width={width}/>
-        <SubHeader label="Mix" x={x} y={y} width={width} labelPosition="center" labelWidth={15}/>
+        <SubHeader label="Voice mix" x={x} y={y} width={width} labelPosition="center" labelWidth={22}/>
         <VoiceMixerChannel x={center} y={offsetY} label="SVF" ctrl={postMixControllers.SVF}/>
         <VoiceMixerChannel x={center} y={offsetY + ROW_HEIGHT} label="LPF" ctrl={postMixControllers.LPF}/>
         <VoiceMixerChannel x={center} y={offsetY + ROW_HEIGHT * 2} label="Sine 1" ctrl={postMixControllers.SINE1}/>
@@ -53,7 +53,7 @@ const PostMix = ({ x, y, height, width }: ModuleProps) => {
 
 
         <ModuleBorder x={x} y={offsetY2 - POT_OFFSET_Y} height={height / 2} width={width}/>
-        <SubHeader label="Voice" x={x} y={offsetY2 - POT_OFFSET_Y} width={width} labelPosition="center" labelWidth={15}/>
+        <SubHeader label="Voice out" x={x} y={offsetY2 - POT_OFFSET_Y} width={width} labelPosition="center" labelWidth={22}/>
         <VoiceMixerChannel x={center} y={offsetY2} label="Pan" potMode="pan" ledMode="single"
                            ctrl={postMixControllers.PAN}/>
         <VoiceMixerChannel x={center} y={offsetY2 + ROW_HEIGHT} label="Amt"

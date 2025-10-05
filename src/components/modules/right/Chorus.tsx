@@ -15,29 +15,32 @@ const Chorus = ({ x, y, height, width }: ModuleProps) => {
 
     const row1 = y + POT_OFFSET_Y;
     const row2 = row1 + ROW_HEIGHT;
-    const col1 = x + POT_DISTANCE_M / 2;
-    const col2 = col1 + POT_DISTANCE_L;
+    const col1 = x + POT_DISTANCE_L / 2;
+    const col2 = col1 + POT_DISTANCE_M;
 
     return <>
         <ModuleBorder x={x} y={y} height={height} width={width}/>
         <SubHeader label="Chorus" x={x} y={y} width={width}/>
-        <RoundPushButton8 label="Source" labelPosition="bottom" x={col1} y={row1} ledCount={2} ledPosition="right" ledLabels={['FX1', 'FX2']}
+        <RoundPushButton8 label="Source" labelPosition="bottom-pot"
+                          x={col1} y={row2} ledCount={2}
+                          ledPosition="top-horizontal" ledLabels={['FX1', 'FX2']}
                           ctrlGroup={ctrlGroup}
                           ctrl={commonFxControllers.CHORUS.SOURCE}
         />
 
-        <RoundPushButton8 label="Mode" labelPosition="bottom"
-                          x={col1} y={row2} ledCount={2} ledPosition="right" ledLabels={['Chorus', 'Vibrato']}
+        <RoundPushButton8 label="Mode" labelPosition="bottom-pot"
+                          x={col2} y={row2}
+                          ledCount={2} ledPosition="top-horizontal" ledLabels={['Chor', 'Vibr']}
                           ctrlGroup={ctrlGroup}
                           ctrl={commonFxControllers.CHORUS.MODE}
         />
 
-        <RotaryPot12 ledMode="single" label="Rate" x={col2} y={row1}
+        <RotaryPot12 ledMode="single" label="Rate" x={col1} y={row1}
                      ctrlGroup={ctrlGroup}
                      ctrl={commonFxControllers.CHORUS.RATE}
         />
 
-        <RotaryPot12 ledMode="single" label="Depth" x={col2} y={row2}
+        <RotaryPot12 ledMode="single" label="Depth" x={col2} y={row1}
                      ctrlGroup={ctrlGroup}
                      ctrl={commonFxControllers.CHORUS.DEPTH}
         />
