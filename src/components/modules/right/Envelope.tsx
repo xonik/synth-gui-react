@@ -147,6 +147,14 @@ const Envelope = ({ x, y, height, width, label, header, showSelect = false, envI
             ctrl={envCtrls.INVERT}
             ctrlIndex={envId}
         />
+
+        {/* TODO: Change what this controls! */}
+        <RoundLedPushButton8 label="Velocity" x={firstPotX + potDistance * 5} y={bottomRowY} labelPosition="bottom-pot"
+                             ctrlGroup={ctrlGroup}
+                             ctrl={envCtrls.LOOP}
+                             ctrlIndex={envId}
+        />
+
         <RoundPushButton8 label="Trigger" x={firstPotX + potDistance * 5 + BUTTON_DISTANCE_S} y={bottomRowY} labelPosition="bottom-pot"
                           ctrlGroup={ctrlGroup}
                           ctrl={envCtrls.ENV_GATE}

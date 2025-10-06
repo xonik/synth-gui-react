@@ -75,10 +75,10 @@ const MainDisplay = React.forwardRef<SVGRectElement, Props>(
             {false && <rect x={x + BORDER_MARGIN} y={y - 15}
                            height={panelHeight} width={width - 2 * BORDER_MARGIN}
                            className="bezel"/>}
-            {true && <rect x={x + BORDER_MARGIN} y={y}
+            {false && <rect x={x + BORDER_MARGIN} y={y}
                             height={height - BORDER_MARGIN} width={width - 2 * BORDER_MARGIN}
                             className="bezel"/>}
-            {false && <rect x={x + BORDER_MARGIN} y={y + 22}
+            {true && <rect x={x + BORDER_MARGIN} y={y + 22}
                             height={height - BORDER_MARGIN - 75} width={width - 2 * BORDER_MARGIN}
                             className="bezel"/>}
             <RoundPushButton8 x={displayCenterX - 2.5 * buttonSpacing} y={buttonRow}

@@ -25,6 +25,7 @@ const DCO1 = ({ x, y, height, width }: ModuleProps) => {
     const bottomRow = topRow + ROW_HEIGHT
     const buttonRow1 = topRow - 5
     const centerRow = topRow + ROW_HEIGHT * 0.5
+    const buttonRow2 = bottomRow + 3
 
     const col1 = x + POT_DISTANCE_M / 2;
     const col2 = col1 + POT_DISTANCE_L
@@ -67,7 +68,13 @@ const DCO1 = ({ x, y, height, width }: ModuleProps) => {
                      ctrl={oscControllers.DCO1.NOTE}
         />
 
+
         {/* TODO: DCO1 DETUNE */}
+        <RotaryPot12 x={col4} y={bottomRow} ledMode="single" label="Detune"
+                     ctrlGroup={ctrlGroup}
+                     ctrl={oscControllers.DCO1.NOTE}
+        />
+
 
         <RoundPushButton8 x={col1} y={bottomRow}
                           ledPosition="right" ledCount={2} ledLabels={['Hard', 'Metal']}
@@ -82,7 +89,7 @@ const DCO1 = ({ x, y, height, width }: ModuleProps) => {
                      ctrl={oscControllers.DCO1.WHEEL}
         />
 
-        <RoundLedPushButton8 x={col5} y={buttonRow1} label="Saw inv" labelPosition="bottom"
+        <RoundLedPushButton8 x={col5} y={topRow} label="Inv saw" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={oscControllers.DCO1.SAW_INV}
         />
@@ -92,7 +99,7 @@ const DCO1 = ({ x, y, height, width }: ModuleProps) => {
                      ctrl={oscControllers.DCO1.WAVEFORM}
         />
 
-        <RoundLedPushButton8 x={col7} y={buttonRow1} label="Sine" labelPosition="bottom"
+        <RoundLedPushButton8 x={col7} y={topRow} label="Sine" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={oscControllers.DCO1.PRE_FILTER_SINE}
         />

@@ -86,7 +86,7 @@ const DCO2 = ({ x, y, height, width }: ModuleProps) => {
                      ctrl={oscControllers.DCO2.WHEEL}
         />
 
-        <RoundLedPushButton8 x={col5} y={buttonRow1} label="Saw inv" labelPosition="bottom"
+        <RoundLedPushButton8 x={col5} y={topRow} label="Inv saw" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={oscControllers.DCO2.SAW_INV}
         />
@@ -96,7 +96,7 @@ const DCO2 = ({ x, y, height, width }: ModuleProps) => {
                      ctrl={oscControllers.DCO2.WAVEFORM}
         />
 
-        <RoundLedPushButton8 x={col7} y={buttonRow1} label="Sine" labelPosition="bottom"
+        <RoundLedPushButton8 x={col7} y={topRow} label="Sine" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={oscControllers.DCO2.PRE_FILTER_SINE}
         />
