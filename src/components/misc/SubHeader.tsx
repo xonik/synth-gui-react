@@ -1,6 +1,7 @@
 import React from 'react';
 import './SubHeader.scss';
 import { BORDER_MARGIN } from "../../constants";
+import classNames from "classnames";
 
 type PositionAlign = 'center' | 'left' | 'right';
 
@@ -13,6 +14,7 @@ interface Props {
     label?: string,
     labelWidth?: number,
     padding?: 'left' | 'right' | 'both'
+    className?: string
 }
 
 const getCenter = (x: number, y: number, width: number, align: PositionAlign) => {
@@ -26,7 +28,7 @@ const getCenter = (x: number, y: number, width: number, align: PositionAlign) =>
     }
 }
 
-const SubHeader = ({ x, y, width, align = 'left', label, labelWidth, labelPosition: inputLabelPos = 'center', padding = 'both' }: Props) => {
+const SubHeader = ({ x, y, width, align = 'left', label, labelWidth, labelPosition: inputLabelPos = 'center', padding = 'both', className }: Props) => {
 
     const center = getCenter(x, y, width, align);
 
@@ -48,10 +50,19 @@ const SubHeader = ({ x, y, width, align = 'left', label, labelWidth, labelPositi
         <rect
             x={x + paddingLeft} y={y + BORDER_MARGIN / 2}
             width={width - paddingLeft - paddingRight} height={1}
-            className="subheader-border"
+            className={classNames(
+                "subheader-border",
+                className,
+                )
+            }
         />
 
-        <polygon points={getLabelBackground(x, y, labelWidth ?? 30, labelCenter, labelPosition)} className="subheader-border"/>
+        <polygon points={getLabelBackground(x, y, labelWidth ?? 30, labelCenter, labelPosition)} className={
+            classNames(
+                "subheader-border",
+                className,
+            )
+        }/>
         {label && <text
             x={labelPosition === 'center' ? labelCenter : x + 3}
             y={y + 3.85}

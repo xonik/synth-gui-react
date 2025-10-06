@@ -13,9 +13,15 @@ $module-background-color: #1e1e1e;
 // Scheme 2 - blueish
 $panel-background: #00293c;
 $center-panel-background: #101010;
-$module-border-color: #535357;
-$module-background-color: #535357;
+$module-border-color: #404040;
+$module-background-color: #404040;
 
+
+$module-border-color-dark: #202020;
+$module-background-color-dark: #202020;
+
+$module-border-color-light: #606060;
+$module-background-color-light: #606060;
 
 $divider-color: none;
 
@@ -27,3 +33,6 @@ $function-label-font-size: 3.5px;
 
 $function-value-color: #f0f0f0;
 $function-value-font-size: 3px;
+
+$svf-color: #00bfa6;
+$lpf-color: #ff8700;

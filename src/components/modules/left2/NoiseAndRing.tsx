@@ -14,6 +14,7 @@ import { VerticalDividerLine } from "../../misc/VerticalDividerLine";
 import ringModControllers from "../../../synthcore/modules/ringMod/ringModControllers";
 import { ModuleProps } from "../types";
 import { ModuleBorder } from "../../misc/ModuleBorder";
+import "../Modules.scss"
 
 const ctrlGroup = ControllerGroupIds.NOISE
 
@@ -25,7 +26,7 @@ const NoiseAndRing = ({ x, y, width, height }: ModuleProps) => {
     const col2 = col1 + POT_DISTANCE_L
 
     return <>
-        <ModuleBorder x={x} y={y} height={height} width={width}/>
+        <ModuleBorder x={x} y={y} height={height} width={width} className="audio-elements-border"/>
         <SubHeader
             label="Noise" labelPosition="center" labelWidth={15}
             x={x} y={y}

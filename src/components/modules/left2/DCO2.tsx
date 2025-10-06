@@ -18,6 +18,7 @@ import { SHOW_CUT } from "../../../config";
 import { VerticalDividerLine } from "../../misc/VerticalDividerLine";
 import { ModuleBorder } from "../../misc/ModuleBorder";
 import { ModuleProps } from "../types";
+import "../Modules.scss"
 
 const ctrlGroup = ControllerGroupIds.OSC
 
@@ -40,7 +41,7 @@ const DCO2 = ({ x, y, height, width }: ModuleProps) => {
 
     return <>
         {/*!SHOW_CUT && <rect x={x-52.5} y={y} width="105" height={130 - ROW_SPACING} className="module-background"/>*/}
-        <ModuleBorder x={x} y={y} height={height} width={width}/>
+        <ModuleBorder x={x} y={y} height={height} width={width} className="audio-elements-border"/>
         <SubHeader label="Osc 2" x={x} y={y} width={width} labelPosition={col6} labelWidth={15}/>
         <VerticalDividerLine x={col1 + POT_DISTANCE_L - POT_DISTANCE_M / 2} y={y} length={2 * ROW_HEIGHT}/>
         <VerticalDividerLine x={col3 + POT_DISTANCE_M / 2} y={y} length={2 * ROW_HEIGHT}/>

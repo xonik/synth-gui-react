@@ -8,6 +8,7 @@ import { POT_DISTANCE_L, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from "../../
 import SubHeader from "../../misc/SubHeader";
 import { ModuleBorder } from "../../misc/ModuleBorder";
 import { ModuleProps } from "../types";
+import "../Modules.scss"
 
 const ctrlGroup = ControllerGroupIds.COMMON_FX
 
@@ -19,7 +20,7 @@ const Chorus = ({ x, y, height, width }: ModuleProps) => {
     const col2 = col1 + POT_DISTANCE_M;
 
     return <>
-        <ModuleBorder x={x} y={y} height={height} width={width}/>
+        <ModuleBorder x={x} y={y} height={height} width={width} className="shared-elements-border"/>
         <SubHeader label="Chorus" x={x} y={y} width={width}/>
         <RoundPushButton8 label="Source" labelPosition="bottom-pot"
                           x={col1} y={row2} ledCount={2}

@@ -9,6 +9,8 @@ import RoundLedPushButton8 from "../../buttons/RoundLedPushButton8";
 import { ModuleBorder } from "../../misc/ModuleBorder";
 import SubHeader from "../../misc/SubHeader";
 import { ModuleProps } from "../types";
+import './LowPassFilter.scss'
+import "../Modules.scss"
 
 const ctrlGroup = ControllerGroupIds.FILTERS
 
@@ -26,8 +28,8 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
     const col5 = col4 + POT_DISTANCE_M
 
     return <>
-        <ModuleBorder x={x} y={y} height={height} width={width}/>
-        <SubHeader label="LFP" x={x} y={y} width={width} labelPosition="center" labelWidth={15}/>
+        <ModuleBorder x={x} y={y} height={height} width={width} className="audio-elements-border"/>
+        <SubHeader label="LFP" x={x} y={y} width={width} labelPosition="center" className="lpf-header-border" labelWidth={15}/>
 
         <RotaryPot21 x={col3} y={centerRow} ledMode="single" label="Cutoff"
                      ctrlGroup={ctrlGroup}

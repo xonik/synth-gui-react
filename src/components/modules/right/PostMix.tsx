@@ -9,7 +9,7 @@ import { POT_DISTANCE_L, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT, ROW_SPACING }
 import SubHeader from "../../misc/SubHeader";
 import { ModuleBorder } from "../../misc/ModuleBorder";
 import { ModuleProps } from "../types";
-
+import "../Modules.scss"
 
 interface Props {
     x: number,
@@ -44,7 +44,7 @@ const PostMix = ({ x, y, height, width }: ModuleProps) => {
     const offsetY2 = offsetY + 4 * ROW_HEIGHT
 
     return <>
-        <ModuleBorder x={x} y={y} height={height / 2} width={width}/>
+        <ModuleBorder x={x} y={y} height={height / 2} width={width} className="audio-elements-border"/>
         <SubHeader label="Voice mix" x={x} y={y} width={width} labelPosition="center" labelWidth={22}/>
         <VoiceMixerChannel x={center} y={offsetY} label="SVF" ctrl={postMixControllers.SVF}/>
         <VoiceMixerChannel x={center} y={offsetY + ROW_HEIGHT} label="LPF" ctrl={postMixControllers.LPF}/>
@@ -52,7 +52,7 @@ const PostMix = ({ x, y, height, width }: ModuleProps) => {
         <VoiceMixerChannel x={center} y={offsetY + ROW_HEIGHT * 3} label="Sine 2" ctrl={postMixControllers.SINE2}/>
 
 
-        <ModuleBorder x={x} y={offsetY2 - POT_OFFSET_Y} height={height / 2} width={width}/>
+        <ModuleBorder x={x} y={offsetY2 - POT_OFFSET_Y} height={height / 2} width={width} className="audio-elements-border"/>
         <SubHeader label="Voice out" x={x} y={offsetY2 - POT_OFFSET_Y} width={width} labelPosition="center" labelWidth={22}/>
         <VoiceMixerChannel x={center} y={offsetY2} label="Pan" potMode="pan" ledMode="single"
                            ctrl={postMixControllers.PAN}/>

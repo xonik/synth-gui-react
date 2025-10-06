@@ -15,13 +15,18 @@ import { dispatch } from '../../synthcore/utils'
 import { click, release } from '../../synthcore/modules/ui/uiReducer'
 import { ModuleProps } from "./types";
 import { BORDER_MARGIN, POT_OFFSET_Y, ROW_HEIGHT } from "../../constants";
+import { displayBG } from "../../config";
 
 const ctrlGroup = ControllerGroupIds.MAIN_DISP
 
 const SHIFT_KEYS = ['16', 'Shift'];
 
-const MainDisplay = React.forwardRef<SVGRectElement, ModuleProps>(
-    ({ x, y, height, width }, displayRef
+type Props = ModuleProps & {
+    panelHeight: number
+}
+
+const MainDisplay = React.forwardRef<SVGRectElement, Props>(
+    ({ x, y, height, width, panelHeight }, displayRef
     ) => {
 
         const currScreen = useAppSelector(selectCurrScreen)
@@ -67,9 +72,15 @@ const MainDisplay = React.forwardRef<SVGRectElement, ModuleProps>(
         useEventListener('keyup', handleOnRelease);
 
         return <>
-            <rect x={x + BORDER_MARGIN} y={y + 22}
-                  height={height - BORDER_MARGIN- 75} width={width - 2 * BORDER_MARGIN}
-                  className="bezel"/>
+            {false && <rect x={x + BORDER_MARGIN} y={y - 15}
+                           height={panelHeight} width={width - 2 * BORDER_MARGIN}
+                           className="bezel"/>}
+            {true && <rect x={x + BORDER_MARGIN} y={y}
+                            height={height - BORDER_MARGIN} width={width - 2 * BORDER_MARGIN}
+                            className="bezel"/>}
+            {false && <rect x={x + BORDER_MARGIN} y={y + 22}
+                            height={height - BORDER_MARGIN - 75} width={width - 2 * BORDER_MARGIN}
+                            className="bezel"/>}
             <RoundPushButton8 x={displayCenterX - 2.5 * buttonSpacing} y={buttonRow}
                               label="LFOs"
                               labelPosition="bottom"

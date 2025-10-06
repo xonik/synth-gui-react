@@ -15,6 +15,7 @@ import {
 import { SHOW_CUT } from "../../../config";
 import { ModuleProps } from "../types";
 import { ModuleBorder } from "../../misc/ModuleBorder";
+import "../Modules.scss"
 
 const ctrlGroup = ControllerGroupIds.FX
 
@@ -33,7 +34,7 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
 
     return <>
         {/*!SHOW_CUT && <rect x={x} y={y} width="131" height={2 * ROW_HEIGHT} className="module-background"/>*/}
-        <ModuleBorder x={x} y={y} height={height} width={width} />
+        <ModuleBorder x={x} y={y} height={height} width={width} className="audio-elements-border"/>
         <SubHeader
             x={x} y={row1}
             width={width / 2}

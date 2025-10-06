@@ -8,7 +8,8 @@ import commonFxControllers from '../../../synthcore/modules/commonFx/commonFxCon
 import { ModuleBorder } from "../../misc/ModuleBorder";
 import { ModuleProps } from "../types";
 import SubHeader from "../../misc/SubHeader";
-import { POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from "../../../constants";
+import { BUTTON_DISTANCE_S, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from "../../../constants";
+import "../Modules.scss"
 
 const ctrlGroup = ControllerGroupIds.COMMON_FX
 
@@ -27,10 +28,17 @@ const DigitalFX = ({ x, y, height, width }: ModuleProps) => {
     const col2 = x + 7.5 + POT_DISTANCE_M
     const col3 = col2 + POT_DISTANCE_M
     const col4 = col3 + POT_DISTANCE_M
+    const col5 = col4 + BUTTON_DISTANCE_S
 
     return <>
-        <ModuleBorder x={x} y={y} height={height} width={width}/>
+        <ModuleBorder x={x} y={y} height={height} width={width} className="shared-elements-border"/>
         <SubHeader label="DSP" x={x} y={y} width={width}/>
+
+        <RoundPushButton8 x={col1} y={row1} label="DSP" ledCount={2}
+                          labelPosition="bottom-pot" ledPosition="top-horizontal-no-label"
+                          ctrlGroup={ctrlGroup}
+                          ctrl={commonFxControllers.DSP2.SOURCE}
+        />
 
         <RoundPushButton8 x={col1} y={row2} label="Source" ledCount={2} ledLabels={['FX1', 'FX2']}
                           labelPosition="bottom-pot" ledPosition="top-horizontal"
@@ -60,7 +68,7 @@ const DigitalFX = ({ x, y, height, width }: ModuleProps) => {
                              ctrl={commonFxControllers.DSP2.CHAIN}
         />*/}
 
-        <RotaryPotWOLeds10 x={col1} y={row1} label="Effect"
+        <RotaryPotWOLeds10 x={col5} y={row1} label="Effect"
                            ctrlGroup={ctrlGroup}
                            ctrl={commonFxControllers.DSP2.EFFECT}
         />

@@ -1,0 +1,15 @@
+@import '../constants';
+
+.audio-elements {
+  &-border {
+    stroke: $module-border-color-dark;
+    fill: $module-background-color-dark;
+  }
+}
+
+.shared-elements {
+  &-border {
+    stroke: $module-border-color-light;
+    fill: $module-background-color-light;
+  }
+}

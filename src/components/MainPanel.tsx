@@ -92,7 +92,7 @@ const MainPanel = () => {
                 {SHOW_LEFT && <LeftPanel panelHeight={panelHeight} topRow={rows[0]}/>}
                 {SHOW_LEFT_2 && <LeftPanel2 x={leftStart} panelHeight={panelHeight} rows={rows}/>}
                 {SHOW_CENTER && <>
-                    <MainDisplay x={centerCol} y={rows[0]} height={7 * ROW_HEIGHT} width={8 * POT_DISTANCE_M} ref={displayRef}/>
+                    <MainDisplay x={centerCol} y={rows[0]} height={7 * ROW_HEIGHT} width={8 * POT_DISTANCE_M} panelHeight={panelHeight} ref={displayRef}/>
                     <VoiceSelector x={centerCol} y={voiceSelRow} height={20} width={8 * POT_DISTANCE_M}/>
                     <Transpose x={centerCol} y={rows[7]} height={ROW_HEIGHT} width={transposeWidth}/>
                     <Keyboard x={centerCol + transposeWidth} y={rows[7]} height={ROW_HEIGHT} width={keyboardWidth}/>

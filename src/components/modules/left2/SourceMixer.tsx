@@ -14,6 +14,7 @@ import {
 import { SHOW_CUT } from "../../../config";
 import { ModuleBorder } from "../../misc/ModuleBorder";
 import { ModuleProps } from "../types";
+import "../Modules.scss"
 
 interface ChannelProps {
     label: string,
@@ -58,7 +59,7 @@ const SourceMixer = ({ x, y, height, width }: ModuleProps) => {
 
     return <>
         {/*!SHOW_CUT && <rect x={x} y={y} width="135" height={2 * ROW_HEIGHT - ROW_SPACING} className="module-background"/> */ }
-        <ModuleBorder x={x} y={y} height={height} width={width} />
+        <ModuleBorder x={x} y={y} height={height} width={width} className="audio-elements-border"/>
         <SubHeader label="Mix" x={x} y={y} width={width} labelWidth={15} labelPosition="center"/>
 
         <MixerChannel x={col1} y={row1} label="Osc 1"

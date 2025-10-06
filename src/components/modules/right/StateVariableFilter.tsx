@@ -3,8 +3,6 @@ import RotaryPot21 from '../../pots/RotaryPot21'
 import RotaryPot12 from '../../pots/RotaryPot12'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
-import Header from '../../misc/Header'
-import HorizontalLine from '../../misc/HorizontalLine'
 import RoundRotaryButton17 from '../../buttons/RoundRotaryButton17'
 import { ControllerGroupIds } from '../../../synthcore/types'
 import filtersControllers from '../../../synthcore/modules/filters/filtersControllers'
@@ -12,6 +10,8 @@ import SubHeader from "../../misc/SubHeader";
 import { POT_DISTANCE_L, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from "../../../constants";
 import { ModuleBorder } from "../../misc/ModuleBorder";
 import { ModuleProps } from "../types";
+import "./StateVariableFilter.scss"
+import "../Modules.scss"
 
 const ctrlGroup = ControllerGroupIds.FILTERS
 
@@ -42,8 +42,12 @@ const StateVariableFilter = ({ x, y, height, width }: ModuleProps) => {
      */
 
     return <>
-        <ModuleBorder x={x} y={y} height={height} width={width}/>
-        <SubHeader label="SVF" x={x} y={y} width={width} labelPosition="center" labelWidth={15}/>
+        <ModuleBorder x={x} y={y} height={height} width={width} className="audio-elements-border"/>
+        <SubHeader label="SVF" x={x} y={y}
+                   width={width}
+                   labelPosition="center" labelWidth={15}
+                   className="svf-header-border"
+        />
 
         <RotaryPot21 x={col3} y={centerRow} ledMode="single" label="Cutoff"
                      ctrlGroup={ctrlGroup}

@@ -11,6 +11,7 @@ import { ModuleBorder } from "../misc/ModuleBorder";
 import SubHeader from "../misc/SubHeader";
 import { ModuleProps } from "./types";
 import { POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from "../../constants";
+import "./KeyboardControls.scss"
 
 const ctrlGroup = ControllerGroupIds.KBD
 
@@ -31,7 +32,7 @@ export const Transpose = ({ x, y, height, width }: ModuleProps) => {
     const transpose = useAppSelector(selectController(kbdControllers.TRANSPOSE))
 
     return <>
-        <ModuleBorder x={x} y={y} height={height} width={width}/>
+        <ModuleBorder x={x} y={y} height={height} width={width} className="keyboard-controls-background"/>
         <SubHeader label="Transpose" x={x} y={y} width={width} labelPosition="center" labelWidth={22}/>
 
         <RoundPushButton8 labelPosition="bottom-pot" x={col1} y={row1}
@@ -65,7 +66,7 @@ export const Keyboard = ({ x, y, height, width }: ModuleProps) => {
     const col12 = col11 + 45
 
     return <>
-        <ModuleBorder x={x} y={y} height={height} width={width}/>
+        <ModuleBorder x={x} y={y} height={height} width={width} className="keyboard-controls-background"/>
         <SubHeader label="Keyboard" x={x} y={y} width={width} labelPosition="center" labelWidth={22}/>
 
         <RotaryPot12 x={col8} y={row1} ledMode="single" label="Portamento"
