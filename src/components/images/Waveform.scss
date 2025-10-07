@@ -1,0 +1,11 @@
+@import '../constants';
+
+.waveform {
+  &-path {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    stroke: $function-value-color;
+    stroke-width: 0.4;
+  }
+}

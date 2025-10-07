@@ -15,13 +15,13 @@ import { SHOW_CUT } from "../../../config";
 import { VerticalDividerLine } from "../../misc/VerticalDividerLine";
 import { ModuleBorder } from "../../misc/ModuleBorder";
 import { ModuleProps } from "../types";
+import { WaveformIconsRing } from "./WaveformIconsRing";
 import "../Modules.scss"
-import { SawLeft } from "../../images/SawLeft";
+import { rotateAround } from "../../../utils/svg/rotateAround";
 import { Triangle } from "../../images/Triangle";
-import { SawRight } from "../../images/SawRight";
-import { Square } from "../../images/Square";
-import { PulseWidth } from "../../images/PulseWidth";
-import { Sine } from "../../images/Sine";
+import { PulseLeft } from "../../images/PulseLeft";
+import { PulseRight } from "../../images/PulseRight";
+import { PwIconsRing } from "./PwIconsRing";
 
 const ctrlGroup = ControllerGroupIds.OSC
 
@@ -42,6 +42,10 @@ const DCO1 = ({ x, y, height, width }: ModuleProps) => {
     const col7 = col6 + POT_DISTANCE_S
     const col8 = col7 + POT_DISTANCE_S
     const col9 = col8 + POT_DISTANCE_M
+
+    const upPos: [number, number] = [x, y - 12]
+    const pwLeftPos = rotateAround(upPos, [x, y], -125)
+    const pwRightPos = rotateAround(upPos, [x, y], 125)
 
     return <>
         {/*!SHOW_CUT && <rect x={x-52.5} y={y} width="105" height={130 - ROW_SPACING} className="module-background"/>*/}
@@ -105,6 +109,8 @@ const DCO1 = ({ x, y, height, width }: ModuleProps) => {
                      ctrl={oscControllers.DCO1.WAVEFORM}
         />
 
+        <WaveformIconsRing x={col6} y={centerRow} />
+
         <RoundLedPushButton8 x={col7} y={topRow} label="Sine" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={oscControllers.DCO1.PRE_FILTER_SINE}
@@ -127,6 +133,8 @@ const DCO1 = ({ x, y, height, width }: ModuleProps) => {
                      ctrl={oscControllers.DCO1.PW}
         />
 
+        <PwIconsRing x={col8} y={bottomRow} />
+
         <RotaryPot12 x={col9} y={topRow} ledMode="multi" label="Sub -2"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.DCO1.SUB2}
@@ -134,9 +142,6 @@ const DCO1 = ({ x, y, height, width }: ModuleProps) => {
 
 
         {/*<RotaryPot12 x={col4} y={topRow} ledMode="multi" label="Super saw"/>*/}
-
-
-        <Sine x={col6} y={centerRow} width={15} height={10}/>
 
     </>
 }

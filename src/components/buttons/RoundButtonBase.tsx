@@ -10,6 +10,7 @@ import { useAppSelector } from '../../synthcore/hooks'
 import { selectUiController } from '../../synthcore/modules/controllers/controllersReducer'
 import './RoundButton.scss'
 import { SHOW_CUT } from "../../config";
+import { WaveformIconType } from "../images/types";
 
 type LedPosition =
     'left'
@@ -42,7 +43,7 @@ export interface Props {
     y: number;
     label?: string;
     labelPosition?: LabelPosition;
-    ledLabels?: string[];
+    ledLabels?: Array<string | JSX.Element>;
     ledPosition?: LedPosition;
     ledRingColors?: string [];
 
@@ -95,7 +96,7 @@ type RenderProps = {
     ledRadius: number;
     labelPos: LabelPos;
     ledPos: LedPos[];
-    ledLabels: string[];
+    ledLabels: Array<string | JSX.Element>;
 }
 
 const positionLabel = (buttonRadius: number, labelPosition: LabelPosition, labelMargin: number): LabelPos => {
@@ -396,16 +397,24 @@ export const RoundButtonBase = (props: Props & Config) => {
                     }
                 />
 
-                {ledLabels[index] && <text
+
+                {typeof ledLabels[index] === 'string' && <text
                     x={position.labelX}
                     y={position.labelY ?? position.y + 1.07}
                     className="button-led-label"
                     textAnchor={position.textAnchor}
                     alignmentBaseline="middle"
                 >{ledLabels[index]}</text>}
+                {typeof ledLabels[index] !== 'string' && <svg x={position.labelX} y={position.y + 1.07}>
+                    {ledLabels[index]}
+                </svg>}
             </React.Fragment>)}
         </svg>
     )
+}
+
+function isString(value: any): value is string {
+    return typeof value === "string";
 }
 
 export default RoundButtonBase

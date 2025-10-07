@@ -19,6 +19,8 @@ import { VerticalDividerLine } from "../../misc/VerticalDividerLine";
 import { ModuleBorder } from "../../misc/ModuleBorder";
 import { ModuleProps } from "../types";
 import "../Modules.scss"
+import { WaveformIconsRing } from "./WaveformIconsRing";
+import { PwIconsRing } from "./PwIconsRing";
 
 const ctrlGroup = ControllerGroupIds.OSC
 
@@ -96,6 +98,8 @@ const DCO2 = ({ x, y, height, width }: ModuleProps) => {
                      ctrl={oscControllers.DCO2.WAVEFORM}
         />
 
+        <WaveformIconsRing x={col6} y={centerRow} />
+
         <RoundLedPushButton8 x={col7} y={topRow} label="Sine" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={oscControllers.DCO2.PRE_FILTER_SINE}
@@ -117,6 +121,8 @@ const DCO2 = ({ x, y, height, width }: ModuleProps) => {
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.DCO2.PW}
         />
+
+        <PwIconsRing x={col8} y={bottomRow} />
 
         <RotaryPot12 x={col9} y={topRow} ledMode="multi" label="Sub -2"
                      ctrlGroup={ctrlGroup}

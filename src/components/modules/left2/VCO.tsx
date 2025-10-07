@@ -18,6 +18,8 @@ import { VerticalDividerLine } from "../../misc/VerticalDividerLine";
 import { ModuleBorder } from "../../misc/ModuleBorder";
 import { ModuleProps } from "../types";
 import "../Modules.scss"
+import { WaveformIconsRing } from "./WaveformIconsRing";
+import { PwIconsRing } from "./PwIconsRing";
 
 const ctrlGroup = ControllerGroupIds.OSC
 
@@ -94,6 +96,8 @@ const VCO = ({ x, y, height, width }: ModuleProps) => {
                      ctrl={oscControllers.VCO.WAVEFORM}
         />
 
+        <WaveformIconsRing x={col6} y={centerRow} />
+
         <RotaryPot12 x={col8} y={topRow} ledMode="multi" label="FM"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.VCO.FM_AMT}
@@ -110,6 +114,8 @@ const VCO = ({ x, y, height, width }: ModuleProps) => {
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.VCO.PW}
         />
+
+        <PwIconsRing x={col8} y={bottomRow} />
 
         <RoundPushButton8 x={col9} y={bottomRow + +DUAL_LED_BUTTON_W_LABEL_OFFSET_Y}
                           ledPosition="top-horizontal" ledCount={2} ledLabels={['Lin', 'Log']}

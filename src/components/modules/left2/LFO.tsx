@@ -16,6 +16,12 @@ import {
 import { SHOW_CUT } from "../../../config";
 import { ModuleBorder } from "../../misc/ModuleBorder";
 import { ModuleProps } from "../types";
+import { SawLeft } from "../../images/SawLeft";
+import { SawRight } from "../../images/SawRight";
+import { Triangle } from "../../images/Triangle";
+import { Square } from "../../images/Square";
+import { Sine } from "../../images/Sine";
+import { Random } from "../../images/Random";
 
 const ctrlGroup = ControllerGroupIds.LFO
 
@@ -31,6 +37,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
     const row2 = row1 + ROW_HEIGHT
 
     const lfoId = useAppSelector(selectCurrUiLfoId)
+
 
     return <>
         {/*!SHOW_CUT && <rect x={x} y={y} width={323} height={ROW_HEIGHT * 2- ROW_SPACING} className="module-background"/>*/}
@@ -111,7 +118,14 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
         <RoundPushButton8 x={col2 + BUTTON_DISTANCE_S * 4} y={row2}
                           label="Shape" labelPosition="bottom-pot"
                           ledPosition="right-two-cols" ledCount={6}
-                          ledLabels={['Saw', 'Tri', 'Sqr', 'Sin', 'Rand', 'Other']}
+                          ledLabels={[
+                              <SawRight x={0} y={0} width={3} height={2}/>,
+                              <Triangle x={0} y={0} width={3} height={2}/>,
+                              <Square x={0} y={0} width={3} height={2}/>,
+                              <Sine x={0} y={0} width={3} height={2}/>,
+                              <Random x={0} y={0} width={3} height={2}/>,
+                              'Other'
+                          ]}
                           ctrlGroup={ctrlGroup}
                           ctrl={lfoCtrls.SHAPE}
                           ctrlIndex={lfoId}
