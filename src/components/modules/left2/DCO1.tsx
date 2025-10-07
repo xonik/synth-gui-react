@@ -16,6 +16,12 @@ import { VerticalDividerLine } from "../../misc/VerticalDividerLine";
 import { ModuleBorder } from "../../misc/ModuleBorder";
 import { ModuleProps } from "../types";
 import "../Modules.scss"
+import { SawLeft } from "../../images/SawLeft";
+import { Triangle } from "../../images/Triangle";
+import { SawRight } from "../../images/SawRight";
+import { Square } from "../../images/Square";
+import { PulseWidth } from "../../images/PulseWidth";
+import { Sine } from "../../images/Sine";
 
 const ctrlGroup = ControllerGroupIds.OSC
 
@@ -129,6 +135,8 @@ const DCO1 = ({ x, y, height, width }: ModuleProps) => {
 
         {/*<RotaryPot12 x={col4} y={topRow} ledMode="multi" label="Super saw"/>*/}
 
+
+        <Sine x={col6} y={centerRow} width={15} height={10}/>
 
     </>
 }
