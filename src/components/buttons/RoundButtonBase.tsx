@@ -104,13 +104,13 @@ const positionLabel = (buttonRadius: number, labelPosition: LabelPosition, label
         case 'left':
             return {
                 x: -(buttonRadius + labelMargin + 2),
-                y: 0,
+                y: 0.9,
                 textAnchor: 'end'
             }
         case 'right':
             return {
                 x: buttonRadius + labelMargin + 2,
-                y: 0,
+                y: 0.9,
                 textAnchor: 'start'
             }
         case 'top':
@@ -222,7 +222,7 @@ const positionLeds = (
                     x: startX + 1.25 * i * yDist,
                     y: -yDist / 2 - buttonRadius - ledMargin - ledRadius,
                     labelX: startX + i * 1.25 * yDist,
-                    labelY: -buttonRadius - 2,
+                    labelY: -buttonRadius - 2.3,
                     textAnchor: 'middle'
                 })
                 break
@@ -405,9 +405,13 @@ export const RoundButtonBase = (props: Props & Config) => {
                     textAnchor={position.textAnchor}
                     alignmentBaseline="middle"
                 >{ledLabels[index]}</text>}
-                {typeof ledLabels[index] !== 'string' && <svg x={position.labelX} y={position.y + 1.07}>
-                    {ledLabels[index]}
-                </svg>}
+                {typeof ledLabels[index] !== 'string' &&
+                    <svg
+                        x={position.textAnchor === 'middle' ? position.labelX - 1.5 : position.labelX}
+                        y={position.labelY ?? position.y + 1.07}
+                    >
+                        {ledLabels[index]}
+                    </svg>}
             </React.Fragment>)}
         </svg>
     )

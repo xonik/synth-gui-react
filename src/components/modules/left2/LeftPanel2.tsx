@@ -28,6 +28,7 @@ export const LeftPanel2 = ({ x, panelHeight, rows }: Props) => {
 
     const oscWidth = POT_DISTANCE_L + POT_DISTANCE_M * 7
     const mixWidth = 2 * POT_DISTANCE_L + 5
+    const panelWidth = oscWidth + mixWidth
 
     const lfoCol = x + POT_DISTANCE_L + POT_DISTANCE_M
     const noiseCol = x + oscWidth
@@ -51,11 +52,11 @@ export const LeftPanel2 = ({ x, panelHeight, rows }: Props) => {
 
         <PanelScrew x={x - 10} y={10}/>
         <PanelScrew x={x - 10} y={145}/>
-        <PanelScrew x={x + PADDING_LEFT + 5.5 * POT_DISTANCE_M} y={10}/>
-        <PanelScrew x={x + 325} y={10}/>
+        <PanelScrew x={x + panelWidth / 2} y={10}/>
+        <PanelScrew x={x + panelWidth + 10} y={10}/>
         <PanelScrew x={x - 10} y={280}/>
-        <PanelScrew x={x + PADDING_LEFT + 5.5 * POT_DISTANCE_M} y={280}/>
-        <PanelScrew x={x + 325} y={145}/>
-        <PanelScrew x={x + 325} y={280}/>
+        <PanelScrew x={x + panelWidth / 2} y={280}/>
+        <PanelScrew x={x + panelWidth + 10} y={145}/>
+        <PanelScrew x={x + panelWidth + 10} y={280}/>
     </>
 }

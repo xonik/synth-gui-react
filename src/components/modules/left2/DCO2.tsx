@@ -21,6 +21,8 @@ import { ModuleProps } from "../types";
 import "../Modules.scss"
 import { WaveformIconsRing } from "./WaveformIconsRing";
 import { PwIconsRing } from "./PwIconsRing";
+import { Square } from "../../images/Square";
+import { SawRight } from "../../images/SawRight";
 
 const ctrlGroup = ControllerGroupIds.OSC
 
@@ -33,8 +35,8 @@ const DCO2 = ({ x, y, height, width }: ModuleProps) => {
 
     const col1 = x + POT_DISTANCE_M / 2;
     const col2 = col1 + POT_DISTANCE_L
-    const col3 = col2 +  POT_DISTANCE_M
-    const col4 = col3 +  POT_DISTANCE_M
+    const col3 = col2 + POT_DISTANCE_M
+    const col4 = col3 + POT_DISTANCE_M
     const col5 = col4 + POT_DISTANCE_S
     const col6 = col5 + POT_DISTANCE_S
     const col7 = col6 + POT_DISTANCE_S
@@ -98,7 +100,7 @@ const DCO2 = ({ x, y, height, width }: ModuleProps) => {
                      ctrl={oscControllers.DCO2.WAVEFORM}
         />
 
-        <WaveformIconsRing x={col6} y={centerRow} />
+        <WaveformIconsRing x={col6} y={centerRow}/>
 
         <RoundLedPushButton8 x={col7} y={topRow} label="Sine" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
@@ -106,7 +108,10 @@ const DCO2 = ({ x, y, height, width }: ModuleProps) => {
         />
 
         <RoundPushButton8 x={col9} y={bottomRow + DUAL_LED_BUTTON_W_LABEL_OFFSET_Y}
-                          ledPosition="top-horizontal" ledCount={2} ledLabels={['Sq', 'Sw']}
+                          ledPosition="top-horizontal" ledCount={2} ledLabels={[
+            <Square x={0} y={0} width={3} height={2}/>,
+            <SawRight x={0} y={0} width={3} height={2}/>,
+        ]}
                           label="Sub wave" labelPosition="bottom"
                           ctrlGroup={ctrlGroup}
                           ctrl={oscControllers.DCO2.SUB_WAVE}
@@ -117,12 +122,10 @@ const DCO2 = ({ x, y, height, width }: ModuleProps) => {
                      ctrl={oscControllers.DCO2.SUB1}
         />
 
-        <RotaryPot12 x={col8} y={bottomRow} ledMode="single" label="PW"
+        <RotaryPot12 x={col8} y={bottomRow} ledMode="single" label="Pulse width"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.DCO2.PW}
         />
-
-        <PwIconsRing x={col8} y={bottomRow} />
 
         <RotaryPot12 x={col9} y={topRow} ledMode="multi" label="Sub -2"
                      ctrlGroup={ctrlGroup}

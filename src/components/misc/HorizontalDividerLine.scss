@@ -1,0 +1,11 @@
+@import '../constants';
+.horizontal-divider-line {
+  stroke: $divider-color;
+  stroke-width: 0.25;
+}
+
+.cut {
+  .horizontal {
+    stroke: black;
+  }
+}

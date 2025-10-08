@@ -12,6 +12,7 @@ import { ModuleBorder } from "../../misc/ModuleBorder";
 import { ModuleProps } from "../types";
 import "./StateVariableFilter.scss"
 import "../Modules.scss"
+import { HorizontalDividerLine } from "../../misc/HorizontalDividerLine";
 
 const ctrlGroup = ControllerGroupIds.FILTERS
 
@@ -100,26 +101,27 @@ const StateVariableFilter = ({ x, y, height, width }: ModuleProps) => {
                              ctrl={filtersControllers.SVF.SLOPE}
         />
 
-        <RotaryPot12 x={col1} y={bottomRow2} ledMode="multi" label="Wheel amt"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={filtersControllers.SVF.WHEEL_AMT}
-        />
+        <HorizontalDividerLine x={x} y={bottomRow2 - 12.5} width={width}/>
 
-        <RotaryPot12 x={col2} y={bottomRow2} ledMode="multi" label="Env amt"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={filtersControllers.SVF.ENV_AMT}
-        />
-
-        <RotaryPot12 x={col4} y={bottomRow2} ledMode="multi" label="LFO amt"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={filtersControllers.SVF.LFO_AMT}
-        />
-
-        <RotaryPot12 x={col5} y={bottomRow2} ledMode="multi" label="Kbd amt"
+        <RotaryPot12 x={col1} y={bottomRow2} ledMode="multi" label="Keyboard"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.SVF.KBD_AMT}
         />
 
+        <RotaryPot12 x={col2} y={bottomRow2} ledMode="multi" label="LFO"
+                     ctrlGroup={ctrlGroup}
+                     ctrl={filtersControllers.SVF.LFO_AMT}
+        />
+
+        <RotaryPot12 x={col4} y={bottomRow2} ledMode="multi" label="Wheel"
+                     ctrlGroup={ctrlGroup}
+                     ctrl={filtersControllers.SVF.WHEEL_AMT}
+        />
+
+        <RotaryPot12 x={col5} y={bottomRow2} ledMode="multi" label="Envelope"
+                     ctrlGroup={ctrlGroup}
+                     ctrl={filtersControllers.SVF.ENV_AMT}
+        />
 
         <RoundLedPushButton8 x={col5} y={bottomRow1 + 5} label="Invert" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}

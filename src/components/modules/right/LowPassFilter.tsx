@@ -11,6 +11,7 @@ import SubHeader from "../../misc/SubHeader";
 import { ModuleProps } from "../types";
 import './LowPassFilter.scss'
 import "../Modules.scss"
+import { HorizontalDividerLine } from "../../misc/HorizontalDividerLine";
 
 const ctrlGroup = ControllerGroupIds.FILTERS
 
@@ -96,24 +97,26 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
                           ctrl={filtersControllers.LPF.FM_SRC}
         />
 
-        <RotaryPot12 x={col1} y={bottomRow2} ledMode="multi" label="Wheel amt"
+        <HorizontalDividerLine x={x} y={bottomRow2 - 12.5} width={width}/>
+
+        <RotaryPot12 x={col1} y={bottomRow2} ledMode="multi" label="Keyboard"
                      ctrlGroup={ctrlGroup}
-                     ctrl={filtersControllers.LPF.WHEEL_AMT}
+                     ctrl={filtersControllers.LPF.KBD_AMT}
         />
 
-        <RotaryPot12 x={col2} y={bottomRow2} ledMode="multi" label="Env amt"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={filtersControllers.LPF.ENV_AMT}
-        />
-
-        <RotaryPot12 x={col4} y={bottomRow2} ledMode="multi" label="LFO amt"
+        <RotaryPot12 x={col2} y={bottomRow2} ledMode="multi" label="LFO"
                      ctrlGroup={ctrlGroup}
                      ctrl={filtersControllers.LPF.LFO_AMT}
         />
 
-        <RotaryPot12 x={col5} y={bottomRow2} ledMode="multi" label="Kbd amt"
+        <RotaryPot12 x={col4} y={bottomRow2} ledMode="multi" label="Wheel amt"
                      ctrlGroup={ctrlGroup}
-                     ctrl={filtersControllers.LPF.KBD_AMT}
+                     ctrl={filtersControllers.LPF.WHEEL_AMT}
+        />
+
+        <RotaryPot12 x={col5} y={bottomRow2} ledMode="multi" label="Envelope"
+                     ctrlGroup={ctrlGroup}
+                     ctrl={filtersControllers.LPF.ENV_AMT}
         />
 
     </>

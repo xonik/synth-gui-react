@@ -1,7 +1,7 @@
 import LowPassFilter from "./LowPassFilter";
 import PostMix from "./PostMix";
 import Envelope from "./Envelope";
-import { BUTTON_DISTANCE_S, POT_DISTANCE_L, POT_DISTANCE_M, ROW_HEIGHT } from "../../../constants";
+import { BUTTON_DISTANCE_S, PADDING_LEFT, POT_DISTANCE_L, POT_DISTANCE_M, ROW_HEIGHT } from "../../../constants";
 import DigitalFX from "./DigitalFX";
 import Chorus from "./Chorus";
 import OutputMixer from "./OutputMixer";
@@ -10,6 +10,7 @@ import StateVariableFilter from "./StateVariableFilter";
 import { useAppSelector } from "../../../synthcore/hooks";
 import { selectController } from "../../../synthcore/modules/controllers/controllersReducer";
 import { envCtrls } from "../../../synthcore/modules/env/envControllers";
+import { PanelScrew } from "../../misc/PanelScrew";
 
 type Props = {
     x: number,
@@ -51,5 +52,14 @@ export const RightPanel = ({ x, rows }: Props) => {
         {/*<BitCrusher x={outFx2Col} y={outputFxRow + 40}/>*/}
 
         <OutputMixer x={outputMixerCol} y={rows[0]} height={4 * ROW_HEIGHT} width={outputMixWidth}/>
+
+        <PanelScrew x={x - 10} y={10}/>
+        <PanelScrew x={x - 10} y={145}/>
+        <PanelScrew x={x + PADDING_LEFT + 5.5 * POT_DISTANCE_M} y={10}/>
+        <PanelScrew x={x + 325} y={10}/>
+        <PanelScrew x={x - 10} y={280}/>
+        <PanelScrew x={x + PADDING_LEFT + 5.5 * POT_DISTANCE_M} y={280}/>
+        <PanelScrew x={x + 325} y={145}/>
+        <PanelScrew x={x + 325} y={280}/>
     </>
 }

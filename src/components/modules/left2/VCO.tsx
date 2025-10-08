@@ -110,12 +110,10 @@ const VCO = ({ x, y, height, width }: ModuleProps) => {
                           ctrl={oscControllers.VCO.FM_SRC}
         />
 
-        <RotaryPot12 x={col8} y={bottomRow} ledMode="single" label="PW"
+        <RotaryPot12 x={col8} y={bottomRow} ledMode="single" label="Pulse width"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.VCO.PW}
         />
-
-        <PwIconsRing x={col8} y={bottomRow} />
 
         <RoundPushButton8 x={col9} y={bottomRow + +DUAL_LED_BUTTON_W_LABEL_OFFSET_Y}
                           ledPosition="top-horizontal" ledCount={2} ledLabels={['Lin', 'Log']}
