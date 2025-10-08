@@ -52,14 +52,5 @@ export const RightPanel = ({ x, rows }: Props) => {
         {/*<BitCrusher x={outFx2Col} y={outputFxRow + 40}/>*/}
 
         <OutputMixer x={outputMixerCol} y={rows[0]} height={4 * ROW_HEIGHT} width={outputMixWidth}/>
-
-        <PanelScrew x={x - 10} y={10}/>
-        <PanelScrew x={x - 10} y={145}/>
-        <PanelScrew x={x + PADDING_LEFT + 5.5 * POT_DISTANCE_M} y={10}/>
-        <PanelScrew x={x + 325} y={10}/>
-        <PanelScrew x={x - 10} y={280}/>
-        <PanelScrew x={x + PADDING_LEFT + 5.5 * POT_DISTANCE_M} y={280}/>
-        <PanelScrew x={x + 325} y={145}/>
-        <PanelScrew x={x + 325} y={280}/>
     </>
 }

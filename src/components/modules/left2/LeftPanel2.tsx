@@ -49,14 +49,5 @@ export const LeftPanel2 = ({ x, panelHeight, rows }: Props) => {
         <Effects x={noiseCol} y={rows[4]} height={2 * ROW_HEIGHT} width={mixWidth}/>
 
         <Arpeggiator x={noiseCol} y={rows[6]} height={2 * ROW_HEIGHT} width={mixWidth}/>
-
-        <PanelScrew x={x - 10} y={10}/>
-        <PanelScrew x={x - 10} y={145}/>
-        <PanelScrew x={x + panelWidth / 2} y={10}/>
-        <PanelScrew x={x + panelWidth + 10} y={10}/>
-        <PanelScrew x={x - 10} y={280}/>
-        <PanelScrew x={x + panelWidth / 2} y={280}/>
-        <PanelScrew x={x + panelWidth + 10} y={145}/>
-        <PanelScrew x={x + panelWidth + 10} y={280}/>
     </>
 }

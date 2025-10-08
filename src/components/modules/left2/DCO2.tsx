@@ -57,7 +57,7 @@ const DCO2 = ({ x, y, height, width }: ModuleProps) => {
                           ctrl={oscControllers.DCO2.MODE}
         />
 
-        <RotaryPot12 x={col2} y={topRow} label="Kbd"
+        <RotaryPot12 x={col2} y={topRow} label="Keyboard"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.DCO2.KBD}
         />

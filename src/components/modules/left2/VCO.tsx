@@ -53,7 +53,7 @@ const VCO = ({ x, y, height, width }: ModuleProps) => {
                           ctrl={oscControllers.VCO.SYNC_SRC}
         />
 
-        <RotaryPot12 x={col2} y={topRow} label="Kbd"
+        <RotaryPot12 x={col2} y={topRow} label="Keyboard"
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.VCO.KBD}
         />

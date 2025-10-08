@@ -11,6 +11,7 @@ import classNames from "classnames";
 import { LeftPanel } from "./modules/left/LeftPanel";
 import { LeftPanel2 } from "./modules/left2/LeftPanel2";
 import { RightPanel } from "./modules/right/RightPanel";
+import { PanelScrew } from "./misc/PanelScrew";
 
 /**
  * TODO:
@@ -77,6 +78,18 @@ const MainPanel = () => {
     }, [])
 
 
+    const screwCol1 = 10
+    const screwCol3 = leftStart + leftWidth + spacing / 2
+    const screwCol2 = screwCol1 + (screwCol3 - screwCol1) / 2
+
+    const screwCol4 = rightStart - spacing / 2
+    const screwCol6 = panelWidth - 10
+    const screwCol5 = screwCol4 + (screwCol6 - screwCol4) / 2
+
+    const screwRow1 = 10
+    const screwRow2 = 145
+    const screwRow3 = 280
+
     // PS: 1 inch in svg is 96pixels, so 1cm = 96 / 2.54 = 37.795276px
     // In Illustrator, one inch is 72 pt. 1pt is 0,0352778, so one inch is
     // 72 * 0,0352778
@@ -98,6 +111,26 @@ const MainPanel = () => {
                     <Keyboard x={centerCol + transposeWidth} y={rows[7]} height={ROW_HEIGHT} width={keyboardWidth}/>
                 </>}
                 {SHOW_RIGHT && <RightPanel x={rightStart} rows={rows}/>}
+
+                {/* Left screws */}
+                <PanelScrew x={screwCol1} y={screwRow1}/>
+                <PanelScrew x={screwCol1} y={screwRow2}/>
+                <PanelScrew x={screwCol1} y={screwRow3}/>
+                <PanelScrew x={screwCol2} y={screwRow1}/>
+                <PanelScrew x={screwCol2} y={screwRow3}/>
+                <PanelScrew x={screwCol3} y={screwRow1}/>
+                <PanelScrew x={screwCol3} y={screwRow2}/>
+                <PanelScrew x={screwCol3} y={screwRow3}/>
+
+                {/* Left screws */}
+                <PanelScrew x={screwCol4} y={screwRow1}/>
+                <PanelScrew x={screwCol4} y={screwRow2}/>
+                <PanelScrew x={screwCol4} y={screwRow3}/>
+                <PanelScrew x={screwCol5} y={screwRow1}/>
+                <PanelScrew x={screwCol5} y={screwRow3}/>
+                <PanelScrew x={screwCol6} y={screwRow1}/>
+                <PanelScrew x={screwCol6} y={screwRow2}/>
+                <PanelScrew x={screwCol6} y={screwRow3}/>
             </svg>
             {SHOW_CENTER && <>
                 {dispRect && <div className="panel-main-display" style={{
