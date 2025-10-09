@@ -1,0 +1,22 @@
+@import './constants';
+
+.display-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-grow: 1;
+
+  &__label {
+    width: 100%;
+    font-size: 13.5px;
+    background-color: black;
+    color: $heading-color;
+    display: flex;
+    justify-content: center;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+  }
+
+}

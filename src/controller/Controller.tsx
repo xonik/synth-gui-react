@@ -3,6 +3,7 @@ import { useAppSelector } from '../synthcore/hooks'
 import { selectCurrScreen } from '../synthcore/modules/mainDisplay/mainDisplayReducer'
 import { MainDisplayScreenId } from '../synthcore/modules/mainDisplay/types'
 import Mod from './mods/Mod'
+import { DisplayButtons } from './DisplayButtons'
 import Env from './envelopes/Env'
 import LFO from './lfos/LFO'
 import Settings from './settings/Settings'
@@ -12,7 +13,9 @@ import './Controller.scss'
 const Controller = () => {
 
     const currScreen = useAppSelector(selectCurrScreen)
-    return <div className="controller-grid">
+    return <>
+        <div className="controller-buttons"><DisplayButtons /></div>
+        <div className="controller-grid">
         {
             currScreen === MainDisplayScreenId.LFO && <LFO/>
         }
@@ -32,6 +35,7 @@ const Controller = () => {
             currScreen === MainDisplayScreenId.SAVE && <PatchBrowser mode="save"/>
         }
     </div>
+    </>
 }
 
 export default Controller
