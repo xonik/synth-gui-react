@@ -82,43 +82,31 @@ const MainDisplay = React.forwardRef<SVGRectElement, Props>(
                             height={height - BORDER_MARGIN - 75} width={width - 2 * BORDER_MARGIN}
                             className="bezel"/>}
             <RoundPushButton8 x={displayCenterX - 2.5 * buttonSpacing} y={buttonRow}
-                              label="LFOs"
-                              labelPosition="bottom"
                               ctrlGroup={ctrlGroup}
                               radioButtonIndex={0}
                               ctrl={mainDisplayControllers.GROUP_MENU}
             />
             <RoundPushButton8 x={displayCenterX - 1.5 * buttonSpacing} y={buttonRow}
-                              label="Osc"
-                              labelPosition="bottom"
                               ctrlGroup={ctrlGroup}
                               radioButtonIndex={1}
                               ctrl={mainDisplayControllers.GROUP_MENU}
             />
             <RoundPushButton8 x={displayCenterX - 0.5 * buttonSpacing} y={buttonRow}
-                              label="Filters"
-                              labelPosition="bottom"
                               ctrlGroup={ctrlGroup}
                               radioButtonIndex={2}
                               ctrl={mainDisplayControllers.GROUP_MENU}
             />
             <RoundPushButton8 x={displayCenterX + 0.5 * buttonSpacing} y={buttonRow}
-                              label="Envelopes"
-                              labelPosition="bottom"
                               ctrlGroup={ctrlGroup}
                               radioButtonIndex={3}
                               ctrl={mainDisplayControllers.GROUP_MENU}
             />
             <RoundPushButton8 x={displayCenterX + 1.5 * buttonSpacing} y={buttonRow}
-                              label="Mods"
-                              labelPosition="bottom"
                               ctrlGroup={ctrlGroup}
                               radioButtonIndex={4}
                               ctrl={mainDisplayControllers.GROUP_MENU}
             />
             <RoundPushButton8 x={displayCenterX + 2.5 * buttonSpacing} y={buttonRow}
-                              label="FX"
-                              labelPosition="bottom"
                               ctrlGroup={ctrlGroup}
                               radioButtonIndex={5}
                               ctrl={mainDisplayControllers.GROUP_MENU}
