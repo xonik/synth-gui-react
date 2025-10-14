@@ -67,7 +67,9 @@ export const Keyboard = ({ x, y, height, width }: ModuleProps) => {
 
     return <>
         <ModuleBorder x={x} y={y} height={height} width={width} className="keyboard-controls-background"/>
-        <SubHeader label="Keyboard" x={x} y={y} width={width} labelPosition="center" labelWidth={22}/>
+        <SubHeader label="Keyboard" labelPosition="center" labelWidth={22} labelBackgroundOn={false}
+                   x={x} y={y} width={width}
+            className="keyboard-controls-header"/>
 
         <RotaryPot12 x={col8} y={row1} ledMode="single" label="Portamento"
                      ctrlGroup={ctrlGroup}

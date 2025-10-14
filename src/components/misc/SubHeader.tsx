@@ -15,6 +15,7 @@ interface Props {
     labelWidth?: number,
     padding?: 'left' | 'right' | 'both'
     className?: string
+    labelBackgroundOn?: boolean
 }
 
 const getCenter = (x: number, y: number, width: number, align: PositionAlign) => {
@@ -28,7 +29,18 @@ const getCenter = (x: number, y: number, width: number, align: PositionAlign) =>
     }
 }
 
-const SubHeader = ({ x, y, width, align = 'left', label, labelWidth, labelPosition: inputLabelPos = 'center', padding = 'both', className }: Props) => {
+const SubHeader = ({
+                       x,
+                       y,
+                       width,
+                       align = 'left',
+                       label,
+                       labelWidth,
+                       labelPosition: inputLabelPos = 'center',
+                       padding = 'both',
+                       className,
+                       labelBackgroundOn = true
+                   }: Props) => {
 
     const center = getCenter(x, y, width, align);
 
@@ -38,7 +50,7 @@ const SubHeader = ({ x, y, width, align = 'left', label, labelWidth, labelPositi
     let labelPosition: PositionAlign
     let labelCenter
 
-    if(isNumeric(inputLabelPos)){
+    if (isNumeric(inputLabelPos)) {
         labelPosition = 'center'
         labelCenter = inputLabelPos
     } else {
@@ -47,26 +59,31 @@ const SubHeader = ({ x, y, width, align = 'left', label, labelWidth, labelPositi
     }
 
     return <>
-        <rect
-            x={x + paddingLeft} y={y + BORDER_MARGIN / 2}
-            width={width - paddingLeft - paddingRight} height={1}
-            className={classNames(
-                "subheader-border",
-                className,
+        {labelBackgroundOn && <>
+            <rect
+                x={x + paddingLeft} y={y + BORDER_MARGIN / 2}
+                width={width - paddingLeft - paddingRight} height={1}
+                className={classNames(
+                    className,
+                    "subheader-border",
                 )
-            }
-        />
+                }
+            />
 
-        <polygon points={getLabelBackground(x, y, labelWidth ?? 30, labelCenter, labelPosition)} className={
-            classNames(
-                "subheader-border",
-                className,
-            )
-        }/>
+            <polygon points={getLabelBackground(x, y, labelWidth ?? 30, labelCenter, labelPosition)} className={
+                classNames(
+                    className,
+                    "subheader-border",
+                )
+            }/>
+        </>}
         {label && <text
             x={labelPosition === 'center' ? labelCenter : x + 3}
             y={y + 3.85}
-            className="subheader-label"
+            className={classNames(
+                className,
+                "subheader-label"
+            )}
             textAnchor={labelPosition === 'center' ? "middle" : "left"}
             alignmentBaseline="baseline"
         >{label}</text>}
@@ -81,10 +98,10 @@ const getLabelBackground = (x: number, y: number, labelWidth: number, center: nu
     const rightOffset = labelPosition === 'right' ? 0 : offset;
 
     let mapper
-    if(labelPosition == 'left'){
+    if (labelPosition == 'left') {
         mapper = ([x0, y0]: Array<number>) => [x + BORDER_MARGIN + x0, y + BORDER_MARGIN + y0]
     } else {
-        mapper = ([x0, y0]: Array<number>) => [center - labelWidth  / 2 + x0, y + BORDER_MARGIN + y0]
+        mapper = ([x0, y0]: Array<number>) => [center - labelWidth / 2 + x0, y + BORDER_MARGIN + y0]
     }
 
     return [

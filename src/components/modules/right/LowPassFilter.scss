@@ -1,6 +1,11 @@
 @import '../../constants';
 
 .lpf-header-border {
-    stroke: $lpf-color;
-    fill: $lpf-color;
+  stroke: $lpf-color;
+  fill: $lpf-color;
+
+  &.subheader-label {
+    fill: $header-label-color;
+    stroke: none;
+  }
 }

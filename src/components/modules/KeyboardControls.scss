@@ -1,6 +1,12 @@
 @import '../constants';
 
-.keyboard-controls-background{
-  stroke: none;
-  fill: none;
+.keyboard-controls {
+  &-background {
+    stroke: white;
+    fill: none;
+  }
+
+  &-header.subheader-label {
+    fill: $function-label-color;
+  }
 }

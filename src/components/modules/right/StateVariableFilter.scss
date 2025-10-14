@@ -1,6 +1,11 @@
 @import '../../constants';
 
 .svf-header-border {
-    stroke: $svf-color;
-    fill: $svf-color;
+  stroke: $svf-color;
+  fill: $svf-color;
+
+  &.subheader-label {
+    fill: $header-label-color;
+    stroke: none;
+  }
 }
