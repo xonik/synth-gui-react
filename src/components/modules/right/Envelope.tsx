@@ -151,7 +151,7 @@ const Envelope = ({ x, y, height, width, label, header, showSelect = false, envI
         {/* TODO: Change what this controls! */}
         <RoundLedPushButton8 label="Velocity" x={firstPotX + potDistance * 5} y={bottomRowY} labelPosition="bottom-pot"
                              ctrlGroup={ctrlGroup}
-                             ctrl={envCtrls.LOOP}
+                             ctrl={envCtrls.VELOCITY}
                              ctrlIndex={envId}
         />
 

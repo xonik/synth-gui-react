@@ -50,8 +50,6 @@ const DCO1 = ({ x, y }: Props) => {
                           ctrl={oscControllers.DCO1.SYNC}
         />
 
-        {/*<RotaryPot12 x={col4} y={topRow} ledMode="multi" label="Super saw"/>*/}
-
         <RoundLedPushButton8 x={col1} y={buttonRow1} label="Saw inv" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={oscControllers.DCO1.SAW_INV}

@@ -15,7 +15,7 @@ interface OscControllers {
         RANGE: ControllerConfigButton
         PITCH: ControllerConfigNRPN
         NOTE: ControllerConfigCC
-        SUPER_SAW: ControllerConfigCC
+        DETUNE: ControllerConfigCC
         WAVEFORM: ControllerConfigCC
         SUB1: ControllerConfigCC
         SUB2: ControllerConfigCC
@@ -35,7 +35,6 @@ interface OscControllers {
         PITCH: ControllerConfigNRPN
         NOTE: ControllerConfigCC
         DETUNE: ControllerConfigCC
-        SUPER_SAW: ControllerConfigCC
         WAVEFORM: ControllerConfigCC
         SUB1: ControllerConfigCC
         SUB2: ControllerConfigCC
@@ -87,6 +86,13 @@ const oscControllers: OscControllers = {
             type: 'pot',
             cc: CC.DCO1_NOTE
         },
+        DETUNE: {
+            id: ControllerIdDst.DCO1_DETUNE,
+            label: 'Detune',
+            isDstDigi: true,
+            type: 'pot',
+            cc: CC.DCO1_DETUNE
+        },
         RANGE: {
             id: ControllerIdNonMod.DCO1_RANGE,
             label: 'Range',
@@ -95,13 +101,6 @@ const oscControllers: OscControllers = {
                 buttonMidiValues.OSC1_RANGE_LOW,
                 buttonMidiValues.OSC1_RANGE_HIGH,
             ],
-        },
-        SUPER_SAW: {
-            id: ControllerIdDst.DCO1_SUPER_SAW,
-            label: 'Super saw',
-            isDstDigi: true,
-            type: 'pot',
-            cc: CC.DCO1_SUPER_SAW
         },
         WAVEFORM: {
             id: ControllerIdDst.DCO1_WAVEFORM,
@@ -239,12 +238,6 @@ const oscControllers: OscControllers = {
             isDstDigi: true,
             type: 'pot',
             cc: CC.DCO2_DETUNE
-        },
-        SUPER_SAW: {
-            id: ControllerIdDst.DCO2_SUPER_SAW,
-            label: 'Super saw',
-            isDstDigi: true,
-            type: 'pot', cc: CC.DCO2_SUPER_SAW
         },
         WAVEFORM: {
             id: ControllerIdDst.DCO2_WAVEFORM,

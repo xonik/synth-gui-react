@@ -37,6 +37,7 @@ const handlers = createGroupedHandlers(
     [
         oscControllers.DCO1.NOTE,
         oscControllers.DCO1.RANGE,
+        oscControllers.DCO1.DETUNE,
         oscControllers.DCO1.WAVEFORM,
         oscControllers.DCO1.SUB1,
         oscControllers.DCO1.SUB2,

@@ -41,6 +41,7 @@ interface EnvControllers {
     ENV_GATE: ControllerConfigButton
     LOOP: ControllerConfigButton
     INVERT: ControllerConfigButton
+    VELOCITY: ControllerConfigButton
     RESET_ON_TRIGGER: ControllerConfigButton
     RELEASE_MODE: ControllerConfigButton
     LOOP_MODE: ControllerConfigButton
@@ -204,6 +205,15 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             values: [
                 buttonMidiValues.ENV_INVERT_OFF,
                 buttonMidiValues.ENV_INVERT_ON,
+            ],
+        },
+        VELOCITY: {
+            id: ControllerIdEnvNonMod.ENV_VELOCITY,
+            label: 'Velocity',
+            type: 'button',
+            values: [
+                buttonMidiValues.ENV_VELOCITY_OFF,
+                buttonMidiValues.ENV_VELOCITY_ON,
             ],
         },
         RESET_ON_TRIGGER: {

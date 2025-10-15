@@ -276,6 +276,8 @@ export enum buttonMidiValues {
     ENV_LOOP_MODE_INFINITE,
     ENV_BIPOLAR_OFF,
     ENV_BIPOLAR_ON,
+    ENV_VELOCITY_OFF,
+    ENV_VELOCITY_ON,
 
     DSP1_SRC1,
     DSP1_SRC2,

@@ -62,7 +62,6 @@ const DCO2 = ({ x, y }: Props) => {
                      ctrl={oscControllers.DCO2.DETUNE}
         />
 
-        {/*<RotaryPot12 x={col4} y={topRow} ledMode="multi" label="Super saw"/>*/}
         <RoundLedPushButton8 x={col1} y={buttonRow1} label="Saw inv" labelPosition="bottom"
                              ctrlGroup={ctrlGroup}
                              ctrl={oscControllers.DCO2.SAW_INV}

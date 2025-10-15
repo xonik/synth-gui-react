@@ -80,11 +80,9 @@ const DCO1 = ({ x, y, height, width }: ModuleProps) => {
                      ctrl={oscControllers.DCO1.NOTE}
         />
 
-
-        {/* TODO: DCO1 DETUNE */}
         <RotaryPot12 x={col4} y={bottomRow} ledMode="single" label="Detune"
                      ctrlGroup={ctrlGroup}
-                     ctrl={oscControllers.DCO1.NOTE}
+                     ctrl={oscControllers.DCO1.DETUNE}
         />
 
 
@@ -142,9 +140,6 @@ const DCO1 = ({ x, y, height, width }: ModuleProps) => {
                      ctrlGroup={ctrlGroup}
                      ctrl={oscControllers.DCO1.SUB2}
         />
-
-
-        {/*<RotaryPot12 x={col4} y={topRow} ledMode="multi" label="Super saw"/>*/}
 
     </>
 }

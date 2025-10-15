@@ -368,6 +368,7 @@ const handlers = groupHandlers({
     [envCtrls.SELECT_ENV3_ID.id]: new Env3IdControllerHandler(),
     ...createDefaultHandlers([
             envCtrls.LOOP,
+            envCtrls.VELOCITY,
             envCtrls.ENV_GATE,
             envCtrls.RESET_ON_TRIGGER,
             envCtrls.RELEASE_MODE,

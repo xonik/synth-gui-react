@@ -33,7 +33,9 @@ export const Transpose = ({ x, y, height, width }: ModuleProps) => {
 
     return <>
         <ModuleBorder x={x} y={y} height={height} width={width} className="keyboard-controls-background"/>
-        <SubHeader label="Transpose" x={x} y={y} width={width} labelPosition="center" labelWidth={22}/>
+        <SubHeader label="Transpose" labelPosition="center" labelWidth={22} labelBackgroundOn={false}
+                   x={x} y={y} width={width}
+                   className="keyboard-controls-header"/>
 
         <RoundPushButton8 labelPosition="bottom-pot" x={col1} y={row1}
                           label="Down" reverse
@@ -69,7 +71,7 @@ export const Keyboard = ({ x, y, height, width }: ModuleProps) => {
         <ModuleBorder x={x} y={y} height={height} width={width} className="keyboard-controls-background"/>
         <SubHeader label="Keyboard" labelPosition="center" labelWidth={22} labelBackgroundOn={false}
                    x={x} y={y} width={width}
-            className="keyboard-controls-header"/>
+                   className="keyboard-controls-header"/>
 
         <RotaryPot12 x={col8} y={row1} ledMode="single" label="Portamento"
                      ctrlGroup={ctrlGroup}
