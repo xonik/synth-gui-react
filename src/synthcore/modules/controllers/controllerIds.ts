@@ -184,7 +184,7 @@ export const FIRST_NON_MOD = FIRST_NON_MOD_POTS + NON_MOD_POTS_COUNT
 
 export enum ControllerIdNonMod {
     // Non-modulatable controllers
-    DCO1_RANGE = 121,
+    DCO1_RANGE = 118,
     DCO1_SYNC,
     DCO1_MODE,
     DCO1_SUB_WAVE,
