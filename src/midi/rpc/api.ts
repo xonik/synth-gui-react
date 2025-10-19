@@ -181,3 +181,15 @@ export function toggleSvfInSummedToCalibrateMix(on: boolean) {
   logger.midi('RPC call to toggleSvfInSummedToCalibrateMix')
   sendSysex(sysexCommands.RPC, data)  
 }
+
+export function tuneVco() {
+  const paramBytes: number[] = [
+    
+  ]
+  const data = [
+    ...splitTo7(FunctionNames.tuneVco, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to tuneVco')
+  sendSysex(sysexCommands.RPC, data)  
+}

@@ -7,6 +7,7 @@ import settingsControllers from '../../synthcore/modules/settings/settingsContro
 import { selectController } from '../../synthcore/modules/controllers/controllersReducer'
 import oscControllers from '../../synthcore/modules/osc/oscControllers'
 import './SettingsButtons.scss'
+import { tuneVco } from "../../midi/rpc/api";
 
 const settingsAction = {
     ctrlGroup: ControllerGroupIds.SETTINGS,
@@ -36,6 +37,7 @@ const SettingsButtons = () => {
         <div className="settings__heading">Settings</div>
         <Button active onClick={() => dispatch(clickCalibrateDco1)}>Calibrate DCO 1</Button>
         <Button active onClick={() => dispatch(clickCalibrateDco2)}>Calibrate DCO 2</Button>
+        <Button active onClick={() => tuneVco()}>Tune VCO</Button>
         <Button active={dco1RangeHigh === 1} onClick={() => dispatch(clickDco1Range)}>DCO 1 Range Hi</Button>
         <Button active={dco2RangeHigh === 1} onClick={() => dispatch(clickDco2Range)}>DCO 2 Range Hi</Button>
     </div>
