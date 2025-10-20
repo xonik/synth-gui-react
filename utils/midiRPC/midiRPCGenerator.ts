@@ -22,7 +22,7 @@ const jsRoot = `${gitRoot}/synth-gui-react`
 const scriptRoot = `${jsRoot}/utils/midiRPC`
 const jsMidiRoot = `${jsRoot}/src/midi/rpc/`
 
-const headerContents = fs.readFileSync(`${cppRoot}/midiRPCFunctions.h`, { encoding: 'utf8', flag: 'r' })
+const headerContents = fs.readFileSync(`${cppRoot}/src/midiRPC/midiRPCFunctions.h`, { encoding: 'utf8', flag: 'r' })
 const funcs = parseCppHeaderFile(headerContents)
 
 const cvPinsContents = fs.readFileSync(`${cppRoot}/cvPins.h`, { encoding: 'utf8', flag: 'r' })
@@ -34,7 +34,7 @@ const cvCount = parseCvConfigFile(cvConfigContents)
 const curveContents = fs.readFileSync(`${cppRoot}/curves.h`, { encoding: 'utf8', flag: 'r' })
 const curveEnums = parseCurves(curveContents)
 
-writeToFile(`${cppRoot}/midiRPCDeserializer.cpp`, generateMidiRPCDeserializer(funcs))
+writeToFile(`${cppRoot}/src/midiRPC/midiRPCDeserializer.cpp`, generateMidiRPCDeserializer(funcs))
 writeToFile(`${jsMidiRoot}/api.ts`, generateApiTs(funcs))
 writeToFile(`${jsMidiRoot}/functionNames.ts`, generateFunctionNamesTs(funcs))
 writeToFile(`${jsRoot}/src/controller/settings/CvDefinitions.ts`, generateCvDefinitionsTs(cvs, cvCount))
