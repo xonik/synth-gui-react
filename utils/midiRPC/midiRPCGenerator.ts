@@ -34,7 +34,7 @@ const cvCount = parseCvConfigFile(cvConfigContents)
 const curveContents = fs.readFileSync(`${cppRoot}/curves.h`, { encoding: 'utf8', flag: 'r' })
 const curveEnums = parseCurves(curveContents)
 
-writeToFile(`${cppRoot}/src/midiRPC/midiRPCDeserializer.cpp`, generateMidiRPCDeserializer(funcs))
+writeToFile(`${cppRoot}/src/midiRPC/generated/midiRPCDeserializer.cpp`, generateMidiRPCDeserializer(funcs))
 writeToFile(`${jsMidiRoot}/api.ts`, generateApiTs(funcs))
 writeToFile(`${jsMidiRoot}/functionNames.ts`, generateFunctionNamesTs(funcs))
 writeToFile(`${jsRoot}/src/controller/settings/CvDefinitions.ts`, generateCvDefinitionsTs(cvs, cvCount))

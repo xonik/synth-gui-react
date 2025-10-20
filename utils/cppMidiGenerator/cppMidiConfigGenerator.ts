@@ -32,7 +32,7 @@ import { writeToFile } from "./utils";
 import { buttonMidiValues } from "../../src/midi/buttonMidiValues";
 
 const outputRoot = '/Users/joakim/git/xonik/xm8-voice-controller/xm8-voice-controller/'
-const outputRootMidi = `${outputRoot}src/midi/`
+const outputRootMidi = `${outputRoot}src/midi/generated/`
 
 const generateParamIO = (): string => {
 

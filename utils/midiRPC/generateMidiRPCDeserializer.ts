@@ -2,10 +2,10 @@ import { dataTypeMap, Func, Param } from './types'
 import { generateFunctionNamesCpp } from './generateFunctionNames'
 export function generateMidiRPCDeserializer(functions: Func[]) {
     return `// GENERATED FILE, DO NOT EDIT
-#include "midiRPCFunctions.h"
-#include "midiRPCDeserializer.h"
-#include "midiRPCReceiver.h"
-#include "../../arduino-debug-utils.h"
+#include "../midiRPCFunctions.h"
+#include "../midiRPCDeserializer.h"
+#include "../midiRPCReceiver.h"
+#include "../../../arduino-debug-utils.h"
 
 namespace midiRPC {
     
