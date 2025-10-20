@@ -32,6 +32,7 @@ import { writeToFile } from "./utils";
 import { buttonMidiValues } from "../../src/midi/buttonMidiValues";
 
 const outputRoot = '/Users/joakim/git/xonik/xm8-voice-controller/xm8-voice-controller/'
+const outputRootMidi = `${outputRoot}src/midi/`
 
 const generateParamIO = (): string => {
 
@@ -257,13 +258,13 @@ const generateCppFiles = () => {
 
 
     writeToFile(`${outputRoot}paramIO.h`, generateParamIO())
-    writeToFile(`${outputRoot}midiButtonValues.h`, buttonEnumFileContents)
-    writeToFile(`${outputRoot}midiPots.h`, potEnumFileContents)
-    writeToFile(`${outputRoot}midiPotsCC.h`, potCCFileContents)
-    writeToFile(`${outputRoot}midiCom.h`, comEnumFileContents)
-    writeToFile(`${outputRoot}midiComCC.h`, comCCFileContents)
-    writeToFile(`${outputRoot}midiPotsNrpnEnum.h`, potEnumNrpnFileContents)
-    writeToFile(`${outputRoot}midiPotsNrpn.h`, potNrpnFileContents)
+    writeToFile(`${outputRootMidi}midiButtonValues.h`, buttonEnumFileContents)
+    writeToFile(`${outputRootMidi}midiPots.h`, potEnumFileContents)
+    writeToFile(`${outputRootMidi}midiPotsCC.h`, potCCFileContents)
+    writeToFile(`${outputRootMidi}midiCom.h`, comEnumFileContents)
+    writeToFile(`${outputRootMidi}midiComCC.h`, comCCFileContents)
+    writeToFile(`${outputRootMidi}midiPotsNrpnEnum.h`, potEnumNrpnFileContents)
+    writeToFile(`${outputRootMidi}midiPotsNrpn.h`, potNrpnFileContents)
 
 
 }
