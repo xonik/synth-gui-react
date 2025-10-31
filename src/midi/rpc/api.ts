@@ -193,3 +193,39 @@ export function tuneVco() {
   logger.midi('RPC call to tuneVco')
   sendSysex(sysexCommands.RPC, data)  
 }
+
+export function measureVcoOctaves() {
+  const paramBytes: number[] = [
+    
+  ]
+  const data = [
+    ...splitTo7(FunctionNames.measureVcoOctaves, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to measureVcoOctaves')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
+export function measureVcoAll() {
+  const paramBytes: number[] = [
+    
+  ]
+  const data = [
+    ...splitTo7(FunctionNames.measureVcoAll, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to measureVcoAll')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
+export function measureVcoOctavesQuickLoop() {
+  const paramBytes: number[] = [
+    
+  ]
+  const data = [
+    ...splitTo7(FunctionNames.measureVcoOctavesQuickLoop, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to measureVcoOctavesQuickLoop')
+  sendSysex(sysexCommands.RPC, data)  
+}

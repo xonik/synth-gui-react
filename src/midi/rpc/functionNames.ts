@@ -15,5 +15,8 @@ export enum FunctionNames {
   releaseCVOverride,
   releaseCVOverrides,
   toggleSvfInSummedToCalibrateMix,
-  tuneVco
+  tuneVco,
+  measureVcoOctaves,
+  measureVcoAll,
+  measureVcoOctavesQuickLoop
 }

@@ -7,11 +7,11 @@ import CvOverrides from "./CvOverrides";
 
 const Settings = () => {
     //return <Trimmers/>
-    //return <CvOverrides/>
-    return <CvRange/>
-    /*return <div className="settings">
+    // return <CvOverrides/>
+    //return <CvRange/>
+    return <div className="settings">
         <SettingsButtons/>
-    </div>*/
+    </div>
 }
 
 export default Settings
