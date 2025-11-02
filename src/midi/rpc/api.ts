@@ -218,14 +218,26 @@ export function measureVcoAll() {
   sendSysex(sysexCommands.RPC, data)  
 }
 
-export function measureVcoOctavesQuickLoop() {
+export function manualTuneVcoStart() {
   const paramBytes: number[] = [
     
   ]
   const data = [
-    ...splitTo7(FunctionNames.measureVcoOctavesQuickLoop, 14),
+    ...splitTo7(FunctionNames.manualTuneVcoStart, 14),
     ...paramBytes,
   ]
-  logger.midi('RPC call to measureVcoOctavesQuickLoop')
+  logger.midi('RPC call to manualTuneVcoStart')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
+export function manualTuneVcoStop() {
+  const paramBytes: number[] = [
+    
+  ]
+  const data = [
+    ...splitTo7(FunctionNames.manualTuneVcoStop, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to manualTuneVcoStop')
   sendSysex(sysexCommands.RPC, data)  
 }

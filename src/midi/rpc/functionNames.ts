@@ -18,5 +18,6 @@ export enum FunctionNames {
   tuneVco,
   measureVcoOctaves,
   measureVcoAll,
-  measureVcoOctavesQuickLoop
+  manualTuneVcoStart,
+  manualTuneVcoStop
 }
