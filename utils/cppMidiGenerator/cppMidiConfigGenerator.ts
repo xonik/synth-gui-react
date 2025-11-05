@@ -32,7 +32,9 @@ import { writeToFile } from "./utils";
 import { buttonMidiValues } from "../../src/midi/buttonMidiValues";
 
 const outputRoot = '/Users/joakim/git/xonik/xm8-voice-controller/xm8-voice-controller/'
+const outputRootMain = '/Users/joakim/git/xonik/xm8-voice-controller/xm8-main-controller/'
 const outputRootMidi = `${outputRoot}src/midi/generated/`
+const outputRootMidiMain = `${outputRootMain}src/midi/generated/`
 
 const generateParamIO = (): string => {
 
@@ -64,9 +66,6 @@ const generateParamIO = (): string => {
         `
 #ifndef paramIO_H_
 #define paramIO_H_
-
-#include "envelopes.h"
-#include "lfos.h"
 
 namespace paramIO {
   const unsigned short SRC_COUNT = ${SRC_COUNT};
@@ -256,7 +255,7 @@ const generateCppFiles = () => {
         .map(key => `BT_${key}`)
     const buttonEnumFileContents = `enum ButtonMidiValues {\n  ${buttonMidiKeys.join(',\n  ')}\n};`
 
-
+    // voice controller
     writeToFile(`${outputRoot}paramIO.h`, generateParamIO())
     writeToFile(`${outputRootMidi}midiButtonValues.h`, buttonEnumFileContents)
     writeToFile(`${outputRootMidi}midiPots.h`, potEnumFileContents)
@@ -265,6 +264,16 @@ const generateCppFiles = () => {
     writeToFile(`${outputRootMidi}midiComCC.h`, comCCFileContents)
     writeToFile(`${outputRootMidi}midiPotsNrpnEnum.h`, potEnumNrpnFileContents)
     writeToFile(`${outputRootMidi}midiPotsNrpn.h`, potNrpnFileContents)
+
+    // main controller
+    writeToFile(`${outputRootMain}paramIO.h`, generateParamIO())
+    writeToFile(`${outputRootMidiMain}midiButtonValues.h`, buttonEnumFileContents)
+    writeToFile(`${outputRootMidiMain}midiPots.h`, potEnumFileContents)
+    writeToFile(`${outputRootMidiMain}midiPotsCC.h`, potCCFileContents)
+    writeToFile(`${outputRootMidiMain}midiCom.h`, comEnumFileContents)
+    writeToFile(`${outputRootMidiMain}midiComCC.h`, comCCFileContents)
+    writeToFile(`${outputRootMidiMain}midiPotsNrpnEnum.h`, potEnumNrpnFileContents)
+    writeToFile(`${outputRootMidiMain}midiPotsNrpn.h`, potNrpnFileContents)
 
 
 }
