@@ -59,7 +59,7 @@ const getUint16Array = (values: number[]): number[] => {
         bytes = bytes.concat(splitTo7(num, 16))
     })
 
-    return values
+    return bytes
 }
 
 const getInt16Array = (values: number[]): number[] => {
@@ -70,7 +70,7 @@ const getInt16Array = (values: number[]): number[] => {
     })
 
 
-    return values
+    return bytes
 }
 
 export const jsToMidiEncoder: Record<DataType, (value: unknown) => number[]> = {
