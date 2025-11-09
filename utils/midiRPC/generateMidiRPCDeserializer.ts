@@ -37,7 +37,15 @@ function functionMapper(func: Func) {
 
 function getSerialPrintln(func: Func) {
     if(func.params.length > 0){
-        return `serialPrintln(String("Calling ${func.name} with params ") + ${func.params.map((param) => param.name).join(' + ", " + ')});`
+        const paramString = func.params.map((param) => {
+            if(dataTypeMap[param.type].printValue){
+                return param.name
+            } else {
+                return '"<unprintable>"'
+            }
+        }).join(' + ", " + ')
+
+        return `serialPrintln(String("Calling ${func.name} with params ") + ${paramString});`
     } else {
         return `serialPrintln("Calling ${func.name}");`
     }
@@ -45,6 +53,6 @@ function getSerialPrintln(func: Func) {
 
 function paramConverterMapper(param: Param) {
     const type = dataTypeMap[param.type]
-    return `      ${type.cppType} ${param.name} = ${type.deserializer}(data, pos);pos+=${type.byteLength};`
+    return `      ${type.cppType} ${param.name} = ${type.deserializer}(data, pos);`
 }
 

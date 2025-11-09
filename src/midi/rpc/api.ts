@@ -241,3 +241,27 @@ export function manualTuneVcoStop() {
   logger.midi('RPC call to manualTuneVcoStop')
   sendSysex(sysexCommands.RPC, data)  
 }
+
+export function setCtrlAllParams(params: number[]) {
+  const paramBytes: number[] = [
+    ...jsToMidiEncoder['std::vector<int16_t>'](params)
+  ]
+  const data = [
+    ...splitTo7(FunctionNames.setCtrlAllParams, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to setCtrlAllParams')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
+export function setCtrlAllNonModParamsParams(params: number[]) {
+  const paramBytes: number[] = [
+    ...jsToMidiEncoder['std::vector<int16_t>'](params)
+  ]
+  const data = [
+    ...splitTo7(FunctionNames.setCtrlAllNonModParamsParams, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to setCtrlAllNonModParamsParams')
+  sendSysex(sysexCommands.RPC, data)  
+}
