@@ -27,8 +27,8 @@ function splitInt8To7(value: number): number[] {
     // Convert to unsigned 8-bit representation
     const int8 = clamped < 0 ? (clamped + 0x100) : clamped;
     return [
-        int8 & 0x7F,
         (int8 >> 7) & 0x7F,
+        int8 & 0x7F
     ];
 }
 
@@ -38,9 +38,9 @@ function splitInt16To7(value: number) {
     // Convert to unsigned 16-bit representation
     const int16 = clamped < 0 ? (clamped + 0x10000) : clamped;
     return [
-        int16 & 0x7F,
+        (int16 >> 14) & 0x7F,
         (int16 >> 7) & 0x7F,
-        (int16 >> 14) & 0x7F
+        int16 & 0x7F
     ];
 }
 
