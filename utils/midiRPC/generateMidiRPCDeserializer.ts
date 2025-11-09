@@ -14,7 +14,6 @@ namespace midiRPC {
   uint16_t deserializeAndCallFunction(const uint8_t* data, uint16_t startPos) {
     uint16_t pos = startPos;
     uint16_t functionId = getFunctionId(data, pos);
-    pos+=2;
 
 ${functions.map(functionMapper).join('')}
 
