@@ -242,9 +242,9 @@ export function manualTuneVcoStop() {
   sendSysex(sysexCommands.RPC, data)  
 }
 
-export function setCtrlAllParams(params: number[]) {
+export function setCtrlAllParams(settings: number[]) {
   const paramBytes: number[] = [
-    ...jsToMidiEncoder['std::vector<int16_t>'](params)
+    ...jsToMidiEncoder['std::vector<int16_t>'](settings)
   ]
   const data = [
     ...splitTo7(FunctionNames.setCtrlAllParams, 14),
@@ -254,14 +254,94 @@ export function setCtrlAllParams(params: number[]) {
   sendSysex(sysexCommands.RPC, data)  
 }
 
-export function setCtrlAllNonModParamsParams(params: number[]) {
+export function setCtrlAllNonModSettings(settings: number[]) {
   const paramBytes: number[] = [
+    ...jsToMidiEncoder['std::vector<int16_t>'](settings)
+  ]
+  const data = [
+    ...splitTo7(FunctionNames.setCtrlAllNonModSettings, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to setCtrlAllNonModSettings')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
+export function setCtrlAllEnvParams(env: number, params: number[]) {
+  const paramBytes: number[] = [
+    ...jsToMidiEncoder['uint8_t'](env),
     ...jsToMidiEncoder['std::vector<int16_t>'](params)
   ]
   const data = [
-    ...splitTo7(FunctionNames.setCtrlAllNonModParamsParams, 14),
+    ...splitTo7(FunctionNames.setCtrlAllEnvParams, 14),
     ...paramBytes,
   ]
-  logger.midi('RPC call to setCtrlAllNonModParamsParams')
+  logger.midi('RPC call to setCtrlAllEnvParams')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
+export function setCtrlAllEnvSettings(env: number, settings: number[]) {
+  const paramBytes: number[] = [
+    ...jsToMidiEncoder['uint8_t'](env),
+    ...jsToMidiEncoder['std::vector<int16_t>'](settings)
+  ]
+  const data = [
+    ...splitTo7(FunctionNames.setCtrlAllEnvSettings, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to setCtrlAllEnvSettings')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
+export function setCtrlAllEnvStageSettings(env: number, stage: number, settings: number[]) {
+  const paramBytes: number[] = [
+    ...jsToMidiEncoder['uint8_t'](env),
+    ...jsToMidiEncoder['uint8_t'](stage),
+    ...jsToMidiEncoder['std::vector<int16_t>'](settings)
+  ]
+  const data = [
+    ...splitTo7(FunctionNames.setCtrlAllEnvStageSettings, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to setCtrlAllEnvStageSettings')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
+export function setCtrlAllLfoParams(lfo: number, settings: number[]) {
+  const paramBytes: number[] = [
+    ...jsToMidiEncoder['uint8_t'](lfo),
+    ...jsToMidiEncoder['std::vector<int16_t>'](settings)
+  ]
+  const data = [
+    ...splitTo7(FunctionNames.setCtrlAllLfoParams, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to setCtrlAllLfoParams')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
+export function setCtrlAllLfoSettings(lfo: number, settings: number[]) {
+  const paramBytes: number[] = [
+    ...jsToMidiEncoder['uint8_t'](lfo),
+    ...jsToMidiEncoder['std::vector<int16_t>'](settings)
+  ]
+  const data = [
+    ...splitTo7(FunctionNames.setCtrlAllLfoSettings, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to setCtrlAllLfoSettings')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
+export function setCtrlAllLfoStageSettings(lfo: number, stage: number, settings: number[]) {
+  const paramBytes: number[] = [
+    ...jsToMidiEncoder['uint8_t'](lfo),
+    ...jsToMidiEncoder['uint8_t'](stage),
+    ...jsToMidiEncoder['std::vector<int16_t>'](settings)
+  ]
+  const data = [
+    ...splitTo7(FunctionNames.setCtrlAllLfoStageSettings, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to setCtrlAllLfoStageSettings')
   sendSysex(sysexCommands.RPC, data)  
 }

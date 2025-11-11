@@ -21,5 +21,11 @@ export enum FunctionNames {
   manualTuneVcoStart,
   manualTuneVcoStop,
   setCtrlAllParams,
-  setCtrlAllNonModParamsParams
+  setCtrlAllNonModSettings,
+  setCtrlAllEnvParams,
+  setCtrlAllEnvSettings,
+  setCtrlAllEnvStageSettings,
+  setCtrlAllLfoParams,
+  setCtrlAllLfoSettings,
+  setCtrlAllLfoStageSettings
 }
