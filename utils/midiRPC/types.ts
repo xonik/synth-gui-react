@@ -80,14 +80,14 @@ export const dataTypeMap:Record<DataType, {
     'std::vector<int16_t>': {
         cppType: 'std::vector<int16_t>',
         jsType: 'number[]',
-        deserializer: 'getInt16Array',
+        deserializer: 'getInt16Vector',
         printValue: false,
 
     },
     'std::vector<uint16_t>': {
         cppType: 'std::vector<uint16_t>',
         jsType: 'number[]',
-        deserializer: 'getUint16Array',
+        deserializer: 'getUint16Vector',
         printValue: false,
     },
 }
