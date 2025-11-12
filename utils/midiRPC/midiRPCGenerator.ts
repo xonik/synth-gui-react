@@ -8,6 +8,7 @@ import { parseCvConfigFile } from './parseCvConfig'
 import { parseCurves } from './parseCurves'
 import { generateEnumTs } from './generateEnumTs'
 import { generateCurveUsageList } from './generateCurveUsageList'
+import { generateApiForCpp, generateApiHForCpp } from "./generateApiForCpp";
 
 const fs = require('fs')
 
@@ -17,25 +18,28 @@ const writeToFile = (path: string, contents: string) => {
 }
 
 const gitRoot = '/Users/joakim/git/xonik'
-const cppRoot = `${gitRoot}/xm8-voice-controller/xm8-voice-controller/`
+const cppVoiceRoot = `${gitRoot}/xm8-voice-controller/xm8-voice-controller/`
+const cppMainRoot = `${gitRoot}/xm8-main-controller/`
 const jsRoot = `${gitRoot}/synth-gui-react`
 const scriptRoot = `${jsRoot}/utils/midiRPC`
 const jsMidiRoot = `${jsRoot}/src/midi/rpc/`
 
-const headerContents = fs.readFileSync(`${cppRoot}src/midiRPC/midiRPCFunctions.h`, { encoding: 'utf8', flag: 'r' })
+const headerContents = fs.readFileSync(`${cppVoiceRoot}src/midiRPC/midiRPCFunctions.h`, { encoding: 'utf8', flag: 'r' })
 const funcs = parseCppHeaderFile(headerContents)
 
-const cvPinsContents = fs.readFileSync(`${cppRoot}src/physical/cv/cvPins.h`, { encoding: 'utf8', flag: 'r' })
+const cvPinsContents = fs.readFileSync(`${cppVoiceRoot}src/physical/cv/cvPins.h`, { encoding: 'utf8', flag: 'r' })
 const cvs = parseCvDefinitionFile(cvPinsContents)
 
-const cvConfigContents = fs.readFileSync(`${cppRoot}src/physical/cv/cvConfig.h`, { encoding: 'utf8', flag: 'r' })
+const cvConfigContents = fs.readFileSync(`${cppVoiceRoot}src/physical/cv/cvConfig.h`, { encoding: 'utf8', flag: 'r' })
 const cvCount = parseCvConfigFile(cvConfigContents)
 
-const curveContents = fs.readFileSync(`${cppRoot}/curves.h`, { encoding: 'utf8', flag: 'r' })
+const curveContents = fs.readFileSync(`${cppVoiceRoot}/curves.h`, { encoding: 'utf8', flag: 'r' })
 const curveEnums = parseCurves(curveContents)
 
-writeToFile(`${cppRoot}/src/midiRPC/generated/midiRPCDeserializer.cpp`, generateMidiRPCDeserializer(funcs))
+writeToFile(`${cppVoiceRoot}src/midiRPC/generated/midiRPCDeserializer.cpp`, generateMidiRPCDeserializer(funcs))
 writeToFile(`${jsMidiRoot}api.ts`, generateApiTs(funcs))
+writeToFile(`${cppMainRoot}src/midiRPC/generated/api.cpp`, generateApiForCpp(funcs))
+writeToFile(`${cppMainRoot}src/midiRPC/generated/api.h`, generateApiHForCpp(funcs))
 writeToFile(`${jsMidiRoot}functionNames.ts`, generateFunctionNamesTs(funcs))
 writeToFile(`${jsRoot}/src/controller/settings/CvDefinitions.ts`, generateCvDefinitionsTs(cvs, cvCount))
 writeToFile(`${jsRoot}/src/synthcore/modules/lfo/generatedTypes.ts`, generateCurveUsageList(curveEnums.enum, curveEnums.lfo, '../..'))

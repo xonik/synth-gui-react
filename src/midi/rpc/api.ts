@@ -306,10 +306,10 @@ export function setCtrlAllEnvStageSettings(env: number, stage: number, settings:
   sendSysex(sysexCommands.RPC, data)  
 }
 
-export function setCtrlAllLfoParams(lfo: number, settings: number[]) {
+export function setCtrlAllLfoParams(lfo: number, params: number[]) {
   const paramBytes: number[] = [
     ...jsToMidiEncoder['uint8_t'](lfo),
-    ...jsToMidiEncoder['std::vector<int16_t>'](settings)
+    ...jsToMidiEncoder['std::vector<int16_t>'](params)
   ]
   const data = [
     ...splitTo7(FunctionNames.setCtrlAllLfoParams, 14),
