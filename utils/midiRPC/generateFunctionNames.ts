@@ -11,8 +11,8 @@ export enum FunctionNames {
 
 export function generateFunctionNamesCpp(funcs: Func[]){
     return `// shared ids for RPC commands
-  enum FunctionNames {
-    ${funcs.map((func) => `${func.name}Id`).join(',\n    ')}
-  };
+    enum FunctionNames {
+        ${funcs.map((func) => `${func.name}Id`).join(',\n        ')}
+    };
 `
 }

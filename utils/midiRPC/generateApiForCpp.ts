@@ -1,4 +1,5 @@
 import { dataTypeMap, Func } from './types'
+import { generateFunctionNamesCpp } from "./generateFunctionNames";
 
 export function generateApiForCpp(funcs: Func[]) {
     return `// GENERATED FILE, DO NOT EDIT
@@ -29,15 +30,15 @@ const functionMapper = (func: Func) => {
     )
     const functionHeader = `void ${func.name}(${params.join(', ')}) {`
 
-    return `${functionHeader}
-        std::vector<uint8_t> result = splitTo7(${func.name}Func, 14);
+    return `    ${functionHeader}
+        std::vector<uint8_t> result = splitTo7(${func.name}Id, 14);
         ${paramConverts.join('\n        ')}
 
         result.reserve(result.size() + param1.size() + param2.size() + param3.size());
         ${paramConverts.join('\n        ')}
 
         nmidi::sendSysex(voice, xmidi::SYSEX_CMD_RPC, &result);
-}`
+    }`
 }
 
 export function generateApiHForCpp(funcs: Func[]) {
@@ -47,6 +48,9 @@ export function generateApiHForCpp(funcs: Func[]) {
 #include "stdint.h"
 
 namespace midiRPC {
+
+${generateFunctionNamesCpp(funcs)}
+
 ${funcs.map(functionMapperH).join('\n')}
 }
 `
