@@ -9,6 +9,7 @@ export type Func = {
     name: string,
     returnType: DataType,
     params: Param[]
+    targets: string[],
 }
 
 export const dataTypeMap:Record<DataType, {

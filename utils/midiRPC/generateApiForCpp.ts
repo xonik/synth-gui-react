@@ -2,6 +2,9 @@ import { dataTypeMap, Func } from './types'
 import { generateFunctionNamesCpp } from "./generateFunctionNames";
 
 export function generateApiForCpp(funcs: Func[]) {
+
+    const mainFuncs = funcs.filter(func => func.targets.includes('main'));
+
     return `// GENERATED FILE, DO NOT EDIT
 // cpp-to-midi RPC wrapper
 #include "api.h"
@@ -10,7 +13,7 @@ export function generateApiForCpp(funcs: Func[]) {
 #include "../../midi/midi.h"
 
 namespace midiRPC {
-${funcs.map(functionMapper).join('\n\n')}
+${mainFuncs.map(functionMapper).join('\n\n')}
 }
 `
 }
@@ -50,6 +53,8 @@ const functionMapper = (func: Func) => {
 }
 
 export function generateApiHForCpp(funcs: Func[]) {
+    const mainFuncs = funcs.filter(func => func.targets.includes('main'));
+
     return `// GENERATED FILE, DO NOT EDIT
 #pragma once
 #include <vector>
@@ -57,9 +62,9 @@ export function generateApiHForCpp(funcs: Func[]) {
 
 namespace midiRPC {
 
-${generateFunctionNamesCpp(funcs)}
+${generateFunctionNamesCpp(mainFuncs)}
 
-${funcs.map(functionMapperH).join('\n')}
+${mainFuncs.map(functionMapperH).join('\n')}
 }
 `
 }

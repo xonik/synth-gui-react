@@ -13,14 +13,21 @@ export const parseCppHeaderFile = (file: string) => {
     return funcs
 }
 
-const funcRegex = new RegExp(`^\\s*(${KNOWN_DATATYPES.join('|')})\\s([a-zA-Z0-9]+)\\((.*)\\)`)
+const funcRegex = new RegExp(`^\\s*(${KNOWN_DATATYPES.join('|')})\\s([a-zA-Z0-9]+)\\((.*)\\);\\s*(\/\/)?\\s*(.*)`)
+
+function getTargetsFromComment(comment?: string): string[]{
+    if(!comment){
+        return []
+    }
+    return comment.split(',').map(target => target.trim())
+}
 
 const parseLine = (line: string) => {
     if (line.length > 0) {
         const trimmed = line.trim()
         const match = trimmed.match(funcRegex)
         if (!match) return
-        const [, returnType, name, paramList] = match
+        const [, returnType, name, paramList, c1, comment] = match
 
         if (!isDataType(returnType)) {
             throw new Error(`${name}: ${returnType} is an unknown datatype`)
@@ -41,8 +48,11 @@ const parseLine = (line: string) => {
                     }
                 })
         }
+
+        const targets = getTargetsFromComment(comment)
+
         return {
-            name, returnType, params
+            name, returnType, params, targets
         }
     }
 }
