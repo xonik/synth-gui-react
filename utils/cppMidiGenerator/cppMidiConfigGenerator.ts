@@ -31,10 +31,10 @@ import CC from "../../src/midi/mapCC";
 import { writeToFile } from "./utils";
 import { buttonMidiValues } from "../../src/midi/buttonMidiValues";
 
-const outputRoot = '/Users/joakim/git/xonik/xm8-voice-controller/xm8-voice-controller/'
-const outputRootMain = '/Users/joakim/git/xonik/xm8-voice-controller/xm8-main-controller/'
-const outputRootMidi = `${outputRoot}src/midi/generated/`
-const outputRootMidiMain = `${outputRootMain}src/midi/generated/`
+const outputRoot = '/Users/joakim/git/xonik/xm8-voice-controller/xm8-voice-controller'
+const outputRootMain = '/Users/joakim/git/xonik/xm8-main-controller'
+const outputRootMidi = `${outputRoot}/src/midi/generated`
+const outputRootMidiMain = `${outputRootMain}/src/midi/generated`
 
 const generateParamIO = (): string => {
 
@@ -256,24 +256,24 @@ const generateCppFiles = () => {
     const buttonEnumFileContents = `enum ButtonMidiValues {\n  ${buttonMidiKeys.join(',\n  ')}\n};`
 
     // voice controller
-    writeToFile(`${outputRoot}paramIO.h`, generateParamIO())
-    writeToFile(`${outputRootMidi}midiButtonValues.h`, buttonEnumFileContents)
-    writeToFile(`${outputRootMidi}midiPots.h`, potEnumFileContents)
-    writeToFile(`${outputRootMidi}midiPotsCC.h`, potCCFileContents)
-    writeToFile(`${outputRootMidi}midiCom.h`, comEnumFileContents)
-    writeToFile(`${outputRootMidi}midiComCC.h`, comCCFileContents)
-    writeToFile(`${outputRootMidi}midiPotsNrpnEnum.h`, potEnumNrpnFileContents)
-    writeToFile(`${outputRootMidi}midiPotsNrpn.h`, potNrpnFileContents)
+    writeToFile(`${outputRoot}/paramIO.h`, generateParamIO())
+    writeToFile(`${outputRootMidi}/midiButtonValues.h`, buttonEnumFileContents)
+    writeToFile(`${outputRootMidi}/midiPots.h`, potEnumFileContents)
+    writeToFile(`${outputRootMidi}/midiPotsCC.h`, potCCFileContents)
+    writeToFile(`${outputRootMidi}/midiCom.h`, comEnumFileContents)
+    writeToFile(`${outputRootMidi}/midiComCC.h`, comCCFileContents)
+    writeToFile(`${outputRootMidi}/midiPotsNrpnEnum.h`, potEnumNrpnFileContents)
+    writeToFile(`${outputRootMidi}/midiPotsNrpn.h`, potNrpnFileContents)
 
     // main controller
-    writeToFile(`${outputRootMain}paramIO.h`, generateParamIO())
-    writeToFile(`${outputRootMidiMain}midiButtonValues.h`, buttonEnumFileContents)
-    writeToFile(`${outputRootMidiMain}midiPots.h`, potEnumFileContents)
-    writeToFile(`${outputRootMidiMain}midiPotsCC.h`, potCCFileContents)
-    writeToFile(`${outputRootMidiMain}midiCom.h`, comEnumFileContents)
-    writeToFile(`${outputRootMidiMain}midiComCC.h`, comCCFileContents)
-    writeToFile(`${outputRootMidiMain}midiPotsNrpnEnum.h`, potEnumNrpnFileContents)
-    writeToFile(`${outputRootMidiMain}midiPotsNrpn.h`, potNrpnFileContents)
+    writeToFile(`${outputRootMain}/src/generated/paramIO.h`, generateParamIO())
+    writeToFile(`${outputRootMidiMain}/midiButtonValues.h`, buttonEnumFileContents)
+    writeToFile(`${outputRootMidiMain}/midiPots.h`, potEnumFileContents)
+    writeToFile(`${outputRootMidiMain}/midiPotsCC.h`, potCCFileContents)
+    writeToFile(`${outputRootMidiMain}/midiCom.h`, comEnumFileContents)
+    writeToFile(`${outputRootMidiMain}/midiComCC.h`, comCCFileContents)
+    writeToFile(`${outputRootMidiMain}/midiPotsNrpnEnum.h`, potEnumNrpnFileContents)
+    writeToFile(`${outputRootMidiMain}/midiPotsNrpn.h`, potNrpnFileContents)
 
 
 }
