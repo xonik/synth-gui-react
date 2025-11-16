@@ -1,5 +1,6 @@
 import { dataTypeMap, Func } from './types'
 import { generateFunctionNamesCpp } from "./generateFunctionNames";
+import { DataType } from "./dataTypes";
 
 export function generateApiForCpp(funcs: Func[]) {
 
@@ -10,7 +11,8 @@ export function generateApiForCpp(funcs: Func[]) {
 #include "api.h"
 #include "../midiSerializer.h"
 #include "../../midi/nativeVoiceMidi.h"
-#include "../../midi/midi.h"
+#include "../../midi/MainMidi.h"
+#include "../../shared/midi/SysexCommands.h"
 
 namespace midiRPC {
 ${mainFuncs.map(functionMapper).join('\n\n')}
@@ -25,30 +27,43 @@ function getResultJoining(paramReserves: string[], paramCombines: string[]) {
 
 const functionMapper = (func: Func) => {
     const params = [
-        'uint8_t voice',
+        'int8_t voice',
         ...func.params.map(({ name, type }) => `${dataTypeMap[type].cppType} ${name}`)
     ]
-    const paramReserves = func.params.map(
-        ({ name, type }, index) => {
-            return `param${index}.size()`
-        }
-    )
+
+    const paramWithFuncId = [
+        {
+            name: 'functionId',
+            type: 'uint8_t',
+        },
+        ...func.params
+    ]
+
     const paramConverts = func.params.map(
         ({ name, type }, index) => {
-            return `std::vector<uint8_t> param${index} = ${dataTypeMap[type].cppSerializer}${name});`
+            return `std::vector<uint8_t> ${name}Vec = ${dataTypeMap[type].cppSerializer}${name});`
         }
     )
-    const paramCombines = func.params.map(
-        (_, index) => {
-            return `result.insert(result.end(), param${index}.begin(), param${index}.end());`
+
+    const paramReserves = [
+        ...paramWithFuncId.map(
+            ({ name, type }, index) => {
+                return `${name}Vec.size()`
+            }
+        )]
+
+    const paramCombines = paramWithFuncId.map(
+        ({name}, index) => {
+            return `result.insert(result.end(), ${name}Vec.begin(), ${name}Vec.end());`
         }
     )
     const functionHeader = `void ${func.name}(${params.join(', ')}) {`
 
     return `    ${functionHeader}
-        std::vector<uint8_t> result = splitTo7(${func.name}Id, 14);${paramConverts.length > 0 ? '\n        ' + paramConverts.join('\n        '): ''}
+        std::vector<uint8_t> result = splitInt8To7(voice);
+        std::vector<uint8_t> functionIdVec = splitTo7(${func.name}Id, 14);${paramConverts.length > 0 ? '\n        ' + paramConverts.join('\n        '): ''}
         ${func.params.length === 0 ? '' : getResultJoining(paramReserves, paramCombines)}
-        nvmidi::sendSysex(voice, xmidi::SYSEX_CMD_RPC, &result);
+        nvmidi::sendSysex(voice, SYSEX_CMD_RPC, &result);
     }`
 }
 
@@ -71,7 +86,7 @@ ${mainFuncs.map(functionMapperH).join('\n')}
 
 const functionMapperH = (func: Func) => {
     const params = [
-        'uint8_t voice',
+        'int8_t voice',
         ...func.params.map(({ name, type }) => `${dataTypeMap[type].cppType} ${name}`)
     ]
     return `    void ${func.name}(${params.join(', ')});`

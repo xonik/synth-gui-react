@@ -3,8 +3,8 @@ import { generateFunctionNamesCpp } from './generateFunctionNames'
 export function generateMidiRPCDeserializer(functions: Func[]) {
     return `// GENERATED FILE, DO NOT EDIT
 #include "../midiRPCFunctions.h"
-#include "../midiRPCDeserializer.h"
-#include "../midiRPCReceiver.h"
+#include "../../shared/midiRPC/midiRPCDeserializer.h"
+#include "../../shared/midiRPC/midiRPCReceiver.h"
 #include "../../../arduino-debug-utils.h"
 
 namespace midiRPC {
@@ -13,6 +13,7 @@ namespace midiRPC {
 
   uint16_t deserializeAndCallFunction(const uint8_t* data, uint16_t startPos) {
     uint16_t pos = startPos;
+    int8_t voice = getVoice(data, pos); // used during routing, not passed to functions
     uint16_t functionId = getFunctionId(data, pos);
 
 ${functions.map(functionMapper).join('')}

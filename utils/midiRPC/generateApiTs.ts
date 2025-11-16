@@ -4,9 +4,11 @@ export function generateApiTs(funcs: Func[]) {
     return `// GENERATED FILE, DO NOT EDIT
 // js-to-midi RPC wrapper
 import logger from '../../utils/logger'
-import { jsToMidiEncoder, splitTo7 } from './serializer'
+import { jsToMidiEncoder, splitTo7, splitInt8To7 } from './serializer'
 import { FunctionNames } from './functionNames'
 import { sendSysex, sysexCommands } from '../midibus'
+
+export const VOICE_ALL = -1
 
 ${funcs.map(functionMapper).join('\n\n')}
 `
@@ -15,13 +17,14 @@ ${funcs.map(functionMapper).join('\n\n')}
 const functionMapper = (func: Func) => {
     const params = func.params.map(({ name, type }) => `${name}: ${dataTypeMap[type].jsType}`)
     const paramBytes = func.params.map(({ name, type }) => `...jsToMidiEncoder['${type}'](${name})`)
-    const functionHeader = `export function ${func.name}(${params.join(', ')}) {`
+    const functionHeader = `export function ${func.name}(${params.join(', ')}${params.length > 0 ? ', ' : ''}voice: number = VOICE_ALL) {`
 
     return `${functionHeader}
   const paramBytes: number[] = [
     ${paramBytes.join(',\n    ')}
   ]
   const data = [
+    ...splitInt8To7(voice),
     ...splitTo7(FunctionNames.${func.name}, 14),
     ...paramBytes,
   ]
