@@ -9,7 +9,7 @@ export function generateApiForCpp(funcs: Func[]) {
 // cpp-to-midi RPC wrapper
 #include "api.h"
 #include "../midiSerializer.h"
-#include "../../midi/nativeMidi.h"
+#include "../../midi/nativeVoiceMidi.h"
 #include "../../midi/midi.h"
 
 namespace midiRPC {
@@ -48,7 +48,7 @@ const functionMapper = (func: Func) => {
     return `    ${functionHeader}
         std::vector<uint8_t> result = splitTo7(${func.name}Id, 14);${paramConverts.length > 0 ? '\n        ' + paramConverts.join('\n        '): ''}
         ${func.params.length === 0 ? '' : getResultJoining(paramReserves, paramCombines)}
-        nmidi::sendSysex(voice, xmidi::SYSEX_CMD_RPC, &result);
+        nvmidi::sendSysex(voice, xmidi::SYSEX_CMD_RPC, &result);
     }`
 }
 

@@ -27,5 +27,6 @@ export enum FunctionNames {
   setCtrlAllEnvStageSettings,
   setCtrlAllLfoParams,
   setCtrlAllLfoSettings,
-  setCtrlAllLfoStageSettings
+  setCtrlAllLfoStageSettings,
+  changeMidiSpeed
 }

@@ -345,3 +345,15 @@ export function setCtrlAllLfoStageSettings(lfo: number, stage: number, settings:
   logger.midi('RPC call to setCtrlAllLfoStageSettings')
   sendSysex(sysexCommands.RPC, data)  
 }
+
+export function changeMidiSpeed(speed: number) {
+  const paramBytes: number[] = [
+    ...jsToMidiEncoder['uint32_t'](speed)
+  ]
+  const data = [
+    ...splitTo7(FunctionNames.changeMidiSpeed, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to changeMidiSpeed')
+  sendSysex(sysexCommands.RPC, data)  
+}
