@@ -33,8 +33,8 @@ import { buttonMidiValues } from "../../src/midi/buttonMidiValues";
 
 const outputRoot = '/Users/joakim/git/xonik/xm8-voice-controller/xm8-voice-controller'
 const outputRootMain = '/Users/joakim/git/xonik/xm8-main-controller'
-const outputRootMidi = `${outputRoot}/src/midi/generated`
-const outputRootMidiMain = `${outputRootMain}/src/midi/generated`
+const outputRootMidi = `${outputRoot}/src/shared/generated/midi`
+const outputRootMidiMain = `${outputRootMain}/src/shared/generated/midi`
 
 const generateParamIO = (): string => {
 
@@ -256,7 +256,7 @@ const generateCppFiles = () => {
     const buttonEnumFileContents = `enum ButtonMidiValues {\n  ${buttonMidiKeys.join(',\n  ')}\n};`
 
     // voice controller
-    writeToFile(`${outputRoot}/src/generated/paramIO.h`, generateParamIO())
+    writeToFile(`${outputRoot}/src/shared/generated/paramIO.h`, generateParamIO())
     writeToFile(`${outputRootMidi}/midiButtonValues.h`, buttonEnumFileContents)
     writeToFile(`${outputRootMidi}/midiPots.h`, potEnumFileContents)
     writeToFile(`${outputRootMidi}/midiPotsCC.h`, potCCFileContents)
@@ -266,7 +266,7 @@ const generateCppFiles = () => {
     writeToFile(`${outputRootMidi}/midiPotsNrpn.h`, potNrpnFileContents)
 
     // main controller
-    writeToFile(`${outputRootMain}/src/generated/paramIO.h`, generateParamIO())
+    writeToFile(`${outputRootMain}/src/shared/generated/paramIO.h`, generateParamIO())
     writeToFile(`${outputRootMidiMain}/midiButtonValues.h`, buttonEnumFileContents)
     writeToFile(`${outputRootMidiMain}/midiPots.h`, potEnumFileContents)
     writeToFile(`${outputRootMidiMain}/midiPotsCC.h`, potCCFileContents)
