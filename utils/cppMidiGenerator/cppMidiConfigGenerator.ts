@@ -256,7 +256,7 @@ const generateCppFiles = () => {
     const buttonEnumFileContents = `enum ButtonMidiValues {\n  ${buttonMidiKeys.join(',\n  ')}\n};`
 
     // voice controller
-    writeToFile(`${outputRoot}/paramIO.h`, generateParamIO())
+    writeToFile(`${outputRoot}/src/generated/paramIO.h`, generateParamIO())
     writeToFile(`${outputRootMidi}/midiButtonValues.h`, buttonEnumFileContents)
     writeToFile(`${outputRootMidi}/midiPots.h`, potEnumFileContents)
     writeToFile(`${outputRootMidi}/midiPotsCC.h`, potCCFileContents)
