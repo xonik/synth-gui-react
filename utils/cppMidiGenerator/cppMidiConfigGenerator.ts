@@ -10,7 +10,9 @@ import {
     ControllerIdLfoStageNonMod,
     ControllerIdNonMod,
     ControllerIdNonModPots,
-    ControllerIdSrc, DST_COUNT, DST_ENV_COUNT,
+    ControllerIdSrc,
+    DST_COUNT,
+    DST_ENV_COUNT,
     DST_LFO_COUNT,
     ENV_NON_MOD_COUNT,
     ENV_STAGE_NON_MOD_COUNT,
@@ -67,43 +69,63 @@ const generateParamIO = (): string => {
 #ifndef paramIO_H_
 #define paramIO_H_
 
-namespace paramIO {
-  const unsigned short SRC_COUNT = ${SRC_COUNT};
-  
-  const unsigned short FIRST_INTERMEDIATE = ${FIRST_INTERMEDIATE};
+namespace paramIO {  
+  // Start of IntermediateCtrlPos
+  const unsigned short FIRST_INTERMEDIATE = ${FIRST_INTERMEDIATE}; 
   const unsigned short INT_COUNT = ${INT_COUNT};
   const unsigned short LAST_INTERMEDIATE = ${FIRST_INTERMEDIATE + INT_COUNT - 1}; 
   
-  const unsigned short FIRST_DST = ${FIRST_DST};
+  // Start of DstCtrlPos
+  const unsigned short FIRST_DST = ${FIRST_DST}; 
   const unsigned short DST_COUNT = ${DST_COUNT};
   const unsigned short LAST_DST = ${FIRST_DST + DST_COUNT - 1};  
       
-  const unsigned short FIRST_ENV_DST = ${FIRST_ENV_DST};
+  // Start of EnvDestinations      
+  const unsigned short FIRST_ENV_DST = ${FIRST_ENV_DST}; 
   const unsigned short DST_ENV_COUNT = ${DST_ENV_COUNT};
   const unsigned short LAST_ENV_DST = ${FIRST_ENV_DST + DST_ENV_COUNT - 1};
   
-  const unsigned short FIRST_LFO_DST = ${FIRST_LFO_DST};
+  // Start of LfoDestinations
+  const unsigned short FIRST_LFO_DST = ${FIRST_LFO_DST}; 
   const unsigned short DST_LFO_COUNT = ${DST_LFO_COUNT};
   const unsigned short LAST_LFO_DST = ${FIRST_LFO_DST + DST_LFO_COUNT - 1};   
   
-  const unsigned short FIRST_NON_MOD_POTS = ${FIRST_NON_MOD_POTS};
+  // Start of NonModPotDestinations
+  const unsigned short FIRST_NON_MOD_POTS = ${FIRST_NON_MOD_POTS}; 
   const unsigned short NON_MOD_POTS_COUNT = ${NON_MOD_POTS_COUNT};
   const unsigned short LAST_NON_MOD_POTS = ${FIRST_NON_MOD_POTS + NON_MOD_POTS_COUNT - 1};     
   
-  const unsigned short FIRST_NON_MOD = ${FIRST_NON_MOD};
+  // Start of NonModPotDestinations
+  const unsigned short FIRST_NON_MOD = ${FIRST_NON_MOD}; 
   const unsigned short NON_MOD_COUNT = ${NON_MOD_COUNT};
   const unsigned short LAST_NON_MOD = ${FIRST_NON_MOD + NON_MOD_COUNT - 1};     
   
+  // Number of entries in NonModEnvDestinations
   const unsigned short ENV_NON_MOD_COUNT = ${ENV_NON_MOD_COUNT};
-  const unsigned short ENV_STAGE_NON_MOD_COUNT = ${ENV_STAGE_NON_MOD_COUNT};
+  
+  // Number of entries in NonModEnvStageDestinations
+  const unsigned short ENV_STAGE_NON_MOD_COUNT = ${ENV_STAGE_NON_MOD_COUNT}; 
 
-  const unsigned short LFO_NON_MOD_COUNT = ${LFO_NON_MOD_COUNT};
+  // Number of entries in NonModLfoDestinations
+  const unsigned short LFO_NON_MOD_COUNT = ${LFO_NON_MOD_COUNT}; 
+
+  // Number of entries in NonModLfoStageDestinations
   const unsigned short LFO_STAGE_NON_MOD_COUNT = ${LFO_STAGE_NON_MOD_COUNT};
   
+  // Number of entries in SrcCtrlPos
+  const unsigned short SRC_COUNT = ${SRC_COUNT};
+  
+  // Number of entries in SrcCtrlPos and IntermediateCtrlPos
   const unsigned short SRC_INT_COUNT = ${SRC_COUNT + INT_COUNT};
+  
+  // Number of entries in SrcCtrlPos, IntermediateCtrlPos and DstCtrlPos
   const unsigned short SRC_INT_DST_COUNT = ${SRC_COUNT + INT_COUNT + DST_COUNT};
+
+  // Number of entries in IntermediateCtrlPos and DstCtrlPos
   const unsigned short INT_DST_COUNT = ${INT_COUNT + DST_COUNT};  
   
+  // These hold the result of functions like arpeggiator, LFO and envelopes, and realtime controllers like pitch bend,
+  // keyboard etc. They are calculated on the fly and should not be stored as part of a patch.  
   enum SrcCtrlPos {
     ${Object.keys(ControllerIdSrc).filter(o => isNaN(o as any)).map((key) => `SRC_${key}`).join(',\n    ')}
     
@@ -111,6 +133,11 @@ namespace paramIO {
     // Note needs to be quantized    
   };
    
+  // These solve a specific use case where a pot controls the amount of modulation from a source to a destination.
+  // E.g. The 'Filter Envelope Amount' pot controls how much Envelope 2 affects the LPF cutoff.
+  // The value comes from pots, and they should be stored as part of a patch.
+  // I think this concept of a multiplier for a modulation amount should be generalized for every source/destination pair
+  // later.   
   enum IntermediateCtrlPos {
     ${Object.keys(ControllerIdIntermediate)
             .filter(o => isNaN(o as any))
@@ -118,6 +145,8 @@ namespace paramIO {
             .join(',\n    ')}
   };
   
+  // Things that can be modulated. These are also pots on the front panel, so modulation is the sum of the pot and
+  // any modulation from the matrix.  
   enum DstCtrlPos {
     ${Object.keys(ControllerIdDst)
             .filter(o => isNaN(o as any))
@@ -139,6 +168,9 @@ namespace paramIO {
             .join(',\n    ')}
   };    
   
+  // Multi function pots that are used to control various other things. These should end up on the main controller,
+  // not the voice cards, and most of them should not be stored in ctrl (except volume/spread/headphones etc that
+  // affect actual modules).  
   enum NonModPotDestinations {
     ${Object.keys(ControllerIdNonModPots)
             .filter(o => isNaN(o as any))
@@ -146,6 +178,7 @@ namespace paramIO {
             .join(',\n    ')}
   };    
   
+  // Parameters controlled by switches/buttons. These are not targets for modulation
   enum NonModDestinations {
     ${Object.keys(ControllerIdNonMod)
             .filter(o => isNaN(o as any))
