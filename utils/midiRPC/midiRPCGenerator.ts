@@ -1,6 +1,6 @@
 import { generateMidiRPCDeserializer } from './generateMidiRPCDeserializer'
 import { generateApiTs } from './generateApiTs'
-import { generateFunctionNamesTs } from './generateFunctionNames'
+import { generateFunctionNamesEnumTs } from './generateFunctionNames'
 import { parseCppHeaderFile } from './parseCppHeader'
 import { parseCvDefinitionFile } from './parseCvDefinition'
 import { generateCvDefinitionsTs } from './generateCvDefinitionsTs'
@@ -40,7 +40,11 @@ writeToFile(`${cppVoiceRoot}src/midiRPC/generated/midiRPCDeserializer.cpp`, gene
 writeToFile(`${jsMidiRoot}api.ts`, generateApiTs(funcs))
 writeToFile(`${cppMainRoot}src/midiRPC/generated/api.cpp`, generateApiForCpp(funcs))
 writeToFile(`${cppMainRoot}src/midiRPC/generated/api.h`, generateApiHForCpp(funcs))
-writeToFile(`${jsMidiRoot}functionNames.ts`, generateFunctionNamesTs(funcs))
+writeToFile(`${jsMidiRoot}functionNames.ts`, generateFunctionNamesEnumTs(
+    funcs.map(
+        (func, index) => ({...func, index})
+    )
+))
 writeToFile(`${jsRoot}/src/controller/settings/CvDefinitions.ts`, generateCvDefinitionsTs(cvs, cvCount))
 writeToFile(`${jsRoot}/src/synthcore/modules/lfo/generatedTypes.ts`, generateCurveUsageList(curveEnums.enum, curveEnums.lfo, '../..'))
 writeToFile(`${jsRoot}/src/synthcore/modules/env/generatedTypes.ts`, generateCurveUsageList(curveEnums.enum, curveEnums.env, '../..'))

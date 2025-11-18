@@ -32,7 +32,7 @@ function splitInt8To7(value: number): number[] {
     ];
 }
 
-function splitInt16To7(value: number) {
+export function splitInt16To7(value: number) {
     // Clamp to int16_t range
     const clamped = Math.max(-32768, Math.min(32767, value));
     // Convert to unsigned 16-bit representation

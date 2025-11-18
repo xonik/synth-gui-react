@@ -1,5 +1,5 @@
 import { dataTypeMap, Func } from './types'
-import { generateFunctionNamesCpp } from "./generateFunctionNames";
+import { generateFunctionNamesEnumCpp } from "./generateFunctionNames";
 import { DataType } from "./dataTypes";
 
 export function generateApiForCpp(funcs: Func[]) {
@@ -68,7 +68,9 @@ const functionMapper = (func: Func) => {
 }
 
 export function generateApiHForCpp(funcs: Func[]) {
-    const mainFuncs = funcs.filter(func => func.targets.includes('main'));
+    const mainFuncs = funcs
+        .map((func, index) => ({...func, index}))
+        .filter(func => func.targets.includes('main'));
 
     return `// GENERATED FILE, DO NOT EDIT
 #pragma once
@@ -77,7 +79,7 @@ export function generateApiHForCpp(funcs: Func[]) {
 
 namespace midiRPC {
 
-${generateFunctionNamesCpp(mainFuncs)}
+${generateFunctionNamesEnumCpp(mainFuncs)}
 
 ${mainFuncs.map(functionMapperH).join('\n')}
 }
