@@ -375,6 +375,50 @@ export function setCtrlAllLfoStageSettings(lfo: number, stage: number, settings:
   sendSysex(sysexCommands.RPC, data)  
 }
 
+export function setAllMatrixEntries(offsetDst: number, sourceAmounts: number[], voice: number = VOICE_ALL) {
+  const paramBytes: number[] = [
+    ...jsToMidiEncoder['uint8_t'](offsetDst),
+    ...jsToMidiEncoder['std::vector<int16_t>'](sourceAmounts)
+  ]
+  const data = [
+    ...splitInt8To7(voice),
+    ...splitTo7(FunctionNames.setAllMatrixEntries, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to setAllMatrixEntries')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
+export function setAllEnvMatrixEntries(env: number, offsetDst: number, sourceAmounts: number[], voice: number = VOICE_ALL) {
+  const paramBytes: number[] = [
+    ...jsToMidiEncoder['uint8_t'](env),
+    ...jsToMidiEncoder['uint8_t'](offsetDst),
+    ...jsToMidiEncoder['std::vector<int16_t>'](sourceAmounts)
+  ]
+  const data = [
+    ...splitInt8To7(voice),
+    ...splitTo7(FunctionNames.setAllEnvMatrixEntries, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to setAllEnvMatrixEntries')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
+export function setAllLfoMatrixEntries(lfo: number, offsetDst: number, sourceAmounts: number[], voice: number = VOICE_ALL) {
+  const paramBytes: number[] = [
+    ...jsToMidiEncoder['uint8_t'](lfo),
+    ...jsToMidiEncoder['uint8_t'](offsetDst),
+    ...jsToMidiEncoder['std::vector<int16_t>'](sourceAmounts)
+  ]
+  const data = [
+    ...splitInt8To7(voice),
+    ...splitTo7(FunctionNames.setAllLfoMatrixEntries, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to setAllLfoMatrixEntries')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
 export function changeMidiSpeed(speed: number, voice: number = VOICE_ALL) {
   const paramBytes: number[] = [
     ...jsToMidiEncoder['uint32_t'](speed)

@@ -28,5 +28,8 @@ export enum FunctionNames {
   setCtrlAllLfoParams = 24,
   setCtrlAllLfoSettings = 25,
   setCtrlAllLfoStageSettings = 26,
-  changeMidiSpeed = 27
+  setAllMatrixEntries = 27,
+  setAllEnvMatrixEntries = 28,
+  setAllLfoMatrixEntries = 29,
+  changeMidiSpeed = 30
 }
