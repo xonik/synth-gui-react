@@ -21,7 +21,7 @@ export const splitTo7 = (value: number, bits: number) => {
     return bytes
 }
 
-function splitInt8To7(value: number): number[] {
+export function splitInt8To7(value: number): number[] {
     // Clamp to int8_t range
     const clamped = Math.max(-128, Math.min(127, value));
     // Convert to unsigned 8-bit representation

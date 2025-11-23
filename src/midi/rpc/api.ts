@@ -375,21 +375,21 @@ export function setCtrlAllLfoStageSettings(lfo: number, stage: number, settings:
   sendSysex(sysexCommands.RPC, data)  
 }
 
-export function setAllMatrixEntries(offsetDst: number, sourceAmounts: number[], voice: number = VOICE_ALL) {
+export function setAllModAmounts(offsetDst: number, sourceAmounts: number[], voice: number = VOICE_ALL) {
   const paramBytes: number[] = [
     ...jsToMidiEncoder['uint8_t'](offsetDst),
     ...jsToMidiEncoder['std::vector<int16_t>'](sourceAmounts)
   ]
   const data = [
     ...splitInt8To7(voice),
-    ...splitTo7(FunctionNames.setAllMatrixEntries, 14),
+    ...splitTo7(FunctionNames.setAllModAmounts, 14),
     ...paramBytes,
   ]
-  logger.midi('RPC call to setAllMatrixEntries')
+  logger.midi('RPC call to setAllModAmounts')
   sendSysex(sysexCommands.RPC, data)  
 }
 
-export function setAllEnvMatrixEntries(env: number, offsetDst: number, sourceAmounts: number[], voice: number = VOICE_ALL) {
+export function setAllEnvModAmounts(env: number, offsetDst: number, sourceAmounts: number[], voice: number = VOICE_ALL) {
   const paramBytes: number[] = [
     ...jsToMidiEncoder['uint8_t'](env),
     ...jsToMidiEncoder['uint8_t'](offsetDst),
@@ -397,14 +397,14 @@ export function setAllEnvMatrixEntries(env: number, offsetDst: number, sourceAmo
   ]
   const data = [
     ...splitInt8To7(voice),
-    ...splitTo7(FunctionNames.setAllEnvMatrixEntries, 14),
+    ...splitTo7(FunctionNames.setAllEnvModAmounts, 14),
     ...paramBytes,
   ]
-  logger.midi('RPC call to setAllEnvMatrixEntries')
+  logger.midi('RPC call to setAllEnvModAmounts')
   sendSysex(sysexCommands.RPC, data)  
 }
 
-export function setAllLfoMatrixEntries(lfo: number, offsetDst: number, sourceAmounts: number[], voice: number = VOICE_ALL) {
+export function setAllLfoModAmounts(lfo: number, offsetDst: number, sourceAmounts: number[], voice: number = VOICE_ALL) {
   const paramBytes: number[] = [
     ...jsToMidiEncoder['uint8_t'](lfo),
     ...jsToMidiEncoder['uint8_t'](offsetDst),
@@ -412,10 +412,10 @@ export function setAllLfoMatrixEntries(lfo: number, offsetDst: number, sourceAmo
   ]
   const data = [
     ...splitInt8To7(voice),
-    ...splitTo7(FunctionNames.setAllLfoMatrixEntries, 14),
+    ...splitTo7(FunctionNames.setAllLfoModAmounts, 14),
     ...paramBytes,
   ]
-  logger.midi('RPC call to setAllLfoMatrixEntries')
+  logger.midi('RPC call to setAllLfoModAmounts')
   sendSysex(sysexCommands.RPC, data)  
 }
 
