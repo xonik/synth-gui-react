@@ -278,7 +278,7 @@ export function setCtrlAllParams(settings: number[], voice: number = VOICE_ALL) 
 
 export function setCtrlAllNonModSettings(settings: number[], voice: number = VOICE_ALL) {
   const paramBytes: number[] = [
-    ...jsToMidiEncoder['std::vector<int16_t>'](settings)
+    ...jsToMidiEncoder['std::vector<uint16_t>'](settings)
   ]
   const data = [
     ...splitInt8To7(voice),
@@ -306,7 +306,7 @@ export function setCtrlAllEnvParams(env: number, params: number[], voice: number
 export function setCtrlAllEnvSettings(env: number, settings: number[], voice: number = VOICE_ALL) {
   const paramBytes: number[] = [
     ...jsToMidiEncoder['uint8_t'](env),
-    ...jsToMidiEncoder['std::vector<int16_t>'](settings)
+    ...jsToMidiEncoder['std::vector<uint8_t>'](settings)
   ]
   const data = [
     ...splitInt8To7(voice),
@@ -321,7 +321,7 @@ export function setCtrlAllEnvStageSettings(env: number, stage: number, settings:
   const paramBytes: number[] = [
     ...jsToMidiEncoder['uint8_t'](env),
     ...jsToMidiEncoder['uint8_t'](stage),
-    ...jsToMidiEncoder['std::vector<int16_t>'](settings)
+    ...jsToMidiEncoder['std::vector<uint8_t>'](settings)
   ]
   const data = [
     ...splitInt8To7(voice),
@@ -349,7 +349,7 @@ export function setCtrlAllLfoParams(lfo: number, params: number[], voice: number
 export function setCtrlAllLfoSettings(lfo: number, settings: number[], voice: number = VOICE_ALL) {
   const paramBytes: number[] = [
     ...jsToMidiEncoder['uint8_t'](lfo),
-    ...jsToMidiEncoder['std::vector<int16_t>'](settings)
+    ...jsToMidiEncoder['std::vector<uint8_t>'](settings)
   ]
   const data = [
     ...splitInt8To7(voice),
@@ -364,7 +364,7 @@ export function setCtrlAllLfoStageSettings(lfo: number, stage: number, settings:
   const paramBytes: number[] = [
     ...jsToMidiEncoder['uint8_t'](lfo),
     ...jsToMidiEncoder['uint8_t'](stage),
-    ...jsToMidiEncoder['std::vector<int16_t>'](settings)
+    ...jsToMidiEncoder['std::vector<uint8_t>'](settings)
   ]
   const data = [
     ...splitInt8To7(voice),

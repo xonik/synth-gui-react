@@ -61,7 +61,7 @@ const functionMapper = (func: Func) => {
 
     return `    ${functionHeader}
         std::vector<uint8_t> result = splitInt8To7(voice);
-        std::vector<uint8_t> functionIdVec = splitTo7(${func.name}Id, 14);${paramConverts.length > 0 ? '\n        ' + paramConverts.join('\n        '): ''}
+        std::vector<uint8_t> functionIdVec = splitTo7(14, ${func.name}Id);${paramConverts.length > 0 ? '\n        ' + paramConverts.join('\n        '): ''}
         ${func.params.length === 0 ? '' : getResultJoining(paramReserves, paramCombines)}
         nvmidi::sendSysex(voice, SYSEX_CMD_RPC, &result);
     }`

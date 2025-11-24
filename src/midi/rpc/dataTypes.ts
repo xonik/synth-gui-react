@@ -10,7 +10,9 @@ export const KNOWN_DATATYPES = [
     'int8_t',
     'int16_t',
     'bool',
+    'std::vector<int8_t>',
     'std::vector<int16_t>',
+    'std::vector<uint8_t>',
     'std::vector<uint16_t>'
 ] as const;
 type DataTypeTuple = typeof KNOWN_DATATYPES;

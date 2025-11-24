@@ -52,11 +52,31 @@ export const getBoolArray = (value: boolean): number[] => {
     }
 }
 
+const getUint8Array = (values: number[]): number[] => {
+    let bytes: number[] = splitTo7(values.length, 14)
+
+    values.forEach((num) => {
+        bytes = bytes.concat(splitTo7(num, 8))
+    })
+
+    return bytes
+}
+
 const getUint16Array = (values: number[]): number[] => {
     let bytes: number[] = splitTo7(values.length, 14)
 
     values.forEach((num) => {
         bytes = bytes.concat(splitTo7(num, 16))
+    })
+
+    return bytes
+}
+
+const getInt8Array = (values: number[]): number[] => {
+    let bytes: number[] = splitTo7(values.length, 14)
+
+    values.forEach((num) => {
+        bytes = bytes.concat(splitInt8To7(num))
     })
 
     return bytes
@@ -68,7 +88,6 @@ const getInt16Array = (values: number[]): number[] => {
     values.forEach((num) => {
         bytes = bytes.concat(splitInt16To7(num))
     })
-
 
     return bytes
 }
@@ -84,6 +103,8 @@ export const jsToMidiEncoder: Record<DataType, (value: unknown) => number[]> = {
     'int8_t': (value: unknown) => splitInt8To7(value as number),
     'int16_t': (value: unknown) => splitInt16To7(value as number),
     'bool': (value: unknown) => getBoolArray(value as boolean),
+    'std::vector<int8_t>': (value: unknown) => getInt8Array(value as number[]),
     'std::vector<int16_t>': (value: unknown) => getInt16Array(value as number[]),
+    'std::vector<uint8_t>': (value: unknown) => getUint8Array(value as number[]),
     'std::vector<uint16_t>': (value: unknown) => getUint16Array(value as number[]),
 }

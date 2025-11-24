@@ -95,7 +95,7 @@ namespace paramIO {
   const unsigned short NON_MOD_POTS_COUNT = ${NON_MOD_POTS_COUNT};
   const unsigned short LAST_NON_MOD_POTS = ${FIRST_NON_MOD_POTS + NON_MOD_POTS_COUNT - 1};     
   
-  // Start of NonModPotDestinations
+  // Start of NonModDestinations
   const unsigned short FIRST_NON_MOD = ${FIRST_NON_MOD}; 
   const unsigned short NON_MOD_COUNT = ${NON_MOD_COUNT};
   const unsigned short LAST_NON_MOD = ${FIRST_NON_MOD + NON_MOD_COUNT - 1};     

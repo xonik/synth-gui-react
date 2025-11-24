@@ -89,6 +89,14 @@ export const dataTypeMap:Record<DataType, {
         cppSerializer: 'getBoolArray(',
         printValue: true,
     },
+    'std::vector<int8_t>': {
+        cppType: 'std::vector<int8_t>',
+        jsType: 'number[]',
+        deserializer: 'getInt8Vector',
+        cppSerializer: 'getInt8Vector(',
+        printValue: false,
+
+    },
     'std::vector<int16_t>': {
         cppType: 'std::vector<int16_t>',
         jsType: 'number[]',
@@ -97,6 +105,14 @@ export const dataTypeMap:Record<DataType, {
         printValue: false,
 
     },
+    'std::vector<uint8_t>': {
+        cppType: 'std::vector<uint8_t>',
+        jsType: 'number[]',
+        deserializer: 'getUint8Vector',
+        cppSerializer: 'getUint8Vector(',
+        printValue: false,
+    },
+
     'std::vector<uint16_t>': {
         cppType: 'std::vector<uint16_t>',
         jsType: 'number[]',

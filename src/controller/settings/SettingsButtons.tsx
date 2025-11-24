@@ -45,7 +45,7 @@ const SettingsButtons = () => {
         <Button active onClick={() => dispatch(clickCalibrateDco1)}>Calibrate DCO 1</Button>
         <Button active onClick={() => dispatch(clickCalibrateDco2)}>Calibrate DCO 2</Button>
         <Button active onClick={() => tuneVco()}>Tune VCO</Button>
-        <Button active onClick={() => setCtrlAllLfoStageSettings(7, 12, [-1,-2,-3 ])}>Measure VCO octaves</Button>
+        <Button active onClick={() => setCtrlAllLfoStageSettings(1, 2, [1,2,3,4 ])}>Ctrl all lfo</Button>
         <Button active onClick={() => measureVcoOctaves()}>Measure VCO octaves</Button>
         <Button active onClick={() => measureVcoAll()}>Measure VCO all</Button>
         <Button active onClick={() => manualTuneVcoStart()}>Manual tune VCO start</Button>
