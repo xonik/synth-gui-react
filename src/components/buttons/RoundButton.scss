@@ -3,13 +3,13 @@
 @keyframes led-cycle {
   0%,
   49.9% {
-    stroke: #500000;
-    fill: #500000;
+    stroke: red;
+    fill: red;
   }
   50%,
   100% {
-    stroke: red;
-    fill: red;
+    stroke: #500000;
+    fill: #500000;
   }
 }
 
