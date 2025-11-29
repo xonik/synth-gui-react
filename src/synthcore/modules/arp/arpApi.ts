@@ -9,6 +9,7 @@ const { set, toggle, increment, getForSave, setFromLoad } = createGroupedHandler
         arpControllers.SYNC,
         arpControllers.RANGE,
         arpControllers.MODE,
+        arpControllers.EXTENDED_MODE,
         arpControllers.SEQUENCE,
     ])
 

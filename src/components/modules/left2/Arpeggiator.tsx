@@ -45,10 +45,15 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
         />
 
 
-        {/* TODO: Make this 'binary' style so multiple can be selected. Let Other default be random */}
+        {/*
+         TODO: Let last option on front panel be "Other". When selecting this, pop up a modal on the display
+         where the user can select from a list of extended options, e.g., Random, up down repeat etc. Default to
+         random, so no choice is needed. Close the modal after a few seconds.
+         */}
         <RoundPushButton8 x={col3} y={row2}
                           label="Mode" labelPosition="bottom-pot"
-                          ledCount={3} ledPosition="right" ledLabels={['Up', 'Down', 'Other']}
+                          ledCount={3} ledPosition="right" ledLabels={['Up', 'Down', 'Random']}
+                          ledCycleBinary
                           ctrlGroup={ctrlGroup}
                           ctrl={arpControllers.MODE}
         />

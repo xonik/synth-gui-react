@@ -11,6 +11,7 @@ interface ArpControllers {
     SYNC: ControllerConfigButton
     RANGE: ControllerConfigButton
     MODE: ControllerConfigButton
+    EXTENDED_MODE: ControllerConfigButton
     SEQUENCE: ControllerConfigButton
     OUTPUT: ControllerConfig
 }
@@ -72,7 +73,15 @@ const arpControllers: ArpControllers = {
             buttonMidiValues.ARP_MODE_DOWN,
             buttonMidiValues.ARP_MODE_UP_DOWN,
             buttonMidiValues.ARP_MODE_RANDOM,
-            buttonMidiValues.ARP_MODE_OTHER,
+        ],
+    },
+    // Modes not selectable from the front panel
+    EXTENDED_MODE: {
+        id: ControllerIdNonMod.ARP_EXTENDED_MODE,
+        label: 'Mode',
+        type: 'button',
+        values: [
+            buttonMidiValues.ARP_MODE_UP_DOWN_REPEAT,
         ],
     },
     SEQUENCE: {

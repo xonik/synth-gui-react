@@ -50,6 +50,10 @@ export interface Props {
     // Number of leds AROUND the button. If this is undefined but ledButton is true, the button itself is a led.
     ledCount?: number;
 
+    // When selecting what leds to light up, use a binary counting: 0ff, 1, 2, 1 and 2, 3. etc. Makes it possible
+    // to show a combination of mode 1 and 2 for arpeggiator.
+    ledCycleBinary?: boolean;
+
     // True if the first midi value is an off state, lets us switch off all diodes
     hasOff?: boolean;
 
@@ -295,6 +299,7 @@ export const RoundButtonBase = (props: Props & Config) => {
         valueIndex,
         resolution,
         ledRingColors,
+        ledCycleBinary,
     } = props
 
     const storeValue = useAppSelector(selectUiController(ctrl, ctrlIndex || 0))
@@ -343,15 +348,27 @@ export const RoundButtonBase = (props: Props & Config) => {
             ledOn[0] = true
         }
     } else {
-        if (ledOnIndex < ledOn.length) {
-            // ledOnIndex -1 means all leds are off
-            if (ledOnIndex > -1) {
-                ledOn[ledOnIndex] = true
+        if(ledCycleBinary) {
+            for(let i = 0; i < ledOn.length; i++) {
+                // ledOnIndex -1 means all leds are off
+                if (ledOnIndex > -1) {
+                    const mask = 1 << i
+                    if (((ledOnIndex + (hasOff ? 0 : 1)) & mask) === mask) {
+                        ledOn[i] = true
+                    }
+                }
             }
         } else {
-            // light up all leds if there are more options than leds (minus off)
-            for (let i = 0; i < (ledCount || 1); i++) {
-                ledOn[i] = true
+            if (ledOnIndex < ledOn.length) {
+                // ledOnIndex -1 means all leds are off
+                if (ledOnIndex > -1) {
+                    ledOn[ledOnIndex] = true
+                }
+            } else {
+                // light up all leds if there are more options than leds (minus off)
+                for (let i = 0; i < (ledCount || 1); i++) {
+                    ledOn[i] = true
+                }
             }
         }
     }
