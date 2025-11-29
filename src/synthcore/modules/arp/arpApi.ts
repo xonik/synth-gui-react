@@ -9,7 +9,7 @@ const { set, toggle, increment, getForSave, setFromLoad } = createGroupedHandler
         arpControllers.SYNC,
         arpControllers.RANGE,
         arpControllers.MODE,
-        arpControllers.TRIGGER,
+        arpControllers.SEQUENCE,
     ])
 
 const api = {

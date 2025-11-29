@@ -178,6 +178,9 @@ export enum buttonMidiValues {
     ARP_MODE_UP_DOWN,
     ARP_MODE_RANDOM,
     ARP_MODE_OTHER,
+    ARP_SEQ_OFF,
+    ARP_SEQ_ENTER,
+    ARP_SEQ_ON,
 
     VOICE1,
     VOICE2,

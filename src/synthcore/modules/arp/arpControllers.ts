@@ -11,6 +11,7 @@ interface ArpControllers {
     SYNC: ControllerConfigButton
     RANGE: ControllerConfigButton
     MODE: ControllerConfigButton
+    SEQUENCE: ControllerConfigButton
     OUTPUT: ControllerConfig
 }
 
@@ -72,6 +73,16 @@ const arpControllers: ArpControllers = {
             buttonMidiValues.ARP_MODE_UP_DOWN,
             buttonMidiValues.ARP_MODE_RANDOM,
             buttonMidiValues.ARP_MODE_OTHER,
+        ],
+    },
+    SEQUENCE: {
+        id: ControllerIdNonMod.ARP_SEQUENCE,
+        label: 'Sequence',
+        type: 'button',
+        values: [
+            buttonMidiValues.ARP_SEQ_OFF,
+            buttonMidiValues.ARP_SEQ_ENTER,
+            buttonMidiValues.ARP_SEQ_ON,
         ],
     },
 

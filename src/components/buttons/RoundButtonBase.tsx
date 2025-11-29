@@ -279,10 +279,21 @@ const getRenderProps = (props: Props & Config): RenderProps => {
 export const RoundButtonBase = (props: Props & Config) => {
 
     const {
-        x, y, label, radioButtonIndex,
-        hasOff, ledCount, ledButton, reverse, loop = true,
+        x, y,
+        label,
+        radioButtonIndex,
+        hasOff,
+        ledCount,
+        ledButton,
+        reverse,
+        loop = true,
         momentary,
-        ctrlGroup, ctrl, ctrlIndex, value, valueIndex, resolution,
+        ctrlGroup,
+        ctrl,
+        ctrlIndex,
+        value,
+        valueIndex,
+        resolution,
         ledRingColors,
     } = props
 
@@ -323,7 +334,7 @@ export const RoundButtonBase = (props: Props & Config) => {
     }, [ctrl, ctrlGroup, ctrlIndex, momentary])
 
     const ledOn: boolean[] = []
-    for (let i = 0; i < (ledCount || 1); i++) {
+    for (let i = 0; i < (ledCount || (ctrl.values?.length || 2) - 1); i++) {
         ledOn[i] = false
     }
 
@@ -345,7 +356,6 @@ export const RoundButtonBase = (props: Props & Config) => {
         }
     }
 
-
     const {
         buttonRadius,
         buttonMode,
@@ -356,6 +366,24 @@ export const RoundButtonBase = (props: Props & Config) => {
         ledLabels,
     } = getRenderProps(props)
 
+    // multiple leds for multi-state led buttons are simulated by blinking the led on the button
+    const modes = ctrl.values?.length || 2
+    let ledButtonStyle = undefined
+    if(ledButton){
+        if(ledOnIndex === -1){
+            ledButtonStyle = 'button-cap-led'
+        } else if(ledOnIndex === modes - 2){
+            ledButtonStyle = 'button-cap-led__on'
+        } else {
+            ledButtonStyle = `button-cap-led__on-blink-${ledOnIndex}`
+        }
+    }
+
+    console.log({
+        label,
+        ledButtonStyle,
+    })
+
     return (
         <svg x={x} y={y} className="button">
             {buttonMode === 'push'
@@ -363,10 +391,7 @@ export const RoundButtonBase = (props: Props & Config) => {
                                        cutRadius={cutRadius}
                                        onClick={handleOnClick}
                                        onRelease={handleOnRelease}
-                                       className={classNames('button-cap', {
-                                           'button-cap-led': ledButton,
-                                           'button-cap-led__on': ledButton && ledOn.length > 0 && ledOn[0]
-                                       })}/>
+                                       className={classNames(['button-cap', ledButtonStyle])}/>
                 : <RotaryPotBase
                     onIncrement={onIncrement}
                     knobRadius={buttonRadius}

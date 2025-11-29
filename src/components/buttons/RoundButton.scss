@@ -1,5 +1,18 @@
 @import '../constants';
 
+@keyframes led-cycle {
+  0%,
+  49.9% {
+    stroke: #500000;
+    fill: #500000;
+  }
+  50%,
+  100% {
+    stroke: red;
+    fill: red;
+  }
+}
+
 .button {
   overflow: visible;
 
@@ -10,10 +23,18 @@
     &-led {
       stroke: #500000;
       fill: #500000;
-
       &__on {
         stroke: red;
         fill: red;
+      }
+      &__on-blink-0 {
+        animation: led-cycle 1s steps(2, jump-none) infinite;
+      }
+      &__on-blink-1 {
+        animation: led-cycle 0.5s steps(2, jump-none) infinite;
+      }
+      &__on-blink-2 {
+        animation: led-cycle 0.25s steps(2, jump-none) infinite;
       }
     }
   }

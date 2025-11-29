@@ -65,10 +65,9 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
                              ctrl={arpControllers.ON_OFF}
         />
 
-        { /* Rename to latch? */}
-        <RoundLedPushButton8 labelPosition="bottom-pot" x={col2} y={row3} label="Latch"
+        <RoundLedPushButton8 labelPosition="bottom-pot" x={col2} y={row3} label="Sequence"
                              ctrlGroup={ctrlGroup}
-                             ctrl={arpControllers.TRIGGER}
+                             ctrl={arpControllers.SEQUENCE}
         />
 
     </>;
