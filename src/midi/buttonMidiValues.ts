@@ -181,6 +181,9 @@ export enum buttonMidiValues {
     ARP_SEQ_OFF,
     ARP_SEQ_ENTER,
     ARP_SEQ_ON,
+    ARP_NOTE_ORDERING_PRESSED,
+    ARP_NOTE_ORDERING_KEYBOARD,
+
 
     VOICE1,
     VOICE2,

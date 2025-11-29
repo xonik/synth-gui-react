@@ -13,6 +13,7 @@ interface ArpControllers {
     MODE: ControllerConfigButton
     EXTENDED_MODE: ControllerConfigButton
     SEQUENCE: ControllerConfigButton
+    NOTE_ORDERING: ControllerConfigButton
     OUTPUT: ControllerConfig
 }
 
@@ -92,6 +93,15 @@ const arpControllers: ArpControllers = {
             buttonMidiValues.ARP_SEQ_OFF,
             buttonMidiValues.ARP_SEQ_ENTER,
             buttonMidiValues.ARP_SEQ_ON,
+        ],
+    },
+    NOTE_ORDERING: {
+        id: ControllerIdNonMod.ARP_NOTE_ORDERING,
+        label: 'Note ordering',
+        type: 'button',
+        values: [
+            buttonMidiValues.ARP_NOTE_ORDERING_PRESSED,
+            buttonMidiValues.ARP_NOTE_ORDERING_KEYBOARD,
         ],
     },
 
