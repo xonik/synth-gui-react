@@ -89,9 +89,6 @@ export enum ControllerIdDst {
     SOURCE_MIX_LEVEL_RING_MOD,
     SOURCE_MIX_LEVEL_EXT_AUDIO,
 
-    MASTER_CLOCK_RATE,
-    ARP_TEMPO,
-
     KBD_PORTAMENTO,
     KBD_UNISON_DETUNE,
 
@@ -137,7 +134,7 @@ export const FIRST_ENV_DST = FIRST_DST + DST_COUNT
 
 export enum ControllerIdEnvDst {
     // LFO and ENV dsts
-    DELAY_TIME = 91,
+    DELAY_TIME = 89,
     ATTACK_TIME,
     DECAY1_TIME,
     DECAY2_TIME,
@@ -152,7 +149,7 @@ export const DST_ENV_COUNT = Object.keys(ControllerIdEnvDst).filter(o => isNaN(o
 export const FIRST_LFO_DST = FIRST_ENV_DST + DST_ENV_COUNT
 
 export enum ControllerIdLfoDst {
-    RATE = 101,
+    RATE = 99,
     DEPTH,
     DELAY,
     BALANCE,
@@ -166,7 +163,10 @@ export const FIRST_NON_MOD_POTS = FIRST_LFO_DST + DST_LFO_COUNT
 // controllers that affect stuff that is not part of the
 // modulation matrix, such as global pots (volume etc)
 export enum ControllerIdNonModPots {
-    MOD_AMOUNT = 107,
+    MOD_AMOUNT = 105,
+    MASTER_CLOCK_RATE,
+    ARP_BPM,
+
     MAIN_DISP_POT1,
     MAIN_DISP_POT2,
     MAIN_DISP_POT3,

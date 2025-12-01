@@ -1,11 +1,21 @@
 import CC from '../../../midi/mapCC'
-import { ControllerConfig, ControllerConfigCC, ControllerConfigButton, FuncProps } from '../../../midi/types'
-import { ControllerIdDst, ControllerIdNonMod, ControllerIdSrc } from '../controllers/controllerIds'
+import {
+    ControllerConfig,
+    ControllerConfigButton,
+    FuncProps,
+    ControllerConfigNRPN
+} from '../../../midi/types'
+import {
+    ControllerIdNonMod,
+    ControllerIdNonModPots,
+    ControllerIdSrc
+} from '../controllers/controllerIds'
 import {buttonMidiValues} from "../../../midi/buttonMidiValues";
+import NRPN from "../../../midi/mapNRPN";
 
 interface ArpControllers {
     props: FuncProps
-    TEMPO: ControllerConfigCC
+    TEMPO: ControllerConfigNRPN,
     ON_OFF: ControllerConfigButton
     TRIGGER: ControllerConfigButton
     SYNC: ControllerConfigButton
@@ -22,11 +32,11 @@ interface ArpControllers {
 const arpControllers: ArpControllers = {
     props: { label: 'Arpeggiator', shortLabel: 'Arp' },
     TEMPO: {
-        id: ControllerIdDst.ARP_TEMPO,
+        id: ControllerIdNonModPots.ARP_BPM,
         label: 'Tempo',
         isDstDigi: true,
         type: 'pot',
-        cc: CC.ARP_TEMPO
+        addr: NRPN.ARP_RATE,
     },
     ON_OFF: {
         id: ControllerIdNonMod.ARP_ON_OFF,

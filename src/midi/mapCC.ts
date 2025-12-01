@@ -52,7 +52,7 @@ const mapCC = {
     LEVEL_EXT_AUDIO: 47,
     VCO_LIN_FM: 48,
     MASTER_CLOCK_RATE: 49,
-    ARP_TEMPO: 50,
+    ARP_BPM: 50,
     MAIN_POT1: 51,
     MAIN_POT2: 52,
     MAIN_POT3: 53,

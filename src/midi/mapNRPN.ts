@@ -24,6 +24,8 @@ const mapNRPN = {
     TRIMMER_MOOG_RESO: 22,
     SVF_WHEEL_AMT: 23,
     LPF_WHEEL_AMT: 24,
+    ARP_RATE: 25,
+    MASTER_CLOCK_RATE: 26,
 }
 
 export default mapNRPN
