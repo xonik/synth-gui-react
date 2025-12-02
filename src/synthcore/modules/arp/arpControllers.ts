@@ -12,10 +12,11 @@ import {
 } from '../controllers/controllerIds'
 import {buttonMidiValues} from "../../../midi/buttonMidiValues";
 import NRPN from "../../../midi/mapNRPN";
+import { sharedConfig } from "../../../sharedConfig";
 
 interface ArpControllers {
     props: FuncProps
-    TEMPO: ControllerConfigNRPN,
+    BPM: ControllerConfigNRPN,
     ON_OFF: ControllerConfigButton
     TRIGGER: ControllerConfigButton
     SYNC: ControllerConfigButton
@@ -31,13 +32,16 @@ interface ArpControllers {
 
 const arpControllers: ArpControllers = {
     props: { label: 'Arpeggiator', shortLabel: 'Arp' },
-    TEMPO: {
+    BPM: {
         id: ControllerIdNonModPots.ARP_BPM,
         label: 'Tempo',
         isDstDigi: true,
         type: 'pot',
-        addr: NRPN.ARP_RATE,
-        range: {from: 30, to: 300},
+        addr: NRPN.ARP_BPM,
+        range: {
+            from: sharedConfig.ARP_MIN_BPM.value,
+            to: sharedConfig.ARP_MAX_BPM.value
+        },
     },
     ON_OFF: {
         id: ControllerIdNonMod.ARP_ON_OFF,

@@ -2,6 +2,7 @@ import { FuncProps, ControllerConfigButton, ControllerConfigNRPN } from '../../.
 import { ControllerIdNonMod, ControllerIdNonModPots } from '../controllers/controllerIds'
 import {buttonMidiValues} from "../../../midi/buttonMidiValues";
 import NRPN from "../../../midi/mapNRPN";
+import { sharedConfig } from "../../../sharedConfig";
 
 interface MasterClockControllers {
     props: FuncProps
@@ -17,7 +18,11 @@ const masterClockControllers: MasterClockControllers = {
         isDstDigi: true,
         type: 'pot',
         addr: NRPN.MASTER_CLOCK_RATE,
-        global: true
+        global: true,
+        range: {
+            from: sharedConfig.MASTER_CLOCK_MIN_BPM.value,
+            to: sharedConfig.MASTER_CLOCK_MAX_BPM.value
+        },
     },
     SOURCE: {
         id: ControllerIdNonMod.MASTER_CLOCK_SOURCE,

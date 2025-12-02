@@ -3,7 +3,7 @@ import arpControllers from './arpControllers'
 
 const { set, toggle, increment, getForSave, setFromLoad } = createGroupedHandlers(
     [
-        arpControllers.TEMPO,
+        arpControllers.BPM,
         arpControllers.ON_OFF,
         arpControllers.TRIGGER,
         arpControllers.SYNC,

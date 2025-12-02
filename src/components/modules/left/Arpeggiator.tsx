@@ -47,7 +47,7 @@ const Arpeggiator = ({ x, y }: Props) => {
 
         <RotaryPot12 ledMode="single" label="Rate" x={col2} y={row2}
                      ctrlGroup={ctrlGroup}
-                     ctrl={arpControllers.TEMPO}
+                     ctrl={arpControllers.BPM}
         />
 
         <RoundPushButton8 labelPosition="bottom-pot" x={col3} y={row2} label="Sync" ledCount={3} ledPosition="right" ledLabels={['Clock', 'LFO1', 'Ext']} hasOff

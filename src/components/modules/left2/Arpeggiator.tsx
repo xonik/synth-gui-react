@@ -35,7 +35,7 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
 
         <RotaryPot12 ledMode="single" label="Rate" x={col2} y={row2}
                      ctrlGroup={ctrlGroup}
-                     ctrl={arpControllers.TEMPO}
+                     ctrl={arpControllers.BPM}
         />
 
         {/* Let sync source be settable from main panel */  }
