@@ -9,12 +9,11 @@ export function generateApiForCpp(funcs: Func[]) {
 // cpp-to-midi RPC wrapper
 #include "api.h"
 #include "../midiSerializer.h"
-#include "../../midi/NativeVoiceMidi.h"
 #include "../../shared/midi/SysexCommands.h"
 
 namespace midiRPC {
 
-    NativeVoiceMidi& voiceMidi;
+    NativeVoiceMidi* voiceMidi;
     
 ${mainFuncs.map(functionMapper).join('\n\n')}
 }
@@ -64,7 +63,7 @@ const functionMapper = (func: Func) => {
         std::vector<uint8_t> result = splitInt8To7(voice);
         std::vector<uint8_t> functionIdVec = splitTo7(14, ${func.name}Id);${paramConverts.length > 0 ? '\n        ' + paramConverts.join('\n        '): ''}
         ${func.params.length === 0 ? '' : getResultJoining(paramReserves, paramCombines)}
-        voiceMidi.sendSysex(voice, SYSEX_CMD_RPC, &result);
+        voiceMidi->sendSysex(voice, SYSEX_CMD_RPC, &result);
     }`
 }
 
@@ -76,9 +75,12 @@ export function generateApiHForCpp(funcs: Func[]) {
     return `// GENERATED FILE, DO NOT EDIT
 #pragma once
 #include <vector>
-#include "stdint.h"
+#include <stdint.h>
+#include "../../midi/NativeVoiceMidi.h"
 
 namespace midiRPC {
+
+    extern NativeVoiceMidi* voiceMidi;
 
 ${generateFunctionNamesEnumCpp(mainFuncs)}
 
