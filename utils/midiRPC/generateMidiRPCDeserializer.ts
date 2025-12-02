@@ -5,7 +5,6 @@ export function generateMidiRPCDeserializer(functions: Func[]) {
 #include "../midiRPCFunctions.h"
 #include "../../shared/midiRPC/midiRPCDeserializer.h"
 #include "../../shared/midiRPC/midiRPCReceiver.h"
-#include "../../../arduino-debug-utils.h"
 
 namespace midiRPC {
     

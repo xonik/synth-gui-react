@@ -1,6 +1,5 @@
 import { dataTypeMap, Func } from './types'
 import { generateFunctionNamesEnumCpp } from "./generateFunctionNames";
-import { DataType } from "./dataTypes";
 
 export function generateApiForCpp(funcs: Func[]) {
 
@@ -10,11 +9,13 @@ export function generateApiForCpp(funcs: Func[]) {
 // cpp-to-midi RPC wrapper
 #include "api.h"
 #include "../midiSerializer.h"
-#include "../../midi/nativeVoiceMidi.h"
-#include "../../midi/MainMidi.h"
+#include "../../midi/NativeVoiceMidi.h"
 #include "../../shared/midi/SysexCommands.h"
 
 namespace midiRPC {
+
+    NativeVoiceMidi& voiceMidi;
+    
 ${mainFuncs.map(functionMapper).join('\n\n')}
 }
 `
@@ -63,7 +64,7 @@ const functionMapper = (func: Func) => {
         std::vector<uint8_t> result = splitInt8To7(voice);
         std::vector<uint8_t> functionIdVec = splitTo7(14, ${func.name}Id);${paramConverts.length > 0 ? '\n        ' + paramConverts.join('\n        '): ''}
         ${func.params.length === 0 ? '' : getResultJoining(paramReserves, paramCombines)}
-        nvmidi::sendSysex(voice, SYSEX_CMD_RPC, &result);
+        voiceMidi.sendSysex(voice, SYSEX_CMD_RPC, &result);
     }`
 }
 
