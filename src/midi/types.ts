@@ -25,6 +25,9 @@ export interface ControllerConfig {
     readonly values?: number[]
     readonly bipolar?: boolean
 
+    // TODO: Only for ControllerConfigCC and ControllerConfigNRPN but here because TS complains!
+    readonly range?: { from: number, to: number }
+
     // used for special functions that may require a ctrlIndex to be sent before the actual controller, such as
     // envelope values.
     readonly midiGroup?: MidiGroup
@@ -42,11 +45,13 @@ export interface ControllerConfigButton extends ControllerConfig {
 
 export interface ControllerConfigCC extends ControllerConfig {
     readonly cc: number
+    readonly range?: { from: number, to: number } // For midi send/receive: range (0-1) is converted to this range
 }
 
 export interface ControllerConfigNRPN extends ControllerConfig {
     readonly addr: number
     readonly bipolar?: boolean
+    readonly range?: { from: number, to: number } // For midi send/receive: range (0-1) is converted to this range
 }
 
 export interface ControllerConfigNRPNWithValue extends ControllerConfigNRPN {

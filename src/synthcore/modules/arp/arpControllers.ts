@@ -37,6 +37,7 @@ const arpControllers: ArpControllers = {
         isDstDigi: true,
         type: 'pot',
         addr: NRPN.ARP_RATE,
+        range: {from: 30, to: 300},
     },
     ON_OFF: {
         id: ControllerIdNonMod.ARP_ON_OFF,

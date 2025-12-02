@@ -9,6 +9,7 @@ import { shouldSend } from '../../../midi/utils'
 import logger from '../../../utils/logger'
 import { button, cc, nrpn } from '../../../midi/midibus'
 import { NumericInputProperty } from './types'
+import { getBounded } from "../../utils";
 
 // Send signature
 export type ParamSendFunc = (
@@ -67,6 +68,39 @@ const ccWithValueMapper = {
     }
 }
 
+const ccWithRangeMapper = {
+    input: (midiValue: number, ctrl: ControllerConfig | ControllerConfigCC | ControllerConfigButton) => {
+        if(!ctrl.range){
+            throw Error('cannot use ctrl without range')
+        }
+        const span = ctrl.range.to - ctrl.range.from
+        const value = (midiValue - ctrl.range.from) / span
+        if(value < 0 || value > 1){
+            console.error('Received midi value is out of range, capping', midiValue, ctrl.range.from, ctrl.range.to)
+        }
+        return { value: getBounded(value) }
+    },
+    output: (value: number, ctrl: ControllerConfig | ControllerConfigCC | ControllerConfigButton) => {
+        if(!ctrl.range){
+            throw Error('cannot use ctrl without range')
+        }
+        const span = ctrl.range.to - ctrl.range.from
+
+        let midiValue = Math.round(ctrl.range.from + span * value)
+        if(midiValue < 0 || midiValue > 127){
+            console.error('Calculated midi value is out of range, capping', midiValue, ctrl.range.from, ctrl.range.to)
+            midiValue = getBounded(midiValue, 0, 127)
+        }
+
+        console.log('outputting', {
+            midiValue,
+            backConverted: (midiValue - ctrl.range.from) / span
+        })
+
+        return midiValue
+    }
+}
+
 const nrpnMapper = {
     input: (midiValue: number, ctrl: ControllerConfig | ControllerConfigCC | ControllerConfigButton) => {
 
@@ -87,6 +121,40 @@ const nrpnMapper = {
         if (valueIndex && valueIndex >= 0 && valueIndex < 32) {
             midiValue += (valueIndex << 16)
         }
+        return midiValue
+    }
+}
+
+
+const nrpnWithRangeMapper = {
+    input: (midiValue: number, ctrl: ControllerConfig | ControllerConfigCC | ControllerConfigButton) => {
+        if(!ctrl.range){
+            throw Error('cannot use ctrl without range')
+        }
+        const span = ctrl.range.to - ctrl.range.from
+        const value = (midiValue - ctrl.range.from) / span
+        if(value < 0 || value > 1){
+            console.log('Received midi value is out of range, capping', midiValue, ctrl.range.from, ctrl.range.to)
+        }
+        return { value: getBounded(value) }
+    },
+    output: (value: number, ctrl: ControllerConfig | ControllerConfigCC | ControllerConfigButton) => {
+        if(!ctrl.range){
+            throw Error('cannot use ctrl without range')
+        }
+        const span = ctrl.range.to - ctrl.range.from
+
+        let midiValue = Math.round(ctrl.range.from + span * value)
+        if(midiValue < 0 || midiValue > 65535){
+            console.log('Calculated midi value is out of range, capping', midiValue, ctrl.range.from, ctrl.range.to)
+            midiValue = getBounded(midiValue, 0, 127)
+        }
+
+        console.log('outputting', {
+            midiValue,
+            backConverted: (midiValue - ctrl.range.from) / span
+        })
+
         return midiValue
     }
 }
@@ -113,11 +181,21 @@ export const paramSend: ParamSendFunc = (
         const buttonValue = (ccWithValueMapper.output)(value, ctrl)
         button.send(voiceGroupIndex, ctrl as ControllerConfigButton, buttonValue)
     } else if (ctrl.hasOwnProperty('cc')) {
-        const midiValue = (outputMapper || ccMapper.output)(value, ctrl)
+        let midiValue
+        if(ctrl.range){
+            midiValue = (outputMapper || ccWithRangeMapper.output)(value, ctrl)
+        } else {
+            midiValue = (outputMapper || ccMapper.output)(value, ctrl)
+        }
         logger.midi(`Setting paramSend cc value for ${ctrl.label} to ${value} (${midiValue})`)
         cc.send(voiceGroupIndex, ctrl as ControllerConfigCC, midiValue)
     } else if (ctrl.hasOwnProperty('addr')) {
-        const midiValue = (outputMapper || nrpnMapper.output)(value, ctrl, valueIndex)
+        let midiValue
+        if(ctrl.range){
+            midiValue = (outputMapper || nrpnWithRangeMapper.output)(value, ctrl)
+        } else {
+            midiValue = (outputMapper || nrpnMapper.output)(value, ctrl, valueIndex)
+        }
         logger.midi(`Setting paramSend nrpn value for ${ctrl.label} to ${value} (${midiValue})`)
         nrpn.send(voiceGroupIndex, ctrl as ControllerConfigNRPN, midiValue)
     }
@@ -139,6 +217,9 @@ export const paramReceive: ParamReceiveFunc = (
         cc.subscribe((voiceGroupIndex: number, midiValue: number) => {
             if (ctrl.values) {
                 const { value } = (inputMapper || ccWithValueMapper.input)(midiValue, ctrl)
+                apiSetValue({ ctrl, value, source: ApiSource.MIDI, voiceGroupIndex })
+            } else if(ctrl.range){
+                const { value } = (inputMapper || ccWithRangeMapper.input)(midiValue, ctrl)
                 apiSetValue({ ctrl, value, source: ApiSource.MIDI, voiceGroupIndex })
             } else {
                 const { value } = (inputMapper || ccMapper.input)(midiValue, ctrl)
