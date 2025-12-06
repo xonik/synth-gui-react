@@ -9,6 +9,7 @@ const handlers = createGroupedHandlers(
         kbdControllers.HOLD,
         kbdControllers.CHORD,
         kbdControllers.MODE,
+        kbdControllers.VOICE_STEALING,
     ])
 
 

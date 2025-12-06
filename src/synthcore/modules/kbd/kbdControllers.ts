@@ -11,6 +11,7 @@ interface KbdControllers {
     CHORD: ControllerConfigButton
     MODE: ControllerConfigButton
     TRANSPOSE: ControllerConfigButton
+    VOICE_STEALING: ControllerConfigButton
 }
 
 const kbdControllers: KbdControllers = {
@@ -67,6 +68,15 @@ const kbdControllers: KbdControllers = {
             buttonMidiValues.TRANSPOSE_0,
             buttonMidiValues.TRANSPOSE_POS_1,
             buttonMidiValues.TRANSPOSE_POS_2,
+        ],
+    },
+    VOICE_STEALING: {
+        id: ControllerIdNonMod.KBD_VOICE_STEALING,
+        label: 'Voice stealing',
+        type: 'button',
+        values: [
+            buttonMidiValues.KBD_VOICE_STEALING_OFF,
+            buttonMidiValues.KBD_VOICE_STEALING_ON,
         ],
     },
 }

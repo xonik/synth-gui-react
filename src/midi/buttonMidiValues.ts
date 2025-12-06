@@ -237,6 +237,9 @@ export enum buttonMidiValues {
     TRANSPOSE_POS_1,
     TRANSPOSE_POS_2,
 
+    KBD_VOICE_STEALING_OFF,
+    KBD_VOICE_STEALING_ON,
+
     KBD_HOLD_ON,
     KBD_HOLD_OFF,
     KBD_CHORD_ON,
