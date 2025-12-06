@@ -25,7 +25,9 @@ interface ArpControllers {
     EXTENDED_MODE: ControllerConfigButton
     SEQUENCE: ControllerConfigButton
     NOTE_ORDERING: ControllerConfigButton
-    SYNC_TO_BIG_TICK: ControllerConfigButton
+    START_SYNC: ControllerConfigButton
+    FUZZY_START: ControllerConfigButton
+    STOP_ON_RELEASE: ControllerConfigButton
     RESOLUTION: ControllerConfigButton
     OUTPUT: ControllerConfig
 }
@@ -120,13 +122,38 @@ const arpControllers: ArpControllers = {
             buttonMidiValues.ARP_NOTE_ORDERING_KEYBOARD,
         ],
     },
-    SYNC_TO_BIG_TICK: {
-        id: ControllerIdNonMod.ARP_SYNC_TO_BIG_TICK,
-        label: 'Sync to quarter note',
+    FUZZY_START: {
+        id: ControllerIdNonMod.ARP_FUZZY_START,
+        label: 'Fuzzy start',
         type: 'button',
         values: [
-            buttonMidiValues.ARP_SYNC_TO_BIG_TICK_OFF,
-            buttonMidiValues.ARP_SYNC_TO_BIG_TICK_ON,
+            buttonMidiValues.ARP_FUZZY_START_OFF,
+            buttonMidiValues.ARP_FUZZY_START_ON,
+        ],
+    },
+    STOP_ON_RELEASE: {
+        id: ControllerIdNonMod.ARP_STOP_ON_RELEASE,
+        label: 'Fuzzy start',
+        type: 'button',
+        values: [
+            buttonMidiValues.ARP_STOP_ON_RELEASE_OFF,
+            buttonMidiValues.ARP_STOP_ON_RELEASE_ON,
+        ],
+    },
+    START_SYNC: {
+        id: ControllerIdNonMod.ARP_START_SYNC,
+        label: 'Sync start to clock',
+        type: 'button',
+        values: [
+            buttonMidiValues.ARP_START_RES_QUARTER,
+            buttonMidiValues.ARP_START_RES_QUARTER_TRIPLET,
+            buttonMidiValues.ARP_START_RES_8TH,
+            buttonMidiValues.ARP_START_RES_8TH_TRIPLET,
+            buttonMidiValues.ARP_START_RES_16TH,
+            buttonMidiValues.ARP_START_RES_16TH_TRIPLET,
+            buttonMidiValues.ARP_START_RES_32ND,
+            buttonMidiValues.ARP_START_RES_32ND_TRIPLET,
+            buttonMidiValues.ARP_START_RES_MAX,
         ],
     },
     RESOLUTION: {
@@ -142,7 +169,7 @@ const arpControllers: ArpControllers = {
             buttonMidiValues.ARP_RES_16TH_TRIPLET,
             buttonMidiValues.ARP_RES_32ND,
             buttonMidiValues.ARP_RES_32ND_TRIPLET,
-            buttonMidiValues.ARP_RES_COUNT,
+            buttonMidiValues.ARP_RES_MAX,
         ],
     },
     // Not a real controller, only used in modulation mappings when arp is a source

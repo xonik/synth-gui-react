@@ -248,7 +248,9 @@ export enum ControllerIdNonMod {
     ARP_EXTENDED_MODE,
     ARP_SEQUENCE,
     ARP_NOTE_ORDERING,
-    ARP_SYNC_TO_BIG_TICK,
+    ARP_FUZZY_START,
+    ARP_STOP_ON_RELEASE,
+    ARP_START_SYNC,
     ARP_RESOLUTION,
 
     VOICE_SELECTOR,
@@ -307,7 +309,7 @@ export enum ControllerIdNonMod {
 }
 
 export enum ControllerIdEnvNonMod {
-  ENV_RESET_ON_TRIGGER= 216,
+  ENV_RESET_ON_TRIGGER= 218,
   ENV_RELEASE_MODE,
   ENV_LOOP_MODE,
   ENV_MAX_LOOPS,
@@ -319,13 +321,13 @@ export enum ControllerIdEnvNonMod {
 export const ENV_NON_MOD_COUNT = Object.keys(ControllerIdEnvNonMod).filter(o => isNaN(o as any)).length
 
 export enum ControllerIdEnvStageNonMod {
-  ENV_CURVE = 224,
+  ENV_CURVE = 226,
   ENV_TOGGLE_STAGE,
 }
 export const ENV_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdEnvStageNonMod).filter(o => isNaN(o as any)).length
 
 export enum ControllerIdLfoNonMod {
-  LFO_SHAPE = 226,
+  LFO_SHAPE = 228,
   LFO_SYNC,
   LFO_RESET,
   LFO_BIPOLAR,
@@ -344,7 +346,7 @@ export enum ControllerIdLfoNonMod {
 export const LFO_NON_MOD_COUNT = Object.keys(ControllerIdLfoNonMod).filter(o => isNaN(o as any)).length
 
 export enum ControllerIdLfoStageNonMod {
-  LFO_CURVE = 241,
+  LFO_CURVE = 243,
   LFO_TOGGLE_STAGE,
 }
 export const LFO_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdLfoStageNonMod).filter(o => isNaN(o as any)).length
