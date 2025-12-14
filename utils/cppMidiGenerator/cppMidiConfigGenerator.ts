@@ -285,7 +285,7 @@ const generateCppFiles = () => {
 
     const buttonMidiKeys = Object.keys(buttonMidiValues)
         .filter(o => isNaN(o as any))
-        .map(key => `BT_${key}`)
+        .map((key, index) => `BT_${key} /* ${index} */`)
     const buttonEnumFileContents = `enum ButtonMidiValues {\n  ${buttonMidiKeys.join(',\n  ')}\n};`
 
     // main controller

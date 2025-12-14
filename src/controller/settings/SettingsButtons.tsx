@@ -41,18 +41,27 @@ const SettingsButtons = () => {
     const clickDco2Range = click({ ...oscAction, ctrl: oscControllers.DCO2.RANGE })
 
     return <div className="settings-buttons">
-        <div className="settings__heading">Settings</div>
-        <Button active onClick={() => dispatch(clickCalibrateDco1)}>Calibrate DCO 1</Button>
-        <Button active onClick={() => dispatch(clickCalibrateDco2)}>Calibrate DCO 2</Button>
-        <Button active onClick={() => tuneVco()}>Tune VCO</Button>
-        <Button active onClick={() => setCtrlAllLfoStageSettings(1, 2, [1,2,3,4 ])}>Ctrl all lfo</Button>
-        <Button active onClick={() => measureVcoOctaves()}>Measure VCO octaves</Button>
-        <Button active onClick={() => measureVcoAll()}>Measure VCO all</Button>
-        <Button active onClick={() => manualTuneVcoStart()}>Manual tune VCO start</Button>
-        <Button active onClick={() => manualTuneVcoStop()}>Manual tune VCO stop</Button>
-        <Button active={dco1RangeHigh === 1} onClick={() => dispatch(clickDco1Range)}>DCO 1 Range Hi</Button>
-        <Button active={dco2RangeHigh === 1} onClick={() => dispatch(clickDco2Range)}>DCO 2 Range Hi</Button>
-    </div>
+        <div className="settings-buttons">
+            <div className="settings__heading">Settings</div>
+            <div className="settings-buttons__columns">
+                <div className="settings-buttons__column">
+                    <Button active onClick={() => dispatch(clickCalibrateDco1)}>Calibrate DCO 1</Button>
+                    <Button active onClick={() => dispatch(clickCalibrateDco2)}>Calibrate DCO 2</Button>
+                    <Button active onClick={() => tuneVco()}>Tune VCO</Button>
+                </div>
+                <div className="settings-buttons__column">
+                    <Button active onClick={() => setCtrlAllLfoStageSettings(1, 2, [1,2,3,4 ])}>Ctrl all lfo</Button>
+                    <Button active onClick={() => measureVcoOctaves()}>Measure VCO octaves</Button>
+                    <Button active onClick={() => measureVcoAll()}>Measure VCO all</Button>
+                </div>
+                <div className="settings-buttons__column">
+                    <Button active onClick={() => manualTuneVcoStart()}>Manual tune VCO start</Button>
+                    <Button active onClick={() => manualTuneVcoStop()}>Manual tune VCO stop</Button>
+                    <Button active={dco1RangeHigh === 1} onClick={() => dispatch(clickDco1Range)}>DCO 1 Range Hi</Button>
+                    <Button active={dco2RangeHigh === 1} onClick={() => dispatch(clickDco2Range)}>DCO 2 Range Hi</Button>
+                </div>
+            </div>
+        </div>    </div>
 }
 
 export default SettingsButtons
