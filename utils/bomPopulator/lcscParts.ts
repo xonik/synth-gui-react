@@ -330,6 +330,7 @@ export const lcscParts = [
     "RECON-FILTER-V1.1,O,XM8-RECON-FILTER-V1.1,MULTI,0,E",
     "TEENSY4.0-BARE,O,TEENSY4.0-BARE,MULTI,0,E",
     "PJ-3200-STEREO-JACK,O,PJ-3200-JACK,MULTI,0,E",
+    "URA2412YMD-20WR3,O,DC-DC-REG-25X25,C5369773,0,E",
 ].map((line): LibPart => {
     const parts = line.split(',')
     if (parts.length < 6) {
