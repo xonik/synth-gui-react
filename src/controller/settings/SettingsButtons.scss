@@ -21,17 +21,6 @@
     margin: 0 0.5em;
   }
 
-  & Button {
-    background: #3a3f44;
-    color: #fafafa;
-    border: 1px solid #4fd1c5;
-    transition: background 0.2s;
-  }
-  & Button:hover {
-    background: #4fd1c5;
-    color: #23272a;
-  }
-
   .gui-ctrl-button {
     text-align: center;
     height: 2.5em;

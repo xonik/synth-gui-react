@@ -14,6 +14,11 @@
   &--active {
     background-color: $button-active-bg-color;
     color: $button-active-color;
+
+    &:hover {
+      background: #4fd1c5;
+      color: #23272a;
+    }
   }
 
   &--disabled {
@@ -22,14 +27,13 @@
   }
 
   &:hover {
-    background: #4fd1c5;
-    color: #23272a;
+    border-color: #4fd1c5;
   }
 
   &:active {
-    background: #ff9800;
+    background: #79f6e9;
     color: #23272a;
-    border-color: #ff9800;
+    border-color: #79f6e9;
   }
 
 }
