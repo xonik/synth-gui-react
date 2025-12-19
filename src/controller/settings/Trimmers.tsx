@@ -131,13 +131,13 @@ export const Trimmers = ({ voice }: Props) => {
 
     return <div className="cv-range">
         <div className="cv-range__graph-controls">
-            <VerticalSelector label="WS A Sym" setValue={updateValue} allSettings={currentSettings} trimmer={0}/>
-            <VerticalSelector label="Center" setValue={updateValue} allSettings={currentSettings} trimmer={1}/>
-            <VerticalSelector label="WS B Sym" setValue={updateValue} allSettings={currentSettings} trimmer={2}/>
-            <VerticalSelector label="Center" setValue={updateValue} allSettings={currentSettings} trimmer={3}/>
-            <VerticalSelector label="Moog 4P" setValue={updateValue} allSettings={currentSettings} trimmer={4}/>
-            <VerticalSelector label="Moog Reso" setValue={updateValue} allSettings={currentSettings} trimmer={5}/>
-            <VerticalSelector label="Moog 2P" setValue={updateValue} allSettings={currentSettings} trimmer={6}/>
+            <VerticalSelector label="A Sym" setValue={updateValue} allSettings={currentSettings} trimmer={0}/>
+            <VerticalSelector label="A Cent" setValue={updateValue} allSettings={currentSettings} trimmer={1}/>
+            <VerticalSelector label="B Sym" setValue={updateValue} allSettings={currentSettings} trimmer={2}/>
+            <VerticalSelector label="B Cent" setValue={updateValue} allSettings={currentSettings} trimmer={3}/>
+            <VerticalSelector label="4P" setValue={updateValue} allSettings={currentSettings} trimmer={4}/>
+            <VerticalSelector label="Reso" setValue={updateValue} allSettings={currentSettings} trimmer={5}/>
+            <VerticalSelector label="2P" setValue={updateValue} allSettings={currentSettings} trimmer={6}/>
             <VerticalSelector label="Calibrate" setValue={updateValue} allSettings={currentSettings} trimmer={7}/>
         </div>
         <div className="cv-range__params">

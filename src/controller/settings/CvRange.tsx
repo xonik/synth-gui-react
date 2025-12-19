@@ -59,7 +59,7 @@ const CvSelector = ({ onSelect, cv }: CvSelectorProps) => {
         }
     }, [onSelect])
 
-    return <select onChange={onOptionChangeHandler} value={cv}>
+    return <select onChange={onOptionChangeHandler} value={cv} className={"cv-range__cv-selector"}>
         {CVs.map((cv, index) => {
             return (
                 <option key={index} value={cv.channel}>
@@ -97,7 +97,7 @@ const CvReverseCheckbox = ({ onChange, reverse }: CvReverseCheckboxProps) => {
         onChange(!reverse);
     }, [onChange, reverse])
 
-    return <label>
+    return <label className="cv-range__nowrap">
         <input type="checkbox" onChange={onOptionChangeHandler} checked={reverse || false}/>
         Reverse
     </label>
@@ -333,8 +333,8 @@ export const CvRange = ({voice}: Props) => {
             <CvReverseCheckbox onChange={updateReverse} reverse={currentCvs[cv].reverse}/>
             <button disabled={currentSaved[cv]} onClick={onSave}>Save</button>
             <button disabled={currentSaved[cv]} onClick={onReset}>Reset</button>
-            <button onClick={onLoadAll}>Load all</button>
-            <div>Voltages: {getAsVolts(currentCvs[cv].start)} - {getAsVolts(currentCvs[cv].end)}</div>
+            <button onClick={onLoadAll}>Ld all</button>
+            <div className="cv-range__nowrap">V: {getAsVolts(currentCvs[cv].start)} - {getAsVolts(currentCvs[cv].end)}</div>
         </div>
     </div>
 }
