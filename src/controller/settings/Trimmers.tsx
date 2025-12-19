@@ -86,6 +86,7 @@ function mutate(trimmerSettings: TrimmerSetting[], trimmer: number, changes: Par
 
 function send(trimmerSetting: TrimmerSetting) {
     const { trimmer, value } = trimmerSetting
+    console.log(trimmer, value)
     setTrimmerSetting(trimmer, value)
 }
 
