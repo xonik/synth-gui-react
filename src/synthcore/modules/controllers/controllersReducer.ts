@@ -17,6 +17,7 @@ import { getDefaultPreFxState } from "../fx/fxUtils";
 import { lfoCtrls } from '../lfo/lfoControllers'
 import { VOICE_GROUPS } from "../../../utils/constants";
 import { getVoiceGroupIndex } from "../voices/currentVoiceGroupIndex";
+import { getDefaultKbdState } from "../kbd/kbdUtils";
 
 type ControllersState = {
 
@@ -52,7 +53,8 @@ export const initialStateCreator =
             getDefaultSrcMixState(),
             getDefaultFiltersState(),
             getDefaultPreFxState(),
-            getDefaultController(envCtrls.SELECT_ENV3_ID, 2)
+            getDefaultController(envCtrls.SELECT_ENV3_ID, 2),
+            getDefaultKbdState()
         ]
         const uiControllers = [
             getDefaultSrcMixUiState()
