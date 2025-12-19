@@ -20,4 +20,16 @@
     background-color: $button-bg-color;
     color: $button-disabled-color;
   }
+
+  &:hover {
+    background: #4fd1c5;
+    color: #23272a;
+  }
+
+  &:active {
+    background: #ff9800;
+    color: #23272a;
+    border-color: #ff9800;
+  }
+
 }
