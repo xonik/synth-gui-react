@@ -11,7 +11,7 @@ export function generateApiForCpp(funcs: Func[]) {
 #include "../midiSerializer.h"
 #include "../../shared/midi/SysexCommands.h"
 
-namespace voiceMidiRPC {
+namespace midiRPC {
 
     NativeVoiceMidi* voiceMidi;
     
@@ -78,7 +78,7 @@ export function generateApiHForCpp(funcs: Func[]) {
 #include <stdint.h>
 #include "../../midi/NativeVoiceMidi.h"
 
-namespace voiceMidiRPC {
+namespace midiRPC {
 
     extern NativeVoiceMidi* voiceMidi;
 
