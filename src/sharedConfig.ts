@@ -7,7 +7,7 @@ export const sharedConfig = {
     ARP_MAX_BPM: { value: 300, type: 'define' },
     ARP_MAX_ASSIGNED_NOTES: { value: 128, type: 'define' },
 
-    VOICE_COUNT: { value: 5, type: 'define' },
+    VOICE_COUNT: { value: 2, type: 'define' },
     VOICE_GROUPS: { value: 8, type: 'define' },
 
     ENVS: { value: 5, type: 'define' },

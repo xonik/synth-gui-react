@@ -1,15 +1,8 @@
 import React, { useCallback, useState } from 'react'
 import ReactSlider from 'react-slider'
-import {saveCvMapping, saveCvMappings, saveTrimmerSettings, setCvParams, setTrimmerSetting} from '../../midi/rpc/api'
-import CvResponseCurve from './CvResponseCurve'
-import { CV_CHANNELS, CVs } from './CvDefinitions'
-import { curveNames } from '../../components/curves/shortCurveNames'
-import { curveValuesUsed } from './generatedTypes'
-import './CvRange.scss'
-import '../lfos/StagesCurve.scss'
-import '../lfos/Stages.scss'
-
-import { Curve } from '../../synthcore/generatedTypes'
+import { saveTrimmerSettings, setTrimmerSetting, VOICE_ALL } from '../../midi/rpc/api'
+import { CV_CHANNELS } from './CvDefinitions'
+import { sharedConfig } from "../../sharedConfig";
 
 type SelectorProps = {
     setValue: (trimmer: number, value: number) => void,
@@ -18,7 +11,7 @@ type SelectorProps = {
     label: string,
 }
 
-const TRIMMER_COUNT = 7
+const TRIMMER_COUNT = 8
 
 const VerticalSelector = ({ setValue, allSettings, trimmer, label }: SelectorProps) => {
 
@@ -32,7 +25,7 @@ const VerticalSelector = ({ setValue, allSettings, trimmer, label }: SelectorPro
         invert
         value={allSettings[trimmer].value}
         onChange={(value) => setValue(trimmer, value)}
-        renderThumb={(props, state) => <div {...props}>{(5 * state.valueNow/65535).toFixed(2)} V</div>}
+        renderThumb={(props, state) => <div {...props}>{(5 * state.valueNow / 65535).toFixed(2)} V</div>}
     />
         <div className="cv-range__slider-label">{label}</div>
     </div>
@@ -45,31 +38,31 @@ type TrimmerSetting = {
 }
 
 function getInitialTrimmerSettings() {
-    const trimmerSettings: TrimmerSetting[] = []
+    const trimmerSettings: TrimmerSetting[] = [];
     for (let i = 0; i < CV_CHANNELS; i++) {
-        trimmerSettings.push({
-            trimmer: i,
-            value: 0,
-        })
+        trimmerSettings.push({ trimmer: i, value: 0 });
     }
-    return trimmerSettings
+    return trimmerSettings;
+}
+
+function getInitialAllTrimmerSettings() {
+    return Array.from({ length: sharedConfig.VOICE_COUNT.value }, getInitialTrimmerSettings);
 }
 
 const initialTrimmerSettings = getInitialTrimmerSettings()
 
-const TRIMMER_SETTINGS_KEY = 'trimmer_settings'
-const saveToLocalStorage = (trimmerSettings: TrimmerSetting[]) => localStorage.setItem(TRIMMER_SETTINGS_KEY, JSON.stringify(trimmerSettings))
+const TRIMMER_SETTINGS_KEY = 'all_trimmer_settings';
+const saveToLocalStorage = (allTrimmerSettings: TrimmerSetting[][]) =>
+    localStorage.setItem(TRIMMER_SETTINGS_KEY, JSON.stringify(allTrimmerSettings));
 const loadFromLocalStorage = () => {
-    const persisted = localStorage.getItem(TRIMMER_SETTINGS_KEY)
-    if (!persisted) {
-        return initialTrimmerSettings
-    }
+    const persisted = localStorage.getItem(TRIMMER_SETTINGS_KEY);
+    if (!persisted) return getInitialAllTrimmerSettings();
     try {
-        return JSON.parse(persisted) as TrimmerSetting[]
+        return JSON.parse(persisted) as TrimmerSetting[][];
     } catch {
-        return initialTrimmerSettings
+        return getInitialAllTrimmerSettings();
     }
-}
+};
 
 function mutate(trimmerSettings: TrimmerSetting[], trimmer: number, changes: Partial<TrimmerSetting>) {
     const trimmerSetting = trimmerSettings[trimmer]
@@ -84,22 +77,18 @@ function mutate(trimmerSettings: TrimmerSetting[], trimmer: number, changes: Par
     return updatedTrimmerSettings
 }
 
-function send(trimmerSetting: TrimmerSetting) {
+function send(voice: number, trimmerSetting: TrimmerSetting) {
     const { trimmer, value } = trimmerSetting
-    console.log(trimmer, value)
-    setTrimmerSetting(trimmer, value)
+    console.log(voice, trimmer, value)
+    setTrimmerSetting(trimmer, value, voice)
 }
 
-const Trimmers = () => {
+export const Trimmers = ({ voice }: Props) => {
 
     console.log('render')
-    const [allTrimmerSettings, setAllTrimmerSettings] = useState<TrimmerSetting[]>(loadFromLocalStorage())
-    const [isSaved, setIsSaved] = useState<boolean>(true)
+    const [allTrimmerSettings, setAllTrimmerSettings] = useState<TrimmerSetting[][]>(loadFromLocalStorage());
 
-    const sendTrimmerSetting = (trimmerSetting: TrimmerSetting) => {
-        console.log(trimmerSetting)
-        setTrimmerSetting(trimmerSetting.trimmer, trimmerSetting.value)
-    }
+    const [isSaved, setIsSaved] = useState<boolean>(true)
 
     const onSave = useCallback(() => {
         saveToLocalStorage(allTrimmerSettings)
@@ -108,30 +97,48 @@ const Trimmers = () => {
     }, [allTrimmerSettings, setIsSaved])
 
     const onLoadAll = useCallback(() => {
-        const persistedTrimmers = loadFromLocalStorage()
+        const persisted = loadFromLocalStorage();
+        setAllTrimmerSettings(persisted);
         for(let i=0; i<TRIMMER_COUNT; i++){
-            send(persistedTrimmers[i])
+            if(voice === VOICE_ALL){
+                send(voice, persisted[0][i])
+            } else {
+                send(voice, persisted[voice][i])
+            }
         }
-        setAllTrimmerSettings(persistedTrimmers)
-    }, [])
+    }, []);
 
     const updateValue = useCallback((trimmer: number, value: number) => {
-        const updatedAllCvs = mutate(allTrimmerSettings, trimmer, { value })
-        setAllTrimmerSettings(updatedAllCvs)
-        setIsSaved(false)
-        sendTrimmerSetting(updatedAllCvs[trimmer])
-    }, [allTrimmerSettings, setIsSaved])
+        setAllTrimmerSettings(prev => {
+            let updated = prev.map(arr => arr.map(obj => ({ ...obj }))); // deep copy
+            if (voice === VOICE_ALL) {
+                for (let v = 0; v < sharedConfig.VOICE_COUNT.value; v++) {
+                    updated[v][trimmer].value = value;
+                }
+                send(voice, updated[0][trimmer])
+            } else {
+                updated[voice][trimmer].value = value;
+                send(voice, updated[voice][trimmer])
+            }
+            setIsSaved(false);
+            // Optionally send to hardware for each voice
+            return updated;
+        });
+    }, [voice]);
+
+    // Use current voice's settings for rendering
+    const currentSettings = voice === VOICE_ALL ? allTrimmerSettings[0] : allTrimmerSettings[voice];
 
     return <div className="cv-range">
         <div className="cv-range__graph-controls">
-            <VerticalSelector label="WS A Sym" setValue={updateValue} allSettings={allTrimmerSettings} trimmer={0}/>
-            <VerticalSelector label="WS A Center" setValue={updateValue} allSettings={allTrimmerSettings} trimmer={1}/>
-            <VerticalSelector label="WS B Sym" setValue={updateValue} allSettings={allTrimmerSettings} trimmer={2}/>
-            <VerticalSelector label="WS B Center" setValue={updateValue} allSettings={allTrimmerSettings} trimmer={3}/>
-            <VerticalSelector label="Moog 4P" setValue={updateValue} allSettings={allTrimmerSettings} trimmer={4}/>
-            <VerticalSelector label="Moog Reso" setValue={updateValue} allSettings={allTrimmerSettings} trimmer={5}/>
-            <VerticalSelector label="Moog 2P" setValue={updateValue} allSettings={allTrimmerSettings} trimmer={6}/>
-            <VerticalSelector label="Calibrate" setValue={updateValue} allSettings={allTrimmerSettings} trimmer={7}/>
+            <VerticalSelector label="WS A Sym" setValue={updateValue} allSettings={currentSettings} trimmer={0}/>
+            <VerticalSelector label="Center" setValue={updateValue} allSettings={currentSettings} trimmer={1}/>
+            <VerticalSelector label="WS B Sym" setValue={updateValue} allSettings={currentSettings} trimmer={2}/>
+            <VerticalSelector label="Center" setValue={updateValue} allSettings={currentSettings} trimmer={3}/>
+            <VerticalSelector label="Moog 4P" setValue={updateValue} allSettings={currentSettings} trimmer={4}/>
+            <VerticalSelector label="Moog Reso" setValue={updateValue} allSettings={currentSettings} trimmer={5}/>
+            <VerticalSelector label="Moog 2P" setValue={updateValue} allSettings={currentSettings} trimmer={6}/>
+            <VerticalSelector label="Calibrate" setValue={updateValue} allSettings={currentSettings} trimmer={7}/>
         </div>
         <div className="cv-range__params">
             <button disabled={isSaved} onClick={onSave}>Save</button>
@@ -140,4 +147,4 @@ const Trimmers = () => {
     </div>
 }
 
-export default Trimmers
+type Props = { voice: number };

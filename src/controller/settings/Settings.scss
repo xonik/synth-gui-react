@@ -12,6 +12,11 @@
     min-height: 36px;
   }
 
+  &-menu-voices {
+    margin-left: auto;
+    margin-right: 1rem;
+  }
+
   &-menu-item {
     padding: 4px 16px;
     cursor: pointer;
@@ -30,4 +35,6 @@
       background: #e3f2fd;
     }
   }
+
+
 }

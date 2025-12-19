@@ -211,6 +211,32 @@ export function tuneVco(voice: number = VOICE_ALL) {
   sendSysex(sysexCommands.RPC, data)  
 }
 
+export function calibrateDCO1(voice: number = VOICE_ALL) {
+  const paramBytes: number[] = [
+    
+  ]
+  const data = [
+    ...splitInt8To7(voice),
+    ...splitTo7(FunctionNames.calibrateDCO1, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to calibrateDCO1')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
+export function calibrateDCO2(voice: number = VOICE_ALL) {
+  const paramBytes: number[] = [
+    
+  ]
+  const data = [
+    ...splitInt8To7(voice),
+    ...splitTo7(FunctionNames.calibrateDCO2, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to calibrateDCO2')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
 export function measureVcoOctaves(voice: number = VOICE_ALL) {
   const paramBytes: number[] = [
     
