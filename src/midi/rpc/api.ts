@@ -457,3 +457,17 @@ export function changeMidiSpeed(speed: number, voice: number = VOICE_ALL) {
   logger.midi('RPC call to changeMidiSpeed')
   sendSysex(sysexCommands.RPC, data)  
 }
+
+export function toggleVoicePower(voiceCardId: number, on: boolean, voice: number = VOICE_ALL) {
+  const paramBytes: number[] = [
+    ...jsToMidiEncoder['uint8_t'](voiceCardId),
+    ...jsToMidiEncoder['bool'](on)
+  ]
+  const data = [
+    ...splitInt8To7(voice),
+    ...splitTo7(FunctionNames.toggleVoicePower, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to toggleVoicePower')
+  sendSysex(sysexCommands.RPC, data)  
+}

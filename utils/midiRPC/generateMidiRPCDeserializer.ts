@@ -1,6 +1,6 @@
 import { dataTypeMap, Func, Param } from './types'
 import { generateFunctionNamesEnumCpp } from './generateFunctionNames'
-export function generateMidiRPCDeserializer(functions: Func[]) {
+export function generateMidiRPCDeserializer(functions: Func[], functionIdOffset: number) {
     return `// GENERATED FILE, DO NOT EDIT
 #include "../midiRPCFunctions.h"
 #include "../../shared/midiRPC/midiRPCDeserializer.h"
@@ -8,7 +8,7 @@ export function generateMidiRPCDeserializer(functions: Func[]) {
 
 namespace midiRPC {
     
-  ${generateFunctionNamesEnumCpp(functions.map((func, index) => ({...func, index})))}
+  ${generateFunctionNamesEnumCpp(functions.map((func, index) => ({...func, index: index + functionIdOffset})))}
 
   uint16_t deserializeAndCallFunction(const uint8_t* data, uint16_t startPos) {
     uint16_t pos = startPos;

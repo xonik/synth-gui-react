@@ -33,5 +33,6 @@ export enum FunctionNames {
   setAllModAmounts = 29,
   setAllEnvModAmounts = 30,
   setAllLfoModAmounts = 31,
-  changeMidiSpeed = 32
+  changeMidiSpeed = 32,
+  toggleVoicePower = 33
 }

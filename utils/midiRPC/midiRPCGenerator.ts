@@ -20,12 +20,22 @@ const writeToFile = (path: string, contents: string) => {
 const gitRoot = '/Users/joakim/git/xonik'
 const cppVoiceRoot = `${gitRoot}/xm8-voice-controller/xm8-voice-controller/`
 const cppMainRoot = `${gitRoot}/xm8-main-controller/`
+
 const jsRoot = `${gitRoot}/synth-gui-react`
 const scriptRoot = `${jsRoot}/utils/midiRPC`
 const jsMidiRoot = `${jsRoot}/src/midi/rpc/`
 
-const headerContents = fs.readFileSync(`${cppVoiceRoot}src/midiRPC/midiRPCFunctions.h`, { encoding: 'utf8', flag: 'r' })
-const funcs = parseCppHeaderFile(headerContents)
+// Functions that can be called on the voice controllers
+const voiceHeaderContents = fs.readFileSync(`${cppVoiceRoot}src/midiRPC/midiRPCFunctions.h`, { encoding: 'utf8', flag: 'r' })
+const voiceFuncs = parseCppHeaderFile(voiceHeaderContents)
+
+// Functions that can be called on the main controller
+const mainHeaderContents = fs.readFileSync(`${cppMainRoot}src/midiRPC/midiRPCFunctions.h`, { encoding: 'utf8', flag: 'r' })
+const mainFuncs = parseCppHeaderFile(mainHeaderContents)
+
+console.log(mainFuncs)
+
+const funcs = [...voiceFuncs, ...mainFuncs]
 
 const cvPinsContents = fs.readFileSync(`${cppVoiceRoot}src/physical/cv/cvPins.h`, { encoding: 'utf8', flag: 'r' })
 const cvs = parseCvDefinitionFile(cvPinsContents)
@@ -36,10 +46,18 @@ const cvCount = parseCvConfigFile(cvConfigContents)
 const curveContents = fs.readFileSync(`${cppVoiceRoot}/curves.h`, { encoding: 'utf8', flag: 'r' })
 const curveEnums = parseCurves(curveContents)
 
-writeToFile(`${cppVoiceRoot}src/midiRPC/generated/midiRPCDeserializer.cpp`, generateMidiRPCDeserializer(funcs))
+// Receivers on the voice and main controllers
+writeToFile(`${cppVoiceRoot}src/midiRPC/generated/midiRPCDeserializer.cpp`, generateMidiRPCDeserializer(voiceFuncs, 0))
+writeToFile(`${cppMainRoot}src/midiRPC/generated/midiRPCDeserializer.cpp`, generateMidiRPCDeserializer(mainFuncs, voiceFuncs.length))
+
+// Stubs in the TypeScript code for calling functions on the main and voice controllers
 writeToFile(`${jsMidiRoot}api.ts`, generateApiTs(funcs))
-writeToFile(`${cppMainRoot}src/midiRPC/generated/api.cpp`, generateApiForCpp(funcs))
-writeToFile(`${cppMainRoot}src/midiRPC/generated/api.h`, generateApiHForCpp(funcs))
+
+// Stubs on the main controller for calling functinons on the voice controllers
+writeToFile(`${cppMainRoot}src/midiRPC/generated/api.cpp`, generateApiForCpp(voiceFuncs))
+writeToFile(`${cppMainRoot}src/midiRPC/generated/api.h`, generateApiHForCpp(voiceFuncs))
+
+// An enum of all functions available, both on main and voice cards
 writeToFile(`${jsMidiRoot}functionNames.ts`, generateFunctionNamesEnumTs(
     funcs.map(
         (func, index) => ({...func, index})

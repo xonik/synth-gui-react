@@ -11,7 +11,7 @@ import {
     manualTuneVcoStart,
     manualTuneVcoStop,
     measureVcoAll,
-    measureVcoOctaves,
+    measureVcoOctaves, toggleVoicePower,
     tuneVco
 } from "../../midi/rpc/api";
 import './SettingsButtons.scss'
@@ -23,11 +23,17 @@ const oscAction = {
     loop: true,
 }
 
+
 export const SettingsButtons = ({ voice }: Props) => {
 
     // Track manual tune state per voice
     const [manualTuneActive, setManualTuneActive] = useState<boolean[]>(
         Array(sharedConfig.VOICE_COUNT.value).fill(false)
+    )
+
+    // Add this state for power toggles
+    const [voicePower, setVoicePower] = useState<boolean[]>(
+        [false, false, false]
     )
 
     const handleManualTuneToggle = () => {
@@ -39,6 +45,15 @@ export const SettingsButtons = ({ voice }: Props) => {
                 manualTuneVcoStart(voice)
             }
             updated[voice] = !updated[voice]
+            return updated
+        })
+    }
+
+    const handlePowerToggle = (voiceId: number) => {
+        setVoicePower(prev => {
+            const updated = [...prev]
+            updated[voiceId] = !updated[voiceId]
+            toggleVoicePower(voiceId, updated[voiceId])
             return updated
         })
     }
@@ -71,6 +86,18 @@ export const SettingsButtons = ({ voice }: Props) => {
                 >
                     {manualTuneActive[voice] ? 'Manual tune stop' : 'Manual tune start'}
                 </Button>
+            </div>
+            <div className="settings-buttons__column">
+                <div className="settings-buttons__column-heading">Voice power</div>
+                {[0, 1, 2].map((voiceId) => (
+                    <Button
+                        key={voiceId}
+                        active={voicePower[voiceId]}
+                        onClick={() => handlePowerToggle(voiceId)}
+                    >
+                        {`${voiceId + 1} ${voicePower[voiceId] ? 'on' : 'off'}`}
+                    </Button>
+                ))}
             </div>
         </div>
     </div>
