@@ -255,6 +255,7 @@ export const sendSysex = (command: number, data: number[]) => {
 }
 
 export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
+    console.log('Received MIDI message', midiEvent.data)
     const midiData = midiEvent.data
     const channel = midiData[0] & 0x0F;
     const midiStatus = midiData[0] & 0xF0;
@@ -298,7 +299,9 @@ export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
             cc.publish(voiceGroupId, ccKey, ccValue)
         }
     } else {
-        midiOut?.send(midiData)
+        console.log('Unhandled MIDI message', midiData)
+        // TODO: Disabled because it duplicates note messages
+        // midiOut?.send(midiData)
     }
 }
 
