@@ -20,8 +20,8 @@ ${mainFuncs.map(functionMapper).join('\n\n')}
 `
 }
 
-function getResultJoining(paramReserves: string[], paramCombines: string[]) {
-    return `result.reserve(result.size() + ${paramReserves.join(' + ')});
+function getDataToSendJoining(paramReserves: string[], paramCombines: string[]) {
+    return `dataToSend.reserve(dataToSend.size() + ${paramReserves.join(' + ')});
         ${paramCombines.join('\n        ')}`
 }
 
@@ -54,16 +54,16 @@ const functionMapper = (func: Func) => {
 
     const paramCombines = paramWithFuncId.map(
         ({name}, index) => {
-            return `result.insert(result.end(), ${name}Vec.begin(), ${name}Vec.end());`
+            return `dataToSend.insert(dataToSend.end(), ${name}Vec.begin(), ${name}Vec.end());`
         }
     )
     const functionHeader = `void ${func.name}(${params.join(', ')}) {`
 
     return `    ${functionHeader}
-        std::vector<uint8_t> result = splitInt8To7(voice);
+        std::vector<uint8_t> dataToSend = splitInt8To7(voice);
         std::vector<uint8_t> functionIdVec = splitTo7(14, ${func.name}Id);${paramConverts.length > 0 ? '\n        ' + paramConverts.join('\n        '): ''}
-        ${func.params.length === 0 ? '' : getResultJoining(paramReserves, paramCombines)}
-        voiceMidi->sendSysex(voice, SYSEX_CMD_RPC, &result);
+        ${getDataToSendJoining(paramReserves, paramCombines)}
+        voiceMidi->sendSysex(voice, SYSEX_CMD_RPC, &dataToSend);
     }`
 }
 
