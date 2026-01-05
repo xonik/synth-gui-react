@@ -289,6 +289,32 @@ export function manualTuneVcoStop(voice: number = VOICE_ALL) {
   sendSysex(sysexCommands.RPC, data)  
 }
 
+export function powerDown(voice: number = VOICE_ALL) {
+  const paramBytes: number[] = [
+    
+  ]
+  const data = [
+    ...splitInt8To7(voice),
+    ...splitTo7(FunctionNames.powerDown, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to powerDown')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
+export function powerUp(voice: number = VOICE_ALL) {
+  const paramBytes: number[] = [
+    
+  ]
+  const data = [
+    ...splitInt8To7(voice),
+    ...splitTo7(FunctionNames.powerUp, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to powerUp')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
 export function setCtrlAllParams(settings: number[], voice: number = VOICE_ALL) {
   const paramBytes: number[] = [
     ...jsToMidiEncoder['std::vector<int16_t>'](settings)

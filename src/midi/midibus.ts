@@ -300,8 +300,7 @@ export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
         }
     } else {
         console.log('Unhandled MIDI message', midiData)
-        // TODO: Disabled because it duplicates note messages
-        // midiOut?.send(midiData)
+        midiOut?.send(midiData)
     }
 }
 
