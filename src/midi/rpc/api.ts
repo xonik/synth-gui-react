@@ -315,6 +315,19 @@ export function powerUp(voice: number = VOICE_ALL) {
   sendSysex(sysexCommands.RPC, data)  
 }
 
+export function unisonDetuneFactor(factor: number, voice: number = VOICE_ALL) {
+  const paramBytes: number[] = [
+    ...jsToMidiEncoder['uint16_t'](factor)
+  ]
+  const data = [
+    ...splitInt8To7(voice),
+    ...splitTo7(FunctionNames.unisonDetuneFactor, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to unisonDetuneFactor')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
 export function setCtrlAllParams(settings: number[], voice: number = VOICE_ALL) {
   const paramBytes: number[] = [
     ...jsToMidiEncoder['std::vector<int16_t>'](settings)
