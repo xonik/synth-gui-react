@@ -1,7 +1,6 @@
 import { DraggedFile, DropResult, FileRendererProps, FolderRendererProps } from '../types'
-import { DragSourceMonitor } from 'react-dnd'
 
-function move(props: FolderRendererProps | FileRendererProps, monitor: DragSourceMonitor<DraggedFile, DropResult>, component: DraggedFile): void {
+function move(props: FolderRendererProps | FileRendererProps, monitor: any, component: DraggedFile): void {
     const folders: string[] = []
     const files: string[] = [] as any
 

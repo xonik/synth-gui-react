@@ -2,7 +2,7 @@ import React from 'react'
 import { move } from './utils'
 import { EXTENSION } from './constants'
 import { DraggedFile, DropResult, FileRendererProps, ItemProps } from './types'
-import { DragSourceConnector, DragSourceMonitor, DropTargetConnector, DropTargetMonitor } from 'react-dnd'
+// import { DragSourceMonitor, DropTargetMonitor } from 'react-dnd'
 
 class BaseFile<T> extends React.Component<FileRendererProps<T>> {
 
@@ -151,21 +151,21 @@ const dragSource = {
     }
   },
 
-  endDrag(props: FileRendererProps<ItemProps>, monitor: DragSourceMonitor, component: DraggedFile) {
+  endDrag(props: FileRendererProps<ItemProps>, monitor: any, component: DraggedFile) {
     move(props, monitor, component)
   },
 }
 
-function dragCollect(connect: DragSourceConnector, monitor: DragSourceMonitor) {
+function dragCollect(connect: any, monitor: any) {
   return {
-    connectDragPreview: connect.dragPreview(),
-    connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging(),
+    connectDragPreview: connect?.dragPreview?.(),
+    connectDragSource: connect?.dragSource?.(),
+    isDragging: monitor?.isDragging?.() || false,
   }
 }
 
 const targetSource = {
-  drop(props: FileRendererProps<ItemProps>, monitor: DropTargetMonitor<DraggedFile, DropResult>) {
+  drop(props: FileRendererProps<ItemProps>, monitor: any) {
     if (monitor.didDrop()) {
       return
     }
@@ -182,10 +182,10 @@ const targetSource = {
   },
 }
 
-function targetCollect(connect: DropTargetConnector, monitor: DropTargetMonitor) {
+function targetCollect(connect: any, monitor: any) {
   return {
-    connectDropTarget: connect.dropTarget(),
-    isOver: monitor.isOver({ shallow: true }),
+    connectDropTarget: connect?.dropTarget?.(),
+    isOver: monitor?.isOver?.({ shallow: true }) || false,
   }
 }
 

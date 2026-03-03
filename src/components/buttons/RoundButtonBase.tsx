@@ -10,7 +10,7 @@ import { useAppSelector } from '../../synthcore/hooks'
 import { selectUiController } from '../../synthcore/modules/controllers/controllersReducer'
 import './RoundButton.scss'
 import { SHOW_CUT } from "../../config";
-import { WaveformIconType } from "../images/types";
+import { TextAnchor } from "../../types";
 
 type LedPosition =
     'left'
@@ -82,7 +82,7 @@ export interface Props {
 type LabelPos = {
     x: number;
     y: number;
-    textAnchor: string;
+    textAnchor: TextAnchor;
 }
 
 type LedPos = {
@@ -90,7 +90,7 @@ type LedPos = {
     y: number;
     labelX: number;
     labelY?: number;
-    textAnchor: string;
+    textAnchor: TextAnchor;
 }
 
 type RenderProps = {
@@ -109,34 +109,34 @@ const positionLabel = (buttonRadius: number, labelPosition: LabelPosition, label
             return {
                 x: -(buttonRadius + labelMargin + 2),
                 y: 0.9,
-                textAnchor: 'end'
+                textAnchor: 'end' as const
             }
         case 'right':
             return {
                 x: buttonRadius + labelMargin + 2,
                 y: 0.9,
-                textAnchor: 'start'
+                textAnchor: 'start' as const
             }
         case 'top':
             return {
                 x: 0,
                 y: -(buttonRadius + labelMargin + 3),
-                textAnchor: 'middle'
+                textAnchor: 'middle' as const
             }
         case 'bottom':
             return {
                 x: 0,
                 y: buttonRadius + labelMargin + 3,
-                textAnchor: 'middle'
+                textAnchor: 'middle' as const
             }
         case 'bottom-pot':
             return {
                 x: 0,
                 y: buttonRadius + labelMargin + 7,
-                textAnchor: 'middle'
+                textAnchor: 'middle' as const
             }
         default:
-            return { x: 0, y: 0, textAnchor: 'right' }
+            return { x: 0, y: 0, textAnchor: 'end' as const }
     }
 }
 
@@ -155,7 +155,7 @@ const positionLeds = (
     }
 
     const yDist = 2 * ledRadius + ledToLedMargin
-    const ledPositions = []
+    const ledPositions: LedPos[] = []
 
     for (let i = 0; i < ledCount; i++) {
         const leftLeds = Math.ceil(ledCount / 2)
@@ -193,32 +193,32 @@ const positionLeds = (
                     x: -(buttonRadius + ledMargin + 2 + ledRadius),
                     y: directionMultiplier * (adjustedI - (adjustedLedCount - 1) / 2) * yDist,
                     labelX: -(buttonRadius + ledMargin + 2 + ledTolabelMargin + 2 * ledRadius),
-                    textAnchor: 'end'
-                })
+                    textAnchor: 'end' as const
+                } as LedPos)
                 break
             case 'right':
                 ledPositions.push({
                     x: buttonRadius + ledMargin + 2 + ledRadius,
                     y: (adjustedI - (adjustedLedCount - 1) / 2) * yDist,
                     labelX: buttonRadius + ledMargin + 2 + ledTolabelMargin + 2 * ledRadius,
-                    textAnchor: 'start'
-                })
+                    textAnchor: 'start' as const
+                } as LedPos)
                 break
             case 'right2':
                 ledPositions.push({
                     x: buttonRadius + 5 * ledMargin + 2 + ledRadius,
                     y: (adjustedI - (adjustedLedCount - 1) / 2) * yDist,
                     labelX: buttonRadius + 5 * ledMargin + 2 + ledTolabelMargin + 2 * ledRadius,
-                    textAnchor: 'start'
-                })
+                    textAnchor: 'start' as const
+                } as LedPos)
                 break
             case 'top':
                 ledPositions.push({
                     x: 0,
                     y: -((ledCount - 1 - i) * yDist + buttonRadius + ledMargin + ledRadius),
                     labelX: ledRadius + ledTolabelMargin,
-                    textAnchor: 'start'
-                })
+                    textAnchor: 'start' as const
+                } as LedPos)
                 break
             case 'top-horizontal':
                 let startX = -((ledCount - 1) * 1.25 * yDist) / 2
@@ -227,8 +227,8 @@ const positionLeds = (
                     y: -yDist / 2 - buttonRadius - ledMargin - ledRadius,
                     labelX: startX + i * 1.25 * yDist,
                     labelY: -buttonRadius - 2.3,
-                    textAnchor: 'middle'
-                })
+                    textAnchor: 'middle' as const
+                } as LedPos)
                 break
             case 'top-horizontal-no-label':
                 let startX2 = -((ledCount - 1) * 1.25 * yDist) / 2
@@ -237,19 +237,19 @@ const positionLeds = (
                     y: -buttonRadius - ledMargin - ledRadius,
                     labelX: startX2 + i * 1.25 * yDist,
                     labelY: -buttonRadius - 2,
-                    textAnchor: 'middle'
-                })
+                    textAnchor: 'middle' as const
+                } as LedPos)
                 break
             case 'bottom':
                 ledPositions.push({
                     x: 0,
                     y: i * yDist + buttonRadius + ledMargin + ledRadius,
                     labelX: ledRadius + ledTolabelMargin,
-                    textAnchor: 'start'
-                })
+                    textAnchor: 'start' as const
+                } as LedPos)
                 break
             default:
-                ledPositions.push({ x: 0, y: 0, labelX: 0, textAnchor: 'right' })
+                ledPositions.push({ x: 0, y: 0, labelX: 0, textAnchor: 'start' as const } as LedPos)
         }
     }
     return ledPositions
@@ -387,12 +387,20 @@ export const RoundButtonBase = (props: Props & Config) => {
     const modes = ctrl.values?.length || 2
     let ledButtonStyle = undefined
     if(ledButton){
-        if(ledOnIndex === -1){
-            ledButtonStyle = 'button-cap-led'
-        } else if(ledOnIndex === modes - 2){
-            ledButtonStyle = 'button-cap-led__on'
+        if(radioButtonIndex !== undefined){
+            if(ledOn[0]){
+                ledButtonStyle = 'button-cap-led__on'
+            } else {
+                ledButtonStyle = 'button-cap-led'
+            }
         } else {
-            ledButtonStyle = `button-cap-led__on-blink-${ledOnIndex}`
+            if (ledOnIndex === -1) {
+                ledButtonStyle = 'button-cap-led'
+            } else if (ledOnIndex === modes - 2) {
+                ledButtonStyle = 'button-cap-led__on'
+            } else {
+                ledButtonStyle = `button-cap-led__on-blink-${ledOnIndex}`
+            }
         }
     }
 

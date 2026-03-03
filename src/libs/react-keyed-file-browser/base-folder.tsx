@@ -1,7 +1,7 @@
 import React from 'react'
 import { move } from './utils'
 import { FolderRendererProps } from './types'
-import { DragSourceConnector, DragSourceMonitor } from 'react-dnd'
+// import { DragSourceMonitor } from 'react-dnd'
 
 class BaseFolder extends React.Component<FolderRendererProps> {
     state: { newName: string } = {
@@ -138,16 +138,16 @@ const dragSource = {
         }
     },
 
-    endDrag(props: FolderRendererProps, monitor: DragSourceMonitor, component: any) {
+    endDrag(props: FolderRendererProps, monitor: any, component: any) {
         move(props, monitor, component)
     },
 }
 
-function dragCollect(connect: DragSourceConnector, monitor: DragSourceMonitor) {
+function dragCollect(connect: any, monitor: any) {
     return {
-        connectDragPreview: connect.dragPreview(),
-        connectDragSource: connect.dragSource(),
-        isDragging: monitor.isDragging(),
+        connectDragPreview: connect?.dragPreview?.(),
+        connectDragSource: connect?.dragSource?.(),
+        isDragging: monitor?.isDragging?.() || false,
     }
 }
 

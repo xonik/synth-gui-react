@@ -1,8 +1,8 @@
 import React from 'react'
 import ClassNames from 'classnames'
-import { DragSource, DropTarget } from 'react-dnd'
-import { NativeTypes } from 'react-dnd-html5-backend'
-import flow from 'lodash/flow'
+// import { DragSource, DropTarget } from 'react-dnd'
+// import { NativeTypes } from 'react-dnd-html5-backend'
+// import flow from 'lodash/flow'
 
 import BaseFolder, { BaseFolderConnectors } from '../base-folder'
 import { BaseFileConnectors } from '../base-file'
@@ -123,10 +123,8 @@ class RawListThumbnailFolder extends BaseFolder {
   }
 }
 
-const ListThumbnailFolder = flow(
-  DragSource('folder', BaseFolderConnectors.dragSource, BaseFolderConnectors.dragCollect), 
-  DropTarget(['file', 'folder', NativeTypes.FILE], BaseFileConnectors.targetSource, BaseFileConnectors.targetCollect)
-)(RawListThumbnailFolder)
+// TODO: Drag and drop functionality disabled for react-dnd v16 compatibility
+const ListThumbnailFolder = RawListThumbnailFolder
 
 export default ListThumbnailFolder
 export { RawListThumbnailFolder }

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import Display from '../misc/Display'
-import useEventListener from '@use-it/event-listener'
+import useEventListener from '../../hooks/useEventListener'
 
 import RotaryPotWOLeds10 from '../pots/RotaryPotWOLeds10'
 import RoundPushButton8 from '../buttons/RoundPushButton8'

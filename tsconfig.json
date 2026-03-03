@@ -1,11 +1,9 @@
 {
   "compilerOptions": {
-    "lib": [
-      "es2020"
-    ],
-    "target": "es2019",
-    "module": "esnext",
-    "moduleResolution": "node",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -21,13 +19,19 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
   "include": [
     "src/**/*",
-    "types"
+    "types",
+    "vite.config.ts"
   ],
   "exclude": [
-    "node_modules/*"
+    "node_modules/*",
+    "dist/*"
   ]
 }

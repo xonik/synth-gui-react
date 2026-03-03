@@ -15,10 +15,7 @@ import CC, { buttonCCs } from './mapCC'
 import logger from '../utils/logger'
 import { handleMpk25 } from './mpk25translator'
 
-type MIDIMessageEvent = WebMidi.MIDIMessageEvent
-type MIDIInput = WebMidi.MIDIInput
-type MIDIOutput = WebMidi.MIDIOutput
-type MIDIAccess = WebMidi.MIDIAccess
+// Use native DOM types for MIDI (instead of @types/webmidi which conflicts with built-in types)
 
 export let lastSentMidiGroup: MidiGroup | undefined;
 
@@ -257,6 +254,7 @@ export const sendSysex = (command: number, data: number[]) => {
 export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
     console.log('Received MIDI message', midiEvent.data)
     const midiData = midiEvent.data
+    if (!midiData) return
     const channel = midiData[0] & 0x0F;
     const midiStatus = midiData[0] & 0xF0;
 
@@ -340,7 +338,7 @@ const onMIDISuccess = async (midiAccess: MIDIAccess) => {
     await updateSelectedMidi(midiAccess)
 
     midiAccess.onstatechange = async (connectionEvent) => {
-        console.log(`Midi port ${connectionEvent.port.name} state changed to ${connectionEvent.port.state}, updating connections`)
+        console.log(`Midi port ${connectionEvent.port?.name} state changed to ${connectionEvent.port?.state}, updating connections`)
         console.log(midiAccess)
         await updateSelectedMidi(midiAccess)
     }

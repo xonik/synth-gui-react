@@ -1,8 +1,8 @@
 import React from 'react'
 import ClassNames from 'classnames'
 
-import { DropTarget } from 'react-dnd'
-import { NativeTypes } from 'react-dnd-html5-backend'
+// import { DropTarget } from 'react-dnd'
+// import { NativeTypes } from 'react-dnd-html5-backend'
 
 import { BaseFileConnectors } from '../base-file'
 import { HeaderRendererProps } from '../types'
@@ -47,13 +47,8 @@ class PathTableHeader extends React.Component<HeaderRendererProps> {
     }
 }
 
-const TableHeader = DropTarget(
-    ['file', 'folder', NativeTypes.FILE],
-    BaseFileConnectors.targetSource,
-    BaseFileConnectors.targetCollect
-    // Not sure why exactly this one does not work
-    // @ts-ignore
-)(PathTableHeader)
+// TODO: Drag and drop functionality disabled for react-dnd v16 compatibility
+const TableHeader = PathTableHeader
 
 export default TableHeader
 export { PathTableHeader }

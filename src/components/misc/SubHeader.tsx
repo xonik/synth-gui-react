@@ -84,7 +84,7 @@ const SubHeader = ({
                 className,
                 "subheader-label"
             )}
-            textAnchor={labelPosition === 'center' ? "middle" : "left"}
+            textAnchor={labelPosition === 'center' ? "middle" : "start"}
             alignmentBaseline="baseline"
         >{label}</text>}
     </>;

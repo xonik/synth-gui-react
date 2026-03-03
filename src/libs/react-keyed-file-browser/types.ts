@@ -175,7 +175,7 @@ export type FolderAndFileRendererProps<P = {}> = ItemProps &
 export type FileRendererProps<P = {}> = FileBrowserTreeFileNode &
     FolderAndFileRendererProps<P>
 
-export type FileRenderer<P = {}> = (props: FileRendererProps<P>) => JSX.Element
+export type FileRenderer<P = {}> = React.ComponentType<FileRendererProps<P>>
 
 export type FileProps = {
     showName: boolean,
@@ -187,9 +187,7 @@ export type FileProps = {
 export type FolderRendererProps<P = {}> = FileBrowserTreeGroupNode &
     FolderAndFileRendererProps<P>
 
-export type FolderRenderer<P = {}> = (
-    props: FolderRendererProps<P>
-) => JSX.Element
+export type FolderRenderer<P = {}> = React.ComponentType<FolderRendererProps<P>>
 
 // Detail
 

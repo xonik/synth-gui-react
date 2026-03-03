@@ -1,8 +1,15 @@
 import React from 'react'
 import classNames from 'classnames'
 import './Led.scss'
+import { TextAnchor } from '../../types'
 
 type LabelPosition = 'left' | 'right' | 'top' | 'bottom' | undefined;
+
+interface LabelPositionResult {
+    x: number;
+    y: number;
+    textAnchor: TextAnchor;
+}
 
 export interface Props {
     x: number;
@@ -18,7 +25,7 @@ interface Config {
 }
 
 
-const positionLabel = (radius: number, labelPosition: LabelPosition, labelMargin: number) => {
+const positionLabel = (radius: number, labelPosition: LabelPosition, labelMargin: number): LabelPositionResult => {
     switch (labelPosition) {
         case 'left':
             return {
@@ -45,7 +52,7 @@ const positionLabel = (radius: number, labelPosition: LabelPosition, labelMargin
                 textAnchor: 'middle'
             }
         default:
-            return { x: 0, y: 0, textAnchor: 'right' }
+            return { x: 0, y: 0, textAnchor: 'end' }
     }
 }
 
