@@ -27,11 +27,13 @@
   },
   "include": [
     "src/**/*",
-    "types",
-    "vite.config.ts"
+    "types"
   ],
   "exclude": [
     "node_modules/*",
     "dist/*"
+  ],
+  "references": [
+    { "path": "./tsconfig.node.json" }
   ]
 }
