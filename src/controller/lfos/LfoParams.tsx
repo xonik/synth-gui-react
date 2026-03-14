@@ -101,8 +101,8 @@ const LfoParams = ({ lfoId, className, delayLevel }: Props) => {
 
         <div className="lfo-params__footer__item">
             <div className="lfo-params__footer__item--labels">
-                <div>Offs:</div>
-                <div>Pha:</div>
+                <div>Offset:</div>
+                <div>Phase:</div>
             </div>
             <div className="lfo-params__footer__item--values--offset">
                 <div>{Math.round(100 * levelOffset)}</div>
@@ -112,8 +112,8 @@ const LfoParams = ({ lfoId, className, delayLevel }: Props) => {
 
         <div className="lfo-params__footer__item">
             <div className="lfo-params__footer__item--labels">
-                <div>Dly T:</div>
-                <div>Dly L:</div>
+                <div>Delay time:</div>
+                <div>Delay level:</div>
             </div>
             <div className="lfo-params__footer__item--values--time">
                 <div>{delay.enabled ? formatTime(delayTime || 0) : '-'}</div>

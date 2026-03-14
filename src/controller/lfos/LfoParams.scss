@@ -6,7 +6,7 @@
   flex-direction: row;
   align-items: center;
   color: $text-mid;
-  font-size: 0.85em;
+  font-size: 0.75rem;
   margin-top: 0.5em;
   background-color: $footer-bg-color;
   border-radius: 3px;
@@ -25,8 +25,8 @@
 
       &--labels {
         div {
-          margin-left: 0.25rem;
-          margin-right: 0.25rem;
+          //margin-left: 0.25rem;
+          //margin-right: 0.25rem;
         }
       }
 
