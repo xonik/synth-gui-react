@@ -19,7 +19,7 @@ const EnvHeader = ({ envId }: Props) => {
                 </div>
             })}
         </div>
-        <div className="ctrl-header__label ctrl-header__label--right">Active</div>
+        <div className="ctrl-header__label ctrl-header__label--right">Stages</div>
     </div>
 }
 
