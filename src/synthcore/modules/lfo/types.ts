@@ -3,7 +3,7 @@ import { Curve } from '../../generatedTypes'
 export enum StageId {
     DELAY,
     ATTACK,
-    DECAY,
+    RELEASE,
     STOPPED,
 }
 

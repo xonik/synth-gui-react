@@ -220,7 +220,7 @@ class MaxLoopsControllerHandler extends ControllerHandler {
 
 // TODO: Could listen to set-event from 'normal' handler instead.
 type ShapeParams = {
-    decayEnabled: boolean,
+    releaseEnabled: boolean,
     curves: { [key: number]: Curve }
 }
 
@@ -238,34 +238,34 @@ class ShapeControllerHandler extends ControllerHandler {
     // buttonMidiValues.LFO_SHAPE_SAW is
     private shapes: { [key: number]: ShapeParams } = {
         [buttonMidiValues.LFO_SHAPE_SAW]: {
-            decayEnabled: false,
+            releaseEnabled: false,
             curves: {
                 [StageId.ATTACK]: Curve.LIN
             }
         },
         [buttonMidiValues.LFO_SHAPE_TRI]: {
-            decayEnabled: true,
+            releaseEnabled: true,
             curves: {
                 [StageId.ATTACK]: Curve.LIN,
-                [StageId.DECAY]: Curve.LIN
+                [StageId.RELEASE]: Curve.LIN
             }
         },
         [buttonMidiValues.LFO_SHAPE_SQR]: {
-            decayEnabled: true,
+            releaseEnabled: true,
             curves: {
                 [StageId.ATTACK]: Curve.LFO_SQUARE,
-                [StageId.DECAY]: Curve.LFO_SQUARE
+                [StageId.RELEASE]: Curve.LFO_SQUARE
             }
         },
         [buttonMidiValues.LFO_SHAPE_SIN]: {
-            decayEnabled: true,
+            releaseEnabled: true,
             curves: {
                 [StageId.ATTACK]: Curve.COSINE,
-                [StageId.DECAY]: Curve.COSINE
+                [StageId.RELEASE]: Curve.COSINE
             }
         },
         [buttonMidiValues.LFO_SHAPE_RANDOM]: {
-            decayEnabled: false,
+            releaseEnabled: false,
             curves: {
                 [StageId.ATTACK]: Curve.LFO_RANDOM
             }
@@ -275,13 +275,13 @@ class ShapeControllerHandler extends ControllerHandler {
     private dispatchShapeActions(input: NumericInputProperty, boundedShape: number) {
         if (boundedShape === customShapeIndex) {
             const customShapeParams = selectCustomShapeParams(store.getState(), input.voiceGroupIndex)(input.ctrlIndex || 0)
-            stagesEnabledControllerHandler.setFromOtherAction(input, StageId.DECAY, customShapeParams.decayEnabled);
+            stagesEnabledControllerHandler.setFromOtherAction(input, StageId.RELEASE, customShapeParams.releaseEnabled);
             stagesCurveControllerHandler.setFromOtherAction(input, StageId.ATTACK, customShapeParams.attackCurve)
-            stagesCurveControllerHandler.setFromOtherAction(input, StageId.DECAY, customShapeParams.decayCurve)
+            stagesCurveControllerHandler.setFromOtherAction(input, StageId.RELEASE, customShapeParams.releaseCurve)
         } else {
             const shapeParams = this.shapes[lfoCtrls.SHAPE.values[boundedShape]]
             if (shapeParams) {
-                stagesEnabledControllerHandler.setFromOtherAction(input, StageId.DECAY, shapeParams.decayEnabled);
+                stagesEnabledControllerHandler.setFromOtherAction(input, StageId.RELEASE, shapeParams.releaseEnabled);
                 Object.entries(shapeParams.curves).forEach(([stageId, curve]) => {
                     stagesCurveControllerHandler.setFromOtherAction(input, Number.parseInt(stageId), curve)
                 })
@@ -289,20 +289,20 @@ class ShapeControllerHandler extends ControllerHandler {
         }
     }
 
-    // Use this to update shape whenever decay enabled or curves change
+    // Use this to update shape whenever release enabled or curves change
     detectCurrent(lfoId: number): number | undefined {
         const lfoStages = selectLfoStages(lfoId)(store.getState())
 
-        const decayEnabled = lfoStages[StageId.DECAY].enabled === 1
+        const releaseEnabled = lfoStages[StageId.RELEASE].enabled === 1
         const attackCurve = lfoStages[StageId.ATTACK].curve
-        const decayCurve = lfoStages[StageId.DECAY].curve
+        const releaseCurve = lfoStages[StageId.RELEASE].curve
 
         const detectedShape = Object.entries(this.shapes).find(([, shapeParams]) =>
-            shapeParams.decayEnabled === decayEnabled &&
+            shapeParams.releaseEnabled === releaseEnabled &&
             shapeParams.curves[StageId.ATTACK] === attackCurve &&
             (
-                (shapeParams.curves[StageId.DECAY] === decayCurve && decayEnabled) ||
-                shapeParams.curves[StageId.DECAY] === undefined
+                (shapeParams.curves[StageId.RELEASE] === releaseCurve && releaseEnabled) ||
+                shapeParams.curves[StageId.RELEASE] === undefined
             )
         )
 
@@ -333,14 +333,14 @@ class ShapeControllerHandler extends ControllerHandler {
     saveCustomShapeParams(voiceGroupIndex: number, lfoId: number) {
         const lfoStages = selectLfoStages(lfoId)(store.getState())
 
-        const decayEnabled = lfoStages[StageId.DECAY].enabled === 1
+        const releaseEnabled = lfoStages[StageId.RELEASE].enabled === 1
         const attackCurve = lfoStages[StageId.ATTACK].curve
-        const decayCurve = lfoStages[StageId.DECAY].curve
+        const releaseCurve = lfoStages[StageId.RELEASE].curve
 
         const action = setCustomShapeParams({
             lfoId, params: {
-                decayEnabled,
-                decayCurve,
+                releaseEnabled,
+                releaseCurve,
                 attackCurve,
             },
             voiceGroupIndex

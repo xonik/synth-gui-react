@@ -17,30 +17,30 @@ export type StageBackground = {
     id: StageId
 }
 
-const getUnscaledLevels = (bipolar: boolean, invert: boolean, decayEnabled: boolean) => {
+const getUnscaledLevels = (bipolar: boolean, invert: boolean, releaseEnabled: boolean) => {
     let attackLevel;
-    let decayLevel;
+    let releaseLevel;
 
     if (bipolar) {
         if (invert) {
             attackLevel = 1;
-            decayLevel = -1;
+            releaseLevel = -1;
         } else {
             attackLevel = -1
-            decayLevel = 1;
+            releaseLevel = 1;
         }
     } else {
         if (invert) {
             attackLevel = 1;
-            decayLevel = 0;
+            releaseLevel = 0;
         } else {
             attackLevel = 0;
-            decayLevel = 1;
+            releaseLevel = 1;
         }
     }
 
-    // Levels for Delay, Attack, Decay and Stop
-    return [attackLevel, attackLevel, decayLevel, decayEnabled ? attackLevel : decayLevel]
+    // Levels for Delay, Attack, Release and Stop
+    return [attackLevel, attackLevel, releaseLevel, releaseEnabled ? attackLevel : releaseLevel]
 }
 
 export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
@@ -61,23 +61,23 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
 
     const delayStage = stages[StageId.DELAY]
     const attackStage = stages[StageId.ATTACK]
-    const decayStage = stages[StageId.DECAY]
+    const releaseStage = stages[StageId.RELEASE]
     const stoppedStage = stages[StageId.STOPPED]
 
     const delayEnabled = delayStage?.enabled === 1
-    const decayEnabled = decayStage?.enabled === 1
+    const releaseEnabled = releaseStage?.enabled === 1
 
     let offsetStage = StageId.ATTACK
     let offsetInStage = 0
 
     if (xOffset !== 0) {
-        if (!decayEnabled) {
+        if (!releaseEnabled) {
             offsetInStage = xOffset
         } else if (xOffset < 0.5) {
             offsetInStage = xOffset * 2
         } else {
             offsetInStage = (xOffset - 0.5) * 2
-            offsetStage = StageId.DECAY
+            offsetStage = StageId.RELEASE
         }
     }
 
@@ -85,14 +85,14 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
     const baseStageWidth = 1 / stageCount
 
     const unscaledLevels = useMemo(
-        () => getUnscaledLevels(bipolar, invert, decayEnabled),
-        [bipolar, invert, decayEnabled]
+        () => getUnscaledLevels(bipolar, invert, releaseEnabled),
+        [bipolar, invert, releaseEnabled]
     )
 
     // Stages used for calculating points on the line
     const contourStages: Stage[] = useMemo(
-        () => [attackStage, decayStage, stoppedStage],
-        [attackStage, decayStage, stoppedStage]
+        () => [attackStage, releaseStage, stoppedStage],
+        [attackStage, releaseStage, stoppedStage]
     )
 
     const pointsPerStage = useMemo(() => contourStages.map((stage) => {
@@ -123,19 +123,19 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
 
         const delayDelta = delayEnabled ? baseStageWidth : 0
 
-        // Attack + Decay always takes up 2  * baseStageWidth even if decay is disabled, to keep
-        // the delay-end-point at the same pos (also, the cycle time stays the same independent of decay enable/disable)
-        const attackDelta = (2 * baseStageWidth / keypoints) * (decayEnabled ? balance : 1)
-        const decayDelta = decayEnabled ? (baseStageWidth / keypoints) * 2 * (1 - balance) : 0
+        // Attack + Release always takes up 2  * baseStageWidth even if release is disabled, to keep
+        // the delay-end-point at the same pos (also, the cycle time stays the same independent of release enable/disable)
+        const attackDelta = (2 * baseStageWidth / keypoints) * (releaseEnabled ? balance : 1)
+        const releaseDelta = releaseEnabled ? (baseStageWidth / keypoints) * 2 * (1 - balance) : 0
 
         let attackValues = pointsPerStage[0]
-        let decayValues = pointsPerStage[1]
+        let releaseValues = pointsPerStage[1]
 
         const sections: { from: number, to: number, id: StageId }[] = []
 
         // Starting point in stage when not starting at beginning
         let phasePointStart = xOffset !== 0 ? Math.floor(keypoints * offsetInStage) : 0
-        if (offsetStage === StageId.DECAY) {
+        if (offsetStage === StageId.RELEASE) {
             phasePointStart += (keypoints + 1)
         }
         const phasePointEnd = (2 * keypoints + 2) + phasePointStart
@@ -157,11 +157,11 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
                 stageId: StageId.ATTACK
             })
         ))
-        cycle.push(...decayValues.map(
+        cycle.push(...releaseValues.map(
             (yValue, index, values) => ({
                 y: yValue,
-                inc: index < values.length - 1 ? decayDelta : 0,
-                stageId: StageId.DECAY
+                inc: index < values.length - 1 ? releaseDelta : 0,
+                stageId: StageId.RELEASE
             })
         ))
 
@@ -208,7 +208,7 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
 
         return [points, sections]
 
-    }, [balance, baseStageWidth, decayEnabled, delayEnabled, offsetInStage, offsetStage, pointsPerStage, xOffset])
+    }, [balance, baseStageWidth, releaseEnabled, delayEnabled, offsetInStage, offsetStage, pointsPerStage, xOffset])
 
     return [points, stageBackgrounds]
 }

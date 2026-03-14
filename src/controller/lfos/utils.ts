@@ -14,7 +14,7 @@ export const getPoints = (
 export const stageNames = {
     [StageId.DELAY]: 'Delay',
     [StageId.ATTACK]: 'Attack',
-    [StageId.DECAY]: 'Decay',
+    [StageId.RELEASE]: 'Release',
     [StageId.STOPPED]: 'Stopped',
 }
 

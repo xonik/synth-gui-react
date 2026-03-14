@@ -227,7 +227,7 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         values: curveValuesUsed,
         legalValueIndexes: [
             StageId.ATTACK,
-            StageId.DECAY,
+            StageId.RELEASE,
         ]
     },
     TOGGLE_STAGE: {
@@ -237,7 +237,7 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         cc: CC.LFO_TOGGLE_STAGE,
         legalValueIndexes: [
             StageId.DELAY,
-            StageId.DECAY,
+            StageId.RELEASE,
         ]
     }, // 4 bit stage, 7 bit on/off
     BALANCE: {

@@ -7,14 +7,14 @@ import { VOICE_GROUPS } from "../../../utils/constants";
 import { getVoiceGroupIndex } from "../voices/currentVoiceGroupIndex"
 
 type CustomParams = {
-    decayEnabled: boolean;
-    decayCurve: number;
+    releaseEnabled: boolean;
+    releaseCurve: number;
     attackCurve: number;
 }
 
 const getDefaultCustomShapeParams = () => ({
-    decayEnabled: true,
-    decayCurve: Curve.LIN,
+    releaseEnabled: true,
+    releaseCurve: Curve.LIN,
     attackCurve: Curve.LIN
 })
 

@@ -45,13 +45,13 @@ const formatRate = (time: number) => {
 }
 
 // TODO: make time calculator elsewhere
-const getTime = (stage: Stage, time: number, balance: number, decayEnabled: boolean) => {
+const getTime = (stage: Stage, time: number, balance: number, releaseEnabled: boolean) => {
     if (stage.id === StageId.DELAY) {
         return stage.time || 0
     } else if (stage.id === StageId.ATTACK) {
-        return decayEnabled ? time * balance : time
-    } else if (stage.id === StageId.DECAY) {
-        return decayEnabled ? time * (1 - balance) : 0
+        return releaseEnabled ? time * balance : time
+    } else if (stage.id === StageId.RELEASE) {
+        return releaseEnabled ? time * (1 - balance) : 0
     }
     return 0
 }
@@ -73,19 +73,19 @@ const LfoParams = ({ lfoId, className, delayLevel }: Props) => {
 
     const delay = stages[StageId.DELAY];
     const attack = stages[StageId.ATTACK];
-    const decay = stages[StageId.DECAY];
+    const release = stages[StageId.RELEASE];
 
     const boundedDelayLevel = Math.round((delayLevel < -1 ? -1 : delayLevel > 1 ? 1 : delayLevel) * 100)
 
     const delayTime = useAppSelector(selectController(lfoCtrls.DELAY, lfoId))
-    const attackTime = getTime(attack, time, balance, !!decay.enabled)
-    const decayTime = getTime(decay, time, balance, !!decay.enabled)
+    const attackTime = getTime(attack, time, balance, !!release.enabled)
+    const releaseTime = getTime(release, time, balance, !!release.enabled)
 
     const attackCurveName = getShortName(lfoCtrls.CURVE, attack.curve)
-    const decayCurveName = decay.enabled ? getShortName(lfoCtrls.CURVE, decay.curve) : '-'
+    const releaseCurveName = release.enabled ? getShortName(lfoCtrls.CURVE, release.curve) : '-'
 
     const attackBalance = Math.round(balance * 100)
-    const decayBalance = Math.round((1 - balance) * 100)
+    const releaseBalance = Math.round((1 - balance) * 100)
 
     return <div className={classNames('lfo-params', className)}>
         <div className="lfo-params__footer__item">
@@ -124,19 +124,19 @@ const LfoParams = ({ lfoId, className, delayLevel }: Props) => {
         <div className="lfo-params__footer__item">
             <div className="lfo-params__footer__item--labels">
                 <div>A:</div>
-                <div>D:</div>
+                <div>R:</div>
             </div>
             <div className="lfo-params__footer__item--values--curve">
                 <div>{attackCurveName}</div>
-                <div>{decay.enabled ? decayCurveName : ''}</div>
+                <div>{release.enabled ? releaseCurveName : ''}</div>
             </div>
             <div className="lfo-params__footer__item--values--stage-percentage">
-                <div>{decay.enabled ? attackBalance : '100'}%</div>
-                <div>{decay.enabled ? `${decayBalance}%` : ''}</div>
+                <div>{release.enabled ? attackBalance : '100'}%</div>
+                <div>{release.enabled ? `${releaseBalance}%` : ''}</div>
             </div>
             <div className="lfo-params__footer__item--values--stage-time">
                 <div>({formatTime(attackTime)})</div>
-                <div>{decay.enabled ? `(${formatTime(decayTime)})` : ''}</div>
+                <div>{release.enabled ? `(${formatTime(releaseTime)})` : ''}</div>
             </div>
         </div>
     </div>

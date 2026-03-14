@@ -110,7 +110,7 @@ const defaultStageConfigs: Stage[] = [
         curve: Curve.LIN,
     },
     {
-        id: StageId.DECAY,
+        id: StageId.RELEASE,
         enabled: 1,
         curve: Curve.LIN,
     },
