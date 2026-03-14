@@ -5,13 +5,13 @@
   justify-content: space-evenly;
   flex-direction: row;
   align-items: center;
-
+  color: $text-mid;
+  font-size: 0.85em;
+  margin-top: 0.5em;
   background-color: $footer-bg-color;
-  color: $footer-color;
-  width: 100%;
+  border-radius: 3px;
   padding-top: 0.33em;
   padding-bottom: 0.33em;
-  margin-top: 0.5em;
 
   &__footer {
 
