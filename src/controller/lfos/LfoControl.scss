@@ -2,23 +2,17 @@
 
 .lfo-ctrl {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   width: 100%;
-  height: 90%;
-
-  &-body {
-    display: flex;
-    justify-content: space-between;
-    flex: 1;
-    min-height: 0;
-  }
+  flex: 1;
+  min-height: 0;
 
   &-stages {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
 
   &-graph {
