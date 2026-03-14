@@ -20,7 +20,6 @@ const StageActivator = ({ envId }: Props) => {
     const stages = useAppSelector(selectEnvStages(envId))
 
     return <div className="stage-activator">
-        <div className="env-ctrl__heading">Active</div>
         {stages.map((stage, index) => {
             if (stage.id === StageId.STOPPED) {
                 return null

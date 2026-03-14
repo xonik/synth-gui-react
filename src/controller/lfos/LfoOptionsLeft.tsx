@@ -41,7 +41,6 @@ const LfoOptionsLeft = ({ lfoId }: Props) => {
     const clickBipolar = click({ ...action, ctrl: lfoCtrls.BIPOLAR })
 
     return <div className="lfo-options">
-        <div className="lfo-ctrl__heading">Params</div>
         <Button active={!!invert} onClick={() => dispatch(clickInvert)}>Invert</Button>
         <Button active={!!bipolar} onClick={() => dispatch(clickBipolar)}>Bipolar</Button>
         <Button active={!!randomPhase} onClick={() => dispatch(clickRandomPhase)}>

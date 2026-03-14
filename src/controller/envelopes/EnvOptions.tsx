@@ -51,7 +51,6 @@ const EnvOptions = ({ envId }: Props) => {
     const curveLabel = hasCurve ? getCurveName(envCtrls.CURVE, curveIndex) : '-'
 
     return <div className="env-options">
-        <div className="env-ctrl__heading">Envelope {envId + 1}</div>
         <div className="env-ctrl__heading">{curveLabel}</div>
         <Button active={!!invert} onClick={() => dispatch(clickInvert)}>Invert</Button>
         <Button active={!!retrigger} onClick={() => dispatch(clickRetrigger)}>Retrigger</Button>

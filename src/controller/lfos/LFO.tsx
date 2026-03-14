@@ -2,9 +2,9 @@ import React from 'react'
 import LfoControl from './LfoControl'
 import LfoPotLabels from './LfoPotLabels'
 
-const Mod = () => <>
+const Lfo = () => <>
     <LfoControl/>
     <LfoPotLabels/>
 </>
 
-export default Mod
+export default Lfo

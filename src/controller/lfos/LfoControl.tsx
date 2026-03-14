@@ -5,8 +5,8 @@ import { selectCurrGuiLfoId } from '../../synthcore/modules/lfo/lfoReducer'
 import StageActivator from './StageActivator'
 import LfoOptionsLeft from './LfoOptionsLeft'
 import LfoParams from './LfoParams'
-import StageNames from './StageNames'
 import LfoOptionsRight from './LfoOptionsRight'
+import LfoHeader from './LfoHeader'
 import { useCurve } from './curveCalculator'
 import './LfoControl.scss'
 
@@ -17,19 +17,21 @@ const LfoControl = () => {
     const [points, stageBackgrounds] = useCurve(lfoId)
 
     return <div className="lfo-ctrl">
-        <LfoOptionsLeft lfoId={lfoId}/>
-        <div className="lfo-ctrl-stages">
-            <StageNames lfoId={lfoId}/>
-            <div className="lfo-ctrl-graph">
-                <svg viewBox={`0 0 1 1`} preserveAspectRatio="none" className="lfo-ctrl-graph-svg">
-                    <Stages lfoId={lfoId} points={points} stageBackgrounds={stageBackgrounds}/>
-                </svg>
+        <LfoHeader lfoId={lfoId}/>
+        <div className="lfo-ctrl-body">
+            <LfoOptionsLeft lfoId={lfoId}/>
+            <div className="lfo-ctrl-stages">
+                <div className="lfo-ctrl-graph">
+                    <svg viewBox={`0 0 1 1`} preserveAspectRatio="none" className="lfo-ctrl-graph-svg">
+                        <Stages lfoId={lfoId} points={points} stageBackgrounds={stageBackgrounds}/>
+                    </svg>
+                </div>
+                <LfoParams lfoId={lfoId} delayLevel={points[0].y}/>
             </div>
-            <LfoParams lfoId={lfoId} delayLevel={points[0].y}/>
-        </div>
-        <div>
-            <StageActivator lfoId={lfoId}/>
-            <LfoOptionsRight lfoId={lfoId}/>
+            <div>
+                <StageActivator lfoId={lfoId}/>
+                <LfoOptionsRight lfoId={lfoId}/>
+            </div>
         </div>
 
     </div>

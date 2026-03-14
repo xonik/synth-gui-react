@@ -20,7 +20,6 @@ const StageActivator = ({ lfoId }: Props) => {
     const stages = useAppSelector(selectLfoStages(lfoId))
 
     return <div className="stage-activator">
-        <div className ="lfo-ctrl__heading">Active</div>
         {stages.map((stage, index) => {
             if (stage.id === StageId.STOPPED) {
                 return null

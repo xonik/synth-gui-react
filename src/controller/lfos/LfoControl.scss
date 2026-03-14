@@ -2,21 +2,28 @@
 
 .lfo-ctrl {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   width: 100%;
   height: 90%;
 
+  &-body {
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+    min-height: 0;
+  }
+
   &-stages {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
     padding-left: 0.5em;
     padding-right: 0.5em;
-    flex-grow: 1;
-    display:flex;
-    flex-direction: column;
   }
 
   &-graph {
-    height: 70%;
-    flex-grow: 1;
+    flex: 1;
+    min-height: 0;
     background: $bg-dark;
     border-radius: 4px;
     border: 1px solid $bg-highlight;
@@ -31,15 +38,16 @@
     background-color: $heading-bg-color;
     color: $heading-color;
     display: flex;
+    align-items: center;
     justify-content: center;
     width: 100%;
-    padding-top: 0.33em;
-    padding-bottom: 0.33em;
-    margin-bottom: 0.5em;
-    font-size: 0.85em;
+    height: 1.5rem;
+    font-size: 0.85rem;
     font-weight: 500;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    border-radius: 3px;
+    border-radius: 0;
+    margin-bottom: 0.5em;
+    padding: 0;
   }
 }
