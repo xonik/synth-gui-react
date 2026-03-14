@@ -24,7 +24,7 @@ const LfoControl = () => {
             </div>
             <LfoParams lfoId={lfoId} delayLevel={points[0].y}/>
         </div>
-        <div>
+        <div className="ctrl-right-panel">
             <StageActivator lfoId={lfoId}/>
             <LfoOptionsRight lfoId={lfoId}/>
         </div>

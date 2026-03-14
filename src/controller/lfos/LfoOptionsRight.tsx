@@ -34,8 +34,8 @@ const LfoOptionsRight = ({ lfoId }: Props) => {
     const clickLoopMode = click({ ...action, ctrl: lfoCtrls.LOOP_MODE })
     const clickLoopEnabled = click({ ...action, ctrl: lfoCtrls.LOOP })
 
-    return <div className="ctrl-options">
-        <div className="ctrl-heading">Looping</div>
+    return <div className="ctrl-activator">
+        <div className="ctrl-heading ctrl-heading--separator">Looping</div>
         <Button active={!!loopEnabled} onClick={() => dispatch(clickLoopEnabled)}>
             Loop
         </Button>
