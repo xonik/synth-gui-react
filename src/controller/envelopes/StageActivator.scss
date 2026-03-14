@@ -2,11 +2,11 @@
   display: flex;
   align-items: stretch;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   width:6em;
 
   .gui-ctrl-button {
-    height: 100%;
+    flex: 1;
     margin-bottom: 0.25em;
   }
 }

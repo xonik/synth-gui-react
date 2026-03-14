@@ -25,7 +25,6 @@ const EnvelopeControl = () => {
             <StageParams envId={envId}/>
         </div>
         <StageActivator envId={envId}/>
-
     </div>
 }
 

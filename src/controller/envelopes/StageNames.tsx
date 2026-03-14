@@ -16,7 +16,7 @@ const StageNames = ({ envId, className }: Props) => {
     const stages = useAppSelector(selectEnvStages(envId))
     return <div className={classNames('stage-names', className)}>
         {stages.filter((stage) => stage.enabled && stage.id !== StageId.STOPPED).map((stage) => {
-            return <div key={stage.id} className="env-ctrl__heading">
+            return <div key={stage.id} className="stage-names__label">
                 {stageNames[stage.id]}
             </div>
         })}
