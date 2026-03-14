@@ -404,11 +404,6 @@ export const RoundButtonBase = (props: Props & Config) => {
         }
     }
 
-    console.log({
-        label,
-        ledButtonStyle,
-    })
-
     return (
         <svg x={x} y={y} className="button">
             {buttonMode === 'push'

@@ -1,3 +1,5 @@
+@import '../constants';
+
 .mod-ctrl {
   overflow: hidden;
   display: flex;
@@ -11,23 +13,23 @@
   $dst-width: 5rem;
   $dst-padding-lr: 0.25rem;
 
-  $amount-text-color: white;
-  $amount-background-color: #1f1f1f;
+  $amount-text-color: $text-bright;
+  $amount-background-color: $bg-darkest;
 
-  $label-color: white;
-  $label-background: #333;
-  $label-background-selected: #ddd;
-  $label-color-selected: #333;
-  $label-group-color: white;
-  $label-group-background: #333;
+  $label-color: $text-mid;
+  $label-background: $bg-mid;
+  $label-background-selected: $accent-primary;
+  $label-color-selected: $bg-darkest;
+  $label-group-color: $text-dim;
+  $label-group-background: $bg-dark;
   $cell-border-width: 1px;
 
-  $cell-border-color: #353535;
-  $label-cell-border-color: #222;
+  $cell-border-color: $bg-mid;
+  $label-cell-border-color: $bg-dark;
 
-  $highlit-border-color: #ccc;
-  $highlit-row-col-color: #505050;
-  $highlit-cell-color: #666;
+  $highlit-border-color: $accent-primary-dim;
+  $highlit-row-col-color: $bg-light;
+  $highlit-cell-color: $bg-highlight;
 
   &__header {
     display: flex;
@@ -41,7 +43,7 @@
       flex: 0 0 $sources-column-width;
       justify-content: center;
       align-items: center;
-      color: white;
+      color: $text-mid;
       background-color: $label-background;
       z-index: 3;
       border-right: $cell-border-width solid $label-cell-border-color;

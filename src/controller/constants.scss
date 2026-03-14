@@ -1,14 +1,49 @@
-$heading-bg-color: #333;
-$heading-color: white;
+// ── Waldorf Iridium / Quantum inspired palette ──
+// Deep dark backgrounds with vibrant teal/cyan accents
 
-$font-color: white;
+// Background tones
+$bg-darkest: #0a0e14;
+$bg-dark: #111820;
+$bg-mid: #1a2230;
+$bg-light: #243040;
+$bg-highlight: #2e3d50;
 
-$footer-bg-color: #333;
-$footer-color: white;
+// Accent colors
+$accent-primary: #00d4aa;       // Teal/cyan – main accent
+$accent-primary-dim: #00a080;   // Dimmed teal
+$accent-secondary: #00b4d8;     // Brighter cyan
+$accent-warm: #f0a030;          // Warm orange for selected/active
+$accent-warm-dim: #c07820;      // Dimmed orange
+$accent-danger: #e05050;        // Red for negative/warnings
 
+// Text colors
+$text-bright: #e8ecf0;
+$text-mid: #a0aab4;
+$text-dim: #506070;
+
+// Heading / footer
+$heading-bg-color: $bg-mid;
+$heading-color: $accent-primary;
+
+$font-color: $text-bright;
+
+$footer-bg-color: $bg-mid;
+$footer-color: $text-mid;
+
+// Buttons
 $button-bg-color: transparent;
-$button-color: #ddd;
-$button-disabled-color: #666;
-$button-active-color: #333;
-$button-active-bg-color: #ddd;
-$button-border-color: #444;
+$button-color: $text-mid;
+$button-disabled-color: $text-dim;
+$button-active-color: $bg-darkest;
+$button-active-bg-color: $accent-primary;
+$button-border-color: $bg-highlight;
+
+// Graph / curve colors
+$graph-line-color: $accent-primary;
+$graph-line-selected: $accent-warm;
+$graph-grid-color: rgba($accent-primary, 0.15);
+$graph-selection-bg: rgba($accent-primary, 0.12);
+
+// Mod matrix
+$mod-amount-positive: $accent-primary;
+$mod-amount-negative: $accent-danger;

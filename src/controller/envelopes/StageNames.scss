@@ -1,5 +1,11 @@
+@import '../constants';
+
 .stage-names {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
+  color: $text-dim;
+  font-size: 0.8em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }

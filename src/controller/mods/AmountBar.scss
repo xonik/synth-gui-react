@@ -1,7 +1,9 @@
+@import '../constants';
+
 .amount-bar {
 
-  $pos-amt-color: green;
-  $neg-amt-color: red;
+  $pos-amt-color: $accent-primary;
+  $neg-amt-color: $accent-danger;
   $amt-bar-height: 0.25rem;
 
   display: flex;

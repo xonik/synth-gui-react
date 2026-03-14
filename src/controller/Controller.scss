@@ -1,7 +1,12 @@
+@import './constants';
+
 .controller {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background-color: $bg-darkest;
+  color: $text-bright;
+  font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
 
   &-buttons {
     height: 10%;

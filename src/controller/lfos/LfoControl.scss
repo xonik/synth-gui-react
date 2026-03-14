@@ -17,6 +17,9 @@
   &-graph {
     height: 70%;
     flex-grow: 1;
+    background: $bg-dark;
+    border-radius: 4px;
+    border: 1px solid $bg-highlight;
 
     &-svg {
       height: 100%;
@@ -33,5 +36,10 @@
     padding-top: 0.33em;
     padding-bottom: 0.33em;
     margin-bottom: 0.5em;
+    font-size: 0.85em;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: 3px;
   }
 }

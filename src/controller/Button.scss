@@ -1,39 +1,49 @@
 @import './constants';
 
-// TODO: Change !active style to something that lets the user think it's clickable
 .gui-ctrl-button {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 0.1em solid $button-border-color;
+  border: 1px solid $button-border-color;
+  border-radius: 4px;
   padding: 0.25em;
   color: $button-color;
   background-color: $button-bg-color;
+  font-size: 0.85em;
+  letter-spacing: 0.03em;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s;
 
   &--active {
-    background-color: $button-active-bg-color;
-    color: $button-active-color;
+    background-color: $accent-primary;
+    color: $bg-darkest;
+    border-color: $accent-primary;
+    box-shadow: 0 0 6px rgba($accent-primary, 0.35);
 
     &:hover {
-      background: #4fd1c5;
-      color: #23272a;
+      background: $accent-primary-dim;
+      color: $bg-darkest;
+      border-color: $accent-primary-dim;
     }
   }
 
   &--disabled {
     background-color: $button-bg-color;
     color: $button-disabled-color;
+    border-color: $bg-mid;
+    cursor: default;
   }
 
   &:hover {
-    border-color: #4fd1c5;
+    border-color: $accent-primary-dim;
+    color: $text-bright;
   }
 
   &:active {
-    background: #79f6e9;
-    color: #23272a;
-    border-color: #79f6e9;
+    background: $accent-primary;
+    color: $bg-darkest;
+    border-color: $accent-primary;
+    box-shadow: 0 0 10px rgba($accent-primary, 0.5);
   }
 
 }
