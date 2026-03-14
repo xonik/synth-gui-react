@@ -64,7 +64,7 @@ const LfoParams = ({ lfoId, className, delayLevel }: Props) => {
 
     const time = useAppSelector(selectController(lfoCtrls.RATE, lfoId))
     let timeFormatted = loopOn ? formatRate(time) : formatTime(time)
-    let timeLabelFormatted = loopOn ? 'F:' : 'T:'
+    let timeLabelFormatted = loopOn ? 'Freq:' : 'Time:'
 
     const balance = useAppSelector(selectController(lfoCtrls.BALANCE, lfoId))
     const levelOffset = useAppSelector(selectController(lfoCtrls.LEVEL_OFFSET, lfoId))
@@ -91,7 +91,7 @@ const LfoParams = ({ lfoId, className, delayLevel }: Props) => {
         <div className="lfo-params__footer__item">
             <div className="lfo-params__footer__item--labels">
                 <div>{timeLabelFormatted}</div>
-                <div>L:</div>
+                <div>Level:</div>
             </div>
             <div className="lfo-params__footer__item--values--time">
                 <div>{timeFormatted}</div>

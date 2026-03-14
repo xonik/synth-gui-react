@@ -23,23 +23,16 @@
         visibility: hidden;
       }
 
-      &--labels {
-        div {
-          //margin-left: 0.25rem;
-          //margin-right: 0.25rem;
-        }
-      }
-
       &--values {
         &--curve {
-          width: 45px;
+          width: 40px;
           margin-right: 0.25rem;
           div {
             text-align: end;
           }
         }
         &--stage-percentage {
-          width: 45px;
+          width: 40px;
           div {
             text-align: end;
           }
@@ -54,7 +47,7 @@
           border-right: 1px solid white;
         }
         &--stage-time {
-          width: 58px;
+          width: 40px;
           div {
             text-align: end;
           }
