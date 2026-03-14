@@ -1,5 +1,7 @@
 @import '../constants';
 
+// Shared footer styles are in controller/_shared.scss (ctrl-footer)
+
 .stage-params {
   display: flex;
   color: $text-mid;
@@ -7,3 +9,5 @@
   align-items: center;
   font-size: 0.85em;
 }
+
+

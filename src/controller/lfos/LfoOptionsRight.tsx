@@ -7,7 +7,6 @@ import { click } from '../../synthcore/modules/ui/uiReducer'
 import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { selectController } from '../../synthcore/modules/controllers/controllersReducer'
-import './LfoOptions.scss'
 
 interface Props {
     lfoId: number
@@ -35,8 +34,8 @@ const LfoOptionsRight = ({ lfoId }: Props) => {
     const clickLoopMode = click({ ...action, ctrl: lfoCtrls.LOOP_MODE })
     const clickLoopEnabled = click({ ...action, ctrl: lfoCtrls.LOOP })
 
-    return <div className="lfo-options">
-        <div className="lfo-ctrl__heading">Looping</div>
+    return <div className="ctrl-options">
+        <div className="ctrl-heading">Looping</div>
         <Button active={!!loopEnabled} onClick={() => dispatch(clickLoopEnabled)}>
             Loop
         </Button>

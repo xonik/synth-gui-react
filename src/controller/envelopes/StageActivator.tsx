@@ -3,7 +3,6 @@ import { StageId } from '../../synthcore/modules/env/types'
 import Button from '../Button'
 import { stageNames } from './utils'
 import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
-import './StageActivator.scss'
 import { click } from '../../synthcore/modules/ui/uiReducer'
 import { envCtrls } from '../../synthcore/modules/env/envControllers'
 import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
@@ -19,7 +18,7 @@ const StageActivator = ({ envId }: Props) => {
     const dispatch = useAppDispatch()
     const stages = useAppSelector(selectEnvStages(envId))
 
-    return <div className="stage-activator">
+    return <div className="ctrl-activator">
         {stages.map((stage, index) => {
             if (stage.id === StageId.STOPPED) {
                 return null

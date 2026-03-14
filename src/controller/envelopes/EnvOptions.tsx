@@ -6,7 +6,6 @@ import {
     selectCurrStageId,
 } from '../../synthcore/modules/env/envReducer'
 import { loopModeNames, releaseModeNames } from './utils'
-import './EnvOptions.scss'
 import { click } from '../../synthcore/modules/ui/uiReducer'
 import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 import { envCtrls } from '../../synthcore/modules/env/envControllers'
@@ -50,8 +49,8 @@ const EnvOptions = ({ envId }: Props) => {
     const curveIndex = useAppSelector(selectEnvStageById(envId, currStageId)).curve
     const curveLabel = hasCurve ? getCurveName(envCtrls.CURVE, curveIndex) : '-'
 
-    return <div className="env-options">
-        <div className="env-ctrl__heading">{curveLabel}</div>
+    return <div className="ctrl-options">
+        <div className="ctrl-heading">{curveLabel}</div>
         <Button active={!!invert} onClick={() => dispatch(clickInvert)}>Invert</Button>
         <Button active={!!retrigger} onClick={() => dispatch(clickRetrigger)}>Retrigger</Button>
         <Button active={releaseMode !== ReleaseMode.NORMAL} onClick={() => dispatch(clickReleaseMode)}>
