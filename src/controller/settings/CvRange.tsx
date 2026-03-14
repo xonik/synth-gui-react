@@ -8,7 +8,7 @@ import { curveValuesUsed } from './generatedTypes'
 import { sharedConfig } from "../../sharedConfig";
 import './CvRange.scss'
 import '../lfos/StagesCurve.scss'
-import '../lfos/Stages.scss'
+import '../_shared.scss'
 
 import { Curve } from '../../synthcore/generatedTypes'
 

@@ -7,7 +7,6 @@ import {
 } from '../../synthcore/modules/env/envReducer'
 import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import classNames from 'classnames'
-import './Stages.scss'
 import { envCtrls } from '../../synthcore/modules/env/envControllers'
 import { selectController, selectEnvStages } from '../../synthcore/modules/controllers/controllersReducer'
 

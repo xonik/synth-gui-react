@@ -136,13 +136,16 @@
 .ctrl-options {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   width: 6.5rem;
 
   .gui-ctrl-button {
     text-align: center;
     flex: 1;
     margin-bottom: 0.25em;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 }
 
@@ -152,12 +155,32 @@
   display: flex;
   align-items: stretch;
   flex-direction: column;
-  justify-content: flex-start;
   width: 6.5rem;
 
   .gui-ctrl-button {
     flex: 1;
     margin-bottom: 0.25em;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 }
 
+// ── Graph stage overlays ──
+
+.stages {
+  &-center-line,
+  &-divider {
+    stroke-width: 0.0625em;
+    stroke-dasharray: 0.2em 0.2em;
+    stroke: $bg-highlight;
+    vector-effect: non-scaling-stroke;
+  }
+  &-background {
+    fill: transparent;
+    &--selected {
+      fill: $graph-selection-bg;
+    }
+  }
+}
