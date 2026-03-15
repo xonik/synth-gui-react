@@ -1,6 +1,5 @@
 import React from 'react'
 import { Stage, StageId } from '../../synthcore/modules/lfo/types'
-import classNames from 'classnames'
 import { useAppSelector } from '../../synthcore/hooks'
 import {
     selectController,
@@ -9,11 +8,10 @@ import {
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { LFO_SEC_PER_UNIT } from '../../utils/constants'
 import { getShortName } from '../../components/curves/shortCurveNames'
+import { Params } from '../components/Params.tsx'
 import './LfoParams.scss'
-import '../components/Params.scss'
 
 interface Props {
-    className?: string
     lfoId: number
     delayLevel: number
 }
@@ -58,7 +56,7 @@ const getTime = (stage: Stage, time: number, balance: number, releaseEnabled: bo
 }
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
-const LfoParams = ({ lfoId, className, delayLevel }: Props) => {
+const LfoParams = ({ lfoId, delayLevel }: Props) => {
 
     const stages = useAppSelector(selectLfoStages(lfoId))
     const loopOn = useAppSelector(selectController(lfoCtrls.LOOP, lfoId)) === 1
@@ -88,7 +86,7 @@ const LfoParams = ({ lfoId, className, delayLevel }: Props) => {
     const attackBalance = Math.round(balance * 100)
     const releaseBalance = Math.round((1 - balance) * 100)
 
-    return <div className={classNames('params', className)}>
+    return <Params>
         <div className="lfo-params__item">
             <div className="lfo-params__item--labels">
                 <div>{timeLabelFormatted}</div>
@@ -140,7 +138,7 @@ const LfoParams = ({ lfoId, className, delayLevel }: Props) => {
                 <div>{release.enabled ? `(${formatTime(releaseTime)})` : ''}</div>
             </div>
         </div>
-    </div>
+    </Params>
 }
 
 export default LfoParams
