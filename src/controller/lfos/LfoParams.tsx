@@ -8,7 +8,7 @@ import {
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { LFO_SEC_PER_UNIT } from '../../utils/constants'
 import { getShortName } from '../../components/curves/shortCurveNames'
-import { Params } from '../components/Params.tsx'
+import { Params } from '../components/Params'
 import './LfoParams.scss'
 
 interface Props {

@@ -17,7 +17,7 @@ const EnvHeader = () => {
     return <CtrlHeader
         leftOptionsLabel={`Envelope ${envId + 1}`}
         centerLabels={centerLabels}
-        rightOptionsLabel="Stages" stages={stages}/>
+        rightOptionsLabel="Stages"/>
 }
 
 export default EnvHeader
