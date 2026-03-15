@@ -11,7 +11,7 @@ import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 import { envCtrls } from '../../synthcore/modules/env/envControllers'
 import { selectController, selectEnvStageById } from '../../synthcore/modules/controllers/controllersReducer'
 import { getCurveName } from '../../components/curves/shortCurveNames'
-import OptionsHeading from '../components/OptionsHeading'
+import { CtrlOptions } from "@/controller/components/CtrlOptions";
 
 interface Props {
     envId: number
@@ -50,8 +50,7 @@ const EnvOptionsLeft = ({ envId }: Props) => {
     const curveIndex = useAppSelector(selectEnvStageById(envId, currStageId)).curve
     const curveLabel = hasCurve ? getCurveName(envCtrls.CURVE, curveIndex) : '-'
 
-    return <div className="ctrl-options">
-        <OptionsHeading>{curveLabel}</OptionsHeading>
+    return <CtrlOptions heading={curveLabel}>
         <Button active={!!invert} onClick={() => dispatch(clickInvert)}>Invert</Button>
         <Button active={!!retrigger} onClick={() => dispatch(clickRetrigger)}>Retrigger</Button>
         <Button active={releaseMode !== ReleaseMode.NORMAL} onClick={() => dispatch(clickReleaseMode)}>
@@ -63,8 +62,7 @@ const EnvOptionsLeft = ({ envId }: Props) => {
         <Button active={!!loopEnabled} onClick={() => dispatch(clickLoopEnabled)}>
             Loop
         </Button>
-
-    </div>
+    </CtrlOptions>
 }
 
 export default EnvOptionsLeft

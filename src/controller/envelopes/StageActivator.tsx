@@ -7,7 +7,7 @@ import { click } from '../../synthcore/modules/ui/uiReducer'
 import { envCtrls } from '../../synthcore/modules/env/envControllers'
 import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 import { selectEnvStages } from '../../synthcore/modules/controllers/controllersReducer'
-import '../components/CtrlOptions.scss'
+import { CtrlOptions } from "@/controller/components/CtrlOptions";
 
 interface Props {
     envId: number
@@ -19,7 +19,7 @@ const StageActivator = ({ envId }: Props) => {
     const dispatch = useAppDispatch()
     const stages = useAppSelector(selectEnvStages(envId))
 
-    return <div className="ctrl-options">
+    return <CtrlOptions>
         {stages.map((stage, index) => {
             if (stage.id === StageId.STOPPED) {
                 return null
@@ -36,7 +36,7 @@ const StageActivator = ({ envId }: Props) => {
                 }))}
             >{stageNames[stage.id]}</Button>
         })}
-    </div>
+    </CtrlOptions>
 }
 
 export default StageActivator

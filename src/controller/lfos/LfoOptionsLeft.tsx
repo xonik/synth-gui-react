@@ -5,7 +5,7 @@ import { click } from '../../synthcore/modules/ui/uiReducer'
 import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { selectController } from '../../synthcore/modules/controllers/controllersReducer'
-import '../components/CtrlOptions.scss'
+import { CtrlOptions } from '../components/CtrlOptions'
 
 interface Props {
     lfoId: number
@@ -40,7 +40,7 @@ const LfoOptionsLeft = ({ lfoId }: Props) => {
     const clickSyncToClock = click({ ...action, ctrl: lfoCtrls.SYNC_TO_CLOCK })
     const clickBipolar = click({ ...action, ctrl: lfoCtrls.BIPOLAR })
 
-    return <div className="ctrl-options">
+    return <CtrlOptions>
         <Button active={!!invert} onClick={() => dispatch(clickInvert)}>Invert</Button>
         <Button active={!!bipolar} onClick={() => dispatch(clickBipolar)}>Bipolar</Button>
         <Button active={!!randomPhase} onClick={() => dispatch(clickRandomPhase)}>
@@ -51,7 +51,7 @@ const LfoOptionsLeft = ({ lfoId }: Props) => {
         <Button active={!!resetLevelOnClock} onClick={() => dispatch(clickResetLevelOnClock)}>Reset on
             clock</Button>
         <Button active={!!resetOnStop} onClick={() => dispatch(clickResetOnStop)}>Reset on stop</Button>
-    </div>
+    </CtrlOptions>
 }
 
 export default LfoOptionsLeft

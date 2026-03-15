@@ -8,6 +8,7 @@ import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 import { selectLfoStages } from '../../synthcore/modules/controllers/controllersReducer'
 import '../components/CtrlOptions.scss'
+import { CtrlOptions } from "@/controller/components/CtrlOptions";
 
 interface Props {
     lfoId: number
@@ -19,7 +20,7 @@ const StageActivator = ({ lfoId }: Props) => {
     const dispatch = useAppDispatch()
     const stages = useAppSelector(selectLfoStages(lfoId))
 
-    return <div className="ctrl-options">
+    return <CtrlOptions>
         {stages.map((stage, index) => {
             if (stage.id === StageId.STOPPED) {
                 return null
@@ -36,7 +37,7 @@ const StageActivator = ({ lfoId }: Props) => {
                 }))}
             >{stageNames[stage.id]}</Button>
         })}
-    </div>
+    </CtrlOptions>
 }
 
 export default StageActivator

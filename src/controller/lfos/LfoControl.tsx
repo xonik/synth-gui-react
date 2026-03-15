@@ -28,7 +28,6 @@ const LfoControl = () => {
             <StageActivator lfoId={lfoId}/>
             <LfoOptionsRight lfoId={lfoId}/>
         </div>
-
     </div>
 }
 
