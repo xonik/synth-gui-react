@@ -32,11 +32,6 @@
   }
 }
 
-// ── Heading row (inline heading inside a control) ──
-
-
-// ── Right panel (stacked activator + options) ──
-
 .ctrl-right-panel {
   display: flex;
   flex-direction: column;
@@ -49,24 +44,3 @@
   }
 }
 
-// ── Full-width header bar ──
-// Used by EnvHeader and LfoHeader
-
-
-// ── Graph stage overlays ──
-
-.stages {
-  &-center-line,
-  &-divider {
-    stroke-width: 0.0625em;
-    stroke-dasharray: 0.2em 0.2em;
-    stroke: $bg-highlight;
-    vector-effect: non-scaling-stroke;
-  }
-  &-background {
-    fill: transparent;
-    &--selected {
-      fill: $graph-selection-bg;
-    }
-  }
-}

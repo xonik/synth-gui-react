@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import classNames from 'classnames'
 import { envCtrls } from '../../synthcore/modules/env/envControllers'
 import { selectController, selectEnvStages } from '../../synthcore/modules/controllers/controllersReducer'
+import '../components/Stages.scss'
 
 interface Props {
     envId: number

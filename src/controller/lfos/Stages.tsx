@@ -6,6 +6,7 @@ import { dispatch } from '../../synthcore/utils'
 import { StageBackground } from './curveCalculator'
 import { Point } from '../../utils/types'
 import { useAppSelector } from '../../synthcore/hooks'
+import '../components/Stages.scss'
 
 interface Props {
     lfoId: number
