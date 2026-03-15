@@ -30,7 +30,7 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
 
     return <>
         <ModuleBorder x={x} y={y} height={height} width={width} className="audio-elements-border"/>
-        <SubHeader label="LFP" x={x} y={y} width={width} labelPosition="center" className="lpf-header-border" labelWidth={15}/>
+        <SubHeader label="LPF" x={x} y={y} width={width} labelPosition="center" className="lpf-header-border" labelWidth={15}/>
 
         <RotaryPot21 x={col3} y={centerRow} ledMode="single" label="Cutoff"
                      ctrlGroup={ctrlGroup}
