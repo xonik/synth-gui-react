@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
-import { StageId, Stage } from '../../synthcore/modules/env/types'
-import StageBlock from './StageBlock'
+import { StageId } from '../../synthcore/modules/env/types'
+import EnvCurve from './EnvCurve'
 import {
     selectCurrStageId,
     toggleStageSelected,
@@ -8,44 +8,28 @@ import {
 import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import classNames from 'classnames'
 import { envCtrls } from '../../synthcore/modules/env/envControllers'
-import { selectController, selectEnvStages } from '../../synthcore/modules/controllers/controllersReducer'
+import { selectController } from '../../synthcore/modules/controllers/controllersReducer'
+import { StageBackground } from './curveCalculator'
+import { Point } from '../../utils/types'
 import '../components/Stages.scss'
 
 interface Props {
     envId: number
-}
-
-const getNextEnabled = (stages: Stage[], currentId: StageId) => {
-    for (let i = currentId + 1; i < stages.length; i++) {
-        const stage = stages[i]
-        if (stage.enabled) {
-            return stage
-        }
-    }
-    return stages[StageId.STOPPED]
+    points: Point[]
+    stageBackgrounds: StageBackground[]
 }
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
-const Stages = ({ envId }: Props) => {
+const Stages = ({ envId, points, stageBackgrounds }: Props) => {
 
-    const stages = useAppSelector(selectEnvStages(envId))
     const bipolar = useAppSelector(selectController(envCtrls.BIPOLAR, envId))
-    const offset = useAppSelector(selectController(envCtrls.OFFSET, envId))
-    const dispatch = useAppDispatch();
-    const select = useAppSelector;
-    const enabledStages = stages.filter((stage) => stage.enabled)
-    const stageCount = enabledStages.length - 1 // -1 because stopped is hidden.
-    const stageWidth = 1 / stageCount
+    const dispatch = useAppDispatch()
+    const currStageId = useAppSelector(selectCurrStageId)
     const graphCenter = bipolar ? 1 / 2 : 1
-
-    let startX = 0
-
-    const currStageId = select(selectCurrStageId);
 
     const onSvgClicked = useCallback((stageId: number) => {
         dispatch(toggleStageSelected({ voiceGroupIndex: -1, env: envId, stage: stageId }))
     }, [envId, dispatch])
-
 
     return <svg x={0} y={0}>
         {
@@ -56,48 +40,26 @@ const Stages = ({ envId }: Props) => {
             />
         }
         {
-            stages.map((stage, index) => {
-                if (stage.id === StageId.STOPPED) {
-                    return null
-                }
-                const nextStage = getNextEnabled(stages, stage.id)
-                const isLast = index === stages.length - 2
-                const enabled = stage.enabled
-                const content = <React.Fragment key={stage.id}>
-                    {enabled &&
-                        <>
-                            <rect x={startX} y={0} width={stageWidth} height={1} onClick={() => onSvgClicked(stage.id)}
-                                  className={classNames('stages-background', { 'stages-background--selected': currStageId === stage.id })}
-
-                            />
-                            <line
-                                x1={startX} y1={0}
-                                x2={startX} y2={1}
-                                className={'stages-divider'}
-                            />
-                        </>}
+            stageBackgrounds.map(({ from, to, id }, index) => {
+                const isLast = index === stageBackgrounds.length - 1
+                return <React.Fragment key={`stage${index}`}>
+                    <rect x={from} y={0} width={to - from} height={1} onClick={() => onSvgClicked(id)}
+                          className={classNames('stages-background', { 'stages-background--selected': currStageId === id })}
+                    />
+                    <line
+                        x1={from} y1={0}
+                        x2={from} y2={1}
+                        className={'stages-divider'}
+                    />
                     {isLast && <line
-                        x1={startX + stageWidth} y1={0}
-                        x2={startX + stageWidth} y2={1}
+                        x1={to} y1={0}
+                        x2={to} y2={1}
                         className={'stages-divider'}
                     />}
-                    <StageBlock
-                        x={startX}
-                        y={0}
-                        width={stageWidth}
-                        height={1}
-                        stage={stage}
-                        nextStage={nextStage}
-                        isBipolar={bipolar === 1}
-                        offset={offset}
-                    />
                 </React.Fragment>
-                if (enabled) {
-                    startX += stageWidth
-                }
-                return content
             })
         }
+        <EnvCurve points={points}/>
     </svg>
 }
 

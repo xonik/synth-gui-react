@@ -5,19 +5,21 @@ import { selectCurrEnvId } from '../../synthcore/modules/env/envReducer'
 import StageActivator from './StageActivator'
 import EnvOptionsLeft from './EnvOptionsLeft'
 import StageParams from './StageParams'
+import { useEnvCurve } from './curveCalculator'
 import '../components/Ctrl.scss'
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
 const EnvelopeControl = () => {
 
     const envId = useAppSelector(selectCurrEnvId)
+    const [points, stageBackgrounds] = useEnvCurve(envId)
 
     return <div className="ctrl-layout">
         <EnvOptionsLeft envId={envId}/>
         <div className="ctrl-stages">
             <div className="ctrl-graph">
                 <svg viewBox={`0 0 1 1`} preserveAspectRatio="none" className="ctrl-graph-svg">
-                    <Stages envId={envId}/>
+                    <Stages envId={envId} points={points} stageBackgrounds={stageBackgrounds}/>
                 </svg>
             </div>
             <StageParams envId={envId}/>

@@ -21,11 +21,9 @@ const AnimatedCurve = ({ x, y, width, height, points, className }: Props) => {
 
     const pointsString = useMemo(() => getPointsString(points), [points]);
 
-    const [{ animatedPoints }, setCurve] = useSpring(() => ({
-        from: {animatedPoints: pointsString},
-    }));
-
-    setCurve({animatedPoints: pointsString})
+    const { animatedPoints } = useSpring({
+        animatedPoints: pointsString,
+    });
 
 
     // We use a viewBox of 0,0, 1,1 to make the svg unit size. We can then use width and height to scale it
