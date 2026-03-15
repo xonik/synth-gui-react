@@ -1,0 +1,15 @@
+@import '../constants';
+
+.params {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row;
+  color: $text-mid;
+  align-items: center;
+  font-size: 0.75rem;
+  margin-top: 0.5em;
+  background-color: $footer-bg-color;
+  border-radius: 3px;
+  padding-top: 0.33em;
+  padding-bottom: 0.33em;
+}

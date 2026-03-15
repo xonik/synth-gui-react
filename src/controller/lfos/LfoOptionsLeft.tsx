@@ -5,6 +5,7 @@ import { click } from '../../synthcore/modules/ui/uiReducer'
 import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { selectController } from '../../synthcore/modules/controllers/controllersReducer'
+import '../components/CtrlOptions.scss'
 
 interface Props {
     lfoId: number

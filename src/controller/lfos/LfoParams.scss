@@ -1,70 +1,68 @@
 @import '../constants';
 
 .lfo-params {
-  display: flex;
-  justify-content: space-evenly;
-  flex-direction: row;
-  align-items: center;
-  color: $text-mid;
-  font-size: 0.75rem;
-  margin-top: 0.5em;
-  background-color: $footer-bg-color;
-  border-radius: 3px;
-  padding-top: 0.33em;
-  padding-bottom: 0.33em;
+  &__item {
+    display: flex;
+    justify-content: center;
 
-  &__footer {
+    &--hidden {
+      visibility: hidden;
+    }
 
-    &__item {
-      display: flex;
-      justify-content: center;
+    &--values {
+      &--curve {
+        width: 40px;
+        margin-right: 0.25rem;
 
-      &--hidden {
-        visibility: hidden;
-      }
-
-      &--values {
-        &--curve {
-          width: 40px;
-          margin-right: 0.25rem;
-          div {
-            text-align: end;
-          }
-        }
-        &--stage-percentage {
-          width: 40px;
-          div {
-            text-align: end;
-          }
-          margin-right: 0.25rem;
-        }
-        &--offset {
-          width: 35px;
-          div {
-            text-align: end;
-          }
-          padding-right: 0.25rem;
-          border-right: 1px solid white;
-        }
-        &--stage-time {
-          width: 40px;
-          div {
-            text-align: end;
-          }
-        }
-        &--time {
-          width: 49px;
-          div {
-            text-align: end;
-          }
-          padding-right: 0.25rem;
-          border-right: 1px solid white;
-        }
         div {
           text-align: end;
-          margin-right: 0.5rem;
-
         }
+      }
+
+      &--stage-percentage {
+        width: 40px;
+
+        div {
+          text-align: end;
+        }
+
+        margin-right: 0.25rem;
+      }
+
+      &--offset {
+        width: 35px;
+
+        div {
+          text-align: end;
+        }
+
+        padding-right: 0.25rem;
+        border-right: 1px solid white;
+      }
+
+      &--stage-time {
+        width: 40px;
+
+        div {
+          text-align: end;
+        }
+      }
+
+      &--time {
+        width: 49px;
+
+        div {
+          text-align: end;
+        }
+
+        padding-right: 0.25rem;
+        border-right: 1px solid white;
+      }
+
+      div {
+        text-align: end;
+        margin-right: 0.5rem;
+
       }
     }
   }

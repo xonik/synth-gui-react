@@ -7,6 +7,7 @@ import { click } from '../../synthcore/modules/ui/uiReducer'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 import { selectLfoStages } from '../../synthcore/modules/controllers/controllersReducer'
+import '../components/CtrlOptions.scss'
 
 interface Props {
     lfoId: number
@@ -18,7 +19,7 @@ const StageActivator = ({ lfoId }: Props) => {
     const dispatch = useAppDispatch()
     const stages = useAppSelector(selectLfoStages(lfoId))
 
-    return <div className="ctrl-activator">
+    return <div className="ctrl-options">
         {stages.map((stage, index) => {
             if (stage.id === StageId.STOPPED) {
                 return null

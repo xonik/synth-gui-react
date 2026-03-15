@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import AnimatedCurve from '../../components/curves/AnimatedCurve'
 import { Point } from '../../utils/types'
-import './StagesCurve.scss'
+import '../components/StageBlock.scss'
 
 interface Props {
     points: Point[]

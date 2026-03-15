@@ -11,6 +11,7 @@ import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 import { envCtrls } from '../../synthcore/modules/env/envControllers'
 import { selectController, selectEnvStageById } from '../../synthcore/modules/controllers/controllersReducer'
 import { getCurveName } from '../../components/curves/shortCurveNames'
+import OptionsHeading from '../components/OptionsHeading'
 
 interface Props {
     envId: number
@@ -21,7 +22,7 @@ const getLoopLabel = (loopMode: LoopMode, loops: number) => `Loop ${loopMode ===
 const ctrlGroup = ControllerGroupIds.ENV
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
-const EnvOptions = ({ envId }: Props) => {
+const EnvOptionsLeft = ({ envId }: Props) => {
 
     const action = {
         ctrlGroup: ctrlGroup,
@@ -50,7 +51,7 @@ const EnvOptions = ({ envId }: Props) => {
     const curveLabel = hasCurve ? getCurveName(envCtrls.CURVE, curveIndex) : '-'
 
     return <div className="ctrl-options">
-        <div className="ctrl-heading">{curveLabel}</div>
+        <OptionsHeading>{curveLabel}</OptionsHeading>
         <Button active={!!invert} onClick={() => dispatch(clickInvert)}>Invert</Button>
         <Button active={!!retrigger} onClick={() => dispatch(clickRetrigger)}>Retrigger</Button>
         <Button active={releaseMode !== ReleaseMode.NORMAL} onClick={() => dispatch(clickReleaseMode)}>
@@ -66,4 +67,4 @@ const EnvOptions = ({ envId }: Props) => {
     </div>
 }
 
-export default EnvOptions
+export default EnvOptionsLeft

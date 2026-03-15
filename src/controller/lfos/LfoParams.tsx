@@ -10,6 +10,7 @@ import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { LFO_SEC_PER_UNIT } from '../../utils/constants'
 import { getShortName } from '../../components/curves/shortCurveNames'
 import './LfoParams.scss'
+import '../components/Params.scss'
 
 interface Props {
     className?: string
@@ -87,54 +88,54 @@ const LfoParams = ({ lfoId, className, delayLevel }: Props) => {
     const attackBalance = Math.round(balance * 100)
     const releaseBalance = Math.round((1 - balance) * 100)
 
-    return <div className={classNames('lfo-params', className)}>
-        <div className="lfo-params__footer__item">
-            <div className="lfo-params__footer__item--labels">
+    return <div className={classNames('params', className)}>
+        <div className="lfo-params__item">
+            <div className="lfo-params__item--labels">
                 <div>{timeLabelFormatted}</div>
                 <div>Level:</div>
             </div>
-            <div className="lfo-params__footer__item--values--time">
+            <div className="lfo-params__item--values--time">
                 <div>{timeFormatted}</div>
                 <div>{Math.floor(depth * 1000 / 10)}</div>
             </div>
         </div>
 
-        <div className="lfo-params__footer__item">
-            <div className="lfo-params__footer__item--labels">
+        <div className="lfo-params__item">
+            <div className="lfo-params__item--labels">
                 <div>Offset:</div>
                 <div>Phase:</div>
             </div>
-            <div className="lfo-params__footer__item--values--offset">
+            <div className="lfo-params__item--values--offset">
                 <div>{Math.round(100 * levelOffset)}</div>
                 <div>{Math.round(100 * phaseOffset)}</div>
             </div>
         </div>
 
-        <div className="lfo-params__footer__item">
-            <div className="lfo-params__footer__item--labels">
+        <div className="lfo-params__item">
+            <div className="lfo-params__item--labels">
                 <div>Delay time:</div>
                 <div>Delay level:</div>
             </div>
-            <div className="lfo-params__footer__item--values--time">
+            <div className="lfo-params__item--values--time">
                 <div>{delay.enabled ? formatTime(delayTime || 0) : '-'}</div>
                 <div>{delay.enabled ? boundedDelayLevel : '-'}</div>
             </div>
         </div>
 
-        <div className="lfo-params__footer__item">
-            <div className="lfo-params__footer__item--labels">
+        <div className="lfo-params__item">
+            <div className="lfo-params__item--labels">
                 <div>A:</div>
                 <div>R:</div>
             </div>
-            <div className="lfo-params__footer__item--values--curve">
+            <div className="lfo-params__item--values--curve">
                 <div>{attackCurveName}</div>
                 <div>{release.enabled ? releaseCurveName : ''}</div>
             </div>
-            <div className="lfo-params__footer__item--values--stage-percentage">
+            <div className="lfo-params__item--values--stage-percentage">
                 <div>{release.enabled ? attackBalance : '100'}%</div>
                 <div>{release.enabled ? `${releaseBalance}%` : ''}</div>
             </div>
-            <div className="lfo-params__footer__item--values--stage-time">
+            <div className="lfo-params__item--values--stage-time">
                 <div>({formatTime(attackTime)})</div>
                 <div>{release.enabled ? `(${formatTime(releaseTime)})` : ''}</div>
             </div>

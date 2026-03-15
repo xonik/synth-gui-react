@@ -3,6 +3,7 @@ import { StageId } from '../../synthcore/modules/env/types'
 import { stageNames } from './utils'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectEnvStages } from '../../synthcore/modules/controllers/controllersReducer'
+import '../components/CtrlHeader.scss'
 
 interface Props {
     envId: number

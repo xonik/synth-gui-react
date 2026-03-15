@@ -1,17 +1,6 @@
 @import '../constants';
 
 .stage-params {
-  display: flex;
-  color: $text-mid;
-  justify-content: space-evenly;
-  align-items: center;
-  font-size: 0.75rem;
-  margin-top: 0.5em;
-  background-color: $footer-bg-color;
-  border-radius: 3px;
-  padding-top: 0.33em;
-  padding-bottom: 0.33em;
-
   &__item {
     display: flex;
     flex-direction: column;

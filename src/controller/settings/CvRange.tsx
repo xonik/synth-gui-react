@@ -7,7 +7,7 @@ import { curveNames } from '../../components/curves/shortCurveNames'
 import { curveValuesUsed } from './generatedTypes'
 import { sharedConfig } from "../../sharedConfig";
 import './CvRange.scss'
-import '../lfos/StagesCurve.scss'
+import '../components/StageBlock.scss'
 import '../_shared.scss'
 
 import { Curve } from '../../synthcore/generatedTypes'

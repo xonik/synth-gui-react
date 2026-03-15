@@ -6,7 +6,7 @@ import { getCurveFunc } from '../../components/curves/curveCalculator'
 import { Point } from '../../utils/types'
 import classNames from 'classnames'
 import { envCtrls } from '../../synthcore/modules/env/envControllers'
-import './StageBlock.scss'
+import '../components/StageBlock.scss'
 
 interface Props {
     x: number
