@@ -36,7 +36,7 @@ import {
 } from './types'
 
 import './browser.scss'
-import Button from '../../controller/Button'
+import Button from '../../controller/components/Button'
 import KeyboardInputModal from './input/KeyboardInputModal'
 
 const SEARCH_RESULTS_PER_PAGE = 20

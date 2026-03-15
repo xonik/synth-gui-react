@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Button from '../Button'
+import Button from '../components/Button'
 import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import { click } from '../../synthcore/modules/ui/uiReducer'
 import { ApiSource, ControllerGroupIds } from '../../synthcore/types'

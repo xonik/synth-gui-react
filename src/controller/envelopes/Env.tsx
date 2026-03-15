@@ -1,13 +1,13 @@
 import React from 'react'
 import EnvelopeControl from './EnvelopeControl'
-import EnvPotLabels from './EnvPotLabels'
 import EnvHeader from './EnvHeader'
+import PotLabels from '../components/PotLabels'
 
 const Env = () => {
     return <>
         <EnvHeader/>
         <EnvelopeControl/>
-        <EnvPotLabels/>
+        <PotLabels labels={['Envelope', 'Time', 'Level', 'Curve', 'Offset', 'Loops']}/>
     </>
 }
 

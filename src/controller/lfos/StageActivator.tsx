@@ -1,13 +1,12 @@
 import React from 'react'
 import { StageId } from '../../synthcore/modules/lfo/types'
-import Button from '../Button'
+import Button from '../components/Button'
 import { stageNames } from './utils'
 import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import { click } from '../../synthcore/modules/ui/uiReducer'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 import { selectLfoStages } from '../../synthcore/modules/controllers/controllersReducer'
-import '../components/CtrlOptions.scss'
 import { CtrlOptions } from "@/controller/components/CtrlOptions";
 
 interface Props {

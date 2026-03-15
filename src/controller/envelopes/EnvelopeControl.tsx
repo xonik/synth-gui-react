@@ -5,6 +5,7 @@ import { selectCurrEnvId } from '../../synthcore/modules/env/envReducer'
 import StageActivator from './StageActivator'
 import EnvOptionsLeft from './EnvOptionsLeft'
 import StageParams from './StageParams'
+import '../components/Ctrl.scss'
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
 const EnvelopeControl = () => {

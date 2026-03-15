@@ -1,6 +1,6 @@
 import React from 'react'
 import { LoopMode, ReleaseMode, StageId } from '../../synthcore/modules/env/types'
-import Button from '../Button'
+import Button from '../components/Button'
 import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import {
     selectCurrStageId,

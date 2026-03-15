@@ -1,13 +1,13 @@
 import React from 'react'
 import LfoControl from './LfoControl'
-import LfoPotLabels from './LfoPotLabels'
 import LfoHeader from './LfoHeader'
+import PotLabels from '../components/PotLabels'
 
 const Lfo = () => {
     return <>
         <LfoHeader/>
         <LfoControl/>
-        <LfoPotLabels/>
+        <PotLabels labels={['LFO', 'Freq/Level', 'Offset/Phase', 'Delay/Balance', 'Curve', 'Loops']}/>
     </>
 }
 

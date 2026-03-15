@@ -11,7 +11,7 @@ interface Props {
 export const CtrlOptions = ({ heading, children, separator }: Props) => {
 
     return <div className="ctrl-options">
-        {heading && <OptionsHeading separator={separator}>heading</OptionsHeading>}
+        {heading && <OptionsHeading separator={separator}>{heading}</OptionsHeading>}
         {children}
     </div>
 }

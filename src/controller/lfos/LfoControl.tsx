@@ -7,6 +7,8 @@ import LfoOptionsLeft from './LfoOptionsLeft'
 import LfoParams from './LfoParams'
 import LfoOptionsRight from './LfoOptionsRight'
 import { useCurve } from './curveCalculator'
+import '../components/Ctrl.scss'
+
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
 const LfoControl = () => {

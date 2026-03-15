@@ -1,6 +1,6 @@
 import React from 'react'
 import { StageId } from '../../synthcore/modules/env/types'
-import Button from '../Button'
+import Button from '../components/Button'
 import { stageNames } from './utils'
 import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import { click } from '../../synthcore/modules/ui/uiReducer'

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { DetailRendererProps } from '../types'
-import Button from '../../../controller/Button'
+import Button from '../../../controller/components/Button'
 import './details.scss'
 
 const DefaultDetails: React.FC<DetailRendererProps> = (

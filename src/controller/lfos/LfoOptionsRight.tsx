@@ -1,6 +1,6 @@
 import React from 'react'
 import { LoopMode, } from '../../synthcore/modules/lfo/types'
-import Button from '../Button'
+import Button from '../components/Button'
 import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
 import { loopModeNames } from './utils'
 import { click } from '../../synthcore/modules/ui/uiReducer'
@@ -35,7 +35,7 @@ const LfoOptionsRight = ({ lfoId }: Props) => {
     const clickLoopMode = click({ ...action, ctrl: lfoCtrls.LOOP_MODE })
     const clickLoopEnabled = click({ ...action, ctrl: lfoCtrls.LOOP })
 
-    return <CtrlOptions heading="Looping" separator>
+    return <CtrlOptions heading={"Looping"} separator>
         <Button active={!!loopEnabled} onClick={() => dispatch(clickLoopEnabled)}>
             Loop
         </Button>
