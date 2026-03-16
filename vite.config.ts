@@ -4,7 +4,24 @@ import path from 'path'
 
 export default defineConfig({
   base: '/synth-gui-react/',
-  plugins: [react()],
+  plugins: [
+    react(),
+    {
+      name: 'redirect-base-path',
+      configureServer(server) {
+        // Register directly so it runs BEFORE Vite's internal middleware
+        server.middlewares.use((req, res, next) => {
+          const url = req.url || ''
+          if (url === '/synth-gui-react' || url.startsWith('/synth-gui-react?')) {
+            res.writeHead(301, { Location: '/synth-gui-react/' })
+            res.end()
+            return
+          }
+          next()
+        })
+      },
+    },
+  ],
   server: {
     port: 3000,
     proxy: {
@@ -24,4 +41,3 @@ export default defineConfig({
     },
   },
 })
-
