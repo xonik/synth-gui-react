@@ -40,18 +40,30 @@
 
     &__corner {
       display: flex;
+      flex-direction: column;
       flex: 0 0 $sources-column-width;
-      justify-content: center;
-      align-items: flex-start;
-      padding-top: 0.25rem;
-      color: $heading-color;
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      background-color: $heading-bg-color;
       z-index: 3;
       border-right: $cell-border-width solid $label-cell-border-color;
+
+      &__top {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 1.5rem;
+        background-color: $heading-bg-color;
+        border-bottom: $cell-border-width solid $label-cell-border-color;
+      }
+
+      &__bottom {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: $dst-height;
+        color: $label-color;
+        font-size: 0.85rem;
+        background-color: $label-background;
+        padding: 0 $dst-padding-lr;
+      }
     }
 
     &__dsts-container {
@@ -126,6 +138,7 @@
     height: $source-height;
     border-bottom: $cell-border-width solid $label-cell-border-color;
     color: $label-color;
+    font-size: 0.85rem;
     padding: 0.25rem 0.25rem 0.25rem 0.5rem;
     background-color: $label-background;
 
@@ -145,10 +158,11 @@
       flex-direction: row;
       justify-content: center;
       align-items: center;
+      height: 1.5rem;
 
       border-bottom: $cell-border-width solid $label-cell-border-color;
       border-right: $cell-border-width solid $label-cell-border-color;
-      padding: $source-padding-tb 0.25rem;
+      padding: 0 0.25rem;
       color: $heading-color;
       font-size: 0.75rem;
       font-weight: 500;
@@ -171,6 +185,7 @@
       border-right: $cell-border-width solid $label-cell-border-color;
       background-color: $label-background;
       color: $label-color;
+      font-size: 0.85rem;
       padding: 0 $dst-padding-lr;
       width: $dst-width;
 

@@ -17,7 +17,8 @@ const ModControl = () => {
                 <>
                     <div className="mod-ctrl__header">
                         <div className="mod-ctrl__header__corner">
-                            Mod source
+                            <div className="mod-ctrl__header__corner__top"></div>
+                            <div className="mod-ctrl__header__corner__bottom">Mod source</div>
                         </div>
                         <ScrollSyncNode lockAxis="Y">
                             <div className="mod-ctrl__header__dsts-container" id="dsts">
