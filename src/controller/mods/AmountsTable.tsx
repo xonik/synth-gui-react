@@ -133,7 +133,7 @@ const AmountsRow = ({ sourceId, sourceIndex }: RowProps) => {
 
     return (
         <div className="mod-ctrl__dsts" ref={ref}>
-            {dstGroup.map((func, funcIndex) => <React.Fragment key={funcIndex}>
+            {dstGroup.map((func, funcIndex) => <div className="mod-ctrl__amount-group" key={funcIndex}>
                     {func.map((dstParam, paramIndex) => <AmountCell
                             key={paramIndex}
                             sourceIndex={sourceIndex}
@@ -145,7 +145,7 @@ const AmountsRow = ({ sourceId, sourceIndex }: RowProps) => {
                             onSelected={onSelected}
                         />
                     )}
-                </React.Fragment>
+                </div>
             )}
         </div>
     )
