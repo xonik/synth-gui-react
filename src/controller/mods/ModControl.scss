@@ -30,8 +30,8 @@
   $label-cell-border-color: $bg-dark;
 
   $highlit-border-color: $accent-primary-dim;
-  $highlit-row-col-color: $bg-light;
-  $highlit-cell-color: $bg-highlight;
+  $highlit-row-col-color: $graph-selection-bg;
+  $highlit-cell-color: rgba($accent-primary, 0.25);
 
   &__header {
     display: flex;
