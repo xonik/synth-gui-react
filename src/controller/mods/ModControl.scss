@@ -5,6 +5,8 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  flex: 1;
+  min-height: 0;
 
   $dst-height: 1.5rem;
   $sources-column-width: 7rem;

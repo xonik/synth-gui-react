@@ -10,6 +10,8 @@
   // PS: 1 inch in svg is 96pixels, so 1cm = 96px / 2.54
   &-main-display {
     position: absolute;
+    display: flex;
+    flex-direction: column;
   }
 
   &-grid-50 {
