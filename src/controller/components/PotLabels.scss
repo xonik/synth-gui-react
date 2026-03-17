@@ -21,6 +21,10 @@
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
+
+    .pot-labels__row:first-child {
+      border-top: 1px solid $bg-highlight;
+    }
   }
 
   &__row {
