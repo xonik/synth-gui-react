@@ -11,6 +11,18 @@
   background-color: $bg-mid;
   border-top: 1px solid $bg-highlight;
 
+  &--two-rows {
+    flex-direction: column;
+    margin-top: auto;
+  }
+
+  &__row {
+    display: flex;
+    justify-content: space-evenly;
+    min-height: 1.5rem;
+    background-color: $bg-mid;
+  }
+
   &__label {
     display: flex;
     align-items: center;
