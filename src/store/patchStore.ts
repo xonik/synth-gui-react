@@ -18,8 +18,6 @@ import { createStore, StoreApi } from 'zustand/vanilla'
 import { useStore } from 'zustand'
 import { VOICE_GROUPS } from '../utils/constants'
 
-// ---- Envelope state ----
-
 export interface EnvelopeStageState {
     time: number    // 0 to 1
     level: number   // -1 to 1
@@ -48,8 +46,6 @@ export interface EnvelopeState {
     offset: number  // -1 to 1
 }
 
-// ---- LFO state ----
-
 export interface LfoStageState {
     curve: number
     enabled: number
@@ -65,8 +61,6 @@ export interface LfoState {
         [stageId: number]: LfoStageState
     }
 }
-
-// ---- Oscillator state ----
 
 export interface OscillatorState {
     range: number
@@ -87,8 +81,6 @@ export interface OscillatorState {
     preFilterSine: number
 }
 
-// ---- Filter state ----
-
 export interface FilterState {
     input: number
     resonance: number
@@ -105,8 +97,6 @@ export interface FilterState {
     fmSrc: number
 }
 
-// ---- Source Mix state ----
-
 export interface SrcMixState {
     levelOsc1: number
     levelOsc2: number
@@ -115,8 +105,6 @@ export interface SrcMixState {
     levelRingMod: number
     levelExtAudio: number
 }
-
-// ---- Effects state ----
 
 export interface FxState {
     distortion: {
@@ -134,15 +122,11 @@ export interface FxState {
     }
 }
 
-// ---- Output state ----
-
 export interface OutputState {
     volume: number
     spread: number
     headphones: number
 }
-
-// ---- Post Mix state ----
 
 export interface PostMixState {
     lpf: number
@@ -155,8 +139,6 @@ export interface PostMixState {
     fx2Send: number
 }
 
-// ---- Modulation state ----
-// modValues[sourceId][dstId][dstCtrlIndex] = amount
 export type ModulationState = {
     [sourceId: number]: {
         [dstId: number]: {
@@ -165,19 +147,13 @@ export type ModulationState = {
     }
 }
 
-// ---- Noise state ----
-
 export interface NoiseState {
     colour: number
 }
 
-// ---- Ring Mod state ----
-
 export interface RingModState {
     source: number
 }
-
-// ---- Keyboard state ----
 
 export interface KbdState {
     portamento: number
@@ -189,15 +165,11 @@ export interface KbdState {
     voiceStealing: number
 }
 
-// ---- Common FX state ----
-
 export interface CommonFxState {
     dsp1: { param1: number; param2: number; param3: number; effect: number; source: number }
     dsp2: { param1: number; param2: number; param3: number; effect: number; source: number }
     chorus: { rate: number; depth: number; mode: number }
 }
-
-// ---- Full voice group patch ----
 
 export interface VoiceGroupPatch {
     envelopes: EnvelopeState[]       // 5 envelopes
@@ -215,8 +187,6 @@ export interface VoiceGroupPatch {
     commonFx: CommonFxState
 }
 
-// ---- Store actions ----
-
 export interface PatchStoreActions {
     /** Set a single parameter value by dot-path (e.g., "envelopes.0.stages.attack.time") */
     setParam: (path: string, value: number, source?: string) => void
@@ -229,8 +199,6 @@ export interface PatchStoreActions {
 }
 
 export type PatchStore = VoiceGroupPatch & PatchStoreActions
-
-// ---- Default values ----
 
 const defaultEnvelopeStage = (): EnvelopeStageState => ({
     time: 0,
@@ -304,8 +272,6 @@ export const defaultVoiceGroupPatch = (): VoiceGroupPatch => ({
     },
 })
 
-// ---- Utility: set a value at a dot-path in an object ----
-
 function setAtPath(obj: Record<string, unknown>, path: string, value: number): void {
     const keys = path.split('.')
     let current: Record<string, unknown> = obj
@@ -318,8 +284,6 @@ function setAtPath(obj: Record<string, unknown>, path: string, value: number): v
     }
     current[keys[keys.length - 1]] = value
 }
-
-// ---- Store factory ----
 
 export function createPatchStore(): StoreApi<PatchStore> {
     return createStore<PatchStore>((set, get) => ({
@@ -348,14 +312,10 @@ export function createPatchStore(): StoreApi<PatchStore> {
     }))
 }
 
-// ---- Voice group store instances ----
-
 export const voiceGroupStores: StoreApi<PatchStore>[] = Array.from(
     { length: VOICE_GROUPS },
     () => createPatchStore()
 )
-
-// ---- React hook to access a voice group store ----
 
 export function useVoiceGroupStore<T>(
     voiceGroupIndex: number,

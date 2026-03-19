@@ -1,33 +1,30 @@
 /**
  * Patch serialization — save/load patches as human-readable JSON.
  *
- * The Zustand store shape IS the patch format. We just need to:
- * - Strip out actions before saving
- * - Validate on load
- * - Handle versioning for future compatibility
+ * A patch represents a single voice group's settings. Loading a patch
+ * applies it to the currently selected voice group only.
  */
 
 import { VoiceGroupPatch, defaultVoiceGroupPatch, voiceGroupStores } from './patchStore'
-import { GlobalPatchState, globalStore } from './globalStore'
+import { useUiStore } from './uiStore'
 
 export interface PatchFile {
     version: 1
     name: string
     createdAt: string
-    global: GlobalPatchState
-    voiceGroups: VoiceGroupPatch[]
+    patch: VoiceGroupPatch
 }
 
 /**
- * Collect current state from all stores into a saveable patch file.
+ * Create a patch file from the currently selected voice group.
  */
 export function createPatchFile(name: string): PatchFile {
+    const voiceGroupIndex = useUiStore.getState().currentVoiceGroupIndex
     return {
         version: 1,
         name,
         createdAt: new Date().toISOString(),
-        global: globalStore.getState().getPatch(),
-        voiceGroups: voiceGroupStores.map((store) => store.getState().getPatch()),
+        patch: voiceGroupStores[voiceGroupIndex].getState().getPatch(),
     }
 }
 
@@ -52,35 +49,33 @@ export function deserializePatch(json: string): PatchFile {
 }
 
 /**
- * Load a patch file into all stores.
+ * Load a patch into the currently selected voice group.
  */
 export function loadPatchFile(patch: PatchFile): void {
-    // Load global state
-    globalStore.getState().loadPatch(patch.global)
-
-    // Load each voice group, falling back to defaults for missing groups
-    voiceGroupStores.forEach((store, index) => {
-        if (index < patch.voiceGroups.length) {
-            store.getState().loadPatch(patch.voiceGroups[index])
-        } else {
-            store.getState().loadPatch(defaultVoiceGroupPatch())
-        }
-    })
+    const voiceGroupIndex = useUiStore.getState().currentVoiceGroupIndex
+    voiceGroupStores[voiceGroupIndex].getState().loadPatch(patch.patch)
 }
 
 /**
- * Reset all stores to default values.
+ * Load a patch into a specific voice group.
+ */
+export function loadPatchToVoiceGroup(patch: PatchFile, voiceGroupIndex: number): void {
+    voiceGroupStores[voiceGroupIndex].getState().loadPatch(patch.patch)
+}
+
+/**
+ * Reset the currently selected voice group to default values.
+ */
+export function resetCurrentVoiceGroup(): void {
+    const voiceGroupIndex = useUiStore.getState().currentVoiceGroupIndex
+    voiceGroupStores[voiceGroupIndex].getState().loadPatch(defaultVoiceGroupPatch())
+}
+
+/**
+ * Reset all voice groups to default values.
  */
 export function resetAllStores(): void {
     voiceGroupStores.forEach((store) => {
         store.getState().loadPatch(defaultVoiceGroupPatch())
-    })
-    globalStore.getState().loadPatch({
-        masterClock: { rate: 0.5, source: 0 },
-        arp: {
-            bpm: 0.5, onOff: 0, trigger: 0, sync: 0, range: 0,
-            mode: 0, extendedMode: 0, sequence: 0, noteOrdering: 0,
-            startSync: 0, fuzzyStart: 0, stopOnRelease: 0,
-        },
     })
 }

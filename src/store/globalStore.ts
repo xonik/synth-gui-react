@@ -40,14 +40,33 @@ export interface GlobalPatchActions {
 export type GlobalStore = GlobalPatchState & GlobalPatchActions
 
 const defaultGlobalPatch = (): GlobalPatchState => ({
-    masterClock: { rate: 0.5, source: 0 },
+    masterClock: {
+        rate: 0.5,
+        source: 0,
+    },
     arp: {
-        bpm: 0.5, onOff: 0, trigger: 0, sync: 0, range: 0,
-        mode: 0, extendedMode: 0, sequence: 0, noteOrdering: 0,
-        startSync: 0, fuzzyStart: 0, stopOnRelease: 0,
+        bpm: 0.5,
+        onOff: 0,
+        trigger: 0,
+        sync: 0,
+        range: 0,
+        mode: 0,
+        extendedMode: 0,
+        sequence: 0,
+        noteOrdering: 0,
+        startSync: 0,
+        fuzzyStart: 0,
+        stopOnRelease: 0,
     },
 })
 
+/**
+ * Sets a value on a nested object using a dot-separated path string.
+ * e.g. setAtPath(obj, 'arp.bpm', 0.7) is equivalent to obj.arp.bpm = 0.7
+ *
+ * This allows setParam('arp.bpm', 0.7) to work with a single generic
+ * function rather than needing a separate action for every parameter.
+ */
 function setAtPath(obj: Record<string, unknown>, path: string, value: number): void {
     const keys = path.split('.')
     let current: Record<string, unknown> = obj
