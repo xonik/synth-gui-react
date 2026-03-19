@@ -22,7 +22,8 @@
     "react-slider": "^2.0.6",
     "react-spring": "^9.7.3",
     "sass": "^1.69.5",
-    "styled-components": "^6.1.8"
+    "styled-components": "^6.1.8",
+    "zustand": "^5.0.12"
   },
   "scripts": {
     "dev": "vite",
