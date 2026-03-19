@@ -284,7 +284,7 @@ export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
             // don't want to
             currNRPN.loValue = ccValue
             const addr = (currNRPN.hiAddr << 7) + currNRPN.loAddr
-            const value = (currNRPN.midValue << 14) + (currNRPN.midValue << 7) + currNRPN.loValue
+            const value = (currNRPN.hiValue << 14) + (currNRPN.midValue << 7) + currNRPN.loValue
             nrpn.publish(voiceGroupId, addr, value)
             currNRPN.hiValue = 0
             currNRPN.midValue = 0
