@@ -248,7 +248,7 @@ const defaultEnvelope = (): EnvelopeState => ({
         },
         release2: {
             time: 0.003,
-            level: 0.25,
+            level: 0.5,
             curve: 5,
             enabled: 1,
         },
