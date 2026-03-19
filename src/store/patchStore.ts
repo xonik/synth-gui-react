@@ -213,7 +213,7 @@ const defaultEnvelope = (): EnvelopeState => ({
         delay: {
             time: 0,
             level: 0,
-            curve: 0,
+            curve: 4,
             enabled: 0,
         },
         attack: {
@@ -231,13 +231,13 @@ const defaultEnvelope = (): EnvelopeState => ({
         decay2: {
             time: 0.001,
             level: 0.5,
-            curve: 0,
+            curve: 4,
             enabled: 0,
         },
         sustain: {
             time: 0,
             level: 0.5,
-            curve: 0,
+            curve: 4,
             enabled: 1,
         },
         release1: {
