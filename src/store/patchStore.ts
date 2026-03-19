@@ -208,28 +208,56 @@ export interface PatchStoreActions {
 
 export type PatchStore = VoiceGroupPatch & PatchStoreActions
 
-const defaultEnvelopeStage = (): EnvelopeStageState => ({
-    time: 0,
-    level: 0,
-    curve: 0,
-    enabled: 1,
-})
-
 const defaultEnvelope = (): EnvelopeState => ({
     stages: {
-        delay: { ...defaultEnvelopeStage(), enabled: 0 },
-        attack: defaultEnvelopeStage(),
-        decay1: defaultEnvelopeStage(),
-        decay2: { ...defaultEnvelopeStage(), enabled: 0 },
-        sustain: { ...defaultEnvelopeStage(), level: 0.5 },
-        release1: defaultEnvelopeStage(),
-        release2: { ...defaultEnvelopeStage(), enabled: 0 },
+        delay: {
+            time: 0,
+            level: 0,
+            curve: 0,
+            enabled: 0,
+        },
+        attack: {
+            time: 0.001,
+            level: 0,
+            curve: 5,
+            enabled: 1,
+        },
+        decay1: {
+            time: 0.5,
+            level: 1,
+            curve: 5,
+            enabled: 1,
+        },
+        decay2: {
+            time: 0.001,
+            level: 0.5,
+            curve: 0,
+            enabled: 0,
+        },
+        sustain: {
+            time: 0,
+            level: 0.5,
+            curve: 0,
+            enabled: 1,
+        },
+        release1: {
+            time: 0.001,
+            level: 0.5,
+            curve: 5,
+            enabled: 0,
+        },
+        release2: {
+            time: 0.003,
+            level: 0.25,
+            curve: 5,
+            enabled: 1,
+        },
     },
     invert: 0,
     bipolar: 0,
     loop: 0,
     loopMode: 0,
-    maxLoops: 0,
+    maxLoops: 2,
     velocity: 0,
     resetOnTrigger: 0,
     releaseMode: 0,
