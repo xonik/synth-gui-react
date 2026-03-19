@@ -1,17 +1,15 @@
 import React from 'react'
 import Stages from './Stages'
-import { useAppSelector } from '../../synthcore/hooks'
-import { selectCurrEnvId } from '../../synthcore/modules/env/envReducer'
 import StageActivator from './StageActivator'
 import EnvOptionsLeft from './EnvOptionsLeft'
 import StageParams from './StageParams'
 import { useEnvCurve } from './curveCalculator'
+import { useUiStore } from '../../store'
 import '../components/Ctrl.scss'
 
-// Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
 const EnvelopeControl = () => {
 
-    const envId = useAppSelector(selectCurrEnvId)
+    const envId = useUiStore(s => s.selectedEnvId)
     const [points, stageBackgrounds] = useEnvCurve(envId)
 
     return <div className="ctrl-layout">

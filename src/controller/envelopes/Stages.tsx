@@ -1,14 +1,9 @@
 import React, { useCallback } from 'react'
 import { StageId } from '../../synthcore/modules/env/types'
 import EnvCurve from './EnvCurve'
-import {
-    selectCurrStageId,
-    toggleStageSelected,
-} from '../../synthcore/modules/env/envReducer'
-import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
+import { useUiStore } from '../../store'
+import { useEnvParam } from '../../store/modules/useEnvelope'
 import classNames from 'classnames'
-import { envCtrls } from '../../synthcore/modules/env/envControllers'
-import { selectController } from '../../synthcore/modules/controllers/controllersReducer'
 import { StageBackground } from './curveCalculator'
 import { Point } from '../../utils/types'
 import '../components/Stages.scss'
@@ -19,17 +14,20 @@ interface Props {
     stageBackgrounds: StageBackground[]
 }
 
-// Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
 const Stages = ({ envId, points, stageBackgrounds }: Props) => {
 
-    const bipolar = useAppSelector(selectController(envCtrls.BIPOLAR, envId))
-    const dispatch = useAppDispatch()
-    const currStageId = useAppSelector(selectCurrStageId)
+    const bipolar = useEnvParam(envId, 'bipolar') === 1
+    const currStageId = useUiStore(s => s.selectedEnvStageId)
+    const selectEnvStage = useUiStore(s => s.selectEnvStage)
     const graphCenter = bipolar ? 1 / 2 : 1
 
-    const onSvgClicked = useCallback((stageId: number) => {
-        dispatch(toggleStageSelected({ voiceGroupIndex: -1, env: envId, stage: stageId }))
-    }, [envId, dispatch])
+    const onSvgClicked = useCallback((stageId: StageId) => {
+        if (currStageId === stageId) {
+            selectEnvStage(StageId.STOPPED)
+        } else {
+            selectEnvStage(stageId)
+        }
+    }, [currStageId, selectEnvStage])
 
     return <svg x={0} y={0}>
         {

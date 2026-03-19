@@ -6,11 +6,9 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux'
 import { store } from './synthcore/store'
 import midiApi from './midi/midiApi'
-import { startEnvelopeSync } from './store/sync/zustandToReduxSync'
 import { startEnvelopeMidiSend } from './store/midi/envMidiSend'
 
 midiApi.initReceive()
-startEnvelopeSync()
 startEnvelopeMidiSend()
 
 const root = ReactDOM.createRoot(
