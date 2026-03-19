@@ -8,24 +8,24 @@
  *   usePot() returns { displayValue, set } where set() writes to store,
  *   and MIDI send happens via store subscription (set up separately).
  *   Display value is derived via useMemo, eliminating the dual uiControllers state.
+ *
+ * State is accessed via typed selector functions, not string paths:
+ *   usePot(s => s.envelopes[0].stages.attack.time, (s, v) => { s.envelopes[0].stages.attack.time = v })
  */
 
 import { useMemo, useCallback } from 'react'
-import { useVoiceGroupStore, voiceGroupStores, PatchStore } from './patchStore'
+import { useVoiceGroupStore, voiceGroupStores, VoiceGroupPatch } from './patchStore'
 import { useUiStore } from './uiStore'
 import type { ResponseMapper } from './types'
 
 /**
- * Get a value from the current voice group's patch store by path.
- * The path is a dot-separated string matching the store shape.
+ * Get a value from the current voice group's patch store using a typed selector.
  *
- * Example: usePatchValue('envelopes.0.stages.attack.time')
+ * Example: usePatchValue(s => s.envelopes[0].stages.attack.time)
  */
-export function usePatchValue(path: string): number {
+export function usePatchValue(selector: (state: VoiceGroupPatch) => number): number {
     const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
-    return useVoiceGroupStore(voiceGroupIndex, (state) => {
-        return getAtPath(state, path)
-    })
+    return useVoiceGroupStore(voiceGroupIndex, selector)
 }
 
 /**
@@ -37,23 +37,26 @@ export function usePatchValue(path: string): number {
  * - set: function to write a new display value (inverse-mapped back to raw)
  * - increment: function to increment the display value by a delta
  *
- * The response mapper is applied via useMemo — no dual state needed.
+ * Example:
+ *   const { displayValue, increment } = usePot(
+ *       s => s.envelopes[0].stages.attack.time,
+ *       (s, v) => { s.envelopes[0].stages.attack.time = v },
+ *       { responseMapper: timeResponseMapper }
+ *   )
  */
 export function usePot(
-    path: string,
+    selector: (state: VoiceGroupPatch) => number,
+    mutator: (state: VoiceGroupPatch, value: number) => void,
     options?: {
         responseMapper?: ResponseMapper
         bipolar?: boolean
     }
 ) {
     const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
-    const rawValue = useVoiceGroupStore(voiceGroupIndex, (state) => {
-        return getAtPath(state, path)
-    })
+    const rawValue = useVoiceGroupStore(voiceGroupIndex, selector)
 
     const { responseMapper, bipolar } = options ?? {}
 
-    // Derive the display value from the raw value — replaces uiControllers
     const displayValue = useMemo(() => {
         if (responseMapper) {
             return responseMapper.input(rawValue, bipolar)
@@ -63,11 +66,13 @@ export function usePot(
 
     const set = useCallback((newDisplayValue: number) => {
         const bounded = getBounded(newDisplayValue, bipolar ? -1 : 0, 1)
-        const rawValue = responseMapper
+        const newRaw = responseMapper
             ? responseMapper.output(bounded, bipolar)
             : bounded
-        voiceGroupStores[voiceGroupIndex].getState().setParam(path, rawValue)
-    }, [voiceGroupIndex, path, responseMapper, bipolar])
+        voiceGroupStores[voiceGroupIndex].getState().set(state => {
+            mutator(state, newRaw)
+        })
+    }, [voiceGroupIndex, mutator, responseMapper, bipolar])
 
     const increment = useCallback((delta: number) => {
         const newDisplay = getBounded(
@@ -75,11 +80,13 @@ export function usePot(
             bipolar ? -1 : 0,
             1
         )
-        const rawValue = responseMapper
+        const newRaw = responseMapper
             ? responseMapper.output(newDisplay, bipolar)
             : newDisplay
-        voiceGroupStores[voiceGroupIndex].getState().setParam(path, rawValue)
-    }, [voiceGroupIndex, path, displayValue, responseMapper, bipolar])
+        voiceGroupStores[voiceGroupIndex].getState().set(state => {
+            mutator(state, newRaw)
+        })
+    }, [voiceGroupIndex, mutator, displayValue, responseMapper, bipolar])
 
     return { displayValue, rawValue, set, increment }
 }
@@ -87,56 +94,46 @@ export function usePot(
 /**
  * Hook for connecting a button to the patch store.
  *
- * Returns:
- * - value: current button value (index into the button's value set)
- * - toggle: cycle to next value
- * - set: set to a specific value
+ * Example:
+ *   const { value, toggle } = useButton(
+ *       s => s.envelopes[0].loop,
+ *       (s, v) => { s.envelopes[0].loop = v },
+ *       2
+ *   )
  */
 export function useButton(
-    path: string,
+    selector: (state: VoiceGroupPatch) => number,
+    mutator: (state: VoiceGroupPatch, value: number) => void,
     numValues: number,
     options?: { loop?: boolean }
 ) {
     const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
-    const value = useVoiceGroupStore(voiceGroupIndex, (state) => {
-        return getAtPath(state, path)
-    })
+    const value = useVoiceGroupStore(voiceGroupIndex, selector)
 
     const loop = options?.loop ?? true
 
     const toggle = useCallback(() => {
         const store = voiceGroupStores[voiceGroupIndex].getState()
-        const current = getAtPath(store, path)
+        const current = selector(store)
         if (numValues === 1) {
-            // Momentary: always send 0
-            store.setParam(path, 0)
+            store.set(state => { mutator(state, 0) })
         } else if (loop) {
-            store.setParam(path, (current + 1) % numValues)
+            store.set(state => { mutator(state, (current + 1) % numValues) })
         } else {
             const next = current + 1
             if (next < numValues) {
-                store.setParam(path, next)
+                store.set(state => { mutator(state, next) })
             }
         }
-    }, [voiceGroupIndex, path, numValues, loop])
+    }, [voiceGroupIndex, selector, mutator, numValues, loop])
 
     const set = useCallback((newValue: number) => {
-        voiceGroupStores[voiceGroupIndex].getState().setParam(path, newValue)
-    }, [voiceGroupIndex, path])
+        voiceGroupStores[voiceGroupIndex].getState().set(state => {
+            mutator(state, newValue)
+        })
+    }, [voiceGroupIndex, mutator])
 
     return { value, toggle, set }
-}
-
-// ---- Utilities ----
-
-function getAtPath(obj: unknown, path: string): number {
-    const keys = path.split('.')
-    let current: unknown = obj
-    for (const key of keys) {
-        if (current === null || current === undefined) return 0
-        current = (current as Record<string, unknown>)[key]
-    }
-    return (current as number) ?? 0
 }
 
 function getBounded(value: number, min: number, max: number): number {

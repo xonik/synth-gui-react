@@ -11,6 +11,7 @@
     "@use-it/event-listener": "^0.1.7",
     "classnames": "^2.3.2",
     "deepmerge": "^4.3.1",
+    "immer": "^11.1.4",
     "lodash.flow": "^3.5.0",
     "react": "^18.2.0",
     "react-dnd": "^16.0.1",
