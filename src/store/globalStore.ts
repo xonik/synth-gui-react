@@ -9,6 +9,7 @@
 
 import { createStore, StoreApi } from 'zustand/vanilla'
 import { useStore } from 'zustand'
+import { immer } from 'zustand/middleware/immer'
 
 export interface GlobalPatchState {
     masterClock: {
@@ -32,7 +33,7 @@ export interface GlobalPatchState {
 }
 
 export interface GlobalPatchActions {
-    setParam: (path: string, value: number) => void
+    set: (mutator: (state: GlobalPatchState) => void) => void
     loadPatch: (patch: GlobalPatchState) => void
     getPatch: () => GlobalPatchState
 }
@@ -60,46 +61,24 @@ const defaultGlobalPatch = (): GlobalPatchState => ({
     },
 })
 
-/**
- * Sets a value on a nested object using a dot-separated path string.
- * e.g. setAtPath(obj, 'arp.bpm', 0.7) is equivalent to obj.arp.bpm = 0.7
- *
- * This allows setParam('arp.bpm', 0.7) to work with a single generic
- * function rather than needing a separate action for every parameter.
- */
-function setAtPath(obj: Record<string, unknown>, path: string, value: number): void {
-    const keys = path.split('.')
-    let current: Record<string, unknown> = obj
-    for (let i = 0; i < keys.length - 1; i++) {
-        const key = keys[i]
-        if (current[key] === undefined || current[key] === null) {
-            current[key] = {}
-        }
-        current = current[key] as Record<string, unknown>
-    }
-    current[keys[keys.length - 1]] = value
-}
+export const globalStore: StoreApi<GlobalStore> = createStore<GlobalStore>()(
+    immer((set, get) => ({
+        ...defaultGlobalPatch(),
 
-export const globalStore: StoreApi<GlobalStore> = createStore<GlobalStore>((set, get) => ({
-    ...defaultGlobalPatch(),
+        set: (mutator: (state: GlobalPatchState) => void) => {
+            set(mutator)
+        },
 
-    setParam: (path: string, value: number) => {
-        set((state) => {
-            const newState = { ...state }
-            setAtPath(newState as unknown as Record<string, unknown>, path, value)
-            return newState
-        })
-    },
+        loadPatch: (patch: GlobalPatchState) => {
+            set(() => ({ ...patch }))
+        },
 
-    loadPatch: (patch: GlobalPatchState) => {
-        set((state) => ({ ...state, ...patch }))
-    },
-
-    getPatch: (): GlobalPatchState => {
-        const { setParam, loadPatch, getPatch, ...patch } = get()
-        return patch
-    },
-}))
+        getPatch: (): GlobalPatchState => {
+            const { set: _set, loadPatch, getPatch, ...patch } = get()
+            return patch
+        },
+    }))
+)
 
 export function useGlobalStore<T>(selector: (state: GlobalStore) => T): T {
     return useStore(globalStore, selector)

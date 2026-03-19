@@ -1,28 +1,24 @@
 /**
- * Per-voice-group patch store using Zustand.
+ * Per-voice-group patch store using Zustand with immer.
  *
  * Each voice group gets its own store instance. The store holds the
  * actual synth parameter values in a human-readable structure that
  * can be directly serialized to JSON for patch save/load.
  *
- * Design:
- * - State is organized by module (env, lfo, osc, etc.)
- * - Each module's state uses named keys, not numeric indices
- * - Values are in the normalized -1 to 1 or 0 to 1 range
- * - No UI-specific state here (display values, selections, etc.)
- * - MIDI layer subscribes to changes for outbound MIDI
- * - MIDI receive writes directly into the store
+ * Uses immer for state updates — mutate the draft directly in set():
+ *   store.getState().set(state => { state.envelopes[0].stages.attack.time = 0.5 })
  */
 
 import { createStore, StoreApi } from 'zustand/vanilla'
 import { useStore } from 'zustand'
+import { immer } from 'zustand/middleware/immer'
 import { VOICE_GROUPS } from '../utils/constants'
 
 export interface EnvelopeStageState {
-    time: number    // 0 to 1
-    level: number   // -1 to 1
-    curve: number   // curve index
-    enabled: number // 0 or 1
+    time: number
+    level: number
+    curve: number
+    enabled: number
 }
 
 export interface EnvelopeState {
@@ -43,7 +39,7 @@ export interface EnvelopeState {
     velocity: number
     resetOnTrigger: number
     releaseMode: number
-    offset: number  // -1 to 1
+    offset: number
 }
 
 export interface LfoStageState {
@@ -184,9 +180,9 @@ export interface CommonFxState {
 }
 
 export interface VoiceGroupPatch {
-    envelopes: EnvelopeState[]       // 5 envelopes
-    lfos: LfoState[]                 // 4 LFOs
-    oscillators: OscillatorState[]   // 3 oscillators
+    envelopes: EnvelopeState[]
+    lfos: LfoState[]
+    oscillators: OscillatorState[]
     filters: FilterState[]
     srcMix: SrcMixState
     fx: FxState
@@ -200,13 +196,13 @@ export interface VoiceGroupPatch {
 }
 
 export interface PatchStoreActions {
-    /** Set a single parameter value by dot-path (e.g., "envelopes.0.stages.attack.time") */
-    setParam: (path: string, value: number, source?: string) => void
+    /**
+     * Update state using immer — mutate the draft directly:
+     *   store.getState().set(state => { state.envelopes[0].stages.attack.time = 0.5 })
+     */
+    set: (mutator: (state: VoiceGroupPatch) => void) => void
 
-    /** Replace the entire patch (for load operations) */
     loadPatch: (patch: VoiceGroupPatch) => void
-
-    /** Get the full patch state for saving */
     getPatch: () => VoiceGroupPatch
 }
 
@@ -366,44 +362,25 @@ export const defaultVoiceGroupPatch = (): VoiceGroupPatch => ({
     },
 })
 
-function setAtPath(obj: Record<string, unknown>, path: string, value: number): void {
-    const keys = path.split('.')
-    let current: Record<string, unknown> = obj
-    for (let i = 0; i < keys.length - 1; i++) {
-        const key = keys[i]
-        if (current[key] === undefined || current[key] === null) {
-            current[key] = {}
-        }
-        current = current[key] as Record<string, unknown>
-    }
-    current[keys[keys.length - 1]] = value
-}
-
 export function createPatchStore(): StoreApi<PatchStore> {
-    return createStore<PatchStore>((set, get) => ({
-        ...defaultVoiceGroupPatch(),
+    return createStore<PatchStore>()(
+        immer((set, get) => ({
+            ...defaultVoiceGroupPatch(),
 
-        setParam: (path: string, value: number, _source?: string) => {
-            set((state) => {
-                // Shallow-clone the path to trigger Zustand reactivity
-                const newState = { ...state }
-                setAtPath(newState as unknown as Record<string, unknown>, path, value)
-                return newState
-            })
-        },
+            set: (mutator: (state: VoiceGroupPatch) => void) => {
+                set(mutator)
+            },
 
-        loadPatch: (patch: VoiceGroupPatch) => {
-            set((state) => ({
-                ...state,
-                ...patch,
-            }))
-        },
+            loadPatch: (patch: VoiceGroupPatch) => {
+                set(() => ({ ...patch }))
+            },
 
-        getPatch: (): VoiceGroupPatch => {
-            const { setParam, loadPatch, getPatch, ...patch } = get()
-            return patch
-        },
-    }))
+            getPatch: (): VoiceGroupPatch => {
+                const { set: _set, loadPatch, getPatch, ...patch } = get()
+                return patch
+            },
+        }))
+    )
 }
 
 export const voiceGroupStores: StoreApi<PatchStore>[] = Array.from(

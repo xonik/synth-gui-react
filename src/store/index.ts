@@ -1,19 +1,19 @@
-// New Zustand-based store infrastructure
+// Zustand-based store infrastructure
 //
-// Usage:
-//   import { usePot, useButton, usePatchValue, useUiStore } from '../store'
+// Patch state (per voice group) — uses immer for direct mutation:
+//   const { displayValue, increment } = usePot(
+//       s => s.envelopes[0].stages.attack.time,
+//       (s, v) => { s.envelopes[0].stages.attack.time = v },
+//       { responseMapper: timeResponseMapper }
+//   )
 //
-// Patch state (per voice group):
-//   const { displayValue, increment } = usePot('envelopes.0.stages.attack.time', {
-//       responseMapper: timeResponseMapper,
-//   })
+// Outside React (e.g., MIDI callbacks):
+//   voiceGroupStores[0].getState().set(s => { s.envelopes[0].stages.attack.time = 0.5 })
 //
 // UI state (transient, not saved):
 //   const screen = useUiStore(s => s.currentScreen)
-//   const setScreen = useUiStore(s => s.setScreen)
 //
 // Patch save/load:
-//   import { createPatchFile, serializePatch, loadPatchFile, deserializePatch } from '../store'
 //   const json = serializePatch(createPatchFile('My Patch'))
 //   loadPatchFile(deserializePatch(json))
 
