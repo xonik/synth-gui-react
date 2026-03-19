@@ -22,11 +22,12 @@ export interface Props {
     label: string
     value?: number;
     valueIndex?: number;
-    ctrlGroup: ControllerGroupIds;
-    ctrl: ControllerConfig;
+    ctrlGroup?: ControllerGroupIds;
+    ctrl?: ControllerConfig;
     ctrlIndex?: number;
     disabled?: boolean;
     silver?: boolean;
+    onValueIncrement?: (delta: number) => void;
 }
 
 interface Config {
@@ -103,7 +104,7 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
 
     // Position should be in the range 0-1 in all modes but pan. In pan the range is -0.5 - 0.5
     const { x, y, ledMode = 'single', potMode = 'normal', label,
-        value, valueIndex, ctrlGroup, ctrl, ctrlIndex, disabled,silver
+        value, valueIndex, ctrlGroup, ctrl, ctrlIndex, disabled, silver, onValueIncrement
     } = props
 
     const dispatch = useAppDispatch()
@@ -120,27 +121,24 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
         windowArc,
         ledArc,
     } = getRenderProps(props);
-    // For objects centered around 0, use overflow: visible
-    // For scaling, use viewBox on the outer svg and unitless the rest of the way
 
-    // positive pointer
-    const storeValue = useAppSelector(selectUiController(ctrl, ctrlIndex, valueIndex))
-    const currentValue = value !== undefined ? value :  storeValue
+    const storeValue = useAppSelector(ctrl ? selectUiController(ctrl, ctrlIndex, valueIndex) : () => 0)
+    const currentValue = value !== undefined ? value : storeValue
 
     const ledPosition = getLedPos(centerLed, ledCount, potMode, currentValue)
 
-    // negative pointer used for spread
     const negLedPosition = centerLed - (ledPosition - centerLed)
 
     const onIncrement = useCallback((steps: number, stepSize: number) => {
         if(disabled) return;
 
-        // When panning, we cover a -1 to 1 range instead of 0 to 1.
-        // To keep the line in sync with how much the pot has been
-        // turned we have to make increments twice as big.
-        const value = potMode === 'pan' ? steps * (stepSize * 2) : steps * stepSize
-        dispatch(increment({ ctrlGroup, ctrl, value, valueIndex, ctrlIndex, source: ApiSource.UI }))
-    }, [disabled, potMode, dispatch, ctrlGroup, ctrl, valueIndex, ctrlIndex])
+        const delta = potMode === 'pan' ? steps * (stepSize * 2) : steps * stepSize
+        if (onValueIncrement) {
+            onValueIncrement(delta)
+        } else if (ctrl && ctrlGroup !== undefined) {
+            dispatch(increment({ ctrlGroup, ctrl, value: delta, valueIndex, ctrlIndex, source: ApiSource.UI }))
+        }
+    }, [disabled, potMode, dispatch, ctrlGroup, ctrl, valueIndex, ctrlIndex, onValueIncrement])
 
     return (
         <svg x={x} y={y} className="pot">

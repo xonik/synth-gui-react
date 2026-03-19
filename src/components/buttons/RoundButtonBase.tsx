@@ -69,14 +69,17 @@ export interface Props {
     // If momentary is true it may have two values - one that is sent on key pressed and one on release.
     momentary?: boolean;
 
-    ctrlGroup: ControllerGroupIds;
-    ctrl: ControllerConfig;
+    ctrlGroup?: ControllerGroupIds;
+    ctrl?: ControllerConfig;
     ctrlIndex?: number;
     value?: number;
     valueIndex?: number;
 
     // Only used if rotary button
     resolution?: number;
+
+    onButtonClick?: () => void;
+    onButtonRelease?: () => void;
 }
 
 type LabelPos = {
@@ -300,46 +303,60 @@ export const RoundButtonBase = (props: Props & Config) => {
         resolution,
         ledRingColors,
         ledCycleBinary,
+        onButtonClick,
+        onButtonRelease,
     } = props
 
-    const storeValue = useAppSelector(selectUiController(ctrl, ctrlIndex || 0))
+    const storeValue = useAppSelector(ctrl ? selectUiController(ctrl, ctrlIndex || 0) : () => 0)
     const currentValue = value !== undefined ? value : storeValue
 
-    // off is always the first element in the midi config values list, so when a radio
-    // button has an off state we need to offset our index by one.
     const radioButtonValueIndex = hasOff ? (radioButtonIndex || 0) + 1 : radioButtonIndex || 0
     const hasOffValue = hasOff || (ledButton && ledCount === undefined)
     const ledOnIndex = hasOffValue ? currentValue - 1 : currentValue
 
     const onIncrement = useCallback((steps: number) => {
-        for (let i = 0; i < Math.abs(steps); i++) {
-            if (steps > 0) {
-                dispatch(click({ ctrlGroup, ctrl, loop, valueIndex, source: ApiSource.UI }))
-            } else {
-                dispatch(click({ ctrlGroup, ctrl, loop, valueIndex, reverse: true, source: ApiSource.UI }))
+        if (onButtonClick) {
+            for (let i = 0; i < Math.abs(steps); i++) {
+                onButtonClick()
+            }
+        } else if (ctrl && ctrlGroup !== undefined) {
+            for (let i = 0; i < Math.abs(steps); i++) {
+                if (steps > 0) {
+                    dispatch(click({ ctrlGroup, ctrl, loop, valueIndex, source: ApiSource.UI }))
+                } else {
+                    dispatch(click({ ctrlGroup, ctrl, loop, valueIndex, reverse: true, source: ApiSource.UI }))
+                }
             }
         }
-    }, [ctrlGroup, ctrl, loop, valueIndex])
+    }, [ctrlGroup, ctrl, loop, valueIndex, onButtonClick])
 
     const handleOnClick = useCallback(() => {
-        dispatch(click({
-            ctrlGroup,
-            ctrl,
-            ctrlIndex,
-            radioButtonIndex,
-            reverse,
-            loop,
-            momentary,
-            source: ApiSource.UI
-        }))
-    }, [ctrlGroup, ctrl, ctrlIndex, radioButtonIndex, reverse, loop, momentary])
+        if (onButtonClick) {
+            onButtonClick()
+        } else if (ctrl && ctrlGroup !== undefined) {
+            dispatch(click({
+                ctrlGroup,
+                ctrl,
+                ctrlIndex,
+                radioButtonIndex,
+                reverse,
+                loop,
+                momentary,
+                source: ApiSource.UI
+            }))
+        }
+    }, [ctrlGroup, ctrl, ctrlIndex, radioButtonIndex, reverse, loop, momentary, onButtonClick])
 
     const handleOnRelease = useCallback(() => {
-        dispatch(release({ ctrlGroup, ctrl, ctrlIndex, momentary, source: ApiSource.UI }))
-    }, [ctrl, ctrlGroup, ctrlIndex, momentary])
+        if (onButtonRelease) {
+            onButtonRelease()
+        } else if (ctrl && ctrlGroup !== undefined) {
+            dispatch(release({ ctrlGroup, ctrl, ctrlIndex, momentary, source: ApiSource.UI }))
+        }
+    }, [ctrl, ctrlGroup, ctrlIndex, momentary, onButtonRelease])
 
     const ledOn: boolean[] = []
-    for (let i = 0; i < (ledCount || (ctrl.values?.length || 2) - 1); i++) {
+    for (let i = 0; i < (ledCount || (ctrl?.values?.length || 2) - 1); i++) {
         ledOn[i] = false
     }
 
@@ -384,7 +401,7 @@ export const RoundButtonBase = (props: Props & Config) => {
     } = getRenderProps(props)
 
     // multiple leds for multi-state led buttons are simulated by blinking the led on the button
-    const modes = ctrl.values?.length || 2
+    const modes = ctrl?.values?.length || 2
     let ledButtonStyle = undefined
     if(ledButton){
         if(radioButtonIndex !== undefined){
