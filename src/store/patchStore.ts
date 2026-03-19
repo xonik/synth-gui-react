@@ -165,10 +165,22 @@ export interface KbdState {
     voiceStealing: number
 }
 
+export interface DspState {
+    param1: number
+    param2: number
+    param3: number
+    effect: number
+    source: number
+}
+
 export interface CommonFxState {
-    dsp1: { param1: number; param2: number; param3: number; effect: number; source: number }
-    dsp2: { param1: number; param2: number; param3: number; effect: number; source: number }
-    chorus: { rate: number; depth: number; mode: number }
+    dsp1: DspState
+    dsp2: DspState
+    chorus: {
+        rate: number
+        depth: number
+        mode: number
+    }
 }
 
 export interface VoiceGroupPatch {
@@ -238,15 +250,38 @@ const defaultLfo = (): LfoState => ({
 })
 
 const defaultOscillator = (): OscillatorState => ({
-    range: 0, pitch: 0, note: 0, detune: 0, waveform: 0,
-    sub1: 0, sub2: 0, pw: 0.5, sync: 0, mode: 0,
-    subWave: 0, wheel: 0, lfo: 0, kbd: 0, sawInv: 0, preFilterSine: 0,
+    range: 0,
+    pitch: 0,
+    note: 0,
+    detune: 0,
+    waveform: 0,
+    sub1: 0,
+    sub2: 0,
+    pw: 0.5,
+    sync: 0,
+    mode: 0,
+    subWave: 0,
+    wheel: 0,
+    lfo: 0,
+    kbd: 0,
+    sawInv: 0,
+    preFilterSine: 0,
 })
 
 const defaultFilter = (): FilterState => ({
-    input: 0, resonance: 0, cutoff: 1, fmAmt: 0, wheelAmt: 0,
-    envAmt: 0, lfoAmt: 0, kbdAmt: 0, extCv: 0, slope: 0,
-    fmMode: 0, filterType: 0, fmSrc: 0,
+    input: 0,
+    resonance: 0,
+    cutoff: 1,
+    fmAmt: 0,
+    wheelAmt: 0,
+    envAmt: 0,
+    lfoAmt: 0,
+    kbdAmt: 0,
+    extCv: 0,
+    slope: 0,
+    fmMode: 0,
+    filterType: 0,
+    fmSrc: 0,
 })
 
 export const defaultVoiceGroupPatch = (): VoiceGroupPatch => ({
@@ -254,21 +289,80 @@ export const defaultVoiceGroupPatch = (): VoiceGroupPatch => ({
     lfos: Array.from({ length: 4 }, defaultLfo),
     oscillators: Array.from({ length: 3 }, defaultOscillator),
     filters: Array.from({ length: 2 }, defaultFilter),
-    srcMix: { levelOsc1: 1, levelOsc2: 0, levelOsc3: 0, levelNoise: 0, levelRingMod: 0, levelExtAudio: 0 },
-    fx: {
-        distortion: { drive: 0, level: 0, in: 0, out: 0 },
-        bitCrusher: { bits: 1, rate: 1, recon: 0, in: 0, out: 0 },
+    srcMix: {
+        levelOsc1: 1,
+        levelOsc2: 0,
+        levelOsc3: 0,
+        levelNoise: 0,
+        levelRingMod: 0,
+        levelExtAudio: 0,
     },
-    output: { volume: 0.75, spread: 0.5, headphones: 0.75 },
-    postMix: { lpf: 1, svf: 0, sine1: 0, sine2: 0, pan: 0.5, amount: 1, fx1Send: 0, fx2Send: 0 },
+    fx: {
+        distortion: {
+            drive: 0,
+            level: 0,
+            in: 0,
+            out: 0,
+        },
+        bitCrusher: {
+            bits: 1,
+            rate: 1,
+            recon: 0,
+            in: 0,
+            out: 0,
+        },
+    },
+    output: {
+        volume: 0.75,
+        spread: 0.5,
+        headphones: 0.75,
+    },
+    postMix: {
+        lpf: 1,
+        svf: 0,
+        sine1: 0,
+        sine2: 0,
+        pan: 0.5,
+        amount: 1,
+        fx1Send: 0,
+        fx2Send: 0,
+    },
     mods: {},
-    noise: { colour: 0.5 },
-    ringMod: { source: 0 },
-    kbd: { portamento: 0, unisonDetune: 0, hold: 0, chord: 0, mode: 0, transpose: 0, voiceStealing: 0 },
+    noise: {
+        colour: 0.5,
+    },
+    ringMod: {
+        source: 0,
+    },
+    kbd: {
+        portamento: 0,
+        unisonDetune: 0,
+        hold: 0,
+        chord: 0,
+        mode: 0,
+        transpose: 0,
+        voiceStealing: 0,
+    },
     commonFx: {
-        dsp1: { param1: 0, param2: 0, param3: 0, effect: 0, source: 0 },
-        dsp2: { param1: 0, param2: 0, param3: 0, effect: 0, source: 0 },
-        chorus: { rate: 0, depth: 0, mode: 0 },
+        dsp1: {
+            param1: 0,
+            param2: 0,
+            param3: 0,
+            effect: 0,
+            source: 0,
+        },
+        dsp2: {
+            param1: 0,
+            param2: 0,
+            param3: 0,
+            effect: 0,
+            source: 0,
+        },
+        chorus: {
+            rate: 0,
+            depth: 0,
+            mode: 0,
+        },
     },
 })
 
