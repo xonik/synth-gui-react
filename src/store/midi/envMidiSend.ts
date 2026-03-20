@@ -22,6 +22,7 @@ const STAGE_NAME_TO_ID: Record<StageName, StageId> = {
     sustain: StageId.SUSTAIN,
     release1: StageId.RELEASE1,
     release2: StageId.RELEASE2,
+    stopped: StageId.STOPPED,
 }
 
 function sendStageParams(

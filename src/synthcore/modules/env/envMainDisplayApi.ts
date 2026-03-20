@@ -25,6 +25,7 @@ const STAGE_ID_TO_NAME: Record<number, StageName> = {
     [StageId.SUSTAIN]: 'sustain',
     [StageId.RELEASE1]: 'release1',
     [StageId.RELEASE2]: 'release2',
+    [StageId.STOPPED]: 'stopped',
 }
 
 function getBounded(value: number, min: number, max: number): number {

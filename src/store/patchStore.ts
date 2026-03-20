@@ -30,6 +30,7 @@ export interface EnvelopeState {
         sustain: EnvelopeStageState
         release1: EnvelopeStageState
         release2: EnvelopeStageState
+        stopped: EnvelopeStageState
     }
     invert: number
     bipolar: number
@@ -252,6 +253,12 @@ const defaultEnvelope = (): EnvelopeState => ({
             curve: 5,
             enabled: 1,
         },
+        stopped: {
+            time: 0,
+            level: 0,
+            curve: 4,
+            enabled: 1,
+        },
     },
     invert: 0,
     bipolar: 0,
@@ -309,7 +316,10 @@ const defaultFilter = (): FilterState => ({
 })
 
 export const defaultVoiceGroupPatch = (): VoiceGroupPatch => ({
-    envelopes: Array.from({ length: 5 }, defaultEnvelope),
+    envelopes: Array.from({ length: 5 }, (_, i) => ({
+        ...defaultEnvelope(),
+        bipolar: (i !== 0 && i !== 1) ? 1 : 0,
+    })),
     lfos: Array.from({ length: 4 }, defaultLfo),
     oscillators: Array.from({ length: 3 }, defaultOscillator),
     filters: Array.from({ length: 2 }, defaultFilter),

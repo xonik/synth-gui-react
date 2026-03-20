@@ -24,6 +24,7 @@ export const STAGE_NAMES: StageName[] = [
     'sustain',
     'release1',
     'release2',
+    'stopped',
 ]
 
 const TOGGLEABLE_STAGES: StageName[] = [
@@ -191,6 +192,7 @@ export function toggleInvert(
     env.stages.delay.level = resetLevel
     env.stages.attack.level = resetLevel
     env.stages.decay1.level = newInvert ? 0 : 1
+    env.stages.stopped.level = resetLevel
 }
 
 /**
@@ -208,6 +210,7 @@ export function setInvert(
     env.stages.delay.level = resetLevel
     env.stages.attack.level = resetLevel
     env.stages.decay1.level = value ? 0 : 1
+    env.stages.stopped.level = resetLevel
 }
 
 /**

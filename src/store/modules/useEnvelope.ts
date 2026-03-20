@@ -90,6 +90,7 @@ const STAGE_NAME_TO_ID: Record<StageName, StageId> = {
     sustain: StageId.SUSTAIN,
     release1: StageId.RELEASE1,
     release2: StageId.RELEASE2,
+    stopped: StageId.STOPPED,
 }
 
 export type DisplayStage = {
@@ -109,7 +110,7 @@ export function useEnvStages(envId: number): DisplayStage[] {
     const env = useVoiceGroupStore(voiceGroupIndex, s => s.envelopes[envId])
 
     return useMemo(() => {
-        const stages: DisplayStage[] = STAGE_NAMES.map(name => {
+        return STAGE_NAMES.map(name => {
             const stage = env.stages[name]
             return {
                 id: STAGE_NAME_TO_ID[name],
@@ -119,15 +120,6 @@ export function useEnvStages(envId: number): DisplayStage[] {
                 time: stage.time,
             }
         })
-        // Add STOPPED stage
-        stages.push({
-            id: StageId.STOPPED,
-            enabled: 1,
-            curve: 0,
-            level: 0,
-            time: 0,
-        })
-        return stages
     }, [env])
 }
 
