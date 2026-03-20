@@ -13,6 +13,7 @@
  */
 
 import { EnvelopeState, EnvelopeStageState, VoiceGroupPatch } from '../patchStore'
+import { getBounded, getQuantized } from '../utils'
 
 export type StageName = keyof EnvelopeState['stages']
 
@@ -38,16 +39,6 @@ const LEVEL_EDITABLE_STAGES: StageName[] = [
     'decay2',
     'sustain',
 ]
-
-function getBounded(value: number, min: number, max: number): number {
-    if (value > max) return max
-    if (value < min) return min
-    return value
-}
-
-function getQuantized(value: number, factor: number = 65535): number {
-    return Math.round(value * factor) / factor
-}
 
 function boundLevel(value: number, bipolar: boolean): number {
     const bounded = bipolar

@@ -11,12 +11,7 @@ import { useUiStore } from '../uiStore'
 import { StageName, STAGE_NAMES, setStageLevel, setStageTime, toggleStageEnabled, toggleInvert, setInvert } from './envActions'
 import { timeResponseMapper, dbLevelResponseMapper } from '../../synthcore/modules/common/responseMappers'
 import { StageId } from '../../synthcore/modules/env/types'
-
-function getBounded(value: number, min: number, max: number): number {
-    if (value > max) return max
-    if (value < min) return min
-    return value
-}
+import { getBounded } from '../utils'
 
 export function useEnvTime(envId: number, stageName: StageName) {
     const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)

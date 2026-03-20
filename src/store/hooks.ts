@@ -17,6 +17,7 @@ import { useMemo, useCallback } from 'react'
 import { useVoiceGroupStore, voiceGroupStores, VoiceGroupPatch } from './patchStore'
 import { useUiStore } from './uiStore'
 import type { ResponseMapper } from './types'
+import { getBounded } from './utils'
 
 /**
  * Get a value from the current voice group's patch store using a typed selector.
@@ -134,10 +135,4 @@ export function useButton(
     }, [voiceGroupIndex, mutator])
 
     return { value, toggle, set }
-}
-
-function getBounded(value: number, min: number, max: number): number {
-    if (value > max) return max
-    if (value < min) return min
-    return value
 }

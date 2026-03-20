@@ -1,6 +1,7 @@
 import { useUiStore } from '../../../store/uiStore'
 import { voiceGroupStores } from '../../../store/patchStore'
 import { setStageTime, setStageLevel, setStageCurve, setMaxLoops, StageName, STAGE_NAMES } from '../../../store/modules/envActions'
+import { getBounded } from '../../../store/utils'
 import { LoopMode, StageId } from './types'
 import { step } from '../../utils'
 import mainDisplayControllers from '../mainDisplay/mainDisplayControllers'
@@ -26,12 +27,6 @@ const STAGE_ID_TO_NAME: Record<number, StageName> = {
     [StageId.RELEASE1]: 'release1',
     [StageId.RELEASE2]: 'release2',
     [StageId.STOPPED]: 'stopped',
-}
-
-function getBounded(value: number, min: number, max: number): number {
-    if (value > max) return max
-    if (value < min) return min
-    return value
 }
 
 export const mainDisplayEnvApi = {
