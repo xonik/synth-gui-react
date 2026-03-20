@@ -7,9 +7,11 @@ import { Provider } from 'react-redux'
 import { store } from './synthcore/store'
 import midiApi from './midi/midiApi'
 import { startEnvelopeMidiSend } from './store/midi/envMidiSend'
+import { startEnvelopeMidiReceive } from './store/midi/envMidiReceive'
 
 midiApi.initReceive()
 startEnvelopeMidiSend()
+startEnvelopeMidiReceive()
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

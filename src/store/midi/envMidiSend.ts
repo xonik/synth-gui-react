@@ -13,6 +13,7 @@ import { paramSend } from '../../synthcore/modules/common/commonMidiApi'
 import { envCtrls } from '../../synthcore/modules/env/envControllers'
 import { StageId, NUMBER_OF_ENVELOPES } from '../../synthcore/modules/env/types'
 import { ApiSource } from '../../synthcore/types'
+import { isMidiReceiving } from './midiGuard'
 
 const STAGE_NAME_TO_ID: Record<StageName, StageId> = {
     delay: StageId.DELAY,
@@ -205,6 +206,10 @@ export function startEnvelopeMidiSend() {
         let previousEnvelopes = store.getState().envelopes
 
         const unsub = store.subscribe((state) => {
+            if (isMidiReceiving()) {
+                previousEnvelopes = state.envelopes
+                return
+            }
             if (state.envelopes !== previousEnvelopes) {
                 const prev = previousEnvelopes
                 previousEnvelopes = state.envelopes
