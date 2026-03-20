@@ -2,38 +2,40 @@ import React from 'react'
 import { StageId } from '../../synthcore/modules/env/types'
 import Button from '../components/Button'
 import { stageNames } from './utils'
-import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
-import { click } from '../../synthcore/modules/ui/uiReducer'
-import { envCtrls } from '../../synthcore/modules/env/envControllers'
-import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
-import { selectEnvStages } from '../../synthcore/modules/controllers/controllersReducer'
+import { useEnvStages, useEnvStageToggle } from '../../store/modules/useEnvelope'
+import { StageName, STAGE_NAMES } from '../../store/modules/envActions'
 import { CtrlOptions } from "@/controller/components/CtrlOptions";
 
 interface Props {
     envId: number
 }
 
-// Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
+const STAGE_ID_TO_NAME: Record<number, StageName> = {
+    [StageId.DELAY]: 'delay',
+    [StageId.ATTACK]: 'attack',
+    [StageId.DECAY1]: 'decay1',
+    [StageId.DECAY2]: 'decay2',
+    [StageId.SUSTAIN]: 'sustain',
+    [StageId.RELEASE1]: 'release1',
+    [StageId.RELEASE2]: 'release2',
+    [StageId.STOPPED]: 'stopped',
+}
+
 const StageActivator = ({ envId }: Props) => {
 
-    const dispatch = useAppDispatch()
-    const stages = useAppSelector(selectEnvStages(envId))
+    const stages = useEnvStages(envId)
+    const toggleStage = useEnvStageToggle(envId)
 
     return <CtrlOptions>
-        {stages.map((stage, index) => {
+        {stages.map((stage) => {
             if (stage.id === StageId.STOPPED) {
                 return null
             }
+            const stageName = STAGE_ID_TO_NAME[stage.id]
             return <Button
                 key={stage.id}
                 active={stage.enabled === 1}
-                onClick={() => dispatch(click({
-                    ctrl: envCtrls.TOGGLE_STAGE,
-                    ctrlGroup: ControllerGroupIds.ENV,
-                    ctrlIndex: envId,
-                    valueIndex: stage.id,
-                    source: ApiSource.GUI
-                }))}
+                onClick={() => toggleStage(stageName)}
             >{stageNames[stage.id]}</Button>
         })}
     </CtrlOptions>

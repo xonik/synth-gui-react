@@ -1,15 +1,14 @@
 import React from 'react'
 import { StageId } from '../../synthcore/modules/env/types'
 import { stageNames } from './utils'
-import { selectEnvStages } from '../../synthcore/modules/controllers/controllersReducer'
+import { useEnvStages } from '../../store/modules/useEnvelope'
+import { useUiStore } from '../../store'
 import CtrlHeader from "@/controller/components/CtrlHeader";
-import { useAppSelector } from '../../synthcore/hooks'
-import { selectCurrEnvId } from '../../synthcore/modules/env/envReducer'
 import '../components/CtrlHeader.scss'
 
 const EnvHeader = () => {
-    const envId = useAppSelector(selectCurrEnvId)
-    const stages = useAppSelector(selectEnvStages(envId))
+    const envId = useUiStore(s => s.selectedEnvId)
+    const stages = useEnvStages(envId)
     const centerLabels = stages
         .filter((stage) => stage.enabled && stage.id !== StageId.STOPPED)
         .map((stage) => stageNames[stage.id])
@@ -21,4 +20,3 @@ const EnvHeader = () => {
 }
 
 export default EnvHeader
-

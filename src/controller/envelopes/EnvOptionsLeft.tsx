@@ -1,16 +1,11 @@
 import React from 'react'
 import { LoopMode, ReleaseMode, StageId } from '../../synthcore/modules/env/types'
 import Button from '../components/Button'
-import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
-import {
-    selectCurrStageId,
-} from '../../synthcore/modules/env/envReducer'
 import { loopModeNames, releaseModeNames } from './utils'
-import { click } from '../../synthcore/modules/ui/uiReducer'
-import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
-import { envCtrls } from '../../synthcore/modules/env/envControllers'
-import { selectController, selectEnvStageById } from '../../synthcore/modules/controllers/controllersReducer'
+import { useUiStore } from '../../store'
+import { useEnvParam, useEnvToggle, useEnvCycleParam, useEnvStageById } from '../../store/modules/useEnvelope'
 import { getCurveName } from '../../components/curves/shortCurveNames'
+import { envCtrls } from '../../synthcore/modules/env/envControllers'
 import { CtrlOptions } from "@/controller/components/CtrlOptions";
 
 interface Props {
@@ -19,47 +14,30 @@ interface Props {
 
 const getLoopLabel = (loopMode: LoopMode, loops: number) => `Loop ${loopMode === LoopMode.COUNTED ? loops + ' ' : ''} ${loopModeNames[loopMode]}`
 
-const ctrlGroup = ControllerGroupIds.ENV
-
-// Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
 const EnvOptionsLeft = ({ envId }: Props) => {
 
-    const action = {
-        ctrlGroup: ctrlGroup,
-        ctrlIndex: envId,
-        source: ApiSource.GUI,
-        loop: true,
-    }
+    const { value: invert, toggle: toggleInvert } = useEnvToggle(envId, 'invert')
+    const { value: retrigger, toggle: toggleRetrigger } = useEnvToggle(envId, 'resetOnTrigger')
+    const { value: loopEnabled, toggle: toggleLoop } = useEnvToggle(envId, 'loop')
+    const { value: releaseMode, cycle: cycleReleaseMode } = useEnvCycleParam(envId, 'releaseMode', 3)
+    const { value: loopMode, cycle: cycleLoopMode } = useEnvCycleParam(envId, 'loopMode', 3)
+    const maxLoops = useEnvParam(envId, 'maxLoops')
 
-    const dispatch = useAppDispatch()
-    const releaseMode = useAppSelector(selectController(envCtrls.RELEASE_MODE, envId))
-    const loopMode = useAppSelector(selectController(envCtrls.LOOP_MODE, envId))
-    const loopEnabled = useAppSelector(selectController(envCtrls.LOOP, envId))
-    const maxLoops = useAppSelector(selectController(envCtrls.MAX_LOOPS, envId))
-    const invert = useAppSelector(selectController(envCtrls.INVERT, envId))
-    const retrigger = useAppSelector(selectController(envCtrls.RESET_ON_TRIGGER, envId))
-    const currStageId = useAppSelector(selectCurrStageId)
-
-    const clickInvert = click({ ...action, ctrl: envCtrls.INVERT })
-    const clickRetrigger = click({ ...action, ctrl: envCtrls.RESET_ON_TRIGGER })
-    const clickReleaseMode = click({ ...action, ctrl: envCtrls.RELEASE_MODE })
-    const clickLoopMode = click({ ...action, ctrl: envCtrls.LOOP_MODE })
-    const clickLoopEnabled = click({ ...action, ctrl: envCtrls.LOOP })
-
+    const currStageId = useUiStore(s => s.selectedEnvStageId)
     const hasCurve = currStageId !== StageId.STOPPED && currStageId !== StageId.DELAY && currStageId !== StageId.SUSTAIN
-    const curveIndex = useAppSelector(selectEnvStageById(envId, currStageId)).curve
-    const curveLabel = hasCurve ? getCurveName(envCtrls.CURVE, curveIndex) : '-'
+    const stage = useEnvStageById(envId, currStageId)
+    const curveLabel = hasCurve ? getCurveName(envCtrls.CURVE, stage.curve) : '-'
 
     return <CtrlOptions heading={curveLabel}>
-        <Button active={!!invert} onClick={() => dispatch(clickInvert)}>Invert</Button>
-        <Button active={!!retrigger} onClick={() => dispatch(clickRetrigger)}>Retrigger</Button>
-        <Button active={releaseMode !== ReleaseMode.NORMAL} onClick={() => dispatch(clickReleaseMode)}>
+        <Button active={!!invert} onClick={toggleInvert}>Invert</Button>
+        <Button active={!!retrigger} onClick={toggleRetrigger}>Retrigger</Button>
+        <Button active={releaseMode !== ReleaseMode.NORMAL} onClick={cycleReleaseMode}>
             {releaseModeNames[releaseMode]}
         </Button>
-        <Button active={!!loopEnabled} onClick={() => dispatch(clickLoopMode)}>
-            {getLoopLabel(loopMode, maxLoops)}
+        <Button active={!!loopEnabled} onClick={cycleLoopMode}>
+            {getLoopLabel(loopMode as LoopMode, maxLoops)}
         </Button>
-        <Button active={!!loopEnabled} onClick={() => dispatch(clickLoopEnabled)}>
+        <Button active={!!loopEnabled} onClick={toggleLoop}>
             Loop
         </Button>
     </CtrlOptions>
