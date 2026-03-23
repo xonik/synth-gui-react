@@ -10,12 +10,15 @@ import { startEnvelopeMidiSend } from './store/midi/envMidiSend'
 import { startEnvelopeMidiReceive } from './store/midi/envMidiReceive'
 import { startSimpleButtonMidiSend } from './store/midi/simpleButtonMidiSend'
 import { startSimpleButtonMidiReceive } from './store/midi/simpleButtonMidiReceive'
+import { startFxKbdMidiSend, startFxKbdMidiReceive } from './store/midi/fxKbdMidi'
 
 midiApi.initReceive()
 startEnvelopeMidiSend()
 startEnvelopeMidiReceive()
 startSimpleButtonMidiSend()
 startSimpleButtonMidiReceive()
+startFxKbdMidiSend()
+startFxKbdMidiReceive()
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
