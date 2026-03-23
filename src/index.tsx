@@ -13,6 +13,7 @@ import { startSimpleButtonMidiReceive } from './store/midi/simpleButtonMidiRecei
 import { startFxKbdMidiSend, startFxKbdMidiReceive } from './store/midi/fxKbdMidi'
 import { startSrcMixMidiSend, startSrcMixMidiReceive } from './store/midi/srcMixMidi'
 import { startOutPostMixMidiSend, startOutPostMixMidiReceive } from './store/midi/outMidi'
+import { startOscMidiSend, startOscMidiReceive } from './store/midi/oscMidi'
 
 midiApi.initReceive()
 startEnvelopeMidiSend()
@@ -25,6 +26,8 @@ startSrcMixMidiSend()
 startSrcMixMidiReceive()
 startOutPostMixMidiSend()
 startOutPostMixMidiReceive()
+startOscMidiSend()
+startOscMidiReceive()
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
