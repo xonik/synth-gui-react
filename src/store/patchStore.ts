@@ -54,6 +54,21 @@ export interface LfoState {
     delay: number
     shape: number
     sync: number
+    balance: number
+    phaseOffset: number
+    levelOffset: number
+    bipolar: number
+    invert: number
+    reset: number
+    loop: number
+    loopMode: number
+    maxLoops: number
+    resetOnTrigger: number
+    resetOnStop: number
+    resetLevelOnClock: number
+    syncToClock: number
+    gated: number
+    randomPhase: number
     stages: {
         [stageId: number]: LfoStageState
     }
@@ -292,6 +307,21 @@ const defaultLfo = (): LfoState => ({
     delay: 0,
     shape: 0,
     sync: 0,
+    balance: 0.5,
+    phaseOffset: 0,
+    levelOffset: 0,
+    bipolar: 0,
+    invert: 0,
+    reset: 0,
+    loop: 0,
+    loopMode: 0,
+    maxLoops: 2,
+    resetOnTrigger: 0,
+    resetOnStop: 0,
+    resetLevelOnClock: 0,
+    syncToClock: 0,
+    gated: 0,
+    randomPhase: 0,
     stages: {},
 })
 
