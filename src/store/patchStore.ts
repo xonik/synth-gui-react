@@ -363,7 +363,7 @@ export const defaultVoiceGroupPatch = (): VoiceGroupPatch => ({
     },
     mods: {},
     noise: {
-        colour: 0.5,
+        colour: 0,
     },
     ringMod: {
         source: 0,

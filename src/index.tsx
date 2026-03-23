@@ -8,10 +8,14 @@ import { store } from './synthcore/store'
 import midiApi from './midi/midiApi'
 import { startEnvelopeMidiSend } from './store/midi/envMidiSend'
 import { startEnvelopeMidiReceive } from './store/midi/envMidiReceive'
+import { startSimpleButtonMidiSend } from './store/midi/simpleButtonMidiSend'
+import { startSimpleButtonMidiReceive } from './store/midi/simpleButtonMidiReceive'
 
 midiApi.initReceive()
 startEnvelopeMidiSend()
 startEnvelopeMidiReceive()
+startSimpleButtonMidiSend()
+startSimpleButtonMidiReceive()
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

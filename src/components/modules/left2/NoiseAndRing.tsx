@@ -1,7 +1,5 @@
 import React from 'react'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
-import { ControllerGroupIds } from '../../../synthcore/types'
-import noiseControllers from '../../../synthcore/modules/noise/noiseControllers'
 import SubHeader from "../../misc/SubHeader";
 import {
     POT_DISTANCE_L,
@@ -9,14 +7,11 @@ import {
     POT_OFFSET_Y,
     ROW_HEIGHT,
 } from "../../../constants";
-import { SHOW_CUT } from "../../../config";
 import { VerticalDividerLine } from "../../misc/VerticalDividerLine";
-import ringModControllers from "../../../synthcore/modules/ringMod/ringModControllers";
 import { ModuleProps } from "../types";
 import { ModuleBorder } from "../../misc/ModuleBorder";
 import "../Modules.scss"
-
-const ctrlGroup = ControllerGroupIds.NOISE
+import { useButton } from '../../../store/hooks'
 
 const NoiseAndRing = ({ x, y, width, height }: ModuleProps) => {
 
@@ -24,6 +19,17 @@ const NoiseAndRing = ({ x, y, width, height }: ModuleProps) => {
 
     const col1 = x + POT_DISTANCE_M / 2
     const col2 = col1 + POT_DISTANCE_L
+
+    const { value: colourValue, toggle: colourToggle } = useButton(
+        s => s.noise.colour,
+        (s, v) => { s.noise.colour = v },
+        3
+    )
+    const { value: sourceValue, toggle: sourceToggle } = useButton(
+        s => s.ringMod.source,
+        (s, v) => { s.ringMod.source = v },
+        3
+    )
 
     return <>
         <ModuleBorder x={x} y={y} height={height} width={width} className="audio-elements-border"/>
@@ -37,8 +43,8 @@ const NoiseAndRing = ({ x, y, width, height }: ModuleProps) => {
         <RoundPushButton8 x={col1} y={y + POT_OFFSET_Y}
                           ledPosition="right" ledCount={3} ledLabels={['White', 'Pink', 'Red']}
                           label="" labelPosition="bottom"
-                          ctrlGroup={ctrlGroup}
-                          ctrl={noiseControllers.COLOUR}
+                          value={colourValue}
+                          onButtonClick={colourToggle}
         />
         <VerticalDividerLine x={center} y={y} length={ROW_HEIGHT}/>
 
@@ -51,8 +57,8 @@ const NoiseAndRing = ({ x, y, width, height }: ModuleProps) => {
         <RoundPushButton8 x={col2} y={y + POT_OFFSET_Y}
                           ledPosition="right" ledCount={3} ledLabels={['1 -> 2', 'E -> 2', '3 -> 2']}
                           label="" labelPosition="bottom"
-                          ctrlGroup={ctrlGroup}
-                          ctrl={ringModControllers.SOURCE}
+                          value={sourceValue}
+                          onButtonClick={sourceToggle}
         />
 
     </>
