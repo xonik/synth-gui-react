@@ -10,12 +10,15 @@ import { startEnvelopeMidiSend } from './store/midi/envMidiSend'
 import { startEnvelopeMidiReceive } from './store/midi/envMidiReceive'
 import { startSimpleButtonMidiSend } from './store/midi/simpleButtonMidiSend'
 import { startSimpleButtonMidiReceive } from './store/midi/simpleButtonMidiReceive'
+import { startOutPostMixMidiSend, startOutPostMixMidiReceive } from './store/midi/outMidi'
 
 midiApi.initReceive()
 startEnvelopeMidiSend()
 startEnvelopeMidiReceive()
 startSimpleButtonMidiSend()
 startSimpleButtonMidiReceive()
+startOutPostMixMidiSend()
+startOutPostMixMidiReceive()
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
