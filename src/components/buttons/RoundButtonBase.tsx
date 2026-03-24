@@ -80,6 +80,7 @@ export interface Props {
 
     onButtonClick?: () => void;
     onButtonRelease?: () => void;
+    onIncrement?: (steps: number) => void;
 }
 
 type LabelPos = {
@@ -305,6 +306,7 @@ export const RoundButtonBase = (props: Props & Config) => {
         ledCycleBinary,
         onButtonClick,
         onButtonRelease,
+        onIncrement: onIncrementProp,
     } = props
 
     const storeValue = useAppSelector(ctrl ? selectUiController(ctrl, ctrlIndex || 0) : () => 0)
@@ -315,7 +317,9 @@ export const RoundButtonBase = (props: Props & Config) => {
     const ledOnIndex = hasOffValue ? currentValue - 1 : currentValue
 
     const onIncrement = useCallback((steps: number) => {
-        if (onButtonClick) {
+        if (onIncrementProp) {
+            onIncrementProp(steps)
+        } else if (onButtonClick) {
             for (let i = 0; i < Math.abs(steps); i++) {
                 onButtonClick()
             }
@@ -328,7 +332,7 @@ export const RoundButtonBase = (props: Props & Config) => {
                 }
             }
         }
-    }, [ctrlGroup, ctrl, loop, valueIndex, onButtonClick])
+    }, [ctrlGroup, ctrl, loop, valueIndex, onButtonClick, onIncrementProp])
 
     const handleOnClick = useCallback(() => {
         if (onButtonClick) {

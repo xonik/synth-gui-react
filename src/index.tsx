@@ -14,6 +14,7 @@ import { startFxKbdMidiSend, startFxKbdMidiReceive } from './store/midi/fxKbdMid
 import { startSrcMixMidiSend, startSrcMixMidiReceive } from './store/midi/srcMixMidi'
 import { startOutPostMixMidiSend, startOutPostMixMidiReceive } from './store/midi/outMidi'
 import { startOscMidiSend, startOscMidiReceive } from './store/midi/oscMidi'
+import { startFilterMidiSend, startFilterMidiReceive } from './store/midi/filterMidi'
 
 midiApi.initReceive()
 startEnvelopeMidiSend()
@@ -28,6 +29,8 @@ startOutPostMixMidiSend()
 startOutPostMixMidiReceive()
 startOscMidiSend()
 startOscMidiReceive()
+startFilterMidiSend()
+startFilterMidiReceive()
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

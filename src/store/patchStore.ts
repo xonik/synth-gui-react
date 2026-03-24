@@ -98,6 +98,9 @@ export interface FilterState {
     fmMode: number
     filterType: number
     fmSrc: number
+    invert: number
+    linkCutoff: number
+    routing: number
 }
 
 export interface SrcMixState {
@@ -331,6 +334,9 @@ const defaultFilter = (): FilterState => ({
     fmMode: 0,
     filterType: 0,
     fmSrc: 0,
+    invert: 0,
+    linkCutoff: 0,
+    routing: 0,
 })
 
 export const defaultVoiceGroupPatch = (): VoiceGroupPatch => ({
