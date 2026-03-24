@@ -31,12 +31,12 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
     const { value: syncValue, toggle: syncToggle } = useGlobalButton(
         s => s.arp.sync,
         (s, v) => { s.arp.sync = v },
-        2
+        3
     )
     const { value: modeValue, toggle: modeToggle } = useGlobalButton(
         s => s.arp.mode,
         (s, v) => { s.arp.mode = v },
-        3
+        4
     )
     const { value: rangeValue, toggle: rangeToggle } = useGlobalButton(
         s => s.arp.range,
@@ -63,14 +63,16 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
                      onValueIncrement={rateIncrement}
         />
 
-        <RoundLedPushButton8 labelPosition="bottom-pot" x={col1} y={row2} label="Sync"
+        <RoundPushButton8 labelPosition="bottom-pot" x={col1} y={row2} label="Sync"
+                          ledCount={3} ledPosition="right" ledLabels={['Off', 'Master', 'Ext']}
+                          hasOff
                           value={syncValue}
                           onButtonClick={syncToggle}
         />
 
         <RoundPushButton8 x={col3} y={row2}
                           label="Mode" labelPosition="bottom-pot"
-                          ledCount={3} ledPosition="right" ledLabels={['Up', 'Down', 'Random']}
+                          ledCount={4} ledPosition="right" ledLabels={['Up', 'Down', 'Up/Down', 'Random']}
                           ledCycleBinary
                           value={modeValue}
                           onButtonClick={modeToggle}
