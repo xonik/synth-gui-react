@@ -10,12 +10,13 @@ export interface Props {
     x: number,
     y: number,
     label?: string,
-    ctrlGroup: ControllerGroupIds;
-    ctrl: ControllerConfig
+    ctrlGroup?: ControllerGroupIds;
+    ctrl?: ControllerConfig
     ctrlIndex?: number
     valueIndex?: number
     resolution?: number
     silver?: boolean;
+    onValueIncrement?: (delta: number) => void;
 }
 
 interface Config {
@@ -23,14 +24,18 @@ interface Config {
 }
 
 const RotaryPotWOLeds = (props: Props & Config) => {
-    const { x, y, label, knobRadius, ctrlGroup, ctrl, ctrlIndex, valueIndex, resolution, silver } = props
+    const { x, y, label, knobRadius, ctrlGroup, ctrl, ctrlIndex, valueIndex, resolution, silver, onValueIncrement } = props
     const labelY = knobRadius + 5
 
     const dispatch = useAppDispatch()
 
     const onIncrement = useCallback((steps: number, stepSize: number) => {
-        dispatch(increment({ ctrlGroup, ctrl, value: steps * stepSize, valueIndex, ctrlIndex, source: ApiSource.UI }))
-    }, [ctrl, ctrlGroup, ctrlIndex, dispatch, valueIndex])
+        if (onValueIncrement) {
+            onValueIncrement(steps * stepSize)
+        } else if (ctrl && ctrlGroup !== undefined) {
+            dispatch(increment({ ctrlGroup, ctrl, value: steps * stepSize, valueIndex, ctrlIndex, source: ApiSource.UI }))
+        }
+    }, [ctrl, ctrlGroup, ctrlIndex, dispatch, valueIndex, onValueIncrement])
 
     return <svg x={x} y={y} className="pot">
         <RotaryPotBase
