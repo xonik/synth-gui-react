@@ -200,6 +200,13 @@ export interface DspState {
     source: number
 }
 
+export interface FxMixState {
+    levelDsp1: number
+    levelDsp2: number
+    levelChorus: number
+    levelBitCrusher: number
+}
+
 export interface CommonFxState {
     dsp1: DspState
     dsp2: DspState
@@ -207,7 +214,9 @@ export interface CommonFxState {
         rate: number
         depth: number
         mode: number
+        source: number
     }
+    fxMix: FxMixState
 }
 
 export interface VoiceGroupPatch {
@@ -456,6 +465,13 @@ export const defaultVoiceGroupPatch = (): VoiceGroupPatch => ({
             rate: 0,
             depth: 0,
             mode: 0,
+            source: 0,
+        },
+        fxMix: {
+            levelDsp1: 0,
+            levelDsp2: 0,
+            levelChorus: 0,
+            levelBitCrusher: 0,
         },
     },
 })

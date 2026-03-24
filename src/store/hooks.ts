@@ -15,6 +15,7 @@
 
 import { useMemo, useCallback } from 'react'
 import { useVoiceGroupStore, voiceGroupStores, VoiceGroupPatch } from './patchStore'
+import { useGlobalStore, globalStore, GlobalPatchState } from './globalStore'
 import { useUiStore } from './uiStore'
 import type { ResponseMapper } from './types'
 import { getBounded } from './utils'
@@ -135,4 +136,62 @@ export function useButton(
     }, [voiceGroupIndex, mutator])
 
     return { value, toggle, set }
+}
+
+/**
+ * Hook for connecting a potentiometer to the global store.
+ */
+export function useGlobalPot(
+    selector: (state: GlobalPatchState) => number,
+    mutator: (state: GlobalPatchState, value: number) => void,
+    options?: {
+        responseMapper?: ResponseMapper
+        bipolar?: boolean
+    }
+) {
+    const rawValue = useGlobalStore(selector)
+    const { responseMapper, bipolar } = options ?? {}
+
+    const displayValue = useMemo(() => {
+        if (responseMapper) {
+            return responseMapper.input(rawValue, bipolar)
+        }
+        return rawValue
+    }, [rawValue, responseMapper, bipolar])
+
+    const increment = useCallback((delta: number) => {
+        const newDisplay = getBounded(
+            displayValue + delta,
+            bipolar ? -1 : 0,
+            1
+        )
+        const newRaw = responseMapper
+            ? responseMapper.output(newDisplay, bipolar)
+            : newDisplay
+        globalStore.getState().set(state => {
+            mutator(state, newRaw)
+        })
+    }, [mutator, displayValue, responseMapper, bipolar])
+
+    return { displayValue, rawValue, increment }
+}
+
+/**
+ * Hook for connecting a button to the global store.
+ */
+export function useGlobalButton(
+    selector: (state: GlobalPatchState) => number,
+    mutator: (state: GlobalPatchState, value: number) => void,
+    numValues: number,
+) {
+    const value = useGlobalStore(selector)
+
+    const toggle = useCallback(() => {
+        const current = selector(globalStore.getState())
+        globalStore.getState().set(state => {
+            mutator(state, (current + 1) % numValues)
+        })
+    }, [selector, mutator, numValues])
+
+    return { value, toggle }
 }

@@ -9,8 +9,10 @@ import { voiceGroupStores, createPatchStore } from '../../store/patchStore'
 import noiseControllers from '../../synthcore/modules/noise/noiseControllers'
 import ringModControllers from '../../synthcore/modules/ringMod/ringModControllers'
 import { buttonMidiValues } from '../../midi/buttonMidiValues'
-import { startSimpleButtonMidiReceive, stopSimpleButtonMidiReceive } from '../../store/midi/simpleButtonMidiReceive'
-import { startSimpleButtonMidiSend, stopSimpleButtonMidiSend } from '../../store/midi/simpleButtonMidiSend'
+import {
+    startNoiseRingModMidiReceive, stopNoiseRingModMidiReceive,
+    startNoiseRingModMidiSend, stopNoiseRingModMidiSend,
+} from '../../store/midi/noiseRingModMidi'
 
 const VG = 0
 
@@ -26,11 +28,11 @@ function resetStore() {
 describe('simple button MIDI receive', () => {
     beforeEach(() => {
         resetStore()
-        startSimpleButtonMidiReceive()
+        startNoiseRingModMidiReceive()
     })
 
     afterEach(() => {
-        stopSimpleButtonMidiReceive()
+        stopNoiseRingModMidiReceive()
     })
 
     describe('noise colour', () => {
@@ -80,11 +82,11 @@ describe('simple button MIDI send', () => {
         button.send = vi.fn((vg, ctrl, value) => {
             sentValues.push({ ctrl, value })
         }) as any
-        startSimpleButtonMidiSend()
+        startNoiseRingModMidiSend()
     })
 
     afterEach(() => {
-        stopSimpleButtonMidiSend()
+        stopNoiseRingModMidiSend()
         button.send = origSend
     })
 

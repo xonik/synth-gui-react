@@ -2,8 +2,6 @@ import React from 'react';
 import RotaryPot12 from '../../pots/RotaryPot12';
 import RoundPushButton8 from '../../buttons/RoundPushButton8';
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8';
-import { ControllerGroupIds } from '../../../synthcore/types'
-import arpControllers from '../../../synthcore/modules/arp/arpControllers'
 import SubHeader from "../../misc/SubHeader";
 import {
     POT_DISTANCE_M,
@@ -12,11 +10,9 @@ import {
     ROW_HEIGHT,
     POT_DISTANCE_S
 } from "../../../constants";
-import { SHOW_CUT } from "../../../config";
 import { ModuleBorder } from "../../misc/ModuleBorder";
 import { ModuleProps } from "../types";
-
-const ctrlGroup = ControllerGroupIds.ARP
+import { useGlobalPot, useGlobalButton } from '../../../store/hooks'
 
 const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
 
@@ -28,51 +24,75 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
     const col2 = col1 + POT_DISTANCE_S
     const col3 = col1 + POT_DISTANCE_L
 
+    const { displayValue: rateValue, increment: rateIncrement } = useGlobalPot(
+        s => s.arp.bpm,
+        (s, v) => { s.arp.bpm = v },
+    )
+    const { value: syncValue, toggle: syncToggle } = useGlobalButton(
+        s => s.arp.sync,
+        (s, v) => { s.arp.sync = v },
+        3
+    )
+    const { value: modeValue, toggle: modeToggle } = useGlobalButton(
+        s => s.arp.mode,
+        (s, v) => { s.arp.mode = v },
+        4
+    )
+    const { value: rangeValue, toggle: rangeToggle } = useGlobalButton(
+        s => s.arp.range,
+        (s, v) => { s.arp.range = v },
+        3
+    )
+    const { value: onOffValue, toggle: onOffToggle } = useGlobalButton(
+        s => s.arp.onOff,
+        (s, v) => { s.arp.onOff = v },
+        2
+    )
+    const { value: sequenceValue, toggle: sequenceToggle } = useGlobalButton(
+        s => s.arp.sequence,
+        (s, v) => { s.arp.sequence = v },
+        2
+    )
+
     return <>
-        {/*!SHOW_CUT && <rect x={x} y={y} width={197} height={ROW_HEIGHT - ROW_SPACING} className="module-background"/>*/}
         <ModuleBorder x={x} y={y} height={height} width={width} />
         <SubHeader label="Arp" x={x} y={row1} width={width} labelPosition="center" labelWidth={15} />
 
         <RotaryPot12 ledMode="single" label="Rate" x={col2} y={row2}
-                     ctrlGroup={ctrlGroup}
-                     ctrl={arpControllers.BPM}
+                     value={rateValue}
+                     onValueIncrement={rateIncrement}
         />
 
         {/* Let sync source be settable from main panel */  }
         <RoundLedPushButton8 labelPosition="bottom-pot" x={col1} y={row2} label="Sync"
-                          ctrlGroup={ctrlGroup}
-                          ctrl={arpControllers.SYNC}
+                          ledModes={3}
+                          value={syncValue}
+                          onButtonClick={syncToggle}
         />
 
-
-        {/*
-         TODO: Let last option on front panel be "Other". When selecting this, pop up a modal on the display
-         where the user can select from a list of extended options, e.g., Random, up down repeat etc. Default to
-         random, so no choice is needed. Close the modal after a few seconds.
-         */}
         <RoundPushButton8 x={col3} y={row2}
                           label="Mode" labelPosition="bottom-pot"
                           ledCount={3} ledPosition="right" ledLabels={['Up', 'Down', 'Random']}
                           ledCycleBinary
-                          ctrlGroup={ctrlGroup}
-                          ctrl={arpControllers.MODE}
+                          value={modeValue}
+                          onButtonClick={modeToggle}
         />
 
         <RoundPushButton8 x={col3} y={row3}
                           label="Range" labelPosition="bottom-pot"
                           ledCount={3} ledPosition="right" ledLabels={['1 oct', '2 oct', '3 oct']}
-                          ctrlGroup={ctrlGroup}
-                          ctrl={arpControllers.RANGE}
+                          value={rangeValue}
+                          onButtonClick={rangeToggle}
         />
 
         <RoundLedPushButton8 labelPosition="bottom-pot" x={col1} y={row3} label="On"
-                             ctrlGroup={ctrlGroup}
-                             ctrl={arpControllers.ON_OFF}
+                             value={onOffValue}
+                             onButtonClick={onOffToggle}
         />
 
         <RoundLedPushButton8 labelPosition="bottom-pot" x={col2} y={row3} label="Sequence"
-                             ctrlGroup={ctrlGroup}
-                             ctrl={arpControllers.SEQUENCE}
+                             value={sequenceValue}
+                             onButtonClick={sequenceToggle}
         />
 
     </>;

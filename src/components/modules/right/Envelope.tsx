@@ -13,8 +13,11 @@ import {
 import { ModuleBorder } from "../../misc/ModuleBorder";
 import { ModuleProps } from "../types";
 import { useEnvTime, useEnvLevel, useEnvToggle, useEnvStageEnabled } from '../../../store/modules/useEnvelope'
+import { useUiStore } from '../../../store/uiStore'
 import { ControllerGroupIds } from '../../../synthcore/types'
 import { envCtrls } from '../../../synthcore/modules/env/envControllers'
+
+const ctrlGroup = ControllerGroupIds.ENV
 
 type Props = ModuleProps & {
     x: number,
@@ -24,8 +27,6 @@ type Props = ModuleProps & {
     envId: number,
     showSelect?: boolean,
 }
-
-const ctrlGroup = ControllerGroupIds.ENV
 
 const EnvTimePot = ({ envId, stageName, label, x, y, disabled }: {
     envId: number, stageName: 'delay' | 'attack' | 'decay1' | 'decay2' | 'sustain' | 'release1' | 'release2',
@@ -75,6 +76,20 @@ const EnvToggleButton = ({ envId, param, label, x, y }: {
     />
 }
 
+const EnvSelectButton = ({ x, y }: { x: number, y: number }) => {
+    const env3Id = useUiStore(s => s.selectedEnv3Id)
+    const selectEnv3Id = useUiStore(s => s.selectEnv3Id)
+    const onToggle = () => selectEnv3Id((env3Id - 2 + 1) % 3 + 2)
+    return <RoundPushButton8
+        ledPosition="top-horizontal"
+        ledCount={3}
+        ledLabels={['3', '4', '5']}
+        label="Env sel" x={x} y={y} labelPosition="bottom"
+        value={env3Id - 2}
+        onButtonClick={onToggle}
+    />
+}
+
 const Envelope = ({ x, y, height, width, label, header, showSelect = false, envId }: Props) => {
     const firstPotX = x + POT_DISTANCE_L / 2
     const topRowY = y + POT_OFFSET_Y
@@ -103,15 +118,7 @@ const Envelope = ({ x, y, height, width, label, header, showSelect = false, envI
         <EnvLevelPot envId={envId} stageName="sustain" label="Sustain" x={firstPotX + potDistance * 3} y={topRowY} disabled={sustainDisabled} />
         <EnvTimePot envId={envId} stageName="release1" label="Release" x={firstPotX + potDistance * 4} y={topRowY} disabled={release1Disabled} />
 
-        {showSelect && <RoundPushButton8
-          ledPosition="top-horizontal"
-          ledCount={3}
-          ledLabels={['3', '4', '5']}
-          label="Env sel" x={firstPotX} y={topRowY+4} labelPosition="bottom"
-          ctrlGroup={ctrlGroup}
-          ctrl={envCtrls.SELECT_ENV3_ID}
-          ctrlIndex={0}
-        />}
+        {showSelect && <EnvSelectButton x={firstPotX} y={topRowY+4} />}
 
         <EnvTimePot envId={envId} stageName="delay" label="Delay" x={firstPotX} y={bottomRowY} disabled={delayDisabled} />
         <EnvLevelPot envId={envId} stageName="decay2" label="D2 Level" x={firstPotX + potDistance * 1} y={bottomRowY} disabled={decay2Disabled} />

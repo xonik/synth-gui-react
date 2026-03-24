@@ -3,8 +3,6 @@ import RotaryPot21 from '../../pots/RotaryPot21'
 import RotaryPot12 from '../../pots/RotaryPot12'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
-import { ControllerGroupIds } from '../../../synthcore/types'
-import filtersControllers from '../../../synthcore/modules/filters/filtersControllers'
 import { POT_DISTANCE_L, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from "../../../constants";
 import { ModuleBorder } from "../../misc/ModuleBorder";
 import SubHeader from "../../misc/SubHeader";
@@ -15,7 +13,6 @@ import { VoiceGroupPatch } from '../../../store/patchStore'
 import './LowPassFilter.scss'
 import "../Modules.scss"
 
-const ctrlGroup = ControllerGroupIds.FILTERS
 const FILTER = 0
 
 const FilterPot = ({ x, y, label, ledMode = 'multi' as const, selector, mutator, Large }: {
@@ -134,12 +131,6 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
                              onButtonClick={linkCutoffToggle}
         />
 
-        {/*
-        <RoundLedPushButton8 x={col4} y={y + 10} label="Ext CV" labelPosition="bottom"
-                             ctrlGroup={ctrlGroup}
-                             ctrl={filtersControllers.LPF.EXT_CV}
-        />*/}
-
         <RoundPushButton8 x={col5} y={fmRow} ledPosition="top" ledCount={2} ledLabels={['2', 'Ext']}
                           label="FM src" labelPosition="bottom"
                           value={fmSrcValue}
@@ -158,9 +149,9 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
                    mutator={(s, v) => { s.filters[FILTER].lfoAmt = v }}
         />
 
-        <RotaryPot12 x={col4} y={bottomRow2} ledMode="multi" label="Wheel amt"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={filtersControllers.LPF.WHEEL_AMT}
+        <FilterPot x={col4} y={bottomRow2} label="Wheel amt"
+                   selector={s => s.filters[FILTER].wheelAmt}
+                   mutator={(s, v) => { s.filters[FILTER].wheelAmt = v }}
         />
 
         <FilterPot x={col5} y={bottomRow2} label="Envelope"

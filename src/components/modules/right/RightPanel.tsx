@@ -7,9 +7,7 @@ import Chorus from "./Chorus";
 import OutputMixer from "./OutputMixer";
 import React from "react";
 import StateVariableFilter from "./StateVariableFilter";
-import { useAppSelector } from "../../../synthcore/hooks";
-import { selectController } from "../../../synthcore/modules/controllers/controllersReducer";
-import { envCtrls } from "../../../synthcore/modules/env/envControllers";
+import { useUiStore } from '../../../store/uiStore'
 import { PanelScrew } from "../../misc/PanelScrew";
 
 type Props = {
@@ -19,7 +17,7 @@ type Props = {
 
 export const RightPanel = ({ x, rows }: Props) => {
 
-    const env3Id = useAppSelector(selectController(envCtrls.SELECT_ENV3_ID))
+    const env3Id = useUiStore(s => s.selectedEnv3Id)
 
     const filterCol = x
     const postMixCol = filterCol + 3 * POT_DISTANCE_M + POT_DISTANCE_L
