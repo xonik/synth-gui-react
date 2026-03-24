@@ -51,6 +51,8 @@ export interface UiState {
 
     // Modulation routing
     modRouting: ModRoutingSelection
+    modRouteButton: number
+    modAmount: number
 }
 
 export interface UiActions {
@@ -62,6 +64,8 @@ export interface UiActions {
     selectEnvStage: (stageId: StageId) => void
     selectLfo: (lfoId: number) => void
     setModRouting: (routing: Partial<ModRoutingSelection>) => void
+    setModRouteButton: (value: number) => void
+    setModAmount: (value: number) => void
 }
 
 export const useUiStore = create<UiState & UiActions>((set) => ({
@@ -79,6 +83,8 @@ export const useUiStore = create<UiState & UiActions>((set) => ({
         dstFuncId: undefined,
         dstParamId: undefined,
     },
+    modRouteButton: 0,
+    modAmount: 0,
 
     // Actions
     setVoiceGroup: (index) => set({ currentVoiceGroupIndex: index }),
@@ -104,4 +110,8 @@ export const useUiStore = create<UiState & UiActions>((set) => ({
     setModRouting: (routing) => set((state) => ({
         modRouting: { ...state.modRouting, ...routing },
     })),
+
+    setModRouteButton: (value) => set({ modRouteButton: value }),
+
+    setModAmount: (value) => set({ modAmount: value }),
 }))
