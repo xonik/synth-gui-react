@@ -79,7 +79,7 @@ const EnvToggleButton = ({ envId, param, label, x, y }: {
 const EnvSelectButton = ({ x, y }: { x: number, y: number }) => {
     const env3Id = useUiStore(s => s.selectedEnv3Id)
     const selectEnv3Id = useUiStore(s => s.selectEnv3Id)
-    const onToggle = () => selectEnv3Id((env3Id + 1) % 3 + 2)
+    const onToggle = () => selectEnv3Id((env3Id - 2 + 1) % 3 + 2)
     return <RoundPushButton8
         ledPosition="top-horizontal"
         ledCount={3}
