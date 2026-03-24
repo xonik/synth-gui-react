@@ -1,27 +1,54 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import RotaryPot21 from '../../pots/RotaryPot21'
 import RotaryPot12 from '../../pots/RotaryPot12'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
-import { ControllerGroupIds } from '../../../synthcore/types'
-import oscControllers from '../../../synthcore/modules/osc/oscControllers'
 import SubHeader from "../../misc/SubHeader";
 import {
-    DUAL_LED_BUTTON_W_LABEL_OFFSET_Y, PADDING_LEFT, POT_DISTANCE_L,
-    POT_DISTANCE_M, POT_DISTANCE_S,
+    DUAL_LED_BUTTON_W_LABEL_OFFSET_Y,
+    POT_DISTANCE_L,
+    POT_DISTANCE_M,
+    POT_DISTANCE_S,
     POT_OFFSET_Y,
     ROW_HEIGHT,
-    ROW_SPACING
 } from "../../../constants";
-import { SHOW_CUT } from "../../../config";
 import { VerticalDividerLine } from "../../misc/VerticalDividerLine";
 import { ModuleBorder } from "../../misc/ModuleBorder";
 import { ModuleProps } from "../types";
 import "../Modules.scss"
 import { WaveformIconsRing } from "./WaveformIconsRing";
 import { PwIconsRing } from "./PwIconsRing";
+import { usePot, useButton } from '../../../store/hooks'
+import { VoiceGroupPatch, voiceGroupStores } from '../../../store/patchStore'
+import { useUiStore } from '../../../store/uiStore'
 
-const ctrlGroup = ControllerGroupIds.OSC
+const OSC = 2
+
+const OscPot = ({ x, y, label, ledMode = 'single' as const, selector, mutator }: {
+    x: number, y: number, label: string, ledMode?: 'single' | 'multi',
+    selector: (s: VoiceGroupPatch) => number,
+    mutator: (s: VoiceGroupPatch, v: number) => void,
+}) => {
+    const { displayValue, increment } = usePot(selector, mutator)
+    return <RotaryPot12 x={x} y={y} ledMode={ledMode} label={label}
+                        value={displayValue} onValueIncrement={increment} />
+}
+
+const OscTogglePot = ({ x, y, label, selector, mutator }: {
+    x: number, y: number, label: string,
+    selector: (s: VoiceGroupPatch) => number,
+    mutator: (s: VoiceGroupPatch, v: number) => void,
+}) => {
+    const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)
+    const { value } = useButton(selector, mutator, 2)
+    const onIncrement = useCallback((delta: number) => {
+        voiceGroupStores[voiceGroupIndex].getState().set(state => {
+            mutator(state, delta > 0 ? 1 : 0)
+        })
+    }, [voiceGroupIndex, mutator])
+    return <RotaryPot12 x={x} y={y} label={label}
+                        value={value} onValueIncrement={onIncrement} />
+}
 
 const VCO = ({ x, y, height, width }: ModuleProps) => {
 
@@ -39,6 +66,36 @@ const VCO = ({ x, y, height, width }: ModuleProps) => {
     const col8 = col7 + POT_DISTANCE_S
     const col9 = col8 + POT_DISTANCE_M
 
+    const { value: syncSrcValue, toggle: syncSrcToggle } = useButton(
+        s => s.oscillators[OSC].syncSrc,
+        (s, v) => { s.oscillators[OSC].syncSrc = v },
+        2
+    )
+    const { value: syncValue, toggle: syncToggle } = useButton(
+        s => s.oscillators[OSC].sync,
+        (s, v) => { s.oscillators[OSC].sync = v },
+        3
+    )
+    const { value: extCvValue, toggle: extCvToggle } = useButton(
+        s => s.oscillators[OSC].extCv,
+        (s, v) => { s.oscillators[OSC].extCv = v },
+        2
+    )
+    const { displayValue: waveformValue, increment: waveformIncrement } = usePot(
+        s => s.oscillators[OSC].waveform,
+        (s, v) => { s.oscillators[OSC].waveform = v }
+    )
+    const { value: fmSrcValue, toggle: fmSrcToggle } = useButton(
+        s => s.oscillators[OSC].fmSrc,
+        (s, v) => { s.oscillators[OSC].fmSrc = v },
+        2
+    )
+    const { value: fmModeValue, toggle: fmModeToggle } = useButton(
+        s => s.oscillators[OSC].fmMode,
+        (s, v) => { s.oscillators[OSC].fmMode = v },
+        3
+    )
+
     return <>
         {/*!SHOW_CUT && <rect x={x-52.5} y={y} width="105" height={130 - ROW_SPACING} className="module-background"/>*/}
         <ModuleBorder x={x} y={y} height={height} width={width} className="audio-elements-border"/>
@@ -49,78 +106,78 @@ const VCO = ({ x, y, height, width }: ModuleProps) => {
         <RoundPushButton8 x={col1} y={topRow}
                           ledPosition="right" ledCount={2} ledLabels={['1', '2']}
                           label="Sync src" labelPosition="bottom-pot"
-                          ctrlGroup={ctrlGroup}
-                          ctrl={oscControllers.VCO.SYNC_SRC}
+                          value={syncSrcValue}
+                          onButtonClick={syncSrcToggle}
         />
 
-        <RotaryPot12 x={col2} y={topRow} label="Keyboard"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={oscControllers.VCO.KBD}
+        <OscTogglePot x={col2} y={topRow} label="Keyboard"
+                      selector={s => s.oscillators[OSC].kbd}
+                      mutator={(s, v) => { s.oscillators[OSC].kbd = v }}
         />
 
-        <RotaryPot12 x={col3} y={topRow} label="LFO"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={oscControllers.VCO.LFO}
+        <OscTogglePot x={col3} y={topRow} label="LFO"
+                      selector={s => s.oscillators[OSC].lfo}
+                      mutator={(s, v) => { s.oscillators[OSC].lfo = v }}
         />
 
-        <RotaryPot12 x={col4} y={topRow} ledMode="single" label="Note"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={oscControllers.VCO.NOTE}
+        <OscPot x={col4} y={topRow} label="Note"
+                selector={s => s.oscillators[OSC].note}
+                mutator={(s, v) => { s.oscillators[OSC].note = v }}
         />
 
-        <RotaryPot12 x={col4} y={bottomRow} ledMode="single" label="Detune"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={oscControllers.VCO.DETUNE}
+        <OscPot x={col4} y={bottomRow} label="Detune"
+                selector={s => s.oscillators[OSC].detune}
+                mutator={(s, v) => { s.oscillators[OSC].detune = v }}
         />
 
         <RoundPushButton8 x={col1} y={bottomRow}
                           ledPosition="right" ledCount={2} ledLabels={['Hard', 'CEM']}
                           label="Sync" labelPosition="bottom-pot"
                           hasOff
-                          ctrlGroup={ctrlGroup}
-                          ctrl={oscControllers.VCO.SYNC}
+                          value={syncValue}
+                          onButtonClick={syncToggle}
         />
 
         <RoundLedPushButton8 x={col2} y={bottomRow} label="Ext CV" labelPosition="bottom-pot"
-                             ctrlGroup={ctrlGroup}
-                             ctrl={oscControllers.VCO.EXT_CV}
+                             value={extCvValue}
+                             onButtonClick={extCvToggle}
         />
 
-        <RotaryPot12 x={col3} y={bottomRow} label="Wheel"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={oscControllers.VCO.WHEEL}
+        <OscTogglePot x={col3} y={bottomRow} label="Wheel"
+                      selector={s => s.oscillators[OSC].wheel}
+                      mutator={(s, v) => { s.oscillators[OSC].wheel = v }}
         />
 
         <RotaryPot21 x={col6} y={centerRow} ledMode="single" label="Waveform"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={oscControllers.VCO.WAVEFORM}
+                     value={waveformValue}
+                     onValueIncrement={waveformIncrement}
         />
 
         <WaveformIconsRing x={col6} y={centerRow} />
 
-        <RotaryPot12 x={col8} y={topRow} ledMode="multi" label="FM"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={oscControllers.VCO.FM_AMT}
+        <OscPot x={col8} y={topRow} ledMode="multi" label="FM"
+                selector={s => s.oscillators[OSC].fmAmt}
+                mutator={(s, v) => { s.oscillators[OSC].fmAmt = v }}
         />
 
         <RoundPushButton8 x={col9} y={topRow + DUAL_LED_BUTTON_W_LABEL_OFFSET_Y}
                           ledPosition="top-horizontal" ledCount={2} ledLabels={['2', 'Ext']}
                           label="FM src" labelPosition="bottom"
-                          ctrlGroup={ctrlGroup}
-                          ctrl={oscControllers.VCO.FM_SRC}
+                          value={fmSrcValue}
+                          onButtonClick={fmSrcToggle}
         />
 
-        <RotaryPot12 x={col8} y={bottomRow} ledMode="single" label="Pulse width"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={oscControllers.VCO.PW}
+        <OscPot x={col8} y={bottomRow} label="Pulse width"
+                selector={s => s.oscillators[OSC].pw}
+                mutator={(s, v) => { s.oscillators[OSC].pw = v }}
         />
 
         <RoundPushButton8 x={col9} y={bottomRow + +DUAL_LED_BUTTON_W_LABEL_OFFSET_Y}
                           ledPosition="top-horizontal" ledCount={2} ledLabels={['Lin', 'Log']}
                           label="FM mode" labelPosition="bottom"
                           hasOff
-                          ctrlGroup={ctrlGroup}
-                          ctrl={oscControllers.VCO.FM_MODE}
+                          value={fmModeValue}
+                          onButtonClick={fmModeToggle}
         />
     </>
 }
