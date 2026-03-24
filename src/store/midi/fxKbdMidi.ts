@@ -22,7 +22,6 @@ const ccMappings: CCMapping[] = [
     { selector: s => s.fx.distortion.level, mutator: (s, v) => { s.fx.distortion.level = v }, ctrl: fxControllers.DISTORTION.LEVEL },
     { selector: s => s.fx.bitCrusher.bits, mutator: (s, v) => { s.fx.bitCrusher.bits = v }, ctrl: fxControllers.BIT_CRUSHER.BITS },
     { selector: s => s.fx.bitCrusher.rate, mutator: (s, v) => { s.fx.bitCrusher.rate = v }, ctrl: fxControllers.BIT_CRUSHER.RATE },
-    { selector: s => s.fx.bitCrusher.level, mutator: (s, v) => { s.fx.bitCrusher.level = v }, ctrl: fxControllers.BIT_CRUSHER.LEVEL },
     { selector: s => s.kbd.portamento, mutator: (s, v) => { s.kbd.portamento = v }, ctrl: kbdControllers.PORTAMENTO },
     { selector: s => s.kbd.unisonDetune, mutator: (s, v) => { s.kbd.unisonDetune = v }, ctrl: kbdControllers.UNISON_DETUNE },
 ]
