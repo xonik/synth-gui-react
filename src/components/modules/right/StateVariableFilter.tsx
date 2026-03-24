@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import RotaryPot21 from '../../pots/RotaryPot21'
 import RotaryPot12 from '../../pots/RotaryPot12'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
@@ -12,7 +12,8 @@ import { ModuleBorder } from "../../misc/ModuleBorder";
 import { ModuleProps } from "../types";
 import { HorizontalDividerLine } from "../../misc/HorizontalDividerLine";
 import { usePot, useButton } from '../../../store/hooks'
-import { VoiceGroupPatch } from '../../../store/patchStore'
+import { VoiceGroupPatch, voiceGroupStores } from '../../../store/patchStore'
+import { useUiStore } from '../../../store/uiStore'
 import "./StateVariableFilter.scss"
 import "../Modules.scss"
 
@@ -57,11 +58,20 @@ const StateVariableFilter = ({ x, y, height, width }: ModuleProps) => {
         (s, v) => { s.filters[FILTER].fmSrc = v },
         2
     )
-    const { value: slopeValue, toggle: slopeToggle } = useButton(
+    const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)
+    const slopeValue = useButton(
         s => s.filters[FILTER].slope,
         (s, v) => { s.filters[FILTER].slope = v },
         10
-    )
+    ).value
+    const slopeIncrement = useCallback((delta: number) => {
+        const store = voiceGroupStores[voiceGroupIndex].getState()
+        const current = store.filters[FILTER].slope
+        const next = current + (delta > 0 ? 1 : -1)
+        if (next >= 0 && next < 10) {
+            store.set(state => { state.filters[FILTER].slope = next })
+        }
+    }, [voiceGroupIndex])
     const { value: invertValue, toggle: invertToggle } = useButton(
         s => s.filters[FILTER].invert,
         (s, v) => { s.filters[FILTER].invert = v },
@@ -138,7 +148,7 @@ const StateVariableFilter = ({ x, y, height, width }: ModuleProps) => {
                              ]}
                              resolution={10}
                              value={slopeValue}
-                             onButtonClick={slopeToggle}
+                             onIncrement={slopeIncrement}
         />
 
         <HorizontalDividerLine x={x} y={bottomRow2 - 12.5} width={width}/>
