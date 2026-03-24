@@ -10,24 +10,21 @@ import { startEnvelopeMidiSend } from './store/midi/envMidiSend'
 import { startEnvelopeMidiReceive } from './store/midi/envMidiReceive'
 import { startSimpleButtonMidiSend } from './store/midi/simpleButtonMidiSend'
 import { startSimpleButtonMidiReceive } from './store/midi/simpleButtonMidiReceive'
-<<<<<<< phase3/source-mixer
+import { startFxKbdMidiSend, startFxKbdMidiReceive } from './store/midi/fxKbdMidi'
 import { startSrcMixMidiSend, startSrcMixMidiReceive } from './store/midi/srcMixMidi'
-=======
 import { startOutPostMixMidiSend, startOutPostMixMidiReceive } from './store/midi/outMidi'
->>>>>>> modernization
 
 midiApi.initReceive()
 startEnvelopeMidiSend()
 startEnvelopeMidiReceive()
 startSimpleButtonMidiSend()
 startSimpleButtonMidiReceive()
-<<<<<<< phase3/source-mixer
+startFxKbdMidiSend()
+startFxKbdMidiReceive()
 startSrcMixMidiSend()
 startSrcMixMidiReceive()
-=======
 startOutPostMixMidiSend()
 startOutPostMixMidiReceive()
->>>>>>> modernization
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
