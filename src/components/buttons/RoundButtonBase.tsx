@@ -81,6 +81,9 @@ export interface Props {
     onButtonClick?: () => void;
     onButtonRelease?: () => void;
     onIncrement?: (steps: number) => void;
+
+    // Number of value states for ledButton blink logic (replaces ctrl.values.length)
+    ledModes?: number;
 }
 
 type LabelPos = {
@@ -405,7 +408,7 @@ export const RoundButtonBase = (props: Props & Config) => {
     } = getRenderProps(props)
 
     // multiple leds for multi-state led buttons are simulated by blinking the led on the button
-    const modes = ctrl?.values?.length || 2
+    const modes = props.ledModes || ctrl?.values?.length || 2
     let ledButtonStyle = undefined
     if(ledButton){
         if(radioButtonIndex !== undefined){

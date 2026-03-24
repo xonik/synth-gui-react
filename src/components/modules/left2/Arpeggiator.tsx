@@ -65,6 +65,7 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
 
         {/* Let sync source be settable from main panel */  }
         <RoundLedPushButton8 labelPosition="bottom-pot" x={col1} y={row2} label="Sync"
+                          ledModes={3}
                           value={syncValue}
                           onButtonClick={syncToggle}
         />
