@@ -8,11 +8,10 @@ import { store } from './synthcore/store'
 import midiApi from './midi/midiApi'
 import { startEnvelopeMidiSend } from './store/midi/envMidiSend'
 import { startEnvelopeMidiReceive } from './store/midi/envMidiReceive'
-import { startSimpleButtonMidiSend } from './store/midi/simpleButtonMidiSend'
-import { startSimpleButtonMidiReceive } from './store/midi/simpleButtonMidiReceive'
+import { startNoiseRingModMidiSend, startNoiseRingModMidiReceive } from './store/midi/noiseRingModMidi'
 import { startFxKbdMidiSend, startFxKbdMidiReceive } from './store/midi/fxKbdMidi'
 import { startSrcMixMidiSend, startSrcMixMidiReceive } from './store/midi/srcMixMidi'
-import { startOutPostMixMidiSend, startOutPostMixMidiReceive } from './store/midi/outMidi'
+import { startOutPostMixMidiSend, startOutPostMixMidiReceive } from './store/midi/outPostMixMidi'
 import { startOscMidiSend, startOscMidiReceive } from './store/midi/oscMidi'
 import { startFilterMidiSend, startFilterMidiReceive } from './store/midi/filterMidi'
 import { startLfoMidiSend, startLfoMidiReceive } from './store/midi/lfoMidi'
@@ -20,8 +19,8 @@ import { startLfoMidiSend, startLfoMidiReceive } from './store/midi/lfoMidi'
 midiApi.initReceive()
 startEnvelopeMidiSend()
 startEnvelopeMidiReceive()
-startSimpleButtonMidiSend()
-startSimpleButtonMidiReceive()
+startNoiseRingModMidiSend()
+startNoiseRingModMidiReceive()
 startFxKbdMidiSend()
 startFxKbdMidiReceive()
 startSrcMixMidiSend()

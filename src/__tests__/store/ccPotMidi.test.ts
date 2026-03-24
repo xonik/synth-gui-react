@@ -13,7 +13,7 @@ import {
     stopOutPostMixMidiSend,
     startOutPostMixMidiReceive,
     stopOutPostMixMidiReceive,
-} from '../../store/midi/outMidi'
+} from '../../store/midi/outPostMixMidi'
 
 const VG = 0
 

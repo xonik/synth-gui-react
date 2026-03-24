@@ -2,8 +2,7 @@ import { voiceGroupStores } from '../patchStore'
 import { button } from '../../midi/midibus'
 import noiseControllers from '../../synthcore/modules/noise/noiseControllers'
 import ringModControllers from '../../synthcore/modules/ringMod/ringModControllers'
-import { ApiSource } from '../../synthcore/types'
-import { isMidiReceiving } from './midiGuard'
+import { isMidiReceiving, withMidiReceive } from './midiGuard'
 import { ControllerConfigButton } from '../../midi/types'
 
 function sendButton(
@@ -14,10 +13,28 @@ function sendButton(
     button.send(voiceGroupIndex, ctrl, ctrl.values[value])
 }
 
-let unsubscribers: (() => void)[] = []
+function subscribeButton(
+    ctrl: ControllerConfigButton,
+    mutator: (state: any, value: number) => void,
+) {
+    const id = button.subscribe((voiceGroupIndex: number, midiValue: number) => {
+        const value = ctrl.values.indexOf(midiValue)
+        if (value < 0) return
 
-export function startSimpleButtonMidiSend() {
-    stopSimpleButtonMidiSend()
+        withMidiReceive(() => {
+            voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                mutator(state, value)
+            })
+        })
+    }, ctrl)
+    return () => button.unsubscribe(ctrl, id)
+}
+
+let sendUnsubscribers: (() => void)[] = []
+let receiveUnsubscribers: (() => void)[] = []
+
+export function startNoiseRingModMidiSend() {
+    stopNoiseRingModMidiSend()
 
     voiceGroupStores.forEach((store, voiceGroupIndex) => {
         let prevNoise = store.getState().noise
@@ -49,11 +66,31 @@ export function startSimpleButtonMidiSend() {
             }
         })
 
-        unsubscribers.push(unsub)
+        sendUnsubscribers.push(unsub)
     })
 }
 
-export function stopSimpleButtonMidiSend() {
-    unsubscribers.forEach(unsub => unsub())
-    unsubscribers = []
+export function stopNoiseRingModMidiSend() {
+    sendUnsubscribers.forEach(unsub => unsub())
+    sendUnsubscribers = []
+}
+
+export function startNoiseRingModMidiReceive() {
+    stopNoiseRingModMidiReceive()
+
+    receiveUnsubscribers.push(
+        subscribeButton(
+            noiseControllers.COLOUR,
+            (state, value) => { state.noise.colour = value }
+        ),
+        subscribeButton(
+            ringModControllers.SOURCE,
+            (state, value) => { state.ringMod.source = value }
+        ),
+    )
+}
+
+export function stopNoiseRingModMidiReceive() {
+    receiveUnsubscribers.forEach(unsub => unsub())
+    receiveUnsubscribers = []
 }
