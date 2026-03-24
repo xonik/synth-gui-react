@@ -101,6 +101,12 @@ export interface SrcMixState {
     levelNoise: number
     levelRingMod: number
     levelExtAudio: number
+    outOsc1: number
+    outOsc2: number
+    outOsc3: number
+    outNoise: number
+    outRingMod: number
+    outExtAudio: number
 }
 
 export interface FxState {
@@ -330,6 +336,12 @@ export const defaultVoiceGroupPatch = (): VoiceGroupPatch => ({
         levelNoise: 0,
         levelRingMod: 0,
         levelExtAudio: 0,
+        outOsc1: 0,
+        outOsc2: 0,
+        outOsc3: 0,
+        outNoise: 0,
+        outRingMod: 0,
+        outExtAudio: 0,
     },
     fx: {
         distortion: {
