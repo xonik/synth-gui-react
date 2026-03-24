@@ -7,7 +7,17 @@ import mainDisplayControllers from './mainDisplayControllers'
 import { createClickMapper, createIncrementMapper } from '../common/utils'
 import { mainDisplaySettingsApi, mainDisplaySettingsPotResolutions } from '../settings/settingsMainDisplayApi'
 import { mainDisplayLfoApi, mainDisplayLfoPotResolutions } from '../lfo/lfoMainDisplayApi'
-import { useUiStore, ScreenId } from '../../../store/uiStore'
+
+// uiStore is imported lazily to break a circular dependency:
+// mainDisplayApi → mainDisplayMidiApi → synthcoreApi → mainDisplayApi
+// We only need it at call time, not at module init time.
+let _useUiStore: any = null
+function getUiStoreState() {
+    if (!_useUiStore) {
+        _useUiStore = require('../../../store/uiStore').useUiStore
+    }
+    return _useUiStore.getState()
+}
 
 
 type PotResolutions = {
@@ -31,15 +41,20 @@ export const getPotResolution = (ctrlId: number, currScreen: number) => {
     return 1000
 }
 
-// Map uiStore ScreenId to MainDisplayScreenId
-const screenIdToNumeric: Partial<Record<ScreenId, MainDisplayScreenId>> = {
-    [ScreenId.LFO]: MainDisplayScreenId.LFO,
-    [ScreenId.OSC]: MainDisplayScreenId.OSC,
-    [ScreenId.FILTER]: MainDisplayScreenId.FILTER,
-    [ScreenId.ENV]: MainDisplayScreenId.ENV,
-    [ScreenId.MOD]: MainDisplayScreenId.MOD,
-    [ScreenId.FX]: MainDisplayScreenId.FX,
-    [ScreenId.SETTINGS]: MainDisplayScreenId.SETTINGS,
+// Map ScreenId string values to MainDisplayScreenId numbers
+const screenToNumeric: Record<string, MainDisplayScreenId> = {
+    'lfo': MainDisplayScreenId.LFO,
+    'osc': MainDisplayScreenId.OSC,
+    'filter': MainDisplayScreenId.FILTER,
+    'env': MainDisplayScreenId.ENV,
+    'mod': MainDisplayScreenId.MOD,
+    'fx': MainDisplayScreenId.FX,
+    'settings': MainDisplayScreenId.SETTINGS,
+}
+
+function getNumericScreenId(): MainDisplayScreenId | undefined {
+    const screen = getUiStoreState().currentScreen
+    return screenToNumeric[screen]
 }
 
 const handleHomeClick = (source: ApiSource) => {
@@ -49,7 +64,7 @@ const handleSettingsClick = (source: ApiSource) => {
     mainDisplayMidiApi.settingsClick(source)
 }
 const handleShift = (on: boolean, source: ApiSource) => {
-    useUiStore.getState().setShift(on)
+    getUiStoreState().setShift(on)
     mainDisplayMidiApi.shift(source, on)
 }
 const handlePerformClick = (source: ApiSource) => {
@@ -70,8 +85,7 @@ const handleRouteClick = (source: ApiSource) => {
 }
 
 const handleMainDisplayController = (voiceGroupIndex: number, ctrlId: number, value: number, source: ApiSource) => {
-    const currentScreen = useUiStore.getState().currentScreen
-    const currScreenId = screenIdToNumeric[currentScreen]
+    const currScreenId = getNumericScreenId()
 
     if (currScreenId === MainDisplayScreenId.MOD) {
         mainDisplayModsApi.handleMainDisplayController(voiceGroupIndex, ctrlId, value)
