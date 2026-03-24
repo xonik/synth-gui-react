@@ -5,14 +5,13 @@ import useEventListener from '../../hooks/useEventListener'
 import RotaryPotWOLeds10 from '../pots/RotaryPotWOLeds10'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import RotaryPotWOLeds24 from '../pots/RotaryPotWOLeds24'
-import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
+import { ControllerGroupIds } from '../../synthcore/types'
 import { getPotResolution } from '../../synthcore/modules/mainDisplay/mainDisplayApi'
 import { useAppSelector } from '../../synthcore/hooks'
 import { selectCurrScreen } from '../../synthcore/modules/mainDisplay/mainDisplayReducer'
 import './MainDisplay.scss'
 import mainDisplayControllers from '../../synthcore/modules/mainDisplay/mainDisplayControllers'
-import { dispatch } from '../../synthcore/utils'
-import { click, release } from '../../synthcore/modules/ui/uiReducer'
+import { useUiStore } from '../../store/uiStore'
 import { ModuleProps } from "./types";
 import { BORDER_MARGIN, POT_OFFSET_Y, ROW_HEIGHT } from "../../constants";
 import { displayBG } from "../../config";
@@ -51,22 +50,20 @@ const MainDisplay = React.forwardRef<SVGRectElement, Props>(
         const ctrlSwitchesRow1 = masterPotRow - 10
         const ctrlSwitchesRow2 = masterPotRow + 10
 
+        const setShift = useUiStore(s => s.setShift)
+
         // PC Keyboard handlers
         const handleOnClick = useCallback(({ key }: { key: any }) => {
             if (SHIFT_KEYS.includes(String(key))) {
-                dispatch(click({
-                    ctrlGroup,
-                    ctrl: mainDisplayControllers.FUNC_SHIFT,
-                    source: ApiSource.UI
-                }))
+                setShift(true)
             }
-        }, [])
+        }, [setShift])
 
         const handleOnRelease = useCallback(({ key }: { key: any }) => {
             if (SHIFT_KEYS.includes(String(key))) {
-                dispatch(release({ ctrlGroup, ctrl: mainDisplayControllers.FUNC_SHIFT, source: ApiSource.UI }))
+                setShift(false)
             }
-        }, [])
+        }, [setShift])
 
         useEventListener('keydown', handleOnClick);
         useEventListener('keyup', handleOnRelease);
