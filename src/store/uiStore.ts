@@ -53,6 +53,9 @@ export interface UiState {
     modRouting: ModRoutingSelection
     modRouteButton: number
     modAmount: number
+
+    // Envelope 3/4/5 selector
+    selectedEnv3Id: number
 }
 
 export interface UiActions {
@@ -66,6 +69,7 @@ export interface UiActions {
     setModRouting: (routing: Partial<ModRoutingSelection>) => void
     setModRouteButton: (value: number) => void
     setModAmount: (value: number) => void
+    selectEnv3Id: (id: number) => void
 }
 
 export const useUiStore = create<UiState & UiActions>((set) => ({
@@ -85,6 +89,7 @@ export const useUiStore = create<UiState & UiActions>((set) => ({
     },
     modRouteButton: 0,
     modAmount: 0,
+    selectedEnv3Id: 2,
 
     // Actions
     setVoiceGroup: (index) => set({ currentVoiceGroupIndex: index }),
@@ -114,4 +119,6 @@ export const useUiStore = create<UiState & UiActions>((set) => ({
     setModRouteButton: (value) => set({ modRouteButton: value }),
 
     setModAmount: (value) => set({ modAmount: value }),
+
+    selectEnv3Id: (id) => set({ selectedEnv3Id: id }),
 }))
