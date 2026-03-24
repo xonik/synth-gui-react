@@ -50,6 +50,7 @@ const midiConfig = {
         '505084812', // Steinberg UR22C Port 1
         '-1515485747', // Steinberg UR22C Port 1
         'vdYvBfG28aCbHM9U6S3RAB8EwW4YMLWpA6pdZ0Eq9tM=', // Steinberg UR22C Port 1 Firefox
+        'l0+mSOnHhAPqGL1UqdZwvtLsPg6lMbdKY6RNwwwdWzQ=', // Steinberg UR22C Port 1 Firefox
         //'-762163153', // Steinberg UR22C Port 2
 
     ],
@@ -59,6 +60,7 @@ const midiConfig = {
         '-746118775', // Steinberg UR22C Port 1
         '979568398', // Steinberg UR22C Port 1
         'vdYvBfG28aCbHM9U6S3RAB8EwW4YMLWpA6pdZ0Eq9tM=', // Steinberg UR22C Port 1 Firefox
+        'l0+mSOnHhAPqGL1UqdZwvtLsPg6lMbdKY6RNwwwdWzQ=', // Steinberg UR22C Port 1 Firefox
         // '298365873', // Steinberg UR22C Port 2
     ],
     sysexAddr: [1, 2, 3],
