@@ -76,6 +76,12 @@ export interface OscillatorState {
     kbd: number
     sawInv: number
     preFilterSine: number
+    fmAmt: number
+    linFm: number
+    syncSrc: number
+    fmSrc: number
+    fmMode: number
+    extCv: number
 }
 
 export interface FilterState {
@@ -303,6 +309,12 @@ const defaultOscillator = (): OscillatorState => ({
     kbd: 0,
     sawInv: 0,
     preFilterSine: 0,
+    fmAmt: 0,
+    linFm: 0,
+    syncSrc: 0,
+    fmSrc: 0,
+    fmMode: 0,
+    extCv: 0,
 })
 
 const defaultFilter = (): FilterState => ({

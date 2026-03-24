@@ -1,10 +1,8 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import RotaryPot21 from '../../pots/RotaryPot21'
 import RotaryPot12 from '../../pots/RotaryPot12'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
-import { ControllerGroupIds } from '../../../synthcore/types'
-import oscControllers from '../../../synthcore/modules/osc/oscControllers'
 import SubHeader from "../../misc/SubHeader";
 import {
     DUAL_LED_BUTTON_W_LABEL_OFFSET_Y,
@@ -14,7 +12,6 @@ import {
     POT_OFFSET_Y,
     ROW_HEIGHT,
 } from "../../../constants";
-import { SHOW_CUT } from "../../../config";
 import { VerticalDividerLine } from "../../misc/VerticalDividerLine";
 import { ModuleBorder } from "../../misc/ModuleBorder";
 import { ModuleProps } from "../types";
@@ -23,10 +20,69 @@ import { WaveformIconsRing } from "./WaveformIconsRing";
 import { PwIconsRing } from "./PwIconsRing";
 import { Square } from "../../images/Square";
 import { SawRight } from "../../images/SawRight";
+import { usePot, useButton } from '../../../store/hooks'
+import { VoiceGroupPatch, voiceGroupStores } from '../../../store/patchStore'
+import { useUiStore } from '../../../store/uiStore'
 
-const ctrlGroup = ControllerGroupIds.OSC
+const OSC = 1
+
+const OscPot = ({ x, y, label, ledMode = 'single' as const, selector, mutator }: {
+    x: number, y: number, label: string, ledMode?: 'single' | 'multi',
+    selector: (s: VoiceGroupPatch) => number,
+    mutator: (s: VoiceGroupPatch, v: number) => void,
+}) => {
+    const { displayValue, increment } = usePot(selector, mutator)
+    return <RotaryPot12 x={x} y={y} ledMode={ledMode} label={label}
+                        value={displayValue} onValueIncrement={increment} />
+}
+
+const OscTogglePot = ({ x, y, label, selector, mutator }: {
+    x: number, y: number, label: string,
+    selector: (s: VoiceGroupPatch) => number,
+    mutator: (s: VoiceGroupPatch, v: number) => void,
+}) => {
+    const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)
+    const { value } = useButton(selector, mutator, 2)
+    const onIncrement = useCallback((delta: number) => {
+        voiceGroupStores[voiceGroupIndex].getState().set(state => {
+            mutator(state, delta > 0 ? 1 : 0)
+        })
+    }, [voiceGroupIndex, mutator])
+    return <RotaryPot12 x={x} y={y} label={label}
+                        value={value} onValueIncrement={onIncrement} />
+}
 
 const DCO2 = ({ x, y, height, width }: ModuleProps) => {
+
+    const { value: modeValue, toggle: modeToggle } = useButton(
+        s => s.oscillators[OSC].mode,
+        (s, v) => { s.oscillators[OSC].mode = v },
+        3
+    )
+    const { value: syncValue, toggle: syncToggle } = useButton(
+        s => s.oscillators[OSC].sync,
+        (s, v) => { s.oscillators[OSC].sync = v },
+        3
+    )
+    const { value: sawInvValue, toggle: sawInvToggle } = useButton(
+        s => s.oscillators[OSC].sawInv,
+        (s, v) => { s.oscillators[OSC].sawInv = v },
+        2
+    )
+    const { value: preFilterSineValue, toggle: preFilterSineToggle } = useButton(
+        s => s.oscillators[OSC].preFilterSine,
+        (s, v) => { s.oscillators[OSC].preFilterSine = v },
+        2
+    )
+    const { value: subWaveValue, toggle: subWaveToggle } = useButton(
+        s => s.oscillators[OSC].subWave,
+        (s, v) => { s.oscillators[OSC].subWave = v },
+        2
+    )
+    const { displayValue: waveformValue, increment: waveformIncrement } = usePot(
+        s => s.oscillators[OSC].waveform,
+        (s, v) => { s.oscillators[OSC].waveform = v }
+    )
 
     const topRow = y + POT_OFFSET_Y
     const bottomRow = topRow + ROW_HEIGHT
@@ -53,58 +109,58 @@ const DCO2 = ({ x, y, height, width }: ModuleProps) => {
         <RoundPushButton8 x={col1} y={topRow}
                           ledPosition="right" ledCount={3} ledLabels={['DCO', 'WT', 'PCM']}
                           label="Mode" labelPosition="bottom-pot"
-                          ctrlGroup={ctrlGroup}
-                          ctrl={oscControllers.DCO2.MODE}
+                          value={modeValue}
+                          onButtonClick={modeToggle}
         />
 
-        <RotaryPot12 x={col2} y={topRow} label="Keyboard"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={oscControllers.DCO2.KBD}
+        <OscTogglePot x={col2} y={topRow} label="Keyboard"
+                      selector={s => s.oscillators[OSC].kbd}
+                      mutator={(s, v) => { s.oscillators[OSC].kbd = v }}
         />
 
-        <RotaryPot12 x={col3} y={topRow} label="LFO"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={oscControllers.DCO2.LFO}
+        <OscTogglePot x={col3} y={topRow} label="LFO"
+                      selector={s => s.oscillators[OSC].lfo}
+                      mutator={(s, v) => { s.oscillators[OSC].lfo = v }}
         />
 
-        <RotaryPot12 x={col4} y={topRow} ledMode="single" label="Note"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={oscControllers.DCO2.NOTE}
+        <OscPot x={col4} y={topRow} label="Note"
+                selector={s => s.oscillators[OSC].note}
+                mutator={(s, v) => { s.oscillators[OSC].note = v }}
         />
 
-        <RotaryPot12 x={col4} y={bottomRow} ledMode="single" label="Detune"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={oscControllers.DCO2.DETUNE}
+        <OscPot x={col4} y={bottomRow} label="Detune"
+                selector={s => s.oscillators[OSC].detune}
+                mutator={(s, v) => { s.oscillators[OSC].detune = v }}
         />
 
         <RoundPushButton8 x={col1} y={bottomRow}
                           ledPosition="right" ledCount={2} ledLabels={['Hard', 'Metal']}
                           label="Sync" labelPosition="bottom-pot"
                           hasOff
-                          ctrlGroup={ctrlGroup}
-                          ctrl={oscControllers.DCO2.SYNC}
+                          value={syncValue}
+                          onButtonClick={syncToggle}
         />
 
-        <RotaryPot12 x={col3} y={bottomRow} label="Wheel"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={oscControllers.DCO2.WHEEL}
+        <OscTogglePot x={col3} y={bottomRow} label="Wheel"
+                      selector={s => s.oscillators[OSC].wheel}
+                      mutator={(s, v) => { s.oscillators[OSC].wheel = v }}
         />
 
         <RoundLedPushButton8 x={col5} y={topRow} label="Inv saw" labelPosition="bottom"
-                             ctrlGroup={ctrlGroup}
-                             ctrl={oscControllers.DCO2.SAW_INV}
+                             value={sawInvValue}
+                             onButtonClick={sawInvToggle}
         />
 
         <RotaryPot21 x={col6} y={centerRow} ledMode="single" label="Waveform"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={oscControllers.DCO2.WAVEFORM}
+                     value={waveformValue}
+                     onValueIncrement={waveformIncrement}
         />
 
         <WaveformIconsRing x={col6} y={centerRow}/>
 
         <RoundLedPushButton8 x={col7} y={topRow} label="Sine" labelPosition="bottom"
-                             ctrlGroup={ctrlGroup}
-                             ctrl={oscControllers.DCO2.PRE_FILTER_SINE}
+                             value={preFilterSineValue}
+                             onButtonClick={preFilterSineToggle}
         />
 
         <RoundPushButton8 x={col9} y={bottomRow + DUAL_LED_BUTTON_W_LABEL_OFFSET_Y}
@@ -113,23 +169,23 @@ const DCO2 = ({ x, y, height, width }: ModuleProps) => {
             <SawRight x={0} y={0} width={3} height={2}/>,
         ]}
                           label="Sub wave" labelPosition="bottom"
-                          ctrlGroup={ctrlGroup}
-                          ctrl={oscControllers.DCO2.SUB_WAVE}
+                          value={subWaveValue}
+                          onButtonClick={subWaveToggle}
         />
 
-        <RotaryPot12 x={col8} y={topRow} ledMode="multi" label="Sub -1"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={oscControllers.DCO2.SUB1}
+        <OscPot x={col8} y={topRow} ledMode="multi" label="Sub -1"
+                selector={s => s.oscillators[OSC].sub1}
+                mutator={(s, v) => { s.oscillators[OSC].sub1 = v }}
         />
 
-        <RotaryPot12 x={col8} y={bottomRow} ledMode="single" label="Pulse width"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={oscControllers.DCO2.PW}
+        <OscPot x={col8} y={bottomRow} label="Pulse width"
+                selector={s => s.oscillators[OSC].pw}
+                mutator={(s, v) => { s.oscillators[OSC].pw = v }}
         />
 
-        <RotaryPot12 x={col9} y={topRow} ledMode="multi" label="Sub -2"
-                     ctrlGroup={ctrlGroup}
-                     ctrl={oscControllers.DCO2.SUB2}
+        <OscPot x={col9} y={topRow} ledMode="multi" label="Sub -2"
+                selector={s => s.oscillators[OSC].sub2}
+                mutator={(s, v) => { s.oscillators[OSC].sub2 = v }}
         />
 
     </>
