@@ -1,4 +1,12 @@
 import { MainDisplayScreenId } from './types'
+import { store } from '../../store'
+import {
+    selectCurrScreen,
+    setCurrentScreen as setCurrentScreenAction,
+    setPreviousScreen as setPreviousScreenAction,
+    setShiftOn
+} from './mainDisplayReducer'
+import { dispatch } from '../../utils'
 import { mainDisplayModsApi, mainDisplayModsPotResolutions } from '../mods/modsMainDisplayApi'
 import { mainDisplayEnvApi, mainDisplayEnvPotResolutions } from '../env/envMainDisplayApi'
 import mainDisplayMidiApi from './mainDisplayMidiApi'
@@ -8,23 +16,19 @@ import { createClickMapper, createIncrementMapper } from '../common/utils'
 import { mainDisplaySettingsApi, mainDisplaySettingsPotResolutions } from '../settings/settingsMainDisplayApi'
 import { mainDisplayLfoApi, mainDisplayLfoPotResolutions } from '../lfo/lfoMainDisplayApi'
 
-// uiStore is imported lazily to break a circular dependency:
-// mainDisplayApi → mainDisplayMidiApi → synthcoreApi → mainDisplayApi
-// We only need it at call time, not at module init time.
-let _useUiStore: any = null
-function getUiStoreState() {
-    if (!_useUiStore) {
-        _useUiStore = require('../../../store/uiStore').useUiStore
-    }
-    return _useUiStore.getState()
-}
-
 
 type PotResolutions = {
     [key: number]: {
         [key: number]: number
     }
 }
+
+// Screens that should not be pushed to 'previousScreen', they are modals that should revert to previous screen
+// BEFORE any modal.
+const modalScreens = [
+    MainDisplayScreenId.SAVE,
+    MainDisplayScreenId.LOAD,
+]
 
 const potResolution: PotResolutions = {
     [MainDisplayScreenId.ENV]: mainDisplayEnvPotResolutions,
@@ -41,22 +45,6 @@ export const getPotResolution = (ctrlId: number, currScreen: number) => {
     return 1000
 }
 
-// Map ScreenId string values to MainDisplayScreenId numbers
-const screenToNumeric: Record<string, MainDisplayScreenId> = {
-    'lfo': MainDisplayScreenId.LFO,
-    'osc': MainDisplayScreenId.OSC,
-    'filter': MainDisplayScreenId.FILTER,
-    'env': MainDisplayScreenId.ENV,
-    'mod': MainDisplayScreenId.MOD,
-    'fx': MainDisplayScreenId.FX,
-    'settings': MainDisplayScreenId.SETTINGS,
-}
-
-function getNumericScreenId(): MainDisplayScreenId | undefined {
-    const screen = getUiStoreState().currentScreen
-    return screenToNumeric[screen]
-}
-
 const handleHomeClick = (source: ApiSource) => {
     mainDisplayMidiApi.homeClick(source)
 }
@@ -64,7 +52,7 @@ const handleSettingsClick = (source: ApiSource) => {
     mainDisplayMidiApi.settingsClick(source)
 }
 const handleShift = (on: boolean, source: ApiSource) => {
-    getUiStoreState().setShift(on)
+    dispatch(setShiftOn({ voiceGroupIndex: -1, value: on }))
     mainDisplayMidiApi.shift(source, on)
 }
 const handlePerformClick = (source: ApiSource) => {
@@ -72,10 +60,12 @@ const handlePerformClick = (source: ApiSource) => {
 }
 const handleLoadClick = (source: ApiSource) => {
     mainDisplayMidiApi.loadClick(source)
+    //patchStorageApi.loadPatch()
 }
 const handleSaveClick = (source: ApiSource) => {
     console.log(`Save form ${source}`)
     mainDisplayMidiApi.saveClick(source)
+    //patchStorageApi.savePatch()
 }
 const handleCompareClick = (source: ApiSource) => {
     mainDisplayMidiApi.compareClick(source)
@@ -85,8 +75,7 @@ const handleRouteClick = (source: ApiSource) => {
 }
 
 const handleMainDisplayController = (voiceGroupIndex: number, ctrlId: number, value: number, source: ApiSource) => {
-    const currScreenId = getNumericScreenId()
-
+    const currScreenId = selectCurrScreen(store.getState())
     if (currScreenId === MainDisplayScreenId.MOD) {
         mainDisplayModsApi.handleMainDisplayController(voiceGroupIndex, ctrlId, value)
     } else if (currScreenId === MainDisplayScreenId.ENV) {
@@ -103,6 +92,11 @@ const handleMainDisplayController = (voiceGroupIndex: number, ctrlId: number, va
 }
 
 const setCurrentScreen = (id: number, source: ApiSource) => {
+    const currentId = selectCurrScreen(store.getState())
+    if (!modalScreens.includes(currentId)) {
+        dispatch(setPreviousScreenAction({ id: currentId }))
+    }
+    dispatch(setCurrentScreenAction({ id }))
     mainDisplayMidiApi.setCurrentScreen(source, id)
 }
 

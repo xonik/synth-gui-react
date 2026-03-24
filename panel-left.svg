@@ -1,0 +1,878 @@
+<svg width="100cm" height="29cm" viewBox="0 0 1000 290" class="panel cut">
+    <rect x="0" y="0" width="365" height="290" class="panel-outline"></rect>
+    <text x="71.125" y="20.5" class="subheader-label" text-anchor="middle" alignment-baseline="baseline">Oscillator 1
+    </text>
+    <line x1="18.625" y1="15" x2="123.625" y2="15" class="subheader-underline"></line>
+    <svg x="29.875" y="31.25" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Note</text>
+    </svg>
+    <svg x="57.375" y="31.25" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+        <text x="0" y="9" class="button-label" text-anchor="middle" alignment-baseline="middle">Sync</text>
+        <circle cx="11.425" cy="-2.925" r="1.425" class="button-led"></circle>
+        <text x="15.85" y="-1.7249999999999999" class="button-led-label" text-anchor="start"
+              alignment-baseline="middle">Hard
+        </text>
+        <circle cx="11.425" cy="2.925" r="1.425" class="button-led"></circle>
+        <text x="15.85" y="4.125" class="button-led-label" text-anchor="start" alignment-baseline="middle">Metal</text>
+    </svg>
+    <svg x="29.875" y="53.75" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap button-cap-led"></circle>
+        <text x="0" y="9" class="button-label" text-anchor="middle" alignment-baseline="middle">Saw inv</text>
+    </svg>
+    <svg x="71.125" y="63.75" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 8.373232009413528 10.268957382155829 A 13.25 13.25 0 1 0 -8.373232009413526 10.26895738215583"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="17.25" class="pot-label" text-anchor="middle">Waveform</text>
+    </svg>
+    <svg x="29.875" y="71.25" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap button-cap-led"></circle>
+        <text x="0" y="9" class="button-label" text-anchor="middle" alignment-baseline="middle">Sine</text>
+    </svg>
+    <svg x="112.375" y="71.25" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+        <text x="0" y="9" class="button-label" text-anchor="middle" alignment-baseline="middle">Mode</text>
+        <circle cx="0" cy="-21.125" r="1.425" class="button-led button-led__on"></circle>
+        <text x="4.425" y="-19.925" class="button-led-label" text-anchor="start" alignment-baseline="middle">DCO</text>
+        <circle cx="0" cy="-15.275" r="1.425" class="button-led"></circle>
+        <text x="4.425" y="-14.075000000000001" class="button-led-label" text-anchor="start"
+              alignment-baseline="middle">WT
+        </text>
+        <circle cx="0" cy="-9.425" r="1.425" class="button-led"></circle>
+        <text x="4.425" y="-8.225000000000001" class="button-led-label" text-anchor="start" alignment-baseline="middle">
+            PCM
+        </text>
+    </svg>
+    <svg x="29.875" y="100" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+        <text x="0" y="9" class="button-label" text-anchor="middle" alignment-baseline="middle">Sub wave</text>
+        <circle cx="0" cy="-15.275" r="1.425" class="button-led button-led__on"></circle>
+        <text x="4.425" y="-14.075000000000001" class="button-led-label" text-anchor="start"
+              alignment-baseline="middle">Sqr
+        </text>
+        <circle cx="0" cy="-9.425" r="1.425" class="button-led"></circle>
+        <text x="4.425" y="-8.225000000000001" class="button-led-label" text-anchor="start" alignment-baseline="middle">
+            Saw
+        </text>
+    </svg>
+    <svg x="57.375" y="96.25" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Sub -1</text>
+    </svg>
+    <svg x="84.875" y="96.25" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Sub -2</text>
+    </svg>
+    <svg x="112.375" y="96.25" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">PW</text>
+    </svg>
+    <svg x="57.375" y="128.75" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Wheel</text>
+    </svg>
+    <svg x="84.875" y="128.75" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">LFO</text>
+    </svg>
+    <svg x="112.375" y="128.75" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Kbd</text>
+    </svg>
+    <text x="181.125" y="20.5" class="subheader-label" text-anchor="middle" alignment-baseline="baseline">Oscillator 2
+    </text>
+    <line x1="128.625" y1="15" x2="233.625" y2="15" class="subheader-underline"></line>
+    <svg x="181.125" y="63.75" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 8.373232009413528 10.268957382155829 A 13.25 13.25 0 1 0 -8.373232009413526 10.26895738215583"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="17.25" class="pot-label" text-anchor="middle">Waveform</text>
+    </svg>
+    <svg x="139.875" y="31.25" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Note</text>
+    </svg>
+    <svg x="167.375" y="31.25" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+        <text x="0" y="9" class="button-label" text-anchor="middle" alignment-baseline="middle">Sync</text>
+        <circle cx="11.425" cy="-2.925" r="1.425" class="button-led"></circle>
+        <text x="15.85" y="-1.7249999999999999" class="button-led-label" text-anchor="start"
+              alignment-baseline="middle">Hard
+        </text>
+        <circle cx="11.425" cy="2.925" r="1.425" class="button-led"></circle>
+        <text x="15.85" y="4.125" class="button-led-label" text-anchor="start" alignment-baseline="middle">Metal</text>
+    </svg>
+    <svg x="222.375" y="31.25" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Detune</text>
+    </svg>
+    <svg x="139.875" y="53.75" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap button-cap-led"></circle>
+        <text x="0" y="9" class="button-label" text-anchor="middle" alignment-baseline="middle">Saw inv</text>
+    </svg>
+    <svg x="139.875" y="71.25" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap button-cap-led"></circle>
+        <text x="0" y="9" class="button-label" text-anchor="middle" alignment-baseline="middle">Sine</text>
+    </svg>
+    <svg x="222.375" y="71.25" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+        <text x="0" y="9" class="button-label" text-anchor="middle" alignment-baseline="middle">Mode</text>
+        <circle cx="0" cy="-21.125" r="1.425" class="button-led button-led__on"></circle>
+        <text x="4.425" y="-19.925" class="button-led-label" text-anchor="start" alignment-baseline="middle">DCO</text>
+        <circle cx="0" cy="-15.275" r="1.425" class="button-led"></circle>
+        <text x="4.425" y="-14.075000000000001" class="button-led-label" text-anchor="start"
+              alignment-baseline="middle">WT
+        </text>
+        <circle cx="0" cy="-9.425" r="1.425" class="button-led"></circle>
+        <text x="4.425" y="-8.225000000000001" class="button-led-label" text-anchor="start" alignment-baseline="middle">
+            PCM
+        </text>
+    </svg>
+    <svg x="139.875" y="100" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+        <text x="0" y="9" class="button-label" text-anchor="middle" alignment-baseline="middle">Sub wave</text>
+        <circle cx="0" cy="-15.275" r="1.425" class="button-led button-led__on"></circle>
+        <text x="4.425" y="-14.075000000000001" class="button-led-label" text-anchor="start"
+              alignment-baseline="middle">Sqr
+        </text>
+        <circle cx="0" cy="-9.425" r="1.425" class="button-led"></circle>
+        <text x="4.425" y="-8.225000000000001" class="button-led-label" text-anchor="start" alignment-baseline="middle">
+            Saw
+        </text>
+    </svg>
+    <svg x="167.375" y="96.25" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Sub -1</text>
+    </svg>
+    <svg x="194.875" y="96.25" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Sub -2</text>
+    </svg>
+    <svg x="222.375" y="96.25" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">PW</text>
+    </svg>
+    <svg x="167.375" y="128.75" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Wheel</text>
+    </svg>
+    <svg x="194.875" y="128.75" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">LFO</text>
+    </svg>
+    <svg x="222.375" y="128.75" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Kbd</text>
+    </svg>
+    <text x="291.125" y="20.5" class="subheader-label" text-anchor="middle" alignment-baseline="baseline">Oscillator 3
+    </text>
+    <line x1="238.625" y1="15" x2="343.625" y2="15" class="subheader-underline"></line>
+    <svg x="291.125" y="63.75" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 8.373232009413528 10.268957382155829 A 13.25 13.25 0 1 0 -8.373232009413526 10.26895738215583"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="17.25" class="pot-label" text-anchor="middle">Waveform</text>
+    </svg>
+    <svg x="249.875" y="31.25" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Note</text>
+    </svg>
+    <svg x="332.375" y="31.25" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Detune</text>
+    </svg>
+    <svg x="277.375" y="31.25" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+        <text x="0" y="9" class="button-label" text-anchor="middle" alignment-baseline="middle">Sync</text>
+        <circle cx="11.425" cy="-2.925" r="1.425" class="button-led"></circle>
+        <text x="15.85" y="-1.7249999999999999" class="button-led-label" text-anchor="start"
+              alignment-baseline="middle">Hard
+        </text>
+        <circle cx="11.425" cy="2.925" r="1.425" class="button-led"></circle>
+        <text x="15.85" y="4.125" class="button-led-label" text-anchor="start" alignment-baseline="middle">CEM Hard
+        </text>
+    </svg>
+    <svg x="332.375" y="71.25" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+        <text x="0" y="9" class="button-label" text-anchor="middle" alignment-baseline="middle">Sync src</text>
+        <circle cx="0" cy="-15.275" r="1.425" class="button-led button-led__on"></circle>
+        <text x="4.425" y="-14.075000000000001" class="button-led-label" text-anchor="start"
+              alignment-baseline="middle">1
+        </text>
+        <circle cx="0" cy="-9.425" r="1.425" class="button-led"></circle>
+        <text x="4.425" y="-8.225000000000001" class="button-led-label" text-anchor="start" alignment-baseline="middle">
+            2
+        </text>
+    </svg>
+    <svg x="249.875" y="71.25" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+        <text x="0" y="9" class="button-label" text-anchor="middle" alignment-baseline="middle">FM mode</text>
+        <circle cx="0" cy="-15.275" r="1.425" class="button-led"></circle>
+        <text x="4.425" y="-14.075000000000001" class="button-led-label" text-anchor="start"
+              alignment-baseline="middle">Lin
+        </text>
+        <circle cx="0" cy="-9.425" r="1.425" class="button-led"></circle>
+        <text x="4.425" y="-8.225000000000001" class="button-led-label" text-anchor="start" alignment-baseline="middle">
+            Log
+        </text>
+    </svg>
+    <svg x="249.875" y="100" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+        <text x="0" y="9" class="button-label" text-anchor="middle" alignment-baseline="middle">FM src</text>
+        <circle cx="0" cy="-15.275" r="1.425" class="button-led button-led__on"></circle>
+        <text x="4.425" y="-14.075000000000001" class="button-led-label" text-anchor="start"
+              alignment-baseline="middle">Osc 2
+        </text>
+        <circle cx="0" cy="-9.425" r="1.425" class="button-led"></circle>
+        <text x="4.425" y="-8.225000000000001" class="button-led-label" text-anchor="start" alignment-baseline="middle">
+            Ext
+        </text>
+    </svg>
+    <svg x="277.375" y="96.25" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">FM</text>
+    </svg>
+    <svg x="332.375" y="96.25" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">PW</text>
+    </svg>
+    <svg x="249.875" y="128.75" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap button-cap-led"></circle>
+        <text x="0" y="13" class="button-label" text-anchor="middle" alignment-baseline="middle">Ext CV</text>
+    </svg>
+    <svg x="277.375" y="128.75" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Wheel</text>
+    </svg>
+    <svg x="304.875" y="128.75" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">LFO</text>
+    </svg>
+    <svg x="332.375" y="128.75" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Kbd</text>
+    </svg>
+    <svg x="30" y="161.25" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+        <circle cx="11.425" cy="-5.85" r="1.425" class="button-led button-led__on"></circle>
+        <text x="15.85" y="-4.6499999999999995" class="button-led-label" text-anchor="start"
+              alignment-baseline="middle">White
+        </text>
+        <circle cx="11.425" cy="0" r="1.425" class="button-led"></circle>
+        <text x="15.85" y="1.2" class="button-led-label" text-anchor="start" alignment-baseline="middle">Pink</text>
+        <circle cx="11.425" cy="5.85" r="1.425" class="button-led"></circle>
+        <text x="15.85" y="7.05" class="button-led-label" text-anchor="start" alignment-baseline="middle">Red</text>
+    </svg>
+    <text x="21" y="183" class="subheader-label" text-anchor="left" alignment-baseline="baseline">Ring</text>
+    <line x1="20" y1="177.5" x2="65" y2="177.5" class="subheader-underline"></line>
+    <svg x="30" y="193.75" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+        <circle cx="11.425" cy="-5.85" r="1.425" class="button-led button-led__on"></circle>
+        <text x="15.85" y="-4.6499999999999995" class="button-led-label" text-anchor="start"
+              alignment-baseline="middle">1 -&gt; 2
+        </text>
+        <circle cx="11.425" cy="0" r="1.425" class="button-led"></circle>
+        <text x="15.85" y="1.2" class="button-led-label" text-anchor="start" alignment-baseline="middle">E -&gt; 2
+        </text>
+        <circle cx="11.425" cy="5.85" r="1.425" class="button-led"></circle>
+        <text x="15.85" y="7.05" class="button-led-label" text-anchor="start" alignment-baseline="middle">3 -&gt; 2
+        </text>
+    </svg>
+    <text x="278" y="150.5" class="subheader-label" text-anchor="middle" alignment-baseline="baseline">Effects</text>
+    <line x1="212.5" y1="145" x2="343.5" y2="145" class="subheader-underline"></line>
+    <svg x="222.5" y="168.75" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+        <circle cx="0" cy="-15.275" r="1.425" class="button-led button-led__on"></circle>
+        <text x="4.425" y="-14.075000000000001" class="button-led-label" text-anchor="start"
+              alignment-baseline="middle">S
+        </text>
+        <circle cx="0" cy="-9.425" r="1.425" class="button-led"></circle>
+        <text x="4.425" y="-8.225000000000001" class="button-led-label" text-anchor="start" alignment-baseline="middle">
+            L
+        </text>
+    </svg>
+    <svg x="250" y="161.25" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Drive</text>
+    </svg>
+    <svg x="305" y="161.25" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Level</text>
+    </svg>
+    <svg x="332.5" y="168.75" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+        <circle cx="0" cy="-15.275" r="1.425" class="button-led button-led__on"></circle>
+        <text x="4.425" y="-14.075000000000001" class="button-led-label" text-anchor="start"
+              alignment-baseline="middle">S
+        </text>
+        <circle cx="0" cy="-9.425" r="1.425" class="button-led"></circle>
+        <text x="4.425" y="-8.225000000000001" class="button-led-label" text-anchor="start" alignment-baseline="middle">
+            L
+        </text>
+    </svg>
+    <svg x="222.5" y="201.25" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+        <circle cx="0" cy="-15.275" r="1.425" class="button-led button-led__on"></circle>
+        <text x="4.425" y="-14.075000000000001" class="button-led-label" text-anchor="start"
+              alignment-baseline="middle">S
+        </text>
+        <circle cx="0" cy="-9.425" r="1.425" class="button-led"></circle>
+        <text x="4.425" y="-8.225000000000001" class="button-led-label" text-anchor="start" alignment-baseline="middle">
+            L
+        </text>
+    </svg>
+    <svg x="250" y="193.75" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 4.193428633800496 7.679691158713488 A 8.75 8.75 0 1 0 -4.193428633800493 7.679691158713489"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Bits</text>
+    </svg>
+    <svg x="277.5" y="193.75" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Rate</text>
+    </svg>
+    <svg x="305" y="193.75" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Level</text>
+    </svg>
+    <svg x="332.5" y="201.25" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+        <circle cx="0" cy="-15.275" r="1.425" class="button-led button-led__on"></circle>
+        <text x="4.425" y="-14.075000000000001" class="button-led-label" text-anchor="start"
+              alignment-baseline="middle">S
+        </text>
+        <circle cx="0" cy="-9.425" r="1.425" class="button-led"></circle>
+        <text x="4.425" y="-8.225000000000001" class="button-led-label" text-anchor="start" alignment-baseline="middle">
+            L
+        </text>
+    </svg>
+    <text x="137.5" y="150.5" class="subheader-label" text-anchor="middle" alignment-baseline="baseline">Mix</text>
+    <line x1="70" y1="145" x2="205" y2="145" class="subheader-underline"></line>
+    <svg x="85" y="161.25" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Noise</text>
+    </svg>
+    <svg x="105.625" y="168.75" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+        <circle cx="0" cy="-15.275" r="1.425" class="button-led button-led__on"></circle>
+        <text x="4.425" y="-14.075000000000001" class="button-led-label" text-anchor="start"
+              alignment-baseline="middle">S
+        </text>
+        <circle cx="0" cy="-9.425" r="1.425" class="button-led"></circle>
+        <text x="4.425" y="-8.225000000000001" class="button-led-label" text-anchor="start" alignment-baseline="middle">
+            L
+        </text>
+    </svg>
+    <svg x="85" y="193.75" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Ring mod</text>
+    </svg>
+    <svg x="105.625" y="201.25" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+        <circle cx="0" cy="-15.275" r="1.425" class="button-led button-led__on"></circle>
+        <text x="4.425" y="-14.075000000000001" class="button-led-label" text-anchor="start"
+              alignment-baseline="middle">S
+        </text>
+        <circle cx="0" cy="-9.425" r="1.425" class="button-led"></circle>
+        <text x="4.425" y="-8.225000000000001" class="button-led-label" text-anchor="start" alignment-baseline="middle">
+            L
+        </text>
+    </svg>
+    <svg x="126.25" y="161.25" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Osc 1</text>
+    </svg>
+    <svg x="146.875" y="168.75" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+        <circle cx="0" cy="-15.275" r="1.425" class="button-led button-led__on"></circle>
+        <text x="4.425" y="-14.075000000000001" class="button-led-label" text-anchor="start"
+              alignment-baseline="middle">S
+        </text>
+        <circle cx="0" cy="-9.425" r="1.425" class="button-led button-led__on"></circle>
+        <text x="4.425" y="-8.225000000000001" class="button-led-label" text-anchor="start" alignment-baseline="middle">
+            L
+        </text>
+    </svg>
+    <svg x="167.5" y="161.25" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Osc 2</text>
+    </svg>
+    <svg x="188.125" y="168.75" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+        <circle cx="0" cy="-15.275" r="1.425" class="button-led button-led__on"></circle>
+        <text x="4.425" y="-14.075000000000001" class="button-led-label" text-anchor="start"
+              alignment-baseline="middle">S
+        </text>
+        <circle cx="0" cy="-9.425" r="1.425" class="button-led button-led__on"></circle>
+        <text x="4.425" y="-8.225000000000001" class="button-led-label" text-anchor="start" alignment-baseline="middle">
+            L
+        </text>
+    </svg>
+    <svg x="126.25" y="193.75" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Osc 3</text>
+    </svg>
+    <svg x="146.875" y="201.25" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+        <circle cx="0" cy="-15.275" r="1.425" class="button-led button-led__on"></circle>
+        <text x="4.425" y="-14.075000000000001" class="button-led-label" text-anchor="start"
+              alignment-baseline="middle">S
+        </text>
+        <circle cx="0" cy="-9.425" r="1.425" class="button-led"></circle>
+        <text x="4.425" y="-8.225000000000001" class="button-led-label" text-anchor="start" alignment-baseline="middle">
+            L
+        </text>
+    </svg>
+    <svg x="167.5" y="193.75" class="pot">
+        <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+        <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+        <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+              class="pot-ring-window" stroke-width="2.5"></path>
+        <text x="0" y="12.75" class="pot-label" text-anchor="middle">Ext audio</text>
+    </svg>
+    <svg x="188.125" y="201.25" class="button">
+        <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+        <circle cx="0" cy="-15.275" r="1.425" class="button-led button-led__on"></circle>
+        <text x="4.425" y="-14.075000000000001" class="button-led-label" text-anchor="start"
+              alignment-baseline="middle">S
+        </text>
+        <circle cx="0" cy="-9.425" r="1.425" class="button-led"></circle>
+        <text x="4.425" y="-8.225000000000001" class="button-led-label" text-anchor="start" alignment-baseline="middle">
+            L
+        </text>
+    </svg>
+    <svg x="20" y="210">
+        <text x="1" y="5.5" class="subheader-label" text-anchor="left" alignment-baseline="baseline">LFO</text>
+        <line x1="0" y1="0" x2="323" y2="0" class="subheader-underline"></line>
+        <svg x="10" y="16.25" class="button">
+            <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+            <circle cx="11.425" cy="-8.774999999999999" r="1.425" class="button-led button-led__on"></circle>
+            <text x="15.85" y="-7.574999999999998" class="button-led-label" text-anchor="start"
+                  alignment-baseline="middle">1
+            </text>
+            <circle cx="11.425" cy="-2.925" r="1.425" class="button-led"></circle>
+            <text x="15.85" y="-1.7249999999999999" class="button-led-label" text-anchor="start"
+                  alignment-baseline="middle">2
+            </text>
+            <circle cx="11.425" cy="2.925" r="1.425" class="button-led"></circle>
+            <text x="15.85" y="4.125" class="button-led-label" text-anchor="start" alignment-baseline="middle">3</text>
+            <circle cx="11.425" cy="8.774999999999999" r="1.425" class="button-led"></circle>
+            <text x="15.85" y="9.974999999999998" class="button-led-label" text-anchor="start"
+                  alignment-baseline="middle">4
+            </text>
+        </svg>
+        <svg x="65" y="16.25" class="button">
+            <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+            <text x="0" y="13" class="button-label" text-anchor="middle" alignment-baseline="middle">Shape</text>
+            <circle cx="-11.425" cy="-5.85" r="1.425" class="button-led button-led__on"></circle>
+            <text x="-15.85" y="-4.6499999999999995" class="button-led-label" text-anchor="end"
+                  alignment-baseline="middle">Saw
+            </text>
+            <circle cx="-11.425" cy="0" r="1.425" class="button-led"></circle>
+            <text x="-15.85" y="1.2" class="button-led-label" text-anchor="end" alignment-baseline="middle">Tri</text>
+            <circle cx="-11.425" cy="5.85" r="1.425" class="button-led"></circle>
+            <text x="-15.85" y="7.05" class="button-led-label" text-anchor="end" alignment-baseline="middle">Sqr</text>
+            <circle cx="11.425" cy="-5.85" r="1.425" class="button-led"></circle>
+            <text x="15.85" y="-4.6499999999999995" class="button-led-label" text-anchor="start"
+                  alignment-baseline="middle">Sin
+            </text>
+            <circle cx="11.425" cy="0" r="1.425" class="button-led"></circle>
+            <text x="15.85" y="1.2" class="button-led-label" text-anchor="start" alignment-baseline="middle">Rand</text>
+            <circle cx="11.425" cy="5.85" r="1.425" class="button-led"></circle>
+            <text x="15.85" y="7.05" class="button-led-label" text-anchor="start" alignment-baseline="middle">Other
+            </text>
+        </svg>
+        <svg x="106.25" y="16.25" class="pot">
+            <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+            <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+            <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+                  class="pot-ring-window" stroke-width="2.5"></path>
+            <text x="0" y="12.75" class="pot-label" text-anchor="middle">Rate</text>
+        </svg>
+        <svg x="126.875" y="16.25" class="button">
+            <circle cx="0" cy="0" r="3.45" class="button-cap button-cap-led"></circle>
+            <text x="0" y="13" class="button-label" text-anchor="middle" alignment-baseline="middle">Sync</text>
+        </svg>
+        <svg x="147.5" y="16.25" class="pot">
+            <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+            <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+            <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+                  class="pot-ring-window" stroke-width="2.5"></path>
+            <text x="0" y="12.75" class="pot-label" text-anchor="middle">Depth</text>
+        </svg>
+        <svg x="175" y="16.25" class="pot">
+            <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+            <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+            <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+                  class="pot-ring-window" stroke-width="2.5"></path>
+            <text x="0" y="12.75" class="pot-label" text-anchor="middle">Balance</text>
+        </svg>
+        <svg x="202.5" y="16.25" class="pot">
+            <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+            <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+            <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+                  class="pot-ring-window" stroke-width="2.5"></path>
+            <text x="0" y="12.75" class="pot-label" text-anchor="middle">Delay</text>
+        </svg>
+        <svg x="239.16666666666669" y="16.25" class="button">
+            <circle cx="0" cy="0" r="3.45" class="button-cap button-cap-led"></circle>
+            <text x="0" y="13" class="button-label" text-anchor="middle" alignment-baseline="middle">Reset</text>
+        </svg>
+        <svg x="257.5" y="16.25" class="button">
+            <circle cx="0" cy="0" r="3.45" class="button-cap button-cap-led"></circle>
+            <text x="0" y="13" class="button-label" text-anchor="middle" alignment-baseline="middle">Loop</text>
+        </svg>
+        <svg x="275.8333333333333" y="16.25" class="button">
+            <circle cx="0" cy="0" r="3.45" class="button-cap button-cap-led"></circle>
+            <text x="0" y="13" class="button-label" text-anchor="middle" alignment-baseline="middle">Invert</text>
+        </svg>
+        <svg x="294.16666666666663" y="16.25" class="button">
+            <circle cx="0" cy="0" r="3.45" class="button-cap button-cap-led button-cap-led__on"></circle>
+            <text x="0" y="13" class="button-label" text-anchor="middle" alignment-baseline="middle">Bipolar</text>
+        </svg>
+        <svg x="312.49999999999994" y="16.25" class="button">
+            <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+            <text x="0" y="13" class="button-label" text-anchor="middle" alignment-baseline="middle">Trigger</text>
+        </svg>
+    </svg>
+    <svg x="20" y="242.5">
+        <text x="1" y="5.5" class="subheader-label" text-anchor="left" alignment-baseline="baseline">Route</text>
+        <line x1="0" y1="0" x2="50" y2="0" class="subheader-underline"></line>
+        <svg x="10" y="16.25" class="button">
+            <circle cx="0" cy="0" r="3.45" class="button-cap button-cap-led"></circle>
+        </svg>
+        <svg x="37.5" y="16.25" class="pot">
+            <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+            <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+            <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+                  class="pot-ring-window" stroke-width="2.5"></path>
+            <text x="0" y="12.75" class="pot-label" text-anchor="middle">Amount</text>
+        </svg>
+    </svg>
+    <svg x="75" y="242.5">
+        <text x="1" y="5.5" class="subheader-label" text-anchor="left" alignment-baseline="baseline">Clock</text>
+        <line x1="0" y1="0" x2="64" y2="0" class="subheader-underline"></line>
+        <svg x="10" y="16.25" class="button">
+            <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+            <text x="0" y="13" class="button-label" text-anchor="middle" alignment-baseline="middle">Source</text>
+            <circle cx="11.425" cy="-5.85" r="1.425" class="button-led button-led__on"></circle>
+            <text x="15.85" y="-4.6499999999999995" class="button-led-label" text-anchor="start"
+                  alignment-baseline="middle">Int
+            </text>
+            <circle cx="11.425" cy="0" r="1.425" class="button-led"></circle>
+            <text x="15.85" y="1.2" class="button-led-label" text-anchor="start" alignment-baseline="middle">Midi</text>
+            <circle cx="11.425" cy="5.85" r="1.425" class="button-led"></circle>
+            <text x="15.85" y="7.05" class="button-led-label" text-anchor="start" alignment-baseline="middle">Ext</text>
+        </svg>
+        <svg x="51.25" y="16.25" class="pot">
+            <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+            <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+            <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+                  class="pot-ring-window" stroke-width="2.5"></path>
+            <text x="0" y="12.75" class="pot-label" text-anchor="middle">Rate</text>
+        </svg>
+    </svg>
+    <svg x="146.875" y="242.5">
+        <text x="1" y="5.5" class="subheader-label" text-anchor="left" alignment-baseline="baseline">Arp</text>
+        <line x1="0" y1="0" x2="197" y2="0" class="subheader-underline"></line>
+        <svg x="20.625" y="16.25" class="pot">
+            <circle cx="0" cy="0" r="3.45" class="pot-knob"></circle>
+            <rect x="-8.5" y="-1.35" width="1.2" height="2.7" class="pot-key"></rect>
+            <path d="M 5.018793818071653 7.1675803875286785 A 8.75 8.75 0 1 0 -5.018793818071656 7.167580387528676"
+                  class="pot-ring-window" stroke-width="2.5"></path>
+            <text x="0" y="12.75" class="pot-label" text-anchor="middle">Rate</text>
+        </svg>
+        <svg x="48.125" y="16.25" class="button">
+            <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+            <text x="0" y="13" class="button-label" text-anchor="middle" alignment-baseline="middle">Sync</text>
+            <circle cx="11.425" cy="-5.85" r="1.425" class="button-led"></circle>
+            <text x="15.85" y="-4.6499999999999995" class="button-led-label" text-anchor="start"
+                  alignment-baseline="middle">Clock
+            </text>
+            <circle cx="11.425" cy="0" r="1.425" class="button-led"></circle>
+            <text x="15.85" y="1.2" class="button-led-label" text-anchor="start" alignment-baseline="middle">LFO1</text>
+            <circle cx="11.425" cy="5.85" r="1.425" class="button-led"></circle>
+            <text x="15.85" y="7.05" class="button-led-label" text-anchor="start" alignment-baseline="middle">Ext</text>
+        </svg>
+        <svg x="84.79166666666666" y="16.25" class="button">
+            <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+            <text x="0" y="13" class="button-label" text-anchor="middle" alignment-baseline="middle">Range</text>
+            <circle cx="11.425" cy="-5.85" r="1.425" class="button-led button-led__on"></circle>
+            <text x="15.85" y="-4.6499999999999995" class="button-led-label" text-anchor="start"
+                  alignment-baseline="middle">1
+            </text>
+            <circle cx="11.425" cy="0" r="1.425" class="button-led"></circle>
+            <text x="15.85" y="1.2" class="button-led-label" text-anchor="start" alignment-baseline="middle">2</text>
+            <circle cx="11.425" cy="5.85" r="1.425" class="button-led"></circle>
+            <text x="15.85" y="7.05" class="button-led-label" text-anchor="start" alignment-baseline="middle">3</text>
+        </svg>
+        <svg x="130.625" y="16.25" class="button">
+            <circle cx="0" cy="0" r="3.45" class="button-cap"></circle>
+            <text x="0" y="13" class="button-label" text-anchor="middle" alignment-baseline="middle">Mode</text>
+            <circle cx="-11.425" cy="-5.85" r="1.425" class="button-led button-led__on"></circle>
+            <text x="-15.85" y="-4.6499999999999995" class="button-led-label" text-anchor="end"
+                  alignment-baseline="middle">Up
+            </text>
+            <circle cx="-11.425" cy="0" r="1.425" class="button-led"></circle>
+            <text x="-15.85" y="1.2" class="button-led-label" text-anchor="end" alignment-baseline="middle">Down</text>
+            <circle cx="-11.425" cy="5.85" r="1.425" class="button-led"></circle>
+            <text x="-15.85" y="7.05" class="button-led-label" text-anchor="end" alignment-baseline="middle">U/D</text>
+            <circle cx="11.425" cy="-2.925" r="1.425" class="button-led"></circle>
+            <text x="15.85" y="-1.7249999999999999" class="button-led-label" text-anchor="start"
+                  alignment-baseline="middle">Rand
+            </text>
+            <circle cx="11.425" cy="2.925" r="1.425" class="button-led"></circle>
+            <text x="15.85" y="4.125" class="button-led-label" text-anchor="start" alignment-baseline="middle">Other
+            </text>
+        </svg>
+        <svg x="167.29166666666666" y="16.25" class="button">
+            <circle cx="0" cy="0" r="3.45" class="button-cap button-cap-led"></circle>
+            <text x="0" y="13" class="button-label" text-anchor="middle" alignment-baseline="middle">On</text>
+        </svg>
+        <svg x="185.625" y="16.25" class="button">
+            <circle cx="0" cy="0" r="3.45" class="button-cap button-cap-led"></circle>
+            <text x="0" y="13" class="button-label" text-anchor="middle" alignment-baseline="middle">Trigger</text>
+        </svg>
+    </svg>
+    <circle cx="10" cy="10" r="1.6" class="panel-screw"></circle>
+    <circle cx="10" cy="145" r="1.6" class="panel-screw"></circle>
+    <circle cx="181.25" cy="10" r="1.6" class="panel-screw"></circle>
+    <circle cx="355" cy="10" r="1.6" class="panel-screw"></circle>
+    <circle cx="10" cy="280" r="1.6" class="panel-screw"></circle>
+    <circle cx="181.25" cy="280" r="1.6" class="panel-screw"></circle>
+    <circle cx="355" cy="145" r="1.6" class="panel-screw"></circle>
+    <circle cx="355" cy="280" r="1.6" class="panel-screw"></circle>
+    <style>
+        .pot-knob{stroke:#000;fill:#181818}.pot-knob-silver{fill:#d2d2d2}.pot-ring-led{stroke:#500000;fill:#500000}.pot-ring-led__on{stroke:red;fill:red}.pot-ring-window{stroke:#1f0000;fill:none}.pot-label{fill:#fff;font-size:3.5px}.cut
+        .pot-knob,.cut .pot-ring-led{stroke-width:.024;stroke:#000;fill:none}.cut
+        .pot-ring-window{stroke:#000;fill:none}.cut .pot-label{fill:#000;stroke:none}.cut
+        .pot-key{stroke-width:.024;stroke:#000;fill:none}.button{overflow:visible}.button-cap{stroke:#000;fill:#181818}.button-cap-led{stroke:#500000;fill:#500000}.button-cap-led__on{stroke:red;fill:red}.button-led{stroke:#500000;fill:#500000}.button-led__on{stroke:red;fill:red}.button-label,.button-led-label{fill:#fff;font-size:3.5px}.cut
+        .button-cap,.cut .button-led{stroke-width:.024;stroke:#000;fill:none}.cut .button-label,.cut
+        .button-led-label{fill:#000;stroke:none}.subheader-label{fill:#fff;font-size:4.5px}.subheader-underline{stroke:#fff}.cut
+        .subheader-label{fill:#000}.cut .subheader-underline{stroke:#000}.line{stroke:#fff}.cut
+        .line{stroke:#000}.display{fill:#1f1f1f}.header-label{fill:#fff;font-size:6px}.header-underline{stroke:#fff}.bezel{fill:#242424}.led{stroke:#500000;fill:#500000}.led__on{stroke:red;fill:red}.led-label{fill:#fff;font-size:4px}.mod-values{min-height:1.5rem;display:flex;justify-content:space-evenly;border-top:1px
+        solid
+        #222;padding-left:.6em;padding-right:.6em;background-color:#333}.mod-values__item{align-items:center;justify-content:center;height:100%;color:#fff}.amount-bar,.mod-values__item{display:flex;width:100%}.amount-bar__left{display:flex;justify-content:flex-end;height:.25rem;width:50%}.amount-bar__right{display:flex;justify-content:flex-start;height:.25rem;width:50%}.amount-bar__neg{height:.25rem;width:25%;background-color:red}.amount-bar__pos{height:.25rem;width:25%;background-color:green}.mod-ctrl{overflow:hidden;display:flex;flex-direction:column;width:100%}.mod-ctrl__header{display:flex;flex-direction:row;justify-content:flex-start;border-bottom:1px
+        solid #222;background-color:#333}.mod-ctrl__header__corner{display:flex;flex:0 0
+        7rem;justify-content:center;align-items:center;color:#fff;background-color:#333;z-index:3;border-right:1px solid
+        #222}.mod-ctrl__header__dsts-container{overflow:scroll;overflow-y:hidden;-ms-overflow-style:none;scrollbar-width:none}.mod-ctrl__header__dsts-container::-webkit-scrollbar{width:0;height:0}.mod-ctrl__content{overflow:hidden;display:flex;flex-direction:row}.mod-ctrl__content__sources-container{border-right:1px
+        solid
+        #353535;min-width:7rem;overflow:scroll;overflow-x:hidden;-ms-overflow-style:none;scrollbar-width:none}.mod-ctrl__content__sources-container::-webkit-scrollbar{width:0;height:0}.mod-ctrl__content__amounts-container{overflow:scroll;-ms-overflow-style:none;scrollbar-width:none}.mod-ctrl__content__amounts-container::-webkit-scrollbar{width:0;height:0}.mod-ctrl__dsts{z-index:2;position:relative;display:inline-flex;flex-direction:row;overflow-y:hidden}.mod-ctrl__sources{z-index:2;position:relative;width:7rem;display:flex;flex-direction:column}.mod-ctrl__source{-webkit-user-select:none;-ms-user-select:none;user-select:none;display:inline-flex;align-items:center;height:2rem;border-bottom:1px
+        solid #222;color:#fff;padding:.25rem .25rem .25rem
+        .5rem;background-color:#333}.mod-ctrl__source--selected{color:#333;background-color:#ddd}.mod-ctrl__dst{display:flex;flex-direction:column}.mod-ctrl__dst__func{-webkit-user-select:none;-ms-user-select:none;user-select:none;justify-content:center;align-items:center;border-bottom:1px
+        solid #222;border-right:1px solid
+        #222;padding:.25rem;color:#fff;background-color:#333}.mod-ctrl__dst__func,.mod-ctrl__dst__props{display:flex;flex-direction:row}.mod-ctrl__dst__label{-webkit-user-select:none;-ms-user-select:none;user-select:none;display:flex;justify-content:center;align-items:center;height:1.5rem;border-right:1px
+        solid #222;background-color:#333;color:#fff;padding:0
+        .25rem;width:5rem}.mod-ctrl__dst__label--selected{color:#333;background-color:#ddd}.mod-ctrl__amounts{z-index:1;position:relative;display:inline-block}.mod-ctrl__amount{border-right:1px
+        solid #353535;border-bottom:1px solid
+        #353535;display:flex;flex-direction:column;min-width:5rem;height:2rem;padding:.25rem;background-color:#1f1f1f;color:#fff}.mod-ctrl__amount__number{-webkit-user-select:none;-ms-user-select:none;user-select:none;flex-grow:1;display:flex;flex-direction:column;justify-content:center;align-items:center}.mod-ctrl__amount--highlit-col,.mod-ctrl__amount--highlit-row{background-color:#505050}.mod-ctrl__amount--selected,.pot-labels{background-color:#666}.pot-labels{min-height:1.5rem;display:flex;justify-content:space-evenly;margin-top:.6em;padding-left:.6em;padding-right:.6em}.pot-labels__label{display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:#fff}.curve{stroke:#fff;stroke-width:.2rem;stroke-linecap:round;fill:none;vector-effect:non-scaling-stroke}.stage-block-disabled{visibility:hidden}.stage-block-line{stroke-width:.15em}.gui-ctrl-button{display:flex;flex-direction:column;justify-content:center;align-items:center;border:.1em
+        solid
+        #444;padding:.25em;color:#ddd;background-color:transparent}.gui-ctrl-button--active{background-color:#ddd;color:#333}.gui-ctrl-button--disabled{background-color:transparent;color:#666}.env-options{display:flex;flex-direction:column;justify-content:flex-start;width:6.5em}.env-options
+        .gui-ctrl-button{text-align:center;height:2.5em;margin-bottom:.25em}.stage-params{display:flex;color:#fff;justify-content:space-evenly;align-items:center}.env-ctrl{display:flex;justify-content:space-between;width:100%;height:90%}.env-ctrl-stages{padding-left:.5em;padding-right:.5em;flex-grow:1;display:flex;flex-direction:column}.env-ctrl-graph{height:70%;flex-grow:1}.env-ctrl-graph-svg{height:100%;width:100%}.env-ctrl__heading{margin-bottom:.5em}.env-ctrl__footer,.env-ctrl__heading{background-color:#333;color:#fff;display:flex;justify-content:center;width:100%;padding-top:.33em;padding-bottom:.33em}.env-ctrl__footer{flex-direction:column;margin-top:.5em}.env-ctrl__footer__item{display:flex;justify-content:center}.env-ctrl__footer__item--hidden,.stages-curve-disabled{visibility:hidden}.stages-curve-line{stroke-width:.15em}.stages-center-line,.stages-divider{stroke-width:.0625em;stroke-dasharray:.2em
+        .2em;stroke:grey;vector-effect:non-scaling-stroke}.stages-background{fill:transparent}.stages-background--selected{fill:rgba(51,51,51,.3333333333)}.stage-activator{display:flex;align-items:stretch;flex-direction:column;justify-content:space-between;width:6em}.stage-activator
+        .gui-ctrl-button{height:100%;margin-bottom:.25em}.lfo-options{display:flex;flex-direction:column;justify-content:flex-start;width:6.5em}.lfo-options
+        .gui-ctrl-button{text-align:center;height:2.5em;margin-bottom:.25em}.lfo-params{display:flex;justify-content:space-evenly;flex-direction:row;align-items:center;background-color:#333;color:#fff;width:100%;padding-top:.33em;padding-bottom:.33em;margin-top:.5em}.lfo-params__footer__item{display:flex;justify-content:center}.lfo-params__footer__item--hidden{visibility:hidden}.lfo-params__footer__item--labels
+        div{margin-left:.25rem;margin-right:.25rem}.lfo-params__footer__item--values--curve{width:45px;margin-right:.25rem}.lfo-params__footer__item--values--curve
+        div{text-align:end}.lfo-params__footer__item--values--stage-percentage{width:45px;margin-right:.25rem}.lfo-params__footer__item--values--stage-percentage
+        div{text-align:end}.lfo-params__footer__item--values--offset{width:35px;padding-right:.25rem;border-right:1px
+        solid #fff}.lfo-params__footer__item--values--offset
+        div{text-align:end}.lfo-params__footer__item--values--stage-time{width:58px}.lfo-params__footer__item--values--stage-time
+        div{text-align:end}.lfo-params__footer__item--values--time{width:49px;padding-right:.25rem;border-right:1px
+        solid #fff}.lfo-params__footer__item--values--time div{text-align:end}.lfo-params__footer__item--values
+        div{text-align:end;margin-right:.5rem}.stage-names{display:flex;justify-content:space-evenly;align-items:center}.lfo-ctrl{display:flex;justify-content:space-between;width:100%;height:90%}.lfo-ctrl-stages{padding-left:.5em;padding-right:.5em;flex-grow:1;display:flex;flex-direction:column}.lfo-ctrl-graph{height:70%;flex-grow:1}.lfo-ctrl-graph-svg{height:100%;width:100%}.lfo-ctrl__heading{background-color:#333;color:#fff;display:flex;justify-content:center;width:100%;padding-top:.33em;padding-bottom:.33em;margin-bottom:.5em}.settings{display:flex;justify-content:space-between;width:100%;height:90%}.settings__heading{background-color:#333;color:#fff;display:flex;justify-content:center;width:100%;padding-top:.33em;padding-bottom:.33em;margin-bottom:.5em}.cv-range{width:100%;height:100%;display:flex;flex-direction:column}.cv-range__graph-controls{display:flex;justify-content:space-between;align-items:center;width:100%;height:90%}.cv-range__graph-controls__range{width:4rem;margin:1rem;height:100%}.cv-range__thumb{color:#000;border:1px
+        solid
+        #fff;background-color:#fff;text-align:center;width:100%}.cv-range__params{color:#fff;display:flex;justify-content:space-between;width:100%}.cv-range__graph{width:100%;height:95%}.cv-range__slider-with-label{height:100%;display:flex;flex-direction:column}.cv-range__slider-label{color:#fff;text-align:center}.filedetails{height:100%;display:flex;flex-direction:column;justify-content:space-between;box-sizing:border-box;padding:1rem}.filedetails__actions{margin-top:1rem}.keyboard-input{padding:1rem;box-sizing:border-box;left:0;position:absolute;top:0;height:100%;width:100%;z-index:1001;color:#000;background-color:#333}.keyboard-input,.keyboard-input_main{display:flex;flex-direction:column;justify-content:space-between}.keyboard-input_main{color:#fff;margin:0
+        1rem
+        1rem}.keyboard-input_heading{font-size:1.5rem}.keyboard-input_text{font-size:1.2rem;color:#fff;background-color:#333;margin-top:.5rem;margin-bottom:.75rem;border-top:0;border-left:0;border-right:0}.keyboard-input_text:focus{outline-width:0}.keyboard-input_text::-webkit-search-cancel-button{-webkit-appearance:none;height:20px;width:20px;border-radius:10px;background:red}.keyboard-input_actions{display:flex;flex-direction:row}.keyboard-input_actions
+        .ctrl-button{width:5rem;margin-right:.5rem}div.rendered-react-keyed-file-browser{box-sizing:border-box;padding:1rem;height:100%;color:#fff}div.rendered-react-keyed-file-browser
+        a{color:#fff;text-decoration:none}div.rendered-react-keyed-file-browser .deleting
+        button{margin-top:.5rem}div.rendered-react-keyed-file-browser
+        .file-browser{height:100%;display:flex;justify-content:space-between;grid-gap:1rem;gap:1rem}div.rendered-react-keyed-file-browser
+        .file-browser__files-container{display:flex;flex-direction:column;justify-content:space-between;height:100%;flex:1
+        1}div.rendered-react-keyed-file-browser .file-browser
+        div.files{overflow-y:auto;height:100%}div.rendered-react-keyed-file-browser
+        .file-browser__filedetails{width:33%;background-color:#333;height:100%}div.rendered-react-keyed-file-browser
+        .file-browser
+        .filename{display:flex;justify-content:space-between;grid-gap:1rem;gap:1rem;margin-top:.5rem;margin-bottom:1rem}div.rendered-react-keyed-file-browser
+        .file-browser .filename .ctrl-button{flex:1 1}div.rendered-react-keyed-file-browser .file-browser .filename
+        button{margin-left:1rem;margin-right:1rem}div.rendered-react-keyed-file-browser .file-browser
+        .path{margin-top:.5rem}div.rendered-react-keyed-file-browser
+        div.action-bar{margin-bottom:.5rem;display:flex;align-items:flex-start}div.rendered-react-keyed-file-browser
+        div.action-bar input [type=search]{display:block;flex-grow:2;min-width:300px;padding:.25rem
+        .5rem;line-height:1em;margin-bottom:.5rem;border:.1rem solid #ddd}div.rendered-react-keyed-file-browser
+        div.action-bar .item-actions{text-align:right;margin:0;padding:0}div.rendered-react-keyed-file-browser
+        div.action-bar
+        ul.item-actions{display:block;flex-grow:1;margin-left:10px;white-space:nowrap}div.rendered-react-keyed-file-browser
+        div.action-bar ul.item-actions li{display:inline-block;margin:0}div.rendered-react-keyed-file-browser
+        div.action-bar ul.item-actions
+        li:not(:last-child){margin-right:.5rem}.filebrowser-icon{display:flex;align-items:center}.filebrowser-icon__svg{display:block;height:1rem;width:1rem;fill:#fff;margin-right:.25rem}.filebrowser-modal{left:0;position:absolute;top:0;height:100%;width:100%;z-index:1001;background-color:rgba(0,0,0,.8666666667)}.filebrowser-modal__content{bottom:0;left:0;position:absolute;right:0;top:0;margin:auto;background-color:#333;padding:1rem;width:30rem;height:20rem}.item-actions
+        a{display:flex;align-items:center}div.rendered-react-keyed-file-browser div.files
+        table{width:100%;margin-bottom:2rem;-webkit-touch-callout:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}div.rendered-react-keyed-file-browser
+        div.files table td,div.rendered-react-keyed-file-browser div.files table
+        th{font-weight:400;text-align:left;margin:0;padding:.5rem}div.rendered-react-keyed-file-browser div.files table
+        th{font-weight:700}div.rendered-react-keyed-file-browser div.files table
+        td.modified,div.rendered-react-keyed-file-browser div.files table td.size,div.rendered-react-keyed-file-browser
+        div.files table th.modified,div.rendered-react-keyed-file-browser div.files table
+        th.size{text-align:right}div.rendered-react-keyed-file-browser div.files table td.name
+        i,div.rendered-react-keyed-file-browser div.files table th.name
+        i{padding-right:.5rem}div.rendered-react-keyed-file-browser div.files table thead th{border-bottom:.1rem solid
+        #ddd}div.rendered-react-keyed-file-browser div.files table tr:not(:last-child) td{border-bottom:.1rem solid
+        #eee}div.rendered-react-keyed-file-browser div.files table
+        td.name{padding-left:.8rem}div.rendered-react-keyed-file-browser div.files table td.name
+        form.renaming{display:flex;align-items:center}div.rendered-react-keyed-file-browser div.files table td.name
+        form.renaming i{flex-grow:0;flex-shrink:0}div.rendered-react-keyed-file-browser div.files table td.name
+        form.renaming input[type=text]{flex:1 1}div.rendered-react-keyed-file-browser div.files table tr
+        td{cursor:pointer}div.rendered-react-keyed-file-browser div.files table tr.selected
+        td{font-weight:700}div.rendered-react-keyed-file-browser div.files table tr.selected td
+        button,div.rendered-react-keyed-file-browser div.files table tr.selected td
+        input{font-weight:400}div.rendered-react-keyed-file-browser div.files table tr.selected
+        td.name{position:relative}div.rendered-react-keyed-file-browser div.files table tr.selected
+        td.name:after{content:"
+        ";position:absolute;left:0;top:0;width:.3rem;height:100%;background:#1d4567}div.rendered-react-keyed-file-browser
+        div.files table tr.dragover td,div.rendered-react-keyed-file-browser div.files table tr.dragover
+        th{background:#eee}div.rendered-file-browser div.files li.file.dragging,div.rendered-file-browser div.files
+        li.file.pending,div.rendered-file-browser div.files li.folder.dragging,div.rendered-file-browser div.files
+        li.folder.pending{opacity:.4}div.rendered-file-browser div.files li.file.dragover,div.rendered-file-browser
+        div.files li.folder.dragover{background:#eee}div.rendered-file-browser div.files
+        li.file.selected>div.item,div.rendered-file-browser div.files
+        li.folder.selected>div.item{color:#fff;background:#ccc}div.rendered-file-browser div.files
+        li.file.selected>div.item .text-muted,div.rendered-file-browser div.files li.folder.selected>div.item
+        .text-muted{color:#e6e6e6}div.rendered-file-browser div.files li.file.selected>div.item.folder
+        a:not(.btn),div.rendered-file-browser div.files li.file.selected>div.item a:not(.btn),div.rendered-file-browser
+        div.files li.file.selected>div.item i,div.rendered-file-browser div.files li.folder.selected>div.item.folder
+        a:not(.btn),div.rendered-file-browser div.files li.folder.selected>div.item
+        a:not(.btn),div.rendered-file-browser div.files li.folder.selected>div.item
+        i{color:#fff}div.rendered-file-browser div.files
+        ul{list-style:none;padding:0;display:grid;grid-gap:4px;gap:4px;grid-template-columns:repeat(3,1fr)}div.rendered-file-browser
+        div.files ul li.folder{grid-column:1/4}div.rendered-file-browser div.files ul
+        li.folder>div.item{display:flex;flex-direction:row;align-items:center;padding-left:4px;border:1px solid
+        #eee}div.rendered-file-browser div.files ul li.folder>div.item span.name{flex:1
+        1;line-height:45px}div.rendered-file-browser div.files ul li.folder>div.item
+        span.thumb{flex-basis:45px;border:none;text-align:center}div.rendered-file-browser div.files ul
+        li.folder>div.item span.thumb>i{line-height:45px;font-size:18px}div.rendered-file-browser div.files ul
+        li.folder>div.item form.renaming{margin-top:8px;margin-right:8px}div.rendered-file-browser div.files ul
+        li.folder>p{margin:8px 8px 0;padding:0}div.rendered-file-browser div.files ul
+        li.folder.expanded{padding-bottom:8px;border-bottom:1px solid #eee;border-left:4px solid #eee;border-right:1px
+        solid #eee}div.rendered-file-browser div.files ul
+        li.folder.expanded>div.item{padding-left:0;margin-right:-1px;margin-left:-1px}div.rendered-file-browser
+        div.files ul li.folder.expanded.selected{border-bottom:1px solid #ccc;border-left:4px solid
+        #ccc;border-right:1px solid #ccc}div.rendered-file-browser div.files ul li.selected.folder>div.item{border:1px
+        solid #bfbfbf}div.rendered-file-browser div.files ul li.selected.folder>div.item
+        span.thumb{border:none}div.rendered-file-browser div.files ul
+        li.file{margin:4px;padding:0}div.rendered-file-browser div.files ul
+        li.file>div.item{display:flex;flex-direction:column;padding:4px;margin:0}div.rendered-file-browser div.files ul
+        li.file>div.item span.thumb{flex-basis:120px;text-align:center;position:relative;border:1px solid
+        #eee;margin-bottom:10px}div.rendered-file-browser div.files ul li.file>div.item
+        span.thumb>i{font-size:40px;line-height:120px}div.rendered-file-browser div.files ul li.file>div.item
+        span.thumb>i
+        div.image{position:absolute;top:0;left:0;width:100%;height:100%;background-size:cover;background-position:50%
+        50%;background-repeat:no-repeat}div.rendered-file-browser div.files ul li.selected.file>div.item
+        span.thumb{border:1px solid #bfbfbf}div.rendered-file-browser div.files ul li.selected.file>div.item span.thumb
+        div.image{opacity:.8}div.rendered-file-browser p.empty,div.rendered-file-browser p.loading{margin:16px
+        0}.patch-browser{display:flex;flex-direction:column;justify-content:space-between;height:100%}.patch-browser_filename{margin-top:2rem}.controller-grid{height:100%;display:flex;flex-direction:column;justify-content:space-between}.panel{float:left;stroke-width:.5;background:#555}.panel-main-display{position:absolute}.panel-grid-50{stroke:#fff;stroke-width:.2}.panel-grid-5{stroke:grey;stroke-width:.2}.panel-grid-1{stroke:#666;stroke-width:.1}.cut
+        .panel{background:none}.cut
+        .panel-outline{background:none;fill:none;stroke:#000;stroke-width:.024}.panel-screw{stroke:none;fill:#000}.cut
+        .panel-screw{stroke-width:.024;stroke:#000;fill:none}.keyboard{float:left;stroke-width:.5;background:rgba(48,48,48,.5647058824)}.keyboard-keys{stroke-width:.5;fill:#eaeaea}.keyboard-keys-octave-divider{stroke:#000}body{font-family:sans-serif;-webkit-user-select:none;-ms-user-select:none;user-select:none}svg{overflow:visible}svg
+        text{-webkit-user-select:none;-ms-user-select:none;user-select:none}svg
+        text::selection{background:none}.module-background{fill:#3b3b3b;stroke:none}
+    </style>
+</svg>
