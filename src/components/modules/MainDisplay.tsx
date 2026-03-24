@@ -59,6 +59,7 @@ const MainDisplay = React.forwardRef<SVGRectElement, Props>(
         const currentScreen = useUiStore(s => s.currentScreen)
         const setScreen = useUiStore(s => s.setScreen)
         const setShift = useUiStore(s => s.setShift)
+        const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)
 
         const currScreenNumeric = screenIdToMainDisplayScreenId[currentScreen] ?? MainDisplayScreenId.ENV
         const menuIndex = screenToMenuIndex[currentScreen] ?? -1
@@ -92,12 +93,12 @@ const MainDisplay = React.forwardRef<SVGRectElement, Props>(
 
         const makePotIncrement = useCallback((potIndex: number) => (delta: number) => {
             mainDisplayApi.handleMainDisplayController(
-                0,
+                voiceGroupIndex,
                 mainDisplayControllers.POT1.id + potIndex,
                 delta,
                 ApiSource.UI
             )
-        }, [])
+        }, [voiceGroupIndex])
 
         const onHomeClick = useCallback(() => {
             mainDisplayApi.handleHomeClick(ApiSource.UI)
