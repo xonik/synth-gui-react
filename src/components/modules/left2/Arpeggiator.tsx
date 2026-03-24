@@ -63,16 +63,15 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
                      onValueIncrement={rateIncrement}
         />
 
-        <RoundPushButton8 labelPosition="bottom-pot" x={col1} y={row2} label="Sync"
-                          ledCount={3} ledPosition="right" ledLabels={['Off', 'Master', 'Ext']}
-                          hasOff
+        {/* Let sync source be settable from main panel */  }
+        <RoundLedPushButton8 labelPosition="bottom-pot" x={col1} y={row2} label="Sync"
                           value={syncValue}
                           onButtonClick={syncToggle}
         />
 
         <RoundPushButton8 x={col3} y={row2}
                           label="Mode" labelPosition="bottom-pot"
-                          ledCount={4} ledPosition="right" ledLabels={['Up', 'Down', 'Up/Down', 'Random']}
+                          ledCount={3} ledPosition="right" ledLabels={['Up', 'Down', 'Random']}
                           ledCycleBinary
                           value={modeValue}
                           onButtonClick={modeToggle}
