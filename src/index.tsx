@@ -17,6 +17,7 @@ import { startFilterMidiSend, startFilterMidiReceive } from './store/midi/filter
 import { startLfoMidiSend, startLfoMidiReceive } from './store/midi/lfoMidi'
 import { startClockMidiSend, startClockMidiReceive } from './store/midi/clockMidi'
 import { startArpMidiSend, startArpMidiReceive } from './store/midi/arpMidi'
+import { startCommonFxMidiSend, startCommonFxMidiReceive } from './store/midi/commonFxMidi'
 
 midiApi.initReceive()
 startEnvelopeMidiSend()
@@ -39,6 +40,8 @@ startClockMidiSend()
 startClockMidiReceive()
 startArpMidiSend()
 startArpMidiReceive()
+startCommonFxMidiSend()
+startCommonFxMidiReceive()
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
