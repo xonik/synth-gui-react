@@ -1,7 +1,5 @@
 import React from 'react'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
-import { ControllerGroupIds } from '../../../synthcore/types'
-import fxControllers from '../../../synthcore/modules/fx/fxControllers'
 import RotaryPot12 from "../../pots/RotaryPot12";
 import SubHeader from "../../misc/SubHeader";
 import {
@@ -12,14 +10,48 @@ import {
     POT_OFFSET_Y,
     ROW_HEIGHT,
 } from "../../../constants";
-import { SHOW_CUT } from "../../../config";
 import { ModuleProps } from "../types";
 import { ModuleBorder } from "../../misc/ModuleBorder";
 import "../Modules.scss"
-
-const ctrlGroup = ControllerGroupIds.FX
+import { usePot, useButton } from '../../../store/hooks'
 
 const Effects = ({ x, y, height, width }: ModuleProps) => {
+    const { displayValue: driveValue, increment: driveIncrement } = usePot(
+        s => s.fx.distortion.drive,
+        (s, v) => { s.fx.distortion.drive = v }
+    )
+    const { displayValue: levelValue, increment: levelIncrement } = usePot(
+        s => s.fx.distortion.level,
+        (s, v) => { s.fx.distortion.level = v }
+    )
+    const { value: distInValue, toggle: distInToggle } = useButton(
+        s => s.fx.distortion.in,
+        (s, v) => { s.fx.distortion.in = v },
+        2
+    )
+    const { value: distOutValue, toggle: distOutToggle } = useButton(
+        s => s.fx.distortion.out,
+        (s, v) => { s.fx.distortion.out = v },
+        4
+    )
+    const { displayValue: bitsValue, increment: bitsIncrement } = usePot(
+        s => s.fx.bitCrusher.bits,
+        (s, v) => { s.fx.bitCrusher.bits = v }
+    )
+    const { displayValue: rateValue, increment: rateIncrement } = usePot(
+        s => s.fx.bitCrusher.rate,
+        (s, v) => { s.fx.bitCrusher.rate = v }
+    )
+    const { value: crushInValue, toggle: crushInToggle } = useButton(
+        s => s.fx.bitCrusher.in,
+        (s, v) => { s.fx.bitCrusher.in = v },
+        2
+    )
+    const { value: crushOutValue, toggle: crushOutToggle } = useButton(
+        s => s.fx.bitCrusher.out,
+        (s, v) => { s.fx.bitCrusher.out = v },
+        4
+    )
 
     const row1 = y
     const row2 = row1 + POT_OFFSET_Y
@@ -30,10 +62,7 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
     const col3 = col1 + POT_DISTANCE_L
     const col4 = col3 + POT_DISTANCE_S
 
-    const center = x + POT_DISTANCE_L
-
     return <>
-        {/*!SHOW_CUT && <rect x={x} y={y} width="131" height={2 * ROW_HEIGHT} className="module-background"/>*/}
         <ModuleBorder x={x} y={y} height={height} width={width} className="audio-elements-border"/>
         <SubHeader
             x={x} y={row1}
@@ -47,8 +76,8 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
             label="Crush" labelWidth={20} labelPosition="center" padding="right"/>
 
         <RotaryPot12 ledMode="multi" label="Drive" x={col1} y={row2}
-                     ctrlGroup={ctrlGroup}
-                     ctrl={fxControllers.DISTORTION.DRIVE}
+                     value={driveValue}
+                     onValueIncrement={driveIncrement}
         />
 
         <RoundPushButton8 x={col2} y={row2 + DUAL_LED_BUTTON_W_LABEL_OFFSET_Y}
@@ -57,13 +86,13 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
                           ledRingColors={['#00bfa6', '#ff8700']}
                           label="From"
                           labelPosition="bottom"
-                          ctrlGroup={ctrlGroup}
-                          ctrl={fxControllers.DISTORTION.IN}
+                          value={distInValue}
+                          onButtonClick={distInToggle}
         />
 
         <RotaryPot12 ledMode="multi" label="Level" x={col1} y={row3}
-                     ctrlGroup={ctrlGroup}
-                     ctrl={fxControllers.DISTORTION.LEVEL}
+                     value={levelValue}
+                     onValueIncrement={levelIncrement}
         />
 
         <RoundPushButton8 x={col2} y={row3 + DUAL_LED_BUTTON_W_LABEL_OFFSET_Y}
@@ -72,15 +101,15 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
                           ledRingColors={['#00bfa6', '#ff8700']}
                           label="To"
                           labelPosition="bottom"
-                          ctrlGroup={ctrlGroup}
                           hasOff
-                          ctrl={fxControllers.DISTORTION.OUT}
+                          value={distOutValue}
+                          onButtonClick={distOutToggle}
         />
 
 
         <RotaryPot12 ledMode="single" ledCount={12} label="Bits" x={col3} y={row2}
-                     ctrlGroup={ctrlGroup}
-                     ctrl={fxControllers.BIT_CRUSHER.BITS}
+                     value={bitsValue}
+                     onValueIncrement={bitsIncrement}
         />
 
         <RoundPushButton8 x={col4} y={row2 + DUAL_LED_BUTTON_W_LABEL_OFFSET_Y}
@@ -89,26 +118,14 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
                           ledRingColors={['#00bfa6', '#ff8700']}
                           label="From"
                           labelPosition="bottom"
-                          ctrlGroup={ctrlGroup}
-                          ctrl={fxControllers.BIT_CRUSHER.IN}
+                          value={crushInValue}
+                          onButtonClick={crushInToggle}
         />
 
         <RotaryPot12 ledMode="single" label="Rate" x={col3} y={row3}
-                     ctrlGroup={ctrlGroup}
-                     ctrl={fxControllers.BIT_CRUSHER.RATE}
+                     value={rateValue}
+                     onValueIncrement={rateIncrement}
         />
-
-        {/*        <RoundLedPushButton8 x={col4} y={row2 + 3}
-                             label="Recon"
-                             labelPosition="bottom"
-                             ctrlGroup={ctrlGroup}
-                             ctrl={fxControllers.BIT_CRUSHER.RECON}
-        />
-
-        <RotaryPot12 ledMode="multi" label="Level" x={col4} y={row3}
-                     ctrlGroup={ctrlGroup}
-                     ctrl={fxControllers.BIT_CRUSHER.LEVEL}
-        />*/}
 
         <RoundPushButton8 x={col4} y={row3 + DUAL_LED_BUTTON_W_LABEL_OFFSET_Y}
                           ledPosition="top-horizontal-no-label"
@@ -116,9 +133,9 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
                           ledRingColors={['#00bfa6', '#ff8700']}
                           label="To"
                           labelPosition="bottom"
-                          ctrlGroup={ctrlGroup}
                           hasOff
-                          ctrl={fxControllers.BIT_CRUSHER.OUT}
+                          value={crushOutValue}
+                          onButtonClick={crushOutToggle}
         />
     </>
 }
