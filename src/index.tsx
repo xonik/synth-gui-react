@@ -15,6 +15,7 @@ import { startSrcMixMidiSend, startSrcMixMidiReceive } from './store/midi/srcMix
 import { startOutPostMixMidiSend, startOutPostMixMidiReceive } from './store/midi/outMidi'
 import { startOscMidiSend, startOscMidiReceive } from './store/midi/oscMidi'
 import { startFilterMidiSend, startFilterMidiReceive } from './store/midi/filterMidi'
+import { startLfoMidiSend, startLfoMidiReceive } from './store/midi/lfoMidi'
 
 midiApi.initReceive()
 startEnvelopeMidiSend()
@@ -31,6 +32,8 @@ startOscMidiSend()
 startOscMidiReceive()
 startFilterMidiSend()
 startFilterMidiReceive()
+startLfoMidiSend()
+startLfoMidiReceive()
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
