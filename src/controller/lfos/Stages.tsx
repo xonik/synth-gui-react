@@ -1,11 +1,9 @@
 import React, { useCallback } from 'react'
 import StagesCurve from './StagesCurve'
-import { selectCurrGuiStageId, toggleStageSelected } from '../../synthcore/modules/lfo/lfoReducer'
+import { useUiStore } from '../../store/uiStore'
 import classNames from 'classnames'
-import { dispatch } from '../../synthcore/utils'
 import { StageBackground } from './curveCalculator'
 import { Point } from '../../utils/types'
-import { useAppSelector } from '../../synthcore/hooks'
 import '../components/Stages.scss'
 
 interface Props {
@@ -14,36 +12,14 @@ interface Props {
     stageBackgrounds: StageBackground[]
 }
 
-/*
-
-Info:
------
-Level:  50%   Delay: 0    Bal:  A: 20 D: 80   Offset: -20%
-Freq: 500Hz   D lev: 23   Tim   A: 3s D: 7s   Phase:   100
-
-
-Pots:
------
-1) LFO
-2) Freq / delay time
-3) Level / Offset,
-4) Balance / Phase
-5) Curve / Loops
-
-Eller ha seks params og ha separat curve/loops
-
-For ENV: ekstra pot for offset etter
- */
-
-
 const Stages = ({ lfoId, stageBackgrounds, points }: Props) => {
 
-    const currStageId = useAppSelector(selectCurrGuiStageId);
+    const currStageId = useUiStore(s => s.selectedLfoStageId)
+    const selectLfoStage = useUiStore(s => s.selectLfoStage)
 
     const onSvgClicked = useCallback((stageId: number) => {
-        dispatch(toggleStageSelected({ voiceGroupIndex: -1, lfo: lfoId, stage: stageId }))
-    }, [lfoId])
-
+        selectLfoStage(stageId)
+    }, [selectLfoStage])
 
     return <svg x={0} y={0}>
         {

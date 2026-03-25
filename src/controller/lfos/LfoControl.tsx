@@ -1,7 +1,6 @@
 import React from 'react'
 import Stages from './Stages'
-import { useAppSelector } from '../../synthcore/hooks'
-import { selectCurrGuiLfoId } from '../../synthcore/modules/lfo/lfoReducer'
+import { useUiStore } from '../../store/uiStore'
 import StageActivator from './StageActivator'
 import LfoOptionsLeft from './LfoOptionsLeft'
 import LfoParams from './LfoParams'
@@ -9,11 +8,8 @@ import LfoOptionsRight from './LfoOptionsRight'
 import { useCurve } from './curveCalculator'
 import '../components/Ctrl.scss'
 
-
-// Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
 const LfoControl = () => {
-
-    const lfoId = useAppSelector(selectCurrGuiLfoId)
+    const lfoId = useUiStore(s => s.selectedLfoId)
     const [points, stageBackgrounds] = useCurve(lfoId)
 
     return <div className="ctrl-layout">

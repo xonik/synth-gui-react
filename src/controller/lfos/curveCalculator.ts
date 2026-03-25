@@ -1,8 +1,5 @@
-import { useAppSelector } from '../../synthcore/hooks'
-import {
-    selectController,
-    selectLfoStages
-} from '../../synthcore/modules/controllers/controllersReducer'
+import { useUiStore } from '../../store/uiStore'
+import { useVoiceGroupStore } from '../../store/patchStore'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { Stage, StageId } from '../../synthcore/modules/lfo/types'
 
@@ -39,33 +36,33 @@ const getUnscaledLevels = (bipolar: boolean, invert: boolean, releaseEnabled: bo
         }
     }
 
-    // Levels for Delay, Attack, Release and Stop
     return [attackLevel, attackLevel, releaseLevel, releaseEnabled ? attackLevel : releaseLevel]
 }
 
 export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
 
-    const select = useAppSelector;
-    const stages = select(selectLfoStages(lfoId))
-    const bipolar = select(selectController(lfoCtrls.BIPOLAR, lfoId)) === 1
+    const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)
+    const lfo = useVoiceGroupStore(voiceGroupIndex, s => s.lfos[lfoId])
 
-    const invert = select(selectController(lfoCtrls.INVERT, lfoId)) === 1
-    const yOffset = select(selectController(lfoCtrls.LEVEL_OFFSET, lfoId))
-    const xOffset = select(selectController(lfoCtrls.PHASE_OFFSET, lfoId))
+    const bipolar = lfo.bipolar === 1
+    const invert = lfo.invert === 1
+    const yOffset = lfo.levelOffset
+    const xOffset = lfo.phaseOffset
+    const depth = lfo.depth
 
-    const depth = select(selectController(lfoCtrls.DEPTH, lfoId))
-
-    let balance = select(selectController(lfoCtrls.BALANCE, lfoId))
+    let balance = lfo.balance
     if (balance < 0.005) balance = 0.005;
     if (balance > 0.995) balance = 0.995;
 
-    const delayStage = stages[StageId.DELAY]
-    const attackStage = stages[StageId.ATTACK]
-    const releaseStage = stages[StageId.RELEASE]
-    const stoppedStage = stages[StageId.STOPPED]
+    // Build Stage objects from Zustand state
+    const stagesMap = lfo.stages
+    const delayStage: Stage = { id: StageId.DELAY, enabled: stagesMap[StageId.DELAY]?.enabled ?? 0, curve: stagesMap[StageId.DELAY]?.curve ?? 0 }
+    const attackStage: Stage = { id: StageId.ATTACK, enabled: stagesMap[StageId.ATTACK]?.enabled ?? 1, curve: stagesMap[StageId.ATTACK]?.curve ?? 0 }
+    const releaseStage: Stage = { id: StageId.RELEASE, enabled: stagesMap[StageId.RELEASE]?.enabled ?? 0, curve: stagesMap[StageId.RELEASE]?.curve ?? 0 }
+    const stoppedStage: Stage = { id: StageId.STOPPED, enabled: 0, curve: 0 }
 
-    const delayEnabled = delayStage?.enabled === 1
-    const releaseEnabled = releaseStage?.enabled === 1
+    const delayEnabled = delayStage.enabled === 1
+    const releaseEnabled = releaseStage.enabled === 1
 
     let offsetStage = StageId.ATTACK
     let offsetInStage = 0
@@ -89,7 +86,6 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
         [bipolar, invert, releaseEnabled]
     )
 
-    // Stages used for calculating points on the line
     const contourStages: Stage[] = useMemo(
         () => [attackStage, releaseStage, stoppedStage],
         [attackStage, releaseStage, stoppedStage]
@@ -112,19 +108,10 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
         return yValues.map((yValue) => yValue * scale + offset)
     }), [depth, contourStages, unscaledLevels, yOffset])
 
-    // TODO:
-    // phaseOffset - finn mellom 0 og 65535, finn stage, bruk curveFuncs til å finne riktig y-verdi.
-    // bruk så levelOffset og cutoff til å beregne korrekt delay level.
-    // og ta hensyn til scale og levels
-
-
-    // calculate all points with correct x value. x has a range of 0 to 1.
     const [points, stageBackgrounds] = useMemo(() => {
 
         const delayDelta = delayEnabled ? baseStageWidth : 0
 
-        // Attack + Release always takes up 2  * baseStageWidth even if release is disabled, to keep
-        // the delay-end-point at the same pos (also, the cycle time stays the same independent of release enable/disable)
         const attackDelta = (2 * baseStageWidth / keypoints) * (releaseEnabled ? balance : 1)
         const releaseDelta = releaseEnabled ? (baseStageWidth / keypoints) * 2 * (1 - balance) : 0
 
@@ -133,17 +120,14 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
 
         const sections: { from: number, to: number, id: StageId }[] = []
 
-        // Starting point in stage when not starting at beginning
         let phasePointStart = xOffset !== 0 ? Math.floor(keypoints * offsetInStage) : 0
         if (offsetStage === StageId.RELEASE) {
             phasePointStart += (keypoints + 1)
         }
         const phasePointEnd = (2 * keypoints + 2) + phasePointStart
 
-        // Delta will be 0 if delay is disabled
         let currentX = delayDelta
 
-        // Delay stage rectangle
         if (delayEnabled) {
             sections.push({ from: 0, to: currentX, id: StageId.DELAY })
         }
@@ -165,10 +149,8 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
             })
         ))
 
-        // Add two full cycles of the wave to be able to move the phase offset from 0 to 1
         const cycles = [...cycle, ...cycle]
 
-        // Adding first point to get line when delay is enabled
         let prevY = cycles[phasePointStart].y;
         let prevX = currentX;
         let prevStageId = StageId.ATTACK;
@@ -176,16 +158,12 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
 
         points.push(...cycles.map(
             (value, index, subArray) => {
-
-                // Hide points outside before and after phase points, so we can only see the
-                // ones we want
                 const hidePoint = index < phasePointStart || index > phasePointEnd
-                const hideNextPoint = index === phasePointEnd // For the last point
+                const hideNextPoint = index === phasePointEnd
                 if (!hidePoint) prevY = value.y;
 
                 const point = { x: currentX, y: hidePoint ? prevY : value.y }
 
-                // Create background sections
                 if (prevStageId !== value.stageId || index === subArray.length - 1) {
                     sections.push({ from: prevX, to: currentX, id: prevStageId })
                     prevX = currentX
@@ -193,18 +171,12 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
                 }
 
                 if (index < subArray.length - 1) {
-                    // The last point in the list is at the same x value as the first in the next, so don't increment
-                    // index x for the last point. (it may still have a different y value so the point has to be
-                    // included)
                     currentX += hideNextPoint || hidePoint ? 0 : value.inc
                 }
 
                 return point
             }
         ))
-
-        // Push first point (= delay level) to store to be able to render. Should be done via context instead?
-        //dispatch(setCurrDelayLevel({value: points[0].y}))
 
         return [points, sections]
 
