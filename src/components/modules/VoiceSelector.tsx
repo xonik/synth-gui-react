@@ -3,6 +3,9 @@ import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
 import { ModuleProps } from "./types";
 import { useUiStore } from '../../store/uiStore'
 import { setVoiceGroupIndex } from '../../synthcore/modules/voices/currentVoiceGroupIndex'
+import voicesControllers from '../../synthcore/modules/voices/voicesControllers'
+import { setController } from '../../synthcore/modules/controllers/controllersReducer'
+import { dispatch } from '../../synthcore/utils'
 
 const VoiceButton = ({ x, y, index, label }: { x: number, y: number, index: number, label: string }) => {
     const currentVoiceGroup = useUiStore(s => s.currentVoiceGroupIndex)
@@ -11,6 +14,12 @@ const VoiceButton = ({ x, y, index, label }: { x: number, y: number, index: numb
     const onClick = useCallback(() => {
         setVoiceGroup(index)
         setVoiceGroupIndex(index)
+        // Dispatch to Redux so display components re-render
+        dispatch(setController({
+            ctrl: voicesControllers.VOICE,
+            value: index,
+            voiceGroupIndex: index,
+        }))
     }, [setVoiceGroup, index])
 
     return <RoundLedPushButton8
