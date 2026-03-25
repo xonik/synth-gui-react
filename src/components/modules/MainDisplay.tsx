@@ -125,16 +125,18 @@ const MainDisplay = React.forwardRef<SVGRectElement, Props>(
             mainDisplayApi.handleRouteClick(ApiSource.UI)
         }, [])
 
-        // PC Keyboard handlers
+        // PC Keyboard handlers - dual-write to both uiStore and Redux
         const handleOnClick = useCallback(({ key }: { key: any }) => {
             if (SHIFT_KEYS.includes(String(key))) {
                 setShift(true)
+                mainDisplayApi.handleShift(true, ApiSource.UI)
             }
         }, [setShift])
 
         const handleOnRelease = useCallback(({ key }: { key: any }) => {
             if (SHIFT_KEYS.includes(String(key))) {
                 setShift(false)
+                mainDisplayApi.handleShift(false, ApiSource.UI)
             }
         }, [setShift])
 

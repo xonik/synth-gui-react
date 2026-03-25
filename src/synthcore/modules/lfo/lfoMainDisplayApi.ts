@@ -1,13 +1,11 @@
-import { selectCurrGuiLfoId, selectCurrGuiStageId } from './lfoReducer'
-import { store } from '../../store'
-import { lfoApi } from '../../synthcoreApi'
-import { ApiSource } from '../../types'
-import { LoopMode, StageId } from './types'
+import { useUiStore } from '../../../store/uiStore'
+import { voiceGroupStores } from '../../../store/patchStore'
+import { getBounded } from '../../../store/utils'
+import { LoopMode } from './types'
 import { step } from '../../utils'
 import mainDisplayControllers from '../mainDisplay/mainDisplayControllers'
-import { lfoCtrls } from './lfoControllers'
-import { selectController } from '../controllers/controllersReducer'
-import { selectShiftOn } from '../mainDisplay/mainDisplayReducer'
+
+const NUMBER_OF_LFOS = 4
 
 export const mainDisplayLfoPotResolutions = {
     [mainDisplayControllers.POT1.id]: 8,
@@ -21,91 +19,68 @@ export const mainDisplayLfoPotResolutions = {
 
 export const mainDisplayLfoApi = {
     handleMainDisplayController: (voiceGroupIndex: number, ctrlId: number, increment: number) => {
-        //TODO Check current display page here
-        const lfoId = selectCurrGuiLfoId(store.getState(), voiceGroupIndex)
-        const shiftOn = selectShiftOn(store.getState())
+        const uiState = useUiStore.getState()
+        const lfoId = uiState.selectedLfoId
+        const shiftOn = uiState.shiftOn
+
+        const lfo = voiceGroupStores[voiceGroupIndex].getState().lfos[lfoId]
+
         if (ctrlId === mainDisplayControllers.POT1.id) {
-            lfoApi.incrementGuiLfo(voiceGroupIndex, step(increment), ApiSource.UI)
+            const newLfoId = getBounded(lfoId + step(increment), 0, NUMBER_OF_LFOS - 1)
+            useUiStore.getState().selectLfo(newLfoId)
+
         } else if (ctrlId === mainDisplayControllers.POT2.id) {
-            // Freq / delay
             if (!shiftOn) {
-                lfoApi.increment({
-                    ctrl: lfoCtrls.RATE,
-                    ctrlIndex: lfoId,
-                    value: increment,
-                    voiceGroupIndex,
-                    source: ApiSource.UI
+                const newRate = getBounded(lfo.rate + increment, 0, 1)
+                voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                    state.lfos[lfoId].rate = newRate
                 })
             } else {
-                lfoApi.increment({
-                    ctrl: lfoCtrls.DEPTH,
-                    ctrlIndex: lfoId,
-                    value: increment,
-                    voiceGroupIndex,
-                    source: ApiSource.UI
+                const newDepth = getBounded(lfo.depth + increment, 0, 1)
+                voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                    state.lfos[lfoId].depth = newDepth
                 })
             }
+
         } else if (ctrlId === mainDisplayControllers.POT3.id) {
-            // Level / offset
             if (!shiftOn) {
-                lfoApi.increment({
-                    ctrl: lfoCtrls.LEVEL_OFFSET,
-                    ctrlIndex: lfoId,
-                    value: increment,
-                    voiceGroupIndex,
-                    source: ApiSource.UI
+                const newValue = getBounded(lfo.levelOffset + increment, -1, 1)
+                voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                    state.lfos[lfoId].levelOffset = newValue
                 })
             } else {
-                lfoApi.increment({
-                    ctrl: lfoCtrls.PHASE_OFFSET,
-                    ctrlIndex: lfoId,
-                    value: increment,
-                    voiceGroupIndex,
-                    source: ApiSource.UI
+                const newValue = getBounded(lfo.phaseOffset + increment, 0, 1)
+                voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                    state.lfos[lfoId].phaseOffset = newValue
                 })
             }
+
         } else if (ctrlId === mainDisplayControllers.POT4.id) {
             if (!shiftOn) {
-                lfoApi.increment({
-                    ctrl: lfoCtrls.DELAY,
-                    ctrlIndex: lfoId,
-                    value: increment,
-                    voiceGroupIndex,
-                    source: ApiSource.UI
+                const newValue = getBounded(lfo.delay + increment, 0, 1)
+                voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                    state.lfos[lfoId].delay = newValue
                 })
             } else {
-                lfoApi.increment({
-                    ctrl: lfoCtrls.BALANCE,
-                    ctrlIndex: lfoId,
-                    value: increment,
-                    voiceGroupIndex,
-                    source: ApiSource.UI
+                const newValue = getBounded(lfo.balance + increment, 0, 1)
+                voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                    state.lfos[lfoId].balance = newValue
                 })
             }
+
         } else if (ctrlId === mainDisplayControllers.POT5.id) {
-            const stageId = selectCurrGuiStageId(store.getState(), voiceGroupIndex)
-            if (stageId !== StageId.STOPPED) {
-                lfoApi.increment({
-                    ctrl: lfoCtrls.CURVE,
-                    ctrlIndex: lfoId,
-                    valueIndex: stageId,
-                    value: step(increment),
-                    voiceGroupIndex,
-                    source: ApiSource.UI
-                })
-            }
+            // Curve - requires stage selection, not yet in uiStore
+            // TODO: add LFO stage selection to uiStore
+
         } else if (ctrlId === mainDisplayControllers.POT6.id) {
-            const loopMode = selectController(lfoCtrls.LOOP_MODE, lfoId)(store.getState(), voiceGroupIndex)
-            if (loopMode !== LoopMode.COUNTED) {
+            if (lfo.loopMode !== LoopMode.COUNTED) {
                 return
             }
-            lfoApi.increment({
-                ctrl: lfoCtrls.MAX_LOOPS,
-                ctrlIndex: lfoId,
-                value: step(increment),
-                voiceGroupIndex,
-                source: ApiSource.UI
+            const newMaxLoops = getBounded(lfo.maxLoops + step(increment), 0, 127)
+            voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                state.lfos[lfoId].maxLoops = newMaxLoops
             })
+
         } else if (ctrlId === mainDisplayControllers.POT7.id) {
         }
     }
