@@ -36,6 +36,7 @@ const getUnscaledLevels = (bipolar: boolean, invert: boolean, releaseEnabled: bo
         }
     }
 
+    // Levels for Delay, Attack, Release and Stop
     return [attackLevel, attackLevel, releaseLevel, releaseEnabled ? attackLevel : releaseLevel]
 }
 
@@ -86,6 +87,7 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
         [bipolar, invert, releaseEnabled]
     )
 
+    // Stages used for calculating points on the line
     const contourStages: Stage[] = useMemo(
         () => [attackStage, releaseStage, stoppedStage],
         [attackStage, releaseStage, stoppedStage]
@@ -108,6 +110,9 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
         return yValues.map((yValue) => yValue * scale + offset)
     }), [depth, contourStages, unscaledLevels, yOffset])
 
+    // TODO: Calculate correct delay level from phase offset.
+    // See issue #27 for details.
+
     const [points, stageBackgrounds] = useMemo(() => {
 
         const delayDelta = delayEnabled ? baseStageWidth : 0
@@ -120,14 +125,17 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
 
         const sections: { from: number, to: number, id: StageId }[] = []
 
+        // Starting point in stage when not starting at beginning
         let phasePointStart = xOffset !== 0 ? Math.floor(keypoints * offsetInStage) : 0
         if (offsetStage === StageId.RELEASE) {
             phasePointStart += (keypoints + 1)
         }
         const phasePointEnd = (2 * keypoints + 2) + phasePointStart
 
+        // Delta will be 0 if delay is disabled
         let currentX = delayDelta
 
+        // Delay stage rectangle
         if (delayEnabled) {
             sections.push({ from: 0, to: currentX, id: StageId.DELAY })
         }
@@ -149,8 +157,10 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
             })
         ))
 
+        // Add two full cycles of the wave to be able to move the phase offset from 0 to 1
         const cycles = [...cycle, ...cycle]
 
+        // Adding first point to get line when delay is enabled
         let prevY = cycles[phasePointStart].y;
         let prevX = currentX;
         let prevStageId = StageId.ATTACK;
@@ -158,12 +168,16 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
 
         points.push(...cycles.map(
             (value, index, subArray) => {
+
+                // Hide points outside before and after phase points, so we can only see the
+                // ones we want
                 const hidePoint = index < phasePointStart || index > phasePointEnd
-                const hideNextPoint = index === phasePointEnd
+                const hideNextPoint = index === phasePointEnd // For the last point
                 if (!hidePoint) prevY = value.y;
 
                 const point = { x: currentX, y: hidePoint ? prevY : value.y }
 
+                // Create background sections
                 if (prevStageId !== value.stageId || index === subArray.length - 1) {
                     sections.push({ from: prevX, to: currentX, id: prevStageId })
                     prevX = currentX
@@ -171,6 +185,9 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
                 }
 
                 if (index < subArray.length - 1) {
+                    // The last point in the list is at the same x value as the first in the next, so don't increment
+                    // index x for the last point. (it may still have a different y value so the point has to be
+                    // included)
                     currentX += hideNextPoint || hidePoint ? 0 : value.inc
                 }
 
