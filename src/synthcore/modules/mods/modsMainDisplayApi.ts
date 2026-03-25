@@ -1,4 +1,4 @@
-import { useUiStore } from '../../../store/uiStore'
+import { useUiStore, ModRoutingSelection } from '../../../store/uiStore'
 import { step } from '../../utils'
 import mainDisplayControllers from '../mainDisplay/mainDisplayControllers'
 import { digitalModSources, modDst } from './utils'
@@ -16,6 +16,18 @@ export const mainDisplayModsPotResolutions = {
     [mainDisplayControllers.POT7.id]: 1000,
 }
 
+// Dual-write selection to both uiStore and Redux so display and modsApi stay in sync
+function setRouting(changes: Partial<ModRoutingSelection>) {
+    useUiStore.getState().setModRouting(changes)
+
+    // Sync full state to Redux after applying changes
+    const routing = useUiStore.getState().modRouting
+    modsApi.setGuiSource(routing.sourceId ?? 0, ApiSource.UI)
+    modsApi.setGuiDstGroup(routing.dstGroupId ?? 0, ApiSource.UI)
+    modsApi.setGuiDstFunc(routing.dstFuncId ?? 0, ApiSource.UI)
+    modsApi.setGuiDstParam(routing.dstParamId ?? 0, ApiSource.UI)
+}
+
 export const mainDisplayModsApi = {
     handleMainDisplayController: (voiceGroupIndex: number, ctrlId: number, increment: number) => {
         const routing = useUiStore.getState().modRouting
@@ -27,7 +39,7 @@ export const mainDisplayModsApi = {
         if (ctrlId === mainDisplayControllers.POT1.id) {
             const next = getBounded(dstGroupIndex + step(increment), 0, modDst.dsts.length - 1)
             if (next !== dstGroupIndex) {
-                useUiStore.getState().setModRouting({
+                setRouting({
                     dstGroupId: next,
                     dstFuncId: 0,
                     dstParamId: 0,
@@ -36,12 +48,12 @@ export const mainDisplayModsApi = {
 
         } else if (ctrlId === mainDisplayControllers.POT2.id) {
             const next = getBounded(sourceIndex + step(increment), 0, digitalModSources.length - 1)
-            useUiStore.getState().setModRouting({ sourceId: next })
+            setRouting({ sourceId: next })
 
         } else if (ctrlId === mainDisplayControllers.POT3.id) {
             const next = getBounded(dstFuncIndex + step(increment), 0, modDst.dsts[dstGroupIndex].length - 1)
             if (next !== dstFuncIndex) {
-                useUiStore.getState().setModRouting({
+                setRouting({
                     dstFuncId: next,
                     dstParamId: 0,
                 })
@@ -56,29 +68,23 @@ export const mainDisplayModsApi = {
                 if (dstFuncIndex > 0) {
                     const prevFunc = dstFuncIndex - 1
                     const prevLastParam = modDst.dsts[dstGroupIndex][prevFunc].length - 1
-                    useUiStore.getState().setModRouting({
+                    setRouting({
                         dstFuncId: prevFunc,
                         dstParamId: prevLastParam,
                     })
                 }
             } else if (requested > lastParam) {
                 if (dstFuncIndex < modDst.dsts[dstGroupIndex].length - 1) {
-                    useUiStore.getState().setModRouting({
+                    setRouting({
                         dstFuncId: dstFuncIndex + 1,
                         dstParamId: 0,
                     })
                 }
             } else {
-                useUiStore.getState().setModRouting({ dstParamId: requested })
+                setRouting({ dstParamId: requested })
             }
 
         } else if (ctrlId === mainDisplayControllers.POT5.id) {
-            // Mod amount - use modsApi for MIDI send and quantization,
-            // but also dual-write the selection to Redux so modsApi can read it
-            modsApi.setGuiSource(sourceIndex, ApiSource.UI)
-            modsApi.setGuiDstGroup(dstGroupIndex, ApiSource.UI)
-            modsApi.setGuiDstFunc(dstFuncIndex, ApiSource.UI)
-            modsApi.setGuiDstParam(dstParamIndex, ApiSource.UI)
             modsApi.incrementGuiModValue(voiceGroupIndex, increment, ApiSource.UI)
 
         } else if (ctrlId === mainDisplayControllers.POT6.id) {
