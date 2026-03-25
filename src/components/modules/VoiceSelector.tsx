@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
 import { ModuleProps } from "./types";
 import { useUiStore } from '../../store/uiStore'
+import { setVoiceGroupIndex } from '../../synthcore/modules/voices/currentVoiceGroupIndex'
 
 const VoiceButton = ({ x, y, index, label }: { x: number, y: number, index: number, label: string }) => {
     const currentVoiceGroup = useUiStore(s => s.currentVoiceGroupIndex)
@@ -9,6 +10,7 @@ const VoiceButton = ({ x, y, index, label }: { x: number, y: number, index: numb
 
     const onClick = useCallback(() => {
         setVoiceGroup(index)
+        setVoiceGroupIndex(index)
     }, [setVoiceGroup, index])
 
     return <RoundLedPushButton8
