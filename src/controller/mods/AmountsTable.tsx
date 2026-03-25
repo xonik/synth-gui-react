@@ -1,52 +1,32 @@
 import { digitalModSources, modDst } from '../../synthcore/modules/mods/utils'
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { DraggableElementProps } from './types'
-import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
-import {
-    setGuiMod,
-    selectGuiSource,
-    selectGuiDstFunc,
-    selectGuiDstGroup,
-    selectGuiDstParam,
-    selectGuiLastModSelectSource,
-    selectModValue
-} from '../../synthcore/modules/mods/modsReducer'
+import { useUiStore } from '../../store/uiStore'
+import { useVoiceGroupStore } from '../../store/patchStore'
+import modsApi from '../../synthcore/modules/mods/modsApi'
+import { ApiSource } from '../../synthcore/types'
 import classNames from 'classnames'
 import AmountBar from './AmountBar'
 import { Point } from '../../utils/types'
 import { ScrollingSyncNodeContext } from '../utils/scrollsync/ScrollSyncNode'
-import { ApiSource } from '../../synthcore/types'
 
 interface CellProps {
     onSelected: (offsetLeft: number, offsetWidth: number) => void,
-
-    // the index in the array of sources (e.g. source controllers)
     sourceIndex: number
-
-    // the index in the array of functions
     funcIndex: number
-
-    // the controller index, e.g. the index uniquely identifying THIS func when there are several of the
-    // same type such as LFOs and envs.
     funcCtrlIndex: number
-
-    // the index in the array of params for the function (e.g. controllers)
     paramIndex: number
-
-    // unique IDs for source and dst params, but must be combined with funcCtrlIndex for params that
-    // occur on multiple functions such as LFOs and envs.
     sourceId: number
     dstId: number
 }
 
 const AmountCell = ({ sourceIndex, funcIndex, funcCtrlIndex, paramIndex, sourceId, dstId, onSelected }: CellProps) => {
 
-    const dispatch = useAppDispatch()
-    const modValue = useAppSelector(selectModValue(sourceId, dstId, funcCtrlIndex))
-    const selectedSource = useAppSelector(selectGuiSource)
-    const selectedDstFunc = useAppSelector(selectGuiDstFunc)
-    const selectedDstParam = useAppSelector(selectGuiDstParam)
-    const modSelectSource = useAppSelector(selectGuiLastModSelectSource)
+    const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)
+    const modValue = useVoiceGroupStore(voiceGroupIndex, s => s.mods?.[sourceId]?.[dstId]?.[funcCtrlIndex] ?? 0)
+    const selectedSource = useUiStore(s => s.modRouting.sourceId ?? 0)
+    const selectedDstFunc = useUiStore(s => s.modRouting.dstFuncId ?? 0)
+    const selectedDstParam = useUiStore(s => s.modRouting.dstParamId ?? 0)
 
     const isDst = paramIndex === selectedDstParam && funcIndex === selectedDstFunc
     const isSource = sourceIndex === selectedSource
@@ -68,18 +48,22 @@ const AmountCell = ({ sourceIndex, funcIndex, funcCtrlIndex, paramIndex, sourceI
 
     const onMouseUp = useCallback((event: React.MouseEvent<HTMLElement>) => {
         if (event.clientX === clickPos?.x && event.clientY === clickPos?.y) {
-            dispatch(setGuiMod({
-                guiSource: sourceIndex,
-                guiDstFunc: funcIndex,
-                guiDstParam: paramIndex,
-            }))
+            // Dual-write selection to uiStore and Redux
+            useUiStore.getState().setModRouting({
+                sourceId: sourceIndex,
+                dstFuncId: funcIndex,
+                dstParamId: paramIndex,
+            })
+            modsApi.setGuiSource(sourceIndex, ApiSource.UI)
+            modsApi.setGuiDstFunc(funcIndex, ApiSource.UI)
+            modsApi.setGuiDstParam(paramIndex, ApiSource.UI)
         }
-    }, [dispatch, sourceIndex, funcIndex, paramIndex, clickPos])
+    }, [sourceIndex, funcIndex, paramIndex, clickPos])
 
     const cellRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        if (isSelectedCell && cellRef.current && modSelectSource === ApiSource.UI) {
+        if (isSelectedCell && cellRef.current) {
             const {
                 offsetWidth,
                 offsetLeft,
@@ -90,9 +74,7 @@ const AmountCell = ({ sourceIndex, funcIndex, funcCtrlIndex, paramIndex, sourceI
                 offsetWidth,
             )
         }
-    }, [isSelectedCell, modSelectSource])
-    // onSelected is missing here on purpose. If it is included we get constant updates.
-    // I can't seem to make onSelected stay the same, it goes all the way up to ScrollSync.
+    }, [isSelectedCell])
 
     return <div ref={cellRef} className={classNames(
         'mod-ctrl__amount',
@@ -114,7 +96,7 @@ interface RowProps {
 
 const AmountsRow = ({ sourceId, sourceIndex }: RowProps) => {
 
-    const dstGroupId = useAppSelector(selectGuiDstGroup)
+    const dstGroupId = useUiStore(s => s.modRouting.dstGroupId ?? 0)
     const dstGroup = modDst.dsts[dstGroupId]
 
     const ref = useRef<HTMLDivElement>(null)

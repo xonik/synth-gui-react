@@ -1,8 +1,7 @@
 import React from 'react'
 import { digitalModSources, shortLabel } from '../../synthcore/modules/mods/utils'
 import { DraggableElementProps } from './types'
-import { useAppSelector } from '../../synthcore/hooks'
-import { selectGuiSource } from '../../synthcore/modules/mods/modsReducer'
+import { useUiStore } from '../../store/uiStore'
 import classNames from 'classnames'
 import { ControllerConfig } from '../../midi/types'
 
@@ -12,7 +11,7 @@ interface LabelProps {
 }
 
 const SourceLabel = ({ sourceIndex, source }: LabelProps) => {
-    const selectedSource = useAppSelector(selectGuiSource)
+    const selectedSource = useUiStore(s => s.modRouting.sourceId ?? 0)
     const isSelected = sourceIndex === selectedSource
     return <div
         className={classNames('mod-ctrl__source', { 'mod-ctrl__source--selected': isSelected })}

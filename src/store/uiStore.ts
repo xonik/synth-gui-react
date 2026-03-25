@@ -24,6 +24,8 @@ export enum ScreenId {
     SETTINGS = 'settings',
     PERFORM = 'perform',
     PATCH = 'patch',
+    LOAD = 'load',
+    SAVE = 'save',
 }
 
 export interface ModRoutingSelection {

@@ -4,8 +4,7 @@ import { FileBrowserTree, FileBrowserTreeNode } from '../../libs/react-keyed-fil
 import { RawTableFile } from '../../libs/react-keyed-file-browser/files'
 import { RawTableFolder } from '../../libs/react-keyed-file-browser/folders'
 import patchStorageApi from '../../synthcore/modules/patchStorage/patchStorageApi'
-import { dispatch } from '../../synthcore/utils'
-import { revertToPreviousScreen } from '../../synthcore/modules/mainDisplay/mainDisplayReducer'
+import { useUiStore } from '../../store/uiStore'
 import { PathTableHeader } from '../../libs/react-keyed-file-browser/headers/PathTableHeader'
 import { KeyboardProvider } from '../../libs/react-keyed-file-browser/input/KeyboardProvider'
 import './PatchBrowser.scss'
@@ -137,13 +136,13 @@ class PatchBrowser extends React.Component<PatchBrowserProps> {
         await patchStorageApi.savePatch(key)
         // This may be a bit inefficient when we get a lot of files later...
         this.setState({files: await patchStorageApi.getFileTree()}, () => console.log(this.state))
-        dispatch(revertToPreviousScreen({reason: 'Save patch'}))
+        useUiStore.getState().goBack()
     }
 
     handleLoad = async (key: string) => {
         console.log(`Loading ${key}`)
         await patchStorageApi.loadPatch(key)
-        dispatch(revertToPreviousScreen({reason: 'Load patch'}))
+        useUiStore.getState().goBack()
     }
 
     handleAudit = async (key: string) => {
@@ -159,7 +158,7 @@ class PatchBrowser extends React.Component<PatchBrowserProps> {
     handleCancel = () => {
         console.log('Cancelling')
         patchStorageApi.revertToCurrentPatch()
-        dispatch(revertToPreviousScreen({reason: 'Cancel patch modal'}))
+        useUiStore.getState().goBack()
     }
 
 

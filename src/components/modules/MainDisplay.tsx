@@ -101,11 +101,13 @@ const MainDisplay = React.forwardRef<SVGRectElement, Props>(
         }, [voiceGroupIndex])
 
         const onHomeClick = useCallback(() => {
+            setScreen(ScreenId.ENV)
             mainDisplayApi.handleHomeClick(ApiSource.UI)
-        }, [])
+        }, [setScreen])
         const onSettingsClick = useCallback(() => {
+            setScreen(ScreenId.SETTINGS)
             mainDisplayApi.handleSettingsClick(ApiSource.UI)
-        }, [])
+        }, [setScreen])
         const onShiftClick = useCallback(() => {
             mainDisplayApi.handleShift(true, ApiSource.UI)
         }, [])
@@ -113,11 +115,13 @@ const MainDisplay = React.forwardRef<SVGRectElement, Props>(
             mainDisplayApi.handlePerformClick(ApiSource.UI)
         }, [])
         const onLoadClick = useCallback(() => {
+            setScreen(ScreenId.LOAD)
             mainDisplayApi.handleLoadClick(ApiSource.UI)
-        }, [])
+        }, [setScreen])
         const onSaveClick = useCallback(() => {
+            setScreen(ScreenId.SAVE)
             mainDisplayApi.handleSaveClick(ApiSource.UI)
-        }, [])
+        }, [setScreen])
         const onCompareClick = useCallback(() => {
             mainDisplayApi.handleCompareClick(ApiSource.UI)
         }, [])
