@@ -1,8 +1,9 @@
 import { useUiStore, ModRoutingSelection } from '../../../store/uiStore'
+import { voiceGroupStores } from '../../../store/patchStore'
 import { step } from '../../utils'
 import mainDisplayControllers from '../mainDisplay/mainDisplayControllers'
 import { digitalModSources, modDst } from './utils'
-import { getBounded } from '../../../store/utils'
+import { getBounded, getQuantized } from '../../../store/utils'
 import modsApi from './modsApi'
 import { ApiSource } from '../../types'
 
@@ -85,6 +86,21 @@ export const mainDisplayModsApi = {
             }
 
         } else if (ctrlId === mainDisplayControllers.POT5.id) {
+            const sourceId = digitalModSources[sourceIndex].id
+            const dstId = modDst.dsts[dstGroupIndex][dstFuncIndex][dstParamIndex].id
+            const dstCtrlIndex = modDst.funcProps[dstGroupIndex][dstFuncIndex].ctrlIndex || 0
+
+            // Read current value from Zustand, increment, write to both Zustand and Redux+MIDI
+            const store = voiceGroupStores[voiceGroupIndex].getState()
+            const currValue = store.mods?.[sourceId]?.[dstId]?.[dstCtrlIndex] ?? 0
+            const nextValue = getQuantized(getBounded(currValue + increment, -1, 1), 32767)
+
+            voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                if (!state.mods[sourceId]) state.mods[sourceId] = {}
+                if (!state.mods[sourceId][dstId]) state.mods[sourceId][dstId] = {}
+                state.mods[sourceId][dstId][dstCtrlIndex] = nextValue
+            })
+
             modsApi.incrementGuiModValue(voiceGroupIndex, increment, ApiSource.UI)
 
         } else if (ctrlId === mainDisplayControllers.POT6.id) {
