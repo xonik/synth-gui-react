@@ -1,46 +1,41 @@
-import React from 'react'
-import { LoopMode, } from '../../synthcore/modules/lfo/types'
+import React, { useCallback } from 'react'
+import { LoopMode } from '../../synthcore/modules/lfo/types'
 import Button from '../components/Button'
-import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
+import { useUiStore } from '../../store/uiStore'
+import { voiceGroupStores, useVoiceGroupStore } from '../../store/patchStore'
 import { loopModeNames } from './utils'
-import { click } from '../../synthcore/modules/ui/uiReducer'
-import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
-import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
-import { selectController } from '../../synthcore/modules/controllers/controllersReducer'
 import { CtrlOptions } from '../components/CtrlOptions'
 
 interface Props {
     lfoId: number
 }
 
+const NUM_LOOP_MODES = Object.keys(LoopMode).length / 2
+
 const getLoopLabel = (loopMode: LoopMode, loops: number) => `Loop ${loopMode === LoopMode.COUNTED ? loops + ' ' : ''} ${loopModeNames[loopMode]}`
 
-const ctrlGroup = ControllerGroupIds.LFO
-
-// Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
 const LfoOptionsRight = ({ lfoId }: Props) => {
+    const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)
+    const lfo = useVoiceGroupStore(voiceGroupIndex, s => s.lfos[lfoId])
 
-    const action = {
-        ctrlGroup: ctrlGroup,
-        ctrlIndex: lfoId,
-        source: ApiSource.GUI,
-        loop: true,
-    }
+    const toggleLoop = useCallback(() => {
+        const store = voiceGroupStores[voiceGroupIndex].getState()
+        const current = store.lfos[lfoId].loop
+        store.set(state => { state.lfos[lfoId].loop = current ? 0 : 1 })
+    }, [voiceGroupIndex, lfoId])
 
-    const dispatch = useAppDispatch()
-    const loopMode = useAppSelector(selectController(lfoCtrls.LOOP_MODE, lfoId))
-    const loopEnabled = useAppSelector(selectController(lfoCtrls.LOOP, lfoId))
-    const maxLoops = useAppSelector(selectController(lfoCtrls.MAX_LOOPS, lfoId))
-
-    const clickLoopMode = click({ ...action, ctrl: lfoCtrls.LOOP_MODE })
-    const clickLoopEnabled = click({ ...action, ctrl: lfoCtrls.LOOP })
+    const cycleLoopMode = useCallback(() => {
+        const store = voiceGroupStores[voiceGroupIndex].getState()
+        const current = store.lfos[lfoId].loopMode
+        store.set(state => { state.lfos[lfoId].loopMode = (current + 1) % NUM_LOOP_MODES })
+    }, [voiceGroupIndex, lfoId])
 
     return <CtrlOptions heading={"Looping"} separator>
-        <Button active={!!loopEnabled} onClick={() => dispatch(clickLoopEnabled)}>
+        <Button active={!!lfo.loop} onClick={toggleLoop}>
             Loop
         </Button>
-        <Button active={!!loopEnabled} onClick={() => dispatch(clickLoopMode)}>
-            {getLoopLabel(loopMode, maxLoops)}
+        <Button active={!!lfo.loop} onClick={cycleLoopMode}>
+            {getLoopLabel(lfo.loopMode, lfo.maxLoops)}
         </Button>
     </CtrlOptions>
 }

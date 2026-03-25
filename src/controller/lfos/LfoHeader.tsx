@@ -1,12 +1,10 @@
 import React from 'react'
 import CtrlHeader from "@/controller/components/CtrlHeader";
-import { useAppSelector } from '../../synthcore/hooks'
-import { selectCurrGuiLfoId } from '../../synthcore/modules/lfo/lfoReducer'
-
+import { useUiStore } from '../../store/uiStore'
 import '../components/CtrlHeader.scss'
 
 const LfoHeader = () => {
-    const lfoId = useAppSelector(selectCurrGuiLfoId)
+    const lfoId = useUiStore(s => s.selectedLfoId)
     return <CtrlHeader
         leftOptionsLabel={`LFO ${lfoId + 1}`}
         centerLabels={[]}
@@ -15,4 +13,3 @@ const LfoHeader = () => {
 }
 
 export default LfoHeader
-

@@ -1,5 +1,4 @@
-import { useAppSelector } from '../../synthcore/hooks'
-import { selectGuiDstFunc, selectGuiDstGroup, selectGuiDstParam } from '../../synthcore/modules/mods/modsReducer'
+import { useUiStore } from '../../store/uiStore'
 import { modDst, shortLabel } from '../../synthcore/modules/mods/utils'
 import React from 'react'
 import { DraggableElementProps } from './types'
@@ -13,8 +12,8 @@ interface DstLabelProps {
 }
 
 const DstLabel = ({ funcIndex, paramIndex, dst }: DstLabelProps) => {
-    const selectedDstFunc = useAppSelector(selectGuiDstFunc)
-    const selectedDstParam = useAppSelector(selectGuiDstParam)
+    const selectedDstFunc = useUiStore(s => s.modRouting.dstFuncId ?? 0)
+    const selectedDstParam = useUiStore(s => s.modRouting.dstParamId ?? 0)
 
     const isSelected = funcIndex === selectedDstFunc && paramIndex === selectedDstParam
 
@@ -26,7 +25,7 @@ const DstLabel = ({ funcIndex, paramIndex, dst }: DstLabelProps) => {
 }
 
 const DstLabels = ({ onMouseDown, onMouseMove }: DraggableElementProps) => {
-    const dstGroupId = useAppSelector(selectGuiDstGroup)
+    const dstGroupId = useUiStore(s => s.modRouting.dstGroupId ?? 0)
     const dstGroup = modDst.dsts[dstGroupId]
 
     return (

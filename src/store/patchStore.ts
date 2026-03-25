@@ -311,7 +311,7 @@ const defaultEnvelope = (): EnvelopeState => ({
 })
 
 const defaultLfo = (): LfoState => ({
-    rate: 0.5,
+    rate: 1,
     depth: 1,
     delay: 0,
     shape: 0,
@@ -319,11 +319,11 @@ const defaultLfo = (): LfoState => ({
     balance: 0.5,
     phaseOffset: 0,
     levelOffset: 0,
-    bipolar: 0,
+    bipolar: 1,
     invert: 0,
     reset: 0,
     loop: 0,
-    loopMode: 0,
+    loopMode: 1,
     maxLoops: 2,
     resetOnTrigger: 0,
     resetOnStop: 0,
@@ -331,7 +331,12 @@ const defaultLfo = (): LfoState => ({
     syncToClock: 0,
     gated: 0,
     randomPhase: 0,
-    stages: {},
+    stages: {
+        0: { curve: 4, enabled: 0 },
+        1: { curve: 4, enabled: 1 },
+        2: { curve: 4, enabled: 1 },
+        3: { curve: 4, enabled: 1 },
+    },
 })
 
 const defaultOscillator = (): OscillatorState => ({

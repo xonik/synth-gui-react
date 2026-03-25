@@ -4,13 +4,9 @@ import DstLabels from './DstLabels'
 import AmountsTable from './AmountsTable'
 import ScrollSync from '../utils/scrollsync/ScrollSync'
 import ScrollSyncNode from '../utils/scrollsync/ScrollSyncNode'
-import { modDst } from '../../synthcore/modules/mods/utils'
-import { useAppSelector } from '../../synthcore/hooks'
-import { selectGuiDstGroup } from '../../synthcore/modules/mods/modsReducer'
 import './ModControl.scss'
 
 const ModControl = () => {
-    const dstGroupId = useAppSelector(selectGuiDstGroup)
     return (
         <div className="mod-ctrl">
             <ScrollSync>

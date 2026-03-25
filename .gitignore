@@ -26,3 +26,17 @@ yarn-error.log*
 # Ignore less-built css-files
 *.css
 
+# Build output
+/build
+
+# Backend dependencies
+synth-backend/node_modules
+
+# Patch storage
+/storage
+
+# Misc generated/temp files
+out.txt
+*.ai
+panel-left.svg
+

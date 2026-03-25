@@ -1,40 +1,42 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { StageId } from '../../synthcore/modules/lfo/types'
 import Button from '../components/Button'
 import { stageNames } from './utils'
-import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
-import { click } from '../../synthcore/modules/ui/uiReducer'
-import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
-import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
-import { selectLfoStages } from '../../synthcore/modules/controllers/controllersReducer'
+import { useUiStore } from '../../store/uiStore'
+import { voiceGroupStores, useVoiceGroupStore } from '../../store/patchStore'
 import { CtrlOptions } from "@/controller/components/CtrlOptions";
 
 interface Props {
     lfoId: number
 }
 
-// Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
-const StageActivator = ({ lfoId }: Props) => {
+const NUMBER_OF_LFO_STAGES = 4
 
-    const dispatch = useAppDispatch()
-    const stages = useAppSelector(selectLfoStages(lfoId))
+const StageActivator = ({ lfoId }: Props) => {
+    const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)
+    const stages = useVoiceGroupStore(voiceGroupIndex, s => s.lfos[lfoId].stages)
+
+    const toggleStage = useCallback((stageId: number) => {
+        const store = voiceGroupStores[voiceGroupIndex].getState()
+        const current = store.lfos[lfoId].stages[stageId]?.enabled ?? 0
+        store.set(state => {
+            if (!state.lfos[lfoId].stages[stageId]) {
+                state.lfos[lfoId].stages[stageId] = { curve: 0, enabled: 0 }
+            }
+            state.lfos[lfoId].stages[stageId].enabled = current ? 0 : 1
+        })
+    }, [voiceGroupIndex, lfoId])
 
     return <CtrlOptions>
-        {stages.map((stage, index) => {
-            if (stage.id === StageId.STOPPED) {
+        {Array.from({ length: NUMBER_OF_LFO_STAGES }, (_, stageId) => {
+            if (stageId === StageId.STOPPED) {
                 return null
             }
             return <Button
-                key={stage.id}
-                active={stage.enabled === 1}
-                onClick={() => dispatch(click({
-                    ctrl: lfoCtrls.TOGGLE_STAGE,
-                    ctrlGroup: ControllerGroupIds.LFO,
-                    ctrlIndex: lfoId,
-                    valueIndex: stage.id,
-                    source: ApiSource.GUI
-                }))}
-            >{stageNames[stage.id]}</Button>
+                key={stageId}
+                active={(stages[stageId]?.enabled ?? 0) === 1}
+                onClick={() => toggleStage(stageId)}
+            >{stageNames[stageId as StageId]}</Button>
         })}
     </CtrlOptions>
 }

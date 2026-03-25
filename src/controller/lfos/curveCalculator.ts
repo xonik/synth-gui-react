@@ -1,8 +1,5 @@
-import { useAppSelector } from '../../synthcore/hooks'
-import {
-    selectController,
-    selectLfoStages
-} from '../../synthcore/modules/controllers/controllersReducer'
+import { useUiStore } from '../../store/uiStore'
+import { useVoiceGroupStore } from '../../store/patchStore'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { Stage, StageId } from '../../synthcore/modules/lfo/types'
 
@@ -45,27 +42,28 @@ const getUnscaledLevels = (bipolar: boolean, invert: boolean, releaseEnabled: bo
 
 export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
 
-    const select = useAppSelector;
-    const stages = select(selectLfoStages(lfoId))
-    const bipolar = select(selectController(lfoCtrls.BIPOLAR, lfoId)) === 1
+    const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)
+    const lfo = useVoiceGroupStore(voiceGroupIndex, s => s.lfos[lfoId])
 
-    const invert = select(selectController(lfoCtrls.INVERT, lfoId)) === 1
-    const yOffset = select(selectController(lfoCtrls.LEVEL_OFFSET, lfoId))
-    const xOffset = select(selectController(lfoCtrls.PHASE_OFFSET, lfoId))
+    const bipolar = lfo.bipolar === 1
+    const invert = lfo.invert === 1
+    const yOffset = lfo.levelOffset
+    const xOffset = lfo.phaseOffset
+    const depth = lfo.depth
 
-    const depth = select(selectController(lfoCtrls.DEPTH, lfoId))
-
-    let balance = select(selectController(lfoCtrls.BALANCE, lfoId))
+    let balance = lfo.balance
     if (balance < 0.005) balance = 0.005;
     if (balance > 0.995) balance = 0.995;
 
-    const delayStage = stages[StageId.DELAY]
-    const attackStage = stages[StageId.ATTACK]
-    const releaseStage = stages[StageId.RELEASE]
-    const stoppedStage = stages[StageId.STOPPED]
+    // Build Stage objects from Zustand state
+    const stagesMap = lfo.stages
+    const delayStage: Stage = { id: StageId.DELAY, enabled: stagesMap[StageId.DELAY]?.enabled ?? 0, curve: stagesMap[StageId.DELAY]?.curve ?? 0 }
+    const attackStage: Stage = { id: StageId.ATTACK, enabled: stagesMap[StageId.ATTACK]?.enabled ?? 1, curve: stagesMap[StageId.ATTACK]?.curve ?? 0 }
+    const releaseStage: Stage = { id: StageId.RELEASE, enabled: stagesMap[StageId.RELEASE]?.enabled ?? 0, curve: stagesMap[StageId.RELEASE]?.curve ?? 0 }
+    const stoppedStage: Stage = { id: StageId.STOPPED, enabled: 0, curve: 0 }
 
-    const delayEnabled = delayStage?.enabled === 1
-    const releaseEnabled = releaseStage?.enabled === 1
+    const delayEnabled = delayStage.enabled === 1
+    const releaseEnabled = releaseStage.enabled === 1
 
     let offsetStage = StageId.ATTACK
     let offsetInStage = 0
@@ -112,19 +110,13 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
         return yValues.map((yValue) => yValue * scale + offset)
     }), [depth, contourStages, unscaledLevels, yOffset])
 
-    // TODO:
-    // phaseOffset - finn mellom 0 og 65535, finn stage, bruk curveFuncs til å finne riktig y-verdi.
-    // bruk så levelOffset og cutoff til å beregne korrekt delay level.
-    // og ta hensyn til scale og levels
+    // TODO: Calculate correct delay level from phase offset.
+    // See issue #27 for details.
 
-
-    // calculate all points with correct x value. x has a range of 0 to 1.
     const [points, stageBackgrounds] = useMemo(() => {
 
         const delayDelta = delayEnabled ? baseStageWidth : 0
 
-        // Attack + Release always takes up 2  * baseStageWidth even if release is disabled, to keep
-        // the delay-end-point at the same pos (also, the cycle time stays the same independent of release enable/disable)
         const attackDelta = (2 * baseStageWidth / keypoints) * (releaseEnabled ? balance : 1)
         const releaseDelta = releaseEnabled ? (baseStageWidth / keypoints) * 2 * (1 - balance) : 0
 
@@ -202,9 +194,6 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
                 return point
             }
         ))
-
-        // Push first point (= delay level) to store to be able to render. Should be done via context instead?
-        //dispatch(setCurrDelayLevel({value: points[0].y}))
 
         return [points, sections]
 

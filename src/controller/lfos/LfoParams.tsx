@@ -1,10 +1,7 @@
 import React from 'react'
-import { Stage, StageId } from '../../synthcore/modules/lfo/types'
-import { useAppSelector } from '../../synthcore/hooks'
-import {
-    selectController,
-    selectLfoStages
-} from '../../synthcore/modules/controllers/controllersReducer'
+import { StageId } from '../../synthcore/modules/lfo/types'
+import { useUiStore } from '../../store/uiStore'
+import { useVoiceGroupStore } from '../../store/patchStore'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { LFO_SEC_PER_UNIT } from '../../utils/constants'
 import { getShortName } from '../../components/curves/shortCurveNames'
@@ -43,45 +40,46 @@ const formatRate = (time: number) => {
     }
 }
 
-// TODO: make time calculator elsewhere
-const getTime = (stage: Stage, time: number, balance: number, releaseEnabled: boolean) => {
-    if (stage.id === StageId.DELAY) {
-        return stage.time || 0
-    } else if (stage.id === StageId.ATTACK) {
+const getTime = (stageId: StageId, enabled: boolean, time: number, balance: number, releaseEnabled: boolean) => {
+    if (stageId === StageId.DELAY) {
+        return 0
+    } else if (stageId === StageId.ATTACK) {
         return releaseEnabled ? time * balance : time
-    } else if (stage.id === StageId.RELEASE) {
+    } else if (stageId === StageId.RELEASE) {
         return releaseEnabled ? time * (1 - balance) : 0
     }
     return 0
 }
 
-// Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
 const LfoParams = ({ lfoId, delayLevel }: Props) => {
+    const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)
+    const lfo = useVoiceGroupStore(voiceGroupIndex, s => s.lfos[lfoId])
 
-    const stages = useAppSelector(selectLfoStages(lfoId))
-    const loopOn = useAppSelector(selectController(lfoCtrls.LOOP, lfoId)) === 1
-
-    const time = useAppSelector(selectController(lfoCtrls.RATE, lfoId))
+    const loopOn = lfo.loop === 1
+    const time = lfo.rate
     let timeFormatted = loopOn ? formatRate(time) : formatTime(time)
     let timeLabelFormatted = loopOn ? 'Freq:' : 'Time:'
 
-    const balance = useAppSelector(selectController(lfoCtrls.BALANCE, lfoId))
-    const levelOffset = useAppSelector(selectController(lfoCtrls.LEVEL_OFFSET, lfoId))
-    const phaseOffset = useAppSelector(selectController(lfoCtrls.PHASE_OFFSET, lfoId))
-    const depth = useAppSelector(selectController(lfoCtrls.DEPTH, lfoId))
+    const balance = lfo.balance
+    const levelOffset = lfo.levelOffset
+    const phaseOffset = lfo.phaseOffset
+    const depth = lfo.depth
 
-    const delay = stages[StageId.DELAY];
-    const attack = stages[StageId.ATTACK];
-    const release = stages[StageId.RELEASE];
+    const delayStage = lfo.stages[StageId.DELAY]
+    const attackStage = lfo.stages[StageId.ATTACK]
+    const releaseStage = lfo.stages[StageId.RELEASE]
+
+    const delayEnabled = delayStage?.enabled === 1
+    const releaseEnabled = releaseStage?.enabled === 1
 
     const boundedDelayLevel = Math.round((delayLevel < -1 ? -1 : delayLevel > 1 ? 1 : delayLevel) * 100)
 
-    const delayTime = useAppSelector(selectController(lfoCtrls.DELAY, lfoId))
-    const attackTime = getTime(attack, time, balance, !!release.enabled)
-    const releaseTime = getTime(release, time, balance, !!release.enabled)
+    const delayTime = lfo.delay
+    const attackTime = getTime(StageId.ATTACK, true, time, balance, releaseEnabled)
+    const releaseTime = getTime(StageId.RELEASE, releaseEnabled, time, balance, releaseEnabled)
 
-    const attackCurveName = getShortName(lfoCtrls.CURVE, attack.curve)
-    const releaseCurveName = release.enabled ? getShortName(lfoCtrls.CURVE, release.curve) : '-'
+    const attackCurveName = getShortName(lfoCtrls.CURVE, attackStage?.curve ?? 0)
+    const releaseCurveName = releaseEnabled ? getShortName(lfoCtrls.CURVE, releaseStage?.curve ?? 0) : '-'
 
     const attackBalance = Math.round(balance * 100)
     const releaseBalance = Math.round((1 - balance) * 100)
@@ -115,8 +113,8 @@ const LfoParams = ({ lfoId, delayLevel }: Props) => {
                 <div>Delay level:</div>
             </div>
             <div className="lfo-params__item--values--time">
-                <div>{delay.enabled ? formatTime(delayTime || 0) : '-'}</div>
-                <div>{delay.enabled ? boundedDelayLevel : '-'}</div>
+                <div>{delayEnabled ? formatTime(delayTime || 0) : '-'}</div>
+                <div>{delayEnabled ? boundedDelayLevel : '-'}</div>
             </div>
         </div>
 
@@ -127,15 +125,15 @@ const LfoParams = ({ lfoId, delayLevel }: Props) => {
             </div>
             <div className="lfo-params__item--values--curve">
                 <div>{attackCurveName}</div>
-                <div>{release.enabled ? releaseCurveName : ''}</div>
+                <div>{releaseEnabled ? releaseCurveName : ''}</div>
             </div>
             <div className="lfo-params__item--values--stage-percentage">
-                <div>{release.enabled ? attackBalance : '100'}%</div>
-                <div>{release.enabled ? `${releaseBalance}%` : ''}</div>
+                <div>{releaseEnabled ? attackBalance : '100'}%</div>
+                <div>{releaseEnabled ? `${releaseBalance}%` : ''}</div>
             </div>
             <div className="lfo-params__item--values--stage-time">
                 <div>({formatTime(attackTime)})</div>
-                <div>{release.enabled ? `(${formatTime(releaseTime)})` : ''}</div>
+                <div>{releaseEnabled ? `(${formatTime(releaseTime)})` : ''}</div>
             </div>
         </div>
     </Params>

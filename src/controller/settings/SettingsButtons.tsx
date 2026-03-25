@@ -1,10 +1,7 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import Button from '../components/Button'
-import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
-import { click } from '../../synthcore/modules/ui/uiReducer'
-import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
-import { selectController } from '../../synthcore/modules/controllers/controllersReducer'
-import oscControllers from '../../synthcore/modules/osc/oscControllers'
+import { useUiStore } from '../../store/uiStore'
+import { voiceGroupStores, useVoiceGroupStore } from '../../store/patchStore'
 import {
     calibrateDCO1,
     calibrateDCO2,
@@ -17,21 +14,18 @@ import {
 import './SettingsButtons.scss'
 import { sharedConfig } from "../../sharedConfig";
 
-const oscAction = {
-    ctrlGroup: ControllerGroupIds.OSC,
-    source: ApiSource.GUI,
-    loop: true,
-}
-
+type Props = { voice: number };
 
 export const SettingsButtons = ({ voice }: Props) => {
 
-    // Track manual tune state per voice
+    const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)
+    const dco1Range = useVoiceGroupStore(voiceGroupIndex, s => s.oscillators[0].range)
+    const dco2Range = useVoiceGroupStore(voiceGroupIndex, s => s.oscillators[1].range)
+
     const [manualTuneActive, setManualTuneActive] = useState<boolean[]>(
         Array(sharedConfig.VOICE_COUNT.value).fill(false)
     )
 
-    // Add this state for power toggles
     const [voicePower, setVoicePower] = useState<boolean[]>(
         [false, false, false]
     )
@@ -58,13 +52,17 @@ export const SettingsButtons = ({ voice }: Props) => {
         })
     }
 
-    const dispatch = useAppDispatch()
+    const toggleDco1Range = useCallback(() => {
+        const store = voiceGroupStores[voiceGroupIndex].getState()
+        const current = store.oscillators[0].range
+        store.set(state => { state.oscillators[0].range = current ? 0 : 1 })
+    }, [voiceGroupIndex])
 
-    const dco1RangeHigh = useAppSelector(selectController(oscControllers.DCO1.RANGE))
-    const dco2RangeHigh = useAppSelector(selectController(oscControllers.DCO2.RANGE))
-
-    const clickDco1Range = click({ ...oscAction, ctrl: oscControllers.DCO1.RANGE })
-    const clickDco2Range = click({ ...oscAction, ctrl: oscControllers.DCO2.RANGE })
+    const toggleDco2Range = useCallback(() => {
+        const store = voiceGroupStores[voiceGroupIndex].getState()
+        const current = store.oscillators[1].range
+        store.set(state => { state.oscillators[1].range = current ? 0 : 1 })
+    }, [voiceGroupIndex])
 
     return <div className="settings-buttons">
         <div className="settings-buttons__columns">
@@ -72,8 +70,8 @@ export const SettingsButtons = ({ voice }: Props) => {
                 <div className="settings-buttons__column-heading">DCO</div>
                 <Button active onClick={() => calibrateDCO1(voice)}>Calibrate DCO 1</Button>
                 <Button active onClick={() => calibrateDCO2(voice)}>Calibrate DCO 2</Button>
-                <Button active={dco1RangeHigh === 1} onClick={() => dispatch(clickDco1Range)}>DCO 1 Range Hi</Button>
-                <Button active={dco2RangeHigh === 1} onClick={() => dispatch(clickDco2Range)}>DCO 2 Range Hi</Button>
+                <Button active={dco1Range === 1} onClick={toggleDco1Range}>DCO 1 Range Hi</Button>
+                <Button active={dco2Range === 1} onClick={toggleDco2Range}>DCO 2 Range Hi</Button>
             </div>
             <div className="settings-buttons__column">
                 <div className="settings-buttons__column-heading">VCO</div>
@@ -102,5 +100,3 @@ export const SettingsButtons = ({ voice }: Props) => {
         </div>
     </div>
 }
-
-type Props = { voice: number };
