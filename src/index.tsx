@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 //import './midi/cppControllerConfigGenerator';
-import { Provider } from 'react-redux'
-import { store } from './synthcore/store'
 import midiApi from './midi/midiApi'
+// Import synthcore store to initialize middleware and MIDI receive handlers
+import './synthcore/store'
 import { startEnvelopeMidiSend } from './store/midi/envMidiSend'
 import { startEnvelopeMidiReceive } from './store/midi/envMidiReceive'
 import { startNoiseRingModMidiSend, startNoiseRingModMidiReceive } from './store/midi/noiseRingModMidi'
@@ -49,9 +49,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
     <React.StrictMode>
-        <Provider store={store}>
-            <App/>
-        </Provider>
+        <App/>
     </React.StrictMode>
 );
 
