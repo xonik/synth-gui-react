@@ -3,8 +3,6 @@ import React, { useCallback, useContext, useEffect, useRef, useState } from 'rea
 import { DraggableElementProps } from './types'
 import { useUiStore } from '../../store/uiStore'
 import { useVoiceGroupStore } from '../../store/patchStore'
-import modsApi from '../../synthcore/modules/mods/modsApi'
-import { ApiSource } from '../../synthcore/types'
 import classNames from 'classnames'
 import AmountBar from './AmountBar'
 import { Point } from '../../utils/types'
@@ -54,9 +52,6 @@ const AmountCell = ({ sourceIndex, funcIndex, funcCtrlIndex, paramIndex, sourceI
                 dstFuncId: funcIndex,
                 dstParamId: paramIndex,
             })
-            modsApi.setGuiSource(sourceIndex, ApiSource.UI)
-            modsApi.setGuiDstFunc(funcIndex, ApiSource.UI)
-            modsApi.setGuiDstParam(paramIndex, ApiSource.UI)
         }
     }, [sourceIndex, funcIndex, paramIndex, clickPos])
 

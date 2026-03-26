@@ -114,12 +114,21 @@ const incrementGuiDstParam = (inc: -1 | 1, source: ApiSource) => {
 
 const setModValue = (voiceGroupIndex: number, sourceId: number, dstId: number, dstCtrlIndex: number, modValue: number, source: ApiSource) => {
     const quantizedValue = getQuantized(modValue, 32767)
-    const currModValue = selectModValue(sourceId, dstId, dstCtrlIndex)(store.getState(), voiceGroupIndex)
+    const { voiceGroupStores } = getZustandStores()
 
+    const currModValue = voiceGroupStores[voiceGroupIndex].getState().mods?.[sourceId]?.[dstId]?.[dstCtrlIndex] ?? 0
     if (quantizedValue === currModValue) {
         return
     }
 
+    // Write to Zustand store
+    voiceGroupStores[voiceGroupIndex].getState().set((state: any) => {
+        if (!state.mods[sourceId]) state.mods[sourceId] = {}
+        if (!state.mods[sourceId][dstId]) state.mods[sourceId][dstId] = {}
+        state.mods[sourceId][dstId][dstCtrlIndex] = quantizedValue
+    })
+
+    // Also dispatch to Redux for any remaining consumers
     dispatch(setModValueAction({ voiceGroupIndex, sourceId, dstId, dstCtrlIndex, modValue: quantizedValue, source }))
 
     // TODO: These should really be converted into ONE!
@@ -128,17 +137,30 @@ const setModValue = (voiceGroupIndex: number, sourceId: number, dstId: number, d
     midiApi.setAmount(voiceGroupIndex, source, modValue)
 }
 
+// Lazy-load to avoid circular dependency: modsApi → synthcoreApi → modsApi
+let _uiStore: any = null
+let _voiceGroupStores: any = null
+function getZustandStores() {
+    if (!_uiStore) {
+        _uiStore = require('../../../store/uiStore').useUiStore
+        _voiceGroupStores = require('../../../store/patchStore').voiceGroupStores
+    }
+    return { uiStore: _uiStore, voiceGroupStores: _voiceGroupStores }
+}
+
 const incrementGuiModValue = (voiceGroupIndex: number, inc: number, source: ApiSource) => {
-    const sourceIndex = selectGuiSource(store.getState())
-    const dstGroupIndex = selectGuiDstGroup(store.getState())
-    const dstFuncIndex = selectGuiDstFunc(store.getState())
-    const dstParamIndex = selectGuiDstParam(store.getState())
+    const { uiStore, voiceGroupStores } = getZustandStores()
+    const routing = uiStore.getState().modRouting
+    const sourceIndex = routing.sourceId ?? 0
+    const dstGroupIndex = routing.dstGroupId ?? 0
+    const dstFuncIndex = routing.dstFuncId ?? 0
+    const dstParamIndex = routing.dstParamId ?? 0
 
     const sourceId = digitalModSources[sourceIndex].id
     const dstId = modDst.dsts[dstGroupIndex][dstFuncIndex][dstParamIndex].id
     const dstCtrlIndex = modDst.funcProps[dstGroupIndex][dstFuncIndex].ctrlIndex || 0
 
-    const currModValue = selectModValue(sourceId, dstId, dstCtrlIndex)(store.getState(), voiceGroupIndex)
+    const currModValue = voiceGroupStores[voiceGroupIndex].getState().mods?.[sourceId]?.[dstId]?.[dstCtrlIndex] ?? 0
     const nextModValue = getBounded(currModValue + inc, -1, 1)
     setModValue(voiceGroupIndex, sourceId, dstId, dstCtrlIndex, nextModValue, source)
 }
