@@ -2,6 +2,8 @@ import { store } from '../../store'
 import midiApi from './modsMidiApi'
 import { ApiSource } from '../../types'
 import { dispatch, getBounded, getQuantized } from '../../utils'
+import { useUiStore } from '../../../store/uiStore'
+import { voiceGroupStores as zustandStores } from '../../../store/patchStore'
 import {
     setGuiSource as setGuiSourceAction,
     setGuiDstGroup as setGuiDstGroupAction,
@@ -114,15 +116,14 @@ const incrementGuiDstParam = (inc: -1 | 1, source: ApiSource) => {
 
 const setModValue = (voiceGroupIndex: number, sourceId: number, dstId: number, dstCtrlIndex: number, modValue: number, source: ApiSource) => {
     const quantizedValue = getQuantized(modValue, 32767)
-    const { voiceGroupStores } = getZustandStores()
 
-    const currModValue = voiceGroupStores[voiceGroupIndex].getState().mods?.[sourceId]?.[dstId]?.[dstCtrlIndex] ?? 0
+    const currModValue = zustandStores[voiceGroupIndex].getState().mods?.[sourceId]?.[dstId]?.[dstCtrlIndex] ?? 0
     if (quantizedValue === currModValue) {
         return
     }
 
     // Write to Zustand store
-    voiceGroupStores[voiceGroupIndex].getState().set((state: any) => {
+    zustandStores[voiceGroupIndex].getState().set((state: any) => {
         if (!state.mods[sourceId]) state.mods[sourceId] = {}
         if (!state.mods[sourceId][dstId]) state.mods[sourceId][dstId] = {}
         state.mods[sourceId][dstId][dstCtrlIndex] = quantizedValue
@@ -137,20 +138,8 @@ const setModValue = (voiceGroupIndex: number, sourceId: number, dstId: number, d
     midiApi.setAmount(voiceGroupIndex, source, modValue)
 }
 
-// Lazy-load to avoid circular dependency: modsApi → synthcoreApi → modsApi
-let _uiStore: any = null
-let _voiceGroupStores: any = null
-function getZustandStores() {
-    if (!_uiStore) {
-        _uiStore = require('../../../store/uiStore').useUiStore
-        _voiceGroupStores = require('../../../store/patchStore').voiceGroupStores
-    }
-    return { uiStore: _uiStore, voiceGroupStores: _voiceGroupStores }
-}
-
 const incrementGuiModValue = (voiceGroupIndex: number, inc: number, source: ApiSource) => {
-    const { uiStore, voiceGroupStores } = getZustandStores()
-    const routing = uiStore.getState().modRouting
+    const routing = useUiStore.getState().modRouting
     const sourceIndex = routing.sourceId ?? 0
     const dstGroupIndex = routing.dstGroupId ?? 0
     const dstFuncIndex = routing.dstFuncId ?? 0
@@ -160,7 +149,7 @@ const incrementGuiModValue = (voiceGroupIndex: number, inc: number, source: ApiS
     const dstId = modDst.dsts[dstGroupIndex][dstFuncIndex][dstParamIndex].id
     const dstCtrlIndex = modDst.funcProps[dstGroupIndex][dstFuncIndex].ctrlIndex || 0
 
-    const currModValue = voiceGroupStores[voiceGroupIndex].getState().mods?.[sourceId]?.[dstId]?.[dstCtrlIndex] ?? 0
+    const currModValue = zustandStores[voiceGroupIndex].getState().mods?.[sourceId]?.[dstId]?.[dstCtrlIndex] ?? 0
     const nextModValue = getBounded(currModValue + inc, -1, 1)
     setModValue(voiceGroupIndex, sourceId, dstId, dstCtrlIndex, nextModValue, source)
 }
