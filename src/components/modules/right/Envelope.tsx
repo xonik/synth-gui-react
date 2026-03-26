@@ -14,10 +14,8 @@ import { ModuleBorder } from "../../misc/ModuleBorder";
 import { ModuleProps } from "../types";
 import { useEnvTime, useEnvLevel, useEnvToggle, useEnvStageEnabled } from '../../../store/modules/useEnvelope'
 import { useUiStore } from '../../../store/uiStore'
-import { ControllerGroupIds } from '../../../synthcore/types'
 import { envCtrls } from '../../../synthcore/modules/env/envControllers'
-
-const ctrlGroup = ControllerGroupIds.ENV
+import { button } from '../../../midi/midibus'
 
 type Props = ModuleProps & {
     x: number,
@@ -131,10 +129,9 @@ const Envelope = ({ x, y, height, width, label, header, showSelect = false, envI
         <EnvToggleButton envId={envId} param="velocity" label="Velocity" x={firstPotX + potDistance * 5} y={bottomRowY} />
 
         <RoundPushButton8 label="Trigger" x={firstPotX + potDistance * 5 + BUTTON_DISTANCE_S} y={bottomRowY} labelPosition="bottom-pot"
-                          ctrlGroup={ctrlGroup}
-                          ctrl={envCtrls.ENV_GATE}
-                          ctrlIndex={envId}
                           momentary
+                          onButtonClick={() => button.send(0, envCtrls.ENV_GATE, envCtrls.ENV_GATE.values[0])}
+                          onButtonRelease={() => button.send(0, envCtrls.ENV_GATE, envCtrls.ENV_GATE.values[1])}
         />
     </>
 }

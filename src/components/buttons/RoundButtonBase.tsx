@@ -3,11 +3,6 @@ import classNames from 'classnames'
 import RoundPushButtonBase from './RoundPushButtonBase'
 import RotaryPotBase from '../pots/RotaryPotBase'
 import { ControllerConfig } from '../../midi/types'
-import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
-import { click, release } from '../../synthcore/modules/ui/uiReducer'
-import { dispatch } from '../../synthcore/utils'
-import { useAppSelector } from '../../synthcore/hooks'
-import { selectUiController } from '../../synthcore/modules/controllers/controllersReducer'
 import './RoundButton.scss'
 import { SHOW_CUT } from "../../config";
 import { TextAnchor } from "../../types";
@@ -69,11 +64,8 @@ export interface Props {
     // If momentary is true it may have two values - one that is sent on key pressed and one on release.
     momentary?: boolean;
 
-    ctrlGroup?: ControllerGroupIds;
     ctrl?: ControllerConfig;
-    ctrlIndex?: number;
     value?: number;
-    valueIndex?: number;
 
     // Only used if rotary button
     resolution?: number;
@@ -299,11 +291,8 @@ export const RoundButtonBase = (props: Props & Config) => {
         reverse,
         loop = true,
         momentary,
-        ctrlGroup,
         ctrl,
-        ctrlIndex,
         value,
-        valueIndex,
         resolution,
         ledRingColors,
         ledCycleBinary,
@@ -312,8 +301,7 @@ export const RoundButtonBase = (props: Props & Config) => {
         onIncrement: onIncrementProp,
     } = props
 
-    const storeValue = useAppSelector(ctrl ? selectUiController(ctrl, ctrlIndex || 0) : () => 0)
-    const currentValue = value !== undefined ? value : storeValue
+    const currentValue = value ?? 0
 
     const radioButtonValueIndex = hasOff ? (radioButtonIndex || 0) + 1 : radioButtonIndex || 0
     const hasOffValue = hasOff || (ledButton && ledCount === undefined)
@@ -326,41 +314,20 @@ export const RoundButtonBase = (props: Props & Config) => {
             for (let i = 0; i < Math.abs(steps); i++) {
                 onButtonClick()
             }
-        } else if (ctrl && ctrlGroup !== undefined) {
-            for (let i = 0; i < Math.abs(steps); i++) {
-                if (steps > 0) {
-                    dispatch(click({ ctrlGroup, ctrl, loop, valueIndex, source: ApiSource.UI }))
-                } else {
-                    dispatch(click({ ctrlGroup, ctrl, loop, valueIndex, reverse: true, source: ApiSource.UI }))
-                }
-            }
         }
-    }, [ctrlGroup, ctrl, loop, valueIndex, onButtonClick, onIncrementProp])
+    }, [onButtonClick, onIncrementProp])
 
     const handleOnClick = useCallback(() => {
         if (onButtonClick) {
             onButtonClick()
-        } else if (ctrl && ctrlGroup !== undefined) {
-            dispatch(click({
-                ctrlGroup,
-                ctrl,
-                ctrlIndex,
-                radioButtonIndex,
-                reverse,
-                loop,
-                momentary,
-                source: ApiSource.UI
-            }))
         }
-    }, [ctrlGroup, ctrl, ctrlIndex, radioButtonIndex, reverse, loop, momentary, onButtonClick])
+    }, [onButtonClick])
 
     const handleOnRelease = useCallback(() => {
         if (onButtonRelease) {
             onButtonRelease()
-        } else if (ctrl && ctrlGroup !== undefined) {
-            dispatch(release({ ctrlGroup, ctrl, ctrlIndex, momentary, source: ApiSource.UI }))
         }
-    }, [ctrl, ctrlGroup, ctrlIndex, momentary, onButtonRelease])
+    }, [onButtonRelease])
 
     const ledOn: boolean[] = []
     for (let i = 0; i < (ledCount || (ctrl?.values?.length || 2) - 1); i++) {
