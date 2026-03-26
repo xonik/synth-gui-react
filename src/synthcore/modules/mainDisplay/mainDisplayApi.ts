@@ -1,12 +1,3 @@
-import { MainDisplayScreenId } from './types'
-import { store } from '../../store'
-import {
-    selectCurrScreen,
-    setCurrentScreen as setCurrentScreenAction,
-    setPreviousScreen as setPreviousScreenAction,
-    setShiftOn
-} from './mainDisplayReducer'
-import { dispatch } from '../../utils'
 import { mainDisplayModsApi, mainDisplayModsPotResolutions } from '../mods/modsMainDisplayApi'
 import { mainDisplayEnvApi, mainDisplayEnvPotResolutions } from '../env/envMainDisplayApi'
 import mainDisplayMidiApi from './mainDisplayMidiApi'
@@ -15,29 +6,23 @@ import mainDisplayControllers from './mainDisplayControllers'
 import { createClickMapper, createIncrementMapper } from '../common/utils'
 import { mainDisplaySettingsApi, mainDisplaySettingsPotResolutions } from '../settings/settingsMainDisplayApi'
 import { mainDisplayLfoApi, mainDisplayLfoPotResolutions } from '../lfo/lfoMainDisplayApi'
+import { useUiStore, ScreenId } from '../../../store/uiStore'
 
 
 type PotResolutions = {
-    [key: number]: {
+    [key: string]: {
         [key: number]: number
     }
 }
 
-// Screens that should not be pushed to 'previousScreen', they are modals that should revert to previous screen
-// BEFORE any modal.
-const modalScreens = [
-    MainDisplayScreenId.SAVE,
-    MainDisplayScreenId.LOAD,
-]
-
 const potResolution: PotResolutions = {
-    [MainDisplayScreenId.ENV]: mainDisplayEnvPotResolutions,
-    [MainDisplayScreenId.LFO]: mainDisplayLfoPotResolutions,
-    [MainDisplayScreenId.MOD]: mainDisplayModsPotResolutions,
-    [MainDisplayScreenId.SETTINGS]: mainDisplaySettingsPotResolutions,
+    [ScreenId.ENV]: mainDisplayEnvPotResolutions,
+    [ScreenId.LFO]: mainDisplayLfoPotResolutions,
+    [ScreenId.MOD]: mainDisplayModsPotResolutions,
+    [ScreenId.SETTINGS]: mainDisplaySettingsPotResolutions,
 }
 
-export const getPotResolution = (ctrlId: number, currScreen: number) => {
+export const getPotResolution = (ctrlId: number, currScreen: ScreenId) => {
     const screenPots = potResolution[currScreen]
     if (screenPots?.[ctrlId]) {
         return screenPots[ctrlId]
@@ -52,7 +37,7 @@ const handleSettingsClick = (source: ApiSource) => {
     mainDisplayMidiApi.settingsClick(source)
 }
 const handleShift = (on: boolean, source: ApiSource) => {
-    dispatch(setShiftOn({ voiceGroupIndex: -1, value: on }))
+    useUiStore.getState().setShift(on)
     mainDisplayMidiApi.shift(source, on)
 }
 const handlePerformClick = (source: ApiSource) => {
@@ -60,12 +45,10 @@ const handlePerformClick = (source: ApiSource) => {
 }
 const handleLoadClick = (source: ApiSource) => {
     mainDisplayMidiApi.loadClick(source)
-    //patchStorageApi.loadPatch()
 }
 const handleSaveClick = (source: ApiSource) => {
     console.log(`Save form ${source}`)
     mainDisplayMidiApi.saveClick(source)
-    //patchStorageApi.savePatch()
 }
 const handleCompareClick = (source: ApiSource) => {
     mainDisplayMidiApi.compareClick(source)
@@ -75,14 +58,15 @@ const handleRouteClick = (source: ApiSource) => {
 }
 
 const handleMainDisplayController = (voiceGroupIndex: number, ctrlId: number, value: number, source: ApiSource) => {
-    const currScreenId = selectCurrScreen(store.getState())
-    if (currScreenId === MainDisplayScreenId.MOD) {
+    const currentScreen = useUiStore.getState().currentScreen
+
+    if (currentScreen === ScreenId.MOD) {
         mainDisplayModsApi.handleMainDisplayController(voiceGroupIndex, ctrlId, value)
-    } else if (currScreenId === MainDisplayScreenId.ENV) {
+    } else if (currentScreen === ScreenId.ENV) {
         mainDisplayEnvApi.handleMainDisplayController(voiceGroupIndex, ctrlId, value)
-    } else if (currScreenId === MainDisplayScreenId.LFO) {
+    } else if (currentScreen === ScreenId.LFO) {
         mainDisplayLfoApi.handleMainDisplayController(voiceGroupIndex, ctrlId, value)
-    } else if (currScreenId === MainDisplayScreenId.SETTINGS) {
+    } else if (currentScreen === ScreenId.SETTINGS) {
         mainDisplaySettingsApi.handleMainDisplayController(voiceGroupIndex, ctrlId, value)
     }
 
@@ -92,11 +76,6 @@ const handleMainDisplayController = (voiceGroupIndex: number, ctrlId: number, va
 }
 
 const setCurrentScreen = (id: number, source: ApiSource) => {
-    const currentId = selectCurrScreen(store.getState())
-    if (!modalScreens.includes(currentId)) {
-        dispatch(setPreviousScreenAction({ id: currentId }))
-    }
-    dispatch(setCurrentScreenAction({ id }))
     mainDisplayMidiApi.setCurrentScreen(source, id)
 }
 
