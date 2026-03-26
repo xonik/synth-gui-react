@@ -2,11 +2,7 @@ import React, { useCallback } from 'react'
 import classNames from 'classnames'
 import arc from '../../utils/svg/arc'
 import RotaryPotBase from './RotaryPotBase'
-import { useAppDispatch, useAppSelector } from '../../synthcore/hooks'
-import { increment } from '../../synthcore/modules/ui/uiReducer'
-import { ApiSource, ControllerGroupIds } from '../../synthcore/types'
 import { ControllerConfig } from '../../midi/types'
-import { selectUiController } from '../../synthcore/modules/controllers/controllersReducer'
 import './RotaryPot.scss'
 import { SHOW_CUT } from "../../config";
 
@@ -21,10 +17,6 @@ export interface Props {
     potMode?: PotMode
     label: string
     value?: number;
-    valueIndex?: number;
-    ctrlGroup?: ControllerGroupIds;
-    ctrl?: ControllerConfig;
-    ctrlIndex?: number;
     disabled?: boolean;
     silver?: boolean;
     onValueIncrement?: (delta: number) => void;
@@ -104,10 +96,8 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
 
     // Position should be in the range 0-1 in all modes but pan. In pan the range is -0.5 - 0.5
     const { x, y, ledMode = 'single', potMode = 'normal', label,
-        value, valueIndex, ctrlGroup, ctrl, ctrlIndex, disabled, silver, onValueIncrement
+        value, disabled, silver, onValueIncrement
     } = props
-
-    const dispatch = useAppDispatch()
 
     const {
         ledRadius,
@@ -122,8 +112,7 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
         ledArc,
     } = getRenderProps(props);
 
-    const storeValue = useAppSelector(ctrl ? selectUiController(ctrl, ctrlIndex, valueIndex) : () => 0)
-    const currentValue = value !== undefined ? value : storeValue
+    const currentValue = value ?? 0
 
     const ledPosition = getLedPos(centerLed, ledCount, potMode, currentValue)
 
@@ -135,10 +124,8 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
         const delta = potMode === 'pan' ? steps * (stepSize * 2) : steps * stepSize
         if (onValueIncrement) {
             onValueIncrement(delta)
-        } else if (ctrl && ctrlGroup !== undefined) {
-            dispatch(increment({ ctrlGroup, ctrl, value: delta, valueIndex, ctrlIndex, source: ApiSource.UI }))
         }
-    }, [disabled, potMode, dispatch, ctrlGroup, ctrl, valueIndex, ctrlIndex, onValueIncrement])
+    }, [disabled, potMode, onValueIncrement])
 
     return (
         <svg x={x} y={y} className="pot">
