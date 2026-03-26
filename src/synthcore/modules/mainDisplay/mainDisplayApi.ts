@@ -1,4 +1,3 @@
-import { MainDisplayScreenId } from './types'
 import { mainDisplayModsApi, mainDisplayModsPotResolutions } from '../mods/modsMainDisplayApi'
 import { mainDisplayEnvApi, mainDisplayEnvPotResolutions } from '../env/envMainDisplayApi'
 import mainDisplayMidiApi from './mainDisplayMidiApi'
@@ -11,35 +10,24 @@ import { useUiStore, ScreenId } from '../../../store/uiStore'
 
 
 type PotResolutions = {
-    [key: number]: {
+    [key: string]: {
         [key: number]: number
     }
 }
 
 const potResolution: PotResolutions = {
-    [MainDisplayScreenId.ENV]: mainDisplayEnvPotResolutions,
-    [MainDisplayScreenId.LFO]: mainDisplayLfoPotResolutions,
-    [MainDisplayScreenId.MOD]: mainDisplayModsPotResolutions,
-    [MainDisplayScreenId.SETTINGS]: mainDisplaySettingsPotResolutions,
+    [ScreenId.ENV]: mainDisplayEnvPotResolutions,
+    [ScreenId.LFO]: mainDisplayLfoPotResolutions,
+    [ScreenId.MOD]: mainDisplayModsPotResolutions,
+    [ScreenId.SETTINGS]: mainDisplaySettingsPotResolutions,
 }
 
-export const getPotResolution = (ctrlId: number, currScreen: number) => {
+export const getPotResolution = (ctrlId: number, currScreen: ScreenId) => {
     const screenPots = potResolution[currScreen]
     if (screenPots?.[ctrlId]) {
         return screenPots[ctrlId]
     }
     return 1000
-}
-
-// Map ScreenId string values to MainDisplayScreenId numbers
-const screenToNumeric: Record<string, MainDisplayScreenId> = {
-    [ScreenId.LFO]: MainDisplayScreenId.LFO,
-    [ScreenId.OSC]: MainDisplayScreenId.OSC,
-    [ScreenId.FILTER]: MainDisplayScreenId.FILTER,
-    [ScreenId.ENV]: MainDisplayScreenId.ENV,
-    [ScreenId.MOD]: MainDisplayScreenId.MOD,
-    [ScreenId.FX]: MainDisplayScreenId.FX,
-    [ScreenId.SETTINGS]: MainDisplayScreenId.SETTINGS,
 }
 
 const handleHomeClick = (source: ApiSource) => {
@@ -71,15 +59,14 @@ const handleRouteClick = (source: ApiSource) => {
 
 const handleMainDisplayController = (voiceGroupIndex: number, ctrlId: number, value: number, source: ApiSource) => {
     const currentScreen = useUiStore.getState().currentScreen
-    const currScreenId = screenToNumeric[currentScreen]
 
-    if (currScreenId === MainDisplayScreenId.MOD) {
+    if (currentScreen === ScreenId.MOD) {
         mainDisplayModsApi.handleMainDisplayController(voiceGroupIndex, ctrlId, value)
-    } else if (currScreenId === MainDisplayScreenId.ENV) {
+    } else if (currentScreen === ScreenId.ENV) {
         mainDisplayEnvApi.handleMainDisplayController(voiceGroupIndex, ctrlId, value)
-    } else if (currScreenId === MainDisplayScreenId.LFO) {
+    } else if (currentScreen === ScreenId.LFO) {
         mainDisplayLfoApi.handleMainDisplayController(voiceGroupIndex, ctrlId, value)
-    } else if (currScreenId === MainDisplayScreenId.SETTINGS) {
+    } else if (currentScreen === ScreenId.SETTINGS) {
         mainDisplaySettingsApi.handleMainDisplayController(voiceGroupIndex, ctrlId, value)
     }
 

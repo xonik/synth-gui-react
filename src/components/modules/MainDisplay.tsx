@@ -13,7 +13,6 @@ import { ModuleProps } from "./types";
 import { BORDER_MARGIN, POT_OFFSET_Y, ROW_HEIGHT } from "../../constants";
 import mainDisplayApi from '../../synthcore/modules/mainDisplay/mainDisplayApi'
 import { ApiSource } from '../../synthcore/types'
-import { MainDisplayScreenId } from '../../synthcore/modules/mainDisplay/types'
 
 const SHIFT_KEYS = ['16', 'Shift'];
 
@@ -37,17 +36,6 @@ const screenToMenuIndex: Partial<Record<ScreenId, number>> = {
     [ScreenId.FX]: 5,
 }
 
-// Map uiStore ScreenId to old MainDisplayScreenId for pot resolution lookup
-const screenIdToMainDisplayScreenId: Partial<Record<ScreenId, MainDisplayScreenId>> = {
-    [ScreenId.LFO]: MainDisplayScreenId.LFO,
-    [ScreenId.OSC]: MainDisplayScreenId.OSC,
-    [ScreenId.FILTER]: MainDisplayScreenId.FILTER,
-    [ScreenId.ENV]: MainDisplayScreenId.ENV,
-    [ScreenId.MOD]: MainDisplayScreenId.MOD,
-    [ScreenId.FX]: MainDisplayScreenId.FX,
-    [ScreenId.SETTINGS]: MainDisplayScreenId.SETTINGS,
-}
-
 type Props = ModuleProps & {
     panelHeight: number
 }
@@ -60,7 +48,6 @@ const MainDisplay = React.forwardRef<SVGRectElement, Props>(
         const setScreen = useUiStore(s => s.setScreen)
         const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)
 
-        const currScreenNumeric = screenIdToMainDisplayScreenId[currentScreen] ?? MainDisplayScreenId.ENV
         const menuIndex = screenToMenuIndex[currentScreen] ?? -1
 
         // approx. 9"
@@ -189,36 +176,36 @@ const MainDisplay = React.forwardRef<SVGRectElement, Props>(
             <RotaryPotWOLeds10 x={displayCenterX - 2.5 * potSpacing} y={potRow}
                                silver
                                onValueIncrement={makePotIncrement(0)}
-                               resolution={getPotResolution(mainDisplayControllers.POT1.id, currScreenNumeric)}
+                               resolution={getPotResolution(mainDisplayControllers.POT1.id, currentScreen)}
             />
             <RotaryPotWOLeds10 x={displayCenterX - 1.5 * potSpacing} y={potRow}
                                silver
                                onValueIncrement={makePotIncrement(1)}
-                               resolution={getPotResolution(mainDisplayControllers.POT2.id, currScreenNumeric)}
+                               resolution={getPotResolution(mainDisplayControllers.POT2.id, currentScreen)}
             />
             <RotaryPotWOLeds10 x={displayCenterX - 0.5 * potSpacing} y={potRow}
                                silver
                                onValueIncrement={makePotIncrement(2)}
-                               resolution={getPotResolution(mainDisplayControllers.POT3.id, currScreenNumeric)}
+                               resolution={getPotResolution(mainDisplayControllers.POT3.id, currentScreen)}
             />
             <RotaryPotWOLeds10 x={displayCenterX + 0.5 * potSpacing} y={potRow}
                                silver
                                onValueIncrement={makePotIncrement(3)}
-                               resolution={getPotResolution(mainDisplayControllers.POT4.id, currScreenNumeric)}
+                               resolution={getPotResolution(mainDisplayControllers.POT4.id, currentScreen)}
             />
             <RotaryPotWOLeds10 x={displayCenterX + 1.5 * potSpacing} y={potRow}
                                silver
                                onValueIncrement={makePotIncrement(4)}
-                               resolution={getPotResolution(mainDisplayControllers.POT5.id, currScreenNumeric)}
+                               resolution={getPotResolution(mainDisplayControllers.POT5.id, currentScreen)}
             />
             <RotaryPotWOLeds10 x={displayCenterX + 2.5 * potSpacing} y={potRow}
                                silver
                                onValueIncrement={makePotIncrement(5)}
-                               resolution={getPotResolution(mainDisplayControllers.POT6.id, currScreenNumeric)}
+                               resolution={getPotResolution(mainDisplayControllers.POT6.id, currentScreen)}
             />
             <RotaryPotWOLeds24 x={displayCenterX} y={masterPotRow}
                                onValueIncrement={makePotIncrement(6)}
-                               resolution={getPotResolution(mainDisplayControllers.POT7.id, currScreenNumeric)}
+                               resolution={getPotResolution(mainDisplayControllers.POT7.id, currentScreen)}
             />
 
             <RoundPushButton8 x={displayCenterX - 2.5 * buttonSpacing} y={ctrlSwitchesRow1} label="Home"
