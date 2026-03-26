@@ -58,7 +58,6 @@ const MainDisplay = React.forwardRef<SVGRectElement, Props>(
 
         const currentScreen = useUiStore(s => s.currentScreen)
         const setScreen = useUiStore(s => s.setScreen)
-        const setShift = useUiStore(s => s.setShift)
         const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)
 
         const currScreenNumeric = screenIdToMainDisplayScreenId[currentScreen] ?? MainDisplayScreenId.ENV
@@ -129,20 +128,18 @@ const MainDisplay = React.forwardRef<SVGRectElement, Props>(
             mainDisplayApi.handleRouteClick(ApiSource.UI)
         }, [])
 
-        // PC Keyboard handlers - dual-write to both uiStore and Redux
+        // PC Keyboard handlers
         const handleOnClick = useCallback(({ key }: { key: any }) => {
             if (SHIFT_KEYS.includes(String(key))) {
-                setShift(true)
                 mainDisplayApi.handleShift(true, ApiSource.UI)
             }
-        }, [setShift])
+        }, [])
 
         const handleOnRelease = useCallback(({ key }: { key: any }) => {
             if (SHIFT_KEYS.includes(String(key))) {
-                setShift(false)
                 mainDisplayApi.handleShift(false, ApiSource.UI)
             }
-        }, [setShift])
+        }, [])
 
         useEventListener('keydown', handleOnClick);
         useEventListener('keyup', handleOnRelease);
