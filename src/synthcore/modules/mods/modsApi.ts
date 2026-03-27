@@ -1,99 +1,87 @@
-import { store } from '../../store'
 import midiApi from './modsMidiApi'
 import { ApiSource } from '../../types'
-import { dispatch, getBounded, getQuantized } from '../../utils'
+import { getBounded, getQuantized } from '../../utils'
 import { useUiStore } from '../../../store/uiStore'
 import { voiceGroupStores as zustandStores } from '../../../store/patchStore'
-import {
-    setGuiSource as setGuiSourceAction,
-    setGuiDstGroup as setGuiDstGroupAction,
-    setGuiDstFunc as setGuiDstFuncAction,
-    setGuiDstParam as setGuiDstParamAction,
-    setModValue as setModValueAction,
-    setModValues as setModValuesAction,
-
-    setUiAmount,
-    setUiRouteButton,
-
-    selectGuiSource,
-    selectGuiDstGroup,
-    selectGuiDstFunc,
-    selectGuiDstParam,
-    selectModValue,
-    selectModsUi,
-    selectModValues,
-} from './modsReducer'
 import { digitalModSources, modDst } from './utils'
 import modsControllers from './modsControllers'
 import modsMidiApi from './modsMidiApi'
 import { paramReceive, paramSend } from '../common/commonMidiApi'
 import { ButtonInputProperty, NumericInputProperty } from '../common/types'
 
+const setGuiSource = (guiSource: number, _source: ApiSource) => {
+    const routing = useUiStore.getState().modRouting
+    if (guiSource !== (routing.sourceId ?? 0)) {
+        useUiStore.getState().setModRouting({ sourceId: guiSource })
+    }
+}
+
+const setGuiDstGroup = (guiDstGroup: number, _source: ApiSource) => {
+    const routing = useUiStore.getState().modRouting
+    if (guiDstGroup !== (routing.dstGroupId ?? 0)) {
+        useUiStore.getState().setModRouting({
+            dstGroupId: guiDstGroup,
+            dstFuncId: 0,
+            dstParamId: 0,
+        })
+    }
+}
+
+const setGuiDstFunc = (guiDstFunc: number, _source: ApiSource) => {
+    const routing = useUiStore.getState().modRouting
+    if (guiDstFunc !== (routing.dstFuncId ?? 0)) {
+        useUiStore.getState().setModRouting({
+            dstFuncId: guiDstFunc,
+            dstParamId: 0,
+        })
+    }
+}
+
+const setGuiDstParam = (guiDstParam: number, _source: ApiSource) => {
+    const routing = useUiStore.getState().modRouting
+    if (guiDstParam !== (routing.dstParamId ?? 0)) {
+        useUiStore.getState().setModRouting({ dstParamId: guiDstParam })
+    }
+}
+
 const setGuiMod = (
     guiSource: number,
     guiDstFunc: number,
     guiDstParam: number,
-    source: ApiSource
+    _source: ApiSource
 ) => {
-    dispatch(setGuiSourceAction({ guiSource, source }))
-    dispatch(setGuiDstFuncAction({ guiDstFunc, source }))
-    dispatch(setGuiDstParamAction({ guiDstParam, source }))
-}
-
-const setGuiSource = (guiSource: number, source: ApiSource) => {
-    const currSource = selectGuiSource(store.getState())
-    if (guiSource !== currSource) {
-        dispatch(setGuiSourceAction({ guiSource, source }))
-    }
+    useUiStore.getState().setModRouting({
+        sourceId: guiSource,
+        dstFuncId: guiDstFunc,
+        dstParamId: guiDstParam,
+    })
 }
 
 const incrementGuiSource = (inc: number, source: ApiSource) => {
-    const currSource = selectGuiSource(store.getState())
+    const currSource = useUiStore.getState().modRouting.sourceId ?? 0
     const nextSource = getBounded(currSource + inc, 0, digitalModSources.length - 1)
     setGuiSource(nextSource, source)
 }
 
-const setGuiDstGroup = (guiDstGroup: number, source: ApiSource) => {
-    const currDstGroup = selectGuiDstGroup(store.getState())
-    if (guiDstGroup !== currDstGroup) {
-        dispatch(setGuiDstParamAction({ guiDstParam: 0, source }))
-        dispatch(setGuiDstFuncAction({ guiDstFunc: 0, source }))
-        dispatch(setGuiDstGroupAction({ guiDstGroup, source }))
-    }
-}
-
 const incrementGuiDstGroup = (inc: number, source: ApiSource) => {
-    const currDstGroup = selectGuiDstGroup(store.getState())
+    const currDstGroup = useUiStore.getState().modRouting.dstGroupId ?? 0
     const nextDstGroup = getBounded(currDstGroup + inc, 0, modDst.dsts.length - 1)
     setGuiDstGroup(nextDstGroup, source)
 }
 
-const setGuiDstFunc = (guiDstFunc: number, source: ApiSource) => {
-    const currDstFunc = selectGuiDstFunc(store.getState())
-    if (guiDstFunc !== currDstFunc) {
-        dispatch(setGuiDstParamAction({ guiDstParam: 0, source }))
-        dispatch(setGuiDstFuncAction({ guiDstFunc, source }))
-    }
-}
-
 const incrementGuiDstFunc = (inc: number, source: ApiSource) => {
-    const currDstGroup = selectGuiDstGroup(store.getState())
-    const currDstFunc = selectGuiDstFunc(store.getState())
+    const routing = useUiStore.getState().modRouting
+    const currDstGroup = routing.dstGroupId ?? 0
+    const currDstFunc = routing.dstFuncId ?? 0
     const nextDstFunc = getBounded(currDstFunc + inc, 0, modDst.dsts[currDstGroup].length - 1)
     setGuiDstFunc(nextDstFunc, source)
 }
 
-const setGuiDstParam = (guiDstParam: number, source: ApiSource) => {
-    const currDstParam = selectGuiDstParam(store.getState())
-    if (guiDstParam !== currDstParam) {
-        dispatch(setGuiDstParamAction({ guiDstParam, source }))
-    }
-}
-
 const incrementGuiDstParam = (inc: -1 | 1, source: ApiSource) => {
-    const currDstGroup = selectGuiDstGroup(store.getState())
-    const currDstFunc = selectGuiDstFunc(store.getState())
-    const currDstParam = selectGuiDstParam(store.getState())
+    const routing = useUiStore.getState().modRouting
+    const currDstGroup = routing.dstGroupId ?? 0
+    const currDstFunc = routing.dstFuncId ?? 0
+    const currDstParam = routing.dstParamId ?? 0
 
     const lastGuiDstParam = modDst.dsts[currDstGroup][currDstFunc].length - 1
     const requestedGuiDstParam = currDstParam + inc
@@ -108,7 +96,6 @@ const incrementGuiDstParam = (inc: -1 | 1, source: ApiSource) => {
         if (currDstFunc < modDst.dsts[currDstGroup].length - 1) {
             setGuiDstFunc(currDstFunc + 1, source)
         }
-
     } else {
         setGuiDstParam(requestedGuiDstParam, source)
     }
@@ -122,15 +109,11 @@ const setModValue = (voiceGroupIndex: number, sourceId: number, dstId: number, d
         return
     }
 
-    // Write to Zustand store
     zustandStores[voiceGroupIndex].getState().set((state: any) => {
         if (!state.mods[sourceId]) state.mods[sourceId] = {}
         if (!state.mods[sourceId][dstId]) state.mods[sourceId][dstId] = {}
         state.mods[sourceId][dstId][dstCtrlIndex] = quantizedValue
     })
-
-    // Also dispatch to Redux for any remaining consumers
-    dispatch(setModValueAction({ voiceGroupIndex, sourceId, dstId, dstCtrlIndex, modValue: quantizedValue, source }))
 
     // TODO: These should really be converted into ONE!
     midiApi.setSourceId(voiceGroupIndex, source, sourceId)
@@ -155,18 +138,18 @@ const incrementGuiModValue = (voiceGroupIndex: number, inc: number, source: ApiS
 }
 
 const setRouteButton = (value: number, source: ApiSource) => {
-    const currentValue = selectModsUi(store.getState()).routeButton
+    const currentValue = useUiStore.getState().modRouteButton
     const boundedValue = getBounded(value, 0, modsControllers.ROUTE_BUTTON.values.length - 1)
 
     if (value === currentValue) {
         return
     }
-    dispatch(setUiRouteButton({ voiceGroupIndex: -1, value: boundedValue }))
+    useUiStore.getState().setModRouteButton(boundedValue)
     modsMidiApi.setUiRouteButton(source, boundedValue)
 }
 
 const toggleRouteButton = (value: number, source: ApiSource) => {
-    const currentValue = selectModsUi(store.getState()).routeButton
+    const currentValue = useUiStore.getState().modRouteButton
     if (value === currentValue) {
         setRouteButton(0, source)
     } else {
@@ -177,21 +160,18 @@ const toggleRouteButton = (value: number, source: ApiSource) => {
 export const uiAmount = (() => {
     const set = (input: NumericInputProperty) => {
         const boundedValue = getQuantized(getBounded(input.value, -1, 1))
-        const currentValue = selectModsUi(store.getState()).amount
+        const currentValue = useUiStore.getState().modAmount
 
         if (boundedValue === currentValue) {
             return
         }
 
-        const boundedInput = { ...input, value: boundedValue }
-        dispatch(setUiAmount(boundedInput))
-
-        // send over midi
-        paramSend(boundedInput)
+        useUiStore.getState().setModAmount(boundedValue)
+        paramSend({ ...input, value: boundedValue })
     }
 
     const increment = (input: NumericInputProperty) => {
-        const currentValue = selectModsUi(store.getState()).amount
+        const currentValue = useUiStore.getState().modAmount
         set({ ...input, value: currentValue + input.value / 2 })
     }
 
@@ -200,7 +180,7 @@ export const uiAmount = (() => {
     return {
         set,
         increment,
-        toggle: (input: ButtonInputProperty) => {
+        toggle: (_input: ButtonInputProperty) => {
         }
     }
 })()
@@ -217,29 +197,39 @@ const toggle = (input: ButtonInputProperty) => {
     customhandlers[input.ctrl.id]?.toggle(input)
 }
 
-// float 0 is hard.
 const epsilon: number = 0.001;
 export const isZero = (A: number) => {
     return (Math.abs(A) < epsilon);
 }
 
 const getForSave = (voiceGroupIndex: number) => {
-    const mods = selectModValues()(store.getState(), voiceGroupIndex)
-
-    // remove empty entries to make patch smaller.
-    return mods.map((destinations) => {
-        return destinations.map((dstIndexes) => {
-            return dstIndexes.filter((dstIndexAmount) => !isZero(dstIndexAmount))
-        }).filter((destinations) => destinations.length > 0)
-    }).filter((destinations) => destinations.length > 0)
+    const mods = zustandStores[voiceGroupIndex].getState().mods
+    // Convert from {sourceId: {dstId: {ctrlIndex: value}}} to number[][][]
+    const result: number[][][] = []
+    for (const sourceId in mods) {
+        const destinations: number[][] = []
+        for (const dstId in mods[sourceId]) {
+            const ctrlIndexes: number[] = []
+            for (const ctrlIndex in mods[sourceId][dstId]) {
+                const value = mods[sourceId][dstId][ctrlIndex]
+                if (!isZero(value)) {
+                    ctrlIndexes.push(value)
+                }
+            }
+            if (ctrlIndexes.length > 0) {
+                destinations.push(ctrlIndexes)
+            }
+        }
+        if (destinations.length > 0) {
+            result.push(destinations)
+        }
+    }
+    return result
 }
 
 const setFromLoad = (voiceGroupIndex: number, modValues: number[][][]) => {
-    dispatch(setModValuesAction({
-        voiceGroupIndex,
-        modValues,
-        source: ApiSource.LOAD
-    }))
+    // TODO: Convert loaded mod values back to Zustand format
+    // This needs the same mapping as getForSave in reverse
 }
 
 const modsApi = {
