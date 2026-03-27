@@ -1,73 +1,39 @@
-import {
-    arpApi,
-    commonFxApi,
-    envApi,
-    filtersApi,
-    fxApi,
-    kbdApi,
-    lfoApi,
-    noiseApi,
-    oscApi,
-    postMixApi,
-    ringModApi,
-    srcMixApi
-} from '../../synthcoreApi'
-import { PatchControllers } from '../common/types'
 import modsApi from '../mods/modsApi'
 import patchFileServerFacade from './patchFileServerFacade'
 import { Patch } from './types'
-import { dispatch } from '../../utils'
-import { selectIsAuditing, selectPreviousPatch, setAuditing, setPreviousPatch } from './patchStorageReducer'
-import { store } from '../../store'
+import { voiceGroupStores } from '../../../store/patchStore'
+import { VoiceGroupPatch } from '../../../store/patchStore'
 import { getVoiceGroupIndex } from "../voices/currentVoiceGroupIndex"
 
-const patchApis = [
-    arpApi,
-    commonFxApi,
-    envApi, // TODO for custom handlers and multiple ctrlIndex
-    filtersApi,
-    fxApi,
-    kbdApi,
-    lfoApi, // TODO for custom handlers and multiple ctrlIndex
-    noiseApi,
-    oscApi,
-    postMixApi,
-    ringModApi,
-    srcMixApi,
-]
+let auditing = false
+let previousPatch: Patch | undefined = undefined
 
-function getCurrentPatch() {
+function getCurrentPatch(): Patch {
     const voiceGroupIndex = getVoiceGroupIndex()
-    const patchControllers = patchApis.reduce((
-        mergedControllers: PatchControllers,
-        api
-    ) => {
-        const patchControllers = api.getForSave(voiceGroupIndex)
-        return {
-            ...mergedControllers,
-            ...patchControllers
-        }
-    }, {})
+    const state = voiceGroupStores[voiceGroupIndex].getState()
+
+    // Extract the patch data (everything except actions)
+    const { set: _set, loadPatch: _loadPatch, getPatch: _getPatch, ...patchData } = state
 
     const mods = modsApi.getForSave(voiceGroupIndex)
-    const patch: Patch = {
-        controllers: patchControllers,
+    return {
+        controllers: patchData as any,
         mods,
     }
-    return patch
 }
 
 function setCurrentPatch(patch: Patch) {
     const voiceGroupIndex = getVoiceGroupIndex()
-    console.log('Setting patch', patch)
-    patchApis.forEach((source) => source.setFromLoad(voiceGroupIndex, patch.controllers))
+
+    // Load the patch data into the Zustand store
+    if (patch.controllers) {
+        voiceGroupStores[voiceGroupIndex].getState().loadPatch(patch.controllers as unknown as VoiceGroupPatch)
+    }
     modsApi.setFromLoad(voiceGroupIndex, patch.mods)
 }
 
 async function savePatch(key: string) {
-    const previousPatch = selectPreviousPatch(store.getState())
-    const isAuditing = selectIsAuditing(store.getState())
-    if (isAuditing && previousPatch) {
+    if (auditing && previousPatch) {
         console.log('Reverting before save')
         patchStorageApi.revertToCurrentPatch()
     }
@@ -76,15 +42,11 @@ async function savePatch(key: string) {
 
 async function loadPatch(key: string, version?: string) {
     try {
-        const voiceGroupIndex = getVoiceGroupIndex()
-
         const patch = await patchFileServerFacade.loadPatch(key, version)
         console.log('Received', patch)
-        patchApis.forEach((source) => source.setFromLoad(voiceGroupIndex, patch.controllers))
-        modsApi.setFromLoad(voiceGroupIndex, patch.mods)
-
-        dispatch(setPreviousPatch({ patch: undefined }))
-        dispatch(setAuditing({ voiceGroupIndex: -1, value: false }))
+        setCurrentPatch(patch)
+        previousPatch = undefined
+        auditing = false
     } catch (err) {
         console.log('Could not load file')
         return
@@ -93,18 +55,13 @@ async function loadPatch(key: string, version?: string) {
 
 async function auditPatch(key: string, version?: string) {
     try {
-        // Store the current patch - but only if it has not yet been set, to be able to run
-        // this function multiple times without losing state.
-        const isAuditing = selectIsAuditing(store.getState())
-        if (!isAuditing) {
-            dispatch(setAuditing({ voiceGroupIndex: -1, value: true }))
-            const previousPatch = getCurrentPatch()
-            dispatch(setPreviousPatch({ patch: previousPatch }))
+        if (!auditing) {
+            auditing = true
+            previousPatch = getCurrentPatch()
             console.log('Stored current patch as ', previousPatch)
         }
 
         const patch = await patchFileServerFacade.loadPatch(key, version)
-
         console.log('Received for auditing', patch)
         setCurrentPatch(patch)
     } catch (err) {
@@ -115,21 +72,18 @@ async function auditPatch(key: string, version?: string) {
 
 function revertToCurrentPatch() {
     try {
-        const previousPatch = selectPreviousPatch(store.getState())
-        const isAuditing = selectIsAuditing(store.getState())
-        console.log('Reverting to current patch', isAuditing, previousPatch)
-        if (isAuditing && previousPatch) {
+        console.log('Reverting to current patch', auditing, previousPatch)
+        if (auditing && previousPatch) {
             setCurrentPatch(previousPatch)
-            dispatch(setPreviousPatch({ patch: undefined }))
+            previousPatch = undefined
         }
-        dispatch(setAuditing({ voiceGroupIndex: -1, value: false }))
+        auditing = false
     } catch (err) {
         console.log('Could not revert to current patch')
         return
     }
 }
 
-// TODO: Move patch.
 const patchStorageApi = {
     savePatch,
     loadPatch,
