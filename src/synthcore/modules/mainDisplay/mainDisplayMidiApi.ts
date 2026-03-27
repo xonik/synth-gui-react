@@ -1,4 +1,4 @@
-import { mainDisplayApi } from '../../synthcoreApi'
+import mainDisplayApi from './mainDisplayApi'
 import controllers from '../controllers/controllers'
 import { button, cc } from '../../../midi/midibus'
 import { ApiSource } from '../../types'
