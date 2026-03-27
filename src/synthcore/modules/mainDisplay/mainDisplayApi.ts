@@ -3,7 +3,6 @@ import { mainDisplayEnvApi, mainDisplayEnvPotResolutions } from '../env/envMainD
 import mainDisplayMidiApi from './mainDisplayMidiApi'
 import { ApiSource } from '../../types'
 import mainDisplayControllers from './mainDisplayControllers'
-import { createClickMapper, createIncrementMapper } from '../common/utils'
 import { mainDisplaySettingsApi, mainDisplaySettingsPotResolutions } from '../settings/settingsMainDisplayApi'
 import { mainDisplayLfoApi, mainDisplayLfoPotResolutions } from '../lfo/lfoMainDisplayApi'
 import { useUiStore, ScreenId } from '../../../store/uiStore'
@@ -79,18 +78,6 @@ const setCurrentScreen = (id: number, source: ApiSource) => {
     mainDisplayMidiApi.setCurrentScreen(source, id)
 }
 
-const toggle = createClickMapper([
-    [mainDisplayControllers.FUNC_HOME, ({ source }) => handleHomeClick(source)],
-    [mainDisplayControllers.FUNC_SETTINGS, ({ source }) => handleSettingsClick(source)],
-    [mainDisplayControllers.FUNC_SHIFT, ({ source }) => handleShift(true, source)],
-    [mainDisplayControllers.FUNC_PERFORM, ({ source }) => handlePerformClick(source)],
-    [mainDisplayControllers.FUNC_LOAD, ({ source }) => handleLoadClick(source)],
-    [mainDisplayControllers.FUNC_SAVE, ({ source }) => handleSaveClick(source)],
-    [mainDisplayControllers.FUNC_COMPARE, ({ source }) => handleCompareClick(source)],
-    [mainDisplayControllers.FUNC_ROUTE, ({ source }) => handleRouteClick(source)],
-])
-const increment = createIncrementMapper([])
-
 const mainDisplayApi = {
     handleMainDisplayController,
     setCurrentScreen,
@@ -102,8 +89,6 @@ const mainDisplayApi = {
     handleSaveClick,
     handleCompareClick,
     handleRouteClick,
-    toggle,
-    increment,
 }
 
 export default mainDisplayApi

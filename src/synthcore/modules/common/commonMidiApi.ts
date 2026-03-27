@@ -9,7 +9,7 @@ import { shouldSend } from '../../../midi/utils'
 import logger from '../../../utils/logger'
 import { button, cc, nrpn } from '../../../midi/midibus'
 import { NumericInputProperty } from './types'
-import { getBounded } from "../../utils";
+import { getBounded } from "../../../store/utils";
 
 // Send signature
 export type ParamSendFunc = (

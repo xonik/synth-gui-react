@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { getBounded, getQuantized, step } from '../../synthcore/utils'
+import { getBounded, getQuantized, step } from '../../store/utils'
 
 describe('synthcore utils', () => {
 
