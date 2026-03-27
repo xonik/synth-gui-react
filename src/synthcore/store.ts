@@ -1,29 +1,24 @@
 import { configureStore } from '@reduxjs/toolkit'
 import envReducer from './modules/env/envReducer'
-import { synthcoreMiddleware } from './synthcoreMiddleware'
-import uiReducer from './modules/ui/uiReducer'
 import settingsReducer from './modules/settings/settingsReducer'
-import mainDisplayReducer from './modules/mainDisplay/mainDisplayReducer'
-import modsReducer from './modules/mods/modsReducer'
 import lfoReducer from './modules/lfo/lfoReducer'
 import controllersReducer from './modules/controllers/controllersReducer'
 import patchStorageReducer from './modules/patchStorage/patchStorageReducer'
 
+// Redux store is retained for the synthcore API layer (envApi, lfoApi, etc.)
+// which manages controller validation, bounding, and MIDI send/receive.
+// The UI components do NOT use this store — they use Zustand stores exclusively.
 export const store = configureStore({
     reducer: {
         controllers: controllersReducer,
         envelopes: envReducer,
         lfos: lfoReducer,
-        mods: modsReducer,
         settings: settingsReducer,
-        ui: uiReducer,
-        mainDisplay: mainDisplayReducer,
-        patchStorage: patchStorageReducer
+        patchStorage: patchStorageReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: {
-                // Ignore these field paths in all actions
                 ignoredActionPaths: [
                     'payload.ctrl.uiResponse',
                     'payload.0.ctrl.uiResponse',
@@ -31,9 +26,6 @@ export const store = configureStore({
                 ],
             },
         })
-            .concat(
-                synthcoreMiddleware,
-            )
 })
 
 export type RootState = ReturnType<typeof store.getState>
