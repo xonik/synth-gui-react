@@ -94,6 +94,7 @@ const Envelope = ({ x, y, height, width, label, header, showSelect = false, envI
     const bottomRowY = topRowY + ROW_HEIGHT
     const potDistance = POT_DISTANCE_M
 
+    const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)
     const delayDisabled = useEnvStageEnabled(envId, 'delay') === 0
     const decay1Disabled = useEnvStageEnabled(envId, 'decay1') === 0
     const decay2Disabled = useEnvStageEnabled(envId, 'decay2') === 0
@@ -130,8 +131,8 @@ const Envelope = ({ x, y, height, width, label, header, showSelect = false, envI
 
         <RoundPushButton8 label="Trigger" x={firstPotX + potDistance * 5 + BUTTON_DISTANCE_S} y={bottomRowY} labelPosition="bottom-pot"
                           momentary
-                          onButtonClick={() => button.send(0, envCtrls.ENV_GATE, envCtrls.ENV_GATE.values[0])}
-                          onButtonRelease={() => button.send(0, envCtrls.ENV_GATE, envCtrls.ENV_GATE.values[1])}
+                          onButtonClick={() => button.send(voiceGroupIndex, envCtrls.ENV_GATE, envCtrls.ENV_GATE.values[0])}
+                          onButtonRelease={() => button.send(voiceGroupIndex, envCtrls.ENV_GATE, envCtrls.ENV_GATE.values[1])}
         />
     </>
 }
