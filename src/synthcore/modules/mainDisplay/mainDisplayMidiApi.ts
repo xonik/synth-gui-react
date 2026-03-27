@@ -6,7 +6,7 @@ import { shouldSend } from '../../../midi/utils'
 import { boolParamReceive, boolParamSend, buttonParamReceive, buttonParamSend, } from '../common/commonMidiApi'
 import logger from '../../../utils/logger'
 import mainDisplayControllers from './mainDisplayControllers'
-import { getBounded } from '../../utils'
+import { getBounded } from '../../../store/utils'
 
 const currentScreen = (() => {
     const cfg = controllers.MAIN_DISPLAY.GROUP_MENU

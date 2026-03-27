@@ -1,6 +1,6 @@
 import midiApi from './modsMidiApi'
 import { ApiSource } from '../../types'
-import { getBounded, getQuantized } from '../../utils'
+import { getBounded, getQuantized } from '../../../store/utils'
 import { useUiStore } from '../../../store/uiStore'
 import { voiceGroupStores as zustandStores } from '../../../store/patchStore'
 import { digitalModSources, modDst } from './utils'

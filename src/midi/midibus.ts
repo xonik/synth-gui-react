@@ -4,13 +4,12 @@ import {
     ControllerConfigNRPN,
     MidiGroup
 } from './types'
-import { store } from '../synthcore/store'
 import status from './midiStatus'
 import {
     getVoiceGroupIdFromMidiChannel,
-    selectGlobalMidiChannel,
-    selectVoiceGroupMidiChannel
-} from '../synthcore/modules/settings/settingsReducer'
+    getGlobalMidiChannel,
+    getVoiceGroupMidiChannel
+} from './midiSettings'
 import CC, { buttonCCs } from './mapCC'
 import logger from '../utils/logger'
 import { handleMpk25 } from './mpk25translator'
@@ -81,9 +80,9 @@ const nrpnSubscribers: { [key: number]: NRPNSubscriber[] } = {}
 
 const getChannel = (global: boolean, voiceGroupIndex: number) => {
     if (global) {
-        return selectGlobalMidiChannel(store.getState())
+        return getGlobalMidiChannel()
     } else {
-        return selectVoiceGroupMidiChannel(store.getState(), voiceGroupIndex)
+        return getVoiceGroupMidiChannel(voiceGroupIndex)
     }
 }
 
@@ -260,8 +259,8 @@ export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
     const channel = midiData[0] & 0x0F;
     const midiStatus = midiData[0] & 0xF0;
 
-    const voiceGroupId = getVoiceGroupIdFromMidiChannel(store.getState(), channel)
-    const isGlobal = channel === selectGlobalMidiChannel(store.getState())
+    const voiceGroupId = getVoiceGroupIdFromMidiChannel(channel)
+    const isGlobal = channel === getGlobalMidiChannel()
 
     // TODO: Currently reception won't care about midi channel, it will publish messages and use the currently
     // selected voice group. This is not ideal.

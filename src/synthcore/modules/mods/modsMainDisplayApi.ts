@@ -1,5 +1,5 @@
 import { useUiStore, ModRoutingSelection } from '../../../store/uiStore'
-import { step } from '../../utils'
+import { step } from '../../../store/utils'
 import mainDisplayControllers from '../mainDisplay/mainDisplayControllers'
 import { digitalModSources, modDst } from './utils'
 import { getBounded } from '../../../store/utils'

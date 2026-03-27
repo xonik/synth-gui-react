@@ -4,8 +4,6 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 //import './midi/cppControllerConfigGenerator';
 import midiApi from './midi/midiApi'
-// Import synthcore store to initialize middleware and MIDI receive handlers
-import './synthcore/store'
 import { startEnvelopeMidiSend } from './store/midi/envMidiSend'
 import { startEnvelopeMidiReceive } from './store/midi/envMidiReceive'
 import { startNoiseRingModMidiSend, startNoiseRingModMidiReceive } from './store/midi/noiseRingModMidi'

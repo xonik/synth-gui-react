@@ -2,7 +2,7 @@ import { useUiStore } from '../../../store/uiStore'
 import { voiceGroupStores } from '../../../store/patchStore'
 import { getBounded } from '../../../store/utils'
 import { LoopMode, StageId } from './types'
-import { step } from '../../utils'
+import { step } from '../../../store/utils'
 import mainDisplayControllers from '../mainDisplay/mainDisplayControllers'
 import { lfoCtrls } from './lfoControllers'
 
