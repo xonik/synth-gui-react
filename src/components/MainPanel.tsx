@@ -8,7 +8,7 @@ import Grid from "./Grid";
 import { POT_DISTANCE_L, POT_DISTANCE_M, ROW_HEIGHT } from "../constants";
 import { SHOW_CENTER, SHOW_CUT, SHOW_GRID, SHOW_LEFT_2, SHOW_RIGHT } from "../config";
 import classNames from "classnames";
-import { LeftPanel2 } from "./modules/left2/LeftPanel2";
+import { LeftPanel } from "./modules/left/LeftPanel";
 import { RightPanel } from "./modules/right/RightPanel";
 import { PanelScrew } from "./misc/PanelScrew";
 
@@ -101,7 +101,7 @@ const MainPanel = () => {
                          'cut': SHOW_CUT
                      })}>
                 {SHOW_GRID && <Grid panelWidth={panelWidth} panelHeight={panelHeight}/>}
-                {SHOW_LEFT_2 && <LeftPanel2 x={leftStart} panelHeight={panelHeight} rows={rows}/>}
+                {SHOW_LEFT_2 && <LeftPanel x={leftStart} panelHeight={panelHeight} rows={rows}/>}
                 {SHOW_CENTER && <>
                     <MainDisplay x={centerCol} y={rows[0]} height={7 * ROW_HEIGHT} width={8 * POT_DISTANCE_M} panelHeight={panelHeight} ref={displayRef}/>
                     <VoiceSelector x={centerCol} y={voiceSelRow} height={20} width={8 * POT_DISTANCE_M}/>

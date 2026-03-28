@@ -24,7 +24,7 @@ type Props = {
     rows: number[]
 }
 
-export const LeftPanel2 = ({ x, panelHeight, rows }: Props) => {
+export const LeftPanel = ({ x, panelHeight, rows }: Props) => {
 
     const oscWidth = POT_DISTANCE_L + POT_DISTANCE_M * 7
     const mixWidth = 2 * POT_DISTANCE_L + 5
