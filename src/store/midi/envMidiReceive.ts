@@ -8,6 +8,7 @@
 
 import { voiceGroupStores } from '../patchStore'
 import { cc, nrpn, button } from '../../midi/midibus'
+import { ControllerConfigNRPN } from '../../midi/types'
 import { envCtrls } from '../../synthcore/modules/env/envControllers'
 import { StageId } from '../../synthcore/modules/env/types'
 import { StageName } from '../modules/envActions'
@@ -94,10 +95,10 @@ function subscribeTime() {
 
 function subscribeCurve() {
     const ctrl = envCtrls.CURVE
-    // Subscribe without values filter — the raw NRPN value encodes
-    // stageId in upper bits and curve in lower bits, so it won't
-    // match the curveValuesUsed array used for filtering.
-    const subCtrl = { ...ctrl, values: undefined }
+    // Subscribe without values filter — the raw NRPN value encodes stageId
+    // in upper bits and curve in lower bits, so it won't match curveValuesUsed.
+    // values must be undefined (not []) so the midibus skips value filtering.
+    const subCtrl = { ...ctrl, values: undefined } as unknown as ControllerConfigNRPN
     const id = nrpn.subscribe((voiceGroupIndex: number, midiValue: number) => {
         if (currentReceivedEnvId < 0) return
 
@@ -114,8 +115,8 @@ function subscribeCurve() {
                 setStageCurve(state, currentReceivedEnvId, stageName, curveIndex, curveValuesUsed.length)
             })
         })
-    }, subCtrl as typeof ctrl)
-    return () => nrpn.unsubscribe(subCtrl as typeof ctrl, id)
+    }, subCtrl)
+    return () => nrpn.unsubscribe(subCtrl, id)
 }
 
 function subscribeToggleStage() {
