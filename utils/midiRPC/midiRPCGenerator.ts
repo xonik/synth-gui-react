@@ -9,8 +9,7 @@ import { parseCurves } from './parseCurves'
 import { generateEnumTs } from './generateEnumTs'
 import { generateCurveUsageList } from './generateCurveUsageList'
 import { generateApiForCpp, generateApiHForCpp } from "./generateApiForCpp";
-
-const fs = require('fs')
+import fs from "fs";
 
 const writeToFile = (path: string, contents: string) => {
     console.log(`writing ${contents.length} bytes to ${path}`)
