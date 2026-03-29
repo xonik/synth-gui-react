@@ -7,8 +7,8 @@
  */
 
 import { voiceGroupStores, FilterState } from '../patchStore'
-import { cc, button } from '../../midi/midibus'
-import { ControllerConfigCC, ControllerConfigButton } from '../../midi/types'
+import { cc, button, nrpn } from '../../midi/midibus'
+import { ControllerConfigCC, ControllerConfigButton, ControllerConfigNRPN } from '../../midi/types'
 import filtersControllers from '../../synthcore/modules/filters/filtersControllers'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
 
@@ -18,6 +18,12 @@ interface CCMapping {
     filterIndex: number
     field: FilterField
     ctrl: ControllerConfigCC
+}
+
+interface NrpnMapping {
+    filterIndex: number
+    field: FilterField
+    ctrl: ControllerConfigNRPN
 }
 
 interface ButtonMapping {
@@ -43,6 +49,13 @@ const ccMappings: CCMapping[] = [
     { filterIndex: 1, field: 'envAmt', ctrl: filtersControllers.SVF.ENV_AMT },
     { filterIndex: 1, field: 'lfoAmt', ctrl: filtersControllers.SVF.LFO_AMT },
     { filterIndex: 1, field: 'kbdAmt', ctrl: filtersControllers.SVF.KBD_AMT },
+]
+
+const nrpnMappings: NrpnMapping[] = [
+    // LPF
+    { filterIndex: 0, field: 'wheelAmt', ctrl: filtersControllers.LPF.WHEEL_AMT },
+    // SVF
+    { filterIndex: 1, field: 'wheelAmt', ctrl: filtersControllers.SVF.WHEEL_AMT },
 ]
 
 const buttonMappings: ButtonMapping[] = [
@@ -87,6 +100,12 @@ export function startFilterMidiSend() {
                     }
                 }
 
+                for (const { filterIndex, field, ctrl } of nrpnMappings) {
+                    if (state.filters[filterIndex][field] !== prev[filterIndex][field]) {
+                        nrpn.send(voiceGroupIndex, ctrl, Math.floor(65535 * state.filters[filterIndex][field]))
+                    }
+                }
+
                 for (const { filterIndex, field, ctrl } of buttonMappings) {
                     if (state.filters[filterIndex][field] !== prev[filterIndex][field]) {
                         button.send(voiceGroupIndex, ctrl, ctrl.values[state.filters[filterIndex][field]])
@@ -117,6 +136,18 @@ export function startFilterMidiReceive() {
             })
         }, ctrl)
         receiveUnsubscribers.push(() => cc.unsubscribe(ctrl, id))
+    }
+
+    for (const { filterIndex, field, ctrl } of nrpnMappings) {
+        const id = nrpn.subscribe((voiceGroupIndex: number, midiValue: number) => {
+            const value = midiValue / 65535
+            withMidiReceive(() => {
+                voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                    state.filters[filterIndex][field] = value
+                })
+            })
+        }, ctrl)
+        receiveUnsubscribers.push(() => nrpn.unsubscribe(ctrl, id))
     }
 
     for (const { filterIndex, field, ctrl } of buttonMappings) {
