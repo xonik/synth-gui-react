@@ -33,6 +33,7 @@ const buttonMappings: ButtonMapping[] = [
     { field: 'sync', ctrl: lfoCtrls.SYNC },
     { field: 'reset', ctrl: lfoCtrls.RESET },
     { field: 'bipolar', ctrl: lfoCtrls.BIPOLAR },
+    { field: 'randomPhase', ctrl: lfoCtrls.RANDOM_PHASE },
     { field: 'invert', ctrl: lfoCtrls.INVERT },
     { field: 'loop', ctrl: lfoCtrls.LOOP },
     { field: 'loopMode', ctrl: lfoCtrls.LOOP_MODE },
