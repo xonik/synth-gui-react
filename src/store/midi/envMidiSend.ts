@@ -9,7 +9,6 @@
 import { voiceGroupStores, EnvelopeState } from '../patchStore'
 import { StageName, STAGE_NAMES } from '../modules/envActions'
 import { envParamSend } from '../../synthcore/modules/env/envMidiApi'
-import { paramSend } from '../../synthcore/modules/common/commonMidiApi'
 import { envCtrls } from '../../synthcore/modules/env/envControllers'
 import { StageId, NUMBER_OF_ENVELOPES } from '../../synthcore/modules/env/types'
 import { ApiSource } from '../../synthcore/types'
