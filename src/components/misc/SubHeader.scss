@@ -22,11 +22,16 @@
 .cut {
   .subheader {
     &-label {
-      fill: black;
+      fill: white;
     }
 
     &-underline {
       stroke: black;
+    }
+
+    &-border {
+      stroke: black;
+      fill: black;
     }
   }
 }

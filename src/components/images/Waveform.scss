@@ -9,3 +9,11 @@
     stroke-width: 0.4;
   }
 }
+
+.cut {
+  .waveform {
+    &-path {
+      stroke: black;
+    }
+  }
+}

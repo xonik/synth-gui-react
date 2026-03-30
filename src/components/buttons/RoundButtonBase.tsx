@@ -417,7 +417,7 @@ export const RoundButtonBase = (props: Props & Config) => {
                 alignmentBaseline="middle"
             >{label}</text>}
             {ledPos.map((position, index) => <React.Fragment key={index}>
-                {ledRingColors && ledRingColors.length > index && <circle
+                {!SHOW_CUT && ledRingColors && ledRingColors.length > index && <circle
                     cx={position.x} cy={position.y} r={ledRadius + 1}
                     fill={ledRingColors[index]}
                 />}

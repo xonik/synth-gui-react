@@ -9,3 +9,15 @@
     stroke: none;
   }
 }
+
+.cut {
+  .lpf-header-border {
+    stroke: black;
+    fill: black;
+
+    &.subheader-label {
+      fill: white;
+      stroke: none ;
+    }
+  }
+}

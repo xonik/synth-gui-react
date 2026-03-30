@@ -65,13 +65,13 @@
   .button {
 
     &-cap {
-      stroke-width: 0.024;
+      stroke-width: $cut-line-width;
       stroke: black;
       fill: none;
     }
 
     &-led {
-      stroke-width: 0.024;
+      stroke-width: $cut-line-width;
       stroke: black;
       fill: none;
 

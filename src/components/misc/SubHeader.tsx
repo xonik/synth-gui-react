@@ -1,7 +1,7 @@
 import React from 'react';
-import './SubHeader.scss';
 import { BORDER_MARGIN } from "../../constants";
 import classNames from "classnames";
+import './SubHeader.scss';
 
 type PositionAlign = 'center' | 'left' | 'right';
 

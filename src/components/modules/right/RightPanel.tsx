@@ -9,13 +9,15 @@ import React from "react";
 import StateVariableFilter from "./StateVariableFilter";
 import { useUiStore } from '../../../store/uiStore'
 import { PanelScrew } from "../../misc/PanelScrew";
+import { SHOW_CUT } from "@/config";
 
 type Props = {
     x: number,
+    panelHeight: number,
     rows: number[],
 }
 
-export const RightPanel = ({ x, rows }: Props) => {
+export const RightPanel = ({ x, rows, panelHeight }: Props) => {
 
     const env3Id = useUiStore(s => s.selectedEnv3Id)
 
@@ -33,6 +35,8 @@ export const RightPanel = ({ x, rows }: Props) => {
     const outputMixWidth = POT_DISTANCE_L
 
     return <>
+        {SHOW_CUT && <rect x={x-10} y={0} width="175" height={panelHeight} className="panel-outline"/>}
+        {SHOW_CUT && <rect x={x+165} y={0} width="254" height={panelHeight} className="panel-outline"/>}
         <StateVariableFilter x={filterCol} y={rows[0]} height={4 * ROW_HEIGHT} width={filterWidth}/>
         <LowPassFilter x={filterCol} y={rows[4]} height={4 * ROW_HEIGHT} width={filterWidth}/>
 

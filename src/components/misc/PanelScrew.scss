@@ -1,3 +1,5 @@
+@import '../constants';
+
 .panel-screw {
   stroke: none;
   fill: black;
@@ -5,7 +7,7 @@
 
 .cut {
   .panel-screw {
-    stroke-width: 0.024;
+    stroke-width: $cut-line-width;
     stroke: black;
     fill: none;
   }

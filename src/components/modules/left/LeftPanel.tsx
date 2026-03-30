@@ -34,7 +34,7 @@ export const LeftPanel = ({ x, panelHeight, rows }: Props) => {
     const noiseCol = x + oscWidth
 
     return <>
-        {SHOW_CUT && <rect x={0} y={0} width="365" height={panelHeight} className="panel-outline"/>}
+        {SHOW_CUT && <rect x={0} y={0} width="351" height={panelHeight} className="panel-outline"/>}
         <DCO1 x={x} y={rows[0]} height={2 * ROW_HEIGHT} width={oscWidth}/>
         <DCO2 x={x} y={rows[2]} height={2 * ROW_HEIGHT} width={oscWidth}/>
         <VCO x={x} y={rows[4]} height={2 * ROW_HEIGHT} width={oscWidth}/>

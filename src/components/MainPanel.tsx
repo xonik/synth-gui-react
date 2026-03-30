@@ -85,6 +85,10 @@ const MainPanel = () => {
     const screwCol6 = panelWidth - 10
     const screwCol5 = screwCol4 + (screwCol6 - screwCol4) / 2
 
+    const extraScrewCol1 = screwCol3 + 15
+    const extraScrewCol2 = screwCol4 - 15
+    const extraScrewCol3 = screwCol4 + 149
+
     const screwRow1 = 10
     const screwRow2 = 145
     const screwRow3 = 280
@@ -103,12 +107,13 @@ const MainPanel = () => {
                 {SHOW_GRID && <Grid panelWidth={panelWidth} panelHeight={panelHeight}/>}
                 {SHOW_LEFT_2 && <LeftPanel x={leftStart} panelHeight={panelHeight} rows={rows}/>}
                 {SHOW_CENTER && <>
+                    {SHOW_CUT && <rect x={centerCol} y={0} width={8 * POT_DISTANCE_M} height={panelHeight} className="panel-outline"/>}
                     <MainDisplay x={centerCol} y={rows[0]} height={7 * ROW_HEIGHT} width={8 * POT_DISTANCE_M} panelHeight={panelHeight} ref={displayRef}/>
                     <VoiceSelector x={centerCol} y={voiceSelRow} height={20} width={8 * POT_DISTANCE_M}/>
                     <Transpose x={centerCol} y={rows[7]} height={ROW_HEIGHT} width={transposeWidth}/>
                     <Keyboard x={centerCol + transposeWidth} y={rows[7]} height={ROW_HEIGHT} width={keyboardWidth}/>
                 </>}
-                {SHOW_RIGHT && <RightPanel x={rightStart} rows={rows}/>}
+                {SHOW_RIGHT && <RightPanel x={rightStart} panelHeight={panelHeight} rows={rows}/>}
 
                 {/* Left screws */}
                 <PanelScrew x={screwCol1} y={screwRow1}/>
@@ -120,7 +125,7 @@ const MainPanel = () => {
                 <PanelScrew x={screwCol3} y={screwRow2}/>
                 <PanelScrew x={screwCol3} y={screwRow3}/>
 
-                {/* Left screws */}
+                {/* Right screws */}
                 <PanelScrew x={screwCol4} y={screwRow1}/>
                 <PanelScrew x={screwCol4} y={screwRow2}/>
                 <PanelScrew x={screwCol4} y={screwRow3}/>
@@ -129,8 +134,16 @@ const MainPanel = () => {
                 <PanelScrew x={screwCol6} y={screwRow1}/>
                 <PanelScrew x={screwCol6} y={screwRow2}/>
                 <PanelScrew x={screwCol6} y={screwRow3}/>
+
+                {/* Extra screws for mockup */}
+                <PanelScrew x={extraScrewCol1} y={screwRow1}/>
+                <PanelScrew x={extraScrewCol1} y={screwRow3}/>
+                <PanelScrew x={extraScrewCol2} y={screwRow1}/>
+                <PanelScrew x={extraScrewCol2} y={screwRow3}/>
+                <PanelScrew x={extraScrewCol3} y={screwRow1}/>
+                <PanelScrew x={extraScrewCol3} y={screwRow3}/>
             </svg>
-            {SHOW_CENTER && <>
+            {SHOW_CENTER && !SHOW_CUT && <>
                 {dispRect && <div className="panel-main-display" style={{
                     top: dispRect.y,
                     left: dispRect.x,

@@ -3,3 +3,10 @@
 .bezel{
   fill: $center-panel-background;
 }
+
+.cut {
+  .bezel {
+    fill: none;
+    stroke: black;
+  }
+}
