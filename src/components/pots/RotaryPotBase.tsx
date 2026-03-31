@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { SHOW_CUT } from '../../config'
+import { SHOW_CUT } from '@/config'
 
 export type Point = { x: number; y: number }
 
@@ -88,7 +88,7 @@ const RotaryPot = ({ knobRadius, onClick, onIncrement, arc = 360, resolution = 1
                             const absSteps = Math.floor(Math.abs(nextAccumulator) / stepSize)
                             const steps = valueChange > 0 ? absSteps : -absSteps
                             setAccumulator(nextAccumulator % stepSize)
-                            onIncrement && onIncrement(steps, stepSize)
+                            onIncrement?.(steps, stepSize)
                         } else {
                             setAccumulator(nextAccumulator)
                         }
@@ -96,7 +96,7 @@ const RotaryPot = ({ knobRadius, onClick, onIncrement, arc = 360, resolution = 1
                 }
             }
         },
-        [onIncrement, stepSize, accumulator, setAccumulator, center, arc, previousAngle, isDragging]
+        [onIncrement, stepSize, accumulator, center, arc, previousAngle, isDragging]
     )
 
     const onMouseDown = useCallback(

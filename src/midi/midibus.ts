@@ -82,7 +82,7 @@ export const button = {
         buttonSubscribers = [...(buttonSubscribers || []), { id, values, callback }]
         return id
     },
-    unsubscribe: (controller: ControllerConfigButton, id: number) => {
+    unsubscribe: (_controller: ControllerConfigButton, id: number) => {
         const index = buttonSubscribers.map((sub) => sub.id).indexOf(id)
         if (index > -1) {
             buttonSubscribers = [...buttonSubscribers.slice(0, index), ...buttonSubscribers.slice(index + 1)]
@@ -273,7 +273,7 @@ export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
             currNRPN.hiValue = 0
             currNRPN.midValue = 0
             currNRPN.loValue = 0
-        } else if (ccKey == CC.BUTTONS_1 || ccKey == CC.BUTTONS_2 || ccKey == CC.BUTTONS_3) {
+        } else if (ccKey === CC.BUTTONS_1 || ccKey === CC.BUTTONS_2 || ccKey === CC.BUTTONS_3) {
             const multiplier = buttonCCs.indexOf(ccKey)
             const buttonValue = multiplier * 128 + ccValue
             button.publish(voiceGroupId, buttonValue)

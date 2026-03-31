@@ -1,4 +1,4 @@
-import { type CvDefinition, EnumDefWithTargets, EnumValueWithTargets } from './dataTypes'
+import type { CvDefinition } from './dataTypes'
 
 export function generateCvDefinitionsTs(cvs: CvDefinition[], cvCount: number) {
     return `// GENERATED FILE, DO NOT EDIT

@@ -6,7 +6,7 @@ export function generateFunctionNamesEnumTs(funcs: FuncWithIndex[]) {
     return `// GENERATED FILE, DO NOT EDIT
 // shared ids for RPC commands
 export enum FunctionNames {
-  ${funcs.map((func, index) => `${func.name} = ${func.index}`).join(',\n  ')}
+  ${funcs.map((func) => `${func.name} = ${func.index}`).join(',\n  ')}
 }
 `
 }

@@ -4,13 +4,13 @@ vi.mock('../../synthcore/synthcoreMiddleware', () => ({
     synthcoreMiddleware: () => (next: any) => (action: any) => next(action),
 }))
 
-import { cc } from '../../midi/midibus'
+import { cc } from '@/midi/midibus'
 import {
     startOutPostMixMidiReceive,
     startOutPostMixMidiSend,
     stopOutPostMixMidiReceive,
     stopOutPostMixMidiSend,
-} from '../../store/midi/outPostMixMidi'
+} from '@/store/midi/outPostMixMidi'
 import { createPatchStore, voiceGroupStores } from '../../store/patchStore'
 import outControllers from '../../synthcore/modules/out/outControllers'
 import postMixControllers from '../../synthcore/modules/postMix/postMixControllers'
@@ -93,7 +93,7 @@ describe('CC pot MIDI send', () => {
     beforeEach(() => {
         resetStore()
         sentValues = []
-        cc.send = vi.fn((vg, ctrl, value) => {
+        cc.send = vi.fn((_vg, ctrl, value) => {
             sentValues.push({ ccNum: ctrl.cc, value })
         }) as any
         startOutPostMixMidiSend()
@@ -110,7 +110,7 @@ describe('CC pot MIDI send', () => {
         })
         const sent = sentValues.find((s) => s.ccNum === outControllers.VOLUME.cc)
         expect(sent).toBeDefined()
-        expect(sent!.value).toBe(Math.floor(127 * 0.5))
+        expect(sent?.value).toBe(Math.floor(127 * 0.5))
     })
 
     it('sends spread change as CC', () => {
@@ -119,7 +119,7 @@ describe('CC pot MIDI send', () => {
         })
         const sent = sentValues.find((s) => s.ccNum === outControllers.SPREAD.cc)
         expect(sent).toBeDefined()
-        expect(sent!.value).toBe(Math.floor(127 * 0.75))
+        expect(sent?.value).toBe(Math.floor(127 * 0.75))
     })
 
     it('sends postMix pan change as CC (bipolar)', () => {
@@ -128,7 +128,7 @@ describe('CC pot MIDI send', () => {
         })
         const sent = sentValues.find((s) => s.ccNum === postMixControllers.PAN.cc)
         expect(sent).toBeDefined()
-        expect(sent!.value).toBe(Math.floor((127 * (0.5 + 1)) / 2))
+        expect(sent?.value).toBe(Math.floor((127 * (0.5 + 1)) / 2))
     })
 
     it('sends postMix LPF change as CC', () => {
@@ -137,7 +137,7 @@ describe('CC pot MIDI send', () => {
         })
         const sent = sentValues.find((s) => s.ccNum === postMixControllers.LPF.cc)
         expect(sent).toBeDefined()
-        expect(sent!.value).toBe(Math.floor(127 * 0.8))
+        expect(sent?.value).toBe(Math.floor(127 * 0.8))
     })
 
     it('does not send when value unchanged', () => {

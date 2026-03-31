@@ -12,7 +12,7 @@
  * Each function takes an immer draft and mutates it directly.
  */
 
-import { EnvelopeStageState, type EnvelopeState, type VoiceGroupPatch } from '../patchStore'
+import type { EnvelopeState, VoiceGroupPatch } from '@/store'
 import { getBounded, getQuantized } from '../utils'
 
 export type StageName = keyof EnvelopeState['stages']

@@ -99,10 +99,10 @@ describe('source mixer MIDI send', () => {
         resetStore()
         sentCC = []
         sentButtons = []
-        cc.send = vi.fn((vg, ctrl, value) => {
+        cc.send = vi.fn((_vg, ctrl, value) => {
             sentCC.push({ ccNum: ctrl.cc, value })
         }) as any
-        button.send = vi.fn((vg, ctrl, value) => {
+        button.send = vi.fn((_vg, ctrl, value) => {
             sentButtons.push({ ctrl, value })
         }) as any
         startSrcMixMidiSend()
@@ -120,7 +120,7 @@ describe('source mixer MIDI send', () => {
         })
         const sent = sentCC.find((s) => s.ccNum === srcMixControllers.LEVEL_OSC1.cc)
         expect(sent).toBeDefined()
-        expect(sent!.value).toBe(Math.floor(127 * 0.5))
+        expect(sent?.value).toBe(Math.floor(127 * 0.5))
     })
 
     it('sends levelRingMod change as CC', () => {
@@ -129,7 +129,7 @@ describe('source mixer MIDI send', () => {
         })
         const sent = sentCC.find((s) => s.ccNum === srcMixControllers.LEVEL_RING_MOD.cc)
         expect(sent).toBeDefined()
-        expect(sent!.value).toBe(Math.floor(127 * 0.8))
+        expect(sent?.value).toBe(Math.floor(127 * 0.8))
     })
 
     it('sends outOsc2 change as button MIDI', () => {

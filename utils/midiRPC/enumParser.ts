@@ -1,12 +1,12 @@
-import { type EnumDef, type EnumValue, KNOWN_DATATYPES } from './dataTypes'
+import type { EnumDef, EnumValue } from './dataTypes'
 
 const splitCodeAndComment = (line: string) => {
     const split = line.split('//')
-    if (split.length == 1) {
+    if (split.length === 1) {
         return {
             code: line.trim(),
         }
-    } else if (split.length == 2) {
+    } else if (split.length === 2) {
         return {
             code: split[0].trim(),
             comment: split[1].trim(),
@@ -40,7 +40,7 @@ const parseEnumValue = (line: string): EnumValue | undefined => {
     if (match) {
         return {
             name: match[1],
-            value: match[3] ? Number.parseInt(match[3]) : undefined,
+            value: match[3] ? Number.parseInt(match[3], 10) : undefined,
             comment,
         }
     }

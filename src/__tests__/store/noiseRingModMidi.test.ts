@@ -4,17 +4,15 @@ vi.mock('../../synthcore/synthcoreMiddleware', () => ({
     synthcoreMiddleware: () => (next: any) => (action: any) => next(action),
 }))
 
-import { buttonMidiValues } from '../../midi/buttonMidiValues'
-import { button } from '../../midi/midibus'
 import {
     startNoiseRingModMidiReceive,
     startNoiseRingModMidiSend,
     stopNoiseRingModMidiReceive,
     stopNoiseRingModMidiSend,
-} from '../../store/midi/noiseRingModMidi'
-import { createPatchStore, voiceGroupStores } from '../../store/patchStore'
-import noiseControllers from '../../synthcore/modules/noise/noiseControllers'
-import ringModControllers from '../../synthcore/modules/ringMod/ringModControllers'
+} from '@/store/midi/noiseRingModMidi'
+import { createPatchStore, voiceGroupStores } from '@/store/patchStore'
+import { buttonMidiValues } from '../../midi/buttonMidiValues'
+import { button } from '../../midi/midibus'
 
 const VG = 0
 
@@ -85,7 +83,7 @@ describe('simple button MIDI send', () => {
     beforeEach(() => {
         resetStore()
         sentValues = []
-        button.send = vi.fn((vg, ctrl, value) => {
+        button.send = vi.fn((_vg, ctrl, value) => {
             sentValues.push({ ctrl, value })
         }) as any
         startNoiseRingModMidiSend()

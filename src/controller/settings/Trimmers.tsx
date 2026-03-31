@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 import ReactSlider from 'react-slider'
-import { saveTrimmerSettings, setTrimmerSetting, VOICE_ALL } from '../../midi/rpc/api'
-import { sharedConfig } from '../../sharedConfig'
+import { saveTrimmerSettings, setTrimmerSetting, VOICE_ALL } from '@/midi/rpc/api'
+import { sharedConfig } from '@/sharedConfig'
 import { CV_CHANNELS } from './CvDefinitions'
 
 type SelectorProps = {
@@ -79,7 +79,7 @@ export const Trimmers = ({ voice }: Props) => {
         saveToLocalStorage(allTrimmerSettings)
         setIsSaved(true)
         saveTrimmerSettings()
-    }, [allTrimmerSettings, setIsSaved])
+    }, [allTrimmerSettings])
 
     const onLoadAll = useCallback(() => {
         const persisted = loadFromLocalStorage()

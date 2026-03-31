@@ -1,5 +1,4 @@
 import { buttonMidiValues } from '../../src/midi/buttonMidiValues'
-import CC from '../../src/midi/mapCC'
 import {
     ControllerIdDst,
     ControllerIdEnvDst,
@@ -34,7 +33,7 @@ import controllers from '../../src/synthcore/modules/controllers/controllers'
 import { generateSharedConfig } from './sharedConfigGenerator'
 import { writeToFile } from './utils'
 
-const outputRoot = '/Users/joakim/git/xonik/xm8-voice-controller/xm8-voice-controller'
+const _outputRoot = '/Users/joakim/git/xonik/xm8-voice-controller/xm8-voice-controller'
 const outputRootMain = '/Users/joakim/git/xonik/xm8-main-controller'
 const outputRootMidiMain = `${outputRootMain}/src/shared/generated/midi`
 
@@ -138,7 +137,7 @@ namespace paramIO {
   // keyboard etc. They are calculated on the fly and should not be stored as part of a patch.  
   enum SrcCtrlPos {
     ${Object.keys(ControllerIdSrc)
-        .filter((o) => isNaN(o as any))
+        .filter((o) => Number.isNaN(o as any))
         .map((key) => `SRC_${key}`)
         .join(',\n    ')}
     
@@ -153,8 +152,8 @@ namespace paramIO {
   // later.   
   enum IntermediateCtrlPos {
     ${Object.keys(ControllerIdIntermediate)
-        .filter((o) => isNaN(o as any))
-        .map((key, index) => `INT_SRC_${key}${index === 0 ? ' = ' + FIRST_INTERMEDIATE : ''}`)
+        .filter((o) => Number.isNaN(o as any))
+        .map((key, index) => `INT_SRC_${key}${index === 0 ? ` = ${FIRST_INTERMEDIATE}` : ''}`)
         .join(',\n    ')}
   };
   
@@ -162,22 +161,22 @@ namespace paramIO {
   // any modulation from the matrix.  
   enum DstCtrlPos {
     ${Object.keys(ControllerIdDst)
-        .filter((o) => isNaN(o as any))
-        .map((key, index) => `DST_${key}${index === 0 ? ' = ' + FIRST_DST : ''}`)
+        .filter((o) => Number.isNaN(o as any))
+        .map((key, index) => `DST_${key}${index === 0 ? ` = ${FIRST_DST}` : ''}`)
         .join(',\n    ')}
   };  
   
   enum EnvDestinations {
     ${Object.keys(ControllerIdEnvDst)
-        .filter((o) => isNaN(o as any))
-        .map((key, index) => `DST_ENV_${key}${index === 0 ? ' = ' + FIRST_ENV_DST : ''}`)
+        .filter((o) => Number.isNaN(o as any))
+        .map((key, index) => `DST_ENV_${key}${index === 0 ? ` = ${FIRST_ENV_DST}` : ''}`)
         .join(',\n    ')}
   };  
   
   enum LfoDestinations {
     ${Object.keys(ControllerIdLfoDst)
-        .filter((o) => isNaN(o as any))
-        .map((key, index) => `DST_LFO_${key}${index === 0 ? ' = ' + FIRST_LFO_DST : ''}`)
+        .filter((o) => Number.isNaN(o as any))
+        .map((key, index) => `DST_LFO_${key}${index === 0 ? ` = ${FIRST_LFO_DST}` : ''}`)
         .join(',\n    ')}
   };    
   
@@ -186,16 +185,16 @@ namespace paramIO {
   // affect actual modules).  
   enum NonModPotDestinations {
     ${Object.keys(ControllerIdNonModPots)
-        .filter((o) => isNaN(o as any))
-        .map((key, index) => `DST_NMP_${key}${index === 0 ? ' = ' + FIRST_NON_MOD_POTS : ''}`)
+        .filter((o) => Number.isNaN(o as any))
+        .map((key, index) => `DST_NMP_${key}${index === 0 ? ` = ${FIRST_NON_MOD_POTS}` : ''}`)
         .join(',\n    ')}
   };    
   
   // Parameters controlled by switches/buttons. These are not targets for modulation
   enum NonModDestinations {
     ${Object.keys(ControllerIdNonMod)
-        .filter((o) => isNaN(o as any))
-        .map((key, index) => `DST_NM_${key}${index === 0 ? ' = ' + FIRST_NON_MOD : ''}`)
+        .filter((o) => Number.isNaN(o as any))
+        .map((key, index) => `DST_NM_${key}${index === 0 ? ` = ${FIRST_NON_MOD}` : ''}`)
         .join(',\n    ')}
   };  
 
@@ -204,8 +203,8 @@ namespace paramIO {
   // index in a 0-indexed array. 
   enum NonModEnvDestinations {
     ${Object.keys(ControllerIdEnvNonMod)
-        .filter((o) => isNaN(o as any))
-        .map((key, index) => `DST_ENV_NM_${key}`)
+        .filter((o) => Number.isNaN(o as any))
+        .map((key, _index) => `DST_ENV_NM_${key}`)
         .join(',\n    ')}
   };  
 
@@ -214,8 +213,8 @@ namespace paramIO {
   // index in a 0-indexed array. 
   enum NonModEnvStageDestinations {
     ${Object.keys(ControllerIdEnvStageNonMod)
-        .filter((o) => isNaN(o as any))
-        .map((key, index) => `DST_ENV_STG_NM_${key}`)
+        .filter((o) => Number.isNaN(o as any))
+        .map((key, _index) => `DST_ENV_STG_NM_${key}`)
         .join(',\n    ')}
   };  
   
@@ -224,8 +223,8 @@ namespace paramIO {
   // index in a 0-indexed array.   
   enum NonModLfoDestinations {
     ${Object.keys(ControllerIdLfoNonMod)
-        .filter((o) => isNaN(o as any))
-        .map((key, index) => `DST_LFO_NM_${key}`)
+        .filter((o) => Number.isNaN(o as any))
+        .map((key, _index) => `DST_LFO_NM_${key}`)
         .join(',\n    ')}
   };  
 
@@ -234,8 +233,8 @@ namespace paramIO {
   // index in a 0-indexed array. 
   enum NonModLfoStageDestinations {
     ${Object.keys(ControllerIdLfoStageNonMod)
-        .filter((o) => isNaN(o as any))
-        .map((key, index) => `DST_LFO_STG_NM_${key}`)
+        .filter((o) => Number.isNaN(o as any))
+        .map((key, _index) => `DST_LFO_STG_NM_${key}`)
         .join(',\n    ')}
   };  
 }
@@ -256,7 +255,7 @@ const generateCppFiles = () => {
 
     Object.entries(controllers).forEach(([controllerGroupKey, controllersList]) => {
         Object.entries(controllersList)
-            .filter(([controllerKey, controller]) => controller.cc !== undefined)
+            .filter(([_controllerKey, controller]) => controller.cc !== undefined)
             .forEach(([controllerKey, controller]) => {
                 if (controller.type === 'button') {
                     // do nothing
@@ -274,7 +273,7 @@ const generateCppFiles = () => {
 
     Object.entries(controllers).forEach(([controllerGroupKey, controllersList]) => {
         Object.entries(controllersList)
-            .filter(([controllerKey, controller]) => controller.addr !== undefined)
+            .filter(([_controllerKey, controller]) => controller.addr !== undefined)
             .forEach(([controllerKey, controller]) => {
                 if (controller.type === 'pot') {
                     potNrpnEnum.push(`POT_${controllerGroupKey}_${controllerKey}`)
@@ -295,7 +294,7 @@ const generateCppFiles = () => {
     const potNrpnFileContents = `const char potNrpn[${potCC.length}] = {\n  ${potNrpn.join(',\n  ')}\n};`
 
     const buttonMidiKeys = Object.keys(buttonMidiValues)
-        .filter((o) => isNaN(o as any))
+        .filter((o) => Number.isNaN(o as any))
         .map((key, index) => `BT_${key} /* ${index} */`)
     const buttonEnumFileContents = `enum ButtonMidiValues {\n  ${buttonMidiKeys.join(',\n  ')}\n};`
 

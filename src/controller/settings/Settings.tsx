@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CvOverrides } from './CvOverrides'
 import { CvRange } from './CvRange'
 import { SettingsButtons } from './SettingsButtons'

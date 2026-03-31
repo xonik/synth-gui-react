@@ -1,12 +1,7 @@
-import { button, cc, nrpn } from '../../../midi/midibus'
-import type {
-    ControllerConfig,
-    ControllerConfigButton,
-    ControllerConfigCC,
-    ControllerConfigNRPN,
-} from '../../../midi/types'
-import { shouldSend } from '../../../midi/utils'
-import { getBounded } from '../../../store/utils'
+import { button, cc, nrpn } from '@/midi/midibus'
+import type { ControllerConfig, ControllerConfigButton, ControllerConfigCC, ControllerConfigNRPN } from '@/midi/types'
+import { shouldSend } from '@/midi/utils'
+import { getBounded } from '@/store/utils'
 import logger from '../../../utils/logger'
 import { ApiSource } from '../../types'
 import type { NumericInputProperty } from './types'
@@ -57,10 +52,10 @@ const ccMapper = {
 }
 const ccWithValueMapper = {
     input: (midiValue: number, ctrl: ControllerConfig | ControllerConfigCC | ControllerConfigButton) => {
-        return { value: (ctrl.values && ctrl.values.indexOf(midiValue)) || 0 }
+        return { value: ctrl.values?.indexOf(midiValue) || 0 }
     },
     output: (value: number, ctrl: ControllerConfig | ControllerConfigCC | ControllerConfigButton) => {
-        return (ctrl.values && ctrl.values[value]) || 0
+        return ctrl.values?.[value] || 0
     },
 }
 
@@ -258,7 +253,7 @@ export const buttonParamReceive = (
     cfg: ControllerConfigButton,
     apiSetValue: (voiceGroupIndex: number, source: ApiSource) => void
 ) => {
-    button.subscribe((voiceGroupIndex: number, midiValue: number) => {
+    button.subscribe((voiceGroupIndex: number, _midiValue: number) => {
         apiSetValue(voiceGroupIndex, ApiSource.MIDI)
     }, cfg)
 }

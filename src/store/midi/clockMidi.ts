@@ -1,6 +1,6 @@
-import { button, nrpn } from '../../midi/midibus'
+import { button, nrpn } from '@/midi/midibus'
+import { globalStore } from '@/store'
 import masterClockControllers from '../../synthcore/modules/masterClock/masterClockControllers'
-import { GlobalPatchState, globalStore } from '../globalStore'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
 
 let sendUnsub: (() => void) | undefined
@@ -66,6 +66,8 @@ export function startClockMidiReceive() {
 }
 
 export function stopClockMidiReceive() {
-    receiveUnsubscribers.forEach((unsub) => unsub())
+    receiveUnsubscribers.forEach((unsub) => {
+        unsub()
+    })
     receiveUnsubscribers = []
 }

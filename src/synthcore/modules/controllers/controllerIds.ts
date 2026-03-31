@@ -22,7 +22,7 @@ export enum ControllerIdSrc {
     LFO4,
 }
 
-export const SRC_COUNT = Object.keys(ControllerIdSrc).filter((o) => isNaN(o as any)).length
+export const SRC_COUNT = Object.keys(ControllerIdSrc).filter((o) => Number.isNaN(o as any)).length
 export const FIRST_INTERMEDIATE = SRC_COUNT
 
 export enum ControllerIdIntermediate {
@@ -43,7 +43,7 @@ export enum ControllerIdIntermediate {
     // TODO: Note and pitch should perhaps be part of this? But
     // Note needs to be quantized
 }
-export const INT_COUNT = Object.keys(ControllerIdIntermediate).filter((o) => isNaN(o as any)).length
+export const INT_COUNT = Object.keys(ControllerIdIntermediate).filter((o) => Number.isNaN(o as any)).length
 export const FIRST_DST = FIRST_INTERMEDIATE + INT_COUNT
 
 export enum ControllerIdDst {
@@ -129,7 +129,7 @@ export enum ControllerIdDst {
     FX_MIX_LEVEL_CHORUS,
     FX_MIX_LEVEL_BIT_CRUSHER,
 }
-export const DST_COUNT = Object.keys(ControllerIdDst).filter((o) => isNaN(o as any)).length
+export const DST_COUNT = Object.keys(ControllerIdDst).filter((o) => Number.isNaN(o as any)).length
 export const FIRST_ENV_DST = FIRST_DST + DST_COUNT
 
 export enum ControllerIdEnvDst {
@@ -145,7 +145,7 @@ export enum ControllerIdEnvDst {
     RELEASE2_LEVEL,
     OFFSET,
 }
-export const DST_ENV_COUNT = Object.keys(ControllerIdEnvDst).filter((o) => isNaN(o as any)).length
+export const DST_ENV_COUNT = Object.keys(ControllerIdEnvDst).filter((o) => Number.isNaN(o as any)).length
 export const FIRST_LFO_DST = FIRST_ENV_DST + DST_ENV_COUNT
 
 export enum ControllerIdLfoDst {
@@ -156,7 +156,7 @@ export enum ControllerIdLfoDst {
     PHASE_OFFSET,
     LEVEL_OFFSET,
 }
-export const DST_LFO_COUNT = Object.keys(ControllerIdLfoDst).filter((o) => isNaN(o as any)).length
+export const DST_LFO_COUNT = Object.keys(ControllerIdLfoDst).filter((o) => Number.isNaN(o as any)).length
 export const FIRST_NON_MOD_POTS = FIRST_LFO_DST + DST_LFO_COUNT
 
 // controllers that affect stuff that is not part of the
@@ -178,7 +178,7 @@ export enum ControllerIdNonModPots {
     OUT_HEADPHONES,
 }
 
-export const NON_MOD_POTS_COUNT = Object.keys(ControllerIdNonModPots).filter((o) => isNaN(o as any)).length
+export const NON_MOD_POTS_COUNT = Object.keys(ControllerIdNonModPots).filter((o) => Number.isNaN(o as any)).length
 export const FIRST_NON_MOD = FIRST_NON_MOD_POTS + NON_MOD_POTS_COUNT
 
 export enum ControllerIdNonMod {
@@ -318,13 +318,15 @@ export enum ControllerIdEnvNonMod {
     ENV_BIPOLAR,
     ENV_VELOCITY,
 }
-export const ENV_NON_MOD_COUNT = Object.keys(ControllerIdEnvNonMod).filter((o) => isNaN(o as any)).length
+export const ENV_NON_MOD_COUNT = Object.keys(ControllerIdEnvNonMod).filter((o) => Number.isNaN(o as any)).length
 
 export enum ControllerIdEnvStageNonMod {
     ENV_CURVE = 227,
     ENV_TOGGLE_STAGE,
 }
-export const ENV_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdEnvStageNonMod).filter((o) => isNaN(o as any)).length
+export const ENV_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdEnvStageNonMod).filter((o) =>
+    Number.isNaN(o as any)
+).length
 
 export enum ControllerIdLfoNonMod {
     LFO_SHAPE = 229,
@@ -343,15 +345,17 @@ export enum ControllerIdLfoNonMod {
     LFO_RANDOM_PHASE,
     LFO_GATE,
 }
-export const LFO_NON_MOD_COUNT = Object.keys(ControllerIdLfoNonMod).filter((o) => isNaN(o as any)).length
+export const LFO_NON_MOD_COUNT = Object.keys(ControllerIdLfoNonMod).filter((o) => Number.isNaN(o as any)).length
 
 export enum ControllerIdLfoStageNonMod {
     LFO_CURVE = 244,
     LFO_TOGGLE_STAGE,
 }
-export const LFO_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdLfoStageNonMod).filter((o) => isNaN(o as any)).length
+export const LFO_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdLfoStageNonMod).filter((o) =>
+    Number.isNaN(o as any)
+).length
 
-export const NON_MOD_COUNT = Object.keys(ControllerIdNonMod).filter((o) => isNaN(o as any)).length
+export const NON_MOD_COUNT = Object.keys(ControllerIdNonMod).filter((o) => Number.isNaN(o as any)).length
 
 export type ControllerId =
     | ControllerIdSrc

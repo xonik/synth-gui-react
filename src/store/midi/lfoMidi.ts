@@ -1,13 +1,13 @@
-import { button, cc, lastSentMidiGroup, nrpn } from '../../midi/midibus'
+import { button, cc, lastSentMidiGroup, nrpn } from '@/midi/midibus'
 import {
     type ControllerConfigButton,
     type ControllerConfigCC,
     type ControllerConfigNRPN,
     MidiGroup,
-} from '../../midi/types'
-import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
-import { LFO_STAGE_NAMES, LfoStageName, STAGE_ID_TO_NAME, STAGE_NAME_TO_ID } from '../modules/lfoActions'
-import { type LfoState, voiceGroupStores } from '../patchStore'
+} from '@/midi/types'
+import { type LfoState, voiceGroupStores } from '@/store'
+import { lfoCtrls } from '@/synthcore/modules/lfo/lfoControllers'
+import { LFO_STAGE_NAMES, STAGE_ID_TO_NAME, STAGE_NAME_TO_ID } from '../modules/lfoActions'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
 
 const NUMBER_OF_LFOS = 4
@@ -147,7 +147,9 @@ export function startLfoMidiSend() {
 }
 
 export function stopLfoMidiSend() {
-    sendUnsubscribers.forEach((unsub) => unsub())
+    sendUnsubscribers.forEach((unsub) => {
+        unsub()
+    })
     sendUnsubscribers = []
     currentSentLfoId = -1
     lastSentLfoIdTimestamp = 0
@@ -158,7 +160,7 @@ let receiveUnsubscribers: (() => void)[] = []
 
 function subscribeLfoSelect() {
     const cfg = lfoCtrls.SELECT as ControllerConfigCC
-    const id = cc.subscribe((voiceGroupIndex: number, value: number) => {
+    const id = cc.subscribe((_voiceGroupIndex: number, value: number) => {
         currentReceivedLfoId = value
     }, cfg)
     return () => cc.unsubscribe(cfg, id)
@@ -238,7 +240,9 @@ export function startLfoMidiReceive() {
 }
 
 export function stopLfoMidiReceive() {
-    receiveUnsubscribers.forEach((unsub) => unsub())
+    receiveUnsubscribers.forEach((unsub) => {
+        unsub()
+    })
     receiveUnsubscribers = []
     currentReceivedLfoId = -1
 }

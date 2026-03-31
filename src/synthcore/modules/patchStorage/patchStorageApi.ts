@@ -46,7 +46,7 @@ async function loadPatch(key: string, version?: string) {
         setCurrentPatch(patch)
         previousPatch = undefined
         auditing = false
-    } catch (err) {
+    } catch (_err) {
         console.log('Could not load file')
         return
     }
@@ -63,7 +63,7 @@ async function auditPatch(key: string, version?: string) {
         const patch = await patchFileServerFacade.loadPatch(key, version)
         console.log('Received for auditing', patch)
         setCurrentPatch(patch)
-    } catch (err) {
+    } catch (_err) {
         console.log('Could not load file for auditing')
         return
     }
@@ -77,7 +77,7 @@ function revertToCurrentPatch() {
             previousPatch = undefined
         }
         auditing = false
-    } catch (err) {
+    } catch (_err) {
         console.log('Could not revert to current patch')
         return
     }

@@ -1,10 +1,9 @@
-import { envCtrls } from '../synthcore/modules/env/envControllers'
-import { StageId } from '../synthcore/modules/env/types'
-import { getVoiceGroupIndex } from '../synthcore/modules/voices/currentVoiceGroupIndex'
+import { envCtrls } from '@/synthcore/modules/env/envControllers'
+import { StageId } from '@/synthcore/modules/env/types'
+import { getVoiceGroupIndex } from '@/synthcore/modules/voices/currentVoiceGroupIndex'
 import mapCC from './mapCC'
 import mapNRPN from './mapNRPN'
 import { cc, nrpn } from './midibus'
-import type { ControllerConfig } from './types'
 
 const getNprnStageTime = (stageId: number, midiTime: number) => {
     const mappedMidiTime = envCtrls.TIME.uiResponse?.output(midiTime / 127) || 0
@@ -14,13 +13,6 @@ const getNprnStageTime = (stageId: number, midiTime: number) => {
 const getNprnStageLevel = (stageId: number, midiLevel: number) => {
     const mappedMidiLevel = envCtrls.LEVEL.uiResponse?.output(midiLevel / 127) || 0
     return (stageId << 16) + 32767 + Math.round(mappedMidiLevel * 32767)
-}
-
-const getFromUi = (ctrl: ControllerConfig, midiValue: number) => {
-    if (ctrl.uiResponse) {
-        return 127 * Math.round(ctrl.uiResponse.output(midiValue / 127))
-    }
-    return midiValue
 }
 
 export const handleMpk25 = (ccNum: number, midiValue: number): boolean => {

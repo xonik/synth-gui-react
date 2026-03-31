@@ -1,5 +1,5 @@
-import { cc, nrpn } from '../../../midi/midibus'
-import { shouldSend } from '../../../midi/utils'
+import { cc, nrpn } from '@/midi/midibus'
+import { shouldSend } from '@/midi/utils'
 import logger from '../../../utils/logger'
 import { ApiSource } from '../../types'
 import { toggleParamReceive, toggleParamSend } from '../common/commonMidiApi'
@@ -54,7 +54,7 @@ const source = (() => {
             cc.send(voiceGroupIndex, cfg, value)
         },
         receive: () => {
-            cc.subscribe((voiceGroupIndex: number, value: number) => {
+            cc.subscribe((_voiceGroupIndex: number, value: number) => {
                 currentSourceId = value
             }, cfg)
         },
@@ -88,11 +88,11 @@ const dst = (() => {
         },
         receive: () => {
             // NB: Synth must send dstId before dstIndex as dstIndex is reset to 0 when dstId is received.
-            cc.subscribe((voiceGroupIndex: number, value: number) => {
+            cc.subscribe((_voiceGroupIndex: number, value: number) => {
                 currentDstId = value
                 currentDstIndex = 0
             }, cfg)
-            cc.subscribe((voiceGroupIndex: number, value: number) => {
+            cc.subscribe((_voiceGroupIndex: number, value: number) => {
                 currentDstIndex = value
             }, indexCfg)
         },

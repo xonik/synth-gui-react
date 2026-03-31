@@ -1,7 +1,7 @@
-import fs from 'fs'
+import fs from 'node:fs'
 import { getLcscPart, type LibPart, type MultiPart, multiParts, type PartType } from './lcscParts'
 
-const testBom = [
+const _testBom = [
     'Comment,Designator,Footprint,LCSC Part #',
     '0.33uF,C13 C15,C0603,C1615',
     '5n5F,C1 C5,C0402,C1538',
@@ -154,7 +154,7 @@ function parseBomLine(line: string) {
     if (line.trim() === '') return
 
     try {
-        const [valueString, idString, footprintString, lscsPartString] = line.split(',').map((field) => field.trim())
+        const [valueString, idString, footprintString, _lscsPartString] = line.split(',').map((field) => field.trim())
         if (valueString === 'Comment') {
             return
         }
@@ -209,7 +209,7 @@ function parseCplLine(line: string) {
             midX: Number.parseFloat(midX),
             midY: Number.parseFloat(midY),
             layer,
-            rotation: Number.parseInt(rotation),
+            rotation: Number.parseInt(rotation, 10),
         })
     } catch (err) {
         console.log(`Failed to parse "${line}"`, err)
@@ -241,7 +241,7 @@ function rotatePoint(point: Point, rotation: number): Point {
 }
 
 function placeMultiPart(stemPos: Point, stemRotation: number, offset: Point): Point {
-    if (stemRotation == 0) {
+    if (stemRotation === 0) {
         return sum(stemPos, offset)
     } else {
         console.log('rorat', rotatePoint(offset, stemRotation))
@@ -253,7 +253,6 @@ function updateMultiParts() {
     const newParts: Part[] = []
     for (let i = 0; i < parts.length; i++) {
         const part = parts[i]
-        // @ts-expect-error
         console.log(`Looking for ${part.value}`)
         const multiPart = multiParts[part.value]
         if (multiPart) {
@@ -309,7 +308,7 @@ function updateMultiParts() {
                         extended: true, // TODO: Not correct
                     },
                     type: part.type,
-                    line: '' + part.line,
+                    line: `${part.line}`,
                 })
             })
         }
@@ -317,7 +316,7 @@ function updateMultiParts() {
     parts = [...parts.filter((part) => part.ids.length > 0), ...newParts]
 }
 
-const writeToFile = (path: string, contents: string) => {
+const _writeToFile = (path: string, contents: string) => {
     console.log(`writing ${contents.length} bytes to ${path}`)
     fs.writeFileSync(path, contents)
 }

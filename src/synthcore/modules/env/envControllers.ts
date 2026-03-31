@@ -1,6 +1,4 @@
-import { buttonMidiValues } from '../../../midi/buttonMidiValues'
-import CC from '../../../midi/mapCC'
-import NRPN from '../../../midi/mapNRPN'
+import { buttonMidiValues } from '@/midi/buttonMidiValues'
 import {
     type ControllerConfig,
     type ControllerConfigButton,
@@ -9,7 +7,9 @@ import {
     type ControllerConfigNRPNWithValue,
     type FuncProps,
     MidiGroup,
-} from '../../../midi/types'
+} from '@/midi/types'
+import CC from '../../../midi/mapCC'
+import NRPN from '../../../midi/mapNRPN'
 import { dbLevelResponseMapper, timeResponseMapper } from '../common/responseMappers'
 import {
     ControllerIdEnvDst,
@@ -249,9 +249,10 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
 
     // add midi group (indicator that we need to select env before sending a value) to every controller, this way
     // we don't forget to add it if a new controller is added
-    Object.keys(controllers).forEach((key) => {
-        controllers['OUTPUT'] = {
-            ...controllers['OUTPUT'],
+    // TODO: This is weird, what does it do?
+    Object.keys(controllers).forEach((_key) => {
+        controllers.OUTPUT = {
+            ...controllers.OUTPUT,
             midiGroup: MidiGroup.ENV,
         }
     })

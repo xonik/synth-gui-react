@@ -12,7 +12,7 @@ interface Props {
 }
 
 const getLoopLabel = (loopMode: LoopMode, loops: number) =>
-    `Loop ${loopMode === LoopMode.COUNTED ? loops + ' ' : ''} ${loopModeNames[loopMode]}`
+    `Loop ${loopMode === LoopMode.COUNTED ? `${loops} ` : ''} ${loopModeNames[loopMode]}`
 
 const EnvOptionsLeft = ({ envId }: Props) => {
     const { value: invert, toggle: toggleInvert } = useEnvToggle(envId, 'invert')

@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import { BUTTON_DISTANCE_S, POT_DISTANCE_L, POT_DISTANCE_M, POT_OFFSET_Y } from '../../../constants'
 import { useUiStore } from '../../../store/uiStore'
 import { getBounded } from '../../../store/utils'

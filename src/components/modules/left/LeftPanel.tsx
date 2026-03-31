@@ -1,4 +1,3 @@
-import React from 'react'
 import { SHOW_CUT } from '../../../config'
 import { POT_DISTANCE_L, POT_DISTANCE_M, ROW_HEIGHT } from '../../../constants'
 import Arpeggiator from './Arpeggiator'

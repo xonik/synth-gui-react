@@ -1,14 +1,6 @@
-import {
-    STAGE_NAMES,
-    type StageName,
-    setMaxLoops,
-    setStageCurve,
-    setStageLevel,
-    setStageTime,
-} from '../../../store/modules/envActions'
-import { voiceGroupStores } from '../../../store/patchStore'
-import { useUiStore } from '../../../store/uiStore'
-import { getBounded, step } from '../../../store/utils'
+import { useUiStore, voiceGroupStores } from '@/store'
+import { type StageName, setMaxLoops, setStageCurve, setStageLevel, setStageTime } from '@/store/modules/envActions'
+import { getBounded, step } from '@/store/utils'
 import { dbLevelResponseMapper, timeResponseMapper } from '../common/responseMappers'
 import mainDisplayControllers from '../mainDisplay/mainDisplayControllers'
 import { envCtrls } from './envControllers'

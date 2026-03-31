@@ -82,10 +82,10 @@ describe('filter MIDI send', () => {
         resetStore()
         sentCC = []
         sentButtons = []
-        cc.send = vi.fn((vg, ctrl, value) => {
+        cc.send = vi.fn((_vg, ctrl, value) => {
             sentCC.push({ ccNum: ctrl.cc, value })
         }) as any
-        button.send = vi.fn((vg, ctrl, value) => {
+        button.send = vi.fn((_vg, ctrl, value) => {
             sentButtons.push({ ctrl, value })
         }) as any
         startFilterMidiSend()
@@ -103,7 +103,7 @@ describe('filter MIDI send', () => {
         })
         const sent = sentCC.find((s) => s.ccNum === filtersControllers.LPF.CUTOFF.cc)
         expect(sent).toBeDefined()
-        expect(sent!.value).toBe(Math.floor(127 * 0.6))
+        expect(sent?.value).toBe(Math.floor(127 * 0.6))
     })
 
     it('sends SVF input as CC', () => {
@@ -112,7 +112,7 @@ describe('filter MIDI send', () => {
         })
         const sent = sentCC.find((s) => s.ccNum === filtersControllers.SVF.INPUT.cc)
         expect(sent).toBeDefined()
-        expect(sent!.value).toBe(Math.floor(127 * 0.8))
+        expect(sent?.value).toBe(Math.floor(127 * 0.8))
     })
 
     it('sends LPF filter type as button MIDI', () => {

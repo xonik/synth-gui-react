@@ -16,7 +16,7 @@ const logarithmicFunc = (sharpness: number) => {
     }
 }
 
-const squared = (x: number) => x ** 2
+const _squared = (x: number) => x ** 2
 
 const getKeypoints = (keypointCount: number) => {
     const points = []
@@ -41,7 +41,7 @@ const getDerivated = (yValues: number[], intermediatesPerKeypoint: number, accur
     return derivated
 }
 
-const expo = exponentialFunc(2.2)
+const _expo = exponentialFunc(2.2)
 const log = logarithmicFunc(2.2)
 
 const testInterpolation = (

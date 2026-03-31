@@ -2,7 +2,7 @@ import type { EnumDef, EnumDefWithTargets, EnumValue, EnumValueWithTargets } fro
 
 export function generateEnumTs(enumDef: EnumDefWithTargets | EnumDef) {
     return `// GENERATED FILE, DO NOT EDIT
-${enumDef.comment ? '// ' + enumDef.comment : ''}
+${enumDef.comment ? `// ${enumDef.comment}` : ''}
 export enum ${enumDef.name} { 
 ${enumDef.values.map((val) => `  ${getVal(val)}, ${getComment(val)}`).join('\n')}
 }

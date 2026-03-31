@@ -1,4 +1,4 @@
-import fs from 'fs'
+import fs from 'node:fs'
 import { generateApiForCpp, generateApiHForCpp } from './generateApiForCpp'
 import { generateApiTs } from './generateApiTs'
 import { generateCurveUsageList } from './generateCurveUsageList'

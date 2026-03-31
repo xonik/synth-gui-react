@@ -1,5 +1,5 @@
-import { readFileSync } from 'fs'
-import fs from 'fs/promises'
+import { readFileSync } from 'node:fs'
+import fs from 'node:fs/promises'
 import { v4 as uuidv4 } from 'uuid'
 import { getAsJSONString, getFilesRecursively, getPathParts } from './fileUtils.js'
 import { type FileEntry, FileNotFoundException, type FileTreeEntry, type FolderEntry } from './types.js'
@@ -26,7 +26,7 @@ export class Fat {
             const fat = JSON.parse(readFileSync(`${this.rootOnDisk}${FAT_FILE_NAME}`, 'utf8'))
             this.setParentOnContents(fat)
             return fat
-        } catch (err) {
+        } catch {
             console.log('Fat not found, creating blank')
             return {
                 name: '',

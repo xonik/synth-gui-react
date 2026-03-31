@@ -1,7 +1,6 @@
 import { useCallback } from 'react'
-import { useVoiceGroupStore, voiceGroupStores } from '../../store/patchStore'
-import { useUiStore } from '../../store/uiStore'
-import { LoopMode } from '../../synthcore/modules/lfo/types'
+import { useUiStore, useVoiceGroupStore, voiceGroupStores } from '@/store'
+import { LoopMode } from '@/synthcore/modules/lfo/types'
 import Button from '../components/Button'
 import { CtrlOptions } from '../components/CtrlOptions'
 import { loopModeNames } from './utils'
@@ -13,7 +12,7 @@ interface Props {
 const NUM_LOOP_MODES = Object.keys(LoopMode).length / 2
 
 const getLoopLabel = (loopMode: LoopMode, loops: number) =>
-    `Loop ${loopMode === LoopMode.COUNTED ? loops + ' ' : ''} ${loopModeNames[loopMode]}`
+    `Loop ${loopMode === LoopMode.COUNTED ? `${loops} ` : ''} ${loopModeNames[loopMode]}`
 
 const LfoOptionsRight = ({ lfoId }: Props) => {
     const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)

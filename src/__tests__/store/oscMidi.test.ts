@@ -4,10 +4,10 @@ vi.mock('../../synthcore/synthcoreMiddleware', () => ({
     synthcoreMiddleware: () => (next: any) => (action: any) => next(action),
 }))
 
-import { buttonMidiValues } from '../../midi/buttonMidiValues'
-import { button, cc } from '../../midi/midibus'
-import { startOscMidiReceive, startOscMidiSend, stopOscMidiReceive, stopOscMidiSend } from '../../store/midi/oscMidi'
-import { createPatchStore, voiceGroupStores } from '../../store/patchStore'
+import { buttonMidiValues } from '@/midi/buttonMidiValues'
+import { button, cc } from '@/midi/midibus'
+import { startOscMidiReceive, startOscMidiSend, stopOscMidiReceive, stopOscMidiSend } from '@/store/midi/oscMidi'
+import { createPatchStore, voiceGroupStores } from '@/store/patchStore'
 import oscControllers from '../../synthcore/modules/osc/oscControllers'
 
 const VG = 0
@@ -82,10 +82,10 @@ describe('oscillator MIDI send', () => {
         resetStore()
         sentCC = []
         sentButtons = []
-        cc.send = vi.fn((vg, ctrl, value) => {
+        cc.send = vi.fn((_vg, ctrl, value) => {
             sentCC.push({ ccNum: ctrl.cc, value })
         }) as any
-        button.send = vi.fn((vg, ctrl, value) => {
+        button.send = vi.fn((_vg, ctrl, value) => {
             sentButtons.push({ ctrl, value })
         }) as any
         startOscMidiSend()
@@ -103,7 +103,7 @@ describe('oscillator MIDI send', () => {
         })
         const sent = sentCC.find((s) => s.ccNum === oscControllers.DCO1.NOTE.cc)
         expect(sent).toBeDefined()
-        expect(sent!.value).toBe(Math.floor(127 * 0.5))
+        expect(sent?.value).toBe(Math.floor(127 * 0.5))
     })
 
     it('sends VCO pw change as CC', () => {
@@ -112,7 +112,7 @@ describe('oscillator MIDI send', () => {
         })
         const sent = sentCC.find((s) => s.ccNum === oscControllers.VCO.PW.cc)
         expect(sent).toBeDefined()
-        expect(sent!.value).toBe(Math.floor(127 * 0.3))
+        expect(sent?.value).toBe(Math.floor(127 * 0.3))
     })
 
     it('sends DCO1 sync change as button MIDI', () => {

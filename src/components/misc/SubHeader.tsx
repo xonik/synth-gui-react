@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { BORDER_MARGIN } from '../../constants'
+import { BORDER_MARGIN } from '@/constants'
 import './SubHeader.scss'
 
 type PositionAlign = 'center' | 'left' | 'right'
@@ -42,8 +42,8 @@ const SubHeader = ({
 }: Props) => {
     const center = getCenter(x, y, width, align)
 
-    const paddingLeft = padding != 'right' ? BORDER_MARGIN : 0
-    const paddingRight = padding != 'left' ? BORDER_MARGIN : 0
+    const paddingLeft = padding !== 'right' ? BORDER_MARGIN : 0
+    const paddingRight = padding !== 'left' ? BORDER_MARGIN : 0
 
     let labelPosition: PositionAlign
     let labelCenter
@@ -97,7 +97,7 @@ const getLabelBackground = (x: number, y: number, labelWidth: number, center: nu
     const rightOffset = labelPosition === 'right' ? 0 : offset
 
     let mapper
-    if (labelPosition == 'left') {
+    if (labelPosition === 'left') {
         mapper = ([x0, y0]: Array<number>) => [x + BORDER_MARGIN + x0, y + BORDER_MARGIN + y0]
     } else {
         mapper = ([x0, y0]: Array<number>) => [center - labelWidth / 2 + x0, y + BORDER_MARGIN + y0]
@@ -115,7 +115,7 @@ const getLabelBackground = (x: number, y: number, labelWidth: number, center: nu
 }
 
 function isNumeric(number: PositionAlign | number): number is number {
-    return !isNaN(Number(number))
+    return !Number.isNaN(Number(number))
 }
 
 export default SubHeader

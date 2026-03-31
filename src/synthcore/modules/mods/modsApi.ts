@@ -1,6 +1,6 @@
+import { useUiStore } from '@/store'
+import { getBounded, getQuantized } from '@/store/utils'
 import { voiceGroupStores as zustandStores } from '../../../store/patchStore'
-import { useUiStore } from '../../../store/uiStore'
-import { getBounded, getQuantized } from '../../../store/utils'
 import type { ApiSource } from '../../types'
 import { paramReceive, paramSend } from '../common/commonMidiApi'
 import type { ButtonInputProperty, NumericInputProperty } from '../common/types'
@@ -228,7 +228,7 @@ const getForSave = (voiceGroupIndex: number) => {
     return result
 }
 
-const setFromLoad = (voiceGroupIndex: number, modValues: number[][][]) => {
+const setFromLoad = (_voiceGroupIndex: number, _modValues: number[][][]) => {
     // TODO: Convert loaded mod values back to Zustand format
     // This needs the same mapping as getForSave in reverse
 }

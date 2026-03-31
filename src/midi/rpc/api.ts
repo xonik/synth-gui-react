@@ -8,21 +8,21 @@ import { jsToMidiEncoder, splitInt8To7, splitTo7 } from './serializer'
 export const VOICE_ALL = -1
 
 export function setCvStart(cv: number, start: number, voice: number = VOICE_ALL) {
-    const paramBytes: number[] = [...jsToMidiEncoder['uint8_t'](cv), ...jsToMidiEncoder['uint16_t'](start)]
+    const paramBytes: number[] = [...jsToMidiEncoder.uint8_t(cv), ...jsToMidiEncoder.uint16_t(start)]
     const data = [...splitInt8To7(voice), ...splitTo7(FunctionNames.setCvStart, 14), ...paramBytes]
     logger.midi('RPC call to setCvStart')
     sendSysex(sysexCommands.RPC, data)
 }
 
 export function setCvEnd(cv: number, end: number, voice: number = VOICE_ALL) {
-    const paramBytes: number[] = [...jsToMidiEncoder['uint8_t'](cv), ...jsToMidiEncoder['uint16_t'](end)]
+    const paramBytes: number[] = [...jsToMidiEncoder.uint8_t(cv), ...jsToMidiEncoder.uint16_t(end)]
     const data = [...splitInt8To7(voice), ...splitTo7(FunctionNames.setCvEnd, 14), ...paramBytes]
     logger.midi('RPC call to setCvEnd')
     sendSysex(sysexCommands.RPC, data)
 }
 
 export function setCvCurve(cv: number, curve: number, voice: number = VOICE_ALL) {
-    const paramBytes: number[] = [...jsToMidiEncoder['uint8_t'](cv), ...jsToMidiEncoder['uint8_t'](curve)]
+    const paramBytes: number[] = [...jsToMidiEncoder.uint8_t(cv), ...jsToMidiEncoder.uint8_t(curve)]
     const data = [...splitInt8To7(voice), ...splitTo7(FunctionNames.setCvCurve, 14), ...paramBytes]
     logger.midi('RPC call to setCvCurve')
     sendSysex(sysexCommands.RPC, data)
@@ -37,11 +37,11 @@ export function setCvParams(
     voice: number = VOICE_ALL
 ) {
     const paramBytes: number[] = [
-        ...jsToMidiEncoder['uint8_t'](cv),
-        ...jsToMidiEncoder['uint16_t'](start),
-        ...jsToMidiEncoder['uint16_t'](end),
-        ...jsToMidiEncoder['uint8_t'](curve),
-        ...jsToMidiEncoder['bool'](reverse),
+        ...jsToMidiEncoder.uint8_t(cv),
+        ...jsToMidiEncoder.uint16_t(start),
+        ...jsToMidiEncoder.uint16_t(end),
+        ...jsToMidiEncoder.uint8_t(curve),
+        ...jsToMidiEncoder.bool(reverse),
     ]
     const data = [...splitInt8To7(voice), ...splitTo7(FunctionNames.setCvParams, 14), ...paramBytes]
     logger.midi('RPC call to setCvParams')
@@ -49,7 +49,7 @@ export function setCvParams(
 }
 
 export function saveCvMapping(cv: number, voice: number = VOICE_ALL) {
-    const paramBytes: number[] = [...jsToMidiEncoder['uint8_t'](cv)]
+    const paramBytes: number[] = [...jsToMidiEncoder.uint8_t(cv)]
     const data = [...splitInt8To7(voice), ...splitTo7(FunctionNames.saveCvMapping, 14), ...paramBytes]
     logger.midi('RPC call to saveCvMapping')
     sendSysex(sysexCommands.RPC, data)
@@ -63,7 +63,7 @@ export function saveCvMappings(voice: number = VOICE_ALL) {
 }
 
 export function loadCvMapping(cv: number, voice: number = VOICE_ALL) {
-    const paramBytes: number[] = [...jsToMidiEncoder['uint8_t'](cv)]
+    const paramBytes: number[] = [...jsToMidiEncoder.uint8_t(cv)]
     const data = [...splitInt8To7(voice), ...splitTo7(FunctionNames.loadCvMapping, 14), ...paramBytes]
     logger.midi('RPC call to loadCvMapping')
     sendSysex(sysexCommands.RPC, data)
@@ -77,7 +77,7 @@ export function loadCvMappings(voice: number = VOICE_ALL) {
 }
 
 export function setTrimmerSetting(trimmer: number, value: number, voice: number = VOICE_ALL) {
-    const paramBytes: number[] = [...jsToMidiEncoder['uint8_t'](trimmer), ...jsToMidiEncoder['uint16_t'](value)]
+    const paramBytes: number[] = [...jsToMidiEncoder.uint8_t(trimmer), ...jsToMidiEncoder.uint16_t(value)]
     const data = [...splitInt8To7(voice), ...splitTo7(FunctionNames.setTrimmerSetting, 14), ...paramBytes]
     logger.midi('RPC call to setTrimmerSetting')
     sendSysex(sysexCommands.RPC, data)
@@ -91,14 +91,14 @@ export function saveTrimmerSettings(voice: number = VOICE_ALL) {
 }
 
 export function setCVOverride(cv: number, value: number, voice: number = VOICE_ALL) {
-    const paramBytes: number[] = [...jsToMidiEncoder['uint8_t'](cv), ...jsToMidiEncoder['uint16_t'](value)]
+    const paramBytes: number[] = [...jsToMidiEncoder.uint8_t(cv), ...jsToMidiEncoder.uint16_t(value)]
     const data = [...splitInt8To7(voice), ...splitTo7(FunctionNames.setCVOverride, 14), ...paramBytes]
     logger.midi('RPC call to setCVOverride')
     sendSysex(sysexCommands.RPC, data)
 }
 
 export function releaseCVOverride(cv: number, voice: number = VOICE_ALL) {
-    const paramBytes: number[] = [...jsToMidiEncoder['uint8_t'](cv)]
+    const paramBytes: number[] = [...jsToMidiEncoder.uint8_t(cv)]
     const data = [...splitInt8To7(voice), ...splitTo7(FunctionNames.releaseCVOverride, 14), ...paramBytes]
     logger.midi('RPC call to releaseCVOverride')
     sendSysex(sysexCommands.RPC, data)
@@ -112,7 +112,7 @@ export function releaseCVOverrides(voice: number = VOICE_ALL) {
 }
 
 export function toggleSvfInSummedToCalibrateMix(on: boolean, voice: number = VOICE_ALL) {
-    const paramBytes: number[] = [...jsToMidiEncoder['bool'](on)]
+    const paramBytes: number[] = [...jsToMidiEncoder.bool(on)]
     const data = [...splitInt8To7(voice), ...splitTo7(FunctionNames.toggleSvfInSummedToCalibrateMix, 14), ...paramBytes]
     logger.midi('RPC call to toggleSvfInSummedToCalibrateMix')
     sendSysex(sysexCommands.RPC, data)
@@ -182,7 +182,7 @@ export function powerUp(voice: number = VOICE_ALL) {
 }
 
 export function unisonDetuneFactor(factor: number, voice: number = VOICE_ALL) {
-    const paramBytes: number[] = [...jsToMidiEncoder['uint16_t'](factor)]
+    const paramBytes: number[] = [...jsToMidiEncoder.uint16_t(factor)]
     const data = [...splitInt8To7(voice), ...splitTo7(FunctionNames.unisonDetuneFactor, 14), ...paramBytes]
     logger.midi('RPC call to unisonDetuneFactor')
     sendSysex(sysexCommands.RPC, data)
@@ -203,20 +203,14 @@ export function setCtrlAllNonModSettings(settings: number[], voice: number = VOI
 }
 
 export function setCtrlAllEnvParams(env: number, params: number[], voice: number = VOICE_ALL) {
-    const paramBytes: number[] = [
-        ...jsToMidiEncoder['uint8_t'](env),
-        ...jsToMidiEncoder['std::vector<int16_t>'](params),
-    ]
+    const paramBytes: number[] = [...jsToMidiEncoder.uint8_t(env), ...jsToMidiEncoder['std::vector<int16_t>'](params)]
     const data = [...splitInt8To7(voice), ...splitTo7(FunctionNames.setCtrlAllEnvParams, 14), ...paramBytes]
     logger.midi('RPC call to setCtrlAllEnvParams')
     sendSysex(sysexCommands.RPC, data)
 }
 
 export function setCtrlAllEnvSettings(env: number, settings: number[], voice: number = VOICE_ALL) {
-    const paramBytes: number[] = [
-        ...jsToMidiEncoder['uint8_t'](env),
-        ...jsToMidiEncoder['std::vector<uint8_t>'](settings),
-    ]
+    const paramBytes: number[] = [...jsToMidiEncoder.uint8_t(env), ...jsToMidiEncoder['std::vector<uint8_t>'](settings)]
     const data = [...splitInt8To7(voice), ...splitTo7(FunctionNames.setCtrlAllEnvSettings, 14), ...paramBytes]
     logger.midi('RPC call to setCtrlAllEnvSettings')
     sendSysex(sysexCommands.RPC, data)
@@ -224,8 +218,8 @@ export function setCtrlAllEnvSettings(env: number, settings: number[], voice: nu
 
 export function setCtrlAllEnvStageSettings(env: number, stage: number, settings: number[], voice: number = VOICE_ALL) {
     const paramBytes: number[] = [
-        ...jsToMidiEncoder['uint8_t'](env),
-        ...jsToMidiEncoder['uint8_t'](stage),
+        ...jsToMidiEncoder.uint8_t(env),
+        ...jsToMidiEncoder.uint8_t(stage),
         ...jsToMidiEncoder['std::vector<uint8_t>'](settings),
     ]
     const data = [...splitInt8To7(voice), ...splitTo7(FunctionNames.setCtrlAllEnvStageSettings, 14), ...paramBytes]
@@ -234,20 +228,14 @@ export function setCtrlAllEnvStageSettings(env: number, stage: number, settings:
 }
 
 export function setCtrlAllLfoParams(lfo: number, params: number[], voice: number = VOICE_ALL) {
-    const paramBytes: number[] = [
-        ...jsToMidiEncoder['uint8_t'](lfo),
-        ...jsToMidiEncoder['std::vector<int16_t>'](params),
-    ]
+    const paramBytes: number[] = [...jsToMidiEncoder.uint8_t(lfo), ...jsToMidiEncoder['std::vector<int16_t>'](params)]
     const data = [...splitInt8To7(voice), ...splitTo7(FunctionNames.setCtrlAllLfoParams, 14), ...paramBytes]
     logger.midi('RPC call to setCtrlAllLfoParams')
     sendSysex(sysexCommands.RPC, data)
 }
 
 export function setCtrlAllLfoSettings(lfo: number, settings: number[], voice: number = VOICE_ALL) {
-    const paramBytes: number[] = [
-        ...jsToMidiEncoder['uint8_t'](lfo),
-        ...jsToMidiEncoder['std::vector<uint8_t>'](settings),
-    ]
+    const paramBytes: number[] = [...jsToMidiEncoder.uint8_t(lfo), ...jsToMidiEncoder['std::vector<uint8_t>'](settings)]
     const data = [...splitInt8To7(voice), ...splitTo7(FunctionNames.setCtrlAllLfoSettings, 14), ...paramBytes]
     logger.midi('RPC call to setCtrlAllLfoSettings')
     sendSysex(sysexCommands.RPC, data)
@@ -255,8 +243,8 @@ export function setCtrlAllLfoSettings(lfo: number, settings: number[], voice: nu
 
 export function setCtrlAllLfoStageSettings(lfo: number, stage: number, settings: number[], voice: number = VOICE_ALL) {
     const paramBytes: number[] = [
-        ...jsToMidiEncoder['uint8_t'](lfo),
-        ...jsToMidiEncoder['uint8_t'](stage),
+        ...jsToMidiEncoder.uint8_t(lfo),
+        ...jsToMidiEncoder.uint8_t(stage),
         ...jsToMidiEncoder['std::vector<uint8_t>'](settings),
     ]
     const data = [...splitInt8To7(voice), ...splitTo7(FunctionNames.setCtrlAllLfoStageSettings, 14), ...paramBytes]
@@ -266,7 +254,7 @@ export function setCtrlAllLfoStageSettings(lfo: number, stage: number, settings:
 
 export function setAllModAmounts(offsetDst: number, sourceAmounts: number[], voice: number = VOICE_ALL) {
     const paramBytes: number[] = [
-        ...jsToMidiEncoder['uint8_t'](offsetDst),
+        ...jsToMidiEncoder.uint8_t(offsetDst),
         ...jsToMidiEncoder['std::vector<int16_t>'](sourceAmounts),
     ]
     const data = [...splitInt8To7(voice), ...splitTo7(FunctionNames.setAllModAmounts, 14), ...paramBytes]
@@ -281,8 +269,8 @@ export function setAllEnvModAmounts(
     voice: number = VOICE_ALL
 ) {
     const paramBytes: number[] = [
-        ...jsToMidiEncoder['uint8_t'](env),
-        ...jsToMidiEncoder['uint8_t'](offsetDst),
+        ...jsToMidiEncoder.uint8_t(env),
+        ...jsToMidiEncoder.uint8_t(offsetDst),
         ...jsToMidiEncoder['std::vector<int16_t>'](sourceAmounts),
     ]
     const data = [...splitInt8To7(voice), ...splitTo7(FunctionNames.setAllEnvModAmounts, 14), ...paramBytes]
@@ -297,8 +285,8 @@ export function setAllLfoModAmounts(
     voice: number = VOICE_ALL
 ) {
     const paramBytes: number[] = [
-        ...jsToMidiEncoder['uint8_t'](lfo),
-        ...jsToMidiEncoder['uint8_t'](offsetDst),
+        ...jsToMidiEncoder.uint8_t(lfo),
+        ...jsToMidiEncoder.uint8_t(offsetDst),
         ...jsToMidiEncoder['std::vector<int16_t>'](sourceAmounts),
     ]
     const data = [...splitInt8To7(voice), ...splitTo7(FunctionNames.setAllLfoModAmounts, 14), ...paramBytes]
@@ -307,14 +295,14 @@ export function setAllLfoModAmounts(
 }
 
 export function changeMidiSpeed(speed: number, voice: number = VOICE_ALL) {
-    const paramBytes: number[] = [...jsToMidiEncoder['uint32_t'](speed)]
+    const paramBytes: number[] = [...jsToMidiEncoder.uint32_t(speed)]
     const data = [...splitInt8To7(voice), ...splitTo7(FunctionNames.changeMidiSpeed, 14), ...paramBytes]
     logger.midi('RPC call to changeMidiSpeed')
     sendSysex(sysexCommands.RPC, data)
 }
 
 export function toggleVoicePower(voiceCardId: number, on: boolean, voice: number = VOICE_ALL) {
-    const paramBytes: number[] = [...jsToMidiEncoder['uint8_t'](voiceCardId), ...jsToMidiEncoder['bool'](on)]
+    const paramBytes: number[] = [...jsToMidiEncoder.uint8_t(voiceCardId), ...jsToMidiEncoder.bool(on)]
     const data = [...splitInt8To7(voice), ...splitTo7(FunctionNames.toggleVoicePower, 14), ...paramBytes]
     logger.midi('RPC call to toggleVoicePower')
     sendSysex(sysexCommands.RPC, data)

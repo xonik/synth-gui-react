@@ -35,24 +35,24 @@ const functionMapper = (func: Func) => {
         ...func.params,
     ]
 
-    const paramConverts = func.params.map(({ name, type }, index) => {
+    const paramConverts = func.params.map(({ name, type }) => {
         return `std::vector<uint8_t> ${name}Vec = ${dataTypeMap[type].cppSerializer}${name});`
     })
 
     const paramReserves = [
-        ...paramWithFuncId.map(({ name, type }, index) => {
+        ...paramWithFuncId.map(({ name }) => {
             return `${name}Vec.size()`
         }),
     ]
 
-    const paramCombines = paramWithFuncId.map(({ name }, index) => {
+    const paramCombines = paramWithFuncId.map(({ name }) => {
         return `dataToSend.insert(dataToSend.end(), ${name}Vec.begin(), ${name}Vec.end());`
     })
     const functionHeader = `void ${func.name}(${params.join(', ')}) {`
 
     return `    ${functionHeader}
         std::vector<uint8_t> dataToSend = splitInt8To7(voice);
-        std::vector<uint8_t> functionIdVec = splitTo7(14, ${func.name}Id);${paramConverts.length > 0 ? '\n        ' + paramConverts.join('\n        ') : ''}
+        std::vector<uint8_t> functionIdVec = splitTo7(14, ${func.name}Id);${paramConverts.length > 0 ? `\n        ${paramConverts.join('\n        ')}` : ''}
         ${getDataToSendJoining(paramReserves, paramCombines)}
         voiceMidi->sendSysex(voice, SYSEX_CMD_RPC, &dataToSend);
     }`

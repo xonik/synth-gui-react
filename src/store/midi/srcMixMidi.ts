@@ -1,7 +1,7 @@
-import { button, cc } from '../../midi/midibus'
-import type { ControllerConfigButton, ControllerConfigCC } from '../../midi/types'
+import { button, cc } from '@/midi/midibus'
+import type { ControllerConfigButton, ControllerConfigCC } from '@/midi/types'
+import { voiceGroupStores } from '@/store'
 import srcMixControllers from '../../synthcore/modules/srcMix/srcMixControllers'
-import { SrcMixState, VoiceGroupPatch, voiceGroupStores } from '../patchStore'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
 
 type LevelField = 'levelOsc1' | 'levelOsc2' | 'levelOsc3' | 'levelNoise' | 'levelRingMod' | 'levelExtAudio'
@@ -61,7 +61,9 @@ export function startSrcMixMidiSend() {
 }
 
 export function stopSrcMixMidiSend() {
-    unsubscribers.forEach((unsub) => unsub())
+    unsubscribers.forEach((unsub) => {
+        unsub()
+    })
     unsubscribers = []
 }
 
@@ -97,6 +99,8 @@ export function startSrcMixMidiReceive() {
 }
 
 export function stopSrcMixMidiReceive() {
-    receiveUnsubscribers.forEach((unsub) => unsub())
+    receiveUnsubscribers.forEach((unsub) => {
+        unsub()
+    })
     receiveUnsubscribers = []
 }

@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it } from 'vitest'
+import { defaultVoiceGroupPatch, type VoiceGroupPatch } from '@/store'
 import {
     incrementMaxLoops,
     isLevelEditable,
     isToggleable,
-    STAGE_NAMES,
     setInvert,
     setMaxLoops,
     setStageCurve,
@@ -12,8 +12,7 @@ import {
     setStageTime,
     toggleInvert,
     toggleStageEnabled,
-} from '../../store/modules/envActions'
-import { defaultVoiceGroupPatch, type VoiceGroupPatch } from '../../store/patchStore'
+} from '@/store/modules/envActions'
 
 describe('envActions', () => {
     let state: VoiceGroupPatch

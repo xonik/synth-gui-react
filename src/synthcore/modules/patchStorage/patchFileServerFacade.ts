@@ -35,7 +35,7 @@ async function loadPatch(key: string, version?: string) {
     }
 
     console.log(`Loading patch ${key} ${version}`)
-    const res = await fetch(patchRoot + '?' + new URLSearchParams(params), {
+    const res = await fetch(`${patchRoot}?${new URLSearchParams(params)}`, {
         method: 'GET',
         cache: 'no-cache',
         headers: {
@@ -55,7 +55,7 @@ async function loadPatch(key: string, version?: string) {
 // OK
 async function createFolder(key: string) {
     console.log(`Creating folder ${key}`)
-    const res = await fetch(patchRoot + '/folder', {
+    const res = await fetch(`${patchRoot}/folder`, {
         method: 'PUT',
         body: JSON.stringify({
             key,
@@ -73,7 +73,7 @@ async function createFolder(key: string) {
 
 async function renameFolder(oldKey: string, newKey: string) {
     console.log(`Renaming folder ${oldKey} to ${newKey}`)
-    const res = await fetch(patchRoot + '/folder/rename', {
+    const res = await fetch(`${patchRoot}/folder/rename`, {
         method: 'POST',
         body: JSON.stringify({
             oldKey,
@@ -93,7 +93,7 @@ async function renameFolder(oldKey: string, newKey: string) {
 // OK
 async function deleteFolder(key: string) {
     console.log(`Deleting folder ${key}`)
-    const res = await fetch(patchRoot + '/folder?' + new URLSearchParams({ key }), {
+    const res = await fetch(`${patchRoot}/folder?${new URLSearchParams({ key })}`, {
         method: 'DELETE',
         cache: 'no-cache',
         headers: {
@@ -109,7 +109,7 @@ async function deleteFolder(key: string) {
 
 async function renamePatch(oldKey: string, newKey: string) {
     console.log(`Renaming patch ${oldKey} to ${newKey}`)
-    const res = await fetch(patchRoot + '/rename', {
+    const res = await fetch(`${patchRoot}/rename`, {
         method: 'POST',
         body: JSON.stringify({
             oldKey,
@@ -128,7 +128,7 @@ async function renamePatch(oldKey: string, newKey: string) {
 
 // OK
 async function deletePatch(key: string) {
-    const res = await fetch(patchRoot + '?' + new URLSearchParams({ key }), {
+    const res = await fetch(`${patchRoot}?${new URLSearchParams({ key })}`, {
         method: 'DELETE',
         cache: 'no-cache',
         headers: {
@@ -143,7 +143,7 @@ async function deletePatch(key: string) {
 
 // OK
 async function getFileTree(): Promise<FileBrowserTree> {
-    const res = await fetch(patchRoot + '/filetree', {
+    const res = await fetch(`${patchRoot}/filetree`, {
         method: 'GET',
         cache: 'no-cache',
         headers: {
@@ -161,7 +161,7 @@ async function getFileTree(): Promise<FileBrowserTree> {
 
 // OK
 async function getPatchVersions(key: string) {
-    const res = await fetch(patchRoot + '/versions?' + new URLSearchParams({ key }), {
+    const res = await fetch(`${patchRoot}/versions?${new URLSearchParams({ key })}`, {
         method: 'GET',
         cache: 'no-cache',
         headers: {

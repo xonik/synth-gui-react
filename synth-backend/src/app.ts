@@ -1,9 +1,9 @@
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import cookieParser from 'cookie-parser'
 import express from 'express'
 import createError, { HttpError } from 'http-errors'
 import logger from 'morgan'
-import path from 'path'
-import { fileURLToPath } from 'url'
 
 import patchRouter from './routes/patch.js'
 
@@ -20,7 +20,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/patch', patchRouter)
 
 // catch 404 and forward to error handler
-app.use((req: any, res: any, next) => {
+app.use((_req: any, _res: any, next) => {
     next(createError(404))
 })
 

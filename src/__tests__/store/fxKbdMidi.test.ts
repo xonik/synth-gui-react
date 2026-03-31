@@ -88,10 +88,10 @@ describe('FX/Kbd MIDI send', () => {
         resetStore()
         sentCC = []
         sentButtons = []
-        cc.send = vi.fn((vg, ctrl, value) => {
+        cc.send = vi.fn((_vg, ctrl, value) => {
             sentCC.push({ ccNum: ctrl.cc, value })
         }) as any
-        button.send = vi.fn((vg, ctrl, value) => {
+        button.send = vi.fn((_vg, ctrl, value) => {
             sentButtons.push({ ctrl, value })
         }) as any
         startFxKbdMidiSend()
@@ -109,7 +109,7 @@ describe('FX/Kbd MIDI send', () => {
         })
         const sent = sentCC.find((s) => s.ccNum === fxControllers.DISTORTION.DRIVE.cc)
         expect(sent).toBeDefined()
-        expect(sent!.value).toBe(Math.floor(127 * 0.6))
+        expect(sent?.value).toBe(Math.floor(127 * 0.6))
     })
 
     it('sends kbd portamento as CC', () => {
@@ -118,7 +118,7 @@ describe('FX/Kbd MIDI send', () => {
         })
         const sent = sentCC.find((s) => s.ccNum === kbdControllers.PORTAMENTO.cc)
         expect(sent).toBeDefined()
-        expect(sent!.value).toBe(Math.floor(127 * 0.3))
+        expect(sent?.value).toBe(Math.floor(127 * 0.3))
     })
 
     it('sends distortion out as button MIDI', () => {

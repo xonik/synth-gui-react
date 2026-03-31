@@ -1,11 +1,11 @@
+import fs from 'node:fs'
 import * as process from 'node:process'
-import fs from 'fs'
-import { isNaN } from 'lodash'
-import readline from 'readline'
+import readline from 'node:readline'
 
 const defaultThreshold = 2.5 // Threshold for rising edge detection
 const logic2OutputFilePath = process.argv[2]
-const threshold = (process.argv[3] ?? Number.parseFloat(process.argv[3])) || defaultThreshold
+const thresholdFromCommandLine = process.argv[3] ? Number.parseFloat(process.argv[3]) : undefined
+const threshold = thresholdFromCommandLine || defaultThreshold
 
 type FrequencyEntry = { time: number; frequency: number }
 type RateOfChangeEntry = { time: number; frequencyDifference: number; ratePercent: number }
@@ -14,7 +14,7 @@ type Sample = { time: number; value: number }
 const { processSample, frequencyList } = createFrequencyProcessor()
 
 function readLinesFromFile(filePath: string): Promise<string[]> {
-    return new Promise((resolve, reject) => {
+    return new Promise((_resolve, reject) => {
         const fileStream = fs.createReadStream(filePath)
 
         const rl = readline.createInterface({
@@ -24,7 +24,7 @@ function readLinesFromFile(filePath: string): Promise<string[]> {
 
         rl.on('line', (line: string) => {
             const sample = parseLine(line)
-            if (isNaN(sample.value)) return
+            if (Number.isNaN(sample.value)) return
             processSample(sample)
         })
 

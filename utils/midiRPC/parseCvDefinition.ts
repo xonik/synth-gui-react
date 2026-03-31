@@ -1,4 +1,4 @@
-import { type CvDefinition, DataType, isDataType, KNOWN_DATATYPES } from './dataTypes'
+import type { CvDefinition } from './dataTypes'
 
 export const parseCvDefinitionFile = (file: string): CvDefinition[] => {
     const lines = file.split('\n')
@@ -31,7 +31,7 @@ const parseLine = (line: string): CvDefinition | undefined => {
 
         return {
             name,
-            channel: Number.parseInt(channel),
+            channel: Number.parseInt(channel, 10),
             description,
         }
     }

@@ -190,7 +190,7 @@ const filterEnvStageConfigs: Stage[] = [
 ]
 
 export const getDefaultEnvStages = (envId: number): Controllers => {
-    const stageConfig = envId == 1 ? filterEnvStageConfigs : defaultStageConfigs
+    const stageConfig = envId === 1 ? filterEnvStageConfigs : defaultStageConfigs
     const stages: Controllers[] = stageConfig.map((conf) => getStageState(envId, conf))
     const controllers = mergeControllers(stages)
 
@@ -206,7 +206,7 @@ export const getDefaultEnvStages = (envId: number): Controllers => {
 }
 
 export const getDefaultEnvUiStages = (envId: number): Controllers => {
-    const stageConfig = envId == 1 ? filterEnvStageConfigs : defaultStageConfigs
+    const stageConfig = envId === 1 ? filterEnvStageConfigs : defaultStageConfigs
     const stages: Controllers[] = stageConfig.map((conf) => getUiStageState(envId, conf))
     const controllers = mergeControllers(stages)
 

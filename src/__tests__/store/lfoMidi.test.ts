@@ -4,11 +4,11 @@ vi.mock('../../synthcore/synthcoreMiddleware', () => ({
     synthcoreMiddleware: () => (next: any) => (action: any) => next(action),
 }))
 
-import { buttonMidiValues } from '../../midi/buttonMidiValues'
-import { button, cc, nrpn } from '../../midi/midibus'
+import { buttonMidiValues } from '@/midi/buttonMidiValues'
+import { button, cc, nrpn } from '@/midi/midibus'
+import { createPatchStore, voiceGroupStores } from '@/store/patchStore'
+import { lfoCtrls } from '@/synthcore/modules/lfo/lfoControllers'
 import { startLfoMidiReceive, startLfoMidiSend, stopLfoMidiReceive, stopLfoMidiSend } from '../../store/midi/lfoMidi'
-import { createPatchStore, voiceGroupStores } from '../../store/patchStore'
-import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 
 const VG = 0
 const LFO = 1
@@ -96,13 +96,13 @@ describe('LFO MIDI send', () => {
         sentNrpn = []
         sentCC = []
         sentButtons = []
-        nrpn.send = vi.fn((vg, ctrl, value) => {
+        nrpn.send = vi.fn((_vg, ctrl, value) => {
             sentNrpn.push({ addr: ctrl.addr, value })
         }) as any
-        cc.send = vi.fn((vg, ctrl, value) => {
+        cc.send = vi.fn((_vg, ctrl, value) => {
             sentCC.push({ ccNum: ctrl.cc, value })
         }) as any
-        button.send = vi.fn((vg, ctrl, value) => {
+        button.send = vi.fn((_vg, ctrl, value) => {
             sentButtons.push({ ctrl, value })
         }) as any
         startLfoMidiSend()
@@ -121,7 +121,7 @@ describe('LFO MIDI send', () => {
         })
         const sent = sentNrpn.find((s) => s.addr === lfoCtrls.RATE.addr)
         expect(sent).toBeDefined()
-        expect(sent!.value).toBe(Math.floor(65535 * 0.3))
+        expect(sent?.value).toBe(Math.floor(65535 * 0.3))
     })
 
     it('sends LFO select CC before param', () => {
@@ -130,7 +130,7 @@ describe('LFO MIDI send', () => {
         })
         const selectSent = sentCC.find((s) => s.ccNum === (lfoCtrls.SELECT as any).cc)
         expect(selectSent).toBeDefined()
-        expect(selectSent!.value).toBe(2)
+        expect(selectSent?.value).toBe(2)
     })
 
     it('sends shape change as button MIDI', () => {
@@ -147,6 +147,6 @@ describe('LFO MIDI send', () => {
         })
         const sent = sentNrpn.find((s) => s.addr === lfoCtrls.LEVEL_OFFSET.addr)
         expect(sent).toBeDefined()
-        expect(sent!.value).toBe(Math.floor(32767 * -0.5 + 32767))
+        expect(sent?.value).toBe(Math.floor(32767 * -0.5 + 32767))
     })
 })

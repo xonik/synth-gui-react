@@ -1,4 +1,3 @@
-import React from 'react'
 import { rotateAround } from '../../../utils/svg/rotateAround'
 import { PulseLeft } from '../../images/PulseLeft'
 import { PulseRight } from '../../images/PulseRight'

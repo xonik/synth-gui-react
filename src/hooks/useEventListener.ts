@@ -18,7 +18,7 @@ export default function useEventListener<K extends keyof WindowEventMap>(
     }, [handler])
 
     useEffect(() => {
-        if (!element || !element.addEventListener) return
+        if (!element?.addEventListener) return
 
         const eventListener = (event: Event) => savedHandler.current(event as WindowEventMap[K])
 

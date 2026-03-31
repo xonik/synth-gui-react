@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { useEffect, useRef, useState } from 'react'
+import { POT_DISTANCE_L, POT_DISTANCE_M, ROW_HEIGHT } from '@/constants'
 import { SHOW_CENTER, SHOW_CUT, SHOW_GRID, SHOW_LEFT_2, SHOW_RIGHT } from '../config'
-import { POT_DISTANCE_L, POT_DISTANCE_M, ROW_HEIGHT } from '../constants'
 import Controller from '../controller/Controller'
 import Grid from './Grid'
 import { PanelScrew } from './misc/PanelScrew'
@@ -25,10 +25,6 @@ const MainPanel = () => {
     const panelHeight = 290
     const panelWidth = 1000
 
-    const osc1Col = 71.125
-    const osc2Col = osc1Col + 110
-    const osc3Col = osc2Col + 110
-
     const leftWidth = 3 * POT_DISTANCE_L + POT_DISTANCE_M * 7 + 5
     const leftStart = 20
 
@@ -39,8 +35,6 @@ const MainPanel = () => {
     const keyboardWidth = POT_DISTANCE_M * 5
     const centerWidth = transposeWidth + keyboardWidth
 
-    const displayCol = osc3Col + 87.5
-
     const spacing = (rightStart - (leftStart + leftWidth) - centerWidth) / 2
     const centerCol = leftStart + leftWidth + spacing
 
@@ -50,7 +44,6 @@ const MainPanel = () => {
     }
 
     const voiceSelRow = 25
-    const displayRow = voiceSelRow + 55
 
     // Gets the svg placeholder for the display and extracts size and position,
     // this is used to create an overlay div in the same position further down
@@ -164,22 +157,18 @@ const MainPanel = () => {
                 <PanelScrew x={extraScrewCol3} y={screwRow1} />
                 <PanelScrew x={extraScrewCol3} y={screwRow3} />
             </svg>
-            {SHOW_CENTER && !SHOW_CUT && (
-                <>
-                    {dispRect && (
-                        <div
-                            className="panel-main-display"
-                            style={{
-                                top: dispRect.y,
-                                left: dispRect.x,
-                                width: dispRect.width,
-                                height: dispRect.height,
-                            }}
-                        >
-                            <Controller />
-                        </div>
-                    )}
-                </>
+            {SHOW_CENTER && !SHOW_CUT && dispRect && (
+                <div
+                    className="panel-main-display"
+                    style={{
+                        top: dispRect.y,
+                        left: dispRect.x,
+                        width: dispRect.width,
+                        height: dispRect.height,
+                    }}
+                >
+                    <Controller />
+                </div>
             )}
         </>
     )

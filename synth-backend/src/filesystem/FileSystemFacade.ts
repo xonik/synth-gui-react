@@ -1,5 +1,5 @@
-import { existsSync } from 'fs'
-import * as fs from 'fs/promises'
+import { existsSync } from 'node:fs'
+import * as fs from 'node:fs/promises'
 import { Fat } from './Fat.js'
 import { splitKey } from './fileUtils.js'
 import { FileNotFoundException, type FileTreeEntry } from './types.js'

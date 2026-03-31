@@ -7,7 +7,7 @@ var router = express.Router()
 const filesystem = new FileSystemFacade('../storage/patches/', '../storage/patchesDeleted/')
 
 // TODO: Prevent caching
-router.get('/filetree', (req, res, next) => {
+router.get('/filetree', (_req, res, _next) => {
     console.log('Got a file tree request')
     try {
         const content = filesystem.getFileTree()
@@ -20,7 +20,7 @@ router.get('/filetree', (req, res, next) => {
 })
 
 // TODO: Prevent caching
-router.get('/', async (req, res, next) => {
+router.get('/', async (req, res, _next) => {
     const { key, version }: { key?: string; version?: string } = req.query
     if (!key) return res.status(400).json({ error: 'Key not included' })
     if (key.endsWith('/')) {
@@ -38,7 +38,7 @@ router.get('/', async (req, res, next) => {
     }
 })
 
-router.get('/path', async (req, res, next) => {
+router.get('/path', async (req, res, _next) => {
     const { keyOnDisk }: { keyOnDisk?: string } = req.query
     if (!keyOnDisk) return res.status(400).json({ error: 'Key not included' })
     try {
@@ -53,7 +53,7 @@ router.get('/path', async (req, res, next) => {
 })
 
 // TODO: Prevent caching
-router.get('/versions', async (req, res, next) => {
+router.get('/versions', async (req, res, _next) => {
     const { key }: { key?: string } = req.query
     if (!key) return res.status(400).json({ error: 'Key not included' })
     if (key.endsWith('/')) {
@@ -72,7 +72,7 @@ router.get('/versions', async (req, res, next) => {
     }
 })
 
-router.put('/', async (req, res, next) => {
+router.put('/', async (req, res, _next) => {
     const { key, content } = req.body
     if (key.endsWith('/')) {
         res.json({})
@@ -88,7 +88,7 @@ router.put('/', async (req, res, next) => {
     }
 })
 
-router.delete('/', async (req, res, next) => {
+router.delete('/', async (req, res, _next) => {
     const { key }: { key?: string } = req.query
     if (!key) return res.status(400).json({ error: 'Key not included' })
     if (key.endsWith('/')) {
@@ -104,7 +104,7 @@ router.delete('/', async (req, res, next) => {
     }
 })
 
-router.post('/rename', async (req, res, next) => {
+router.post('/rename', async (req, res, _next) => {
     const { oldKey, newKey } = req.body
     if (!oldKey.endsWith('/') && !newKey.endsWith('/')) {
         try {
@@ -119,7 +119,7 @@ router.post('/rename', async (req, res, next) => {
     }
 })
 
-router.put('/folder', async (req, res, next) => {
+router.put('/folder', async (req, res, _next) => {
     const { key } = req.body
     if (key.endsWith('/')) {
         try {
@@ -135,7 +135,7 @@ router.put('/folder', async (req, res, next) => {
     }
 })
 
-router.post('/folder/rename', async (req, res, next) => {
+router.post('/folder/rename', async (req, res, _next) => {
     const { oldKey, newKey } = req.body
     if (oldKey.endsWith('/') && newKey.endsWith('/')) {
         try {
@@ -150,7 +150,7 @@ router.post('/folder/rename', async (req, res, next) => {
     }
 })
 
-router.delete('/folder', async (req, res, next) => {
+router.delete('/folder', async (req, res, _next) => {
     const { key }: { key?: string } = req.query
     if (!key) return res.status(400).json({ error: 'Key not included' })
     if (key.endsWith('/')) {

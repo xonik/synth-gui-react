@@ -37,7 +37,7 @@ const StageBlock = ({ x, y, width, height, stage, nextStage, isBipolar, offset }
 
     const points = useMemo(() => {
         return getPoints(curveFunc, false, false)
-    }, [stage.curve])
+    }, [curveFunc])
 
     const svgPoints = useMemo(
         () =>

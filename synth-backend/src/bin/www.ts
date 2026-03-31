@@ -1,4 +1,4 @@
-import * as http from 'http'
+import * as http from 'node:http'
 import app from '../app.js'
 
 /**
@@ -29,7 +29,7 @@ server.on('listening', onListening)
 function normalizePort(val: string) {
     const port = parseInt(val, 10)
 
-    if (isNaN(port)) {
+    if (Number.isNaN(port)) {
         // named pipe
         return val
     }
@@ -51,16 +51,16 @@ function onError(error: NodeJS.ErrnoException) {
         throw error
     }
 
-    var bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port
+    var bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`
 
     // handle specific listen errors with friendly messages
     switch (error.code) {
         case 'EACCES':
-            console.error(bind + ' requires elevated privileges')
+            console.error(`${bind} requires elevated privileges`)
             process.exit(1)
             break
         case 'EADDRINUSE':
-            console.error(bind + ' is already in use')
+            console.error(`${bind} is already in use`)
             process.exit(1)
             break
         default:
@@ -74,6 +74,6 @@ function onError(error: NodeJS.ErrnoException) {
 
 function onListening() {
     const addr = server.address()
-    const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr?.port
+    const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr?.port}`
     console.log('listening 2', bind)
 }

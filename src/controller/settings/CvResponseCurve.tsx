@@ -1,10 +1,10 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
+import type { Curve } from '@/synthcore/generatedTypes'
+import type { Point } from '@/utils/types'
 import AnimatedCurve from '../../components/curves/AnimatedCurve'
 import { curveFuncs, reverse as reverseCurve } from '../../components/curves/curveCalculator'
-import type { Point } from '../../utils/types'
 import { getPoints } from '../lfos/utils'
 import './CvRange.scss'
-import type { Curve } from '../../synthcore/generatedTypes'
 
 interface Props {
     start: number

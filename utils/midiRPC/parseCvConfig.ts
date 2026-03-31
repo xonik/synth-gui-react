@@ -17,6 +17,6 @@ const parseLine = (line: string): number | undefined => {
         if (!match) return
         const [, channelCount] = match
 
-        return Number.parseInt(channelCount)
+        return Number.parseInt(channelCount, 10)
     }
 }

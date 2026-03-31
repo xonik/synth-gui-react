@@ -1,6 +1,6 @@
-import { buttonMidiValues } from '../../../midi/buttonMidiValues'
-import { type ControllerConfigButton, ControllerConfigNRPN, type FuncProps } from '../../../midi/types'
-import { ControllerIdNonMod, ControllerIdNonModPots } from '../controllers/controllerIds'
+import { buttonMidiValues } from '@/midi/buttonMidiValues'
+import type { ControllerConfigButton, FuncProps } from '@/midi/types'
+import { ControllerIdNonMod } from '../controllers/controllerIds'
 
 interface SettingsControllers {
     props: FuncProps

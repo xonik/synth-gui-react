@@ -36,7 +36,7 @@ const CvSelector = ({ onSelect, cv }: CvSelectorProps) => {
             event.preventDefault()
             const value = event.target.value
             if (value) {
-                onSelect(Number.parseInt(value))
+                onSelect(Number.parseInt(value, 10))
             }
         },
         [onSelect]

@@ -6,15 +6,14 @@
  */
 
 import { useCallback, useMemo } from 'react'
-import { dbLevelResponseMapper, timeResponseMapper } from '../../synthcore/modules/common/responseMappers'
-import { StageId } from '../../synthcore/modules/env/types'
+import { useUiStore } from '@/store'
+import { dbLevelResponseMapper, timeResponseMapper } from '@/synthcore/modules/common/responseMappers'
+import { StageId } from '@/synthcore/modules/env/types'
 import { type EnvelopeState, useVoiceGroupStore, type VoiceGroupPatch, voiceGroupStores } from '../patchStore'
-import { useUiStore } from '../uiStore'
 import { getBounded } from '../utils'
 import {
     STAGE_NAMES,
     type StageName,
-    setInvert,
     setStageLevel,
     setStageTime,
     toggleInvert,

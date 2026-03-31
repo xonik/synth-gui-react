@@ -85,7 +85,7 @@ const getInt16Array = (values: number[]): number[] => {
 }
 
 export const jsToMidiEncoder: Record<DataType, (value: unknown) => number[]> = {
-    void: (value: unknown) => [], // should not be used
+    void: (_value: unknown) => [], // should not be used
     uint7_t: (value: unknown) => splitTo7(value as number, 7),
     uint8_t: (value: unknown) => splitTo7(value as number, 8),
     uint14_t: (value: unknown) => splitTo7(value as number, 14),

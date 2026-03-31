@@ -27,7 +27,7 @@ const parseLine = (line: string) => {
         const trimmed = line.trim()
         const match = trimmed.match(funcRegex)
         if (!match) return
-        const [, returnType, name, paramList, c1, comment] = match
+        const [, returnType, name, paramList, _c1, comment] = match
 
         if (!isDataType(returnType)) {
             throw new Error(`${name}: ${returnType} is an unknown datatype`)

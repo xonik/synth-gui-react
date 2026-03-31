@@ -1,5 +1,6 @@
 // All functions are rising between 0, 0 and 1, 1
 
+import { curveNames } from '@/components/curves/shortCurveNames'
 import type { ControllerConfig } from '../../midi/types'
 import { Curve } from '../../synthcore/generatedTypes'
 
@@ -113,7 +114,7 @@ testInterpolation(log, 65535, 256,256, 256)
  */
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const generateAndPrintTables = (
+const _generateAndPrintTables = (
     yScale: number,
     keypointCount: number,
     intermediatesPerKeypoint: number,

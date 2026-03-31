@@ -55,7 +55,7 @@ const CvSelector = ({ onSelect, cv }: CvSelectorProps) => {
             const value = event.target.value
             console.log(value)
             if (value) {
-                onSelect(Number.parseInt(value))
+                onSelect(Number.parseInt(value, 10))
             }
         },
         [onSelect]
@@ -81,7 +81,7 @@ const CvCurveSelector = ({ onSelect, curve }: CvCurveSelectorProps) => {
             const value = event.target.value
             console.log(value)
             if (value) {
-                onSelect(Number.parseInt(value))
+                onSelect(Number.parseInt(value, 10))
             }
         },
         [onSelect]

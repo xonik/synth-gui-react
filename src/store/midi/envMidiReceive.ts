@@ -43,7 +43,7 @@ function storeForVoiceGroup(voiceGroupIndex: number) {
 
 function subscribeEnvSelect() {
     const cfg = envCtrls.SELECT
-    const id = cc.subscribe((voiceGroupIndex: number, value: number) => {
+    const id = cc.subscribe((_voiceGroupIndex: number, value: number) => {
         currentReceivedEnvId = value
     }, cfg)
     return () => cc.unsubscribe(cfg, id)

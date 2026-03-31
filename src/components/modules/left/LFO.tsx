@@ -1,11 +1,10 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
+import { buttonMidiValues } from '@/midi/buttonMidiValues'
+import { button } from '@/midi/midibus'
+import { useButton, usePot, useUiStore } from '@/store'
+import { timeResponseMapper } from '@/synthcore/modules/common/responseMappers'
+import { lfoCtrls } from '@/synthcore/modules/lfo/lfoControllers'
 import { BUTTON_DISTANCE_S, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from '../../../constants'
-import { buttonMidiValues } from '../../../midi/buttonMidiValues'
-import { button } from '../../../midi/midibus'
-import { useButton, usePot } from '../../../store/hooks'
-import { useUiStore } from '../../../store/uiStore'
-import { timeResponseMapper } from '../../../synthcore/modules/common/responseMappers'
-import { lfoCtrls } from '../../../synthcore/modules/lfo/lfoControllers'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { Random } from '../../images/Random'
@@ -216,11 +215,11 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 ledPosition="right-two-cols"
                 ledCount={6}
                 ledLabels={[
-                    <SawRight x={0} y={0} width={3} height={2} />,
-                    <Triangle x={0} y={0} width={3} height={2} />,
-                    <Square x={0} y={0} width={3} height={2} />,
-                    <Sine x={0} y={0} width={3} height={2} />,
-                    <Random x={0} y={0} width={3} height={2} />,
+                    <SawRight key="sr" x={0} y={0} width={3} height={2} />,
+                    <Triangle key="tri" x={0} y={0} width={3} height={2} />,
+                    <Square key="sq" x={0} y={0} width={3} height={2} />,
+                    <Sine key="sin" x={0} y={0} width={3} height={2} />,
+                    <Random key="rnd" x={0} y={0} width={3} height={2} />,
                     'Other',
                 ]}
                 value={shapeValue}

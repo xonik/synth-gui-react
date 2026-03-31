@@ -341,7 +341,7 @@ export const lcscParts = [
         type: getPartType(parts[1]),
         footprint: parts[2],
         id: parts[3],
-        rotation: Number.parseInt(parts[4]),
+        rotation: Number.parseInt(parts[4], 10),
         extended: parts[5] === 'E',
     }
 })

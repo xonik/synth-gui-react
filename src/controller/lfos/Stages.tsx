@@ -29,19 +29,17 @@ const Stages = ({ stageBackgrounds, points }: Props) => {
                 const isLast = index === stageBackgrounds.length - 1
                 return (
                     <Fragment key={`stage${index}`}>
-                        <>
-                            <rect
-                                x={from}
-                                y={0}
-                                width={to - from}
-                                height={1}
-                                onClick={() => onSvgClicked(id)}
-                                className={classNames('stages-background', {
-                                    'stages-background--selected': currStageId === id,
-                                })}
-                            />
-                            <line x1={from} y1={0} x2={from} y2={1} className={'stages-divider'} />
-                        </>
+                        <rect
+                            x={from}
+                            y={0}
+                            width={to - from}
+                            height={1}
+                            onClick={() => onSvgClicked(id)}
+                            className={classNames('stages-background', {
+                                'stages-background--selected': currStageId === id,
+                            })}
+                        />
+                        <line x1={from} y1={0} x2={from} y2={1} className={'stages-divider'} />
                         {isLast && <line x1={to} y1={0} x2={to} y2={1} className={'stages-divider'} />}
                     </Fragment>
                 )
