@@ -69,9 +69,9 @@ describe('CC pot MIDI receive', () => {
             expect(getState().postMix.svf).toBeCloseTo(50 / 127, 2)
         })
 
-        it('sets pan from CC', () => {
+        it('sets pan from CC (bipolar)', () => {
             cc.publish(VG, postMixControllers.PAN.cc, 96)
-            expect(getState().postMix.pan).toBeCloseTo(96 / 127, 2)
+            expect(getState().postMix.pan).toBeCloseTo((96 * 2 / 127) - 1, 2)
         })
 
         it('sets amount from CC', () => {
@@ -118,11 +118,11 @@ describe('CC pot MIDI send', () => {
         expect(sent!.value).toBe(Math.floor(127 * 0.75))
     })
 
-    it('sends postMix pan change as CC', () => {
-        getState().set(s => { s.postMix.pan = 0.75 })
+    it('sends postMix pan change as CC (bipolar)', () => {
+        getState().set(s => { s.postMix.pan = 0.5 })
         const sent = sentValues.find(s => s.ccNum === postMixControllers.PAN.cc)
         expect(sent).toBeDefined()
-        expect(sent!.value).toBe(Math.floor(127 * 0.75))
+        expect(sent!.value).toBe(Math.floor(127 * (0.5 + 1) / 2))
     })
 
     it('sends postMix LPF change as CC', () => {

@@ -56,10 +56,9 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
     if (balance > 0.995) balance = 0.995;
 
     // Build Stage objects from Zustand state
-    const stagesMap = lfo.stages
-    const delayStage: Stage = { id: StageId.DELAY, enabled: stagesMap[StageId.DELAY]?.enabled ?? 0, curve: stagesMap[StageId.DELAY]?.curve ?? 0 }
-    const attackStage: Stage = { id: StageId.ATTACK, enabled: stagesMap[StageId.ATTACK]?.enabled ?? 1, curve: stagesMap[StageId.ATTACK]?.curve ?? 0 }
-    const releaseStage: Stage = { id: StageId.RELEASE, enabled: stagesMap[StageId.RELEASE]?.enabled ?? 0, curve: stagesMap[StageId.RELEASE]?.curve ?? 0 }
+    const delayStage: Stage = { id: StageId.DELAY, enabled: lfo.stages.delay.enabled, curve: lfo.stages.delay.curve }
+    const attackStage: Stage = { id: StageId.ATTACK, enabled: lfo.stages.attack.enabled, curve: lfo.stages.attack.curve }
+    const releaseStage: Stage = { id: StageId.RELEASE, enabled: lfo.stages.release.enabled, curve: lfo.stages.release.curve }
     const stoppedStage: Stage = { id: StageId.STOPPED, enabled: 0, curve: 0 }
 
     const delayEnabled = delayStage.enabled === 1

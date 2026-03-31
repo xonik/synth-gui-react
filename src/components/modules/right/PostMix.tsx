@@ -9,12 +9,13 @@ import "../Modules.scss"
 import { usePot } from '../../../store/hooks'
 import { VoiceGroupPatch } from '../../../store/patchStore'
 
-const PostMixPot = ({ x, y, label, potMode = 'normal', ledMode = 'multi', selector, mutator }: {
+const PostMixPot = ({ x, y, label, potMode = 'normal', ledMode = 'multi', selector, mutator, bipolar }: {
     x: number, y: number, label: string, potMode?: PotMode, ledMode?: LedMode,
     selector: (s: VoiceGroupPatch) => number,
     mutator: (s: VoiceGroupPatch, v: number) => void,
+    bipolar?: boolean,
 }) => {
-    const { displayValue, increment } = usePot(selector, mutator)
+    const { displayValue, increment } = usePot(selector, mutator, bipolar ? { bipolar: true } : undefined)
     return <RotaryPot12
         label={label}
         x={x}
@@ -53,7 +54,7 @@ const PostMix = ({ x, y, height, width }: ModuleProps) => {
 
         <ModuleBorder x={x} y={offsetY2 - POT_OFFSET_Y} height={height / 2} width={width} className="audio-elements-border"/>
         <SubHeader label="Voice out" x={x} y={offsetY2 - POT_OFFSET_Y} width={width} labelPosition="center" labelWidth={22}/>
-        <PostMixPot x={center} y={offsetY2} label="Pan" potMode="pan" ledMode="single"
+        <PostMixPot x={center} y={offsetY2} label="Pan" potMode="pan" ledMode="single" bipolar
                     selector={s => s.postMix.pan}
                     mutator={(s, v) => { s.postMix.pan = v }}
         />

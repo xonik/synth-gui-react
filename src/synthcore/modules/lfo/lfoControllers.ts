@@ -5,7 +5,8 @@ import {
     ControllerConfigButton,
     ControllerConfigNRPN,
     ControllerConfigNRPNWithValue,
-    ControllerConfigCC
+    ControllerConfigCC,
+    MidiGroup
 } from '../../../midi/types'
 import {
     ControllerIdLfoDst,
@@ -126,7 +127,7 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         type: 'output',
         isSourceDigi: true
     },
-    SELECT: { id: ControllerIdNonMod.LFO_SELECT, label: 'Select lfo', type: 'pot', cc: CC.LFO_SELECT_LFO },
+    SELECT: { id: ControllerIdNonMod.LFO_SELECT, label: 'Select lfo', type: 'pot', cc: CC.LFO_SELECT_LFO, midiGroup: MidiGroup.LFO },
     BIPOLAR: {
         id: ControllerIdLfoNonMod.LFO_BIPOLAR,
         label: 'Bipolar',

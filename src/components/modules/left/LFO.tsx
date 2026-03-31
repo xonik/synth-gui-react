@@ -19,6 +19,9 @@ import { Random } from "../../images/Random";
 import { usePot, useButton } from '../../../store/hooks'
 import { useUiStore } from '../../../store/uiStore'
 import { timeResponseMapper } from '../../../synthcore/modules/common/responseMappers'
+import { button } from '../../../midi/midibus'
+import { lfoCtrls } from '../../../synthcore/modules/lfo/lfoControllers'
+import { buttonMidiValues } from '../../../midi/buttonMidiValues'
 
 const LFO = ({ x, y, height, width }: ModuleProps) => {
     const col1 = x + POT_DISTANCE_M / 2
@@ -32,10 +35,15 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
 
     const lfoId = useUiStore(s => s.selectedLfoId)
     const selectLfo = useUiStore(s => s.selectLfo)
+    const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)
 
     const onSelectLfo = useCallback(() => {
         selectLfo((lfoId + 1) % 3)
     }, [lfoId, selectLfo])
+
+    const onTrigger = useCallback(() => {
+        button.send(voiceGroupIndex, lfoCtrls.GATE, buttonMidiValues.LFO_TRIGGER)
+    }, [voiceGroupIndex])
 
     const { displayValue: rateValue, increment: rateIncrement } = usePot(
         s => s.lfos[lfoId].rate,
@@ -161,6 +169,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
         />
 
         <RoundPushButton8 label="Trigger" x={col2 + BUTTON_DISTANCE_S * 6} y={row1} labelPosition="bottom-pot"
+                          onButtonClick={onTrigger}
         />
 
     </>

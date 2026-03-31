@@ -65,12 +65,12 @@ const LfoParams = ({ lfoId, delayLevel }: Props) => {
     const phaseOffset = lfo.phaseOffset
     const depth = lfo.depth
 
-    const delayStage = lfo.stages[StageId.DELAY]
-    const attackStage = lfo.stages[StageId.ATTACK]
-    const releaseStage = lfo.stages[StageId.RELEASE]
+    const delayStage = lfo.stages.delay
+    const attackStage = lfo.stages.attack
+    const releaseStage = lfo.stages.release
 
-    const delayEnabled = delayStage?.enabled === 1
-    const releaseEnabled = releaseStage?.enabled === 1
+    const delayEnabled = delayStage.enabled === 1
+    const releaseEnabled = releaseStage.enabled === 1
 
     const boundedDelayLevel = Math.round((delayLevel < -1 ? -1 : delayLevel > 1 ? 1 : delayLevel) * 100)
 
@@ -78,8 +78,8 @@ const LfoParams = ({ lfoId, delayLevel }: Props) => {
     const attackTime = getTime(StageId.ATTACK, true, time, balance, releaseEnabled)
     const releaseTime = getTime(StageId.RELEASE, releaseEnabled, time, balance, releaseEnabled)
 
-    const attackCurveName = getShortName(lfoCtrls.CURVE, attackStage?.curve ?? 0)
-    const releaseCurveName = releaseEnabled ? getShortName(lfoCtrls.CURVE, releaseStage?.curve ?? 0) : '-'
+    const attackCurveName = getShortName(lfoCtrls.CURVE, attackStage.curve)
+    const releaseCurveName = releaseEnabled ? getShortName(lfoCtrls.CURVE, releaseStage.curve) : '-'
 
     const attackBalance = Math.round(balance * 100)
     const releaseBalance = Math.round((1 - balance) * 100)

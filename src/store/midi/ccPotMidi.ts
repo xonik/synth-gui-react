@@ -9,11 +9,17 @@ export interface CCPotMapping {
     ctrl: ControllerConfigCC
 }
 
-function toMidi(value: number): number {
+function toMidi(value: number, bipolar?: boolean): number {
+    if (bipolar) {
+        return Math.floor(127 * (value + 1) / 2)
+    }
     return Math.floor(127 * value)
 }
 
-function fromMidi(midiValue: number): number {
+function fromMidi(midiValue: number, bipolar?: boolean): number {
+    if (bipolar) {
+        return (midiValue * 2 / 127) - 1
+    }
     return midiValue / 127
 }
 
@@ -39,7 +45,7 @@ export function createCCPotMidiSend(mappings: CCPotMapping[]) {
                     const current = mapping.selector(state)
                     const previous = mapping.selector(prev)
                     if (current !== previous) {
-                        const midiValue = toMidi(current)
+                        const midiValue = toMidi(current, mapping.ctrl.bipolar)
                         cc.send(voiceGroupIndex, mapping.ctrl, midiValue)
                     }
                 }
@@ -65,7 +71,7 @@ export function createCCPotMidiReceive(mappings: CCPotMapping[]) {
 
         for (const mapping of mappings) {
             const id = cc.subscribe((voiceGroupIndex: number, midiValue: number) => {
-                const value = fromMidi(midiValue)
+                const value = fromMidi(midiValue, mapping.ctrl.bipolar)
 
                 withMidiReceive(() => {
                     voiceGroupStores[voiceGroupIndex].getState().set(state => {

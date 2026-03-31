@@ -1,8 +1,9 @@
 import { voiceGroupStores, LfoState } from '../patchStore'
-import { cc, nrpn, button } from '../../midi/midibus'
-import { ControllerConfigCC, ControllerConfigNRPN, ControllerConfigButton } from '../../midi/types'
+import { cc, nrpn, button, lastSentMidiGroup } from '../../midi/midibus'
+import { ControllerConfigCC, ControllerConfigNRPN, ControllerConfigButton, MidiGroup } from '../../midi/types'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
+import { LfoStageName, LFO_STAGE_NAMES, STAGE_NAME_TO_ID, STAGE_ID_TO_NAME } from '../modules/lfoActions'
 
 const NUMBER_OF_LFOS = 4
 
@@ -45,10 +46,16 @@ const buttonMappings: ButtonMapping[] = [
 ]
 
 let currentSentLfoId = -1
+let lastSentLfoIdTimestamp = 0
 
 function sendLfoSelect(voiceGroupIndex: number, lfoId: number) {
-    if (lfoId !== currentSentLfoId) {
+    if (
+        lfoId !== currentSentLfoId ||
+        (lastSentMidiGroup !== MidiGroup.LFO && Date.now() - lastSentLfoIdTimestamp > 10000) ||
+        (Date.now() - lastSentLfoIdTimestamp > 30000)
+    ) {
         currentSentLfoId = lfoId
+        lastSentLfoIdTimestamp = Date.now()
         cc.send(voiceGroupIndex, lfoCtrls.SELECT as ControllerConfigCC, lfoId)
     }
 }
@@ -89,6 +96,27 @@ function sendLfoParams(
             button.send(voiceGroupIndex, m.ctrl, m.ctrl.values[lfo[m.field]])
         }
     }
+
+    for (const stageName of LFO_STAGE_NAMES) {
+        const stage = lfo.stages[stageName]
+        const prevStage = prevLfo.stages[stageName]
+        if (stage !== prevStage) {
+            const stageId = STAGE_NAME_TO_ID[stageName]
+
+            if (stage.curve !== prevStage.curve) {
+                ensureSelect()
+                const midiValue = (stageId << 7) + stage.curve
+                nrpn.send(voiceGroupIndex, lfoCtrls.CURVE, midiValue)
+            }
+
+            if (stage.enabled !== prevStage.enabled) {
+                ensureSelect()
+                const enableBit = stage.enabled ? 0b1000 : 0
+                const midiValue = stageId | enableBit
+                cc.send(voiceGroupIndex, lfoCtrls.TOGGLE_STAGE as ControllerConfigCC, midiValue)
+            }
+        }
+    }
 }
 
 let sendUnsubscribers: (() => void)[] = []
@@ -124,6 +152,7 @@ export function stopLfoMidiSend() {
     sendUnsubscribers.forEach(unsub => unsub())
     sendUnsubscribers = []
     currentSentLfoId = -1
+    lastSentLfoIdTimestamp = 0
 }
 
 let currentReceivedLfoId = -1
@@ -181,6 +210,35 @@ export function startLfoMidiReceive() {
         }, m.ctrl)
         receiveUnsubscribers.push(() => button.unsubscribe(m.ctrl, id))
     }
+
+    const curveId = nrpn.subscribe((voiceGroupIndex: number, midiValue: number) => {
+        if (currentReceivedLfoId < 0) return
+        const stageId = midiValue >> 7
+        const stageName = STAGE_ID_TO_NAME[stageId as keyof typeof STAGE_ID_TO_NAME]
+        if (!stageName) return
+        const curve = midiValue & 0b01111111
+        withMidiReceive(() => {
+            voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                state.lfos[currentReceivedLfoId].stages[stageName].curve = curve
+            })
+        })
+    }, lfoCtrls.CURVE)
+    receiveUnsubscribers.push(() => nrpn.unsubscribe(lfoCtrls.CURVE, curveId))
+
+    const toggleStageCtrl = lfoCtrls.TOGGLE_STAGE as ControllerConfigCC
+    const tsId = cc.subscribe((voiceGroupIndex: number, midiValue: number) => {
+        if (currentReceivedLfoId < 0) return
+        const stageId = midiValue & 0b111
+        const stageName = STAGE_ID_TO_NAME[stageId as keyof typeof STAGE_ID_TO_NAME]
+        if (!stageName) return
+        const enabled = (midiValue & 0b1000) > 0 ? 1 : 0
+        withMidiReceive(() => {
+            voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                state.lfos[currentReceivedLfoId].stages[stageName].enabled = enabled
+            })
+        })
+    }, toggleStageCtrl)
+    receiveUnsubscribers.push(() => cc.unsubscribe(toggleStageCtrl, tsId))
 }
 
 export function stopLfoMidiReceive() {

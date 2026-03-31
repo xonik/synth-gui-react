@@ -5,6 +5,7 @@ import { LoopMode, StageId } from './types'
 import { step } from '../../../store/utils'
 import mainDisplayControllers from '../mainDisplay/mainDisplayControllers'
 import { lfoCtrls } from './lfoControllers'
+import { STAGE_ID_TO_NAME } from '../../../store/modules/lfoActions'
 
 const NUMBER_OF_LFOS = 4
 
@@ -72,14 +73,13 @@ export const mainDisplayLfoApi = {
         } else if (ctrlId === mainDisplayControllers.POT5.id) {
             const stageId = uiState.selectedLfoStageId
             if (stageId !== StageId.STOPPED) {
-                const currentCurve = lfo.stages[stageId]?.curve ?? 0
+                const stageName = STAGE_ID_TO_NAME[stageId as keyof typeof STAGE_ID_TO_NAME]
+                if (!stageName) return
+                const currentCurve = lfo.stages[stageName].curve
                 const numCurves = lfoCtrls.CURVE.values?.length ?? 10
                 const newCurve = getBounded(currentCurve + step(increment), 0, numCurves - 1)
                 voiceGroupStores[voiceGroupIndex].getState().set(state => {
-                    if (!state.lfos[lfoId].stages[stageId]) {
-                        state.lfos[lfoId].stages[stageId] = { curve: 0, enabled: 0 }
-                    }
-                    state.lfos[lfoId].stages[stageId].curve = newCurve
+                    state.lfos[lfoId].stages[stageName].curve = newCurve
                 })
             }
 

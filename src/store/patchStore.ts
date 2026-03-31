@@ -48,6 +48,13 @@ export interface LfoStageState {
     enabled: number
 }
 
+export interface LfoStages {
+    delay: LfoStageState
+    attack: LfoStageState
+    release: LfoStageState
+    stopped: LfoStageState
+}
+
 export interface LfoState {
     rate: number
     depth: number
@@ -69,9 +76,7 @@ export interface LfoState {
     syncToClock: number
     gated: number
     randomPhase: number
-    stages: {
-        [stageId: number]: LfoStageState
-    }
+    stages: LfoStages
 }
 
 export interface OscillatorState {
@@ -332,10 +337,10 @@ const defaultLfo = (): LfoState => ({
     gated: 0,
     randomPhase: 0,
     stages: {
-        0: { curve: 4, enabled: 0 },
-        1: { curve: 4, enabled: 1 },
-        2: { curve: 4, enabled: 1 },
-        3: { curve: 4, enabled: 1 },
+        delay: { curve: 4, enabled: 0 },
+        attack: { curve: 4, enabled: 1 },
+        release: { curve: 4, enabled: 1 },
+        stopped: { curve: 4, enabled: 1 },
     },
 })
 
@@ -430,7 +435,7 @@ export const defaultVoiceGroupPatch = (): VoiceGroupPatch => ({
         svf: 0,
         sine1: 0,
         sine2: 0,
-        pan: 0.5,
+        pan: 0,
         amount: 1,
         fx1Send: 0,
         fx2Send: 0,
