@@ -31,6 +31,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "type-check": "tsc --noEmit",
+    "lint:fix": "biome check --write .",
     "run-ts": "tsx",
     "generateCppFiles": "npm run run-ts utils/cppMidiGenerator/cppMidiConfigGenerator.ts",
     "generateMidiRPCFiles": "npm run run-ts utils/midiRPC/midiRPCGenerator.ts",
@@ -40,10 +41,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
+"browserslist": {
     "production": [
       ">0.2%",
       "not dead",
@@ -56,6 +54,7 @@
     ]
   },
   "devDependencies": {
+    "@biomejs/biome": "2.4.10",
     "@types/lodash": "^4.14.202",
     "@types/node": "^20.10.6",
     "@types/react": "^18.2.45",
