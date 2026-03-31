@@ -1,17 +1,13 @@
 // If imported directly we get a cyclic dependency. Not sure why it works now.
-import controllers from '../controllers/controllers'
-import { cc, lastSentMidiGroup } from '../../../midi/midibus'
-import { ApiSource } from '../../types'
-import { shouldSend } from '../../../midi/utils'
+
+import { cc, lastSentMidiGroup } from '@/midi/midibus'
+import { type ControllerConfig, type ControllerConfigButton, type ControllerConfigCC, MidiGroup } from '@/midi/types'
+import { shouldSend } from '@/midi/utils'
 import logger from '../../../utils/logger'
-import { NumericInputProperty } from '../common/types'
-import {
-    ControllerConfig,
-    ControllerConfigButton,
-    ControllerConfigCC,
-    MidiGroup
-} from '../../../midi/types'
-import { paramReceive, ParamReceiveFunc, paramSend, ParamSendFunc } from '../common/commonMidiApi'
+import type { ApiSource } from '../../types'
+import { type ParamReceiveFunc, type ParamSendFunc, paramReceive, paramSend } from '../common/commonMidiApi'
+import type { NumericInputProperty } from '../common/types'
+import controllers from '../controllers/controllers'
 
 let currentReceivedEnvId = -1
 let currentSentEnvId = -1
@@ -33,7 +29,7 @@ const envSelect = (() => {
             if (
                 envId !== currentSentEnvId ||
                 (lastSentMidiGroup !== MidiGroup.ENV && Date.now() - lastSentEnvIdTimestamp > 10000) ||
-                (Date.now() - lastSentEnvIdTimestamp > 30000) // resend every 30 sec even if nothing has changed, just in case.
+                Date.now() - lastSentEnvIdTimestamp > 30000 // resend every 30 sec even if nothing has changed, just in case.
             ) {
                 currentSentEnvId = envId
                 lastSentEnvIdTimestamp = Date.now()
@@ -42,11 +38,10 @@ const envSelect = (() => {
             }
         },
         receive: () => {
-            cc.subscribe((voiceGroupIndex, value: number) => {
+            cc.subscribe((_voiceGroupIndex, value: number) => {
                 currentReceivedEnvId = value
             }, cfg)
-
-        }
+        },
     }
 })()
 
@@ -56,7 +51,7 @@ const curve = (() => {
         return (stageId << 7) + curveIndex
     }
     const curveInputMapper = (value: number, ctrl: ControllerConfig) => {
-        const stageId = (value >> 7)
+        const stageId = value >> 7
         const curve = value & 0b01111111
         const curveIndex = ctrl.values?.indexOf(curve) || 0
         return { value: curveIndex, valueIndex: stageId }
@@ -64,20 +59,20 @@ const curve = (() => {
 
     return {
         send: (input: NumericInputProperty) => envParamSend(input, curveOutputMapper),
-        receive: (ctrl: ControllerConfig, set: (input: NumericInputProperty) => void) => envParamReceive(ctrl, set, curveInputMapper)
+        receive: (ctrl: ControllerConfig, set: (input: NumericInputProperty) => void) =>
+            envParamReceive(ctrl, set, curveInputMapper),
     }
 })()
 
 const stageEnabled = (() => {
-
-    const stageEnabledOutputMapper = (enabled: number, cfg: ControllerConfig, stageId: number = 0) => {
+    const stageEnabledOutputMapper = (enabled: number, _cfg: ControllerConfig, stageId: number = 0) => {
         const enableBit = enabled ? 0b1000 : 0
         const data = stageId | enableBit
         logger.midi(`Changing enable for stage ${stageId} to ${enabled}`)
         return data
     }
 
-    const stageEnabledInputMapper = (value: number, ctrl: ControllerConfig) => {
+    const stageEnabledInputMapper = (value: number, _ctrl: ControllerConfig) => {
         const stageId = value & 0b111
         const enabled = (value & 0b1000) > 0 ? 1 : 0
         return { valueIndex: stageId, value: enabled }
@@ -85,7 +80,8 @@ const stageEnabled = (() => {
 
     return {
         send: (input: NumericInputProperty) => envParamSend(input, stageEnabledOutputMapper),
-        receive: (ctrl: ControllerConfig, set: (input: NumericInputProperty) => void) => envParamReceive(ctrl, set, stageEnabledInputMapper)
+        receive: (ctrl: ControllerConfig, set: (input: NumericInputProperty) => void) =>
+            envParamReceive(ctrl, set, stageEnabledInputMapper),
     }
 })()
 
@@ -100,11 +96,15 @@ export const envParamSend: ParamSendFunc = (
 export const envParamReceive: ParamReceiveFunc = (
     ctrl: ControllerConfig | ControllerConfigCC | ControllerConfigButton,
     apiSetValue: (input: NumericInputProperty) => void,
-    inputMapper?: (midiValue: number, ctrl: ControllerConfig) => ({ value: number, valueIndex?: number }),
+    inputMapper?: (midiValue: number, ctrl: ControllerConfig) => { value: number; valueIndex?: number }
 ) => {
-    paramReceive(ctrl, (input) => {
-        apiSetValue({ ...input, ctrlIndex: currentReceivedEnvId })
-    }, inputMapper)
+    paramReceive(
+        ctrl,
+        (input) => {
+            apiSetValue({ ...input, ctrlIndex: currentReceivedEnvId })
+        },
+        inputMapper
+    )
 }
 
 const initReceive = () => {
