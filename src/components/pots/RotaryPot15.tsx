@@ -1,4 +1,3 @@
-import React from 'react'
 import RotaryPotWithLedRingBase, { Props } from './RotaryPotWithLedRingBase';
 
 const RotaryPot15 = (props: Props) => <RotaryPotWithLedRingBase

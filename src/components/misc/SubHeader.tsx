@@ -1,4 +1,3 @@
-import React from 'react';
 import { BORDER_MARGIN } from "../../constants";
 import classNames from "classnames";
 import './SubHeader.scss';
@@ -18,7 +17,7 @@ interface Props {
     labelBackgroundOn?: boolean
 }
 
-const getCenter = (x: number, y: number, width: number, align: PositionAlign) => {
+const getCenter = (x: number, _y: number, width: number, align: PositionAlign) => {
     switch (align) {
         case 'center':
             return x;

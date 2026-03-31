@@ -1,4 +1,3 @@
-import React from 'react'
 import Stages from './Stages'
 import { useUiStore } from '../../store/uiStore'
 import StageActivator from './StageActivator'
@@ -17,7 +16,7 @@ const LfoControl = () => {
         <div className="ctrl-stages">
             <div className="ctrl-graph">
                 <svg viewBox={`0 0 1 1`} preserveAspectRatio="none" className="ctrl-graph-svg">
-                    <Stages lfoId={lfoId} points={points} stageBackgrounds={stageBackgrounds}/>
+                    <Stages points={points} stageBackgrounds={stageBackgrounds}/>
                 </svg>
             </div>
             <LfoParams lfoId={lfoId} delayLevel={points[0].y}/>

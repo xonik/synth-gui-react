@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import RotaryPot21 from '../../pots/RotaryPot21'
 import RotaryPot12 from '../../pots/RotaryPot12'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
@@ -15,12 +15,11 @@ import {
 import { VerticalDividerLine } from "../../misc/VerticalDividerLine";
 import { ModuleBorder } from "../../misc/ModuleBorder";
 import { ModuleProps } from "../types";
-import "../Modules.scss"
 import { WaveformIconsRing } from "./WaveformIconsRing";
-import { PwIconsRing } from "./PwIconsRing";
 import { usePot, useButton } from '../../../store/hooks'
 import { VoiceGroupPatch, voiceGroupStores } from '../../../store/patchStore'
 import { useUiStore } from '../../../store/uiStore'
+import "../Modules.scss"
 
 const OSC = 2
 

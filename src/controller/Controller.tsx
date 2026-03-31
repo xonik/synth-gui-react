@@ -1,4 +1,3 @@
-import React from 'react'
 import { useUiStore, ScreenId } from '../store/uiStore'
 import Mod from './mods/Mod'
 import { DisplayButtons } from './components/DisplayButtons'

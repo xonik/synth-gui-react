@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import AnimatedCurve from '../../components/curves/AnimatedCurve'
 import { Point } from '../../utils/types'
 import '../components/StageBlock.scss'

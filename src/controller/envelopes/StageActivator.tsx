@@ -1,9 +1,8 @@
-import React from 'react'
 import { StageId } from '../../synthcore/modules/env/types'
 import Button from '../components/Button'
 import { stageNames } from './utils'
 import { useEnvStages, useEnvStageToggle } from '../../store/modules/useEnvelope'
-import { StageName, STAGE_NAMES } from '../../store/modules/envActions'
+import { StageName } from '../../store/modules/envActions'
 import { CtrlOptions } from "@/controller/components/CtrlOptions";
 
 interface Props {

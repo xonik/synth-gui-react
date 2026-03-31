@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import ReactSlider from 'react-slider'
 import { saveCvMapping, saveCvMappings, setCvParams, VOICE_ALL } from '../../midi/rpc/api'
 import CvResponseCurve from './CvResponseCurve'
@@ -93,7 +93,7 @@ const CvCurveSelector = ({ onSelect, curve }: CvCurveSelectorProps) => {
 }
 
 const CvReverseCheckbox = ({ onChange, reverse }: CvReverseCheckboxProps) => {
-    const onOptionChangeHandler = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const onOptionChangeHandler = useCallback((_event: React.ChangeEvent<HTMLInputElement>) => {
         onChange(!reverse);
     }, [onChange, reverse])
 
@@ -205,7 +205,7 @@ export const CvRange = ({voice}: Props) => {
         })
     }, [cv, voice])
 
-    const sendCv = (cvRange: CvRange, v: number) => {
+    const sendCv = (cvRange: CvRange, _v: number) => {
         setCvParams(cvRange.cv, cvRange.start, cvRange.end, cvRange.curve, cvRange.reverse, voice)
     }
 

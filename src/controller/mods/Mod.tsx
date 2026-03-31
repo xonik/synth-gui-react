@@ -1,4 +1,3 @@
-import React from 'react'
 import ModControl from './ModControl'
 import ModPotLabels from './ModPotLabels'
 

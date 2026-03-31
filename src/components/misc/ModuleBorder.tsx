@@ -1,7 +1,6 @@
-import React from 'react'
 import { BORDER_MARGIN } from "../../constants";
-import "./ModuleBorder.scss"
 import classNames from "classnames";
+import "./ModuleBorder.scss"
 
 type Props = {
     x: number,

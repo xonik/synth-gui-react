@@ -1,5 +1,5 @@
 import RotaryPotBase from './RotaryPotBase'
-import React, { useCallback} from 'react'
+import { useCallback} from 'react'
 import './RotaryPot.scss'
 
 export interface Props {

@@ -1,4 +1,3 @@
-import React from 'react'
 import RotaryPot12 from '../../pots/RotaryPot12'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'

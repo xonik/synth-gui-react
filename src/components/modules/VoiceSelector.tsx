@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8';
 import { ModuleProps } from "./types";
 import { useUiStore } from '../../store/uiStore'
@@ -23,7 +23,7 @@ const VoiceButton = ({ x, y, index, label }: { x: number, y: number, index: numb
     />
 }
 
-const VoiceSelector = ({ x, y, width, height }: ModuleProps) => {
+const VoiceSelector = ({ x, y, width }: ModuleProps) => {
     const buttonRow = y
     const buttonDistance = 25;
     const offsetX = x + (width - 7 * buttonDistance) / 2

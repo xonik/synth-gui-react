@@ -1,4 +1,3 @@
-import React from 'react'
 import SourceLabels from './SourceLabels'
 import DstLabels from './DstLabels'
 import AmountsTable from './AmountsTable'

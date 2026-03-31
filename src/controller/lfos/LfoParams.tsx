@@ -1,4 +1,3 @@
-import React from 'react'
 import { StageId } from '../../synthcore/modules/lfo/types'
 import { useUiStore } from '../../store/uiStore'
 import { useVoiceGroupStore } from '../../store/patchStore'
@@ -40,7 +39,7 @@ const formatRate = (time: number) => {
     }
 }
 
-const getTime = (stageId: StageId, enabled: boolean, time: number, balance: number, releaseEnabled: boolean) => {
+const getTime = (stageId: StageId, _enabled: boolean, time: number, balance: number, releaseEnabled: boolean) => {
     if (stageId === StageId.DELAY) {
         return 0
     } else if (stageId === StageId.ATTACK) {

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import ReactSlider from 'react-slider'
 import { saveTrimmerSettings, setTrimmerSetting, VOICE_ALL } from '../../midi/rpc/api'
 import { CV_CHANNELS } from './CvDefinitions'
@@ -49,8 +49,6 @@ function getInitialAllTrimmerSettings() {
     return Array.from({ length: sharedConfig.VOICE_COUNT.value }, getInitialTrimmerSettings);
 }
 
-const initialTrimmerSettings = getInitialTrimmerSettings()
-
 const TRIMMER_SETTINGS_KEY = 'all_trimmer_settings';
 const saveToLocalStorage = (allTrimmerSettings: TrimmerSetting[][]) =>
     localStorage.setItem(TRIMMER_SETTINGS_KEY, JSON.stringify(allTrimmerSettings));
@@ -63,19 +61,6 @@ const loadFromLocalStorage = () => {
         return getInitialAllTrimmerSettings();
     }
 };
-
-function mutate(trimmerSettings: TrimmerSetting[], trimmer: number, changes: Partial<TrimmerSetting>) {
-    const trimmerSetting = trimmerSettings[trimmer]
-    const updatedTrimmerSetting = {
-        ...trimmerSetting,
-        ...changes
-    }
-    const updatedTrimmerSettings = [
-        ...trimmerSettings
-    ]
-    updatedTrimmerSettings[trimmer] = updatedTrimmerSetting
-    return updatedTrimmerSettings
-}
 
 function send(voice: number, trimmerSetting: TrimmerSetting) {
     const { trimmer, value } = trimmerSetting

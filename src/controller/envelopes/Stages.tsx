@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import { useCallback, Fragment } from 'react'
 import { StageId } from '../../synthcore/modules/env/types'
 import EnvCurve from './EnvCurve'
 import { useUiStore } from '../../store'
@@ -40,7 +40,7 @@ const Stages = ({ envId, points, stageBackgrounds }: Props) => {
         {
             stageBackgrounds.map(({ from, to, id }, index) => {
                 const isLast = index === stageBackgrounds.length - 1
-                return <React.Fragment key={`stage${index}`}>
+                return <Fragment key={`stage${index}`}>
                     <rect x={from} y={0} width={to - from} height={1} onClick={() => onSvgClicked(id)}
                           className={classNames('stages-background', { 'stages-background--selected': currStageId === id })}
                     />
@@ -54,7 +54,7 @@ const Stages = ({ envId, points, stageBackgrounds }: Props) => {
                         x2={to} y2={1}
                         className={'stages-divider'}
                     />}
-                </React.Fragment>
+                </Fragment>
             })
         }
         <EnvCurve points={points}/>

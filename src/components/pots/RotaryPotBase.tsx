@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { SHOW_CUT } from "../../config";
-import classNames from "classnames";
 
 export type Point = { x: number, y: number }
 

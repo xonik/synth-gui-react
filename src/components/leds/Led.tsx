@@ -1,7 +1,6 @@
-import React from 'react'
 import classNames from 'classnames'
-import './Led.scss'
 import { TextAnchor } from '../../types'
+import './Led.scss'
 
 type LabelPosition = 'left' | 'right' | 'top' | 'bottom' | undefined;
 

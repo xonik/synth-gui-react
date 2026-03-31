@@ -1,4 +1,3 @@
-import React from 'react'
 import RoundButtonBase, { Props } from './RoundButtonBase';
 
 const RoundLedPushButton8 = (props: Props) => <RoundButtonBase

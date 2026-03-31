@@ -1,11 +1,11 @@
-import React, { useCallback } from 'react'
+import { useCallback, Fragment } from 'react'
 import classNames from 'classnames'
 import RoundPushButtonBase from './RoundPushButtonBase'
 import RotaryPotBase from '../pots/RotaryPotBase'
 import { ControllerConfig } from '../../midi/types'
-import './RoundButton.scss'
 import { SHOW_CUT } from "../../config";
 import { TextAnchor } from "../../types";
+import './RoundButton.scss'
 
 type LedPosition =
     'left'
@@ -288,9 +288,6 @@ export const RoundButtonBase = (props: Props & Config) => {
         hasOff,
         ledCount,
         ledButton,
-        reverse,
-        loop = true,
-        momentary,
         ctrl,
         value,
         resolution,
@@ -416,7 +413,7 @@ export const RoundButtonBase = (props: Props & Config) => {
                 textAnchor={labelPos.textAnchor}
                 alignmentBaseline="middle"
             >{label}</text>}
-            {ledPos.map((position, index) => <React.Fragment key={index}>
+            {ledPos.map((position, index) => <Fragment key={index}>
                 {!SHOW_CUT && ledRingColors && ledRingColors.length > index && <circle
                     cx={position.x} cy={position.y} r={ledRadius + 1}
                     fill={ledRingColors[index]}
@@ -448,13 +445,9 @@ export const RoundButtonBase = (props: Props & Config) => {
                     >
                         {ledLabels[index]}
                     </svg>}
-            </React.Fragment>)}
+            </Fragment>)}
         </svg>
     )
-}
-
-function isString(value: any): value is string {
-    return typeof value === "string";
 }
 
 export default RoundButtonBase

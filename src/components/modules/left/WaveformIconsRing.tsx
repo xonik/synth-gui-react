@@ -1,7 +1,6 @@
 import { Triangle } from "../../images/Triangle";
 import { SawRight } from "../../images/SawRight";
 import { Square } from "../../images/Square";
-import React from "react";
 import { rotateAround } from "../../../utils/svg/rotateAround";
 
 type Props = {

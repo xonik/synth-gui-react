@@ -1,4 +1,3 @@
-import React from 'react'
 import { StageId } from '../../synthcore/modules/env/types'
 import classNames from 'classnames'
 import { useEnvStages, DisplayStage } from '../../store/modules/useEnvelope'

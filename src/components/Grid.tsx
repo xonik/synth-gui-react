@@ -1,5 +1,3 @@
-import React from "react";
-import { PADDING_LEFT, POT_DISTANCE_M, POT_DISTANCE_S } from "../constants";
 
 const minLines = 5
 const midLines = 10

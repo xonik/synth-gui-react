@@ -1,13 +1,12 @@
-import React from 'react'
 import RotaryPot12 from '../../pots/RotaryPot12'
 import { LedMode, PotMode } from '../../pots/RotaryPotWithLedRingBase'
 import { POT_DISTANCE_L, POT_OFFSET_Y, ROW_HEIGHT } from "../../../constants";
 import SubHeader from "../../misc/SubHeader";
 import { ModuleBorder } from "../../misc/ModuleBorder";
 import { ModuleProps } from "../types";
-import "../Modules.scss"
 import { usePot } from '../../../store/hooks'
 import { VoiceGroupPatch } from '../../../store/patchStore'
+import "../Modules.scss"
 
 const PostMixPot = ({ x, y, label, potMode = 'normal', ledMode = 'multi', selector, mutator, bipolar }: {
     x: number, y: number, label: string, potMode?: PotMode, ledMode?: LedMode,

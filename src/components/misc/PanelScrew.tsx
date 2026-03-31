@@ -1,4 +1,3 @@
-import React from 'react'
 import { SHOW_CUT } from "../../config";
 import './PanelScrew.scss';
 

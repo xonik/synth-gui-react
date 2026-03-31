@@ -1,4 +1,3 @@
-import React from 'react'
 import { useUiStore } from '../../store/uiStore'
 import { useVoiceGroupStore } from '../../store/patchStore'
 import { digitalModSources, modDst } from '../../synthcore/modules/mods/utils'

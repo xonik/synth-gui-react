@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import AnimatedCurve from '../../components/curves/AnimatedCurve'
 import { Stage } from '../../synthcore/modules/env/types'
 import { getPoints } from './utils'

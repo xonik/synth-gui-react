@@ -1,4 +1,3 @@
-import React from 'react'
 import OptionsHeading from '../components/OptionsHeading'
 import '../components/CtrlOptions.scss'
 

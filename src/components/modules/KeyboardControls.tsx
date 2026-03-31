@@ -2,15 +2,15 @@ import RotaryPot12 from '../pots/RotaryPot12'
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import Led from '../leds/Led'
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import { ModuleBorder } from "../misc/ModuleBorder";
 import SubHeader from "../misc/SubHeader";
 import { ModuleProps } from "./types";
 import { POT_DISTANCE_M, POT_OFFSET_Y } from "../../constants";
-import "./KeyboardControls.scss"
 import { usePot, useButton, usePatchValue } from '../../store/hooks'
 import { voiceGroupStores } from '../../store/patchStore'
 import { useUiStore } from '../../store/uiStore'
+import "./KeyboardControls.scss"
 
 export const Transpose = ({ x, y, height, width }: ModuleProps) => {
     const ledDistance = 8
@@ -135,7 +135,7 @@ export const Keyboard = ({ x, y, height, width }: ModuleProps) => {
     </>
 }
 
-const KeyboardControls = ({ x, y, height, width }: ModuleProps) => {
+const KeyboardControls = (_props: ModuleProps) => {
 
     return <>
     </>

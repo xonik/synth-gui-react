@@ -1,4 +1,3 @@
-import React from 'react'
 import './CtrlHeader.scss'
 
 interface Props {

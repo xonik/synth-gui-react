@@ -162,7 +162,7 @@ class PatchBrowser extends React.Component<PatchBrowserProps> {
     }
 
 
-    onKeyboardOk = (value: string) => {
+    onKeyboardOk = (_value: string) => {
         this.setState({showKeyboardInput: false})
     }
 

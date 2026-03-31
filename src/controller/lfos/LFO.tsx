@@ -1,4 +1,3 @@
-import React from 'react'
 import LfoControl from './LfoControl'
 import LfoHeader from './LfoHeader'
 import PotLabels from '../components/PotLabels'

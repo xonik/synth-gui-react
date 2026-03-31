@@ -1,12 +1,11 @@
-import React from 'react';
 import RotaryPot12 from '../../pots/RotaryPot12';
 import RoundPushButton8 from '../../buttons/RoundPushButton8';
 import { POT_DISTANCE_L, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from "../../../constants";
 import SubHeader from "../../misc/SubHeader";
 import { ModuleBorder } from "../../misc/ModuleBorder";
 import { ModuleProps } from "../types";
-import "../Modules.scss"
 import { usePot, useButton } from '../../../store/hooks'
+import "../Modules.scss"
 
 const Chorus = ({ x, y, height, width }: ModuleProps) => {
 

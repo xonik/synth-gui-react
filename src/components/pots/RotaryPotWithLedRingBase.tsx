@@ -1,10 +1,9 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import classNames from 'classnames'
 import arc from '../../utils/svg/arc'
 import RotaryPotBase from './RotaryPotBase'
-import { ControllerConfig } from '../../midi/types'
-import './RotaryPot.scss'
 import { SHOW_CUT } from "../../config";
+import './RotaryPot.scss'
 
 export type LedMode = 'single' | 'multi';
 export type PotMode = 'normal' | 'pan' | 'spread';

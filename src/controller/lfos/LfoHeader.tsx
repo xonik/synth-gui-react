@@ -1,4 +1,3 @@
-import React from 'react'
 import CtrlHeader from "@/controller/components/CtrlHeader";
 import { useUiStore } from '../../store/uiStore'
 import '../components/CtrlHeader.scss'

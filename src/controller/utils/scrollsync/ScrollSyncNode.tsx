@@ -45,10 +45,10 @@ interface ScrollingSyncNodeContextValues {
 
 export const ScrollingSyncNodeContext: React.Context<ScrollingSyncNodeContextValues> = React.createContext({
     onScrollToElement: (
-        offsetLeft: number,
-        offsetTop: number,
-        offsetWidth: number,
-        offsetHeight: number
+        _offsetLeft: number,
+        _offsetTop: number,
+        _offsetWidth: number,
+        _offsetHeight: number
     ) => {},
 })
 

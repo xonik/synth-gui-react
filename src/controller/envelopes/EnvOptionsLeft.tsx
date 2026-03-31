@@ -1,4 +1,3 @@
-import React from 'react'
 import { LoopMode, ReleaseMode, StageId } from '../../synthcore/modules/env/types'
 import Button from '../components/Button'
 import { loopModeNames, releaseModeNames } from './utils'

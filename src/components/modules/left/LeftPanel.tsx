@@ -10,9 +10,7 @@ import LFO from "./LFO";
 import Route from "./Route";
 import Clock from "./Clock";
 import Arpeggiator from "./Arpeggiator";
-import { PanelScrew } from "../../misc/PanelScrew";
 import {
-    PADDING_LEFT,
     POT_DISTANCE_L,
     POT_DISTANCE_M,
     ROW_HEIGHT
@@ -28,7 +26,6 @@ export const LeftPanel = ({ x, panelHeight, rows }: Props) => {
 
     const oscWidth = POT_DISTANCE_L + POT_DISTANCE_M * 7
     const mixWidth = 2 * POT_DISTANCE_L + 5
-    const panelWidth = oscWidth + mixWidth
 
     const lfoCol = x + POT_DISTANCE_L + POT_DISTANCE_M
     const noiseCol = x + oscWidth

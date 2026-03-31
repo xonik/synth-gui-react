@@ -1,5 +1,5 @@
 import { digitalModSources, modDst } from '../../synthcore/modules/mods/utils'
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { forwardRef, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { DraggableElementProps } from './types'
 import { useUiStore } from '../../store/uiStore'
 import { useVoiceGroupStore } from '../../store/patchStore'
@@ -128,7 +128,7 @@ const AmountsRow = ({ sourceId, sourceIndex }: RowProps) => {
     )
 }
 
-const AmountsTable = React.forwardRef<HTMLDivElement, DraggableElementProps>(
+const AmountsTable = forwardRef<HTMLDivElement, DraggableElementProps>(
     ({ onMouseDown, onMouseMove },
      tableRef
     ) => {

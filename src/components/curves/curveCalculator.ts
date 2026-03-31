@@ -2,7 +2,6 @@
 
 import { ControllerConfig } from '../../midi/types'
 import { Curve } from '../../synthcore/generatedTypes'
-import { curveNames } from './shortCurveNames'
 
 export const exponentialFunc = (sharpness: number) => {
     const a = 1 / (Math.exp(sharpness) - 1)
@@ -68,8 +67,8 @@ const log1 = logarithmicFunc(1.35);
 const log2 = logarithmicFunc(1.6);
 const log3 = logarithmicFunc(2);
 const cosine = cosineFunc;
-const square = (x: number) => 0;
-const random = (x: number) => 0.75;
+const square = (_x: number) => 0;
+const random = (_x: number) => 0.75;
 
 
 export const getCurveFunc = (ctrl: ControllerConfig, curveIndex: number) => {

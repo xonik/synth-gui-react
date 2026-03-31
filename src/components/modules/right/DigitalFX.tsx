@@ -1,4 +1,3 @@
-import React from 'react';
 import RotaryPotWOLeds10 from '../../pots/RotaryPotWOLeds10';
 import Display from '../../misc/Display';
 import RoundPushButton8 from '../../buttons/RoundPushButton8';
@@ -6,8 +5,8 @@ import { ModuleBorder } from "../../misc/ModuleBorder";
 import { ModuleProps } from "../types";
 import SubHeader from "../../misc/SubHeader";
 import { BUTTON_DISTANCE_S, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from "../../../constants";
-import "../Modules.scss"
 import { usePot, useButton } from '../../../store/hooks'
+import "../Modules.scss"
 
 const DigitalFX = ({ x, y, height, width }: ModuleProps) => {
 
@@ -31,19 +30,19 @@ const DigitalFX = ({ x, y, height, width }: ModuleProps) => {
         (s, v) => { s.commonFx.dsp2.source = v },
         2
     )
-    const { displayValue: param1Value, increment: param1Increment } = usePot(
+    const { increment: param1Increment } = usePot(
         s => s.commonFx.dsp2.param1,
         (s, v) => { s.commonFx.dsp2.param1 = v },
     )
-    const { displayValue: param2Value, increment: param2Increment } = usePot(
+    const { increment: param2Increment } = usePot(
         s => s.commonFx.dsp2.param2,
         (s, v) => { s.commonFx.dsp2.param2 = v },
     )
-    const { displayValue: param3Value, increment: param3Increment } = usePot(
+    const { increment: param3Increment } = usePot(
         s => s.commonFx.dsp2.param3,
         (s, v) => { s.commonFx.dsp2.param3 = v },
     )
-    const { displayValue: effectValue, increment: effectIncrement } = usePot(
+    const { increment: effectIncrement } = usePot(
         s => s.commonFx.dsp2.effect,
         (s, v) => { s.commonFx.dsp2.effect = v },
     )

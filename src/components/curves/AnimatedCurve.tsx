@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { useSpring, animated } from 'react-spring'
 import classNames from 'classnames'
 import { Point } from '../../utils/types'

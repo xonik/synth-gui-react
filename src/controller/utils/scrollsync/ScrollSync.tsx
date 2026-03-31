@@ -58,7 +58,7 @@ export const ScrollingSyncerContext: React.Context<ScrollingSyncerContextValues>
     },
     onScroll: (_e, _groups: string[], _lockAxis: LockAxis) => {
     },
-    setScrollSource: (dragNode: HTMLElement) => {
+    setScrollSource: (_dragNode: HTMLElement) => {
     },
 })
 

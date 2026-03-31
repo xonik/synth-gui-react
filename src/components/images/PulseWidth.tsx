@@ -1,4 +1,3 @@
-import React from 'react'
 import { WaveformIcon } from "./WaveformIcon";
 import { IconProps, WaveformIconType } from "./types";
 import './Waveform.scss'

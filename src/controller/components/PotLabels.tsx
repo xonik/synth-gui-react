@@ -1,4 +1,3 @@
-import React from 'react'
 import './PotLabels.scss'
 
 type Props = {

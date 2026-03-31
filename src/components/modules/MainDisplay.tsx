@@ -6,13 +6,13 @@ import RotaryPotWOLeds10 from '../pots/RotaryPotWOLeds10'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import RotaryPotWOLeds24 from '../pots/RotaryPotWOLeds24'
 import { getPotResolution } from '../../synthcore/modules/mainDisplay/mainDisplayApi'
-import './MainDisplay.scss'
 import mainDisplayControllers from '../../synthcore/modules/mainDisplay/mainDisplayControllers'
 import { useUiStore, ScreenId } from '../../store/uiStore'
 import { ModuleProps } from "./types";
-import { BORDER_MARGIN, POT_OFFSET_Y, ROW_HEIGHT } from "../../constants";
+import { BORDER_MARGIN, ROW_HEIGHT } from "../../constants";
 import mainDisplayApi from '../../synthcore/modules/mainDisplay/mainDisplayApi'
 import { ApiSource } from '../../synthcore/types'
+import './MainDisplay.scss'
 
 const SHIFT_KEYS = ['16', 'Shift'];
 

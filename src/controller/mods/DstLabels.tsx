@@ -1,6 +1,5 @@
 import { useUiStore } from '../../store/uiStore'
 import { modDst, shortLabel } from '../../synthcore/modules/mods/utils'
-import React from 'react'
 import { DraggableElementProps } from './types'
 import classNames from 'classnames'
 import { ControllerConfig } from '../../midi/types'

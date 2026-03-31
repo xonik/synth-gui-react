@@ -1,4 +1,3 @@
-import React from 'react'
 import './DisplayButtons.scss'
 
 export const DisplayButtons = () => {

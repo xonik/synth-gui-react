@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import RotaryPot21 from '../../pots/RotaryPot21'
 import RotaryPot12 from '../../pots/RotaryPot12'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
@@ -13,17 +13,12 @@ import { VerticalDividerLine } from "../../misc/VerticalDividerLine";
 import { ModuleBorder } from "../../misc/ModuleBorder";
 import { ModuleProps } from "../types";
 import { WaveformIconsRing } from "./WaveformIconsRing";
-import "../Modules.scss"
-import { rotateAround } from "../../../utils/svg/rotateAround";
-import { Triangle } from "../../images/Triangle";
-import { PulseLeft } from "../../images/PulseLeft";
-import { PulseRight } from "../../images/PulseRight";
-import { PwIconsRing } from "./PwIconsRing";
 import { SawRight } from "../../images/SawRight";
 import { Square } from "../../images/Square";
 import { usePot, useButton } from '../../../store/hooks'
 import { VoiceGroupPatch, voiceGroupStores } from '../../../store/patchStore'
 import { useUiStore } from '../../../store/uiStore'
+import "../Modules.scss"
 
 const OSC = 0
 
@@ -57,9 +52,7 @@ const DCO1 = ({ x, y, height, width }: ModuleProps) => {
 
     const topRow = y + POT_OFFSET_Y
     const bottomRow = topRow + ROW_HEIGHT
-    const buttonRow1 = topRow - 5
     const centerRow = topRow + ROW_HEIGHT * 0.5
-    const buttonRow2 = bottomRow + 3
 
     const col1 = x + POT_DISTANCE_M / 2;
     const col2 = col1 + POT_DISTANCE_L
@@ -70,10 +63,6 @@ const DCO1 = ({ x, y, height, width }: ModuleProps) => {
     const col7 = col6 + POT_DISTANCE_S
     const col8 = col7 + POT_DISTANCE_S
     const col9 = col8 + POT_DISTANCE_M
-
-    const upPos: [number, number] = [x, y - 12]
-    const pwLeftPos = rotateAround(upPos, [x, y], -125)
-    const pwRightPos = rotateAround(upPos, [x, y], 125)
 
     const { value: modeValue, toggle: modeToggle } = useButton(
         s => s.oscillators[OSC].mode,

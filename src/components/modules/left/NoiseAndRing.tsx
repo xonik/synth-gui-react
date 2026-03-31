@@ -1,4 +1,3 @@
-import React from 'react'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import SubHeader from "../../misc/SubHeader";
 import {
@@ -10,8 +9,8 @@ import {
 import { VerticalDividerLine } from "../../misc/VerticalDividerLine";
 import { ModuleProps } from "../types";
 import { ModuleBorder } from "../../misc/ModuleBorder";
-import "../Modules.scss"
 import { useButton } from '../../../store/hooks'
+import "../Modules.scss"
 
 const NoiseAndRing = ({ x, y, width, height }: ModuleProps) => {
 

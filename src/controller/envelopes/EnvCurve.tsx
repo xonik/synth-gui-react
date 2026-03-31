@@ -1,4 +1,3 @@
-import React from 'react'
 import AnimatedCurve from '../../components/curves/AnimatedCurve'
 import { Point } from '../../utils/types'
 import '../components/StageBlock.scss'

@@ -1,4 +1,3 @@
-import React from 'react'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import RotaryPot12 from "../../pots/RotaryPot12";
 import SubHeader from "../../misc/SubHeader";
@@ -9,10 +8,10 @@ import {
 } from "../../../constants";
 import { ModuleBorder } from "../../misc/ModuleBorder";
 import { ModuleProps } from "../types";
-import "../Modules.scss"
 import { usePot, useButton } from '../../../store/hooks'
 import { VoiceGroupPatch } from '../../../store/patchStore'
 import { dbLevelResponseMapper } from '../../../synthcore/modules/common/responseMappers'
+import "../Modules.scss"
 
 const SrcMixLevelPot = ({ x, y, label, selector, mutator }: {
     x: number, y: number, label: string,

@@ -1,9 +1,8 @@
-import React from 'react';
 import MainPanel from './components/MainPanel';
 import Keyboard from './components/Keyboard';
-import './App.scss';
 import { SHOW_CUT, SHOW_KEYBOARD, SHOW_MAIN_PANEL } from "./config";
 import classNames from "classnames";
+import './App.scss';
 
 function App() {
   return (

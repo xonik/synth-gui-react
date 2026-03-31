@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import { useCallback, Fragment } from 'react'
 import StagesCurve from './StagesCurve'
 import { useUiStore } from '../../store/uiStore'
 import classNames from 'classnames'
@@ -7,12 +7,11 @@ import { Point } from '../../utils/types'
 import '../components/Stages.scss'
 
 interface Props {
-    lfoId: number
     points: Point[]
     stageBackgrounds: StageBackground[]
 }
 
-const Stages = ({ lfoId, stageBackgrounds, points }: Props) => {
+const Stages = ({ stageBackgrounds, points }: Props) => {
 
     const currStageId = useUiStore(s => s.selectedLfoStageId)
     const selectLfoStage = useUiStore(s => s.selectLfoStage)
@@ -32,7 +31,7 @@ const Stages = ({ lfoId, stageBackgrounds, points }: Props) => {
         {
             stageBackgrounds.map(({ from, to, id }, index) => {
                 const isLast = index === stageBackgrounds.length - 1
-                return <React.Fragment key={`stage${index}`}>
+                return <Fragment key={`stage${index}`}>
                     <>
                         <rect x={from} y={0} width={to - from} height={1} onClick={() => onSvgClicked(id)}
                               className={classNames('stages-background', { 'stages-background--selected': currStageId === id })}
@@ -49,7 +48,7 @@ const Stages = ({ lfoId, stageBackgrounds, points }: Props) => {
                         x2={to} y2={1}
                         className={'stages-divider'}
                     />}
-                </React.Fragment>
+                </Fragment>
             })
         }
 

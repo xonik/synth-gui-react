@@ -1,4 +1,3 @@
-import React from 'react'
 import { StageId } from '../../synthcore/modules/env/types'
 import { stageNames } from './utils'
 import { useEnvStages } from '../../store/modules/useEnvelope'

@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import MainDisplay from './modules/MainDisplay'
 import { Transpose, Keyboard } from './modules/KeyboardControls'
 import VoiceSelector from './modules/VoiceSelector'
 import Controller from '../controller/Controller'
-import './MainPanel.scss'
 import Grid from "./Grid";
 import { POT_DISTANCE_L, POT_DISTANCE_M, ROW_HEIGHT } from "../constants";
 import { SHOW_CENTER, SHOW_CUT, SHOW_GRID, SHOW_LEFT_2, SHOW_RIGHT } from "../config";
@@ -11,6 +10,7 @@ import classNames from "classnames";
 import { LeftPanel } from "./modules/left/LeftPanel";
 import { RightPanel } from "./modules/right/RightPanel";
 import { PanelScrew } from "./misc/PanelScrew";
+import './MainPanel.scss'
 
 /**
  * TODO:
@@ -42,8 +42,6 @@ const MainPanel = () => {
     const centerWidth = transposeWidth + keyboardWidth
 
     const displayCol = osc3Col + 87.5
-    const keyCtrlCol = displayCol - 22
-    const voiceSelCol = displayCol
 
     const spacing = (rightStart - (leftStart + leftWidth) - centerWidth) / 2
     const centerCol = leftStart + leftWidth + spacing
@@ -55,7 +53,6 @@ const MainPanel = () => {
 
     const voiceSelRow = 25
     const displayRow = voiceSelRow + 55
-    const keyCtrlRow = displayRow + 180
 
     // Gets the svg placeholder for the display and extracts size and position,
     // this is used to create an overlay div in the same position further down

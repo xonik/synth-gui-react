@@ -1,4 +1,3 @@
-import React from 'react';
 import './Header.scss';
 
 type PositionAlign = 'center' | 'left' | 'right';
@@ -11,7 +10,7 @@ interface Props {
     label?: string,
 }
 
-const getCenter = (x: number, y: number, width: number, align: PositionAlign) => {
+const getCenter = (x: number, _y: number, width: number, align: PositionAlign) => {
     switch (align) {
         case 'center':
             return x;

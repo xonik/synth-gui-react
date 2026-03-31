@@ -1,4 +1,3 @@
-import React from 'react'
 import EnvelopeControl from './EnvelopeControl'
 import EnvHeader from './EnvHeader'
 import PotLabels from '../components/PotLabels'

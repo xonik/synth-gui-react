@@ -1,4 +1,3 @@
-import React from 'react'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import RotaryPot12 from "../../pots/RotaryPot12";
 import SubHeader from "../../misc/SubHeader";
@@ -12,8 +11,8 @@ import {
 } from "../../../constants";
 import { ModuleProps } from "../types";
 import { ModuleBorder } from "../../misc/ModuleBorder";
-import "../Modules.scss"
 import { usePot, useButton } from '../../../store/hooks'
+import "../Modules.scss"
 
 const Effects = ({ x, y, height, width }: ModuleProps) => {
     const { displayValue: driveValue, increment: driveIncrement } = usePot(

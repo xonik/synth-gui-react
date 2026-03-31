@@ -1,4 +1,3 @@
-import React from 'react'
 import Stages from './Stages'
 import StageActivator from './StageActivator'
 import EnvOptionsLeft from './EnvOptionsLeft'

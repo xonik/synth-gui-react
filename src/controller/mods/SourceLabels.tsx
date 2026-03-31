@@ -1,4 +1,3 @@
-import React from 'react'
 import { digitalModSources, shortLabel } from '../../synthcore/modules/mods/utils'
 import { DraggableElementProps } from './types'
 import { useUiStore } from '../../store/uiStore'

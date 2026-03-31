@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 import { LoopMode } from '../../synthcore/modules/lfo/types'
 import Button from '../components/Button'
 import { useUiStore } from '../../store/uiStore'

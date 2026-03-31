@@ -1,14 +1,12 @@
 import LowPassFilter from "./LowPassFilter";
 import PostMix from "./PostMix";
 import Envelope from "./Envelope";
-import { BUTTON_DISTANCE_S, PADDING_LEFT, POT_DISTANCE_L, POT_DISTANCE_M, ROW_HEIGHT } from "../../../constants";
+import { POT_DISTANCE_L, POT_DISTANCE_M, ROW_HEIGHT } from "../../../constants";
 import DigitalFX from "./DigitalFX";
 import Chorus from "./Chorus";
 import OutputMixer from "./OutputMixer";
-import React from "react";
 import StateVariableFilter from "./StateVariableFilter";
 import { useUiStore } from '../../../store/uiStore'
-import { PanelScrew } from "../../misc/PanelScrew";
 import { SHOW_CUT } from "@/config";
 
 type Props = {
