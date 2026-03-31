@@ -1,5 +1,5 @@
-import React, { FC, useRef, useState } from 'react'
-import { LockAxis, ScrollConfig } from './ScrollSyncNode'
+import React, { type FC, useRef, useState } from 'react'
+import type { LockAxis, ScrollConfig } from './ScrollSyncNode'
 
 /**
  * ScrollSync and ScrollSyncNode are copied and modified from
@@ -7,59 +7,55 @@ import { LockAxis, ScrollConfig } from './ScrollSyncNode'
  */
 
 export interface ScrollSyncProps {
-    children: React.ReactNode;
+    children: React.ReactNode
     /**syncing enable control */
-    disabled?: boolean;
+    disabled?: boolean
     /** In case we want scroll to be proportionally applied regardless of the width and/or height*/
-    proportional?: boolean;
+    proportional?: boolean
 }
 
 interface RecordMap<T> {
-    [key: string]: T;
+    [key: string]: T
 }
 
 /**
  * node should be scrollable
  */
-export type Node = (EventTarget & HTMLElement) | null;
+export type Node = (EventTarget & HTMLElement) | null
 
 /**
  * node should be scrollable
  */
 interface SyncableElement {
-    node: Node;
-    scroll: ScrollConfig;
+    node: Node
+    scroll: ScrollConfig
 }
 
 interface ScrollingSyncerContextValues {
     /**
      * register node to be synced with other scrolled nodes
      */
-    registerNode: (node: SyncableElement, groups: string[]) => void;
+    registerNode: (node: SyncableElement, groups: string[]) => void
     /**
      * unregister node to stop syncing with other scrolled nodes
      */
-    unregisterNode: (node: SyncableElement, group: string[]) => void;
+    unregisterNode: (node: SyncableElement, group: string[]) => void
     /**
      * scroll handler for each node.onScroll
      */
-    onScroll: (e: React.UIEvent<HTMLElement>, groups: string[], lockAxis: LockAxis) => void;
+    onScroll: (e: React.UIEvent<HTMLElement>, groups: string[], lockAxis: LockAxis) => void
 
-    setScrollSource: (dragNode: HTMLElement) => void;
+    setScrollSource: (dragNode: HTMLElement) => void
 }
 
 /**
  * ScrollingSyncerContext is the context to be handling scrolled nodes
  */
 export const ScrollingSyncerContext: React.Context<ScrollingSyncerContextValues> = React.createContext({
-    registerNode: (_node: SyncableElement, _group: string[]) => {
-    },
-    unregisterNode: (_node: SyncableElement, _group: string[]) => {
-    },
-    onScroll: (_e, _groups: string[], _lockAxis: LockAxis) => {
-    },
-    setScrollSource: (_dragNode: HTMLElement) => {
-    },
+    registerNode: (_node: SyncableElement, _group: string[]) => {},
+    unregisterNode: (_node: SyncableElement, _group: string[]) => {},
+    onScroll: (_e, _groups: string[], _lockAxis: LockAxis) => {},
+    setScrollSource: (_dragNode: HTMLElement) => {},
 })
 
 /**
@@ -67,7 +63,7 @@ export const ScrollingSyncerContext: React.Context<ScrollingSyncerContextValues>
  * that wrappes children to be .Provided with context utils and eventsHandlers
  * @param props ScrollSyncProps
  */
-export const ScrollSync: FC<ScrollSyncProps> = props => {
+export const ScrollSync: FC<ScrollSyncProps> = (props) => {
     /**
      * a map of group: and it's nodes
      * {
@@ -76,7 +72,7 @@ export const ScrollSync: FC<ScrollSyncProps> = props => {
      *  groupC: [node1, node4],
      * }
      */
-    const nodesRef = useRef<RecordMap<(SyncableElement)[]>>({})
+    const nodesRef = useRef<RecordMap<SyncableElement[]>>({})
     const elements = nodesRef.current
 
     const findGroup = (group: string): boolean => {
@@ -89,7 +85,7 @@ export const ScrollSync: FC<ScrollSyncProps> = props => {
             return false
         }
 
-        const foundNode = elements[group].find(element => element.node === node)
+        const foundNode = elements[group].find((element) => element.node === node)
         if (!foundNode) {
             return false
         }
@@ -105,7 +101,7 @@ export const ScrollSync: FC<ScrollSyncProps> = props => {
      * @param groups to which groups the node should be registered
      */
     const registerNode = (element: SyncableElement, groups: string[]) => {
-        groups.forEach(group => {
+        groups.forEach((group) => {
             const groupExists = findGroup(group)
             if (!groupExists) {
                 elements[group] = []
@@ -125,12 +121,12 @@ export const ScrollSync: FC<ScrollSyncProps> = props => {
      * @param groups to wich groups the node should be registered
      */
     const unregisterNode = (element: SyncableElement, groups: string[]) => {
-        groups.forEach(group => {
+        groups.forEach((group) => {
             const doesNodeExist = doesNodeExists(element.node, group)
             if (doesNodeExist) {
                 elements[group].splice(
-                    elements[group].findIndex(e => element.node === e.node),
-                    1,
+                    elements[group].findIndex((e) => element.node === e.node),
+                    1
                 )
             }
         })
@@ -168,13 +164,13 @@ export const ScrollSync: FC<ScrollSyncProps> = props => {
         if (scrolledNode !== scrollSource) {
             return
         }
-        groups.forEach(group => {
-            elements[group].forEach(element => {
+        groups.forEach((group) => {
+            elements[group].forEach((element) => {
                 /* For all nodes other than the currently scrolled one */
                 if (scrolledNode !== element.node) {
                     const isEnabled = element.scroll === 'two-way'
-                    const isSynced = element.scroll === 'synced-only';
-                    (isEnabled || isSynced) && syncScrollPosition(scrolledNode, element.node, lockAxis)
+                    const isSynced = element.scroll === 'synced-only'
+                    ;(isEnabled || isSynced) && syncScrollPosition(scrolledNode, element.node, lockAxis)
                 }
             })
         })
@@ -201,9 +197,11 @@ export const ScrollSync: FC<ScrollSyncProps> = props => {
             value={{
                 registerNode,
                 unregisterNode,
-                onScroll: (e, groups, lockAxis: LockAxis) => !props.disabled && handleNodeScroll(e.currentTarget, groups, lockAxis),
-                setScrollSource: (scrollSource: HTMLElement) => setScrollSource(scrollSource)
-            }}>
+                onScroll: (e, groups, lockAxis: LockAxis) =>
+                    !props.disabled && handleNodeScroll(e.currentTarget, groups, lockAxis),
+                setScrollSource: (scrollSource: HTMLElement) => setScrollSource(scrollSource),
+            }}
+        >
             {React.Children.only(props.children)}
         </ScrollingSyncerContext.Provider>
     )

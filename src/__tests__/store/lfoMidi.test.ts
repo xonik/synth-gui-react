@@ -1,14 +1,14 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.mock('../../synthcore/synthcoreMiddleware', () => ({
     synthcoreMiddleware: () => (next: any) => (action: any) => next(action),
 }))
 
-import { cc, nrpn, button } from '../../midi/midibus'
-import { voiceGroupStores, createPatchStore } from '../../store/patchStore'
-import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 import { buttonMidiValues } from '../../midi/buttonMidiValues'
-import { startLfoMidiReceive, stopLfoMidiReceive, startLfoMidiSend, stopLfoMidiSend } from '../../store/midi/lfoMidi'
+import { button, cc, nrpn } from '../../midi/midibus'
+import { startLfoMidiReceive, startLfoMidiSend, stopLfoMidiReceive, stopLfoMidiSend } from '../../store/midi/lfoMidi'
+import { createPatchStore, voiceGroupStores } from '../../store/patchStore'
+import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
 
 const VG = 0
 const LFO = 1
@@ -84,9 +84,9 @@ describe('LFO MIDI receive', () => {
 })
 
 describe('LFO MIDI send', () => {
-    let sentNrpn: { addr: number, value: number }[] = []
-    let sentCC: { ccNum: number, value: number }[] = []
-    let sentButtons: { ctrl: any, value: number }[] = []
+    let sentNrpn: { addr: number; value: number }[] = []
+    let sentCC: { ccNum: number; value: number }[] = []
+    let sentButtons: { ctrl: any; value: number }[] = []
     const origNrpnSend = nrpn.send
     const origCCSend = cc.send
     const origButtonSend = button.send
@@ -116,28 +116,36 @@ describe('LFO MIDI send', () => {
     })
 
     it('sends rate change as NRPN', () => {
-        voiceGroupStores[VG].getState().set(s => { s.lfos[0].rate = 0.3 })
-        const sent = sentNrpn.find(s => s.addr === lfoCtrls.RATE.addr)
+        voiceGroupStores[VG].getState().set((s) => {
+            s.lfos[0].rate = 0.3
+        })
+        const sent = sentNrpn.find((s) => s.addr === lfoCtrls.RATE.addr)
         expect(sent).toBeDefined()
         expect(sent!.value).toBe(Math.floor(65535 * 0.3))
     })
 
     it('sends LFO select CC before param', () => {
-        voiceGroupStores[VG].getState().set(s => { s.lfos[2].depth = 0.8 })
-        const selectSent = sentCC.find(s => s.ccNum === (lfoCtrls.SELECT as any).cc)
+        voiceGroupStores[VG].getState().set((s) => {
+            s.lfos[2].depth = 0.8
+        })
+        const selectSent = sentCC.find((s) => s.ccNum === (lfoCtrls.SELECT as any).cc)
         expect(selectSent).toBeDefined()
         expect(selectSent!.value).toBe(2)
     })
 
     it('sends shape change as button MIDI', () => {
-        voiceGroupStores[VG].getState().set(s => { s.lfos[0].shape = 3 })
-        const sent = sentButtons.find(s => s.value === buttonMidiValues.LFO_SHAPE_SIN)
+        voiceGroupStores[VG].getState().set((s) => {
+            s.lfos[0].shape = 3
+        })
+        const sent = sentButtons.find((s) => s.value === buttonMidiValues.LFO_SHAPE_SIN)
         expect(sent).toBeDefined()
     })
 
     it('sends levelOffset as bipolar NRPN', () => {
-        voiceGroupStores[VG].getState().set(s => { s.lfos[0].levelOffset = -0.5 })
-        const sent = sentNrpn.find(s => s.addr === lfoCtrls.LEVEL_OFFSET.addr)
+        voiceGroupStores[VG].getState().set((s) => {
+            s.lfos[0].levelOffset = -0.5
+        })
+        const sent = sentNrpn.find((s) => s.addr === lfoCtrls.LEVEL_OFFSET.addr)
         expect(sent).toBeDefined()
         expect(sent!.value).toBe(Math.floor(32767 * -0.5 + 32767))
     })

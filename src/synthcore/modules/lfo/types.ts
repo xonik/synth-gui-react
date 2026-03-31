@@ -1,4 +1,4 @@
-import { Curve } from '../../generatedTypes'
+import type { Curve } from '../../generatedTypes'
 
 export enum StageId {
     DELAY,
@@ -16,32 +16,32 @@ export enum LoopMode {
 }
 
 export type Stage = {
-    id: StageId;
-    enabled: number;
-    curve: Curve;
-    time?: number; // 0 to 1
-};
+    id: StageId
+    enabled: number
+    curve: Curve
+    time?: number // 0 to 1
+}
 
 export type Lfo = {
-    id: number;
-    loopMode: LoopMode;
-    loopEnabled: boolean;
-    maxLoops: number;
-    invert: boolean;
-    bipolar: boolean;
+    id: number
+    loopMode: LoopMode
+    loopEnabled: boolean
+    maxLoops: number
+    invert: boolean
+    bipolar: boolean
 
-    time: number;
-    depth: number;
-    balance: number;
-    offset: number;
-    phaseOffset: number;
-    randomPhase: boolean;
-    resetOnTrigger: boolean;
-    resetOnStop: boolean;
-    resetLevelOnClock: boolean;
-    syncToClock: boolean;
+    time: number
+    depth: number
+    balance: number
+    offset: number
+    phaseOffset: number
+    randomPhase: boolean
+    resetOnTrigger: boolean
+    resetOnStop: boolean
+    resetLevelOnClock: boolean
+    syncToClock: boolean
 
     // convenience stuff
-    timeOffset: number;
-    timeOffsetStage: number;
+    timeOffset: number
+    timeOffsetStage: number
 }

@@ -1,15 +1,15 @@
-import { generateMidiRPCDeserializer } from './generateMidiRPCDeserializer'
+import fs from 'fs'
+import { generateApiForCpp, generateApiHForCpp } from './generateApiForCpp'
 import { generateApiTs } from './generateApiTs'
-import { generateFunctionNamesEnumTs } from './generateFunctionNames'
-import { parseCppHeaderFile } from './parseCppHeader'
-import { parseCvDefinitionFile } from './parseCvDefinition'
-import { generateCvDefinitionsTs } from './generateCvDefinitionsTs'
-import { parseCvConfigFile } from './parseCvConfig'
-import { parseCurves } from './parseCurves'
-import { generateEnumTs } from './generateEnumTs'
 import { generateCurveUsageList } from './generateCurveUsageList'
-import { generateApiForCpp, generateApiHForCpp } from "./generateApiForCpp";
-import fs from "fs";
+import { generateCvDefinitionsTs } from './generateCvDefinitionsTs'
+import { generateEnumTs } from './generateEnumTs'
+import { generateFunctionNamesEnumTs } from './generateFunctionNames'
+import { generateMidiRPCDeserializer } from './generateMidiRPCDeserializer'
+import { parseCppHeaderFile } from './parseCppHeader'
+import { parseCurves } from './parseCurves'
+import { parseCvConfigFile } from './parseCvConfig'
+import { parseCvDefinitionFile } from './parseCvDefinition'
 
 const writeToFile = (path: string, contents: string) => {
     console.log(`writing ${contents.length} bytes to ${path}`)
@@ -25,11 +25,17 @@ const scriptRoot = `${jsRoot}/utils/midiRPC`
 const jsMidiRoot = `${jsRoot}/src/midi/rpc/`
 
 // Functions that can be called on the voice controllers
-const voiceHeaderContents = fs.readFileSync(`${cppVoiceRoot}src/midiRPC/midiRPCFunctions.h`, { encoding: 'utf8', flag: 'r' })
+const voiceHeaderContents = fs.readFileSync(`${cppVoiceRoot}src/midiRPC/midiRPCFunctions.h`, {
+    encoding: 'utf8',
+    flag: 'r',
+})
 const voiceFuncs = parseCppHeaderFile(voiceHeaderContents)
 
 // Functions that can be called on the main controller
-const mainHeaderContents = fs.readFileSync(`${cppMainRoot}src/midiRPC/midiRPCFunctions.h`, { encoding: 'utf8', flag: 'r' })
+const mainHeaderContents = fs.readFileSync(`${cppMainRoot}src/midiRPC/midiRPCFunctions.h`, {
+    encoding: 'utf8',
+    flag: 'r',
+})
 const mainFuncs = parseCppHeaderFile(mainHeaderContents)
 
 console.log(mainFuncs)
@@ -47,7 +53,10 @@ const curveEnums = parseCurves(curveContents)
 
 // Receivers on the voice and main controllers
 writeToFile(`${cppVoiceRoot}src/midiRPC/generated/midiRPCDeserializer.cpp`, generateMidiRPCDeserializer(voiceFuncs, 0))
-writeToFile(`${cppMainRoot}src/midiRPC/generated/midiRPCDeserializer.cpp`, generateMidiRPCDeserializer(mainFuncs, voiceFuncs.length))
+writeToFile(
+    `${cppMainRoot}src/midiRPC/generated/midiRPCDeserializer.cpp`,
+    generateMidiRPCDeserializer(mainFuncs, voiceFuncs.length)
+)
 
 // Stubs in the TypeScript code for calling functions on the main and voice controllers
 writeToFile(`${jsMidiRoot}api.ts`, generateApiTs(funcs))
@@ -57,15 +66,23 @@ writeToFile(`${cppMainRoot}src/midiRPC/generated/api.cpp`, generateApiForCpp(voi
 writeToFile(`${cppMainRoot}src/midiRPC/generated/api.h`, generateApiHForCpp(voiceFuncs))
 
 // An enum of all functions available, both on main and voice cards
-writeToFile(`${jsMidiRoot}functionNames.ts`, generateFunctionNamesEnumTs(
-    funcs.map(
-        (func, index) => ({...func, index})
-    )
-))
+writeToFile(
+    `${jsMidiRoot}functionNames.ts`,
+    generateFunctionNamesEnumTs(funcs.map((func, index) => ({ ...func, index })))
+)
 writeToFile(`${jsRoot}/src/controller/settings/CvDefinitions.ts`, generateCvDefinitionsTs(cvs, cvCount))
-writeToFile(`${jsRoot}/src/synthcore/modules/lfo/generatedTypes.ts`, generateCurveUsageList(curveEnums.enum, curveEnums.lfo, '../..'))
-writeToFile(`${jsRoot}/src/synthcore/modules/env/generatedTypes.ts`, generateCurveUsageList(curveEnums.enum, curveEnums.env, '../..'))
-writeToFile(`${jsRoot}/src/controller/settings/generatedTypes.ts`, generateCurveUsageList(curveEnums.enum, curveEnums.cvmaps, '../../synthcore'))
+writeToFile(
+    `${jsRoot}/src/synthcore/modules/lfo/generatedTypes.ts`,
+    generateCurveUsageList(curveEnums.enum, curveEnums.lfo, '../..')
+)
+writeToFile(
+    `${jsRoot}/src/synthcore/modules/env/generatedTypes.ts`,
+    generateCurveUsageList(curveEnums.enum, curveEnums.env, '../..')
+)
+writeToFile(
+    `${jsRoot}/src/controller/settings/generatedTypes.ts`,
+    generateCurveUsageList(curveEnums.enum, curveEnums.cvmaps, '../../synthcore')
+)
 writeToFile(`${jsRoot}/src/synthcore/generatedTypes.ts`, generateEnumTs(curveEnums.enum))
 
 fs.copyFileSync(`${scriptRoot}/serializer.ts`, `${jsMidiRoot}serializer.ts`)

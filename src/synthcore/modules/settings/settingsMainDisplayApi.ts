@@ -18,5 +18,5 @@ export const mainDisplaySettingsApi = {
         } else if (ctrlId === mainDisplayControllers.POT5.id) {
         } else if (ctrlId === mainDisplayControllers.POT6.id) {
         }
-    }
+    },
 }

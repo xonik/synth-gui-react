@@ -1,7 +1,6 @@
-import { FuncProps, ControllerConfigButton, ControllerConfigNRPN } from '../../../midi/types'
+import { buttonMidiValues } from '../../../midi/buttonMidiValues'
+import { type ControllerConfigButton, ControllerConfigNRPN, type FuncProps } from '../../../midi/types'
 import { ControllerIdNonMod, ControllerIdNonModPots } from '../controllers/controllerIds'
-import {buttonMidiValues} from "../../../midi/buttonMidiValues";
-
 
 interface SettingsControllers {
     props: FuncProps
@@ -15,17 +14,13 @@ const settingsControllers: SettingsControllers = {
         id: ControllerIdNonMod.CALIBRATE_DCO1,
         label: 'Calibrate DCO 1',
         type: 'button',
-        values: [
-            buttonMidiValues.CALIBRATE_DCO1,
-        ],
+        values: [buttonMidiValues.CALIBRATE_DCO1],
     },
     CALIBRATE_DCO2: {
         id: ControllerIdNonMod.CALIBRATE_DCO2,
         label: 'Calibrate DCO 2',
         type: 'button',
-        values: [
-            buttonMidiValues.CALIBRATE_DCO2,
-        ],
+        values: [buttonMidiValues.CALIBRATE_DCO2],
     },
 
     /*

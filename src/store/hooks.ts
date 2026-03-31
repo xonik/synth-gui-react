@@ -13,11 +13,11 @@
  *   usePot(s => s.envelopes[0].stages.attack.time, (s, v) => { s.envelopes[0].stages.attack.time = v })
  */
 
-import { useMemo, useCallback } from 'react'
-import { useVoiceGroupStore, voiceGroupStores, VoiceGroupPatch } from './patchStore'
-import { useGlobalStore, globalStore, GlobalPatchState } from './globalStore'
-import { useUiStore } from './uiStore'
+import { useCallback, useMemo } from 'react'
+import { type GlobalPatchState, globalStore, useGlobalStore } from './globalStore'
+import { useVoiceGroupStore, type VoiceGroupPatch, voiceGroupStores } from './patchStore'
 import type { ResponseMapper } from './types'
+import { useUiStore } from './uiStore'
 import { getBounded } from './utils'
 
 /**
@@ -66,29 +66,27 @@ export function usePot(
         return rawValue
     }, [rawValue, responseMapper, bipolar])
 
-    const set = useCallback((newDisplayValue: number) => {
-        const bounded = getBounded(newDisplayValue, bipolar ? -1 : 0, 1)
-        const newRaw = responseMapper
-            ? responseMapper.output(bounded, bipolar)
-            : bounded
-        voiceGroupStores[voiceGroupIndex].getState().set(state => {
-            mutator(state, newRaw)
-        })
-    }, [voiceGroupIndex, mutator, responseMapper, bipolar])
+    const set = useCallback(
+        (newDisplayValue: number) => {
+            const bounded = getBounded(newDisplayValue, bipolar ? -1 : 0, 1)
+            const newRaw = responseMapper ? responseMapper.output(bounded, bipolar) : bounded
+            voiceGroupStores[voiceGroupIndex].getState().set((state) => {
+                mutator(state, newRaw)
+            })
+        },
+        [voiceGroupIndex, mutator, responseMapper, bipolar]
+    )
 
-    const increment = useCallback((delta: number) => {
-        const newDisplay = getBounded(
-            displayValue + delta,
-            bipolar ? -1 : 0,
-            1
-        )
-        const newRaw = responseMapper
-            ? responseMapper.output(newDisplay, bipolar)
-            : newDisplay
-        voiceGroupStores[voiceGroupIndex].getState().set(state => {
-            mutator(state, newRaw)
-        })
-    }, [voiceGroupIndex, mutator, displayValue, responseMapper, bipolar])
+    const increment = useCallback(
+        (delta: number) => {
+            const newDisplay = getBounded(displayValue + delta, bipolar ? -1 : 0, 1)
+            const newRaw = responseMapper ? responseMapper.output(newDisplay, bipolar) : newDisplay
+            voiceGroupStores[voiceGroupIndex].getState().set((state) => {
+                mutator(state, newRaw)
+            })
+        },
+        [voiceGroupIndex, mutator, displayValue, responseMapper, bipolar]
+    )
 
     return { displayValue, rawValue, set, increment }
 }
@@ -118,22 +116,31 @@ export function useButton(
         const store = voiceGroupStores[voiceGroupIndex].getState()
         const current = selector(store)
         if (numValues === 1) {
-            store.set(state => { mutator(state, 0) })
+            store.set((state) => {
+                mutator(state, 0)
+            })
         } else if (loop) {
-            store.set(state => { mutator(state, (current + 1) % numValues) })
+            store.set((state) => {
+                mutator(state, (current + 1) % numValues)
+            })
         } else {
             const next = current + 1
             if (next < numValues) {
-                store.set(state => { mutator(state, next) })
+                store.set((state) => {
+                    mutator(state, next)
+                })
             }
         }
     }, [voiceGroupIndex, selector, mutator, numValues, loop])
 
-    const set = useCallback((newValue: number) => {
-        voiceGroupStores[voiceGroupIndex].getState().set(state => {
-            mutator(state, newValue)
-        })
-    }, [voiceGroupIndex, mutator])
+    const set = useCallback(
+        (newValue: number) => {
+            voiceGroupStores[voiceGroupIndex].getState().set((state) => {
+                mutator(state, newValue)
+            })
+        },
+        [voiceGroupIndex, mutator]
+    )
 
     return { value, toggle, set }
 }
@@ -159,19 +166,16 @@ export function useGlobalPot(
         return rawValue
     }, [rawValue, responseMapper, bipolar])
 
-    const increment = useCallback((delta: number) => {
-        const newDisplay = getBounded(
-            displayValue + delta,
-            bipolar ? -1 : 0,
-            1
-        )
-        const newRaw = responseMapper
-            ? responseMapper.output(newDisplay, bipolar)
-            : newDisplay
-        globalStore.getState().set(state => {
-            mutator(state, newRaw)
-        })
-    }, [mutator, displayValue, responseMapper, bipolar])
+    const increment = useCallback(
+        (delta: number) => {
+            const newDisplay = getBounded(displayValue + delta, bipolar ? -1 : 0, 1)
+            const newRaw = responseMapper ? responseMapper.output(newDisplay, bipolar) : newDisplay
+            globalStore.getState().set((state) => {
+                mutator(state, newRaw)
+            })
+        },
+        [mutator, displayValue, responseMapper, bipolar]
+    )
 
     return { displayValue, rawValue, increment }
 }
@@ -182,13 +186,13 @@ export function useGlobalPot(
 export function useGlobalButton(
     selector: (state: GlobalPatchState) => number,
     mutator: (state: GlobalPatchState, value: number) => void,
-    numValues: number,
+    numValues: number
 ) {
     const value = useGlobalStore(selector)
 
     const toggle = useCallback(() => {
         const current = selector(globalStore.getState())
-        globalStore.getState().set(state => {
+        globalStore.getState().set((state) => {
             mutator(state, (current + 1) % numValues)
         })
     }, [selector, mutator, numValues])

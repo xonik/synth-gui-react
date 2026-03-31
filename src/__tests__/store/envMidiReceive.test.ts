@@ -1,16 +1,16 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.mock('../../synthcore/synthcoreMiddleware', () => ({
     synthcoreMiddleware: () => (next: any) => (action: any) => next(action),
 }))
 
-import { cc, nrpn, button } from '../../midi/midibus'
-import { voiceGroupStores, createPatchStore } from '../../store/patchStore'
-import { envCtrls } from '../../synthcore/modules/env/envControllers'
-import { StageId } from '../../synthcore/modules/env/types'
-import { startEnvelopeMidiReceive, stopEnvelopeMidiReceive } from '../../store/midi/envMidiReceive'
-import { curveValuesUsed } from '../../synthcore/modules/env/generatedTypes'
 import { buttonMidiValues } from '../../midi/buttonMidiValues'
+import { button, cc, nrpn } from '../../midi/midibus'
+import { startEnvelopeMidiReceive, stopEnvelopeMidiReceive } from '../../store/midi/envMidiReceive'
+import { createPatchStore, voiceGroupStores } from '../../store/patchStore'
+import { envCtrls } from '../../synthcore/modules/env/envControllers'
+import { curveValuesUsed } from '../../synthcore/modules/env/generatedTypes'
+import { StageId } from '../../synthcore/modules/env/types'
 
 const VG = 0
 const ENV = 0
@@ -24,13 +24,11 @@ function getEnv(envId = ENV) {
 }
 
 function encodeNrpn(value: number, valueIndex: number) {
-    return (valueIndex << 16) | (value & 0xFFFF)
+    return (valueIndex << 16) | (value & 0xffff)
 }
 
 function encodeLevel(level: number, stageId: number, bipolar: boolean) {
-    const midiValue = bipolar
-        ? Math.floor(32767 * level + 32767)
-        : Math.floor(65535 * level)
+    const midiValue = bipolar ? Math.floor(32767 * level + 32767) : Math.floor(65535 * level)
     return encodeNrpn(midiValue, stageId)
 }
 

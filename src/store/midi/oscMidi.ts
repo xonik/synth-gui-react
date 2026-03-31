@@ -6,10 +6,10 @@
  * Handles all 3 oscillators: DCO1 (index 0), DCO2 (index 1), VCO (index 2).
  */
 
-import { voiceGroupStores, OscillatorState } from '../patchStore'
-import { cc, button } from '../../midi/midibus'
-import { ControllerConfigCC, ControllerConfigButton } from '../../midi/types'
+import { button, cc } from '../../midi/midibus'
+import type { ControllerConfigButton, ControllerConfigCC } from '../../midi/types'
 import oscControllers from '../../synthcore/modules/osc/oscControllers'
+import { type OscillatorState, voiceGroupStores } from '../patchStore'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
 
 type OscField = keyof OscillatorState
@@ -119,7 +119,7 @@ export function startOscMidiSend() {
 }
 
 export function stopOscMidiSend() {
-    sendUnsubscribers.forEach(unsub => unsub())
+    sendUnsubscribers.forEach((unsub) => unsub())
     sendUnsubscribers = []
 }
 
@@ -130,7 +130,7 @@ export function startOscMidiReceive() {
         const id = cc.subscribe((voiceGroupIndex: number, midiValue: number) => {
             const value = midiValue / 127
             withMidiReceive(() => {
-                voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                     state.oscillators[oscIndex][field] = value
                 })
             })
@@ -144,7 +144,7 @@ export function startOscMidiReceive() {
             if (value < 0) return
 
             withMidiReceive(() => {
-                voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                     state.oscillators[oscIndex][field] = value
                 })
             })
@@ -154,6 +154,6 @@ export function startOscMidiReceive() {
 }
 
 export function stopOscMidiReceive() {
-    receiveUnsubscribers.forEach(unsub => unsub())
+    receiveUnsubscribers.forEach((unsub) => unsub())
     receiveUnsubscribers = []
 }

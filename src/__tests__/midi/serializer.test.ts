@@ -1,13 +1,7 @@
-import { describe, it, expect } from 'vitest'
-import {
-    splitTo7,
-    splitInt8To7,
-    splitInt16To7,
-    getBoolArray,
-} from '../../midi/rpc/serializer'
+import { describe, expect, it } from 'vitest'
+import { getBoolArray, splitInt8To7, splitInt16To7, splitTo7 } from '../../midi/rpc/serializer'
 
 describe('serializer', () => {
-
     describe('splitTo7', () => {
         it('splits a 7-bit value into 1 byte', () => {
             expect(splitTo7(0, 7)).toEqual([0])
@@ -61,7 +55,7 @@ describe('serializer', () => {
             expect(splitInt8To7(1)).toEqual([0, 1])
         })
 
-        it('handles negative values (two\'s complement)', () => {
+        it("handles negative values (two's complement)", () => {
             // -1 as uint8 = 255 = 0b11111111 -> [1, 127]
             expect(splitInt8To7(-1)).toEqual([1, 127])
             // -128 as uint8 = 128 = 0b10000000 -> [1, 0]
@@ -81,7 +75,7 @@ describe('serializer', () => {
             expect(splitInt16To7(32767)).toEqual([1, 127, 127])
         })
 
-        it('handles negative values (two\'s complement)', () => {
+        it("handles negative values (two's complement)", () => {
             // -1 as uint16 = 65535 = 0xFFFF -> [3, 127, 127]
             expect(splitInt16To7(-1)).toEqual([3, 127, 127])
             // -32768 as uint16 = 32768 = 0x8000 -> [2, 0, 0]

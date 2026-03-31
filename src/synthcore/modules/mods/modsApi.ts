@@ -1,13 +1,13 @@
-import midiApi from './modsMidiApi'
-import { ApiSource } from '../../types'
-import { getBounded, getQuantized } from '../../../store/utils'
-import { useUiStore } from '../../../store/uiStore'
 import { voiceGroupStores as zustandStores } from '../../../store/patchStore'
-import { digitalModSources, modDst } from './utils'
-import modsControllers from './modsControllers'
-import modsMidiApi from './modsMidiApi'
+import { useUiStore } from '../../../store/uiStore'
+import { getBounded, getQuantized } from '../../../store/utils'
+import type { ApiSource } from '../../types'
 import { paramReceive, paramSend } from '../common/commonMidiApi'
-import { ButtonInputProperty, NumericInputProperty } from '../common/types'
+import type { ButtonInputProperty, NumericInputProperty } from '../common/types'
+import modsControllers from './modsControllers'
+import midiApi from './modsMidiApi'
+import modsMidiApi from './modsMidiApi'
+import { digitalModSources, modDst } from './utils'
 
 const setGuiSource = (guiSource: number, _source: ApiSource) => {
     const routing = useUiStore.getState().modRouting
@@ -44,12 +44,7 @@ const setGuiDstParam = (guiDstParam: number, _source: ApiSource) => {
     }
 }
 
-const setGuiMod = (
-    guiSource: number,
-    guiDstFunc: number,
-    guiDstParam: number,
-    _source: ApiSource
-) => {
+const setGuiMod = (guiSource: number, guiDstFunc: number, guiDstParam: number, _source: ApiSource) => {
     useUiStore.getState().setModRouting({
         sourceId: guiSource,
         dstFuncId: guiDstFunc,
@@ -101,7 +96,14 @@ const incrementGuiDstParam = (inc: -1 | 1, source: ApiSource) => {
     }
 }
 
-const setModValue = (voiceGroupIndex: number, sourceId: number, dstId: number, dstCtrlIndex: number, modValue: number, source: ApiSource) => {
+const setModValue = (
+    voiceGroupIndex: number,
+    sourceId: number,
+    dstId: number,
+    dstCtrlIndex: number,
+    modValue: number,
+    source: ApiSource
+) => {
     const quantizedValue = getQuantized(modValue, 32767)
 
     const currModValue = zustandStores[voiceGroupIndex].getState().mods?.[sourceId]?.[dstId]?.[dstCtrlIndex] ?? 0
@@ -180,8 +182,7 @@ export const uiAmount = (() => {
     return {
         set,
         increment,
-        toggle: (_input: ButtonInputProperty) => {
-        }
+        toggle: (_input: ButtonInputProperty) => {},
     }
 })()
 
@@ -197,9 +198,9 @@ const toggle = (input: ButtonInputProperty) => {
     customhandlers[input.ctrl.id]?.toggle(input)
 }
 
-const epsilon: number = 0.001;
+const epsilon: number = 0.001
 export const isZero = (A: number) => {
-    return (Math.abs(A) < epsilon);
+    return Math.abs(A) < epsilon
 }
 
 const getForSave = (voiceGroupIndex: number) => {

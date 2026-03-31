@@ -1,11 +1,11 @@
 import { useCallback, useState } from 'react'
 import ReactSlider from 'react-slider'
-import { saveCvMapping, saveCvMappings, setCvParams, VOICE_ALL } from '../../midi/rpc/api'
-import CvResponseCurve from './CvResponseCurve'
-import { CV_CHANNELS, CVs } from './CvDefinitions'
 import { curveNames } from '../../components/curves/shortCurveNames'
+import { saveCvMapping, saveCvMappings, setCvParams, VOICE_ALL } from '../../midi/rpc/api'
+import { sharedConfig } from '../../sharedConfig'
+import { CV_CHANNELS, CVs } from './CvDefinitions'
+import CvResponseCurve from './CvResponseCurve'
 import { curveValuesUsed } from './generatedTypes'
-import { sharedConfig } from "../../sharedConfig";
 import './CvRange.scss'
 import '../components/StageBlock.scss'
 import '../components/Ctrl.scss'
@@ -13,25 +13,25 @@ import '../components/Ctrl.scss'
 import { Curve } from '../../synthcore/generatedTypes'
 
 type RangeProps = {
-    setRange: (value: number) => void,
+    setRange: (value: number) => void
     value: number
 }
 
 const VerticalRangeSelector = ({ setRange, value }: RangeProps) => {
-
-    return <ReactSlider
-        className="horizontal-slider cv-range__graph-controls__range"
-        thumbClassName="cv-range__thumb"
-        trackClassName="example-track"
-        orientation="vertical"
-        max={65535}
-        min={0}
-        invert
-        value={value}
-        onChange={setRange}
-        renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
-    />
-
+    return (
+        <ReactSlider
+            className="horizontal-slider cv-range__graph-controls__range"
+            thumbClassName="cv-range__thumb"
+            trackClassName="example-track"
+            orientation="vertical"
+            max={65535}
+            min={0}
+            invert
+            value={value}
+            onChange={setRange}
+            renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
+        />
+    )
 }
 
 type CvSelectorProps = {
@@ -49,70 +49,82 @@ type CvReverseCheckboxProps = {
 }
 
 const CvSelector = ({ onSelect, cv }: CvSelectorProps) => {
+    const onOptionChangeHandler = useCallback(
+        (event: React.ChangeEvent<HTMLSelectElement>) => {
+            event.preventDefault()
+            const value = event.target.value
+            console.log(value)
+            if (value) {
+                onSelect(Number.parseInt(value))
+            }
+        },
+        [onSelect]
+    )
 
-    const onOptionChangeHandler = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-        event.preventDefault();
-        const value = event.target.value
-        console.log(value)
-        if (value) {
-            onSelect(Number.parseInt(value));
-        }
-    }, [onSelect])
-
-    return <select onChange={onOptionChangeHandler} value={cv} className={"cv-range__cv-selector"}>
-        {CVs.map((cv, index) => {
-            return (
-                <option key={index} value={cv.channel}>
-                    {cv.description} ({cv.channel})
-                </option>
-            );
-        })}
-    </select>
+    return (
+        <select onChange={onOptionChangeHandler} value={cv} className={'cv-range__cv-selector'}>
+            {CVs.map((cv, index) => {
+                return (
+                    <option key={index} value={cv.channel}>
+                        {cv.description} ({cv.channel})
+                    </option>
+                )
+            })}
+        </select>
+    )
 }
 
 const CvCurveSelector = ({ onSelect, curve }: CvCurveSelectorProps) => {
+    const onOptionChangeHandler = useCallback(
+        (event: React.ChangeEvent<HTMLSelectElement>) => {
+            event.preventDefault()
+            const value = event.target.value
+            console.log(value)
+            if (value) {
+                onSelect(Number.parseInt(value))
+            }
+        },
+        [onSelect]
+    )
 
-    const onOptionChangeHandler = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-        event.preventDefault();
-        const value = event.target.value
-        console.log(value)
-        if (value) {
-            onSelect(Number.parseInt(value));
-        }
-    }, [onSelect])
-
-    return <select onChange={onOptionChangeHandler} value={curve}>
-        {curveValuesUsed.map((curve: Curve) => {
-            return (
-                <option key={curve} value={curve}>
-                    {curveNames[curve]}
-                </option>
-            );
-        })}
-    </select>
+    return (
+        <select onChange={onOptionChangeHandler} value={curve}>
+            {curveValuesUsed.map((curve: Curve) => {
+                return (
+                    <option key={curve} value={curve}>
+                        {curveNames[curve]}
+                    </option>
+                )
+            })}
+        </select>
+    )
 }
 
 const CvReverseCheckbox = ({ onChange, reverse }: CvReverseCheckboxProps) => {
-    const onOptionChangeHandler = useCallback((_event: React.ChangeEvent<HTMLInputElement>) => {
-        onChange(!reverse);
-    }, [onChange, reverse])
+    const onOptionChangeHandler = useCallback(
+        (_event: React.ChangeEvent<HTMLInputElement>) => {
+            onChange(!reverse)
+        },
+        [onChange, reverse]
+    )
 
-    return <label className="cv-range__nowrap">
-        <input type="checkbox" onChange={onOptionChangeHandler} checked={reverse || false}/>
-        Reverse
-    </label>
+    return (
+        <label className="cv-range__nowrap">
+            <input type="checkbox" onChange={onOptionChangeHandler} checked={reverse || false} />
+            Reverse
+        </label>
+    )
 }
-
 
 function getAsVolts(index: number) {
     return (Math.round(500 * (index / 65535)) / 100).toFixed(2)
 }
 
 type CvRange = {
-    cv: number,
-    start: number,
-    end: number,
-    reverse: boolean,
+    cv: number
+    start: number
+    end: number
+    reverse: boolean
     curve: Curve // PS: This is the actual curve value, not index. In controllers, we use the index as value instead.
 }
 
@@ -160,11 +172,9 @@ function mutate(cvRanges: CvRange[], cv: number, changes: Partial<CvRange>) {
     const cvRange = cvRanges[cv]
     const updatedCvRange = {
         ...cvRange,
-        ...changes
+        ...changes,
     }
-    const updatedCvRanges = [
-        ...cvRanges
-    ]
+    const updatedCvRanges = [...cvRanges]
     updatedCvRanges[cv] = updatedCvRange
     return updatedCvRanges
 }
@@ -173,8 +183,8 @@ function sendAll(voice: number, cvRanges: CvRange[], i: number) {
     const { cv, start, end, curve, reverse } = cvRanges[i]
     setCvParams(cv, start, end, curve, reverse)
 
-    if(i < CV_CHANNELS){
-        if(i === CV_CHANNELS - 1) {
+    if (i < CV_CHANNELS) {
+        if (i === CV_CHANNELS - 1) {
             saveCvMappings(voice)
         } else {
             setTimeout(() => {
@@ -184,34 +194,37 @@ function sendAll(voice: number, cvRanges: CvRange[], i: number) {
     }
 }
 
-export const CvRange = ({voice}: Props) => {
+export const CvRange = ({ voice }: Props) => {
     const [allCvs, setAllCvs] = useState<CvRange[][]>(load())
     const [cv, setCv] = useState<number>(0)
     const [saved, setSaved] = useState<boolean[][]>(
         Array.from({ length: sharedConfig.VOICE_COUNT.value }, getInitialSaved)
     )
 
-    const updateSaved = useCallback((isSaved: boolean) => {
-        setSaved(prev => {
-            const updated = prev.map(arr => [...arr])
-            if (voice === VOICE_ALL) {
-                for (let v = 0; v < sharedConfig.VOICE_COUNT.value; v++) {
-                    updated[v][cv] = isSaved
+    const updateSaved = useCallback(
+        (isSaved: boolean) => {
+            setSaved((prev) => {
+                const updated = prev.map((arr) => [...arr])
+                if (voice === VOICE_ALL) {
+                    for (let v = 0; v < sharedConfig.VOICE_COUNT.value; v++) {
+                        updated[v][cv] = isSaved
+                    }
+                } else {
+                    updated[voice][cv] = isSaved
                 }
-            } else {
-                updated[voice][cv] = isSaved
-            }
-            return updated
-        })
-    }, [cv, voice])
+                return updated
+            })
+        },
+        [cv, voice]
+    )
 
     const sendCv = (cvRange: CvRange, _v: number) => {
         setCvParams(cvRange.cv, cvRange.start, cvRange.end, cvRange.curve, cvRange.reverse, voice)
     }
 
     const onSave = useCallback(() => {
-        setAllCvs(prev => {
-            const updated = prev.map(arr => arr.map(obj => ({ ...obj })))
+        setAllCvs((prev) => {
+            const updated = prev.map((arr) => arr.map((obj) => ({ ...obj })))
             if (voice === VOICE_ALL) {
                 for (let v = 0; v < sharedConfig.VOICE_COUNT.value; v++) {
                     updated[v][cv] = { ...updated[v][cv] }
@@ -227,9 +240,9 @@ export const CvRange = ({voice}: Props) => {
     }, [cv, voice, updateSaved])
 
     const onReset = useCallback(() => {
-        setAllCvs(prev => {
+        setAllCvs((prev) => {
             const persisted = load()
-            const updated = prev.map(arr => arr.map(obj => ({ ...obj })))
+            const updated = prev.map((arr) => arr.map((obj) => ({ ...obj })))
             if (voice === VOICE_ALL) {
                 for (let v = 0; v < sharedConfig.VOICE_COUNT.value; v++) {
                     updated[v][cv] = persisted[v][cv]
@@ -249,94 +262,119 @@ export const CvRange = ({voice}: Props) => {
         sendAll(voice, persisted[voice], 0)
     }, [])
 
-    const updateStart = useCallback((start: number) => {
-        setAllCvs(prev => {
-            const updated = prev.map(arr => arr.map(obj => ({ ...obj })))
-            if (voice === VOICE_ALL) {
-                for (let v = 0; v < sharedConfig.VOICE_COUNT.value; v++) {
-                    updated[v] = mutate(updated[v], cv, { start })
+    const updateStart = useCallback(
+        (start: number) => {
+            setAllCvs((prev) => {
+                const updated = prev.map((arr) => arr.map((obj) => ({ ...obj })))
+                if (voice === VOICE_ALL) {
+                    for (let v = 0; v < sharedConfig.VOICE_COUNT.value; v++) {
+                        updated[v] = mutate(updated[v], cv, { start })
+                    }
+                    sendCv(updated[0][cv], voice)
+                } else {
+                    updated[voice] = mutate(updated[voice], cv, { start })
+                    sendCv(updated[voice][cv], voice)
                 }
-                sendCv(updated[0][cv], voice)
-            } else {
-                updated[voice] = mutate(updated[voice], cv, { start })
-                sendCv(updated[voice][cv], voice)
-            }
-            updateSaved(false)
-            return updated
-        })
-    }, [cv, voice, updateSaved])
+                updateSaved(false)
+                return updated
+            })
+        },
+        [cv, voice, updateSaved]
+    )
 
-    const updateEnd = useCallback((end: number) => {
-        setAllCvs(prev => {
-            const updated = prev.map(arr => arr.map(obj => ({ ...obj })))
-            if (voice === VOICE_ALL) {
-                for (let v = 0; v < sharedConfig.VOICE_COUNT.value; v++) {
-                    updated[v] = mutate(updated[v], cv, { end })
+    const updateEnd = useCallback(
+        (end: number) => {
+            setAllCvs((prev) => {
+                const updated = prev.map((arr) => arr.map((obj) => ({ ...obj })))
+                if (voice === VOICE_ALL) {
+                    for (let v = 0; v < sharedConfig.VOICE_COUNT.value; v++) {
+                        updated[v] = mutate(updated[v], cv, { end })
+                    }
+                    sendCv(updated[0][cv], voice)
+                } else {
+                    updated[voice] = mutate(updated[voice], cv, { end })
+                    sendCv(updated[voice][cv], voice)
                 }
-                sendCv(updated[0][cv], voice)
-            } else {
-                updated[voice] = mutate(updated[voice], cv, { end })
-                sendCv(updated[voice][cv], voice)
-            }
-            updateSaved(false)
-            return updated
-        })
-    }, [cv, voice, updateSaved])
+                updateSaved(false)
+                return updated
+            })
+        },
+        [cv, voice, updateSaved]
+    )
 
-    const updateCurve = useCallback((curve: number) => {
-        setAllCvs(prev => {
-            const updated = prev.map(arr => arr.map(obj => ({ ...obj })))
-            if (voice === VOICE_ALL) {
-                for (let v = 0; v < sharedConfig.VOICE_COUNT.value; v++) {
-                    updated[v] = mutate(updated[v], cv, { curve })
+    const updateCurve = useCallback(
+        (curve: number) => {
+            setAllCvs((prev) => {
+                const updated = prev.map((arr) => arr.map((obj) => ({ ...obj })))
+                if (voice === VOICE_ALL) {
+                    for (let v = 0; v < sharedConfig.VOICE_COUNT.value; v++) {
+                        updated[v] = mutate(updated[v], cv, { curve })
+                    }
+                    sendCv(updated[0][cv], voice)
+                } else {
+                    updated[voice] = mutate(updated[voice], cv, { curve })
+                    sendCv(updated[voice][cv], voice)
                 }
-                sendCv(updated[0][cv], voice)
-            } else {
-                updated[voice] = mutate(updated[voice], cv, { curve })
-                sendCv(updated[voice][cv], voice)
-            }
-            updateSaved(false)
-            return updated
-        })
-    }, [cv, voice, updateSaved])
+                updateSaved(false)
+                return updated
+            })
+        },
+        [cv, voice, updateSaved]
+    )
 
-    const updateReverse = useCallback((reverse: boolean) => {
-        setAllCvs(prev => {
-            const updated = prev.map(arr => arr.map(obj => ({ ...obj })))
-            if (voice === VOICE_ALL) {
-                for (let v = 0; v < sharedConfig.VOICE_COUNT.value; v++) {
-                    updated[v] = mutate(updated[v], cv, { reverse })
+    const updateReverse = useCallback(
+        (reverse: boolean) => {
+            setAllCvs((prev) => {
+                const updated = prev.map((arr) => arr.map((obj) => ({ ...obj })))
+                if (voice === VOICE_ALL) {
+                    for (let v = 0; v < sharedConfig.VOICE_COUNT.value; v++) {
+                        updated[v] = mutate(updated[v], cv, { reverse })
+                    }
+                    sendCv(updated[0][cv], voice)
+                } else {
+                    updated[voice] = mutate(updated[voice], cv, { reverse })
+                    sendCv(updated[voice][cv], voice)
                 }
-                sendCv(updated[0][cv], voice)
-            } else {
-                updated[voice] = mutate(updated[voice], cv, { reverse })
-                sendCv(updated[voice][cv], voice)
-            }
-            updateSaved(false)
-            return updated
-        })
-    }, [cv, voice, updateSaved])
+                updateSaved(false)
+                return updated
+            })
+        },
+        [cv, voice, updateSaved]
+    )
 
     // For display, use the first voice if "All" is selected
     const currentCvs = voice === -1 ? allCvs[0] : allCvs[voice]
     const currentSaved = voice === -1 ? saved[0] : saved[voice]
 
-    return <div className="cv-range">
-        <div className="cv-range__graph-controls">
-            <VerticalRangeSelector setRange={updateStart} value={currentCvs[cv].start}/>
-            <CvResponseCurve start={currentCvs[cv].start} end={currentCvs[cv].end} curve={currentCvs[cv].curve} reverse={currentCvs[cv].reverse}/>
-            <VerticalRangeSelector setRange={updateEnd} value={currentCvs[cv].end}/>
+    return (
+        <div className="cv-range">
+            <div className="cv-range__graph-controls">
+                <VerticalRangeSelector setRange={updateStart} value={currentCvs[cv].start} />
+                <CvResponseCurve
+                    start={currentCvs[cv].start}
+                    end={currentCvs[cv].end}
+                    curve={currentCvs[cv].curve}
+                    reverse={currentCvs[cv].reverse}
+                />
+                <VerticalRangeSelector setRange={updateEnd} value={currentCvs[cv].end} />
+            </div>
+            <div className="cv-range__params">
+                <CvCurveSelector onSelect={updateCurve} curve={currentCvs[cv].curve} />
+                <CvSelector onSelect={setCv} cv={cv} />
+                <CvReverseCheckbox onChange={updateReverse} reverse={currentCvs[cv].reverse} />
+                <button disabled={currentSaved[cv]} onClick={onSave}>
+                    Save
+                </button>
+                <button disabled={currentSaved[cv]} onClick={onReset}>
+                    Reset
+                </button>
+                <button onClick={onLoadAll}>Ld all</button>
+                <div className="cv-range__nowrap">
+                    V: {getAsVolts(currentCvs[cv].start)} - {getAsVolts(currentCvs[cv].end)}
+                </div>
+            </div>
         </div>
-        <div className="cv-range__params">
-            <CvCurveSelector onSelect={updateCurve} curve={currentCvs[cv].curve}/>
-            <CvSelector onSelect={setCv} cv={cv}/>
-            <CvReverseCheckbox onChange={updateReverse} reverse={currentCvs[cv].reverse}/>
-            <button disabled={currentSaved[cv]} onClick={onSave}>Save</button>
-            <button disabled={currentSaved[cv]} onClick={onReset}>Reset</button>
-            <button onClick={onLoadAll}>Ld all</button>
-            <div className="cv-range__nowrap">V: {getAsVolts(currentCvs[cv].start)} - {getAsVolts(currentCvs[cv].end)}</div>
-        </div>
-    </div>
+    )
 }
 
-type Props = { voice: number };
+type Props = { voice: number }

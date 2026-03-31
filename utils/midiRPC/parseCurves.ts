@@ -1,18 +1,19 @@
+import type { EnumDef, EnumDefWithTargets } from './dataTypes'
 import { findEnums } from './enumParser'
-import { EnumDef, EnumDefWithTargets } from './dataTypes'
+
 const parseComment = (comment: string | undefined) => {
-    if(!comment) {
+    if (!comment) {
         return {
             targets: [],
-            description: ''
+            description: '',
         }
     }
 
     const matches = comment.trim().match(/(\[(.*)\])?(.*)/)
-    if(!matches) {
+    if (!matches) {
         return {
             targets: [],
-            description: ''
+            description: '',
         }
     }
 
@@ -20,7 +21,7 @@ const parseComment = (comment: string | undefined) => {
     const description = matches[3]?.trim()
     return {
         targets: targets || [],
-        description
+        description,
     }
 }
 
@@ -28,28 +29,26 @@ const appendData = (enumDef: EnumDef): EnumDefWithTargets => {
     const newValues = enumDef.values.map((entry) => {
         return {
             ...entry,
-            ...parseComment(entry.comment)
+            ...parseComment(entry.comment),
         }
     })
     return {
         ...enumDef,
-        values: newValues
+        values: newValues,
     }
 }
 
 const getFilteredValues = (enumDef: EnumDefWithTargets, key: string) => {
     console.log('entry', enumDef.values)
-    return enumDef.values
-        .filter((entry) => entry.targets.indexOf(key) > -1)
+    return enumDef.values.filter((entry) => entry.targets.indexOf(key) > -1)
 }
-
 
 export const parseCurves = (file: string) => {
     const lines = file.split('\n')
 
     const enums = findEnums(lines)
     const curvesEnum = enums.find(({ name }) => name === 'Curve')
-    if(!curvesEnum) throw Error('Cannot find curve enum in h file')
+    if (!curvesEnum) throw Error('Cannot find curve enum in h file')
 
     const enumWithTargets = appendData(curvesEnum)
     return {

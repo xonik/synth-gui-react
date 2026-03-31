@@ -1,11 +1,11 @@
-import { useUiStore } from '../../store/uiStore'
 import { useVoiceGroupStore } from '../../store/patchStore'
+import { useUiStore } from '../../store/uiStore'
 import { digitalModSources, modDst } from '../../synthcore/modules/mods/utils'
 import '../components/PotLabels.scss'
 
 const ModPotLabels = () => {
-    const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)
-    const routing = useUiStore(s => s.modRouting)
+    const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
+    const routing = useUiStore((s) => s.modRouting)
     const sourceIndex = routing.sourceId ?? 0
     const dstGroupId = routing.dstGroupId ?? 0
     const dstFuncId = routing.dstFuncId ?? 0
@@ -17,7 +17,7 @@ const ModPotLabels = () => {
 
     const sourceId = source.id
     const dstId = dst.id
-    const dstValue = useVoiceGroupStore(voiceGroupIndex, s => s.mods?.[sourceId]?.[dstId]?.[dstCtrlIndex] ?? 0)
+    const dstValue = useVoiceGroupStore(voiceGroupIndex, (s) => s.mods?.[sourceId]?.[dstId]?.[dstCtrlIndex] ?? 0)
 
     const values = [
         modDst.groupLabels[dstGroupId],
@@ -29,14 +29,24 @@ const ModPotLabels = () => {
     ]
     const labels = ['Group', 'Source', 'Func', 'Param', 'Amount', '']
 
-    return <div className="pot-labels pot-labels--two-rows">
-        <div className="pot-labels__row">
-            {values.map((value, index) => <div key={index} className="pot-labels__label">{value}</div>)}
+    return (
+        <div className="pot-labels pot-labels--two-rows">
+            <div className="pot-labels__row">
+                {values.map((value, index) => (
+                    <div key={index} className="pot-labels__label">
+                        {value}
+                    </div>
+                ))}
+            </div>
+            <div className="pot-labels__row">
+                {labels.map((label, index) => (
+                    <div key={index} className="pot-labels__label">
+                        {label}
+                    </div>
+                ))}
+            </div>
         </div>
-        <div className="pot-labels__row">
-            {labels.map((label, index) => <div key={index} className="pot-labels__label">{label}</div>)}
-        </div>
-    </div>
+    )
 }
 
 export default ModPotLabels

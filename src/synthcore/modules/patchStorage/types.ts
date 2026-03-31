@@ -1,7 +1,6 @@
-import { PatchControllers } from '../common/types'
+import type { PatchControllers } from '../common/types'
 
 export type Patch = {
-    controllers: PatchControllers,
-    mods: number [][][],
+    controllers: PatchControllers
+    mods: number[][][]
 }
-

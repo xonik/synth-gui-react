@@ -1,8 +1,8 @@
-import SourceLabels from './SourceLabels'
-import DstLabels from './DstLabels'
-import AmountsTable from './AmountsTable'
 import ScrollSync from '../utils/scrollsync/ScrollSync'
 import ScrollSyncNode from '../utils/scrollsync/ScrollSyncNode'
+import AmountsTable from './AmountsTable'
+import DstLabels from './DstLabels'
+import SourceLabels from './SourceLabels'
 import './ModControl.scss'
 
 const ModControl = () => {
@@ -17,19 +17,19 @@ const ModControl = () => {
                         </div>
                         <ScrollSyncNode lockAxis="Y">
                             <div className="mod-ctrl__header__dsts-container" id="dsts">
-                                <DstLabels/>
+                                <DstLabels />
                             </div>
                         </ScrollSyncNode>
                     </div>
                     <div className="mod-ctrl__content">
                         <ScrollSyncNode lockAxis="X">
                             <div className="mod-ctrl__content__sources-container" id="sources">
-                                <SourceLabels/>
+                                <SourceLabels />
                             </div>
                         </ScrollSyncNode>
                         <ScrollSyncNode>
                             <div className="mod-ctrl__content__amounts-container" id="amounts">
-                                <AmountsTable/>
+                                <AmountsTable />
                             </div>
                         </ScrollSyncNode>
                     </div>

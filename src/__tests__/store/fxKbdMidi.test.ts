@@ -1,20 +1,20 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.mock('../../synthcore/synthcoreMiddleware', () => ({
     synthcoreMiddleware: () => (next: any) => (action: any) => next(action),
 }))
 
-import { cc, button } from '../../midi/midibus'
-import { voiceGroupStores, createPatchStore } from '../../store/patchStore'
+import { buttonMidiValues } from '../../midi/buttonMidiValues'
+import { button, cc } from '../../midi/midibus'
+import {
+    startFxKbdMidiReceive,
+    startFxKbdMidiSend,
+    stopFxKbdMidiReceive,
+    stopFxKbdMidiSend,
+} from '../../store/midi/fxKbdMidi'
+import { createPatchStore, voiceGroupStores } from '../../store/patchStore'
 import fxControllers from '../../synthcore/modules/fx/fxControllers'
 import kbdControllers from '../../synthcore/modules/kbd/kbdControllers'
-import { buttonMidiValues } from '../../midi/buttonMidiValues'
-import {
-    startFxKbdMidiSend,
-    stopFxKbdMidiSend,
-    startFxKbdMidiReceive,
-    stopFxKbdMidiReceive,
-} from '../../store/midi/fxKbdMidi'
 
 const VG = 0
 
@@ -79,8 +79,8 @@ describe('FX/Kbd MIDI receive', () => {
 })
 
 describe('FX/Kbd MIDI send', () => {
-    let sentCC: { ccNum: number, value: number }[] = []
-    let sentButtons: { ctrl: any, value: number }[] = []
+    let sentCC: { ccNum: number; value: number }[] = []
+    let sentButtons: { ctrl: any; value: number }[] = []
     const origCCSend = cc.send
     const origButtonSend = button.send
 
@@ -104,34 +104,44 @@ describe('FX/Kbd MIDI send', () => {
     })
 
     it('sends distortion drive as CC', () => {
-        getState().set(s => { s.fx.distortion.drive = 0.6 })
-        const sent = sentCC.find(s => s.ccNum === fxControllers.DISTORTION.DRIVE.cc)
+        getState().set((s) => {
+            s.fx.distortion.drive = 0.6
+        })
+        const sent = sentCC.find((s) => s.ccNum === fxControllers.DISTORTION.DRIVE.cc)
         expect(sent).toBeDefined()
         expect(sent!.value).toBe(Math.floor(127 * 0.6))
     })
 
     it('sends kbd portamento as CC', () => {
-        getState().set(s => { s.kbd.portamento = 0.3 })
-        const sent = sentCC.find(s => s.ccNum === kbdControllers.PORTAMENTO.cc)
+        getState().set((s) => {
+            s.kbd.portamento = 0.3
+        })
+        const sent = sentCC.find((s) => s.ccNum === kbdControllers.PORTAMENTO.cc)
         expect(sent).toBeDefined()
         expect(sent!.value).toBe(Math.floor(127 * 0.3))
     })
 
     it('sends distortion out as button MIDI', () => {
-        getState().set(s => { s.fx.distortion.out = 3 })
-        const sent = sentButtons.find(s => s.value === buttonMidiValues.DISTORTION_OUT_BOTH)
+        getState().set((s) => {
+            s.fx.distortion.out = 3
+        })
+        const sent = sentButtons.find((s) => s.value === buttonMidiValues.DISTORTION_OUT_BOTH)
         expect(sent).toBeDefined()
     })
 
     it('sends kbd transpose as button MIDI', () => {
-        getState().set(s => { s.kbd.transpose = 2 })
-        const sent = sentButtons.find(s => s.value === buttonMidiValues.TRANSPOSE_0)
+        getState().set((s) => {
+            s.kbd.transpose = 2
+        })
+        const sent = sentButtons.find((s) => s.value === buttonMidiValues.TRANSPOSE_0)
         expect(sent).toBeDefined()
     })
 
     it('sends kbd mode as button MIDI', () => {
-        getState().set(s => { s.kbd.mode = 2 })
-        const sent = sentButtons.find(s => s.value === buttonMidiValues.KBD_MODE_POLY)
+        getState().set((s) => {
+            s.kbd.mode = 2
+        })
+        const sent = sentButtons.find((s) => s.value === buttonMidiValues.KBD_MODE_POLY)
         expect(sent).toBeDefined()
     })
 })

@@ -1,6 +1,6 @@
-import { voiceGroupStores, VoiceGroupPatch } from '../patchStore'
 import { cc } from '../../midi/midibus'
-import { ControllerConfigCC } from '../../midi/types'
+import type { ControllerConfigCC } from '../../midi/types'
+import { type VoiceGroupPatch, voiceGroupStores } from '../patchStore'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
 
 export interface CCPotMapping {
@@ -11,14 +11,14 @@ export interface CCPotMapping {
 
 function toMidi(value: number, bipolar?: boolean): number {
     if (bipolar) {
-        return Math.floor(127 * (value + 1) / 2)
+        return Math.floor((127 * (value + 1)) / 2)
     }
     return Math.floor(127 * value)
 }
 
 function fromMidi(midiValue: number, bipolar?: boolean): number {
     if (bipolar) {
-        return (midiValue * 2 / 127) - 1
+        return (midiValue * 2) / 127 - 1
     }
     return midiValue / 127
 }
@@ -56,7 +56,7 @@ export function createCCPotMidiSend(mappings: CCPotMapping[]) {
     }
 
     function stop() {
-        unsubscribers.forEach(unsub => unsub())
+        unsubscribers.forEach((unsub) => unsub())
         unsubscribers = []
     }
 
@@ -74,7 +74,7 @@ export function createCCPotMidiReceive(mappings: CCPotMapping[]) {
                 const value = fromMidi(midiValue, mapping.ctrl.bipolar)
 
                 withMidiReceive(() => {
-                    voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                    voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                         mapping.mutator(state, value)
                     })
                 })
@@ -85,7 +85,7 @@ export function createCCPotMidiReceive(mappings: CCPotMapping[]) {
     }
 
     function stop() {
-        unsubscribers.forEach(unsub => unsub())
+        unsubscribers.forEach((unsub) => unsub())
         unsubscribers = []
     }
 

@@ -1,162 +1,154 @@
 import React, { forwardRef, useCallback, useContext, useEffect, useRef } from 'react'
+import { useDrag } from '../../../hooks'
 import { ScrollingSyncerContext } from './ScrollSync'
 import { getMovingAxis, toArray } from './utils'
-import { useDrag } from '../../../hooks'
 
 /**
  * ScrollSyncNode Component
  *
  * Wrap your content in it to keep its scroll position in sync with other panes
  */
-export type ScrollConfig = 'synced-only' | 'syncer-only' | 'two-way';
-export type LockAxis = 'X' | 'Y' | 'XY' | null;
+export type ScrollConfig = 'synced-only' | 'syncer-only' | 'two-way'
+export type LockAxis = 'X' | 'Y' | 'XY' | null
 
 interface ScrollSyncNodeProps {
     /**
      * Children
      */
-    children: React.ReactElement;
+    children: React.ReactElement
     /**
      * Groups to make the children attached to
      */
-    group?: string | string[];
+    group?: string | string[]
     /**
      * If the scrolling is enabled or not
      */
-    scroll?: ScrollConfig;
+    scroll?: ScrollConfig
     /**
      * Prevent scroll on current node if axis is locked
      */
-    lockAxis?: LockAxis;
+    lockAxis?: LockAxis
     /**
      * Callback for scroll handling
      */
-    onScroll?: (e: React.UIEvent<HTMLElement>) => void;
+    onScroll?: (e: React.UIEvent<HTMLElement>) => void
 }
 
 interface ScrollingSyncNodeContextValues {
-    onScrollToElement: (
-        offsetLeft: number,
-        offsetTop: number,
-        offsetWidth: number,
-        offsetHeight: number
-    ) => void,
+    onScrollToElement: (offsetLeft: number, offsetTop: number, offsetWidth: number, offsetHeight: number) => void
 }
 
 export const ScrollingSyncNodeContext: React.Context<ScrollingSyncNodeContextValues> = React.createContext({
-    onScrollToElement: (
-        _offsetLeft: number,
-        _offsetTop: number,
-        _offsetWidth: number,
-        _offsetHeight: number
-    ) => {},
+    onScrollToElement: (_offsetLeft: number, _offsetTop: number, _offsetWidth: number, _offsetHeight: number) => {},
 })
 
-const ScrollSyncNode: React.ForwardRefExoticComponent<ScrollSyncNodeProps &
-    React.RefAttributes<EventTarget & HTMLElement>> = forwardRef<EventTarget & HTMLElement, ScrollSyncNodeProps>(
-    (props, forwardedRef) => {
-        const {
-            children,
-            group = 'default',
-            scroll = 'two-way',
-            lockAxis = null,
-            onScroll: onNodeScroll = () => undefined,
-        } = props
+const ScrollSyncNode: React.ForwardRefExoticComponent<
+    ScrollSyncNodeProps & React.RefAttributes<EventTarget & HTMLElement>
+> = forwardRef<EventTarget & HTMLElement, ScrollSyncNodeProps>((props, forwardedRef) => {
+    const {
+        children,
+        group = 'default',
+        scroll = 'two-way',
+        lockAxis = null,
+        onScroll: onNodeScroll = () => undefined,
+    } = props
 
-        const { registerNode, unregisterNode, onScroll, setScrollSource } = useContext(ScrollingSyncerContext)
+    const { registerNode, unregisterNode, onScroll, setScrollSource } = useContext(ScrollingSyncerContext)
 
-        const ref = useRef<EventTarget & HTMLElement>(null)
+    const ref = useRef<EventTarget & HTMLElement>(null)
 
-        useEffect(() => {
-            if (typeof forwardedRef === 'function') {
-                forwardedRef(ref.current)
+    useEffect(() => {
+        if (typeof forwardedRef === 'function') {
+            forwardedRef(ref.current)
+        }
+    }, [forwardedRef])
+
+    useEffect(() => {
+        const applyLockAxis = (event: WheelEvent) => {
+            const movingAxis = getMovingAxis(event)
+            if (lockAxis === 'X' && movingAxis === 'X') {
+                event.preventDefault()
+            } else if (lockAxis === 'Y' && movingAxis === 'Y') {
+                event.preventDefault()
+            } else if (lockAxis === 'XY' && movingAxis !== null) {
+                event.preventDefault()
             }
-        }, [forwardedRef])
+        }
 
+        const node = ref.current
+        const syncableElement = { node, scroll, lockAxis }
 
-        useEffect(() => {
-            const applyLockAxis = (event: WheelEvent) => {
-                const movingAxis = getMovingAxis(event)
-                if (lockAxis === 'X' && movingAxis === 'X') {
-                    event.preventDefault()
-                } else if (lockAxis === 'Y' && movingAxis === 'Y') {
-                    event.preventDefault()
-                } else if (lockAxis === 'XY' && movingAxis !== null) {
-                    event.preventDefault()
-                }
-            }
-
-            const node = ref.current
-            const syncableElement = { node, scroll, lockAxis }
-
-            if (syncableElement) {
-                registerNode(syncableElement, toArray(group))
-            }
-
-            node?.addEventListener('wheel', applyLockAxis, { passive: false })
-
-            return () => {
-                unregisterNode(syncableElement, toArray(group))
-                node?.removeEventListener('wheel', applyLockAxis)
-            }
-        }, [lockAxis, group, registerNode, unregisterNode, scroll])
-
-        useEffect(() => {
-            const syncableElement = { node: ref.current, scroll }
-
-            unregisterNode(syncableElement, toArray(group))
+        if (syncableElement) {
             registerNode(syncableElement, toArray(group))
-            return () => unregisterNode(syncableElement, toArray(group))
-        }, [registerNode, unregisterNode, scroll, group])
+        }
 
-        const isSyncer = scroll === 'syncer-only'
-        const isEnabled = scroll === 'two-way'
+        node?.addEventListener('wheel', applyLockAxis, { passive: false })
 
-        const { onMouseDown, onMouseMove } = useDrag(lockAxis?.includes('X') || false, lockAxis?.includes('Y') || false, ref, setScrollSource)
+        return () => {
+            unregisterNode(syncableElement, toArray(group))
+            node?.removeEventListener('wheel', applyLockAxis)
+        }
+    }, [lockAxis, group, registerNode, unregisterNode, scroll])
 
-        const onScrollToElement = useCallback((
-            offsetLeft: number,
-            offsetTop: number,
-            offsetWidth: number,
-            offsetHeight: number
-        ) => {
-            if(ref.current){
+    useEffect(() => {
+        const syncableElement = { node: ref.current, scroll }
+
+        unregisterNode(syncableElement, toArray(group))
+        registerNode(syncableElement, toArray(group))
+        return () => unregisterNode(syncableElement, toArray(group))
+    }, [registerNode, unregisterNode, scroll, group])
+
+    const isSyncer = scroll === 'syncer-only'
+    const isEnabled = scroll === 'two-way'
+
+    const { onMouseDown, onMouseMove } = useDrag(
+        lockAxis?.includes('X') || false,
+        lockAxis?.includes('Y') || false,
+        ref,
+        setScrollSource
+    )
+
+    const onScrollToElement = useCallback(
+        (offsetLeft: number, offsetTop: number, offsetWidth: number, offsetHeight: number) => {
+            if (ref.current) {
                 const left = offsetLeft + offsetWidth / 2 - ref.current.clientWidth / 2
                 const top = offsetTop + offsetHeight / 2 - ref.current.clientHeight / 2
                 setScrollSource(ref.current)
-                ref.current.scrollTo({top, left, behavior: 'smooth' })
+                ref.current.scrollTo({ top, left, behavior: 'smooth' })
             }
-        }, [setScrollSource])
+        },
+        [setScrollSource]
+    )
 
-        return (
-            <ScrollingSyncNodeContext.Provider
-                value={{
-                    onScrollToElement
-                }}>
-                {React.cloneElement(children, {
-                    ref,
-                    onScroll: (e: React.UIEvent<HTMLElement>) => {
-                        e.persist()
-                        if (isSyncer || isEnabled) {
-                            onScroll(e, toArray(group), lockAxis)
-                            onNodeScroll(e)
-                        }
-                    },
-                    onWheel: (e: React.UIEvent<HTMLElement>) => {
-                        e.persist()
-                        if (isSyncer || isEnabled) {
-                            onScroll(e, toArray(group), lockAxis)
-                            setScrollSource(e.currentTarget)
-                            onNodeScroll(e)
-                        }
-                    },
-                    onMouseDown: onMouseDown,
-                    onMouseMove: onMouseMove,
-                })}
-            </ScrollingSyncNodeContext.Provider>
-        )
-    },
-)
+    return (
+        <ScrollingSyncNodeContext.Provider
+            value={{
+                onScrollToElement,
+            }}
+        >
+            {React.cloneElement(children, {
+                ref,
+                onScroll: (e: React.UIEvent<HTMLElement>) => {
+                    e.persist()
+                    if (isSyncer || isEnabled) {
+                        onScroll(e, toArray(group), lockAxis)
+                        onNodeScroll(e)
+                    }
+                },
+                onWheel: (e: React.UIEvent<HTMLElement>) => {
+                    e.persist()
+                    if (isSyncer || isEnabled) {
+                        onScroll(e, toArray(group), lockAxis)
+                        setScrollSource(e.currentTarget)
+                        onNodeScroll(e)
+                    }
+                },
+                onMouseDown: onMouseDown,
+                onMouseMove: onMouseMove,
+            })}
+        </ScrollingSyncNodeContext.Provider>
+    )
+})
 
 ScrollSyncNode.displayName = 'ScrollSyncNode'
 

@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 /**
  * Tests for envelope-specific MIDI encoding/decoding.
@@ -8,14 +8,12 @@ import { describe, it, expect } from 'vitest'
  */
 
 describe('envelope MIDI mappers', () => {
-
     describe('curve mapper', () => {
         // Packs stageId into upper 7 bits, curve index into lower 7 bits
-        const curveOutputMapper = (curveIndex: number, stageId: number) =>
-            (stageId << 7) + curveIndex
+        const curveOutputMapper = (curveIndex: number, stageId: number) => (stageId << 7) + curveIndex
 
         const curveInputMapper = (value: number, curveValues: number[]) => {
-            const stageId = (value >> 7)
+            const stageId = value >> 7
             const curve = value & 0b01111111
             const curveIndex = curveValues.indexOf(curve)
             return { value: curveIndex >= 0 ? curveIndex : 0, valueIndex: stageId }
@@ -111,7 +109,6 @@ describe('envelope MIDI mappers', () => {
  * converted to real assertions when the logic moves to the new stores.
  */
 describe('envelope business rules (documented)', () => {
-
     describe('sustain level mirroring', () => {
         it.todo('setting sustain level also sets R1 level when R1 is enabled')
         it.todo('setting sustain level also sets R2 level when R1 is disabled')

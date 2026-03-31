@@ -1,4 +1,4 @@
-import { Curve } from '../../generatedTypes'
+import type { Curve } from '../../generatedTypes'
 
 export enum StageId {
     DELAY,
@@ -27,21 +27,21 @@ export enum LoopMode {
 }
 
 export type Stage = {
-    id: StageId;
-    enabled: number;
-    curve: Curve;
-    level: number; //-1 to 1
-    time: number; // 0 to 1
-};
+    id: StageId
+    enabled: number
+    curve: Curve
+    level: number //-1 to 1
+    time: number // 0 to 1
+}
 
 export type Envelope = {
-    id: number;
-    resetOnTrigger: boolean;
-    releaseMode: ReleaseMode;
-    loopMode: LoopMode;
-    loopEnabled: boolean;
-    maxLoops: number;
-    invert: boolean;
-    bipolar: boolean;
-    offset: number;
+    id: number
+    resetOnTrigger: boolean
+    releaseMode: ReleaseMode
+    loopMode: LoopMode
+    loopEnabled: boolean
+    maxLoops: number
+    invert: boolean
+    bipolar: boolean
+    offset: number
 }

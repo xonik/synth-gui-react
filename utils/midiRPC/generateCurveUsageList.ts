@@ -1,7 +1,10 @@
-import { EnumDef, EnumDefWithTargets, EnumValue, EnumValueWithTargets } from './dataTypes'
+import type { EnumDef, EnumDefWithTargets, EnumValue, EnumValueWithTargets } from './dataTypes'
 
-export function generateCurveUsageList(enumDef: EnumDefWithTargets | EnumDef, values: (EnumValue | EnumValueWithTargets)[], curveFilePath: string) {
-
+export function generateCurveUsageList(
+    enumDef: EnumDefWithTargets | EnumDef,
+    values: (EnumValue | EnumValueWithTargets)[],
+    curveFilePath: string
+) {
     return `// GENERATED FILE, DO NOT EDIT
 import { Curve } from '${curveFilePath}/generatedTypes'    
     

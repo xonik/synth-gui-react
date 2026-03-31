@@ -9,9 +9,9 @@
  *   store.getState().set(state => { state.envelopes[0].stages.attack.time = 0.5 })
  */
 
-import { createStore, StoreApi } from 'zustand/vanilla'
 import { useStore } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
+import { createStore, type StoreApi } from 'zustand/vanilla'
 import { VOICE_GROUPS } from '../utils/constants'
 
 export interface EnvelopeStageState {
@@ -391,7 +391,7 @@ const defaultFilter = (): FilterState => ({
 export const defaultVoiceGroupPatch = (): VoiceGroupPatch => ({
     envelopes: Array.from({ length: 5 }, (_, i) => ({
         ...defaultEnvelope(),
-        bipolar: (i !== 0 && i !== 1) ? 1 : 0,
+        bipolar: i !== 0 && i !== 1 ? 1 : 0,
     })),
     lfos: Array.from({ length: 4 }, defaultLfo),
     oscillators: Array.from({ length: 3 }, defaultOscillator),
@@ -507,14 +507,8 @@ export function createPatchStore(): StoreApi<PatchStore> {
     )
 }
 
-export const voiceGroupStores: StoreApi<PatchStore>[] = Array.from(
-    { length: VOICE_GROUPS },
-    () => createPatchStore()
-)
+export const voiceGroupStores: StoreApi<PatchStore>[] = Array.from({ length: VOICE_GROUPS }, () => createPatchStore())
 
-export function useVoiceGroupStore<T>(
-    voiceGroupIndex: number,
-    selector: (state: PatchStore) => T,
-): T {
+export function useVoiceGroupStore<T>(voiceGroupIndex: number, selector: (state: PatchStore) => T): T {
     return useStore(voiceGroupStores[voiceGroupIndex], selector)
 }

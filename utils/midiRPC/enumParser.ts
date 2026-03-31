@@ -1,12 +1,12 @@
-import { EnumDef, EnumValue, KNOWN_DATATYPES } from './dataTypes'
+import { type EnumDef, type EnumValue, KNOWN_DATATYPES } from './dataTypes'
 
 const splitCodeAndComment = (line: string) => {
     const split = line.split('//')
-    if(split.length == 1) {
+    if (split.length == 1) {
         return {
-            code: line.trim()
+            code: line.trim(),
         }
-    } else if(split.length == 2) {
+    } else if (split.length == 2) {
         return {
             code: split[0].trim(),
             comment: split[1].trim(),
@@ -22,7 +22,7 @@ const splitCodeAndComment = (line: string) => {
 const parseEnumStart = (line: string): EnumStart | undefined => {
     const { code, comment } = splitCodeAndComment(line)
     const match = code.match(/^\s*enum\s+([a-zA-Z0-9_]+).*/)
-    if(match) {
+    if (match) {
         return {
             name: match[1],
             comment,
@@ -36,8 +36,8 @@ const parseEnumValue = (line: string): EnumValue | undefined => {
     const { code, comment } = splitCodeAndComment(line)
 
     const match = code.match(/([a-zA-Z0-9_]+)(\s*=\s*([0-9]+))?/)
-    console.log(line, comment,match)
-    if(match) {
+    console.log(line, comment, match)
+    if (match) {
         return {
             name: match[1],
             value: match[3] ? Number.parseInt(match[3]) : undefined,
@@ -55,36 +55,34 @@ const isEnumEnd = (line: string): boolean => {
     return Boolean(match)
 }
 
-
 type EnumStart = {
-    name: string,
-    comment: string | undefined,
+    name: string
+    comment: string | undefined
 }
 
 export const findEnums = (lines: string[]) => {
-    let insideEnum = false;
-    let enumStart;
+    let insideEnum = false
+    let enumStart
     let enumValues: EnumValue[] = []
     let enums: EnumDef[] = []
-    for(let i = 0; i<lines.length; i++){
-        const line = lines[i];
-        if(!insideEnum){
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i]
+        if (!insideEnum) {
             enumStart = parseEnumStart(line)
-            if(enumStart){
-                insideEnum = true;
+            if (enumStart) {
+                insideEnum = true
             }
         } else {
-            if(isEnumEnd(line)){
-
+            if (isEnumEnd(line)) {
                 // update values to allow gaps
                 let enumVal = 0
                 enumValues.forEach((entry) => {
-                    if(entry.value === undefined){
-                        entry.value = enumVal;
+                    if (entry.value === undefined) {
+                        entry.value = enumVal
                     } else {
-                        enumVal = entry.value;
+                        enumVal = entry.value
                     }
-                    enumVal++;
+                    enumVal++
                 })
 
                 enums = [
@@ -92,19 +90,19 @@ export const findEnums = (lines: string[]) => {
                     {
                         name: enumStart?.name || '',
                         comment: enumStart?.comment,
-                        values: enumValues
-                    }
+                        values: enumValues,
+                    },
                 ]
 
-                insideEnum = false;
-                enumValues = [];
+                insideEnum = false
+                enumValues = []
                 console.log(enums)
             } else {
                 const enumValue = parseEnumValue(line)
                 console.log(enumValue)
-                if(enumValue) enumValues.push(enumValue)
+                if (enumValue) enumValues.push(enumValue)
             }
         }
     }
-    return enums;
+    return enums
 }

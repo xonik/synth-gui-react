@@ -1,10 +1,9 @@
-import { useUiStore, ModRoutingSelection } from '../../../store/uiStore'
-import { step } from '../../../store/utils'
-import mainDisplayControllers from '../mainDisplay/mainDisplayControllers'
-import { digitalModSources, modDst } from './utils'
-import { getBounded } from '../../../store/utils'
-import modsApi from './modsApi'
+import { type ModRoutingSelection, useUiStore } from '../../../store/uiStore'
+import { getBounded, step } from '../../../store/utils'
 import { ApiSource } from '../../types'
+import mainDisplayControllers from '../mainDisplay/mainDisplayControllers'
+import modsApi from './modsApi'
+import { digitalModSources, modDst } from './utils'
 
 export const mainDisplayModsPotResolutions = {
     [mainDisplayControllers.POT1.id]: 16,
@@ -37,11 +36,9 @@ export const mainDisplayModsApi = {
                     dstParamId: 0,
                 })
             }
-
         } else if (ctrlId === mainDisplayControllers.POT2.id) {
             const next = getBounded(sourceIndex + step(increment), 0, digitalModSources.length - 1)
             setRouting({ sourceId: next })
-
         } else if (ctrlId === mainDisplayControllers.POT3.id) {
             const next = getBounded(dstFuncIndex + step(increment), 0, modDst.dsts[dstGroupIndex].length - 1)
             if (next !== dstFuncIndex) {
@@ -50,7 +47,6 @@ export const mainDisplayModsApi = {
                     dstParamId: 0,
                 })
             }
-
         } else if (ctrlId === mainDisplayControllers.POT4.id) {
             const inc = step(increment) as -1 | 1
             const lastParam = modDst.dsts[dstGroupIndex][dstFuncIndex].length - 1
@@ -75,12 +71,10 @@ export const mainDisplayModsApi = {
             } else {
                 setRouting({ dstParamId: requested })
             }
-
         } else if (ctrlId === mainDisplayControllers.POT5.id) {
             modsApi.incrementGuiModValue(voiceGroupIndex, increment, ApiSource.UI)
-
         } else if (ctrlId === mainDisplayControllers.POT6.id) {
         } else if (ctrlId === mainDisplayControllers.POT7.id) {
         }
-    }
+    },
 }

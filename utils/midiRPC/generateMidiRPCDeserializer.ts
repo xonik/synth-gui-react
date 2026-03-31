@@ -1,5 +1,5 @@
-import { dataTypeMap, Func, Param } from './types'
 import { generateFunctionNamesEnumCpp } from './generateFunctionNames'
+import { dataTypeMap, type Func, type Param } from './types'
 export function generateMidiRPCDeserializer(functions: Func[], functionIdOffset: number) {
     return `// GENERATED FILE, DO NOT EDIT
 #include "../midiRPCFunctions.h"
@@ -8,7 +8,7 @@ export function generateMidiRPCDeserializer(functions: Func[], functionIdOffset:
 
 namespace midiRPC {
     
-  ${generateFunctionNamesEnumCpp(functions.map((func, index) => ({...func, index: index + functionIdOffset})))}
+  ${generateFunctionNamesEnumCpp(functions.map((func, index) => ({ ...func, index: index + functionIdOffset })))}
 
   uint16_t deserializeAndCallFunction(const uint8_t* data, uint16_t startPos) {
     uint16_t pos = startPos;
@@ -24,7 +24,7 @@ ${functions.map(functionMapper).join('')}
 
 function functionMapper(func: Func) {
     let paramsString = func.params.map(paramConverterMapper).join('\n')
-    if(paramsString.length > 0) paramsString = `\n${paramsString}`
+    if (paramsString.length > 0) paramsString = `\n${paramsString}`
 
     return `
     if(functionId == ${func.name}Id) {${paramsString}
@@ -35,14 +35,16 @@ function functionMapper(func: Func) {
 }
 
 function getSerialPrintln(func: Func) {
-    if(func.params.length > 0){
-        const paramString = func.params.map((param) => {
-            if(dataTypeMap[param.type].printValue){
-                return param.name
-            } else {
-                return '"<unprintable>"'
-            }
-        }).join(' + ", " + ')
+    if (func.params.length > 0) {
+        const paramString = func.params
+            .map((param) => {
+                if (dataTypeMap[param.type].printValue) {
+                    return param.name
+                } else {
+                    return '"<unprintable>"'
+                }
+            })
+            .join(' + ", " + ')
 
         return `serialPrintln(String("Calling ${func.name} with params ") + ${paramString});`
     } else {
@@ -54,4 +56,3 @@ function paramConverterMapper(param: Param) {
     const type = dataTypeMap[param.type]
     return `      ${type.cppType} ${param.name} = ${type.deserializer}(data, pos);`
 }
-

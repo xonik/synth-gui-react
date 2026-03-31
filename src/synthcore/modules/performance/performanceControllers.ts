@@ -1,4 +1,4 @@
-import { ControllerConfig, FuncProps } from '../../../midi/types'
+import type { ControllerConfig, FuncProps } from '../../../midi/types'
 import { ControllerIdSrc } from '../controllers/controllerIds'
 
 interface PerformanceControllers {
@@ -55,7 +55,7 @@ const performanceControllers: PerformanceControllers = {
         label: 'Aftertouch',
         type: 'pot',
         isSourceDigi: true,
-    }
+    },
 }
 
 export default performanceControllers

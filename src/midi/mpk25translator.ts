@@ -1,14 +1,14 @@
-import mapCC from './mapCC'
-import { cc, nrpn } from './midibus'
-import mapNRPN from './mapNRPN'
-import { StageId } from '../synthcore/modules/env/types'
 import { envCtrls } from '../synthcore/modules/env/envControllers'
-import { ControllerConfig } from './types'
-import { getVoiceGroupIndex } from "../synthcore/modules/voices/currentVoiceGroupIndex";
+import { StageId } from '../synthcore/modules/env/types'
+import { getVoiceGroupIndex } from '../synthcore/modules/voices/currentVoiceGroupIndex'
+import mapCC from './mapCC'
+import mapNRPN from './mapNRPN'
+import { cc, nrpn } from './midibus'
+import type { ControllerConfig } from './types'
 
 const getNprnStageTime = (stageId: number, midiTime: number) => {
     const mappedMidiTime = envCtrls.TIME.uiResponse?.output(midiTime / 127) || 0
-    return (stageId << 16) + Math.round(mappedMidiTime * 65535);
+    return (stageId << 16) + Math.round(mappedMidiTime * 65535)
 }
 
 const getNprnStageLevel = (stageId: number, midiLevel: number) => {
@@ -24,7 +24,6 @@ const getFromUi = (ctrl: ControllerConfig, midiValue: number) => {
 }
 
 export const handleMpk25 = (ccNum: number, midiValue: number): boolean => {
-
     const voiceGroupIndex = getVoiceGroupIndex()
     /**
      * A:
@@ -52,14 +51,12 @@ export const handleMpk25 = (ccNum: number, midiValue: number): boolean => {
         cc.publish(voiceGroupIndex, mapCC.ENV_SELECT_ENV, 0)
 
         // TODO: This is a hack to make pot use full range for VCA env
-        nrpn.publish(voiceGroupIndex, mapNRPN.ENV_LEVEL, getNprnStageLevel(StageId.SUSTAIN, (midiValue / 2) + 64))
-
+        nrpn.publish(voiceGroupIndex, mapNRPN.ENV_LEVEL, getNprnStageLevel(StageId.SUSTAIN, midiValue / 2 + 64))
     } else if (ccNum === 25) {
         // release
         cc.publish(voiceGroupIndex, mapCC.ENV_SELECT_ENV, 0)
         nrpn.publish(voiceGroupIndex, mapNRPN.ENV_TIME, getNprnStageTime(StageId.RELEASE2, midiValue))
     }
-
 
     // DCO 1
     else if (ccNum === 26) {
@@ -83,7 +80,7 @@ export const handleMpk25 = (ccNum: number, midiValue: number): boolean => {
         cc.publish(voiceGroupIndex, mapCC.DCO2_SUB2, midiValue)
     }
 
-    // FILTER ENV     
+    // FILTER ENV
     else if (ccNum === 30) {
         // attack
         cc.publish(voiceGroupIndex, mapCC.ENV_SELECT_ENV, 1)
@@ -124,7 +121,7 @@ export const handleMpk25 = (ccNum: number, midiValue: number): boolean => {
         //cc.publish(voiceGroupIndex, mapCC.LEVEL_RING_MOD, getFromUi(srcMixControllers.LEVEL_OSC1, midiValue))
         cc.publish(voiceGroupIndex, mapCC.LEVEL_RING_MOD, midiValue)
     } else {
-        return false;
+        return false
     }
-    return true;
+    return true
 }

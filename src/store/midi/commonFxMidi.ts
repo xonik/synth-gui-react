@@ -1,7 +1,7 @@
-import { voiceGroupStores, VoiceGroupPatch } from '../patchStore'
-import { cc, button } from '../../midi/midibus'
-import { ControllerConfigCC, ControllerConfigButton } from '../../midi/types'
+import { button, cc } from '../../midi/midibus'
+import type { ControllerConfigButton, ControllerConfigCC } from '../../midi/types'
 import commonFxControllers from '../../synthcore/modules/commonFx/commonFxControllers'
+import { type VoiceGroupPatch, voiceGroupStores } from '../patchStore'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
 
 interface CCMapping {
@@ -18,38 +18,146 @@ interface ButtonMapping {
 
 const ccMappings: CCMapping[] = [
     // DSP1
-    { selector: s => s.commonFx.dsp1.param1, mutator: (s, v) => { s.commonFx.dsp1.param1 = v }, ctrl: commonFxControllers.DSP1.PARAM1 },
-    { selector: s => s.commonFx.dsp1.param2, mutator: (s, v) => { s.commonFx.dsp1.param2 = v }, ctrl: commonFxControllers.DSP1.PARAM2 },
-    { selector: s => s.commonFx.dsp1.param3, mutator: (s, v) => { s.commonFx.dsp1.param3 = v }, ctrl: commonFxControllers.DSP1.PARAM3 },
-    { selector: s => s.commonFx.dsp1.effect, mutator: (s, v) => { s.commonFx.dsp1.effect = v }, ctrl: commonFxControllers.DSP1.EFFECT },
+    {
+        selector: (s) => s.commonFx.dsp1.param1,
+        mutator: (s, v) => {
+            s.commonFx.dsp1.param1 = v
+        },
+        ctrl: commonFxControllers.DSP1.PARAM1,
+    },
+    {
+        selector: (s) => s.commonFx.dsp1.param2,
+        mutator: (s, v) => {
+            s.commonFx.dsp1.param2 = v
+        },
+        ctrl: commonFxControllers.DSP1.PARAM2,
+    },
+    {
+        selector: (s) => s.commonFx.dsp1.param3,
+        mutator: (s, v) => {
+            s.commonFx.dsp1.param3 = v
+        },
+        ctrl: commonFxControllers.DSP1.PARAM3,
+    },
+    {
+        selector: (s) => s.commonFx.dsp1.effect,
+        mutator: (s, v) => {
+            s.commonFx.dsp1.effect = v
+        },
+        ctrl: commonFxControllers.DSP1.EFFECT,
+    },
 
     // DSP2
-    { selector: s => s.commonFx.dsp2.param1, mutator: (s, v) => { s.commonFx.dsp2.param1 = v }, ctrl: commonFxControllers.DSP2.PARAM1 },
-    { selector: s => s.commonFx.dsp2.param2, mutator: (s, v) => { s.commonFx.dsp2.param2 = v }, ctrl: commonFxControllers.DSP2.PARAM2 },
-    { selector: s => s.commonFx.dsp2.param3, mutator: (s, v) => { s.commonFx.dsp2.param3 = v }, ctrl: commonFxControllers.DSP2.PARAM3 },
-    { selector: s => s.commonFx.dsp2.effect, mutator: (s, v) => { s.commonFx.dsp2.effect = v }, ctrl: commonFxControllers.DSP2.EFFECT },
+    {
+        selector: (s) => s.commonFx.dsp2.param1,
+        mutator: (s, v) => {
+            s.commonFx.dsp2.param1 = v
+        },
+        ctrl: commonFxControllers.DSP2.PARAM1,
+    },
+    {
+        selector: (s) => s.commonFx.dsp2.param2,
+        mutator: (s, v) => {
+            s.commonFx.dsp2.param2 = v
+        },
+        ctrl: commonFxControllers.DSP2.PARAM2,
+    },
+    {
+        selector: (s) => s.commonFx.dsp2.param3,
+        mutator: (s, v) => {
+            s.commonFx.dsp2.param3 = v
+        },
+        ctrl: commonFxControllers.DSP2.PARAM3,
+    },
+    {
+        selector: (s) => s.commonFx.dsp2.effect,
+        mutator: (s, v) => {
+            s.commonFx.dsp2.effect = v
+        },
+        ctrl: commonFxControllers.DSP2.EFFECT,
+    },
 
     // Chorus
-    { selector: s => s.commonFx.chorus.rate, mutator: (s, v) => { s.commonFx.chorus.rate = v }, ctrl: commonFxControllers.CHORUS.RATE },
-    { selector: s => s.commonFx.chorus.depth, mutator: (s, v) => { s.commonFx.chorus.depth = v }, ctrl: commonFxControllers.CHORUS.DEPTH },
+    {
+        selector: (s) => s.commonFx.chorus.rate,
+        mutator: (s, v) => {
+            s.commonFx.chorus.rate = v
+        },
+        ctrl: commonFxControllers.CHORUS.RATE,
+    },
+    {
+        selector: (s) => s.commonFx.chorus.depth,
+        mutator: (s, v) => {
+            s.commonFx.chorus.depth = v
+        },
+        ctrl: commonFxControllers.CHORUS.DEPTH,
+    },
 
     // FX Mix
-    { selector: s => s.commonFx.fxMix.levelDsp1, mutator: (s, v) => { s.commonFx.fxMix.levelDsp1 = v }, ctrl: commonFxControllers.FX_MIX.LEVEL_DSP1 },
-    { selector: s => s.commonFx.fxMix.levelDsp2, mutator: (s, v) => { s.commonFx.fxMix.levelDsp2 = v }, ctrl: commonFxControllers.FX_MIX.LEVEL_DSP2 },
-    { selector: s => s.commonFx.fxMix.levelChorus, mutator: (s, v) => { s.commonFx.fxMix.levelChorus = v }, ctrl: commonFxControllers.FX_MIX.LEVEL_CHORUS },
-    { selector: s => s.commonFx.fxMix.levelBitCrusher, mutator: (s, v) => { s.commonFx.fxMix.levelBitCrusher = v }, ctrl: commonFxControllers.FX_MIX.LEVEL_BIT_CRUSHER },
+    {
+        selector: (s) => s.commonFx.fxMix.levelDsp1,
+        mutator: (s, v) => {
+            s.commonFx.fxMix.levelDsp1 = v
+        },
+        ctrl: commonFxControllers.FX_MIX.LEVEL_DSP1,
+    },
+    {
+        selector: (s) => s.commonFx.fxMix.levelDsp2,
+        mutator: (s, v) => {
+            s.commonFx.fxMix.levelDsp2 = v
+        },
+        ctrl: commonFxControllers.FX_MIX.LEVEL_DSP2,
+    },
+    {
+        selector: (s) => s.commonFx.fxMix.levelChorus,
+        mutator: (s, v) => {
+            s.commonFx.fxMix.levelChorus = v
+        },
+        ctrl: commonFxControllers.FX_MIX.LEVEL_CHORUS,
+    },
+    {
+        selector: (s) => s.commonFx.fxMix.levelBitCrusher,
+        mutator: (s, v) => {
+            s.commonFx.fxMix.levelBitCrusher = v
+        },
+        ctrl: commonFxControllers.FX_MIX.LEVEL_BIT_CRUSHER,
+    },
 ]
 
 const buttonMappings: ButtonMapping[] = [
     // DSP1
-    { selector: s => s.commonFx.dsp1.source, mutator: (s, v) => { s.commonFx.dsp1.source = v }, ctrl: commonFxControllers.DSP1.SOURCE },
+    {
+        selector: (s) => s.commonFx.dsp1.source,
+        mutator: (s, v) => {
+            s.commonFx.dsp1.source = v
+        },
+        ctrl: commonFxControllers.DSP1.SOURCE,
+    },
 
     // DSP2
-    { selector: s => s.commonFx.dsp2.source, mutator: (s, v) => { s.commonFx.dsp2.source = v }, ctrl: commonFxControllers.DSP2.SOURCE },
+    {
+        selector: (s) => s.commonFx.dsp2.source,
+        mutator: (s, v) => {
+            s.commonFx.dsp2.source = v
+        },
+        ctrl: commonFxControllers.DSP2.SOURCE,
+    },
 
     // Chorus
-    { selector: s => s.commonFx.chorus.source, mutator: (s, v) => { s.commonFx.chorus.source = v }, ctrl: commonFxControllers.CHORUS.SOURCE },
-    { selector: s => s.commonFx.chorus.mode, mutator: (s, v) => { s.commonFx.chorus.mode = v }, ctrl: commonFxControllers.CHORUS.MODE },
+    {
+        selector: (s) => s.commonFx.chorus.source,
+        mutator: (s, v) => {
+            s.commonFx.chorus.source = v
+        },
+        ctrl: commonFxControllers.CHORUS.SOURCE,
+    },
+    {
+        selector: (s) => s.commonFx.chorus.mode,
+        mutator: (s, v) => {
+            s.commonFx.chorus.mode = v
+        },
+        ctrl: commonFxControllers.CHORUS.MODE,
+    },
 ]
 
 let sendUnsubscribers: (() => void)[] = []
@@ -91,7 +199,7 @@ export function startCommonFxMidiSend() {
 }
 
 export function stopCommonFxMidiSend() {
-    sendUnsubscribers.forEach(unsub => unsub())
+    sendUnsubscribers.forEach((unsub) => unsub())
     sendUnsubscribers = []
 }
 
@@ -104,7 +212,7 @@ export function startCommonFxMidiReceive() {
         const id = cc.subscribe((voiceGroupIndex: number, midiValue: number) => {
             const value = midiValue / 127
             withMidiReceive(() => {
-                voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                     m.mutator(state, value)
                 })
             })
@@ -117,7 +225,7 @@ export function startCommonFxMidiReceive() {
             const value = m.ctrl.values.indexOf(midiValue)
             if (value < 0) return
             withMidiReceive(() => {
-                voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                     m.mutator(state, value)
                 })
             })
@@ -127,6 +235,6 @@ export function startCommonFxMidiReceive() {
 }
 
 export function stopCommonFxMidiReceive() {
-    receiveUnsubscribers.forEach(unsub => unsub())
+    receiveUnsubscribers.forEach((unsub) => unsub())
     receiveUnsubscribers = []
 }

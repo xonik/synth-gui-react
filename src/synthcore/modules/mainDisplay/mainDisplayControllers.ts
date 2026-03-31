@@ -1,17 +1,17 @@
+import { buttonMidiValues } from '../../../midi/buttonMidiValues'
 import CC from '../../../midi/mapCC'
-import { FuncProps, ControllerConfigCC, ControllerConfigButton } from '../../../midi/types'
+import type { ControllerConfigButton, ControllerConfigCC, FuncProps } from '../../../midi/types'
 import { ControllerIdNonMod, ControllerIdNonModPots } from '../controllers/controllerIds'
-import {buttonMidiValues} from "../../../midi/buttonMidiValues";
 
 interface MainDisplayControllers {
     props: FuncProps
-    POT1: ControllerConfigCC,
-    POT2: ControllerConfigCC,
-    POT3: ControllerConfigCC,
-    POT4: ControllerConfigCC,
-    POT5: ControllerConfigCC,
-    POT6: ControllerConfigCC,
-    POT7: ControllerConfigCC,
+    POT1: ControllerConfigCC
+    POT2: ControllerConfigCC
+    POT3: ControllerConfigCC
+    POT4: ControllerConfigCC
+    POT5: ControllerConfigCC
+    POT6: ControllerConfigCC
+    POT7: ControllerConfigCC
 
     GROUP_MENU: ControllerConfigButton
     FUNC_HOME: ControllerConfigButton
@@ -54,73 +54,56 @@ const mainDisplayControllers: MainDisplayControllers = {
         id: ControllerIdNonMod.MAIN_DISP_FUNC_HOME,
         label: 'Home',
         type: 'button',
-        values: [
-            buttonMidiValues.FUNC_HOME,
-        ],
+        values: [buttonMidiValues.FUNC_HOME],
         global: true,
     },
     FUNC_SETTINGS: {
         id: ControllerIdNonMod.MAIN_DISP_FUNC_SETTINGS,
         label: 'Setup',
         type: 'button',
-        values: [
-            buttonMidiValues.FUNC_SETTINGS,
-        ],
+        values: [buttonMidiValues.FUNC_SETTINGS],
         global: true,
     },
     FUNC_SHIFT: {
         id: ControllerIdNonMod.MAIN_DISP_FUNC_SHIFT,
         label: 'Shift',
         type: 'button',
-        values: [
-            buttonMidiValues.FUNC_SHIFT_OFF,
-            buttonMidiValues.FUNC_SHIFT_ON,
-        ],
+        values: [buttonMidiValues.FUNC_SHIFT_OFF, buttonMidiValues.FUNC_SHIFT_ON],
         global: true,
     },
     FUNC_PERFORM: {
         id: ControllerIdNonMod.MAIN_DISP_FUNC_PERFORM,
         label: 'Perform',
         type: 'button',
-        values: [
-            buttonMidiValues.FUNC_PERFORM,
-        ],
+        values: [buttonMidiValues.FUNC_PERFORM],
         global: true,
     },
     FUNC_LOAD: {
         id: ControllerIdNonMod.MAIN_DISP_FUNC_LOAD,
         label: 'Load',
         type: 'button',
-        values: [
-            buttonMidiValues.FUNC_LOAD,
-        ],
+        values: [buttonMidiValues.FUNC_LOAD],
         global: true,
     },
     FUNC_SAVE: {
         id: ControllerIdNonMod.MAIN_DISP_FUNC_SAVE,
         label: 'Save',
         type: 'button',
-        values: [
-            buttonMidiValues.FUNC_SAVE,
-        ],
+        values: [buttonMidiValues.FUNC_SAVE],
         global: true,
     },
     FUNC_COMPARE: {
         id: ControllerIdNonMod.MAIN_DISP_FUNC_COMPARE,
         label: 'Compare',
         type: 'button',
-        values: [
-            buttonMidiValues.FUNC_COMPARE,
-        ],
+        values: [buttonMidiValues.FUNC_COMPARE],
         global: true,
     },
     FUNC_ROUTE: {
         id: ControllerIdNonMod.MAIN_DISP_FUNC_ROUTE,
         label: 'Route',
         type: 'button',
-        values: [
-            buttonMidiValues.FUNC_ROUTE,
-        ],
+        values: [buttonMidiValues.FUNC_ROUTE],
         global: true,
     },
 }

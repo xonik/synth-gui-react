@@ -1,19 +1,11 @@
-import { VoiceGroupPatch, LfoStages } from '../patchStore'
 import { StageId } from '../../synthcore/modules/lfo/types'
+import type { LfoStages, VoiceGroupPatch } from '../patchStore'
 
 export type LfoStageName = keyof LfoStages
 
-export const LFO_STAGE_NAMES: LfoStageName[] = [
-    'delay',
-    'attack',
-    'release',
-    'stopped',
-]
+export const LFO_STAGE_NAMES: LfoStageName[] = ['delay', 'attack', 'release', 'stopped']
 
-const TOGGLEABLE_STAGES: LfoStageName[] = [
-    'delay',
-    'release',
-]
+const TOGGLEABLE_STAGES: LfoStageName[] = ['delay', 'release']
 
 export const STAGE_NAME_TO_ID: Record<LfoStageName, StageId> = {
     delay: StageId.DELAY,
@@ -29,11 +21,7 @@ export const STAGE_ID_TO_NAME: Record<StageId, LfoStageName> = {
     [StageId.STOPPED]: 'stopped',
 }
 
-export function toggleLfoStageEnabled(
-    state: VoiceGroupPatch,
-    lfoId: number,
-    stageName: LfoStageName
-): void {
+export function toggleLfoStageEnabled(state: VoiceGroupPatch, lfoId: number, stageName: LfoStageName): void {
     if (!TOGGLEABLE_STAGES.includes(stageName)) {
         return
     }

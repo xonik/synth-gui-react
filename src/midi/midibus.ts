@@ -1,39 +1,30 @@
-import {
-    ControllerConfigButton,
-    ControllerConfigCC,
-    ControllerConfigNRPN,
-    MidiGroup
-} from './types'
-import status from './midiStatus'
-import {
-    getVoiceGroupIdFromMidiChannel,
-    getGlobalMidiChannel,
-    getVoiceGroupMidiChannel
-} from './midiSettings'
-import CC, { buttonCCs } from './mapCC'
 import logger from '../utils/logger'
+import CC, { buttonCCs } from './mapCC'
+import { getGlobalMidiChannel, getVoiceGroupIdFromMidiChannel, getVoiceGroupMidiChannel } from './midiSettings'
+import status from './midiStatus'
 import { handleMpk25 } from './mpk25translator'
+import type { ControllerConfigButton, ControllerConfigCC, ControllerConfigNRPN, MidiGroup } from './types'
 
 // Use native DOM types for MIDI (instead of @types/webmidi which conflicts with built-in types)
 
-export let lastSentMidiGroup: MidiGroup | undefined;
+export let lastSentMidiGroup: MidiGroup | undefined
 
 type CCSubscriber = {
-    id: number;
-    values: number[] | undefined;
-    callback: (voiceGroupIndex: number, value: number) => void;
+    id: number
+    values: number[] | undefined
+    callback: (voiceGroupIndex: number, value: number) => void
 }
 
 type ButtonSubscriber = {
-    id: number;
-    values: number[] | undefined;
-    callback: (voiceGroupIndex: number, value: number) => void;
+    id: number
+    values: number[] | undefined
+    callback: (voiceGroupIndex: number, value: number) => void
 }
 
 type NRPNSubscriber = {
-    id: number;
-    values: number[] | undefined;
-    callback: (voiceGroupIndex: number, value: number) => void;
+    id: number
+    values: number[] | undefined
+    callback: (voiceGroupIndex: number, value: number) => void
 }
 
 /*
@@ -51,7 +42,6 @@ const midiConfig = {
         'vdYvBfG28aCbHM9U6S3RAB8EwW4YMLWpA6pdZ0Eq9tM=', // Steinberg UR22C Port 1 Firefox
         'l0+mSOnHhAPqGL1UqdZwvtLsPg6lMbdKY6RNwwwdWzQ=', // Steinberg UR22C Port 1 Firefox
         //'-762163153', // Steinberg UR22C Port 2
-
     ],
     outputIds: [
         '-259958146',
@@ -89,13 +79,11 @@ const getChannel = (global: boolean, voiceGroupIndex: number) => {
 export const button = {
     subscribe: (callback: (voiceGroupIndex: number, value: number) => void, { values }: ControllerConfigButton) => {
         const id = idPool++
-        buttonSubscribers = [
-            ...(buttonSubscribers || []), { id, values, callback }
-        ]
+        buttonSubscribers = [...(buttonSubscribers || []), { id, values, callback }]
         return id
     },
     unsubscribe: (controller: ControllerConfigButton, id: number) => {
-        const index = buttonSubscribers.map(sub => sub.id).indexOf(id)
+        const index = buttonSubscribers.map((sub) => sub.id).indexOf(id)
         if (index > -1) {
             buttonSubscribers = [...buttonSubscribers.slice(0, index), ...buttonSubscribers.slice(index + 1)]
         }
@@ -110,7 +98,6 @@ export const button = {
         }
     },
     send: (voiceGroupIndex: number, controller: ControllerConfigButton, value: number, loopback = false) => {
-
         const midiChannel = getChannel(Boolean(controller.global), voiceGroupIndex)
 
         if (loopback) {
@@ -128,7 +115,7 @@ export const button = {
             logger.midiMsg(data)
             midiOut?.send(data)
         }
-    }
+    },
 }
 
 export const cc = {
@@ -139,7 +126,7 @@ export const cc = {
     },
     unsubscribe: (controller: ControllerConfigCC, id: number) => {
         const subscribersForCC = ccSubscribers[controller.cc]
-        const index = subscribersForCC.map(sub => sub.id).indexOf(id)
+        const index = subscribersForCC.map((sub) => sub.id).indexOf(id)
         if (index > -1) {
             ccSubscribers[controller.cc] = [...subscribersForCC.slice(0, index), ...subscribersForCC.slice(index + 1)]
         }
@@ -165,7 +152,7 @@ export const cc = {
             logger.midiMsg(data)
             midiOut.send(data)
         }
-    }
+    },
 }
 
 export const nrpn = {
@@ -176,9 +163,12 @@ export const nrpn = {
     },
     unsubscribe: (controller: ControllerConfigNRPN, id: number) => {
         const subscribersForNRPN = nrpnSubscribers[controller.addr]
-        const index = subscribersForNRPN.map(sub => sub.id).indexOf(id)
+        const index = subscribersForNRPN.map((sub) => sub.id).indexOf(id)
         if (index > -1) {
-            nrpnSubscribers[controller.addr] = [...subscribersForNRPN.slice(0, index), ...subscribersForNRPN.slice(index + 1)]
+            nrpnSubscribers[controller.addr] = [
+                ...subscribersForNRPN.slice(0, index),
+                ...subscribersForNRPN.slice(index + 1),
+            ]
         }
     },
     publish: (voiceGroupIndex: number, addr: number, value: number) => {
@@ -207,7 +197,7 @@ export const nrpn = {
 
             const ccForChannel = status.CC + midiChannel
 
-            let data = [ccForChannel, CC.NRPN_MSB, hiAddr, ccForChannel, CC.NRPN_LSB, loAddr]
+            const data = [ccForChannel, CC.NRPN_MSB, hiAddr, ccForChannel, CC.NRPN_LSB, loAddr]
             if (value > 16383) {
                 data.push(ccForChannel)
                 data.push(CC.DATA_ENTRY_HSB)
@@ -225,7 +215,7 @@ export const nrpn = {
             logger.midiMsg(data)
             midiOut.send(data)
         }
-    }
+    },
 }
 
 const currNRPN = {
@@ -237,13 +227,7 @@ const currNRPN = {
 }
 
 export const sendSysex = (command: number, data: number[]) => {
-    const midiBytes = [
-        status.SYSEX_START,
-        ...midiConfig.sysexAddr,
-        command,
-        ...data,
-        status.SYSEX_END,
-    ]
+    const midiBytes = [status.SYSEX_START, ...midiConfig.sysexAddr, command, ...data, status.SYSEX_END]
     console.log('sending sysex', midiBytes)
     if (midiBytes.length > 60) {
         console.warn('Sysex message is more than 60 bytes, it may not work with teensy', midiBytes)
@@ -256,8 +240,8 @@ export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
     console.log('Received MIDI message', midiEvent.data)
     const midiData = midiEvent.data
     if (!midiData) return
-    const channel = midiData[0] & 0x0F;
-    const midiStatus = midiData[0] & 0xF0;
+    const channel = midiData[0] & 0x0f
+    const midiStatus = midiData[0] & 0xf0
 
     const voiceGroupId = getVoiceGroupIdFromMidiChannel(channel)
     const isGlobal = channel === getGlobalMidiChannel()
@@ -265,7 +249,6 @@ export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
     // TODO: Currently reception won't care about midi channel, it will publish messages and use the currently
     // selected voice group. This is not ideal.
     if (midiStatus === status.CC && (isGlobal || voiceGroupId > -1)) {
-
         const ccKey = midiData[1]
         const ccValue = midiData[2]
 
@@ -308,8 +291,8 @@ const updateSelectedMidi = async (midiAccess: MIDIAccess) => {
     midiAccess.inputs.forEach((value, key) => console.log({ key, value }))
     midiAccess.outputs.forEach((value, key) => console.log({ key, value }))
 
-    const foundInputId = midiConfig.inputIds.find(id => midiAccess.inputs.has(id))
-    const foundOutputId = midiConfig.outputIds.find(id => midiAccess.outputs.has(id))
+    const foundInputId = midiConfig.inputIds.find((id) => midiAccess.inputs.has(id))
+    const foundOutputId = midiConfig.outputIds.find((id) => midiAccess.outputs.has(id))
 
     if (foundInputId) {
         midiIn = midiAccess.inputs.get(foundInputId)
@@ -330,16 +313,16 @@ const updateSelectedMidi = async (midiAccess: MIDIAccess) => {
         midiOut = undefined
         console.log('Desired midi output not found', midiConfig.outputIds)
     }
-
 }
 
 const onMIDISuccess = async (midiAccess: MIDIAccess) => {
-
     console.log('on midi success', midiAccess)
     await updateSelectedMidi(midiAccess)
 
     midiAccess.onstatechange = async (connectionEvent) => {
-        console.log(`Midi port ${connectionEvent.port?.name} state changed to ${connectionEvent.port?.state}, updating connections`)
+        console.log(
+            `Midi port ${connectionEvent.port?.name} state changed to ${connectionEvent.port?.state}, updating connections`
+        )
         console.log(midiAccess)
         await updateSelectedMidi(midiAccess)
     }

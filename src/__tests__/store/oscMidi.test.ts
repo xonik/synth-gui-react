@@ -1,19 +1,14 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.mock('../../synthcore/synthcoreMiddleware', () => ({
     synthcoreMiddleware: () => (next: any) => (action: any) => next(action),
 }))
 
-import { cc, button } from '../../midi/midibus'
-import { voiceGroupStores, createPatchStore } from '../../store/patchStore'
-import oscControllers from '../../synthcore/modules/osc/oscControllers'
 import { buttonMidiValues } from '../../midi/buttonMidiValues'
-import {
-    startOscMidiSend,
-    stopOscMidiSend,
-    startOscMidiReceive,
-    stopOscMidiReceive,
-} from '../../store/midi/oscMidi'
+import { button, cc } from '../../midi/midibus'
+import { startOscMidiReceive, startOscMidiSend, stopOscMidiReceive, stopOscMidiSend } from '../../store/midi/oscMidi'
+import { createPatchStore, voiceGroupStores } from '../../store/patchStore'
+import oscControllers from '../../synthcore/modules/osc/oscControllers'
 
 const VG = 0
 
@@ -78,8 +73,8 @@ describe('oscillator MIDI receive', () => {
 })
 
 describe('oscillator MIDI send', () => {
-    let sentCC: { ccNum: number, value: number }[] = []
-    let sentButtons: { ctrl: any, value: number }[] = []
+    let sentCC: { ccNum: number; value: number }[] = []
+    let sentButtons: { ctrl: any; value: number }[] = []
     const origCCSend = cc.send
     const origButtonSend = button.send
 
@@ -103,34 +98,44 @@ describe('oscillator MIDI send', () => {
     })
 
     it('sends DCO1 note change as CC', () => {
-        getState().set(s => { s.oscillators[0].note = 0.5 })
-        const sent = sentCC.find(s => s.ccNum === oscControllers.DCO1.NOTE.cc)
+        getState().set((s) => {
+            s.oscillators[0].note = 0.5
+        })
+        const sent = sentCC.find((s) => s.ccNum === oscControllers.DCO1.NOTE.cc)
         expect(sent).toBeDefined()
         expect(sent!.value).toBe(Math.floor(127 * 0.5))
     })
 
     it('sends VCO pw change as CC', () => {
-        getState().set(s => { s.oscillators[2].pw = 0.3 })
-        const sent = sentCC.find(s => s.ccNum === oscControllers.VCO.PW.cc)
+        getState().set((s) => {
+            s.oscillators[2].pw = 0.3
+        })
+        const sent = sentCC.find((s) => s.ccNum === oscControllers.VCO.PW.cc)
         expect(sent).toBeDefined()
         expect(sent!.value).toBe(Math.floor(127 * 0.3))
     })
 
     it('sends DCO1 sync change as button MIDI', () => {
-        getState().set(s => { s.oscillators[0].sync = 2 })
-        const sent = sentButtons.find(s => s.value === buttonMidiValues.OSC1_SYNC_METAL)
+        getState().set((s) => {
+            s.oscillators[0].sync = 2
+        })
+        const sent = sentButtons.find((s) => s.value === buttonMidiValues.OSC1_SYNC_METAL)
         expect(sent).toBeDefined()
     })
 
     it('sends VCO ext CV change as button MIDI', () => {
-        getState().set(s => { s.oscillators[2].extCv = 1 })
-        const sent = sentButtons.find(s => s.value === buttonMidiValues.OSC3_EXT_CV_ON)
+        getState().set((s) => {
+            s.oscillators[2].extCv = 1
+        })
+        const sent = sentButtons.find((s) => s.value === buttonMidiValues.OSC3_EXT_CV_ON)
         expect(sent).toBeDefined()
     })
 
     it('does not send when value unchanged', () => {
         const defaultNote = getState().oscillators[0].note
-        getState().set(s => { s.oscillators[0].note = defaultNote })
-        expect(sentCC.find(s => s.ccNum === oscControllers.DCO1.NOTE.cc)).toBeUndefined()
+        getState().set((s) => {
+            s.oscillators[0].note = defaultNote
+        })
+        expect(sentCC.find((s) => s.ccNum === oscControllers.DCO1.NOTE.cc)).toBeUndefined()
     })
 })

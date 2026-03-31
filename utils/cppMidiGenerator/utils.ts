@@ -1,4 +1,4 @@
-import fs from "fs";
+import fs from 'fs'
 
 export const writeToFile = (path: string, inputcontents: string) => {
     const contents = `// GENERATED FILE - DO NOT EDIT\n${inputcontents}`

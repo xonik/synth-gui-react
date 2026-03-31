@@ -1,10 +1,9 @@
-import { Envelope, LoopMode, ReleaseMode, Stage, StageId } from './types'
-import { envCtrls } from './envControllers'
-import { Controllers } from '../controllers/types'
-import { mergeControllers } from '../controllers/controllersUtils'
-import { dbLevelResponseMapper, timeResponseMapper } from '../common/responseMappers'
 import { Curve } from '../../generatedTypes'
-
+import { dbLevelResponseMapper, timeResponseMapper } from '../common/responseMappers'
+import { mergeControllers } from '../controllers/controllersUtils'
+import type { Controllers } from '../controllers/types'
+import { envCtrls } from './envControllers'
+import { type Envelope, LoopMode, ReleaseMode, type Stage, StageId } from './types'
 
 const getStageState = (envId: number, stage: Stage): Controllers => {
     const { id: stageId, enabled, curve, level, time } = stage
@@ -12,16 +11,16 @@ const getStageState = (envId: number, stage: Stage): Controllers => {
     const controllers: Controllers = {}
     controllers[envId] = {
         [envCtrls.TOGGLE_STAGE.id]: {
-            [stageId]: enabled
+            [stageId]: enabled,
         },
         [envCtrls.CURVE.id]: {
-            [stageId]: curve
+            [stageId]: curve,
         },
         [envCtrls.LEVEL.id]: {
-            [stageId]: level
+            [stageId]: level,
         },
         [envCtrls.TIME.id]: {
-            [stageId]: time
+            [stageId]: time,
         },
     }
     return controllers
@@ -33,26 +32,17 @@ const getUiStageState = (envId: number, stage: Stage): Controllers => {
     const controllers: Controllers = {}
     controllers[envId] = {
         [envCtrls.LEVEL.id]: {
-            [stageId]: dbLevelResponseMapper.input(level)
+            [stageId]: dbLevelResponseMapper.input(level),
         },
         [envCtrls.TIME.id]: {
-            [stageId]: timeResponseMapper.input(time)
+            [stageId]: timeResponseMapper.input(time),
         },
     }
     return controllers
 }
 
 const getEnvState = (env: Envelope): Controllers => {
-    const {
-        resetOnTrigger,
-        releaseMode,
-        loopMode,
-        loopEnabled,
-        maxLoops,
-        invert,
-        bipolar,
-        offset,
-    } = env
+    const { resetOnTrigger, releaseMode, loopMode, loopEnabled, maxLoops, invert, bipolar, offset } = env
     const envControllers: Controllers = {}
     envControllers[env.id] = {
         [envCtrls.RESET_ON_TRIGGER.id]: [resetOnTrigger ? 1 : 0],
@@ -68,7 +58,6 @@ const getEnvState = (env: Envelope): Controllers => {
 }
 
 export const getDefaultEnv = (envId: number): Controllers => {
-
     return getEnvState({
         id: envId,
         resetOnTrigger: false,
@@ -139,7 +128,7 @@ const defaultStageConfigs: Stage[] = [
         curve: Curve.LIN,
         level: 0,
         time: 0,
-    }
+    },
 ]
 const filterEnvStageConfigs: Stage[] = [
     {
@@ -197,12 +186,12 @@ const filterEnvStageConfigs: Stage[] = [
         curve: Curve.LIN,
         level: 0,
         time: 0,
-    }
+    },
 ]
 
 export const getDefaultEnvStages = (envId: number): Controllers => {
     const stageConfig = envId == 1 ? filterEnvStageConfigs : defaultStageConfigs
-    const stages: Controllers[] = stageConfig.map(conf => getStageState(envId, conf))
+    const stages: Controllers[] = stageConfig.map((conf) => getStageState(envId, conf))
     const controllers = mergeControllers(stages)
 
     // TODO: Duplicated in reducer, fix!
@@ -218,7 +207,7 @@ export const getDefaultEnvStages = (envId: number): Controllers => {
 
 export const getDefaultEnvUiStages = (envId: number): Controllers => {
     const stageConfig = envId == 1 ? filterEnvStageConfigs : defaultStageConfigs
-    const stages: Controllers[] = stageConfig.map(conf => getUiStageState(envId, conf))
+    const stages: Controllers[] = stageConfig.map((conf) => getUiStageState(envId, conf))
     const controllers = mergeControllers(stages)
 
     // TODO: Duplicated in reducer, fix!

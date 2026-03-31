@@ -1,8 +1,8 @@
-import { voiceGroupStores, VoiceGroupPatch, FxState, KbdState } from '../patchStore'
-import { cc, button } from '../../midi/midibus'
-import { ControllerConfigCC, ControllerConfigButton } from '../../midi/types'
+import { button, cc } from '../../midi/midibus'
+import type { ControllerConfigButton, ControllerConfigCC } from '../../midi/types'
 import fxControllers from '../../synthcore/modules/fx/fxControllers'
 import kbdControllers from '../../synthcore/modules/kbd/kbdControllers'
+import { FxState, KbdState, type VoiceGroupPatch, voiceGroupStores } from '../patchStore'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
 
 interface CCMapping {
@@ -18,24 +18,114 @@ interface ButtonMapping {
 }
 
 const ccMappings: CCMapping[] = [
-    { selector: s => s.fx.distortion.drive, mutator: (s, v) => { s.fx.distortion.drive = v }, ctrl: fxControllers.DISTORTION.DRIVE },
-    { selector: s => s.fx.distortion.level, mutator: (s, v) => { s.fx.distortion.level = v }, ctrl: fxControllers.DISTORTION.LEVEL },
-    { selector: s => s.fx.bitCrusher.bits, mutator: (s, v) => { s.fx.bitCrusher.bits = v }, ctrl: fxControllers.BIT_CRUSHER.BITS },
-    { selector: s => s.fx.bitCrusher.rate, mutator: (s, v) => { s.fx.bitCrusher.rate = v }, ctrl: fxControllers.BIT_CRUSHER.RATE },
-    { selector: s => s.kbd.portamento, mutator: (s, v) => { s.kbd.portamento = v }, ctrl: kbdControllers.PORTAMENTO },
-    { selector: s => s.kbd.unisonDetune, mutator: (s, v) => { s.kbd.unisonDetune = v }, ctrl: kbdControllers.UNISON_DETUNE },
+    {
+        selector: (s) => s.fx.distortion.drive,
+        mutator: (s, v) => {
+            s.fx.distortion.drive = v
+        },
+        ctrl: fxControllers.DISTORTION.DRIVE,
+    },
+    {
+        selector: (s) => s.fx.distortion.level,
+        mutator: (s, v) => {
+            s.fx.distortion.level = v
+        },
+        ctrl: fxControllers.DISTORTION.LEVEL,
+    },
+    {
+        selector: (s) => s.fx.bitCrusher.bits,
+        mutator: (s, v) => {
+            s.fx.bitCrusher.bits = v
+        },
+        ctrl: fxControllers.BIT_CRUSHER.BITS,
+    },
+    {
+        selector: (s) => s.fx.bitCrusher.rate,
+        mutator: (s, v) => {
+            s.fx.bitCrusher.rate = v
+        },
+        ctrl: fxControllers.BIT_CRUSHER.RATE,
+    },
+    {
+        selector: (s) => s.kbd.portamento,
+        mutator: (s, v) => {
+            s.kbd.portamento = v
+        },
+        ctrl: kbdControllers.PORTAMENTO,
+    },
+    {
+        selector: (s) => s.kbd.unisonDetune,
+        mutator: (s, v) => {
+            s.kbd.unisonDetune = v
+        },
+        ctrl: kbdControllers.UNISON_DETUNE,
+    },
 ]
 
 const buttonMappings: ButtonMapping[] = [
-    { selector: s => s.fx.distortion.in, mutator: (s, v) => { s.fx.distortion.in = v }, ctrl: fxControllers.DISTORTION.IN },
-    { selector: s => s.fx.distortion.out, mutator: (s, v) => { s.fx.distortion.out = v }, ctrl: fxControllers.DISTORTION.OUT },
-    { selector: s => s.fx.bitCrusher.in, mutator: (s, v) => { s.fx.bitCrusher.in = v }, ctrl: fxControllers.BIT_CRUSHER.IN },
-    { selector: s => s.fx.bitCrusher.out, mutator: (s, v) => { s.fx.bitCrusher.out = v }, ctrl: fxControllers.BIT_CRUSHER.OUT },
-    { selector: s => s.kbd.hold, mutator: (s, v) => { s.kbd.hold = v }, ctrl: kbdControllers.HOLD },
-    { selector: s => s.kbd.chord, mutator: (s, v) => { s.kbd.chord = v }, ctrl: kbdControllers.CHORD },
-    { selector: s => s.kbd.mode, mutator: (s, v) => { s.kbd.mode = v }, ctrl: kbdControllers.MODE },
-    { selector: s => s.kbd.transpose, mutator: (s, v) => { s.kbd.transpose = v }, ctrl: kbdControllers.TRANSPOSE },
-    { selector: s => s.kbd.voiceStealing, mutator: (s, v) => { s.kbd.voiceStealing = v }, ctrl: kbdControllers.VOICE_STEALING },
+    {
+        selector: (s) => s.fx.distortion.in,
+        mutator: (s, v) => {
+            s.fx.distortion.in = v
+        },
+        ctrl: fxControllers.DISTORTION.IN,
+    },
+    {
+        selector: (s) => s.fx.distortion.out,
+        mutator: (s, v) => {
+            s.fx.distortion.out = v
+        },
+        ctrl: fxControllers.DISTORTION.OUT,
+    },
+    {
+        selector: (s) => s.fx.bitCrusher.in,
+        mutator: (s, v) => {
+            s.fx.bitCrusher.in = v
+        },
+        ctrl: fxControllers.BIT_CRUSHER.IN,
+    },
+    {
+        selector: (s) => s.fx.bitCrusher.out,
+        mutator: (s, v) => {
+            s.fx.bitCrusher.out = v
+        },
+        ctrl: fxControllers.BIT_CRUSHER.OUT,
+    },
+    {
+        selector: (s) => s.kbd.hold,
+        mutator: (s, v) => {
+            s.kbd.hold = v
+        },
+        ctrl: kbdControllers.HOLD,
+    },
+    {
+        selector: (s) => s.kbd.chord,
+        mutator: (s, v) => {
+            s.kbd.chord = v
+        },
+        ctrl: kbdControllers.CHORD,
+    },
+    {
+        selector: (s) => s.kbd.mode,
+        mutator: (s, v) => {
+            s.kbd.mode = v
+        },
+        ctrl: kbdControllers.MODE,
+    },
+    {
+        selector: (s) => s.kbd.transpose,
+        mutator: (s, v) => {
+            s.kbd.transpose = v
+        },
+        ctrl: kbdControllers.TRANSPOSE,
+    },
+    {
+        selector: (s) => s.kbd.voiceStealing,
+        mutator: (s, v) => {
+            s.kbd.voiceStealing = v
+        },
+        ctrl: kbdControllers.VOICE_STEALING,
+    },
 ]
 
 let sendUnsubscribers: (() => void)[] = []
@@ -77,7 +167,7 @@ export function startFxKbdMidiSend() {
 }
 
 export function stopFxKbdMidiSend() {
-    sendUnsubscribers.forEach(unsub => unsub())
+    sendUnsubscribers.forEach((unsub) => unsub())
     sendUnsubscribers = []
 }
 
@@ -90,7 +180,7 @@ export function startFxKbdMidiReceive() {
         const id = cc.subscribe((voiceGroupIndex: number, midiValue: number) => {
             const value = midiValue / 127
             withMidiReceive(() => {
-                voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                     m.mutator(state, value)
                 })
             })
@@ -103,7 +193,7 @@ export function startFxKbdMidiReceive() {
             const value = m.ctrl.values.indexOf(midiValue)
             if (value < 0) return
             withMidiReceive(() => {
-                voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                     m.mutator(state, value)
                 })
             })
@@ -113,6 +203,6 @@ export function startFxKbdMidiReceive() {
 }
 
 export function stopFxKbdMidiReceive() {
-    receiveUnsubscribers.forEach(unsub => unsub())
+    receiveUnsubscribers.forEach((unsub) => unsub())
     receiveUnsubscribers = []
 }

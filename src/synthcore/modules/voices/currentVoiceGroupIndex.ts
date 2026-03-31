@@ -1,5 +1,4 @@
-
-let currentVoiceGroupIndex = 0;
+let currentVoiceGroupIndex = 0
 
 export function getVoiceGroupIndex(): number {
     return currentVoiceGroupIndex

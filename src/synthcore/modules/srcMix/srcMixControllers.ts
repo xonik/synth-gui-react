@@ -1,8 +1,8 @@
+import { buttonMidiValues } from '../../../midi/buttonMidiValues'
 import CC from '../../../midi/mapCC'
-import { FuncProps, ControllerConfigCC, ControllerConfigButton } from '../../../midi/types'
-import { ControllerIdDst, ControllerIdNonMod } from '../controllers/controllerIds'
+import type { ControllerConfigButton, ControllerConfigCC, FuncProps } from '../../../midi/types'
 import { dbLevelResponseMapper } from '../common/responseMappers'
-import {buttonMidiValues} from "../../../midi/buttonMidiValues";
+import { ControllerIdDst, ControllerIdNonMod } from '../controllers/controllerIds'
 
 interface SrcMixControllers {
     props: FuncProps
@@ -22,7 +22,7 @@ interface SrcMixControllers {
 
 const srcMixControllers: SrcMixControllers = {
     props: {
-        label: 'Source mix'
+        label: 'Source mix',
     },
     LEVEL_OSC1: {
         id: ControllerIdDst.SOURCE_MIX_LEVEL_OSC1,

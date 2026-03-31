@@ -6,12 +6,12 @@
  * which handles env select, NRPN encoding, CC encoding, etc.
  */
 
-import { voiceGroupStores, EnvelopeState } from '../patchStore'
-import { StageName, STAGE_NAMES } from '../modules/envActions'
-import { envParamSend } from '../../synthcore/modules/env/envMidiApi'
 import { envCtrls } from '../../synthcore/modules/env/envControllers'
-import { StageId, NUMBER_OF_ENVELOPES } from '../../synthcore/modules/env/types'
+import { envParamSend } from '../../synthcore/modules/env/envMidiApi'
+import { NUMBER_OF_ENVELOPES, StageId } from '../../synthcore/modules/env/types'
 import { ApiSource } from '../../synthcore/types'
+import { STAGE_NAMES, type StageName } from '../modules/envActions'
+import { type EnvelopeState, voiceGroupStores } from '../patchStore'
 import { isMidiReceiving } from './midiGuard'
 
 const STAGE_NAME_TO_ID: Record<StageName, StageId> = {
@@ -60,14 +60,17 @@ function sendStageParams(
         const curveOutputMapper = (curveIndex: number, _cfg: unknown, valueIndex: number = 0) =>
             (valueIndex << 7) + curveIndex
 
-        envParamSend({
-            ctrl: envCtrls.CURVE,
-            ctrlIndex: envId,
-            valueIndex: stageId,
-            value: stage.curve,
-            voiceGroupIndex,
-            source: ApiSource.UI,
-        }, curveOutputMapper)
+        envParamSend(
+            {
+                ctrl: envCtrls.CURVE,
+                ctrlIndex: envId,
+                valueIndex: stageId,
+                value: stage.curve,
+                voiceGroupIndex,
+                source: ApiSource.UI,
+            },
+            curveOutputMapper
+        )
     }
 
     if (stage.enabled !== prevStage.enabled) {
@@ -76,23 +79,21 @@ function sendStageParams(
             return valueIndex | enableBit
         }
 
-        envParamSend({
-            ctrl: envCtrls.TOGGLE_STAGE,
-            ctrlIndex: envId,
-            valueIndex: stageId,
-            value: stage.enabled,
-            voiceGroupIndex,
-            source: ApiSource.UI,
-        }, stageEnabledOutputMapper)
+        envParamSend(
+            {
+                ctrl: envCtrls.TOGGLE_STAGE,
+                ctrlIndex: envId,
+                valueIndex: stageId,
+                value: stage.enabled,
+                voiceGroupIndex,
+                source: ApiSource.UI,
+            },
+            stageEnabledOutputMapper
+        )
     }
 }
 
-function sendEnvParams(
-    voiceGroupIndex: number,
-    envId: number,
-    env: EnvelopeState,
-    prevEnv: EnvelopeState
-) {
+function sendEnvParams(voiceGroupIndex: number, envId: number, env: EnvelopeState, prevEnv: EnvelopeState) {
     for (const stageName of STAGE_NAMES) {
         const stage = env.stages[stageName]
         const prevStage = prevEnv.stages[stageName]
@@ -102,83 +103,107 @@ function sendEnvParams(
     }
 
     if (env.invert !== prevEnv.invert) {
-        envParamSend({
-            ctrl: envCtrls.INVERT,
-            ctrlIndex: envId,
-            value: env.invert,
-            voiceGroupIndex,
-            source: ApiSource.UI,
-        }, (value: number) => value)
+        envParamSend(
+            {
+                ctrl: envCtrls.INVERT,
+                ctrlIndex: envId,
+                value: env.invert,
+                voiceGroupIndex,
+                source: ApiSource.UI,
+            },
+            (value: number) => value
+        )
     }
 
     if (env.loop !== prevEnv.loop) {
-        envParamSend({
-            ctrl: envCtrls.LOOP,
-            ctrlIndex: envId,
-            value: env.loop,
-            voiceGroupIndex,
-            source: ApiSource.UI,
-        }, (value: number) => value)
+        envParamSend(
+            {
+                ctrl: envCtrls.LOOP,
+                ctrlIndex: envId,
+                value: env.loop,
+                voiceGroupIndex,
+                source: ApiSource.UI,
+            },
+            (value: number) => value
+        )
     }
 
     if (env.velocity !== prevEnv.velocity) {
-        envParamSend({
-            ctrl: envCtrls.VELOCITY,
-            ctrlIndex: envId,
-            value: env.velocity,
-            voiceGroupIndex,
-            source: ApiSource.UI,
-        }, (value: number) => value)
+        envParamSend(
+            {
+                ctrl: envCtrls.VELOCITY,
+                ctrlIndex: envId,
+                value: env.velocity,
+                voiceGroupIndex,
+                source: ApiSource.UI,
+            },
+            (value: number) => value
+        )
     }
 
     if (env.loopMode !== prevEnv.loopMode) {
-        envParamSend({
-            ctrl: envCtrls.LOOP_MODE,
-            ctrlIndex: envId,
-            value: env.loopMode,
-            voiceGroupIndex,
-            source: ApiSource.UI,
-        }, (value: number) => value)
+        envParamSend(
+            {
+                ctrl: envCtrls.LOOP_MODE,
+                ctrlIndex: envId,
+                value: env.loopMode,
+                voiceGroupIndex,
+                source: ApiSource.UI,
+            },
+            (value: number) => value
+        )
     }
 
     if (env.maxLoops !== prevEnv.maxLoops) {
-        envParamSend({
-            ctrl: envCtrls.MAX_LOOPS,
-            ctrlIndex: envId,
-            value: env.maxLoops,
-            voiceGroupIndex,
-            source: ApiSource.UI,
-        }, (value: number) => value)
+        envParamSend(
+            {
+                ctrl: envCtrls.MAX_LOOPS,
+                ctrlIndex: envId,
+                value: env.maxLoops,
+                voiceGroupIndex,
+                source: ApiSource.UI,
+            },
+            (value: number) => value
+        )
     }
 
     if (env.resetOnTrigger !== prevEnv.resetOnTrigger) {
-        envParamSend({
-            ctrl: envCtrls.RESET_ON_TRIGGER,
-            ctrlIndex: envId,
-            value: env.resetOnTrigger,
-            voiceGroupIndex,
-            source: ApiSource.UI,
-        }, (value: number) => value)
+        envParamSend(
+            {
+                ctrl: envCtrls.RESET_ON_TRIGGER,
+                ctrlIndex: envId,
+                value: env.resetOnTrigger,
+                voiceGroupIndex,
+                source: ApiSource.UI,
+            },
+            (value: number) => value
+        )
     }
 
     if (env.releaseMode !== prevEnv.releaseMode) {
-        envParamSend({
-            ctrl: envCtrls.RELEASE_MODE,
-            ctrlIndex: envId,
-            value: env.releaseMode,
-            voiceGroupIndex,
-            source: ApiSource.UI,
-        }, (value: number) => value)
+        envParamSend(
+            {
+                ctrl: envCtrls.RELEASE_MODE,
+                ctrlIndex: envId,
+                value: env.releaseMode,
+                voiceGroupIndex,
+                source: ApiSource.UI,
+            },
+            (value: number) => value
+        )
     }
 
     if (env.bipolar !== prevEnv.bipolar) {
-        envParamSend({
-            ctrl: envCtrls.BIPOLAR,
-            ctrlIndex: envId,
-            value: env.bipolar,
-            voiceGroupIndex,
-            source: ApiSource.UI,
-        }, (value: number) => value)
+        envParamSend(
+            {
+                ctrl: envCtrls.BIPOLAR,
+                ctrlIndex: envId,
+                value: env.bipolar,
+                voiceGroupIndex,
+                source: ApiSource.UI,
+            },
+            (value: number) => value
+        )
     }
 
     if (env.offset !== prevEnv.offset) {
@@ -226,6 +251,6 @@ export function startEnvelopeMidiSend() {
 }
 
 export function stopEnvelopeMidiSend() {
-    unsubscribers.forEach(unsub => unsub())
+    unsubscribers.forEach((unsub) => unsub())
     unsubscribers = []
 }

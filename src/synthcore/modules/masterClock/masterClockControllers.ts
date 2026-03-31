@@ -1,12 +1,12 @@
-import { FuncProps, ControllerConfigButton, ControllerConfigNRPN } from '../../../midi/types'
+import { buttonMidiValues } from '../../../midi/buttonMidiValues'
+import NRPN from '../../../midi/mapNRPN'
+import type { ControllerConfigButton, ControllerConfigNRPN, FuncProps } from '../../../midi/types'
+import { sharedConfig } from '../../../sharedConfig'
 import { ControllerIdNonMod, ControllerIdNonModPots } from '../controllers/controllerIds'
-import {buttonMidiValues} from "../../../midi/buttonMidiValues";
-import NRPN from "../../../midi/mapNRPN";
-import { sharedConfig } from "../../../sharedConfig";
 
 interface MasterClockControllers {
     props: FuncProps
-    RATE: ControllerConfigNRPN,
+    RATE: ControllerConfigNRPN
     SOURCE: ControllerConfigButton
 }
 
@@ -21,7 +21,7 @@ const masterClockControllers: MasterClockControllers = {
         global: true,
         range: {
             from: sharedConfig.MASTER_CLOCK_MIN_BPM.value,
-            to: sharedConfig.MASTER_CLOCK_MAX_BPM.value
+            to: sharedConfig.MASTER_CLOCK_MAX_BPM.value,
         },
     },
     SOURCE: {
@@ -33,7 +33,7 @@ const masterClockControllers: MasterClockControllers = {
             buttonMidiValues.MASTER_CLOCK_SRC_MIDI,
             buttonMidiValues.MASTER_CLOCK_SRC_EXT,
         ],
-        global: true
+        global: true,
     },
 }
 

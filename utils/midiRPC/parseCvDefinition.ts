@@ -1,4 +1,4 @@
-import { CvDefinition, DataType, isDataType, KNOWN_DATATYPES } from './dataTypes'
+import { type CvDefinition, DataType, isDataType, KNOWN_DATATYPES } from './dataTypes'
 
 export const parseCvDefinitionFile = (file: string): CvDefinition[] => {
     const lines = file.split('\n')
@@ -6,11 +6,11 @@ export const parseCvDefinitionFile = (file: string): CvDefinition[] => {
     const cvs: CvDefinition[] = []
     lines.forEach((line: string) => {
         const foundCv = parseLine(line)
-        if(foundCv) cvs.push(foundCv)
+        if (foundCv) cvs.push(foundCv)
     })
 
     cvs.sort((a, b) => {
-        if(a.description < b.description) {
+        if (a.description < b.description) {
             return -1
         }
         return 1
@@ -19,7 +19,7 @@ export const parseCvDefinitionFile = (file: string): CvDefinition[] => {
     return cvs
 }
 
-const cvRegex = new RegExp(`^#define \(CV_[A-Z_0-9]+\) \([0-9]+\) // \([0-9a-zA-Z ]+\)`)
+const cvRegex = /^#define (CV_[A-Z_0-9]+) ([0-9]+) \/\/ ([0-9a-zA-Z ]+)/
 
 const parseLine = (line: string): CvDefinition | undefined => {
     if (line.length > 0) {
@@ -30,7 +30,9 @@ const parseLine = (line: string): CvDefinition | undefined => {
         const [, name, channel, description] = match
 
         return {
-            name, channel: Number.parseInt(channel), description
+            name,
+            channel: Number.parseInt(channel),
+            description,
         }
     }
 }

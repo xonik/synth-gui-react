@@ -7,9 +7,9 @@
  * - Any controller marked as `global: true` in the old system
  */
 
-import { createStore, StoreApi } from 'zustand/vanilla'
 import { useStore } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
+import { createStore, type StoreApi } from 'zustand/vanilla'
 
 export interface GlobalPatchState {
     masterClock: {

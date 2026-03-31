@@ -1,19 +1,19 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.mock('../../synthcore/synthcoreMiddleware', () => ({
     synthcoreMiddleware: () => (next: any) => (action: any) => next(action),
 }))
 
 import { cc } from '../../midi/midibus'
-import { voiceGroupStores, createPatchStore } from '../../store/patchStore'
+import {
+    startOutPostMixMidiReceive,
+    startOutPostMixMidiSend,
+    stopOutPostMixMidiReceive,
+    stopOutPostMixMidiSend,
+} from '../../store/midi/outPostMixMidi'
+import { createPatchStore, voiceGroupStores } from '../../store/patchStore'
 import outControllers from '../../synthcore/modules/out/outControllers'
 import postMixControllers from '../../synthcore/modules/postMix/postMixControllers'
-import {
-    startOutPostMixMidiSend,
-    stopOutPostMixMidiSend,
-    startOutPostMixMidiReceive,
-    stopOutPostMixMidiReceive,
-} from '../../store/midi/outPostMixMidi'
 
 const VG = 0
 
@@ -71,7 +71,7 @@ describe('CC pot MIDI receive', () => {
 
         it('sets pan from CC (bipolar)', () => {
             cc.publish(VG, postMixControllers.PAN.cc, 96)
-            expect(getState().postMix.pan).toBeCloseTo((96 * 2 / 127) - 1, 2)
+            expect(getState().postMix.pan).toBeCloseTo((96 * 2) / 127 - 1, 2)
         })
 
         it('sets amount from CC', () => {
@@ -87,7 +87,7 @@ describe('CC pot MIDI receive', () => {
 })
 
 describe('CC pot MIDI send', () => {
-    let sentValues: { ccNum: number, value: number }[] = []
+    let sentValues: { ccNum: number; value: number }[] = []
     const origSend = cc.send
 
     beforeEach(() => {
@@ -105,36 +105,46 @@ describe('CC pot MIDI send', () => {
     })
 
     it('sends volume change as CC', () => {
-        getState().set(s => { s.output.volume = 0.5 })
-        const sent = sentValues.find(s => s.ccNum === outControllers.VOLUME.cc)
+        getState().set((s) => {
+            s.output.volume = 0.5
+        })
+        const sent = sentValues.find((s) => s.ccNum === outControllers.VOLUME.cc)
         expect(sent).toBeDefined()
         expect(sent!.value).toBe(Math.floor(127 * 0.5))
     })
 
     it('sends spread change as CC', () => {
-        getState().set(s => { s.output.spread = 0.75 })
-        const sent = sentValues.find(s => s.ccNum === outControllers.SPREAD.cc)
+        getState().set((s) => {
+            s.output.spread = 0.75
+        })
+        const sent = sentValues.find((s) => s.ccNum === outControllers.SPREAD.cc)
         expect(sent).toBeDefined()
         expect(sent!.value).toBe(Math.floor(127 * 0.75))
     })
 
     it('sends postMix pan change as CC (bipolar)', () => {
-        getState().set(s => { s.postMix.pan = 0.5 })
-        const sent = sentValues.find(s => s.ccNum === postMixControllers.PAN.cc)
+        getState().set((s) => {
+            s.postMix.pan = 0.5
+        })
+        const sent = sentValues.find((s) => s.ccNum === postMixControllers.PAN.cc)
         expect(sent).toBeDefined()
-        expect(sent!.value).toBe(Math.floor(127 * (0.5 + 1) / 2))
+        expect(sent!.value).toBe(Math.floor((127 * (0.5 + 1)) / 2))
     })
 
     it('sends postMix LPF change as CC', () => {
-        getState().set(s => { s.postMix.lpf = 0.8 })
-        const sent = sentValues.find(s => s.ccNum === postMixControllers.LPF.cc)
+        getState().set((s) => {
+            s.postMix.lpf = 0.8
+        })
+        const sent = sentValues.find((s) => s.ccNum === postMixControllers.LPF.cc)
         expect(sent).toBeDefined()
         expect(sent!.value).toBe(Math.floor(127 * 0.8))
     })
 
     it('does not send when value unchanged', () => {
         const defaultVolume = getState().output.volume
-        getState().set(s => { s.output.volume = defaultVolume })
-        expect(sentValues.find(s => s.ccNum === outControllers.VOLUME.cc)).toBeUndefined()
+        getState().set((s) => {
+            s.output.volume = defaultVolume
+        })
+        expect(sentValues.find((s) => s.ccNum === outControllers.VOLUME.cc)).toBeUndefined()
     })
 })

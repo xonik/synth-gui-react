@@ -1,16 +1,16 @@
-import controllers from '../controllers/controllers'
 import { cc, nrpn } from '../../../midi/midibus'
 import { shouldSend } from '../../../midi/utils'
-import modsApi from './modsApi'
-import { ApiSource } from '../../types'
 import logger from '../../../utils/logger'
+import { ApiSource } from '../../types'
 import { toggleParamReceive, toggleParamSend } from '../common/commonMidiApi'
+import controllers from '../controllers/controllers'
+import modsApi from './modsApi'
 
 // TODO: Dette virker nå fordi source/dst/index mottas samtidig som amount. Men det er ikke bombesikkert
 // og burde heller vært én melding
-let currentSourceId = 0;
-let currentDstId = 0;
-let currentDstIndex = 0;
+let currentSourceId = 0
+let currentDstId = 0
+let currentDstIndex = 0
 
 const amount = (() => {
     const cfg = controllers.MODS.AMOUNT
@@ -28,9 +28,16 @@ const amount = (() => {
         },
         receive: () => {
             nrpn.subscribe((voiceGroupIndex: number, value: number) => {
-                modsApi.setModValue(voiceGroupIndex, currentSourceId, currentDstId, currentDstIndex, (value - 32767) / 32767, ApiSource.MIDI)
+                modsApi.setModValue(
+                    voiceGroupIndex,
+                    currentSourceId,
+                    currentDstId,
+                    currentDstIndex,
+                    (value - 32767) / 32767,
+                    ApiSource.MIDI
+                )
             }, cfg)
-        }
+        },
     }
 })()
 
@@ -50,7 +57,7 @@ const source = (() => {
             cc.subscribe((voiceGroupIndex: number, value: number) => {
                 currentSourceId = value
             }, cfg)
-        }
+        },
     }
 })()
 
@@ -83,12 +90,12 @@ const dst = (() => {
             // NB: Synth must send dstId before dstIndex as dstIndex is reset to 0 when dstId is received.
             cc.subscribe((voiceGroupIndex: number, value: number) => {
                 currentDstId = value
-                currentDstIndex = 0;
+                currentDstIndex = 0
             }, cfg)
             cc.subscribe((voiceGroupIndex: number, value: number) => {
                 currentDstIndex = value
             }, indexCfg)
-        }
+        },
     }
 })()
 
@@ -96,7 +103,7 @@ const uiRouteButton = (() => {
     const cfg = controllers.MODS.ROUTE_BUTTON
     return {
         send: (source: ApiSource, value: number) => toggleParamSend(source, value, cfg, -1),
-        receive: () => toggleParamReceive(cfg, modsApi.setRouteButton)
+        receive: () => toggleParamReceive(cfg, modsApi.setRouteButton),
     }
 })()
 

@@ -25,5 +25,5 @@ export enum ApiSource {
     SPI,
     MIDI,
     INTERNAL,
-    LOAD
+    LOAD,
 }

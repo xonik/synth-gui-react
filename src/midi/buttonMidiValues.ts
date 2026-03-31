@@ -322,5 +322,5 @@ export enum buttonMidiValues {
     CHORUS_MODE_VIBRATO,
 
     FX_BIT_CRUSHER_SRC1,
-    FX_BIT_CRUSHER_SRC2
+    FX_BIT_CRUSHER_SRC2,
 }

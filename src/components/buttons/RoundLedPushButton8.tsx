@@ -1,9 +1,7 @@
-import RoundButtonBase, { Props } from './RoundButtonBase';
+import RoundButtonBase, { type Props } from './RoundButtonBase'
 
-const RoundLedPushButton8 = (props: Props) => <RoundButtonBase
-    buttonRadius={4}
-    buttonMode="push"
-    ledButton {...props}
-/>
+const RoundLedPushButton8 = (props: Props) => (
+    <RoundButtonBase buttonRadius={4} buttonMode="push" ledButton {...props} />
+)
 
 export default RoundLedPushButton8

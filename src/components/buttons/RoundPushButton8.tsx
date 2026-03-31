@@ -1,4 +1,4 @@
-import RoundButtonBase, { Props } from './RoundButtonBase';
+import RoundButtonBase, { type Props } from './RoundButtonBase'
 
 const RoundPushButton8 = (props: Props) => <RoundButtonBase buttonRadius={4} buttonMode="push" {...props} />
 

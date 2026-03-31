@@ -1,6 +1,4 @@
-import {
-    ControllerId,
-} from '../synthcore/modules/controllers/controllerIds'
+import type { ControllerId } from '../synthcore/modules/controllers/controllerIds'
 
 export enum MidiGroup {
     ENV,
@@ -11,22 +9,25 @@ export interface ControllerConfig {
     // ID is uniquely identifying a controller TYPE, but some controllers may be repeated
     // as params on multiple functions LFOs and Envs - params on these have the same
     // controllerId and ctrlIndex on the function is used to tell them apart.
-    readonly id: ControllerId,
-    readonly label: string,
-    readonly shortLabel?: string,
-    readonly isSourceDigi?: boolean,
-    readonly isDstDigi?: boolean,
+    readonly id: ControllerId
+    readonly label: string
+    readonly shortLabel?: string
+    readonly isSourceDigi?: boolean
+    readonly isDstDigi?: boolean
     readonly type: ControllerType
 
     // Funcs to use if pots should behave differently from stored/midi value
-    readonly uiResponse?: { output: (val: number, bipolar?: boolean) => number, input: (val: number, bipolar?: boolean) => number}
+    readonly uiResponse?: {
+        output: (val: number, bipolar?: boolean) => number
+        input: (val: number, bipolar?: boolean) => number
+    }
 
     // TODO: Only for ControllerConfigCC and ControllerConfigButton but here because TS complains!
     readonly values?: number[]
     readonly bipolar?: boolean
 
     // TODO: Only for ControllerConfigCC and ControllerConfigNRPN but here because TS complains!
-    readonly range?: { from: number, to: number }
+    readonly range?: { from: number; to: number }
 
     // used for special functions that may require a ctrlIndex to be sent before the actual controller, such as
     // envelope values.
@@ -42,16 +43,15 @@ export interface ControllerConfigButton extends ControllerConfig {
     readonly values: number[]
 }
 
-
 export interface ControllerConfigCC extends ControllerConfig {
     readonly cc: number
-    readonly range?: { from: number, to: number } // For midi send/receive: range (0-1) is converted to this range
+    readonly range?: { from: number; to: number } // For midi send/receive: range (0-1) is converted to this range
 }
 
 export interface ControllerConfigNRPN extends ControllerConfig {
     readonly addr: number
     readonly bipolar?: boolean
-    readonly range?: { from: number, to: number } // For midi send/receive: range (0-1) is converted to this range
+    readonly range?: { from: number; to: number } // For midi send/receive: range (0-1) is converted to this range
 }
 
 export interface ControllerConfigNRPNWithValue extends ControllerConfigNRPN {

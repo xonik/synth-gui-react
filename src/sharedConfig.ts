@@ -24,5 +24,5 @@ export const sharedConfig = {
 
     CLOCK_PPQN: { value: 96, type: 'define' },
 
-    SYSEX_ADDR: { value: [1, 2, 3], type: 'uint8_t[]'}
+    SYSEX_ADDR: { value: [1, 2, 3], type: 'uint8_t[]' },
 }

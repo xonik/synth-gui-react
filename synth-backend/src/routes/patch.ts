@@ -1,15 +1,14 @@
-import FileSystemFacade from '../filesystem/FileSystemFacade.js';
-import { FileNotFoundException } from '../filesystem/types.js';
-
 import express from 'express'
+import FileSystemFacade from '../filesystem/FileSystemFacade.js'
+import { FileNotFoundException } from '../filesystem/types.js'
 
-var router = express.Router();
+var router = express.Router()
 
 const filesystem = new FileSystemFacade('../storage/patches/', '../storage/patchesDeleted/')
 
 // TODO: Prevent caching
-router.get('/filetree', function (req, res, next) {
-    console.log("Got a file tree request")
+router.get('/filetree', (req, res, next) => {
+    console.log('Got a file tree request')
     try {
         const content = filesystem.getFileTree()
         console.log(content)
@@ -18,12 +17,12 @@ router.get('/filetree', function (req, res, next) {
         console.log(error)
         return res.status(500).json({ error: 'Could not read patch list' })
     }
-});
+})
 
 // TODO: Prevent caching
-router.get('/', async function (req, res, next) {
-    const { key, version }: {key?: string, version?: string} = req.query
-    if(!key) return res.status(400).json({ error: 'Key not included' })
+router.get('/', async (req, res, next) => {
+    const { key, version }: { key?: string; version?: string } = req.query
+    if (!key) return res.status(400).json({ error: 'Key not included' })
     if (key.endsWith('/')) {
         res.json({})
     } else {
@@ -37,11 +36,11 @@ router.get('/', async function (req, res, next) {
             return res.status(500).json({ error: `Could not read file (version ${version})` })
         }
     }
-});
+})
 
-router.get('/path', async function (req, res, next) {
-    const { keyOnDisk }: {keyOnDisk?: string} = req.query
-    if(!keyOnDisk) return res.status(400).json({ error: 'Key not included' })
+router.get('/path', async (req, res, next) => {
+    const { keyOnDisk }: { keyOnDisk?: string } = req.query
+    if (!keyOnDisk) return res.status(400).json({ error: 'Key not included' })
     try {
         return res.json(await filesystem.getPath(keyOnDisk))
     } catch (error) {
@@ -51,12 +50,12 @@ router.get('/path', async function (req, res, next) {
         }
         return res.status(500).json({ error: `Error while searching for path of ${keyOnDisk}` })
     }
-});
+})
 
 // TODO: Prevent caching
-router.get('/versions', async function (req, res, next) {
-    const { key }: {key?: string } = req.query
-    if(!key) return res.status(400).json({ error: 'Key not included' })
+router.get('/versions', async (req, res, next) => {
+    const { key }: { key?: string } = req.query
+    if (!key) return res.status(400).json({ error: 'Key not included' })
     if (key.endsWith('/')) {
         res.json({})
     } else {
@@ -71,9 +70,9 @@ router.get('/versions', async function (req, res, next) {
             return res.status(500).json({ error: 'Could not read patch versions' })
         }
     }
-});
+})
 
-router.put('/', async function (req, res, next) {
+router.put('/', async (req, res, next) => {
     const { key, content } = req.body
     if (key.endsWith('/')) {
         res.json({})
@@ -87,11 +86,11 @@ router.put('/', async function (req, res, next) {
             return res.status(500).json({ error: 'Could not write patch' })
         }
     }
-});
+})
 
-router.delete('/', async function (req, res, next) {
-    const { key }: {key?: string} = req.query
-    if(!key) return res.status(400).json({ error: 'Key not included' })
+router.delete('/', async (req, res, next) => {
+    const { key }: { key?: string } = req.query
+    if (!key) return res.status(400).json({ error: 'Key not included' })
     if (key.endsWith('/')) {
         res.status(500).json({ error: `key ${key} is not a file` })
     } else {
@@ -103,9 +102,9 @@ router.delete('/', async function (req, res, next) {
             return res.status(500).json({ error: 'Could not delete patch' })
         }
     }
-});
+})
 
-router.post('/rename', async function (req, res, next) {
+router.post('/rename', async (req, res, next) => {
     const { oldKey, newKey } = req.body
     if (!oldKey.endsWith('/') && !newKey.endsWith('/')) {
         try {
@@ -118,9 +117,9 @@ router.post('/rename', async function (req, res, next) {
     } else {
         res.status(500).json({ error: `keys ${oldKey} or ${newKey} are not files` })
     }
-});
+})
 
-router.put('/folder', async function (req, res, next) {
+router.put('/folder', async (req, res, next) => {
     const { key } = req.body
     if (key.endsWith('/')) {
         try {
@@ -134,9 +133,9 @@ router.put('/folder', async function (req, res, next) {
     } else {
         res.status(500).json({ error: `key ${key} is not a folder` })
     }
-});
+})
 
-router.post('/folder/rename', async function (req, res, next) {
+router.post('/folder/rename', async (req, res, next) => {
     const { oldKey, newKey } = req.body
     if (oldKey.endsWith('/') && newKey.endsWith('/')) {
         try {
@@ -149,11 +148,11 @@ router.post('/folder/rename', async function (req, res, next) {
     } else {
         res.status(500).json({ error: `keys ${oldKey} or ${newKey} are not folders` })
     }
-});
+})
 
-router.delete('/folder', async function (req, res, next) {
-    const { key }: {key?: string} = req.query
-    if(!key) return res.status(400).json({ error: 'Key not included' })
+router.delete('/folder', async (req, res, next) => {
+    const { key }: { key?: string } = req.query
+    if (!key) return res.status(400).json({ error: 'Key not included' })
     if (key.endsWith('/')) {
         try {
             await filesystem.deleteFolder(key)
@@ -165,6 +164,6 @@ router.delete('/folder', async function (req, res, next) {
     } else {
         res.status(500).json({ error: `key ${key} is not a folder` })
     }
-});
+})
 
 export default router

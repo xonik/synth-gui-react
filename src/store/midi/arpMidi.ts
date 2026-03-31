@@ -1,7 +1,7 @@
-import { globalStore } from '../globalStore'
-import { nrpn, button } from '../../midi/midibus'
+import { button, nrpn } from '../../midi/midibus'
+import type { ControllerConfigButton } from '../../midi/types'
 import arpControllers from '../../synthcore/modules/arp/arpControllers'
-import { ControllerConfigButton } from '../../midi/types'
+import { globalStore } from '../globalStore'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
 
 interface ButtonMapping {
@@ -70,7 +70,7 @@ export function startArpMidiReceive() {
     const bpmId = nrpn.subscribe((_voiceGroupIndex: number, midiValue: number) => {
         const value = midiValue / 65535
         withMidiReceive(() => {
-            globalStore.getState().set(state => {
+            globalStore.getState().set((state) => {
                 state.arp.bpm = value
             })
         })
@@ -82,7 +82,7 @@ export function startArpMidiReceive() {
             const value = m.ctrl.values.indexOf(midiValue)
             if (value < 0) return
             withMidiReceive(() => {
-                globalStore.getState().set(state => {
+                globalStore.getState().set((state) => {
                     state.arp[m.field] = value
                 })
             })
@@ -92,6 +92,6 @@ export function startArpMidiReceive() {
 }
 
 export function stopArpMidiReceive() {
-    receiveUnsubscribers.forEach(unsub => unsub())
+    receiveUnsubscribers.forEach((unsub) => unsub())
     receiveUnsubscribers = []
 }

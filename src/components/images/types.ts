@@ -1,10 +1,10 @@
 export type IconProps = {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-    className?: string;
-    centered?: boolean;
+    x: number
+    y: number
+    width: number
+    height: number
+    className?: string
+    centered?: boolean
 }
 
 export type IconBaseProps = IconProps & {

@@ -1,12 +1,18 @@
-import { useUiStore } from '../../../store/uiStore'
+import {
+    STAGE_NAMES,
+    type StageName,
+    setMaxLoops,
+    setStageCurve,
+    setStageLevel,
+    setStageTime,
+} from '../../../store/modules/envActions'
 import { voiceGroupStores } from '../../../store/patchStore'
-import { setStageTime, setStageLevel, setStageCurve, setMaxLoops, StageName, STAGE_NAMES } from '../../../store/modules/envActions'
-import { getBounded } from '../../../store/utils'
-import { LoopMode, StageId } from './types'
-import { step } from '../../../store/utils'
+import { useUiStore } from '../../../store/uiStore'
+import { getBounded, step } from '../../../store/utils'
+import { dbLevelResponseMapper, timeResponseMapper } from '../common/responseMappers'
 import mainDisplayControllers from '../mainDisplay/mainDisplayControllers'
-import { timeResponseMapper, dbLevelResponseMapper } from '../common/responseMappers'
 import { envCtrls } from './envControllers'
+import { LoopMode, StageId } from './types'
 
 export const mainDisplayEnvPotResolutions = {
     [mainDisplayControllers.POT1.id]: 8,
@@ -41,18 +47,16 @@ export const mainDisplayEnvApi = {
             const numEnvelopes = store.envelopes.length
             const newEnvId = getBounded(envId + step(increment), 0, numEnvelopes - 1)
             useUiStore.getState().selectEnv(newEnvId)
-
         } else if (ctrlId === mainDisplayControllers.POT2.id) {
             if (stageId !== StageId.STOPPED && stageName) {
                 const currentTime = store.envelopes[envId].stages[stageName].time
                 const currentDisplay = timeResponseMapper.input(currentTime)
                 const newDisplay = getBounded(currentDisplay + increment, 0, 1)
                 const newRaw = timeResponseMapper.output(newDisplay)
-                voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                     setStageTime(state, envId, stageName, newRaw)
                 })
             }
-
         } else if (ctrlId === mainDisplayControllers.POT3.id) {
             if (stageId !== StageId.STOPPED && stageName) {
                 const env = store.envelopes[envId]
@@ -61,36 +65,33 @@ export const mainDisplayEnvApi = {
                 const currentDisplay = dbLevelResponseMapper.input(currentLevel, bipolar)
                 const newDisplay = getBounded(currentDisplay + increment, bipolar ? -1 : 0, 1)
                 const newRaw = dbLevelResponseMapper.output(newDisplay, bipolar)
-                voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                     setStageLevel(state, envId, stageName, newRaw)
                 })
             }
-
         } else if (ctrlId === mainDisplayControllers.POT4.id) {
             if (stageId !== StageId.STOPPED && stageName) {
                 const currentCurve = store.envelopes[envId].stages[stageName].curve
                 const numCurves = envCtrls.CURVE.values?.length || 8
                 const newCurve = getBounded(currentCurve + step(increment), 0, numCurves - 1)
-                voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                     setStageCurve(state, envId, stageName, newCurve, numCurves)
                 })
             }
-
         } else if (ctrlId === mainDisplayControllers.POT5.id) {
             const currentOffset = store.envelopes[envId].offset
             const newOffset = getBounded(currentOffset + increment, -1, 1)
-            voiceGroupStores[voiceGroupIndex].getState().set(state => {
+            voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                 state.envelopes[envId].offset = newOffset
             })
-
         } else if (ctrlId === mainDisplayControllers.POT6.id) {
             const loopMode = store.envelopes[envId].loopMode
             if (loopMode !== LoopMode.COUNTED) {
                 return
             }
-            voiceGroupStores[voiceGroupIndex].getState().set(state => {
+            voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                 setMaxLoops(state, envId, store.envelopes[envId].maxLoops + step(increment))
             })
         }
-    }
+    },
 }

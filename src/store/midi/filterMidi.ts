@@ -6,10 +6,10 @@
  * Handles both filters: LPF (index 0) and SVF (index 1).
  */
 
-import { voiceGroupStores, FilterState } from '../patchStore'
-import { cc, button, nrpn } from '../../midi/midibus'
-import { ControllerConfigCC, ControllerConfigButton, ControllerConfigNRPN } from '../../midi/types'
+import { button, cc, nrpn } from '../../midi/midibus'
+import type { ControllerConfigButton, ControllerConfigCC, ControllerConfigNRPN } from '../../midi/types'
 import filtersControllers from '../../synthcore/modules/filters/filtersControllers'
+import { type FilterState, voiceGroupStores } from '../patchStore'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
 
 type FilterField = keyof FilterState
@@ -119,7 +119,7 @@ export function startFilterMidiSend() {
 }
 
 export function stopFilterMidiSend() {
-    sendUnsubscribers.forEach(unsub => unsub())
+    sendUnsubscribers.forEach((unsub) => unsub())
     sendUnsubscribers = []
 }
 
@@ -130,7 +130,7 @@ export function startFilterMidiReceive() {
         const id = cc.subscribe((voiceGroupIndex: number, midiValue: number) => {
             const value = midiValue / 127
             withMidiReceive(() => {
-                voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                     state.filters[filterIndex][field] = value
                 })
             })
@@ -142,7 +142,7 @@ export function startFilterMidiReceive() {
         const id = nrpn.subscribe((voiceGroupIndex: number, midiValue: number) => {
             const value = midiValue / 65535
             withMidiReceive(() => {
-                voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                     state.filters[filterIndex][field] = value
                 })
             })
@@ -156,7 +156,7 @@ export function startFilterMidiReceive() {
             if (value < 0) return
 
             withMidiReceive(() => {
-                voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                     state.filters[filterIndex][field] = value
                 })
             })
@@ -166,6 +166,6 @@ export function startFilterMidiReceive() {
 }
 
 export function stopFilterMidiReceive() {
-    receiveUnsubscribers.forEach(unsub => unsub())
+    receiveUnsubscribers.forEach((unsub) => unsub())
     receiveUnsubscribers = []
 }

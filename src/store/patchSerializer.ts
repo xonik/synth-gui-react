@@ -5,7 +5,7 @@
  * applies it to the currently selected voice group only.
  */
 
-import { VoiceGroupPatch, defaultVoiceGroupPatch, voiceGroupStores } from './patchStore'
+import { defaultVoiceGroupPatch, type VoiceGroupPatch, voiceGroupStores } from './patchStore'
 import { useUiStore } from './uiStore'
 
 export interface PatchFile {

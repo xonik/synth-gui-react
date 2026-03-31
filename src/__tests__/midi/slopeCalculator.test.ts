@@ -1,15 +1,14 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import {
     getLinearToDBMapper,
-    getLinearToExpMapper,
     getLinearToExpBipolarMapper,
+    getLinearToExpMapper,
     getMapperWithFade,
     inverse,
     isZero,
 } from '../../midi/slopeCalculator'
 
 describe('slopeCalculator', () => {
-
     describe('isZero', () => {
         it('returns true for 0', () => {
             expect(isZero(0)).toBe(true)
@@ -163,12 +162,7 @@ describe('slopeCalculator', () => {
         })
 
         it('inverts a dB mapper with fade', () => {
-            const base = getMapperWithFade(
-                getLinearToDBMapper(1, 1, 23, true, false),
-                1,
-                true,
-                10 / 65534,
-            )
+            const base = getMapperWithFade(getLinearToDBMapper(1, 1, 23, true, false), 1, true, 10 / 65534)
             const inv = inverse(base, 65534)
 
             for (const x of [0.1, 0.25, 0.5, 0.75, 1]) {

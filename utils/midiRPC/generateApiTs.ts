@@ -1,4 +1,4 @@
-import { dataTypeMap, Func } from './types'
+import { dataTypeMap, type Func } from './types'
 
 export function generateApiTs(funcs: Func[]) {
     return `// GENERATED FILE, DO NOT EDIT

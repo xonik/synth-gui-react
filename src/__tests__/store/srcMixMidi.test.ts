@@ -1,19 +1,19 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.mock('../../synthcore/synthcoreMiddleware', () => ({
     synthcoreMiddleware: () => (next: any) => (action: any) => next(action),
 }))
 
-import { cc, button } from '../../midi/midibus'
-import { voiceGroupStores, createPatchStore } from '../../store/patchStore'
-import srcMixControllers from '../../synthcore/modules/srcMix/srcMixControllers'
 import { buttonMidiValues } from '../../midi/buttonMidiValues'
+import { button, cc } from '../../midi/midibus'
 import {
-    startSrcMixMidiSend,
-    stopSrcMixMidiSend,
     startSrcMixMidiReceive,
+    startSrcMixMidiSend,
     stopSrcMixMidiReceive,
+    stopSrcMixMidiSend,
 } from '../../store/midi/srcMixMidi'
+import { createPatchStore, voiceGroupStores } from '../../store/patchStore'
+import srcMixControllers from '../../synthcore/modules/srcMix/srcMixControllers'
 
 const VG = 0
 
@@ -70,7 +70,9 @@ describe('source mixer MIDI receive', () => {
         })
 
         it('sets outOsc1 to Off from button MIDI', () => {
-            getState().set(s => { s.srcMix.outOsc1 = 2 })
+            getState().set((s) => {
+                s.srcMix.outOsc1 = 2
+            })
             button.publish(VG, buttonMidiValues.OSC1_OUT_OFF)
             expect(getState().srcMix.outOsc1).toBe(0)
         })
@@ -88,8 +90,8 @@ describe('source mixer MIDI receive', () => {
 })
 
 describe('source mixer MIDI send', () => {
-    let sentCC: { ccNum: number, value: number }[] = []
-    let sentButtons: { ctrl: any, value: number }[] = []
+    let sentCC: { ccNum: number; value: number }[] = []
+    let sentButtons: { ctrl: any; value: number }[] = []
     const origCCSend = cc.send
     const origButtonSend = button.send
 
@@ -113,34 +115,44 @@ describe('source mixer MIDI send', () => {
     })
 
     it('sends levelOsc1 change as CC', () => {
-        getState().set(s => { s.srcMix.levelOsc1 = 0.5 })
-        const sent = sentCC.find(s => s.ccNum === srcMixControllers.LEVEL_OSC1.cc)
+        getState().set((s) => {
+            s.srcMix.levelOsc1 = 0.5
+        })
+        const sent = sentCC.find((s) => s.ccNum === srcMixControllers.LEVEL_OSC1.cc)
         expect(sent).toBeDefined()
         expect(sent!.value).toBe(Math.floor(127 * 0.5))
     })
 
     it('sends levelRingMod change as CC', () => {
-        getState().set(s => { s.srcMix.levelRingMod = 0.8 })
-        const sent = sentCC.find(s => s.ccNum === srcMixControllers.LEVEL_RING_MOD.cc)
+        getState().set((s) => {
+            s.srcMix.levelRingMod = 0.8
+        })
+        const sent = sentCC.find((s) => s.ccNum === srcMixControllers.LEVEL_RING_MOD.cc)
         expect(sent).toBeDefined()
         expect(sent!.value).toBe(Math.floor(127 * 0.8))
     })
 
     it('sends outOsc2 change as button MIDI', () => {
-        getState().set(s => { s.srcMix.outOsc2 = 2 })
+        getState().set((s) => {
+            s.srcMix.outOsc2 = 2
+        })
         expect(sentButtons).toHaveLength(1)
         expect(sentButtons[0].value).toBe(buttonMidiValues.OSC2_OUT_B)
     })
 
     it('sends outExtAudio change as button MIDI', () => {
-        getState().set(s => { s.srcMix.outExtAudio = 3 })
+        getState().set((s) => {
+            s.srcMix.outExtAudio = 3
+        })
         expect(sentButtons).toHaveLength(1)
         expect(sentButtons[0].value).toBe(buttonMidiValues.EXT_AUDIO_OUT_BOTH)
     })
 
     it('does not send when value unchanged', () => {
         const defaultLevel = getState().srcMix.levelOsc2
-        getState().set(s => { s.srcMix.levelOsc2 = defaultLevel })
-        expect(sentCC.find(s => s.ccNum === srcMixControllers.LEVEL_OSC2.cc)).toBeUndefined()
+        getState().set((s) => {
+            s.srcMix.levelOsc2 = defaultLevel
+        })
+        expect(sentCC.find((s) => s.ccNum === srcMixControllers.LEVEL_OSC2.cc)).toBeUndefined()
     })
 })

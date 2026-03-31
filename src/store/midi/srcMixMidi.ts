@@ -1,13 +1,13 @@
-import { voiceGroupStores, VoiceGroupPatch, SrcMixState } from '../patchStore'
-import { cc, button } from '../../midi/midibus'
-import { ControllerConfigCC, ControllerConfigButton } from '../../midi/types'
+import { button, cc } from '../../midi/midibus'
+import type { ControllerConfigButton, ControllerConfigCC } from '../../midi/types'
 import srcMixControllers from '../../synthcore/modules/srcMix/srcMixControllers'
+import { SrcMixState, VoiceGroupPatch, voiceGroupStores } from '../patchStore'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
 
 type LevelField = 'levelOsc1' | 'levelOsc2' | 'levelOsc3' | 'levelNoise' | 'levelRingMod' | 'levelExtAudio'
 type OutField = 'outOsc1' | 'outOsc2' | 'outOsc3' | 'outNoise' | 'outRingMod' | 'outExtAudio'
 
-const levelMappings: { field: LevelField, ctrl: ControllerConfigCC }[] = [
+const levelMappings: { field: LevelField; ctrl: ControllerConfigCC }[] = [
     { field: 'levelOsc1', ctrl: srcMixControllers.LEVEL_OSC1 },
     { field: 'levelOsc2', ctrl: srcMixControllers.LEVEL_OSC2 },
     { field: 'levelOsc3', ctrl: srcMixControllers.LEVEL_OSC3 },
@@ -16,7 +16,7 @@ const levelMappings: { field: LevelField, ctrl: ControllerConfigCC }[] = [
     { field: 'levelExtAudio', ctrl: srcMixControllers.LEVEL_EXT_AUDIO },
 ]
 
-const outMappings: { field: OutField, ctrl: ControllerConfigButton }[] = [
+const outMappings: { field: OutField; ctrl: ControllerConfigButton }[] = [
     { field: 'outOsc1', ctrl: srcMixControllers.OUT_OSC1 },
     { field: 'outOsc2', ctrl: srcMixControllers.OUT_OSC2 },
     { field: 'outOsc3', ctrl: srcMixControllers.OUT_OSC3 },
@@ -61,7 +61,7 @@ export function startSrcMixMidiSend() {
 }
 
 export function stopSrcMixMidiSend() {
-    unsubscribers.forEach(unsub => unsub())
+    unsubscribers.forEach((unsub) => unsub())
     unsubscribers = []
 }
 
@@ -74,7 +74,7 @@ export function startSrcMixMidiReceive() {
         const id = cc.subscribe((voiceGroupIndex: number, midiValue: number) => {
             const value = midiValue / 127
             withMidiReceive(() => {
-                voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                     state.srcMix[field] = value
                 })
             })
@@ -87,7 +87,7 @@ export function startSrcMixMidiReceive() {
             const value = ctrl.values.indexOf(midiValue)
             if (value < 0) return
             withMidiReceive(() => {
-                voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                     state.srcMix[field] = value
                 })
             })
@@ -97,6 +97,6 @@ export function startSrcMixMidiReceive() {
 }
 
 export function stopSrcMixMidiReceive() {
-    receiveUnsubscribers.forEach(unsub => unsub())
+    receiveUnsubscribers.forEach((unsub) => unsub())
     receiveUnsubscribers = []
 }

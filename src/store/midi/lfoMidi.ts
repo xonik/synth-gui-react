@@ -1,9 +1,14 @@
-import { voiceGroupStores, LfoState } from '../patchStore'
-import { cc, nrpn, button, lastSentMidiGroup } from '../../midi/midibus'
-import { ControllerConfigCC, ControllerConfigNRPN, ControllerConfigButton, MidiGroup } from '../../midi/types'
+import { button, cc, lastSentMidiGroup, nrpn } from '../../midi/midibus'
+import {
+    type ControllerConfigButton,
+    type ControllerConfigCC,
+    type ControllerConfigNRPN,
+    MidiGroup,
+} from '../../midi/types'
 import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
+import { LFO_STAGE_NAMES, LfoStageName, STAGE_ID_TO_NAME, STAGE_NAME_TO_ID } from '../modules/lfoActions'
+import { type LfoState, voiceGroupStores } from '../patchStore'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
-import { LfoStageName, LFO_STAGE_NAMES, STAGE_NAME_TO_ID, STAGE_ID_TO_NAME } from '../modules/lfoActions'
 
 const NUMBER_OF_LFOS = 4
 
@@ -52,7 +57,7 @@ function sendLfoSelect(voiceGroupIndex: number, lfoId: number) {
     if (
         lfoId !== currentSentLfoId ||
         (lastSentMidiGroup !== MidiGroup.LFO && Date.now() - lastSentLfoIdTimestamp > 10000) ||
-        (Date.now() - lastSentLfoIdTimestamp > 30000)
+        Date.now() - lastSentLfoIdTimestamp > 30000
     ) {
         currentSentLfoId = lfoId
         lastSentLfoIdTimestamp = Date.now()
@@ -60,12 +65,7 @@ function sendLfoSelect(voiceGroupIndex: number, lfoId: number) {
     }
 }
 
-function sendLfoParams(
-    voiceGroupIndex: number,
-    lfoId: number,
-    lfo: LfoState,
-    prevLfo: LfoState
-) {
+function sendLfoParams(voiceGroupIndex: number, lfoId: number, lfo: LfoState, prevLfo: LfoState) {
     let selectSent = false
     const ensureSelect = () => {
         if (!selectSent) {
@@ -78,9 +78,7 @@ function sendLfoParams(
         if (lfo[m.field] !== prevLfo[m.field]) {
             ensureSelect()
             const value = lfo[m.field]
-            const midiValue = m.bipolar
-                ? Math.floor(32767 * value + 32767)
-                : Math.floor(65535 * value)
+            const midiValue = m.bipolar ? Math.floor(32767 * value + 32767) : Math.floor(65535 * value)
             nrpn.send(voiceGroupIndex, m.ctrl, midiValue)
         }
     }
@@ -149,7 +147,7 @@ export function startLfoMidiSend() {
 }
 
 export function stopLfoMidiSend() {
-    sendUnsubscribers.forEach(unsub => unsub())
+    sendUnsubscribers.forEach((unsub) => unsub())
     sendUnsubscribers = []
     currentSentLfoId = -1
     lastSentLfoIdTimestamp = 0
@@ -174,11 +172,9 @@ export function startLfoMidiReceive() {
     for (const m of nrpnMappings) {
         const id = nrpn.subscribe((voiceGroupIndex: number, midiValue: number) => {
             if (currentReceivedLfoId < 0) return
-            const value = m.bipolar
-                ? (midiValue - 32767) / 32767
-                : midiValue / 65535
+            const value = m.bipolar ? (midiValue - 32767) / 32767 : midiValue / 65535
             withMidiReceive(() => {
-                voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                     state.lfos[currentReceivedLfoId][m.field] = value
                 })
             })
@@ -190,7 +186,7 @@ export function startLfoMidiReceive() {
     const mlId = cc.subscribe((voiceGroupIndex: number, midiValue: number) => {
         if (currentReceivedLfoId < 0) return
         withMidiReceive(() => {
-            voiceGroupStores[voiceGroupIndex].getState().set(state => {
+            voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                 state.lfos[currentReceivedLfoId].maxLoops = midiValue
             })
         })
@@ -203,7 +199,7 @@ export function startLfoMidiReceive() {
             const value = m.ctrl.values.indexOf(midiValue)
             if (value < 0) return
             withMidiReceive(() => {
-                voiceGroupStores[voiceGroupIndex].getState().set(state => {
+                voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                     state.lfos[currentReceivedLfoId][m.field] = value
                 })
             })
@@ -218,7 +214,7 @@ export function startLfoMidiReceive() {
         if (!stageName) return
         const curve = midiValue & 0b01111111
         withMidiReceive(() => {
-            voiceGroupStores[voiceGroupIndex].getState().set(state => {
+            voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                 state.lfos[currentReceivedLfoId].stages[stageName].curve = curve
             })
         })
@@ -233,7 +229,7 @@ export function startLfoMidiReceive() {
         if (!stageName) return
         const enabled = (midiValue & 0b1000) > 0 ? 1 : 0
         withMidiReceive(() => {
-            voiceGroupStores[voiceGroupIndex].getState().set(state => {
+            voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                 state.lfos[currentReceivedLfoId].stages[stageName].enabled = enabled
             })
         })
@@ -242,7 +238,7 @@ export function startLfoMidiReceive() {
 }
 
 export function stopLfoMidiReceive() {
-    receiveUnsubscribers.forEach(unsub => unsub())
+    receiveUnsubscribers.forEach((unsub) => unsub())
     receiveUnsubscribers = []
     currentReceivedLfoId = -1
 }

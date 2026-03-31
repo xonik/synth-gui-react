@@ -1,17 +1,13 @@
-import React, { useCallback, useState } from 'react'
+import type React from 'react'
+import { useCallback, useState } from 'react'
 import ReactSlider from 'react-slider'
-import {
-    releaseCVOverride,
-    releaseCVOverrides,
-    setCVOverride,
-    VOICE_ALL,
-} from '../../midi/rpc/api'
+import { releaseCVOverride, releaseCVOverrides, setCVOverride, VOICE_ALL } from '../../midi/rpc/api'
+import { sharedConfig } from '../../sharedConfig'
 import { CV_CHANNELS, CVs } from './CvDefinitions'
-import { sharedConfig } from "../../sharedConfig";
 import './CvRange.scss'
 
 type RangeProps = {
-    setRange: (value: number) => void,
+    setRange: (value: number) => void
     value: number
 }
 
@@ -35,21 +31,26 @@ type CvSelectorProps = {
     onSelect: (cv: number) => void
 }
 const CvSelector = ({ onSelect, cv }: CvSelectorProps) => {
-    const onOptionChangeHandler = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-        event.preventDefault();
-        const value = event.target.value
-        if (value) {
-            onSelect(Number.parseInt(value));
-        }
-    }, [onSelect])
+    const onOptionChangeHandler = useCallback(
+        (event: React.ChangeEvent<HTMLSelectElement>) => {
+            event.preventDefault()
+            const value = event.target.value
+            if (value) {
+                onSelect(Number.parseInt(value))
+            }
+        },
+        [onSelect]
+    )
 
-    return <select onChange={onOptionChangeHandler} value={cv}>
-        {CVs.map((cv, index) => (
-            <option key={index} value={cv.channel}>
-                {cv.description} ({cv.channel})
-            </option>
-        ))}
-    </select>
+    return (
+        <select onChange={onOptionChangeHandler} value={cv}>
+            {CVs.map((cv, index) => (
+                <option key={index} value={cv.channel}>
+                    {cv.description} ({cv.channel})
+                </option>
+            ))}
+        </select>
+    )
 }
 
 function getAsVolts(index: number) {
@@ -57,8 +58,8 @@ function getAsVolts(index: number) {
 }
 
 type CvRange = {
-    cv: number,
-    value: number,
+    cv: number
+    value: number
 }
 
 function getInitialCVs() {
@@ -73,7 +74,7 @@ function getInitialAllCVs() {
     return Array.from({ length: sharedConfig.VOICE_COUNT.value }, getInitialCVs)
 }
 
-type Props = { voice: number };
+type Props = { voice: number }
 
 export const CvOverrides = ({ voice }: Props) => {
     const [allCvs, setAllCvs] = useState<CvRange[][]>(getInitialAllCVs())
@@ -84,36 +85,41 @@ export const CvOverrides = ({ voice }: Props) => {
     }, [cv, voice])
 
     const onReleaseAll = useCallback(() => {
-        releaseCVOverrides();
+        releaseCVOverrides()
     }, [])
 
-    const updateCV = useCallback((start: number) => {
-        setAllCvs(prev => {
-            let updated = prev.map(arr => arr.map(obj => ({ ...obj })))
-            if (voice === VOICE_ALL) {
-                for (let v = 0; v < sharedConfig.VOICE_COUNT.value; v++) {
-                    updated[v][cv].value = start
+    const updateCV = useCallback(
+        (start: number) => {
+            setAllCvs((prev) => {
+                const updated = prev.map((arr) => arr.map((obj) => ({ ...obj })))
+                if (voice === VOICE_ALL) {
+                    for (let v = 0; v < sharedConfig.VOICE_COUNT.value; v++) {
+                        updated[v][cv].value = start
+                    }
+                } else {
+                    updated[voice][cv].value = start
                 }
-            } else {
-                updated[voice][cv].value = start
-            }
-            setCVOverride(cv, start, voice)
-            return updated
-        })
-    }, [cv, voice])
+                setCVOverride(cv, start, voice)
+                return updated
+            })
+        },
+        [cv, voice]
+    )
 
     // For display, show the first voice if "All" is selected
     const currentCVs = voice === VOICE_ALL ? allCvs[0] : allCvs[voice]
 
-    return <div className="cv-range">
-        <div className="cv-range__graph-controls">
-            <VerticalSelector setRange={updateCV} value={currentCVs[cv].value}/>
+    return (
+        <div className="cv-range">
+            <div className="cv-range__graph-controls">
+                <VerticalSelector setRange={updateCV} value={currentCVs[cv].value} />
+            </div>
+            <div className="cv-range__params">
+                <CvSelector onSelect={setCv} cv={cv} />
+                <button onClick={onRelease}>Release</button>
+                <button onClick={onReleaseAll}>Release all</button>
+                <div>Voltage: {getAsVolts(currentCVs[cv].value)}</div>
+            </div>
         </div>
-        <div className="cv-range__params">
-            <CvSelector onSelect={setCv} cv={cv}/>
-            <button onClick={onRelease}>Release</button>
-            <button onClick={onReleaseAll}>Release all</button>
-            <div>Voltage: {getAsVolts(currentCVs[cv].value)}</div>
-        </div>
-    </div>
+    )
 }

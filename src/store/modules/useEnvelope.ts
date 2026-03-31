@@ -6,60 +6,71 @@
  */
 
 import { useCallback, useMemo } from 'react'
-import { useVoiceGroupStore, voiceGroupStores, VoiceGroupPatch, EnvelopeState } from '../patchStore'
-import { useUiStore } from '../uiStore'
-import { StageName, STAGE_NAMES, setStageLevel, setStageTime, toggleStageEnabled, toggleInvert, setInvert } from './envActions'
-import { timeResponseMapper, dbLevelResponseMapper } from '../../synthcore/modules/common/responseMappers'
+import { dbLevelResponseMapper, timeResponseMapper } from '../../synthcore/modules/common/responseMappers'
 import { StageId } from '../../synthcore/modules/env/types'
+import { type EnvelopeState, useVoiceGroupStore, type VoiceGroupPatch, voiceGroupStores } from '../patchStore'
+import { useUiStore } from '../uiStore'
 import { getBounded } from '../utils'
+import {
+    STAGE_NAMES,
+    type StageName,
+    setInvert,
+    setStageLevel,
+    setStageTime,
+    toggleInvert,
+    toggleStageEnabled,
+} from './envActions'
 
 export function useEnvTime(envId: number, stageName: StageName) {
-    const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)
-    const rawValue = useVoiceGroupStore(voiceGroupIndex, s => s.envelopes[envId].stages[stageName].time)
+    const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
+    const rawValue = useVoiceGroupStore(voiceGroupIndex, (s) => s.envelopes[envId].stages[stageName].time)
 
-    const displayValue = useMemo(
-        () => timeResponseMapper.input(rawValue),
-        [rawValue]
+    const displayValue = useMemo(() => timeResponseMapper.input(rawValue), [rawValue])
+
+    const increment = useCallback(
+        (delta: number) => {
+            const newDisplay = getBounded(displayValue + delta, 0, 1)
+            const newRaw = timeResponseMapper.output(newDisplay)
+            voiceGroupStores[voiceGroupIndex].getState().set((state) => {
+                setStageTime(state, envId, stageName, newRaw)
+            })
+        },
+        [voiceGroupIndex, envId, stageName, displayValue]
     )
-
-    const increment = useCallback((delta: number) => {
-        const newDisplay = getBounded(displayValue + delta, 0, 1)
-        const newRaw = timeResponseMapper.output(newDisplay)
-        voiceGroupStores[voiceGroupIndex].getState().set(state => {
-            setStageTime(state, envId, stageName, newRaw)
-        })
-    }, [voiceGroupIndex, envId, stageName, displayValue])
 
     return { displayValue, increment }
 }
 
 export function useEnvLevel(envId: number, stageName: StageName) {
-    const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)
-    const rawValue = useVoiceGroupStore(voiceGroupIndex, s => s.envelopes[envId].stages[stageName].level)
-    const bipolar = useVoiceGroupStore(voiceGroupIndex, s => s.envelopes[envId].bipolar) === 1
+    const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
+    const rawValue = useVoiceGroupStore(voiceGroupIndex, (s) => s.envelopes[envId].stages[stageName].level)
+    const bipolar = useVoiceGroupStore(voiceGroupIndex, (s) => s.envelopes[envId].bipolar) === 1
 
-    const displayValue = useMemo(
-        () => dbLevelResponseMapper.input(rawValue, bipolar),
-        [rawValue, bipolar]
+    const displayValue = useMemo(() => dbLevelResponseMapper.input(rawValue, bipolar), [rawValue, bipolar])
+
+    const increment = useCallback(
+        (delta: number) => {
+            const newDisplay = getBounded(displayValue + delta, bipolar ? -1 : 0, 1)
+            const newRaw = dbLevelResponseMapper.output(newDisplay, bipolar)
+            voiceGroupStores[voiceGroupIndex].getState().set((state) => {
+                setStageLevel(state, envId, stageName, newRaw)
+            })
+        },
+        [voiceGroupIndex, envId, stageName, displayValue, bipolar]
     )
-
-    const increment = useCallback((delta: number) => {
-        const newDisplay = getBounded(displayValue + delta, bipolar ? -1 : 0, 1)
-        const newRaw = dbLevelResponseMapper.output(newDisplay, bipolar)
-        voiceGroupStores[voiceGroupIndex].getState().set(state => {
-            setStageLevel(state, envId, stageName, newRaw)
-        })
-    }, [voiceGroupIndex, envId, stageName, displayValue, bipolar])
 
     return { displayValue, bipolar, increment }
 }
 
-export function useEnvToggle(envId: number, param: keyof Omit<VoiceGroupPatch['envelopes'][0], 'stages' | 'offset' | 'maxLoops'>) {
-    const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)
-    const value = useVoiceGroupStore(voiceGroupIndex, s => s.envelopes[envId][param] as number)
+export function useEnvToggle(
+    envId: number,
+    param: keyof Omit<VoiceGroupPatch['envelopes'][0], 'stages' | 'offset' | 'maxLoops'>
+) {
+    const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
+    const value = useVoiceGroupStore(voiceGroupIndex, (s) => s.envelopes[envId][param] as number)
 
     const toggle = useCallback(() => {
-        voiceGroupStores[voiceGroupIndex].getState().set(state => {
+        voiceGroupStores[voiceGroupIndex].getState().set((state) => {
             if (param === 'invert') {
                 toggleInvert(state, envId)
             } else {
@@ -73,8 +84,8 @@ export function useEnvToggle(envId: number, param: keyof Omit<VoiceGroupPatch['e
 }
 
 export function useEnvStageEnabled(envId: number, stageName: StageName) {
-    const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)
-    return useVoiceGroupStore(voiceGroupIndex, s => s.envelopes[envId].stages[stageName].enabled)
+    const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
+    return useVoiceGroupStore(voiceGroupIndex, (s) => s.envelopes[envId].stages[stageName].enabled)
 }
 
 const STAGE_NAME_TO_ID: Record<StageName, StageId> = {
@@ -101,11 +112,11 @@ export type DisplayStage = {
  * display components (same shape as the old selectEnvStages selector).
  */
 export function useEnvStages(envId: number): DisplayStage[] {
-    const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)
-    const env = useVoiceGroupStore(voiceGroupIndex, s => s.envelopes[envId])
+    const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
+    const env = useVoiceGroupStore(voiceGroupIndex, (s) => s.envelopes[envId])
 
     return useMemo(() => {
-        return STAGE_NAMES.map(name => {
+        return STAGE_NAMES.map((name) => {
             const stage = env.stages[name]
             return {
                 id: STAGE_NAME_TO_ID[name],
@@ -130,21 +141,24 @@ export function useEnvStageById(envId: number, stageId: StageId): DisplayStage {
  * Returns a scalar envelope parameter (bipolar, offset, etc.)
  */
 export function useEnvParam(envId: number, param: keyof Omit<EnvelopeState, 'stages'>): number {
-    const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)
-    return useVoiceGroupStore(voiceGroupIndex, s => s.envelopes[envId][param])
+    const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
+    return useVoiceGroupStore(voiceGroupIndex, (s) => s.envelopes[envId][param])
 }
 
 /**
  * Toggle a stage's enabled state via Zustand.
  */
 export function useEnvStageToggle(envId: number) {
-    const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)
+    const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
 
-    const toggle = useCallback((stageName: StageName) => {
-        voiceGroupStores[voiceGroupIndex].getState().set(state => {
-            toggleStageEnabled(state, envId, stageName)
-        })
-    }, [voiceGroupIndex, envId])
+    const toggle = useCallback(
+        (stageName: StageName) => {
+            voiceGroupStores[voiceGroupIndex].getState().set((state) => {
+                toggleStageEnabled(state, envId, stageName)
+            })
+        },
+        [voiceGroupIndex, envId]
+    )
 
     return toggle
 }
@@ -153,11 +167,11 @@ export function useEnvStageToggle(envId: number) {
  * Cycle a multi-value parameter (releaseMode, loopMode, etc.)
  */
 export function useEnvCycleParam(envId: number, param: keyof Omit<EnvelopeState, 'stages'>, numValues: number) {
-    const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)
-    const value = useVoiceGroupStore(voiceGroupIndex, s => s.envelopes[envId][param])
+    const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
+    const value = useVoiceGroupStore(voiceGroupIndex, (s) => s.envelopes[envId][param])
 
     const cycle = useCallback(() => {
-        voiceGroupStores[voiceGroupIndex].getState().set(state => {
+        voiceGroupStores[voiceGroupIndex].getState().set((state) => {
             const current = state.envelopes[envId][param] as number
             state.envelopes[envId][param] = ((current + 1) % numValues) as never
         })

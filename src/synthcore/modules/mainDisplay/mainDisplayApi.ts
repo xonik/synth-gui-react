@@ -1,12 +1,11 @@
-import { mainDisplayModsApi, mainDisplayModsPotResolutions } from '../mods/modsMainDisplayApi'
+import { ScreenId, useUiStore } from '../../../store/uiStore'
+import type { ApiSource } from '../../types'
 import { mainDisplayEnvApi, mainDisplayEnvPotResolutions } from '../env/envMainDisplayApi'
-import mainDisplayMidiApi from './mainDisplayMidiApi'
-import { ApiSource } from '../../types'
-import mainDisplayControllers from './mainDisplayControllers'
-import { mainDisplaySettingsApi, mainDisplaySettingsPotResolutions } from '../settings/settingsMainDisplayApi'
 import { mainDisplayLfoApi, mainDisplayLfoPotResolutions } from '../lfo/lfoMainDisplayApi'
-import { useUiStore, ScreenId } from '../../../store/uiStore'
-
+import { mainDisplayModsApi, mainDisplayModsPotResolutions } from '../mods/modsMainDisplayApi'
+import { mainDisplaySettingsApi, mainDisplaySettingsPotResolutions } from '../settings/settingsMainDisplayApi'
+import mainDisplayControllers from './mainDisplayControllers'
+import mainDisplayMidiApi from './mainDisplayMidiApi'
 
 type PotResolutions = {
     [key: string]: {

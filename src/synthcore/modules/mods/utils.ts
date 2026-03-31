@@ -1,12 +1,11 @@
-import { ControllerConfig, FuncProps } from '../../../midi/types'
+import type { ControllerConfig, FuncProps } from '../../../midi/types'
 import { controllerGroups } from '../controllers/controllers'
 
 export const shortLabel = (element: ControllerConfig | FuncProps) => element.shortLabel || element.label
 
 const getDsts = () => {
-
     type Func = ControllerConfig[]
-    type Group = Func[];
+    type Group = Func[]
 
     const modDsts: Group[] = []
     const modDstGroupLabels: string[] = []
@@ -38,7 +37,7 @@ const getDsts = () => {
     return {
         dsts: modDsts,
         groupLabels: modDstGroupLabels,
-        funcProps: modDstFuncProps
+        funcProps: modDstFuncProps,
     }
 }
 

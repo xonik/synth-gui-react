@@ -1,9 +1,9 @@
-import { Lfo, LoopMode, Stage, StageId } from './types'
-import { Controllers } from '../controllers/types'
-import { mergeControllers } from '../controllers/controllersUtils'
-import { lfoCtrls } from './lfoControllers'
-import { timeResponseMapper } from '../common/responseMappers'
 import { Curve } from '../../generatedTypes'
+import { timeResponseMapper } from '../common/responseMappers'
+import { mergeControllers } from '../controllers/controllersUtils'
+import type { Controllers } from '../controllers/types'
+import { lfoCtrls } from './lfoControllers'
+import { type Lfo, LoopMode, type Stage, StageId } from './types'
 
 const getStageState = (lfoId: number, stage: Stage): Controllers => {
     const { id: stageId, enabled, curve } = stage
@@ -11,10 +11,10 @@ const getStageState = (lfoId: number, stage: Stage): Controllers => {
     const controllers: Controllers = {}
     controllers[lfoId] = {
         [lfoCtrls.TOGGLE_STAGE.id]: {
-            [stageId]: enabled
+            [stageId]: enabled,
         },
         [lfoCtrls.CURVE.id]: {
-            [stageId]: curve
+            [stageId]: curve,
         },
     }
     return controllers
@@ -26,7 +26,7 @@ const getUiStageState = (lfoId: number, stage: Stage): Controllers => {
     const controllers: Controllers = {}
     controllers[lfoId] = {
         [lfoCtrls.DEPTH.id]: {
-            [stageId]: timeResponseMapper.input(time || 0)
+            [stageId]: timeResponseMapper.input(time || 0),
         },
     }
     return controllers
@@ -73,7 +73,6 @@ const getLfoState = (lfo: Lfo) => {
 }
 
 export const getDefaultLfo = (lfoId: number): Controllers => {
-
     return getLfoState({
         id: lfoId,
         resetOnTrigger: false,
@@ -118,15 +117,15 @@ const defaultStageConfigs: Stage[] = [
         id: StageId.STOPPED,
         enabled: 1,
         curve: Curve.LIN,
-    }
+    },
 ]
 
 export const getDefaultLfoStages = (lfoId: number): Controllers => {
-    const stages: Controllers[] = defaultStageConfigs.map(conf => getStageState(lfoId, conf))
+    const stages: Controllers[] = defaultStageConfigs.map((conf) => getStageState(lfoId, conf))
     return mergeControllers(stages)
 }
 
 export const getDefaultUiLfoStages = (lfoId: number): Controllers => {
-    const stages: Controllers[] = defaultStageConfigs.map(conf => getUiStageState(lfoId, conf))
+    const stages: Controllers[] = defaultStageConfigs.map((conf) => getUiStageState(lfoId, conf))
     return mergeControllers(stages)
 }

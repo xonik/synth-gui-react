@@ -12,7 +12,7 @@
  * Each function takes an immer draft and mutates it directly.
  */
 
-import { EnvelopeState, EnvelopeStageState, VoiceGroupPatch } from '../patchStore'
+import { EnvelopeStageState, type EnvelopeState, type VoiceGroupPatch } from '../patchStore'
 import { getBounded, getQuantized } from '../utils'
 
 export type StageName = keyof EnvelopeState['stages']
@@ -28,22 +28,12 @@ export const STAGE_NAMES: StageName[] = [
     'stopped',
 ]
 
-const TOGGLEABLE_STAGES: StageName[] = [
-    'delay',
-    'decay1',
-    'decay2',
-    'release1',
-]
+const TOGGLEABLE_STAGES: StageName[] = ['delay', 'decay1', 'decay2', 'release1']
 
-const LEVEL_EDITABLE_STAGES: StageName[] = [
-    'decay2',
-    'sustain',
-]
+const LEVEL_EDITABLE_STAGES: StageName[] = ['decay2', 'sustain']
 
 function boundLevel(value: number, bipolar: boolean): number {
-    const bounded = bipolar
-        ? getBounded(value, -1, 1)
-        : getBounded(value, 0, 1)
+    const bounded = bipolar ? getBounded(value, -1, 1) : getBounded(value, 0, 1)
     return getQuantized(bounded, 32767)
 }
 
@@ -58,12 +48,7 @@ function boundTime(value: number): number {
  * - Only decay2, sustain, and release2 (when r1 enabled) levels can be set
  * - Setting sustain level also copies to R1 or R2 depending on which is enabled
  */
-export function setStageLevel(
-    state: VoiceGroupPatch,
-    envId: number,
-    stageName: StageName,
-    value: number
-): void {
+export function setStageLevel(state: VoiceGroupPatch, envId: number, stageName: StageName, value: number): void {
     const env = state.envelopes[envId]
     const bipolar = env.bipolar === 1
     const bounded = boundLevel(value, bipolar)
@@ -85,12 +70,7 @@ export function setStageLevel(
 /**
  * Set a stage's time value.
  */
-export function setStageTime(
-    state: VoiceGroupPatch,
-    envId: number,
-    stageName: StageName,
-    value: number
-): void {
+export function setStageTime(state: VoiceGroupPatch, envId: number, stageName: StageName, value: number): void {
     state.envelopes[envId].stages[stageName].time = boundTime(value)
 }
 
@@ -101,11 +81,7 @@ export function setStageTime(
  * - Only delay, decay1, decay2, release1 can be toggled
  * - When R1 is toggled, sustain level is copied to the newly active release stage
  */
-export function toggleStageEnabled(
-    state: VoiceGroupPatch,
-    envId: number,
-    stageName: StageName
-): void {
+export function toggleStageEnabled(state: VoiceGroupPatch, envId: number, stageName: StageName): void {
     if (!TOGGLEABLE_STAGES.includes(stageName)) {
         return
     }
@@ -128,12 +104,7 @@ export function toggleStageEnabled(
 /**
  * Set a stage's enabled state to a specific value.
  */
-export function setStageEnabled(
-    state: VoiceGroupPatch,
-    envId: number,
-    stageName: StageName,
-    enabled: number
-): void {
+export function setStageEnabled(state: VoiceGroupPatch, envId: number, stageName: StageName, enabled: number): void {
     if (!TOGGLEABLE_STAGES.includes(stageName)) {
         return
     }
@@ -171,10 +142,7 @@ export function setStageCurve(
  * - When inverted: delay, attack, stopped levels → 1, decay1 level → 0
  * - When not inverted: delay, attack, stopped levels → 0, decay1 level → 1
  */
-export function toggleInvert(
-    state: VoiceGroupPatch,
-    envId: number
-): void {
+export function toggleInvert(state: VoiceGroupPatch, envId: number): void {
     const env = state.envelopes[envId]
     const newInvert = env.invert === 1 ? 0 : 1
     env.invert = newInvert
@@ -189,11 +157,7 @@ export function toggleInvert(
 /**
  * Set the invert flag with level resets.
  */
-export function setInvert(
-    state: VoiceGroupPatch,
-    envId: number,
-    value: number
-): void {
+export function setInvert(state: VoiceGroupPatch, envId: number, value: number): void {
     const env = state.envelopes[envId]
     env.invert = value
 
@@ -207,22 +171,14 @@ export function setInvert(
 /**
  * Set max loops, bounded 1-127.
  */
-export function setMaxLoops(
-    state: VoiceGroupPatch,
-    envId: number,
-    value: number
-): void {
+export function setMaxLoops(state: VoiceGroupPatch, envId: number, value: number): void {
     state.envelopes[envId].maxLoops = getBounded(value, 1, 127)
 }
 
 /**
  * Increment max loops by a delta.
  */
-export function incrementMaxLoops(
-    state: VoiceGroupPatch,
-    envId: number,
-    delta: number
-): void {
+export function incrementMaxLoops(state: VoiceGroupPatch, envId: number, delta: number): void {
     const current = state.envelopes[envId].maxLoops
     setMaxLoops(state, envId, current + delta)
 }

@@ -1,12 +1,12 @@
-const LOG_MIDI = true;
+const LOG_MIDI = true
 
 const midi = (...logItems: any[]) => {
-    if(LOG_MIDI){
+    if (LOG_MIDI) {
         console.log(...logItems)
     }
 }
 const midiMsg = (data: number[]) => {
-    if(LOG_MIDI){
+    if (LOG_MIDI) {
         console.log(data.join(','))
     }
 }
@@ -16,4 +16,4 @@ const logger = {
     midiMsg,
 }
 
-export default logger;
+export default logger

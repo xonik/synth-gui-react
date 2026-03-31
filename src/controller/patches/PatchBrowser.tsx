@@ -1,12 +1,12 @@
 import React from 'react'
 import { Icons, RawFileBrowser } from '../../libs/react-keyed-file-browser'
-import { FileBrowserTree, FileBrowserTreeNode } from '../../libs/react-keyed-file-browser/types'
 import { RawTableFile } from '../../libs/react-keyed-file-browser/files'
 import { RawTableFolder } from '../../libs/react-keyed-file-browser/folders'
-import patchStorageApi from '../../synthcore/modules/patchStorage/patchStorageApi'
-import { useUiStore } from '../../store/uiStore'
 import { PathTableHeader } from '../../libs/react-keyed-file-browser/headers/PathTableHeader'
 import { KeyboardProvider } from '../../libs/react-keyed-file-browser/input/KeyboardProvider'
+import type { FileBrowserTree, FileBrowserTreeNode } from '../../libs/react-keyed-file-browser/types'
+import { useUiStore } from '../../store/uiStore'
+import patchStorageApi from '../../synthcore/modules/patchStorage/patchStorageApi'
 import './PatchBrowser.scss'
 
 type State = {
@@ -19,22 +19,18 @@ type PatchBrowserProps = {
 }
 
 class PatchBrowser extends React.Component<PatchBrowserProps> {
-
     state: State = {
         files: [],
-        selectedFileName: undefined
+        selectedFileName: undefined,
     }
 
     async componentDidMount() {
-        this.setState({files: await patchStorageApi.getFileTree()}, () => console.log(this.state))
+        this.setState({ files: await patchStorageApi.getFileTree() }, () => console.log(this.state))
     }
 
     handleCreateFolder = (key: string) => {
-       this.setState((state: State) => {
-            return {files: [
-                ...state.files,
-                { key, size: 0 }
-            ]}
+        this.setState((state: State) => {
+            return { files: [...state.files, { key, size: 0 }] }
         })
         patchStorageApi.createFolder(key)
     }
@@ -135,7 +131,7 @@ class PatchBrowser extends React.Component<PatchBrowserProps> {
         console.log(`Saving ${key}`)
         await patchStorageApi.savePatch(key)
         // This may be a bit inefficient when we get a lot of files later...
-        this.setState({files: await patchStorageApi.getFileTree()}, () => console.log(this.state))
+        this.setState({ files: await patchStorageApi.getFileTree() }, () => console.log(this.state))
         useUiStore.getState().goBack()
     }
 
@@ -146,7 +142,7 @@ class PatchBrowser extends React.Component<PatchBrowserProps> {
     }
 
     handleAudit = async (key: string) => {
-        if(key === '') {
+        if (key === '') {
             console.log('Resetting audit')
             patchStorageApi.revertToCurrentPatch()
         } else {
@@ -161,25 +157,23 @@ class PatchBrowser extends React.Component<PatchBrowserProps> {
         useUiStore.getState().goBack()
     }
 
-
     onKeyboardOk = (_value: string) => {
-        this.setState({showKeyboardInput: false})
+        this.setState({ showKeyboardInput: false })
     }
 
     onKeyboardCancel = () => {
-        this.setState({showKeyboardInput: false})
+        this.setState({ showKeyboardInput: false })
     }
 
     render() {
         return (
             <KeyboardProvider>
                 <div className="patch-browser">
-
                     <RawFileBrowser
                         fileTypeHeading="Patch"
                         mode={this.props.mode}
                         files={this.state.files}
-                        // @ts-ignore
+                        // @ts-expect-error
                         icons={Icons.FontAwesome(4)}
                         onSave={this.handleSave}
                         onLoad={this.handleLoad}
@@ -193,13 +187,11 @@ class PatchBrowser extends React.Component<PatchBrowserProps> {
                         onRenameFile={this.handleRenameFile}
                         onDeleteFolder={this.handleDeleteFolder}
                         onDeleteFile={this.handleDeleteFile}
-
-                        // @ts-ignore
+                        // @ts-expect-error
                         headerRenderer={PathTableHeader}
                         fileRenderer={RawTableFile}
                         folderRenderer={RawTableFolder}
                     />
-
                 </div>
             </KeyboardProvider>
         )

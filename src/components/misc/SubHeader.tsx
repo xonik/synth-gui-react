@@ -1,17 +1,17 @@
-import { BORDER_MARGIN } from "../../constants";
-import classNames from "classnames";
-import './SubHeader.scss';
+import classNames from 'classnames'
+import { BORDER_MARGIN } from '../../constants'
+import './SubHeader.scss'
 
-type PositionAlign = 'center' | 'left' | 'right';
+type PositionAlign = 'center' | 'left' | 'right'
 
 interface Props {
-    x: number,
-    y: number,
-    width: number,
-    align?: PositionAlign,
+    x: number
+    y: number
+    width: number
+    align?: PositionAlign
     labelPosition?: PositionAlign | number
-    label?: string,
-    labelWidth?: number,
+    label?: string
+    labelWidth?: number
     padding?: 'left' | 'right' | 'both'
     className?: string
     labelBackgroundOn?: boolean
@@ -20,28 +20,27 @@ interface Props {
 const getCenter = (x: number, _y: number, width: number, align: PositionAlign) => {
     switch (align) {
         case 'center':
-            return x;
+            return x
         case 'left':
-            return x + width / 2;
+            return x + width / 2
         case 'right':
-            return x - width / 2;
+            return x - width / 2
     }
 }
 
 const SubHeader = ({
-                       x,
-                       y,
-                       width,
-                       align = 'left',
-                       label,
-                       labelWidth,
-                       labelPosition: inputLabelPos = 'center',
-                       padding = 'both',
-                       className,
-                       labelBackgroundOn = true
-                   }: Props) => {
-
-    const center = getCenter(x, y, width, align);
+    x,
+    y,
+    width,
+    align = 'left',
+    label,
+    labelWidth,
+    labelPosition: inputLabelPos = 'center',
+    padding = 'both',
+    className,
+    labelBackgroundOn = true,
+}: Props) => {
+    const center = getCenter(x, y, width, align)
 
     const paddingLeft = padding != 'right' ? BORDER_MARGIN : 0
     const paddingRight = padding != 'left' ? BORDER_MARGIN : 0
@@ -57,44 +56,45 @@ const SubHeader = ({
         labelCenter = center
     }
 
-    return <>
-        {labelBackgroundOn && <>
-            <rect
-                x={x + paddingLeft} y={y + BORDER_MARGIN / 2}
-                width={width - paddingLeft - paddingRight} height={1}
-                className={classNames(
-                    className,
-                    "subheader-border",
-                )
-                }
-            />
+    return (
+        <>
+            {labelBackgroundOn && (
+                <>
+                    <rect
+                        x={x + paddingLeft}
+                        y={y + BORDER_MARGIN / 2}
+                        width={width - paddingLeft - paddingRight}
+                        height={1}
+                        className={classNames(className, 'subheader-border')}
+                    />
 
-            <polygon points={getLabelBackground(x, y, labelWidth ?? 30, labelCenter, labelPosition)} className={
-                classNames(
-                    className,
-                    "subheader-border",
-                )
-            }/>
-        </>}
-        {label && <text
-            x={labelPosition === 'center' ? labelCenter : x + 3}
-            y={y + 3.85}
-            className={classNames(
-                className,
-                "subheader-label"
+                    <polygon
+                        points={getLabelBackground(x, y, labelWidth ?? 30, labelCenter, labelPosition)}
+                        className={classNames(className, 'subheader-border')}
+                    />
+                </>
             )}
-            textAnchor={labelPosition === 'center' ? "middle" : "start"}
-            alignmentBaseline="baseline"
-        >{label}</text>}
-    </>;
-};
+            {label && (
+                <text
+                    x={labelPosition === 'center' ? labelCenter : x + 3}
+                    y={y + 3.85}
+                    className={classNames(className, 'subheader-label')}
+                    textAnchor={labelPosition === 'center' ? 'middle' : 'start'}
+                    alignmentBaseline="baseline"
+                >
+                    {label}
+                </text>
+            )}
+        </>
+    )
+}
 
 const getLabelBackground = (x: number, y: number, labelWidth: number, center: number, labelPosition: PositionAlign) => {
     const height = 3.5
     const offset = 1.5
 
-    const leftOffset = labelPosition === 'left' ? 0 : -offset;
-    const rightOffset = labelPosition === 'right' ? 0 : offset;
+    const leftOffset = labelPosition === 'left' ? 0 : -offset
+    const rightOffset = labelPosition === 'right' ? 0 : offset
 
     let mapper
     if (labelPosition == 'left') {
@@ -118,4 +118,4 @@ function isNumeric(number: PositionAlign | number): number is number {
     return !isNaN(Number(number))
 }
 
-export default SubHeader;
+export default SubHeader

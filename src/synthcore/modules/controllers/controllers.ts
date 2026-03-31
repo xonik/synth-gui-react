@@ -1,23 +1,24 @@
 // TODO: High value bits. Mod wheels, ribbon controller
-import oscControllers from '../osc/oscControllers'
-import noiseControllers from '../noise/noiseControllers'
-import ringModControllers from '../ringMod/ringModControllers'
-import fxControllers from '../fx/fxControllers'
-import lfoControllers from '../lfo/lfoControllers'
-import srcMixControllers from '../srcMix/srcMixControllers'
-import modsControllers from '../mods/modsControllers'
-import masterClockControllers from '../masterClock/masterClockControllers'
+
 import arpControllers from '../arp/arpControllers'
-import voicesControllers from '../voices/voicesControllers'
-import mainDisplayControllers from '../mainDisplay/mainDisplayControllers'
-import kbdControllers from '../kbd/kbdControllers'
-import filtersControllers from '../filters/filtersControllers'
-import postMixControllers from '../postMix/postMixControllers'
-import envControllers from '../env/envControllers'
 import commonFxControllers from '../commonFx/commonFxControllers'
+import envControllers from '../env/envControllers'
+import filtersControllers from '../filters/filtersControllers'
+import fxControllers from '../fx/fxControllers'
+import kbdControllers from '../kbd/kbdControllers'
+import lfoControllers from '../lfo/lfoControllers'
+import mainDisplayControllers from '../mainDisplay/mainDisplayControllers'
+import masterClockControllers from '../masterClock/masterClockControllers'
+import modsControllers from '../mods/modsControllers'
+import noiseControllers from '../noise/noiseControllers'
+import oscControllers from '../osc/oscControllers'
 import outControllers from '../out/outControllers'
 import performanceControllers from '../performance/performanceControllers'
-import settingsControllers from "../settings/settingsControllers";
+import postMixControllers from '../postMix/postMixControllers'
+import ringModControllers from '../ringMod/ringModControllers'
+import settingsControllers from '../settings/settingsControllers'
+import srcMixControllers from '../srcMix/srcMixControllers'
+import voicesControllers from '../voices/voicesControllers'
 
 // controller functions grouped by type
 export const controllerGroups = {
@@ -89,8 +90,8 @@ export const controllerGroups = {
     },
     PERFORMANCE: {
         label: 'Performance controls',
-        PERFORMANCE: performanceControllers
-    }
+        PERFORMANCE: performanceControllers,
+    },
 }
 
 const controllers = {

@@ -22,14 +22,14 @@ export enum ControllerIdSrc {
     LFO4,
 }
 
-export const SRC_COUNT = Object.keys(ControllerIdSrc).filter(o => isNaN(o as any)).length
+export const SRC_COUNT = Object.keys(ControllerIdSrc).filter((o) => isNaN(o as any)).length
 export const FIRST_INTERMEDIATE = SRC_COUNT
 
 export enum ControllerIdIntermediate {
     // Intermediate, controllers that regulate the level of another source and then acts as the
     // modulator of a dst.
     LPF_FM_AMT = 17,
-    LPF_WHEEL_AMT ,
+    LPF_WHEEL_AMT,
     LPF_ENV_AMT,
     LPF_LFO_AMT,
     LPF_KBD_AMT,
@@ -43,7 +43,7 @@ export enum ControllerIdIntermediate {
     // TODO: Note and pitch should perhaps be part of this? But
     // Note needs to be quantized
 }
-export const INT_COUNT = Object.keys(ControllerIdIntermediate).filter(o => isNaN(o as any)).length
+export const INT_COUNT = Object.keys(ControllerIdIntermediate).filter((o) => isNaN(o as any)).length
 export const FIRST_DST = FIRST_INTERMEDIATE + INT_COUNT
 
 export enum ControllerIdDst {
@@ -58,7 +58,7 @@ export enum ControllerIdDst {
     //(Wheel amt, Lfo amt, Kbd amt?)
 
     DCO2_PITCH, // TODO: Not an output destination?
-    DCO2_NOTE,  // TODO: Not an output destination?
+    DCO2_NOTE, // TODO: Not an output destination?
     DCO2_DETUNE,
     DCO2_WAVEFORM,
     DCO2_SUB1,
@@ -129,7 +129,7 @@ export enum ControllerIdDst {
     FX_MIX_LEVEL_CHORUS,
     FX_MIX_LEVEL_BIT_CRUSHER,
 }
-export const DST_COUNT = Object.keys(ControllerIdDst).filter(o => isNaN(o as any)).length
+export const DST_COUNT = Object.keys(ControllerIdDst).filter((o) => isNaN(o as any)).length
 export const FIRST_ENV_DST = FIRST_DST + DST_COUNT
 
 export enum ControllerIdEnvDst {
@@ -145,7 +145,7 @@ export enum ControllerIdEnvDst {
     RELEASE2_LEVEL,
     OFFSET,
 }
-export const DST_ENV_COUNT = Object.keys(ControllerIdEnvDst).filter(o => isNaN(o as any)).length
+export const DST_ENV_COUNT = Object.keys(ControllerIdEnvDst).filter((o) => isNaN(o as any)).length
 export const FIRST_LFO_DST = FIRST_ENV_DST + DST_ENV_COUNT
 
 export enum ControllerIdLfoDst {
@@ -156,9 +156,8 @@ export enum ControllerIdLfoDst {
     PHASE_OFFSET,
     LEVEL_OFFSET,
 }
-export const DST_LFO_COUNT = Object.keys(ControllerIdLfoDst).filter(o => isNaN(o as any)).length
+export const DST_LFO_COUNT = Object.keys(ControllerIdLfoDst).filter((o) => isNaN(o as any)).length
 export const FIRST_NON_MOD_POTS = FIRST_LFO_DST + DST_LFO_COUNT
-
 
 // controllers that affect stuff that is not part of the
 // modulation matrix, such as global pots (volume etc)
@@ -179,7 +178,7 @@ export enum ControllerIdNonModPots {
     OUT_HEADPHONES,
 }
 
-export const NON_MOD_POTS_COUNT = Object.keys(ControllerIdNonModPots).filter(o => isNaN(o as any)).length
+export const NON_MOD_POTS_COUNT = Object.keys(ControllerIdNonModPots).filter((o) => isNaN(o as any)).length
 export const FIRST_NON_MOD = FIRST_NON_MOD_POTS + NON_MOD_POTS_COUNT
 
 export enum ControllerIdNonMod {
@@ -310,51 +309,52 @@ export enum ControllerIdNonMod {
 }
 
 export enum ControllerIdEnvNonMod {
-  ENV_RESET_ON_TRIGGER= 219,
-  ENV_RELEASE_MODE,
-  ENV_LOOP_MODE,
-  ENV_MAX_LOOPS,
-  ENV_LOOP,
-  ENV_INVERT,
-  ENV_BIPOLAR,
-  ENV_VELOCITY
+    ENV_RESET_ON_TRIGGER = 219,
+    ENV_RELEASE_MODE,
+    ENV_LOOP_MODE,
+    ENV_MAX_LOOPS,
+    ENV_LOOP,
+    ENV_INVERT,
+    ENV_BIPOLAR,
+    ENV_VELOCITY,
 }
-export const ENV_NON_MOD_COUNT = Object.keys(ControllerIdEnvNonMod).filter(o => isNaN(o as any)).length
+export const ENV_NON_MOD_COUNT = Object.keys(ControllerIdEnvNonMod).filter((o) => isNaN(o as any)).length
 
 export enum ControllerIdEnvStageNonMod {
-  ENV_CURVE = 227,
-  ENV_TOGGLE_STAGE,
+    ENV_CURVE = 227,
+    ENV_TOGGLE_STAGE,
 }
-export const ENV_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdEnvStageNonMod).filter(o => isNaN(o as any)).length
+export const ENV_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdEnvStageNonMod).filter((o) => isNaN(o as any)).length
 
 export enum ControllerIdLfoNonMod {
-  LFO_SHAPE = 229,
-  LFO_SYNC,
-  LFO_RESET,
-  LFO_BIPOLAR,
-  LFO_INVERT,
-  LFO_LOOP_MODE,
-  LFO_MAX_LOOPS,
-  LFO_LOOP,
-  LFO_RESET_ON_TRIGGER,
-  LFO_RESET_ON_STOP,
-  LFO_RESET_LEVEL_ON_CLOCK,
-  LFO_SYNC_TO_CLOCK,
-  LFO_GATED,
-  LFO_RANDOM_PHASE,
-  LFO_GATE,
+    LFO_SHAPE = 229,
+    LFO_SYNC,
+    LFO_RESET,
+    LFO_BIPOLAR,
+    LFO_INVERT,
+    LFO_LOOP_MODE,
+    LFO_MAX_LOOPS,
+    LFO_LOOP,
+    LFO_RESET_ON_TRIGGER,
+    LFO_RESET_ON_STOP,
+    LFO_RESET_LEVEL_ON_CLOCK,
+    LFO_SYNC_TO_CLOCK,
+    LFO_GATED,
+    LFO_RANDOM_PHASE,
+    LFO_GATE,
 }
-export const LFO_NON_MOD_COUNT = Object.keys(ControllerIdLfoNonMod).filter(o => isNaN(o as any)).length
+export const LFO_NON_MOD_COUNT = Object.keys(ControllerIdLfoNonMod).filter((o) => isNaN(o as any)).length
 
 export enum ControllerIdLfoStageNonMod {
-  LFO_CURVE = 244,
-  LFO_TOGGLE_STAGE,
+    LFO_CURVE = 244,
+    LFO_TOGGLE_STAGE,
 }
-export const LFO_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdLfoStageNonMod).filter(o => isNaN(o as any)).length
+export const LFO_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdLfoStageNonMod).filter((o) => isNaN(o as any)).length
 
-export const NON_MOD_COUNT = Object.keys(ControllerIdNonMod).filter(o => isNaN(o as any)).length
+export const NON_MOD_COUNT = Object.keys(ControllerIdNonMod).filter((o) => isNaN(o as any)).length
 
-export type ControllerId = | ControllerIdSrc
+export type ControllerId =
+    | ControllerIdSrc
     | ControllerIdIntermediate
     | ControllerIdDst
     | ControllerIdEnvDst

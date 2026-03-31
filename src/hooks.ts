@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { Dimension } from './types'
-import { Point } from './utils/types'
+import type React from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import type { Dimension } from './types'
+import type { Point } from './utils/types'
 
 const getBounded = (value: number, max: number) => {
     if (value < 0) {
@@ -36,16 +37,11 @@ export const useDrag = (
 
     const calcMaxScroll = useCallback(() => {
         if (ref.current) {
-            const {
-                clientHeight,
-                clientWidth,
-                scrollHeight,
-                scrollWidth,
-            } = ref.current
+            const { clientHeight, clientWidth, scrollHeight, scrollWidth } = ref.current
 
             setMaxScroll({
                 y: scrollHeight - clientHeight,
-                x: scrollWidth - clientWidth
+                x: scrollWidth - clientWidth,
             })
         }
     }, [ref])
@@ -68,35 +64,40 @@ export const useDrag = (
             })
             setDragStart({ x: event.clientX, y: event.clientY })
             setIsDragging(true)
-        }, [calcMaxScroll])
+        },
+        [calcMaxScroll]
+    )
 
-    const onMouseMove = useCallback((event: React.MouseEvent<HTMLElement>) => {
-        if (event.preventDefault) {
-            event.preventDefault()
-        }
-        if (!isDragging || !maxScroll) {
-            return
-        }
-        onDrag(event.currentTarget)
+    const onMouseMove = useCallback(
+        (event: React.MouseEvent<HTMLElement>) => {
+            if (event.preventDefault) {
+                event.preventDefault()
+            }
+            if (!isDragging || !maxScroll) {
+                return
+            }
+            onDrag(event.currentTarget)
 
-        const x = event.clientX
-        const y = event.clientY
+            const x = event.clientX
+            const y = event.clientY
 
-        const newScroll = {
-            x: startScroll.x,
-            y: startScroll.y,
-        }
+            const newScroll = {
+                x: startScroll.x,
+                y: startScroll.y,
+            }
 
-        if (!lockX) {
-            newScroll.x = getBounded(startScroll.x + dragStart.x - x, maxScroll.x)
-        }
-        if (!lockY) {
-            newScroll.y = getBounded(dragStart.y - y + startScroll.y, maxScroll.y)
-        }
+            if (!lockX) {
+                newScroll.x = getBounded(startScroll.x + dragStart.x - x, maxScroll.x)
+            }
+            if (!lockY) {
+                newScroll.y = getBounded(dragStart.y - y + startScroll.y, maxScroll.y)
+            }
 
-        event.currentTarget.scrollLeft = newScroll.x
-        event.currentTarget.scrollTop = newScroll.y
-    }, [dragStart.x, dragStart.y, isDragging, lockX, lockY, maxScroll, onDrag, startScroll.x, startScroll.y])
+            event.currentTarget.scrollLeft = newScroll.x
+            event.currentTarget.scrollTop = newScroll.y
+        },
+        [dragStart.x, dragStart.y, isDragging, lockX, lockY, maxScroll, onDrag, startScroll.x, startScroll.y]
+    )
 
     // captures mouse up even if mouse is no longer on top of display
     useEffect(() => {
@@ -121,11 +122,14 @@ export const useClickDetector = (onClick: () => void) => {
         }
     }, [])
 
-    const onMouseUp = useCallback((event: React.MouseEvent<HTMLElement>) => {
-        if (event.clientX === clickPos?.x && event.clientY === clickPos?.y) {
-            onClick()
-        }
-    }, [onClick, clickPos])
+    const onMouseUp = useCallback(
+        (event: React.MouseEvent<HTMLElement>) => {
+            if (event.clientX === clickPos?.x && event.clientY === clickPos?.y) {
+                onClick()
+            }
+        },
+        [onClick, clickPos]
+    )
 
     return [onMouseDown, onMouseUp]
 }

@@ -2,7 +2,7 @@ import { readFileSync } from 'fs'
 import fs from 'fs/promises'
 import { v4 as uuidv4 } from 'uuid'
 import { getAsJSONString, getFilesRecursively, getPathParts } from './fileUtils.js'
-import { FileEntry, FileNotFoundException, FileTreeEntry, FolderEntry } from './types.js'
+import { type FileEntry, FileNotFoundException, type FileTreeEntry, type FolderEntry } from './types.js'
 
 /**
  * A virtual file system (File Allocation Table) that maps between a path
@@ -31,7 +31,7 @@ export class Fat {
             return {
                 name: '',
                 type: 'folder',
-                contents: []
+                contents: [],
             }
         }
     }
@@ -39,11 +39,7 @@ export class Fat {
     private async writeToDisk() {
         console.log('Writing fat to disk')
 
-        await fs.writeFile(
-            `${this.rootOnDisk}${FAT_FILE_NAME}`,
-            getAsJSONString(this.root),
-            'utf8'
-        );
+        await fs.writeFile(`${this.rootOnDisk}${FAT_FILE_NAME}`, getAsJSONString(this.root), 'utf8')
     }
 
     private setParentOnContents(parent: FolderEntry) {
@@ -75,7 +71,7 @@ export class Fat {
                 const newChildFolder: FolderEntry = {
                     name: childPath,
                     type: 'folder',
-                    contents: []
+                    contents: [],
                 }
                 folder.contents.push(newChildFolder)
                 newChildFolder.parent = folder
@@ -123,7 +119,7 @@ export class Fat {
         const newFile: FileEntry = {
             name: filename,
             type: 'file',
-            keyOnDisk
+            keyOnDisk,
         }
         const folder = this.getFolderWithCreate(path)
         folder.contents.push(newFile)
@@ -163,8 +159,8 @@ export class Fat {
 
         const file = this.getFileFromFolder(folder, filename)
         if (file) {
-            const index = folder.contents.indexOf(file);
-            folder.contents.splice(index, 1);
+            const index = folder.contents.indexOf(file)
+            folder.contents.splice(index, 1)
             await this.writeToDisk()
             return file.keyOnDisk
         }
@@ -177,11 +173,10 @@ export class Fat {
 
         const parent = folder.parent
         if (parent) {
-            const index = parent.contents.indexOf(parent);
+            const index = parent.contents.indexOf(parent)
             console.log('Parent', parent)
-            parent.contents.splice(index - 1, 1);
+            parent.contents.splice(index - 1, 1)
             console.log('Parent after', parent)
-
         }
         await this.writeToDisk()
 
@@ -232,8 +227,8 @@ export class Fat {
 
         const newFolder = this.getFolderWithCreate(toPath)
 
-        const index = oldFolder.contents.indexOf(file);
-        oldFolder.contents = oldFolder.contents.splice(index, 1);
+        const index = oldFolder.contents.indexOf(file)
+        oldFolder.contents = oldFolder.contents.splice(index, 1)
 
         newFolder.contents.push(file)
         file.parent = newFolder
@@ -250,8 +245,8 @@ export class Fat {
 
         const parent = folderToMove.parent
         if (parent) {
-            const index = parent.contents.indexOf(folderToMove);
-            parent.contents = parent.contents.splice(index, 1);
+            const index = parent.contents.indexOf(folderToMove)
+            parent.contents = parent.contents.splice(index, 1)
             console.log(`Removed ${folderPath} from ${parent.name}`)
         }
 
@@ -265,29 +260,14 @@ export class Fat {
             const fileTreeEntry = {
                 key: path,
                 size: 0,
-                keyOnDisk: entry?.type === 'file' ? entry.keyOnDisk : ''
+                keyOnDisk: entry?.type === 'file' ? entry.keyOnDisk : '',
             }
-            const children = entry.type === 'file'
-                ? []
-                : entry.contents.flatMap(child =>
-                    this.flatten(path, child)
-                )
-            return [
-                fileTreeEntry,
-                ...children
-            ]
+            const children = entry.type === 'file' ? [] : entry.contents.flatMap((child) => this.flatten(path, child))
+            return [fileTreeEntry, ...children]
         } else {
-            return [
-                ...this.root.contents.flatMap(child =>
-                    this.flatten('', child)
-                )
-            ]
+            return [...this.root.contents.flatMap((child) => this.flatten('', child))]
         }
     }
 }
 
 const FAT_FILE_NAME = 'fat.json'
-
-
-
-

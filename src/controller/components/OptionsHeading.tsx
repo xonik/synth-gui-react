@@ -7,10 +7,7 @@ interface Props {
 }
 
 const OptionsHeading = ({ children, separator }: Props) => {
-    return <div className={classNames('options-heading', { 'options-heading--separator': separator })}>
-        {children}
-    </div>
+    return <div className={classNames('options-heading', { 'options-heading--separator': separator })}>{children}</div>
 }
 
 export default OptionsHeading
-

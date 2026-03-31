@@ -99,15 +99,17 @@ export const useUiStore = create<UiState & UiActions>((set) => ({
     // Actions
     setVoiceGroup: (index) => set({ currentVoiceGroupIndex: index }),
 
-    setScreen: (screen) => set((state) => ({
-        previousScreen: state.currentScreen,
-        currentScreen: screen,
-    })),
+    setScreen: (screen) =>
+        set((state) => ({
+            previousScreen: state.currentScreen,
+            currentScreen: screen,
+        })),
 
-    goBack: () => set((state) => ({
-        currentScreen: state.previousScreen ?? state.currentScreen,
-        previousScreen: undefined,
-    })),
+    goBack: () =>
+        set((state) => ({
+            currentScreen: state.previousScreen ?? state.currentScreen,
+            previousScreen: undefined,
+        })),
 
     setShift: (on) => set({ shiftOn: on }),
 
@@ -118,9 +120,10 @@ export const useUiStore = create<UiState & UiActions>((set) => ({
     selectLfo: (lfoId) => set({ selectedLfoId: lfoId }),
     selectLfoStage: (stageId) => set({ selectedLfoStageId: stageId }),
 
-    setModRouting: (routing) => set((state) => ({
-        modRouting: { ...state.modRouting, ...routing },
-    })),
+    setModRouting: (routing) =>
+        set((state) => ({
+            modRouting: { ...state.modRouting, ...routing },
+        })),
 
     setModRouteButton: (value) => set({ modRouteButton: value }),
 

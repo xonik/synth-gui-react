@@ -1,6 +1,6 @@
-import { globalStore, GlobalPatchState } from '../globalStore'
-import { nrpn, button } from '../../midi/midibus'
+import { button, nrpn } from '../../midi/midibus'
 import masterClockControllers from '../../synthcore/modules/masterClock/masterClockControllers'
+import { GlobalPatchState, globalStore } from '../globalStore'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
 
 let sendUnsub: (() => void) | undefined
@@ -24,7 +24,11 @@ export function startClockMidiSend() {
         }
 
         if (state.masterClock.source !== prevState.masterClock.source) {
-            button.send(0, masterClockControllers.SOURCE, masterClockControllers.SOURCE.values[state.masterClock.source])
+            button.send(
+                0,
+                masterClockControllers.SOURCE,
+                masterClockControllers.SOURCE.values[state.masterClock.source]
+            )
         }
     })
 }
@@ -42,7 +46,7 @@ export function startClockMidiReceive() {
     const rateId = nrpn.subscribe((_voiceGroupIndex: number, midiValue: number) => {
         const value = midiValue / 65535
         withMidiReceive(() => {
-            globalStore.getState().set(state => {
+            globalStore.getState().set((state) => {
                 state.masterClock.rate = value
             })
         })
@@ -53,7 +57,7 @@ export function startClockMidiReceive() {
         const value = masterClockControllers.SOURCE.values.indexOf(midiValue)
         if (value < 0) return
         withMidiReceive(() => {
-            globalStore.getState().set(state => {
+            globalStore.getState().set((state) => {
                 state.masterClock.source = value
             })
         })
@@ -62,6 +66,6 @@ export function startClockMidiReceive() {
 }
 
 export function stopClockMidiReceive() {
-    receiveUnsubscribers.forEach(unsub => unsub())
+    receiveUnsubscribers.forEach((unsub) => unsub())
     receiveUnsubscribers = []
 }

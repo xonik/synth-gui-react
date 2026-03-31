@@ -1,19 +1,19 @@
-import { describe, it, expect, beforeEach } from 'vitest'
-import { defaultVoiceGroupPatch, VoiceGroupPatch } from '../../store/patchStore'
+import { beforeEach, describe, expect, it } from 'vitest'
 import {
-    setStageLevel,
-    setStageTime,
-    toggleStageEnabled,
-    setStageEnabled,
-    setStageCurve,
-    toggleInvert,
+    incrementMaxLoops,
+    isLevelEditable,
+    isToggleable,
+    STAGE_NAMES,
     setInvert,
     setMaxLoops,
-    incrementMaxLoops,
-    isToggleable,
-    isLevelEditable,
-    STAGE_NAMES,
+    setStageCurve,
+    setStageEnabled,
+    setStageLevel,
+    setStageTime,
+    toggleInvert,
+    toggleStageEnabled,
 } from '../../store/modules/envActions'
+import { defaultVoiceGroupPatch, type VoiceGroupPatch } from '../../store/patchStore'
 
 describe('envActions', () => {
     let state: VoiceGroupPatch

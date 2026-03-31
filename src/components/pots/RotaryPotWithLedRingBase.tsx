@@ -1,31 +1,31 @@
-import { useCallback } from 'react'
 import classNames from 'classnames'
+import { useCallback } from 'react'
+import { SHOW_CUT } from '../../config'
 import arc from '../../utils/svg/arc'
 import RotaryPotBase from './RotaryPotBase'
-import { SHOW_CUT } from "../../config";
 import './RotaryPot.scss'
 
-export type LedMode = 'single' | 'multi';
-export type PotMode = 'normal' | 'pan' | 'spread';
+export type LedMode = 'single' | 'multi'
+export type PotMode = 'normal' | 'pan' | 'spread'
 
 export interface Props {
-    x: number;
-    y: number;
-    ledCount?: number;
+    x: number
+    y: number
+    ledCount?: number
     ledMode?: LedMode
     potMode?: PotMode
     label: string
-    value?: number;
-    disabled?: boolean;
-    silver?: boolean;
-    onValueIncrement?: (delta: number) => void;
+    value?: number
+    disabled?: boolean
+    silver?: boolean
+    onValueIncrement?: (delta: number) => void
 }
 
 interface Config {
-    knobRadius: number;
-    ledArc?: number;
-    windowToKnobMargin?: number;
-    windowWidth?: number;
+    knobRadius: number
+    ledArc?: number
+    windowToKnobMargin?: number
+    windowWidth?: number
 }
 
 const getRenderProps = (props: Props & Config) => {
@@ -84,7 +84,7 @@ const getLedPos = (centerLed: number, ledCount: number, mode: PotMode, position:
         case 'spread': {
             // Done this way so that edge case for rounding is the same on both sides of center
             // Spread goes from 0 to 1 where 0 is senter and 1 is max spread.
-            const panAmount = Math.round(Math.abs((position) * centerLed))
+            const panAmount = Math.round(Math.abs(position * centerLed))
             return centerLed + panAmount
         }
     }
@@ -92,11 +92,8 @@ const getLedPos = (centerLed: number, ledCount: number, mode: PotMode, position:
 }
 
 const RotaryPotWithLedRingBase = (props: Props & Config) => {
-
     // Position should be in the range 0-1 in all modes but pan. In pan the range is -0.5 - 0.5
-    const { x, y, ledMode = 'single', potMode = 'normal', label,
-        value, disabled, silver, onValueIncrement
-    } = props
+    const { x, y, ledMode = 'single', potMode = 'normal', label, value, disabled, silver, onValueIncrement } = props
 
     const {
         ledRadius,
@@ -109,7 +106,7 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
         ledAngles,
         windowArc,
         ledArc,
-    } = getRenderProps(props);
+    } = getRenderProps(props)
 
     const currentValue = value ?? 0
 
@@ -117,55 +114,57 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
 
     const negLedPosition = centerLed - (ledPosition - centerLed)
 
-    const onIncrement = useCallback((steps: number, stepSize: number) => {
-        if(disabled) return;
+    const onIncrement = useCallback(
+        (steps: number, stepSize: number) => {
+            if (disabled) return
 
-        const delta = potMode === 'pan' ? steps * (stepSize * 2) : steps * stepSize
-        if (onValueIncrement) {
-            onValueIncrement(delta)
-        }
-    }, [disabled, potMode, onValueIncrement])
+            const delta = potMode === 'pan' ? steps * (stepSize * 2) : steps * stepSize
+            if (onValueIncrement) {
+                onValueIncrement(delta)
+            }
+        },
+        [disabled, potMode, onValueIncrement]
+    )
 
     return (
         <svg x={x} y={y} className="pot">
-            <RotaryPotBase
-                knobRadius={knobRadius}
-                onIncrement={onIncrement}
-                arc={ledArc}
-                silver={silver}
-            />
-            <path d={windowArc} className="pot-ring-window" strokeWidth={windowWidth}/>
-            {!SHOW_CUT && ledAngles.map((angle, led) => {
-                const ledOn =
-                    !disabled && (
-                    // pointer should always be on
-                    (ledMode === 'single' && led === ledPosition) ||
+            <RotaryPotBase knobRadius={knobRadius} onIncrement={onIncrement} arc={ledArc} silver={silver} />
+            <path d={windowArc} className="pot-ring-window" strokeWidth={windowWidth} />
+            {!SHOW_CUT &&
+                ledAngles.map((angle, led) => {
+                    const ledOn =
+                        !disabled &&
+                        // pointer should always be on
+                        ((ledMode === 'single' && led === ledPosition) ||
+                            // 'negative' pointer should be on for spread
+                            (ledMode === 'single' && potMode === 'spread' && led === negLedPosition) ||
+                            // highlight all from start to position
+                            (ledMode === 'multi' && potMode === 'normal' && led <= ledPosition) ||
+                            // highlight all from center to position when panning
+                            (ledMode === 'multi' &&
+                                potMode === 'pan' &&
+                                ((ledPosition >= centerLed && led >= centerLed && led <= ledPosition) ||
+                                    (ledPosition <= centerLed && led <= centerLed && led >= ledPosition))) ||
+                            // highlight all from center to pointer on both sides when spreading
+                            (ledMode === 'multi' &&
+                                potMode === 'spread' &&
+                                led >= negLedPosition &&
+                                led <= ledPosition))
 
-                    // 'negative' pointer should be on for spread
-                    (ledMode === 'single' && potMode === 'spread' && led === negLedPosition) ||
-
-                    // highlight all from start to position
-                    (ledMode === 'multi' && potMode === 'normal' && led <= ledPosition) ||
-
-                    // highlight all from center to position when panning
-                    (ledMode === 'multi' && potMode === 'pan' && (
-                        (ledPosition >= centerLed && led >= centerLed && led <= ledPosition) ||
-                        (ledPosition <= centerLed && led <= centerLed && led >= ledPosition)
-                    )) ||
-
-                    // highlight all from center to pointer on both sides when spreading
-                    (ledMode === 'multi' && potMode === 'spread' && (
-                        (led >= negLedPosition) && (led <= ledPosition)
-                    ))
+                    return (
+                        <circle
+                            key={led}
+                            cx={0}
+                            cy={-ledRingRadius}
+                            r={SHOW_CUT ? ledRadius * 2 : ledRadius}
+                            transform={`rotate(${angle})`}
+                            className={classNames('pot-ring-led', { 'pot-ring-led__on': ledOn })}
+                        />
                     )
-
-                return <circle
-                    key={led}
-                    cx={0} cy={-ledRingRadius} r={SHOW_CUT ? ledRadius * 2 : ledRadius}
-                    transform={`rotate(${angle})`}
-                    className={classNames('pot-ring-led', { 'pot-ring-led__on': ledOn })}/>
-            })}
-            <text x={0} y={labelY} className="pot-label" textAnchor="middle">{label}</text>
+                })}
+            <text x={0} y={labelY} className="pot-label" textAnchor="middle">
+                {label}
+            </text>
         </svg>
     )
 }

@@ -1,21 +1,20 @@
+import * as process from 'node:process'
 import fs from 'fs'
+import { isNaN } from 'lodash'
 import readline from 'readline'
-import { isNaN } from "lodash";
-import * as process from "node:process";
 
 const defaultThreshold = 2.5 // Threshold for rising edge detection
 const logic2OutputFilePath = process.argv[2]
 const threshold = (process.argv[3] ?? Number.parseFloat(process.argv[3])) || defaultThreshold
 
-type FrequencyEntry = { time: number, frequency: number }
-type RateOfChangeEntry = { time: number, frequencyDifference: number, ratePercent: number }
-type Sample = { time: number, value: number }
+type FrequencyEntry = { time: number; frequency: number }
+type RateOfChangeEntry = { time: number; frequencyDifference: number; ratePercent: number }
+type Sample = { time: number; value: number }
 
 const { processSample, frequencyList } = createFrequencyProcessor()
 
 function readLinesFromFile(filePath: string): Promise<string[]> {
     return new Promise((resolve, reject) => {
-
         const fileStream = fs.createReadStream(filePath)
 
         const rl = readline.createInterface({
@@ -45,15 +44,14 @@ function parseLine(line: string): Sample {
     const value = parseFloat(parts[1])
     return {
         time,
-        value
+        value,
     }
 }
 
 function createFrequencyProcessor() {
     let prevSample: Sample | null = null
-    let isHigh = false;
+    let isHigh = false
     const frequencyList: FrequencyEntry[] = []
-
 
     function processSample(sample: Sample) {
         if (prevSample !== null && !isHigh && sample.value >= threshold) {
@@ -99,8 +97,10 @@ function roundToFiveSignificantDigits(num: number): number {
     return Number(num.toPrecision(5))
 }
 
-readLinesFromFile(logic2OutputFilePath).then(() => {
-    console.log('completed')
-}).catch((err) => {
-    console.error('Error reading file:', err)
-})
+readLinesFromFile(logic2OutputFilePath)
+    .then(() => {
+        console.log('completed')
+    })
+    .catch((err) => {
+        console.error('Error reading file:', err)
+    })

@@ -1,35 +1,37 @@
+import { buttonMidiValues } from '../../../midi/buttonMidiValues'
 import CC from '../../../midi/mapCC'
 import NRPN from '../../../midi/mapNRPN'
 import {
-    FuncProps,
-    ControllerConfig,
-    ControllerConfigCC,
-    ControllerConfigButton,
-    ControllerConfigNRPN, MidiGroup, ControllerConfigNRPNWithValue
+    type ControllerConfig,
+    type ControllerConfigButton,
+    type ControllerConfigCC,
+    type ControllerConfigNRPN,
+    type ControllerConfigNRPNWithValue,
+    type FuncProps,
+    MidiGroup,
 } from '../../../midi/types'
+import { dbLevelResponseMapper, timeResponseMapper } from '../common/responseMappers'
 import {
     ControllerIdEnvDst,
     ControllerIdEnvNonMod,
     ControllerIdEnvStageNonMod,
     ControllerIdNonMod,
-    ControllerIdSrc
+    ControllerIdSrc,
 } from '../controllers/controllerIds'
-import { dbLevelResponseMapper, timeResponseMapper } from '../common/responseMappers'
-import { StageId } from './types'
 import { curveValuesUsed } from './generatedTypes'
-import {buttonMidiValues} from "../../../midi/buttonMidiValues";
+import { StageId } from './types'
 
 interface EnvControllers {
     props: FuncProps
-    DELAY_TIME: ControllerConfig,
-    ATTACK_TIME: ControllerConfig,
-    DECAY1_TIME: ControllerConfig,
-    DECAY2_TIME: ControllerConfig,
-    RELEASE1_TIME: ControllerConfig,
-    RELEASE2_TIME: ControllerConfig,
-    DECAY2_LEVEL: ControllerConfig,
-    SUSTAIN_LEVEL: ControllerConfig,
-    RELEASE2_LEVEL: ControllerConfig,
+    DELAY_TIME: ControllerConfig
+    ATTACK_TIME: ControllerConfig
+    DECAY1_TIME: ControllerConfig
+    DECAY2_TIME: ControllerConfig
+    RELEASE1_TIME: ControllerConfig
+    RELEASE2_TIME: ControllerConfig
+    DECAY2_LEVEL: ControllerConfig
+    SUSTAIN_LEVEL: ControllerConfig
+    RELEASE2_LEVEL: ControllerConfig
     CURVE: ControllerConfigNRPNWithValue
     LEVEL: ControllerConfigNRPN
     TIME: ControllerConfigNRPN
@@ -58,63 +60,63 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             label: 'Delay time',
             shortLabel: 'Delay',
             isDstDigi: true,
-            type: 'pot'
+            type: 'pot',
         },
         ATTACK_TIME: {
             id: ControllerIdEnvDst.ATTACK_TIME,
             label: 'Attack time',
             shortLabel: 'Attack',
             isDstDigi: true,
-            type: 'pot'
+            type: 'pot',
         },
         DECAY1_TIME: {
             id: ControllerIdEnvDst.DECAY1_TIME,
             label: 'Decay 1 time',
             shortLabel: 'Decay 1',
             isDstDigi: true,
-            type: 'pot'
+            type: 'pot',
         },
         DECAY2_TIME: {
             id: ControllerIdEnvDst.DECAY2_TIME,
             label: 'Decay 2 time',
             shortLabel: 'Decay 2',
             isDstDigi: true,
-            type: 'pot'
+            type: 'pot',
         },
         SUSTAIN_LEVEL: {
             id: ControllerIdEnvDst.SUSTAIN_LEVEL,
             label: 'Sustain level',
             shortLabel: 'Sustain',
             isDstDigi: true,
-            type: 'pot'
+            type: 'pot',
         },
         RELEASE1_TIME: {
             id: ControllerIdEnvDst.RELEASE1_TIME,
             label: 'Release 1 time',
             shortLabel: 'Release 1',
             isDstDigi: true,
-            type: 'pot'
+            type: 'pot',
         },
         RELEASE2_TIME: {
             id: ControllerIdEnvDst.RELEASE2_TIME,
             label: 'Release 2 time',
             shortLabel: 'Release 2',
             isDstDigi: true,
-            type: 'pot'
+            type: 'pot',
         },
         DECAY2_LEVEL: {
             id: ControllerIdEnvDst.DECAY2_LEVEL,
             label: 'Decay 2 level',
             shortLabel: 'D2 level',
             isDstDigi: true,
-            type: 'pot'
+            type: 'pot',
         },
         RELEASE2_LEVEL: {
             id: ControllerIdEnvDst.RELEASE2_LEVEL,
             label: 'Release 2 level',
             shortLabel: 'R2 level',
             isDstDigi: true,
-            type: 'pot'
+            type: 'pot',
         },
         CURVE: {
             id: ControllerIdEnvStageNonMod.ENV_CURVE,
@@ -129,8 +131,8 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
                 StageId.DECAY2,
                 StageId.SUSTAIN,
                 StageId.RELEASE1,
-                StageId.RELEASE2
-            ]
+                StageId.RELEASE2,
+            ],
         },
         LEVEL: {
             id: ControllerIdNonMod.ENV_LEVEL,
@@ -139,11 +141,7 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             addr: NRPN.ENV_LEVEL,
             bipolar: true,
             uiResponse: dbLevelResponseMapper,
-            legalValueIndexes: [
-                StageId.DECAY2,
-                StageId.SUSTAIN,
-                StageId.RELEASE2,
-            ]
+            legalValueIndexes: [StageId.DECAY2, StageId.SUSTAIN, StageId.RELEASE2],
         },
         TIME: {
             id: ControllerIdNonMod.ENV_TIME,
@@ -158,7 +156,7 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
                 StageId.DECAY2,
                 StageId.RELEASE1,
                 StageId.RELEASE2,
-            ]
+            ],
         },
         OFFSET: {
             id: ControllerIdEnvDst.OFFSET,
@@ -175,55 +173,38 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             label: 'Stage on/off',
             type: 'pot',
             cc: CC.ENV_TOGGLE_STAGE,
-            legalValueIndexes: [
-                StageId.DELAY,
-                StageId.DECAY1,
-                StageId.DECAY2,
-                StageId.RELEASE1,
-            ]
+            legalValueIndexes: [StageId.DELAY, StageId.DECAY1, StageId.DECAY2, StageId.RELEASE1],
         }, // 4 bit stage, 7 bit on/off
         SELECT: { id: ControllerIdNonMod.ENV_SELECT, label: 'Select env', type: 'pot', cc: CC.ENV_SELECT_ENV },
         SELECT_ENV3_ID: {
             id: ControllerIdNonMod.ENV_SELECT_ENV3_ID,
             label: 'Select env 3',
             type: 'pot',
-            cc: CC.ENV_SELECT_ENV3_ID
+            cc: CC.ENV_SELECT_ENV3_ID,
         },
         ENV_GATE: {
             id: ControllerIdNonMod.ENV_GATE,
             label: 'Env gate',
             type: 'button',
-            values: [
-                buttonMidiValues.ENV_TRIGGER,
-                buttonMidiValues.ENV_RELEASE,
-            ],
+            values: [buttonMidiValues.ENV_TRIGGER, buttonMidiValues.ENV_RELEASE],
         },
         INVERT: {
             id: ControllerIdEnvNonMod.ENV_INVERT,
             label: 'Invert',
             type: 'button',
-            values: [
-                buttonMidiValues.ENV_INVERT_OFF,
-                buttonMidiValues.ENV_INVERT_ON,
-            ],
+            values: [buttonMidiValues.ENV_INVERT_OFF, buttonMidiValues.ENV_INVERT_ON],
         },
         VELOCITY: {
             id: ControllerIdEnvNonMod.ENV_VELOCITY,
             label: 'Velocity',
             type: 'button',
-            values: [
-                buttonMidiValues.ENV_VELOCITY_OFF,
-                buttonMidiValues.ENV_VELOCITY_ON,
-            ],
+            values: [buttonMidiValues.ENV_VELOCITY_OFF, buttonMidiValues.ENV_VELOCITY_ON],
         },
         RESET_ON_TRIGGER: {
             id: ControllerIdEnvNonMod.ENV_RESET_ON_TRIGGER,
             label: 'Reset on trigger',
             type: 'button',
-            values: [
-                buttonMidiValues.ENV_RESET_ON_TRIGGER_OFF,
-                buttonMidiValues.ENV_RESET_ON_TRIGGER_ON,
-            ],
+            values: [buttonMidiValues.ENV_RESET_ON_TRIGGER_OFF, buttonMidiValues.ENV_RESET_ON_TRIGGER_ON],
         },
         RELEASE_MODE: {
             id: ControllerIdEnvNonMod.ENV_RELEASE_MODE,
@@ -239,10 +220,7 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             id: ControllerIdEnvNonMod.ENV_LOOP,
             label: 'Loop on/off',
             type: 'button',
-            values: [
-                buttonMidiValues.ENV_LOOP_OFF,
-                buttonMidiValues.ENV_LOOP_ON,
-            ],
+            values: [buttonMidiValues.ENV_LOOP_OFF, buttonMidiValues.ENV_LOOP_ON],
         },
         LOOP_MODE: {
             id: ControllerIdEnvNonMod.ENV_LOOP_MODE,
@@ -258,17 +236,14 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             id: ControllerIdEnvNonMod.ENV_BIPOLAR,
             label: 'Bipolar',
             type: 'button',
-            values: [
-                buttonMidiValues.ENV_BIPOLAR_OFF,
-                buttonMidiValues.ENV_BIPOLAR_ON,
-            ],
+            values: [buttonMidiValues.ENV_BIPOLAR_OFF, buttonMidiValues.ENV_BIPOLAR_ON],
         },
         OUTPUT: {
             // does not have a midi mapping as it is only used as a modulation source
             id: ControllerIdSrc.ENVELOPE1 + ctrlIndex,
             label: `Env ${1 + ctrlIndex}`,
             type: 'output',
-            isSourceDigi: true
+            isSourceDigi: true,
         },
     }
 

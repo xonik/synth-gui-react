@@ -1,5 +1,5 @@
-import { Func } from './types'
-import { DataType, isDataType, KNOWN_DATATYPES} from './dataTypes'
+import { type DataType, isDataType, KNOWN_DATATYPES } from './dataTypes'
+import type { Func } from './types'
 
 export const parseCppHeaderFile = (file: string) => {
     const lines = file.split('\n')
@@ -7,19 +7,19 @@ export const parseCppHeaderFile = (file: string) => {
     const funcs: Func[] = []
     lines.forEach((line: string) => {
         const foundFunc = parseLine(line)
-        if(foundFunc) funcs.push(foundFunc)
+        if (foundFunc) funcs.push(foundFunc)
     })
     console.log(lines)
     return funcs
 }
 
-const funcRegex = new RegExp(`^\\s*(${KNOWN_DATATYPES.join('|')})\\s([a-zA-Z0-9]+)\\((.*)\\);\\s*(\/\/)?\\s*(.*)`)
+const funcRegex = new RegExp(`^\\s*(${KNOWN_DATATYPES.join('|')})\\s([a-zA-Z0-9]+)\\((.*)\\);\\s*(//)?\\s*(.*)`)
 
-function getTargetsFromComment(comment?: string): string[]{
-    if(!comment){
+function getTargetsFromComment(comment?: string): string[] {
+    if (!comment) {
         return []
     }
-    return comment.split(',').map(target => target.trim())
+    return comment.split(',').map((target) => target.trim())
 }
 
 const parseLine = (line: string) => {
@@ -33,26 +33,27 @@ const parseLine = (line: string) => {
             throw new Error(`${name}: ${returnType} is an unknown datatype`)
         }
 
-        let params: { type: DataType, name: string }[] = []
+        let params: { type: DataType; name: string }[] = []
         if (paramList.length > 0) {
-            params = paramList
-                .split(',')
-                .map((param) => {
-                    const [paramType, paramName] = param.trim().split(' ')
-                    if (!isDataType(paramType.trim())) {
-                        throw new Error(`${name}: ${paramType.trim()} is an unknown datatype`)
-                    }
-                    return {
-                        type: paramType.trim() as DataType,
-                        name: paramName.trim()
-                    }
-                })
+            params = paramList.split(',').map((param) => {
+                const [paramType, paramName] = param.trim().split(' ')
+                if (!isDataType(paramType.trim())) {
+                    throw new Error(`${name}: ${paramType.trim()} is an unknown datatype`)
+                }
+                return {
+                    type: paramType.trim() as DataType,
+                    name: paramName.trim(),
+                }
+            })
         }
 
         const targets = getTargetsFromComment(comment)
 
         return {
-            name, returnType, params, targets
+            name,
+            returnType,
+            params,
+            targets,
         }
     }
 }

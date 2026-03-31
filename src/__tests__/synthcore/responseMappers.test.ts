@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import {
     dbLevelResponseMapper,
     timeResponseMapper,
@@ -6,7 +6,6 @@ import {
 } from '../../synthcore/modules/common/responseMappers'
 
 describe('responseMappers', () => {
-
     describe('dbLevelResponseMapper', () => {
         describe('unipolar (default)', () => {
             it('output(0) is close to 0 (fade region)', () => {

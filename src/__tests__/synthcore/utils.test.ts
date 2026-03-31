@@ -1,8 +1,7 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { getBounded, getQuantized, step } from '../../store/utils'
 
 describe('synthcore utils', () => {
-
     describe('getBounded', () => {
         it('returns value when within bounds', () => {
             expect(getBounded(0.5)).toBe(0.5)

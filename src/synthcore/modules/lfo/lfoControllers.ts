@@ -1,25 +1,25 @@
+import { buttonMidiValues } from '../../../midi/buttonMidiValues'
+import CC from '../../../midi/mapCC'
 import NRPN from '../../../midi/mapNRPN'
 import {
-    FuncProps,
-    ControllerConfig,
-    ControllerConfigButton,
-    ControllerConfigNRPN,
-    ControllerConfigNRPNWithValue,
-    ControllerConfigCC,
-    MidiGroup
+    type ControllerConfig,
+    type ControllerConfigButton,
+    type ControllerConfigCC,
+    type ControllerConfigNRPN,
+    type ControllerConfigNRPNWithValue,
+    type FuncProps,
+    MidiGroup,
 } from '../../../midi/types'
+import { timeResponseMapper } from '../common/responseMappers'
 import {
     ControllerIdLfoDst,
-    ControllerIdLfoNonMod, ControllerIdLfoStageNonMod,
+    ControllerIdLfoNonMod,
+    ControllerIdLfoStageNonMod,
     ControllerIdNonMod,
-    ControllerIdSrc
+    ControllerIdSrc,
 } from '../controllers/controllerIds'
-import { timeResponseMapper } from '../common/responseMappers'
-import CC from '../../../midi/mapCC'
-import { StageId } from './types'
 import { curveValuesUsed } from './generatedTypes'
-import {buttonMidiValues} from "../../../midi/buttonMidiValues";
-
+import { StageId } from './types'
 
 interface ControllersLfo {
     props: FuncProps
@@ -54,7 +54,7 @@ interface ControllersLfo {
 const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
     props: {
         label: `LFO ${1 + ctrlIndex}`,
-        ctrlIndex
+        ctrlIndex,
     },
     // Pots
     RATE: {
@@ -87,7 +87,7 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         type: 'button',
         values: [
             // TODO!
-        ]
+        ],
     },
     SHAPE: {
         id: ControllerIdLfoNonMod.LFO_SHAPE,
@@ -106,63 +106,51 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         id: ControllerIdLfoNonMod.LFO_SYNC,
         label: 'Sync',
         type: 'button',
-        values: [
-            buttonMidiValues.LFO_SYNC_OFF,
-            buttonMidiValues.LFO_SYNC_ON,
-        ],
+        values: [buttonMidiValues.LFO_SYNC_OFF, buttonMidiValues.LFO_SYNC_ON],
     },
     RESET: {
         id: ControllerIdLfoNonMod.LFO_RESET,
         label: 'Reset',
         type: 'button',
-        values: [
-            buttonMidiValues.LFO_RESET_OFF,
-            buttonMidiValues.LFO_RESET_ON,
-        ],
+        values: [buttonMidiValues.LFO_RESET_OFF, buttonMidiValues.LFO_RESET_ON],
     },
     OUTPUT: {
         // does not have a midi mapping as it is only used as a modulation source
         id: ControllerIdSrc.LFO1 + ctrlIndex,
         label: `LFO ${1 + ctrlIndex}`,
         type: 'output',
-        isSourceDigi: true
+        isSourceDigi: true,
     },
-    SELECT: { id: ControllerIdNonMod.LFO_SELECT, label: 'Select lfo', type: 'pot', cc: CC.LFO_SELECT_LFO, midiGroup: MidiGroup.LFO },
+    SELECT: {
+        id: ControllerIdNonMod.LFO_SELECT,
+        label: 'Select lfo',
+        type: 'pot',
+        cc: CC.LFO_SELECT_LFO,
+        midiGroup: MidiGroup.LFO,
+    },
     BIPOLAR: {
         id: ControllerIdLfoNonMod.LFO_BIPOLAR,
         label: 'Bipolar',
         type: 'button',
-        values: [
-            buttonMidiValues.LFO_BIPOLAR_OFF,
-            buttonMidiValues.LFO_BIPOLAR_ON,
-        ],
+        values: [buttonMidiValues.LFO_BIPOLAR_OFF, buttonMidiValues.LFO_BIPOLAR_ON],
     },
     INVERT: {
         id: ControllerIdLfoNonMod.LFO_INVERT,
         label: 'Invert',
         type: 'button',
-        values: [
-            buttonMidiValues.LFO_INVERT_OFF,
-            buttonMidiValues.LFO_INVERT_ON,
-        ],
+        values: [buttonMidiValues.LFO_INVERT_OFF, buttonMidiValues.LFO_INVERT_ON],
     },
     GATE: {
         id: ControllerIdLfoNonMod.LFO_GATE,
         label: 'Trigger',
         type: 'button',
-        values: [
-            buttonMidiValues.LFO_TRIGGER,
-            buttonMidiValues.LFO_RELEASE,
-        ],
+        values: [buttonMidiValues.LFO_TRIGGER, buttonMidiValues.LFO_RELEASE],
     },
     LOOP: {
         id: ControllerIdLfoNonMod.LFO_LOOP,
         label: 'Loop on/off',
         type: 'button',
-        values: [
-            buttonMidiValues.LFO_LOOP_OFF,
-            buttonMidiValues.LFO_LOOP_ON,
-        ],
+        values: [buttonMidiValues.LFO_LOOP_OFF, buttonMidiValues.LFO_LOOP_ON],
     },
     LOOP_MODE: {
         id: ControllerIdLfoNonMod.LFO_LOOP_MODE,
@@ -179,46 +167,31 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         id: ControllerIdLfoNonMod.LFO_RESET_ON_TRIGGER,
         label: 'Reset on trigger',
         type: 'button',
-        values: [
-            buttonMidiValues.LFO_RESET_ON_TRIGGER_OFF,
-            buttonMidiValues.LFO_RESET_ON_TRIGGER_ON,
-        ],
+        values: [buttonMidiValues.LFO_RESET_ON_TRIGGER_OFF, buttonMidiValues.LFO_RESET_ON_TRIGGER_ON],
     },
     RESET_ON_STOP: {
         id: ControllerIdLfoNonMod.LFO_RESET_ON_STOP,
         label: 'Reset on stop',
         type: 'button',
-        values: [
-            buttonMidiValues.LFO_RESET_ON_STOP_OFF,
-            buttonMidiValues.LFO_RESET_ON_STOP_ON,
-        ],
+        values: [buttonMidiValues.LFO_RESET_ON_STOP_OFF, buttonMidiValues.LFO_RESET_ON_STOP_ON],
     },
     RESET_LEVEL_ON_CLOCK: {
         id: ControllerIdLfoNonMod.LFO_RESET_LEVEL_ON_CLOCK,
         label: 'Reset level on clock',
         type: 'button',
-        values: [
-            buttonMidiValues.LFO_RESET_LEVEL_ON_CLOCK_OFF,
-            buttonMidiValues.LFO_RESET_LEVEL_ON_CLOCK_ON,
-        ],
+        values: [buttonMidiValues.LFO_RESET_LEVEL_ON_CLOCK_OFF, buttonMidiValues.LFO_RESET_LEVEL_ON_CLOCK_ON],
     },
     SYNC_TO_CLOCK: {
         id: ControllerIdLfoNonMod.LFO_SYNC_TO_CLOCK,
         label: 'Sync to clock',
         type: 'button',
-        values: [
-            buttonMidiValues.LFO_SYNC_TO_CLOCK_OFF,
-            buttonMidiValues.LFO_SYNC_TO_CLOCK_ON,
-        ],
+        values: [buttonMidiValues.LFO_SYNC_TO_CLOCK_OFF, buttonMidiValues.LFO_SYNC_TO_CLOCK_ON],
     },
     GATED: {
         id: ControllerIdLfoNonMod.LFO_GATED,
         label: 'Gated',
         type: 'button',
-        values: [
-            buttonMidiValues.LFO_GATED_OFF,
-            buttonMidiValues.LFO_GATED_ON,
-        ],
+        values: [buttonMidiValues.LFO_GATED_OFF, buttonMidiValues.LFO_GATED_ON],
     },
     CURVE: {
         id: ControllerIdLfoStageNonMod.LFO_CURVE,
@@ -226,27 +199,21 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         type: 'pot',
         addr: NRPN.LFO_CURVE,
         values: curveValuesUsed,
-        legalValueIndexes: [
-            StageId.ATTACK,
-            StageId.RELEASE,
-        ]
+        legalValueIndexes: [StageId.ATTACK, StageId.RELEASE],
     },
     TOGGLE_STAGE: {
         id: ControllerIdLfoStageNonMod.LFO_TOGGLE_STAGE,
         label: 'Stage on/off',
         type: 'pot',
         cc: CC.LFO_TOGGLE_STAGE,
-        legalValueIndexes: [
-            StageId.DELAY,
-            StageId.RELEASE,
-        ]
+        legalValueIndexes: [StageId.DELAY, StageId.RELEASE],
     }, // 4 bit stage, 7 bit on/off
     BALANCE: {
         id: ControllerIdLfoDst.BALANCE,
         label: 'Balance',
         type: 'pot',
         isDstDigi: true,
-        addr: NRPN.LFO_BALANCE
+        addr: NRPN.LFO_BALANCE,
     },
     PHASE_OFFSET: {
         id: ControllerIdLfoDst.PHASE_OFFSET,
@@ -269,11 +236,7 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         id: ControllerIdLfoNonMod.LFO_RANDOM_PHASE,
         label: 'Random phase on trigger',
         type: 'pot',
-        values: [
-            buttonMidiValues.LFO_RANDOM_PHASE_OFF,
-            buttonMidiValues.LFO_RANDOM_PHASE_ON,
-        ],
-
+        values: [buttonMidiValues.LFO_RANDOM_PHASE_OFF, buttonMidiValues.LFO_RANDOM_PHASE_ON],
     }, // 4 bit stage, 7 bit on/off
 })
 

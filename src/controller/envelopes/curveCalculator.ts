@@ -1,10 +1,10 @@
-import { useEnvStages, useEnvParam, DisplayStage } from '../../store/modules/useEnvelope'
+import { useMemo } from 'react'
+import { getCurveFunc } from '../../components/curves/curveCalculator'
+import { type DisplayStage, useEnvParam, useEnvStages } from '../../store/modules/useEnvelope'
 import { envCtrls } from '../../synthcore/modules/env/envControllers'
 import { StageId } from '../../synthcore/modules/env/types'
+import type { Point } from '../../utils/types'
 import { getPoints } from './utils'
-import { getCurveFunc } from '../../components/curves/curveCalculator'
-import { Point } from '../../utils/types'
-import { useMemo } from 'react'
 
 export type StageBackground = {
     from: number
@@ -14,7 +14,7 @@ export type StageBackground = {
 
 const mapToSvg = (point: Point, isBipolar: boolean) => ({
     x: point.x,
-    y: isBipolar ? (1 - point.y) / 2 : 1 - point.y
+    y: isBipolar ? (1 - point.y) / 2 : 1 - point.y,
 })
 
 const getNextEnabled = (stages: DisplayStage[], currentId: StageId): DisplayStage => {
@@ -28,7 +28,6 @@ const getNextEnabled = (stages: DisplayStage[], currentId: StageId): DisplayStag
 }
 
 export const useEnvCurve = (envId: number): [Point[], StageBackground[]] => {
-
     const stages = useEnvStages(envId)
     const bipolar = useEnvParam(envId, 'bipolar') === 1
     const offset = useEnvParam(envId, 'offset')
@@ -60,14 +59,18 @@ export const useEnvCurve = (envId: number): [Point[], StageBackground[]] => {
                 stageBackgrounds.push({
                     from: currentX,
                     to: currentX + width,
-                    id: stage.id
+                    id: stage.id,
                 })
             }
 
             curvePoints.forEach((point) => {
                 const minY = bipolar ? -1 : 0
                 let y = isEnabled ? point.y * scale + summedOffset : summedOffset
-                if (y < minY) { y = minY } else if (y > 1) { y = 1 }
+                if (y < minY) {
+                    y = minY
+                } else if (y > 1) {
+                    y = 1
+                }
 
                 allPoints.push(mapToSvg({ x: currentX + point.x * width, y }, bipolar))
             })

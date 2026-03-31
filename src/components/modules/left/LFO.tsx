@@ -1,27 +1,22 @@
 import React, { useCallback } from 'react'
-import RotaryPot12 from '../../pots/RotaryPot12'
-import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
-import RoundPushButton8 from '../../buttons/RoundPushButton8'
-import SubHeader from "../../misc/SubHeader";
-import {
-    BUTTON_DISTANCE_S,
-    POT_DISTANCE_M,
-    POT_OFFSET_Y,
-    ROW_HEIGHT,
-} from "../../../constants";
-import { ModuleBorder } from "../../misc/ModuleBorder";
-import { ModuleProps } from "../types";
-import { SawRight } from "../../images/SawRight";
-import { Triangle } from "../../images/Triangle";
-import { Square } from "../../images/Square";
-import { Sine } from "../../images/Sine";
-import { Random } from "../../images/Random";
-import { usePot, useButton } from '../../../store/hooks'
+import { BUTTON_DISTANCE_S, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from '../../../constants'
+import { buttonMidiValues } from '../../../midi/buttonMidiValues'
+import { button } from '../../../midi/midibus'
+import { useButton, usePot } from '../../../store/hooks'
 import { useUiStore } from '../../../store/uiStore'
 import { timeResponseMapper } from '../../../synthcore/modules/common/responseMappers'
-import { button } from '../../../midi/midibus'
 import { lfoCtrls } from '../../../synthcore/modules/lfo/lfoControllers'
-import { buttonMidiValues } from '../../../midi/buttonMidiValues'
+import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
+import RoundPushButton8 from '../../buttons/RoundPushButton8'
+import { Random } from '../../images/Random'
+import { SawRight } from '../../images/SawRight'
+import { Sine } from '../../images/Sine'
+import { Square } from '../../images/Square'
+import { Triangle } from '../../images/Triangle'
+import { ModuleBorder } from '../../misc/ModuleBorder'
+import SubHeader from '../../misc/SubHeader'
+import RotaryPot12 from '../../pots/RotaryPot12'
+import type { ModuleProps } from '../types'
 
 const LFO = ({ x, y, height, width }: ModuleProps) => {
     const col1 = x + POT_DISTANCE_M / 2
@@ -33,9 +28,9 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
     const row1 = y + POT_OFFSET_Y
     const row2 = row1 + ROW_HEIGHT
 
-    const lfoId = useUiStore(s => s.selectedLfoId)
-    const selectLfo = useUiStore(s => s.selectLfo)
-    const voiceGroupIndex = useUiStore(s => s.currentVoiceGroupIndex)
+    const lfoId = useUiStore((s) => s.selectedLfoId)
+    const selectLfo = useUiStore((s) => s.selectLfo)
+    const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
 
     const onSelectLfo = useCallback(() => {
         selectLfo((lfoId + 1) % 3)
@@ -46,133 +41,201 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
     }, [voiceGroupIndex])
 
     const { displayValue: rateValue, increment: rateIncrement } = usePot(
-        s => s.lfos[lfoId].rate,
-        (s, v) => { s.lfos[lfoId].rate = v },
+        (s) => s.lfos[lfoId].rate,
+        (s, v) => {
+            s.lfos[lfoId].rate = v
+        },
         { responseMapper: timeResponseMapper }
     )
     const { displayValue: depthValue, increment: depthIncrement } = usePot(
-        s => s.lfos[lfoId].depth,
-        (s, v) => { s.lfos[lfoId].depth = v }
+        (s) => s.lfos[lfoId].depth,
+        (s, v) => {
+            s.lfos[lfoId].depth = v
+        }
     )
     const { displayValue: balanceValue, increment: balanceIncrement } = usePot(
-        s => s.lfos[lfoId].balance,
-        (s, v) => { s.lfos[lfoId].balance = v }
+        (s) => s.lfos[lfoId].balance,
+        (s, v) => {
+            s.lfos[lfoId].balance = v
+        }
     )
     const { displayValue: delayValue, increment: delayIncrement } = usePot(
-        s => s.lfos[lfoId].delay,
-        (s, v) => { s.lfos[lfoId].delay = v },
+        (s) => s.lfos[lfoId].delay,
+        (s, v) => {
+            s.lfos[lfoId].delay = v
+        },
         { responseMapper: timeResponseMapper }
     )
     const { value: shapeValue, toggle: shapeToggle } = useButton(
-        s => s.lfos[lfoId].shape,
-        (s, v) => { s.lfos[lfoId].shape = v },
+        (s) => s.lfos[lfoId].shape,
+        (s, v) => {
+            s.lfos[lfoId].shape = v
+        },
         6
     )
     const { value: syncValue, toggle: syncToggle } = useButton(
-        s => s.lfos[lfoId].sync,
-        (s, v) => { s.lfos[lfoId].sync = v },
+        (s) => s.lfos[lfoId].sync,
+        (s, v) => {
+            s.lfos[lfoId].sync = v
+        },
         2
     )
     const { value: resetValue, toggle: resetToggle } = useButton(
-        s => s.lfos[lfoId].reset,
-        (s, v) => { s.lfos[lfoId].reset = v },
+        (s) => s.lfos[lfoId].reset,
+        (s, v) => {
+            s.lfos[lfoId].reset = v
+        },
         2
     )
     const { value: loopValue, toggle: loopToggle } = useButton(
-        s => s.lfos[lfoId].loop,
-        (s, v) => { s.lfos[lfoId].loop = v },
+        (s) => s.lfos[lfoId].loop,
+        (s, v) => {
+            s.lfos[lfoId].loop = v
+        },
         2
     )
     const { value: invertValue, toggle: invertToggle } = useButton(
-        s => s.lfos[lfoId].invert,
-        (s, v) => { s.lfos[lfoId].invert = v },
+        (s) => s.lfos[lfoId].invert,
+        (s, v) => {
+            s.lfos[lfoId].invert = v
+        },
         2
     )
     const { value: bipolarValue, toggle: bipolarToggle } = useButton(
-        s => s.lfos[lfoId].bipolar,
-        (s, v) => { s.lfos[lfoId].bipolar = v },
+        (s) => s.lfos[lfoId].bipolar,
+        (s, v) => {
+            s.lfos[lfoId].bipolar = v
+        },
         2
     )
 
-    return <>
-        {/*!SHOW_CUT && <rect x={x} y={y} width={323} height={ROW_HEIGHT * 2- ROW_SPACING} className="module-background"/>*/}
-        <ModuleBorder x={x} y={y} height={height} width={width}/>
-        <SubHeader align="left" label="LFO" labelPosition="center" x={x} y={y} width={width} labelWidth={15}/>
+    return (
+        <>
+            {/*!SHOW_CUT && <rect x={x} y={y} width={323} height={ROW_HEIGHT * 2- ROW_SPACING} className="module-background"/>*/}
+            <ModuleBorder x={x} y={y} height={height} width={width} />
+            <SubHeader align="left" label="LFO" labelPosition="center" x={x} y={y} width={width} labelWidth={15} />
 
-        <RoundLedPushButton8 label="Sync" x={col1} y={row1} labelPosition="bottom-pot"
-                             value={syncValue}
-                             onButtonClick={syncToggle}
-        />
+            <RoundLedPushButton8
+                label="Sync"
+                x={col1}
+                y={row1}
+                labelPosition="bottom-pot"
+                value={syncValue}
+                onButtonClick={syncToggle}
+            />
 
-        <RoundPushButton8 x={col1} y={row2}
-                          label="LFO"
-                          labelPosition="bottom-pot"
-                          ledPosition="right" ledCount={3}
-                          ledLabels={['1', '2', '3']}
-                          value={lfoId}
-                          onButtonClick={onSelectLfo}
-        />
+            <RoundPushButton8
+                x={col1}
+                y={row2}
+                label="LFO"
+                labelPosition="bottom-pot"
+                ledPosition="right"
+                ledCount={3}
+                ledLabels={['1', '2', '3']}
+                value={lfoId}
+                onButtonClick={onSelectLfo}
+            />
 
-        <RotaryPot12 ledMode="single" label="Rate" x={col2} y={row1}
-                     value={rateValue}
-                     onValueIncrement={rateIncrement}
-        />
+            <RotaryPot12
+                ledMode="single"
+                label="Rate"
+                x={col2}
+                y={row1}
+                value={rateValue}
+                onValueIncrement={rateIncrement}
+            />
 
-        <RotaryPot12 ledMode="single" label="Depth" x={col3} y={row1}
-                     value={depthValue}
-                     onValueIncrement={depthIncrement}
-        />
+            <RotaryPot12
+                ledMode="single"
+                label="Depth"
+                x={col3}
+                y={row1}
+                value={depthValue}
+                onValueIncrement={depthIncrement}
+            />
 
-        <RotaryPot12 ledMode="single" label="Balance" x={col4} y={row1}
-                     value={balanceValue}
-                     onValueIncrement={balanceIncrement}
-        />
+            <RotaryPot12
+                ledMode="single"
+                label="Balance"
+                x={col4}
+                y={row1}
+                value={balanceValue}
+                onValueIncrement={balanceIncrement}
+            />
 
-        <RotaryPot12 ledMode="single" label="Delay" x={col5} y={row1}
-                     value={delayValue}
-                     onValueIncrement={delayIncrement}
-        />
+            <RotaryPot12
+                ledMode="single"
+                label="Delay"
+                x={col5}
+                y={row1}
+                value={delayValue}
+                onValueIncrement={delayIncrement}
+            />
 
-        <RoundLedPushButton8 label="Bipolar" x={col2} y={row2} labelPosition="bottom-pot"
-                             value={bipolarValue}
-                             onButtonClick={bipolarToggle}
-        />
+            <RoundLedPushButton8
+                label="Bipolar"
+                x={col2}
+                y={row2}
+                labelPosition="bottom-pot"
+                value={bipolarValue}
+                onButtonClick={bipolarToggle}
+            />
 
-        <RoundLedPushButton8 label="Invert" x={col2 + BUTTON_DISTANCE_S} y={row2} labelPosition="bottom-pot"
-                             value={invertValue}
-                             onButtonClick={invertToggle}
-        />
+            <RoundLedPushButton8
+                label="Invert"
+                x={col2 + BUTTON_DISTANCE_S}
+                y={row2}
+                labelPosition="bottom-pot"
+                value={invertValue}
+                onButtonClick={invertToggle}
+            />
 
-        <RoundLedPushButton8 label="Loop" x={col2 + BUTTON_DISTANCE_S * 2} y={row2} labelPosition="bottom-pot"
-                             value={loopValue}
-                             onButtonClick={loopToggle}
-        />
+            <RoundLedPushButton8
+                label="Loop"
+                x={col2 + BUTTON_DISTANCE_S * 2}
+                y={row2}
+                labelPosition="bottom-pot"
+                value={loopValue}
+                onButtonClick={loopToggle}
+            />
 
-        <RoundLedPushButton8 label="Reset" x={col2 + BUTTON_DISTANCE_S * 3} y={row2} labelPosition="bottom-pot"
-                             value={resetValue}
-                             onButtonClick={resetToggle}
-        />
+            <RoundLedPushButton8
+                label="Reset"
+                x={col2 + BUTTON_DISTANCE_S * 3}
+                y={row2}
+                labelPosition="bottom-pot"
+                value={resetValue}
+                onButtonClick={resetToggle}
+            />
 
-        <RoundPushButton8 x={col2 + BUTTON_DISTANCE_S * 4} y={row2}
-                          label="Shape" labelPosition="bottom-pot"
-                          ledPosition="right-two-cols" ledCount={6}
-                          ledLabels={[
-                              <SawRight x={0} y={0} width={3} height={2}/>,
-                              <Triangle x={0} y={0} width={3} height={2}/>,
-                              <Square x={0} y={0} width={3} height={2}/>,
-                              <Sine x={0} y={0} width={3} height={2}/>,
-                              <Random x={0} y={0} width={3} height={2}/>,
-                              'Other'
-                          ]}
-                          value={shapeValue}
-                          onButtonClick={shapeToggle}
-        />
+            <RoundPushButton8
+                x={col2 + BUTTON_DISTANCE_S * 4}
+                y={row2}
+                label="Shape"
+                labelPosition="bottom-pot"
+                ledPosition="right-two-cols"
+                ledCount={6}
+                ledLabels={[
+                    <SawRight x={0} y={0} width={3} height={2} />,
+                    <Triangle x={0} y={0} width={3} height={2} />,
+                    <Square x={0} y={0} width={3} height={2} />,
+                    <Sine x={0} y={0} width={3} height={2} />,
+                    <Random x={0} y={0} width={3} height={2} />,
+                    'Other',
+                ]}
+                value={shapeValue}
+                onButtonClick={shapeToggle}
+            />
 
-        <RoundPushButton8 label="Trigger" x={col2 + BUTTON_DISTANCE_S * 6} y={row1} labelPosition="bottom-pot"
-                          onButtonClick={onTrigger}
-        />
-
-    </>
+            <RoundPushButton8
+                label="Trigger"
+                x={col2 + BUTTON_DISTANCE_S * 6}
+                y={row1}
+                labelPosition="bottom-pot"
+                onButtonClick={onTrigger}
+            />
+        </>
+    )
 }
 
 export default LFO

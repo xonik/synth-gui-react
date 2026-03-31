@@ -1,8 +1,8 @@
-import { Func } from './types'
+import type { Func } from './types'
 
-type FuncWithIndex = Func & {index: number}
+type FuncWithIndex = Func & { index: number }
 
-export function generateFunctionNamesEnumTs(funcs: FuncWithIndex[]){
+export function generateFunctionNamesEnumTs(funcs: FuncWithIndex[]) {
     return `// GENERATED FILE, DO NOT EDIT
 // shared ids for RPC commands
 export enum FunctionNames {
@@ -11,7 +11,7 @@ export enum FunctionNames {
 `
 }
 
-export function generateFunctionNamesEnumCpp(funcs: FuncWithIndex[]){
+export function generateFunctionNamesEnumCpp(funcs: FuncWithIndex[]) {
     return `    // shared ids for RPC commands
     enum FunctionNames {
         ${funcs.map((func) => `${func.name}Id = ${func.index}`).join(',\n        ')}

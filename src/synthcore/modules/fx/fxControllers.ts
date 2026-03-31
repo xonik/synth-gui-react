@@ -1,7 +1,7 @@
+import { buttonMidiValues } from '../../../midi/buttonMidiValues'
 import CC from '../../../midi/mapCC'
-import { FuncProps, ControllerConfigCC, ControllerConfigButton } from '../../../midi/types'
+import type { ControllerConfigButton, ControllerConfigCC, FuncProps } from '../../../midi/types'
 import { ControllerIdDst, ControllerIdNonMod } from '../controllers/controllerIds'
-import {buttonMidiValues} from "../../../midi/buttonMidiValues";
 
 interface FxControllers {
     DISTORTION: {
@@ -10,7 +10,7 @@ interface FxControllers {
         LEVEL: ControllerConfigCC
         IN: ControllerConfigButton
         OUT: ControllerConfigButton
-    },
+    }
     BIT_CRUSHER: {
         props: FuncProps
         BITS: ControllerConfigCC
@@ -31,14 +31,14 @@ const fxControllers: FxControllers = {
             label: 'Drive',
             isDstDigi: true,
             type: 'pot',
-            cc: CC.DISTORTION_DRIVE
+            cc: CC.DISTORTION_DRIVE,
         },
         LEVEL: {
             id: ControllerIdDst.DISTORTION_LEVEL,
             label: 'Level',
             isDstDigi: true,
             type: 'pot',
-            cc: CC.DISTORTION_LEVEL
+            cc: CC.DISTORTION_LEVEL,
         },
         // Buttons
         IN: {
@@ -71,30 +71,27 @@ const fxControllers: FxControllers = {
             label: 'Bits',
             isDstDigi: true,
             type: 'pot',
-            cc: CC.BIT_CRUSHER_BITS
+            cc: CC.BIT_CRUSHER_BITS,
         },
         RATE: {
             id: ControllerIdDst.BIT_CRUSHER_RATE,
             label: 'Rate',
             isDstDigi: true,
             type: 'pot',
-            cc: CC.BIT_CRUSHER_RATE
+            cc: CC.BIT_CRUSHER_RATE,
         },
         RECON: {
             id: ControllerIdNonMod.BIT_CRUSHER_RECON,
             label: 'Clip',
             type: 'button',
-            values: [
-                buttonMidiValues.BIT_CRUSHER_RECON_OFF,
-                buttonMidiValues.BIT_CRUSHER_RECON_ON,
-            ],
+            values: [buttonMidiValues.BIT_CRUSHER_RECON_OFF, buttonMidiValues.BIT_CRUSHER_RECON_ON],
         },
         LEVEL: {
             id: ControllerIdDst.BIT_CRUSHER_LEVEL,
             label: 'Level',
             isDstDigi: true,
             type: 'pot',
-            cc: CC.BIT_CRUSHER_LEVEL
+            cc: CC.BIT_CRUSHER_LEVEL,
         },
         // Buttons
         IN: {
@@ -119,7 +116,7 @@ const fxControllers: FxControllers = {
                 buttonMidiValues.BIT_CRUSHER_OUT_BOTH,
             ],
         },
-    }
+    },
 }
 
 export default fxControllers

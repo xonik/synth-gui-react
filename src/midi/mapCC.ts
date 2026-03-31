@@ -5,7 +5,7 @@ const mapCC = {
     BUTTONS_1: 3,
     MIDI_FOOT_CTRL: 4, // N/I
     KBD_PORTAMENTO: 5,
-    DATA_ENTRY_MSB:6,
+    DATA_ENTRY_MSB: 6,
     BUTTONS_2: 7,
     BUTTONS_3: 8,
     DCO1_NOTE: 9,

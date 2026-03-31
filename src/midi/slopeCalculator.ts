@@ -1,4 +1,3 @@
-
 /*
 Converts a linear input in the range 0-inputMax to an exponential curve with the requested dB range.
 The curve will always end at outputMax, but depending on the range it will end above 0 (the increase
@@ -18,47 +17,43 @@ export const getLinearToDBMapper = (
     outputMax: number,
     db: number,
     rising: boolean = true,
-    stretchY = false,
+    stretchY = false
 ) => {
-
     const outputFunc = (input: number) => {
         const index = rising ? inputMax - input : input
 
         // NB: Describes a falling curve, input 0 gives outputMax.
-        return outputMax * Math.pow(10, (-db) * ((index)/inputMax) / 20)
+        return outputMax * 10 ** ((-db * (index / inputMax)) / 20)
     }
 
-    if(stretchY) {
+    if (stretchY) {
         const minValueIndex = rising ? 0 : inputMax
         const outputMin = outputFunc(minValueIndex)
 
-        return (input: number) => outputMax * (outputFunc(input) - outputMin) / (outputMax - outputMin)
+        return (input: number) => (outputMax * (outputFunc(input) - outputMin)) / (outputMax - outputMin)
     } else {
-        return outputFunc;
+        return outputFunc
     }
 }
 
-export const getMapperWithFade = (
-    convertFunc: (input: number) => number,
-    inputMax: number,
-    rising: boolean = true,
-    fadeLength = 0,
-) => (input: number) => {
-    if (rising && input < fadeLength) {
-        const fadeEnd = convertFunc(fadeLength)
-        return (input * fadeEnd) / fadeLength;
-    } else if(!rising && input > inputMax - fadeLength){
-        const fadeEnd = convertFunc(inputMax - fadeLength)
-        return ((inputMax - input) * fadeEnd) / fadeLength;
-    } else {
-        return convertFunc(input)
+export const getMapperWithFade =
+    (convertFunc: (input: number) => number, inputMax: number, rising: boolean = true, fadeLength = 0) =>
+    (input: number) => {
+        if (rising && input < fadeLength) {
+            const fadeEnd = convertFunc(fadeLength)
+            return (input * fadeEnd) / fadeLength
+        } else if (!rising && input > inputMax - fadeLength) {
+            const fadeEnd = convertFunc(inputMax - fadeLength)
+            return ((inputMax - input) * fadeEnd) / fadeLength
+        } else {
+            return convertFunc(input)
+        }
     }
-}
 
 // float 0 is hard.
-const epsilon: number = 0.001;
+const epsilon: number = 0.001
 export const isZero = (A: number) => {
-    return (Math.abs(A) < epsilon);
+    return Math.abs(A) < epsilon
 }
 
 /**
@@ -71,16 +66,15 @@ export const isZero = (A: number) => {
  * NB: Input is 0 to maxInput!
  */
 export const getLinearToExpMapper = (maxInput: number, outputRange: number, steepness: number) => {
-
-    const a = 1.0 / ( Math.pow(10.0, steepness) -1.0 );
+    const a = 1.0 / (10.0 ** steepness - 1.0)
 
     return (input: number) => {
         // special case, linear result
-        if(isZero(steepness)){
-            return input * outputRange / maxInput;
+        if (isZero(steepness)) {
+            return (input * outputRange) / maxInput
         }
 
-        return outputRange * (a * Math.pow(10.0, steepness * (input / maxInput)) - a);
+        return outputRange * (a * 10.0 ** (steepness * (input / maxInput)) - a)
     }
 }
 
@@ -89,20 +83,24 @@ export const getLinearToExpMapper = (maxInput: number, outputRange: number, stee
  *
  * NB: Input is 0 to maxInput!
  */
-export const getLinearToExpBipolarMapper = (maxInput: number, outputMin: number, outputRange: number, steepness: number) => {
-
+export const getLinearToExpBipolarMapper = (
+    maxInput: number,
+    outputMin: number,
+    outputRange: number,
+    steepness: number
+) => {
     // Slight protection against overflowing ranges since the output has to fit an int16_t
-    const adjustedRange = outputRange + outputRange > 32767 ? 32767 - outputMin  : outputRange;
+    const adjustedRange = outputRange + outputRange > 32767 ? 32767 - outputMin : outputRange
 
-    const a = 1.0 / ( Math.pow(10.0, steepness) -1.0 ); //NB! use decimal numbers to force float math
+    const a = 1.0 / (10.0 ** steepness - 1.0) //NB! use decimal numbers to force float math
 
     return (input: number) => {
         // special case, linear result
-        if(isZero(steepness)){
-            return outputMin + input * adjustedRange / maxInput;
+        if (isZero(steepness)) {
+            return outputMin + (input * adjustedRange) / maxInput
         }
 
-        return outputMin + adjustedRange * (a * Math.pow(10.0, steepness * (input / maxInput)) - a);
+        return outputMin + adjustedRange * (a * 10.0 ** (steepness * (input / maxInput)) - a)
     }
 }
 
@@ -110,14 +108,12 @@ export const getLinearToExpBipolarMapper = (maxInput: number, outputMin: number,
 // 0 and 1. Since binary search is discrete but the mapper function is continuous, we need a resolution,
 // e.g. how many steps to try during searching.
 export const inverse = (mapper: (input: number) => number, resolution: number) => (x: number) => {
-
     // x is a number between 0 and resolution
     const search = (start: number, end: number): number => {
-
         // Base Condition
         if (start > end) return end / resolution
 
-        let mid = Math.floor((start + end) / 2)
+        const mid = Math.floor((start + end) / 2)
 
         // The mapper function takes an input in the range 0-1 so we need to scale
         // our value before mapping.

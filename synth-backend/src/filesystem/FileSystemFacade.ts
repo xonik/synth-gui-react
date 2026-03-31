@@ -1,20 +1,22 @@
-import * as fs from 'fs/promises'
 import { existsSync } from 'fs'
+import * as fs from 'fs/promises'
 import { Fat } from './Fat.js'
-import { FileNotFoundException, FileTreeEntry } from './types.js'
 import { splitKey } from './fileUtils.js'
+import { FileNotFoundException, type FileTreeEntry } from './types.js'
 
 export type FileMetadata = {
-    currentVersion: string,
+    currentVersion: string
 }
 
 const METADATA_FILE_NAME = 'metadata'
 
 class FileSystemFacade {
-
     fat: Fat
 
-    constructor(private root: string, private rootDeleted: string) {
+    constructor(
+        private root: string,
+        private rootDeleted: string
+    ) {
         this.fat = new Fat(root)
     }
 
@@ -52,14 +54,14 @@ class FileSystemFacade {
             return {
                 version,
                 keyOnDisk,
-                ...await this.readFileInstance(keyOnDisk, version)
+                ...(await this.readFileInstance(keyOnDisk, version)),
             }
         } else {
             const fileMetadata: FileMetadata = await this.readFileInstance(keyOnDisk, METADATA_FILE_NAME)
             return {
                 version: fileMetadata.currentVersion,
                 keyOnDisk,
-                ...await this.readFileInstance(keyOnDisk, fileMetadata.currentVersion)
+                ...(await this.readFileInstance(keyOnDisk, fileMetadata.currentVersion)),
             }
         }
     }
@@ -78,7 +80,7 @@ class FileSystemFacade {
         // and a list of all versions.
         await this.writeFileInstance(content, keyOnDisk, newVersion)
         const fileMetadata: FileMetadata = {
-            currentVersion: newVersion
+            currentVersion: newVersion,
         }
         await this.writeFileInstance(fileMetadata, keyOnDisk, METADATA_FILE_NAME)
     }
@@ -120,10 +122,10 @@ class FileSystemFacade {
         if (!existsSync(folderOnDisk)) {
             throw new FileNotFoundException(`File ${filename} with key ${keyOnDisk} does not exist on disk`)
         }
-        return (await fs.readdir(folderOnDisk)).filter(file => file !== METADATA_FILE_NAME)
+        return (await fs.readdir(folderOnDisk)).filter((file) => file !== METADATA_FILE_NAME)
     }
 
-    getPath(keyOnDisk: string){
+    getPath(keyOnDisk: string) {
         return this.fat.getPath(keyOnDisk)
     }
 
@@ -135,7 +137,7 @@ class FileSystemFacade {
         }
         const filepath = `${folder}${instanceName}`
         try {
-            await fs.writeFile(filepath, JSON.stringify(content, null, 2), 'utf8');
+            await fs.writeFile(filepath, JSON.stringify(content, null, 2), 'utf8')
         } catch (err) {
             console.log('ERROR', err)
         }
@@ -148,7 +150,6 @@ class FileSystemFacade {
         }
         return JSON.parse(await fs.readFile(filepath, 'utf8'))
     }
-
 }
 
 export default FileSystemFacade

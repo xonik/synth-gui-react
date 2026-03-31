@@ -1,12 +1,11 @@
+import { type VoiceGroupPatch, voiceGroupStores } from '../../../store/patchStore'
 import modsApi from '../mods/modsApi'
+import { getVoiceGroupIndex } from '../voices/currentVoiceGroupIndex'
 import patchFileServerFacade from './patchFileServerFacade'
-import { Patch } from './types'
-import { voiceGroupStores } from '../../../store/patchStore'
-import { VoiceGroupPatch } from '../../../store/patchStore'
-import { getVoiceGroupIndex } from "../voices/currentVoiceGroupIndex"
+import type { Patch } from './types'
 
 let auditing = false
-let previousPatch: Patch | undefined = undefined
+let previousPatch: Patch | undefined
 
 function getCurrentPatch(): Patch {
     const voiceGroupIndex = getVoiceGroupIndex()

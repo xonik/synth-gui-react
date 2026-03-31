@@ -6,7 +6,7 @@ export const dbLevelResponseMapper = (() => {
         getLinearToDBMapper(1, 1, 23, true, false),
         1,
         true,
-        10 / 65534, // When converting to midi, the 10 first (of 65534) entries will be a fade
+        10 / 65534 // When converting to midi, the 10 first (of 65534) entries will be a fade
     )
 
     // input is 0 to 1, or -1 to 1 for bipolar
@@ -34,23 +34,22 @@ export const dbLevelResponseMapper = (() => {
 // mapper for controllers that may be switched between uni and bipolar but where the output is always
 // bipolar (so negative part is not used if unipolar)
 export const uniBipolarLevelResponseMapper = (() => {
-
     const output = (x: number, bipolar: boolean = false) => {
         if (bipolar) {
             // x input as -1 to 1, output should be 0 to 1
-            return 0.5 * x + 0.5;
+            return 0.5 * x + 0.5
         } else {
             // x input as 0 to 1, output should be 0.5 to 1
-            return 0.5 + x / 2;
+            return 0.5 + x / 2
         }
     }
     const input = (x: number, bipolar: boolean = false) => {
         if (bipolar) {
             // x input as 0 to 1, output should be -1 to 1
-            return 2 * (x - 0.5);
+            return 2 * (x - 0.5)
         } else {
             //x input as 0.5 to 1, output should be 0 to 1;
-            return 2 * (x - 0.5);
+            return 2 * (x - 0.5)
         }
     }
 

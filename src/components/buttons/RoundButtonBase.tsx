@@ -1,14 +1,14 @@
-import { useCallback, Fragment } from 'react'
 import classNames from 'classnames'
-import RoundPushButtonBase from './RoundPushButtonBase'
+import { Fragment, useCallback } from 'react'
+import { SHOW_CUT } from '../../config'
+import type { ControllerConfig } from '../../midi/types'
+import type { TextAnchor } from '../../types'
 import RotaryPotBase from '../pots/RotaryPotBase'
-import { ControllerConfig } from '../../midi/types'
-import { SHOW_CUT } from "../../config";
-import { TextAnchor } from "../../types";
+import RoundPushButtonBase from './RoundPushButtonBase'
 import './RoundButton.scss'
 
 type LedPosition =
-    'left'
+    | 'left'
     | 'right'
     | 'right2'
     | 'right-two-cols'
@@ -17,89 +17,89 @@ type LedPosition =
     | 'top-horizontal'
     | 'top-horizontal-no-label'
     | 'bottom'
-    | undefined;
-type LabelPosition = 'left' | 'right' | 'top' | 'bottom' | 'bottom-pot' | undefined;
-type ButtonMode = 'push' | 'rotate';
+    | undefined
+type LabelPosition = 'left' | 'right' | 'top' | 'bottom' | 'bottom-pot' | undefined
+type ButtonMode = 'push' | 'rotate'
 
 // Stuff that is special for a particular kind of button, used in wrapper functions.
 type Config = {
-    buttonRadius: number;
-    buttonMode: ButtonMode;
-    ledMargin?: number; // margin button-led
-    ledToLedMargin?: number; // vertical spacing
-    labelMargin?: number; // margin button-label
-    ledTolabelMargin?: number; // margin button-label
-    ledButton?: boolean;
+    buttonRadius: number
+    buttonMode: ButtonMode
+    ledMargin?: number // margin button-led
+    ledToLedMargin?: number // vertical spacing
+    labelMargin?: number // margin button-label
+    ledTolabelMargin?: number // margin button-label
+    ledButton?: boolean
 }
 
 // Per instance properties.
 export interface Props {
-    x: number;
-    y: number;
-    label?: string;
-    labelPosition?: LabelPosition;
-    ledLabels?: Array<string | JSX.Element>;
-    ledPosition?: LedPosition;
-    ledRingColors?: string [];
+    x: number
+    y: number
+    label?: string
+    labelPosition?: LabelPosition
+    ledLabels?: Array<string | JSX.Element>
+    ledPosition?: LedPosition
+    ledRingColors?: string[]
 
     // Number of leds AROUND the button. If this is undefined but ledButton is true, the button itself is a led.
-    ledCount?: number;
+    ledCount?: number
 
     // When selecting what leds to light up, use a binary counting: 0ff, 1, 2, 1 and 2, 3. etc. Makes it possible
     // to show a combination of mode 1 and 2 for arpeggiator.
-    ledCycleBinary?: boolean;
+    ledCycleBinary?: boolean
 
     // True if the first midi value is an off state, lets us switch off all diodes
-    hasOff?: boolean;
+    hasOff?: boolean
 
     // Normally, clicking a button adds one modulo the length of the value array to the value. If this is true it subtracts instead
-    reverse?: boolean;
+    reverse?: boolean
 
     // Loop - normally true, means that if we're clicking through a group and have reached the end, we will wrap around and start at the beginning
-    loop?: boolean;
+    loop?: boolean
 
     // Used if button is part of a group - "radio button"
-    radioButtonIndex?: number;
+    radioButtonIndex?: number
 
     // If momentary is true it may have two values - one that is sent on key pressed and one on release.
-    momentary?: boolean;
+    momentary?: boolean
 
-    ctrl?: ControllerConfig;
-    value?: number;
+    ctrl?: ControllerConfig
+    value?: number
 
     // Only used if rotary button
-    resolution?: number;
+    resolution?: number
 
-    onButtonClick?: () => void;
-    onButtonRelease?: () => void;
-    onIncrement?: (steps: number) => void;
+    onButtonClick?: () => void
+    onButtonRelease?: () => void
+    onIncrement?: (steps: number) => void
 
     // Number of value states for ledButton blink logic (replaces ctrl.values.length)
-    ledModes?: number;
+    ledModes?: number
 }
 
 type LabelPos = {
-    x: number;
-    y: number;
-    textAnchor: TextAnchor;
+    x: number
+    y: number
+    textAnchor: TextAnchor
 }
 
 type LedPos = {
-    x: number;
-    y: number;
-    labelX: number;
-    labelY?: number;
-    textAnchor: TextAnchor;
+    x: number
+    y: number
+    labelX: number
+    labelY?: number
+    textAnchor: TextAnchor
 }
 
 type RenderProps = {
-    buttonRadius: number;
-    cutRadius: number,
-    buttonMode: ButtonMode;
-    ledRadius: number;
-    labelPos: LabelPos;
-    ledPos: LedPos[];
-    ledLabels: Array<string | JSX.Element>;
+    buttonRadius: number
+    cutRadius: number
+    buttonMode: ButtonMode
+    ledRadius: number
+    labelPos: LabelPos
+    ledPos: LedPos[]
+    ledLabels: Array<string | JSX.Element>
 }
 
 const positionLabel = (buttonRadius: number, labelPosition: LabelPosition, labelMargin: number): LabelPos => {
@@ -108,31 +108,31 @@ const positionLabel = (buttonRadius: number, labelPosition: LabelPosition, label
             return {
                 x: -(buttonRadius + labelMargin + 2),
                 y: 0.9,
-                textAnchor: 'end' as const
+                textAnchor: 'end' as const,
             }
         case 'right':
             return {
                 x: buttonRadius + labelMargin + 2,
                 y: 0.9,
-                textAnchor: 'start' as const
+                textAnchor: 'start' as const,
             }
         case 'top':
             return {
                 x: 0,
                 y: -(buttonRadius + labelMargin + 3),
-                textAnchor: 'middle' as const
+                textAnchor: 'middle' as const,
             }
         case 'bottom':
             return {
                 x: 0,
                 y: buttonRadius + labelMargin + 3,
-                textAnchor: 'middle' as const
+                textAnchor: 'middle' as const,
             }
         case 'bottom-pot':
             return {
                 x: 0,
                 y: buttonRadius + labelMargin + 7,
-                textAnchor: 'middle' as const
+                textAnchor: 'middle' as const,
             }
         default:
             return { x: 0, y: 0, textAnchor: 'end' as const }
@@ -147,7 +147,7 @@ const positionLeds = (
     ledMargin: number,
     ledToLedMargin: number,
     ledTolabelMargin: number,
-    buttonMode: ButtonMode,
+    buttonMode: ButtonMode
 ): LedPos[] => {
     if (ledCount === 0) {
         return []
@@ -192,7 +192,7 @@ const positionLeds = (
                     x: -(buttonRadius + ledMargin + 2 + ledRadius),
                     y: directionMultiplier * (adjustedI - (adjustedLedCount - 1) / 2) * yDist,
                     labelX: -(buttonRadius + ledMargin + 2 + ledTolabelMargin + 2 * ledRadius),
-                    textAnchor: 'end' as const
+                    textAnchor: 'end' as const,
                 } as LedPos)
                 break
             case 'right':
@@ -200,7 +200,7 @@ const positionLeds = (
                     x: buttonRadius + ledMargin + 2 + ledRadius,
                     y: (adjustedI - (adjustedLedCount - 1) / 2) * yDist,
                     labelX: buttonRadius + ledMargin + 2 + ledTolabelMargin + 2 * ledRadius,
-                    textAnchor: 'start' as const
+                    textAnchor: 'start' as const,
                 } as LedPos)
                 break
             case 'right2':
@@ -208,7 +208,7 @@ const positionLeds = (
                     x: buttonRadius + 5 * ledMargin + 2 + ledRadius,
                     y: (adjustedI - (adjustedLedCount - 1) / 2) * yDist,
                     labelX: buttonRadius + 5 * ledMargin + 2 + ledTolabelMargin + 2 * ledRadius,
-                    textAnchor: 'start' as const
+                    textAnchor: 'start' as const,
                 } as LedPos)
                 break
             case 'top':
@@ -216,35 +216,37 @@ const positionLeds = (
                     x: 0,
                     y: -((ledCount - 1 - i) * yDist + buttonRadius + ledMargin + ledRadius),
                     labelX: ledRadius + ledTolabelMargin,
-                    textAnchor: 'start' as const
+                    textAnchor: 'start' as const,
                 } as LedPos)
                 break
-            case 'top-horizontal':
-                let startX = -((ledCount - 1) * 1.25 * yDist) / 2
+            case 'top-horizontal': {
+                const startX = -((ledCount - 1) * 1.25 * yDist) / 2
                 ledPositions.push({
                     x: startX + 1.25 * i * yDist,
                     y: -yDist / 2 - buttonRadius - ledMargin - ledRadius,
                     labelX: startX + i * 1.25 * yDist,
                     labelY: -buttonRadius - 2.3,
-                    textAnchor: 'middle' as const
+                    textAnchor: 'middle' as const,
                 } as LedPos)
                 break
-            case 'top-horizontal-no-label':
-                let startX2 = -((ledCount - 1) * 1.25 * yDist) / 2
+            }
+            case 'top-horizontal-no-label': {
+                const startX2 = -((ledCount - 1) * 1.25 * yDist) / 2
                 ledPositions.push({
                     x: startX2 + 1.25 * i * yDist,
                     y: -buttonRadius - ledMargin - ledRadius,
                     labelX: startX2 + i * 1.25 * yDist,
                     labelY: -buttonRadius - 2,
-                    textAnchor: 'middle' as const
+                    textAnchor: 'middle' as const,
                 } as LedPos)
                 break
+            }
             case 'bottom':
                 ledPositions.push({
                     x: 0,
                     y: i * yDist + buttonRadius + ledMargin + ledRadius,
                     labelX: ledRadius + ledTolabelMargin,
-                    textAnchor: 'start' as const
+                    textAnchor: 'start' as const,
                 } as LedPos)
                 break
             default:
@@ -273,16 +275,25 @@ const getRenderProps = (props: Props & Config): RenderProps => {
         buttonRadius,
         cutRadius,
         labelPos: positionLabel(buttonRadius, labelPosition, labelMargin),
-        ledPos: positionLeds(buttonRadius, ledRadius, ledCount, ledPosition, ledMargin, ledToLedMargin, ledTolabelMargin, props.buttonMode),
+        ledPos: positionLeds(
+            buttonRadius,
+            ledRadius,
+            ledCount,
+            ledPosition,
+            ledMargin,
+            ledToLedMargin,
+            ledTolabelMargin,
+            props.buttonMode
+        ),
         ledLabels: props.ledLabels || [],
         buttonMode: props.buttonMode,
     }
 }
 
 export const RoundButtonBase = (props: Props & Config) => {
-
     const {
-        x, y,
+        x,
+        y,
         label,
         radioButtonIndex,
         hasOff,
@@ -304,15 +315,18 @@ export const RoundButtonBase = (props: Props & Config) => {
     const hasOffValue = hasOff || (ledButton && ledCount === undefined)
     const ledOnIndex = hasOffValue ? currentValue - 1 : currentValue
 
-    const onIncrement = useCallback((steps: number) => {
-        if (onIncrementProp) {
-            onIncrementProp(steps)
-        } else if (onButtonClick) {
-            for (let i = 0; i < Math.abs(steps); i++) {
-                onButtonClick()
+    const onIncrement = useCallback(
+        (steps: number) => {
+            if (onIncrementProp) {
+                onIncrementProp(steps)
+            } else if (onButtonClick) {
+                for (let i = 0; i < Math.abs(steps); i++) {
+                    onButtonClick()
+                }
             }
-        }
-    }, [onButtonClick, onIncrementProp])
+        },
+        [onButtonClick, onIncrementProp]
+    )
 
     const handleOnClick = useCallback(() => {
         if (onButtonClick) {
@@ -336,8 +350,8 @@ export const RoundButtonBase = (props: Props & Config) => {
             ledOn[0] = true
         }
     } else {
-        if(ledCycleBinary) {
-            for(let i = 0; i < ledOn.length; i++) {
+        if (ledCycleBinary) {
+            for (let i = 0; i < ledOn.length; i++) {
                 // ledOnIndex -1 means all leds are off
                 if (ledOnIndex > -1) {
                     const mask = 1 << i
@@ -361,22 +375,14 @@ export const RoundButtonBase = (props: Props & Config) => {
         }
     }
 
-    const {
-        buttonRadius,
-        buttonMode,
-        cutRadius,
-        ledRadius,
-        labelPos,
-        ledPos,
-        ledLabels,
-    } = getRenderProps(props)
+    const { buttonRadius, buttonMode, cutRadius, ledRadius, labelPos, ledPos, ledLabels } = getRenderProps(props)
 
     // multiple leds for multi-state led buttons are simulated by blinking the led on the button
     const modes = props.ledModes || ctrl?.values?.length || 2
-    let ledButtonStyle = undefined
-    if(ledButton){
-        if(radioButtonIndex !== undefined){
-            if(ledOn[0]){
+    let ledButtonStyle
+    if (ledButton) {
+        if (radioButtonIndex !== undefined) {
+            if (ledOn[0]) {
                 ledButtonStyle = 'button-cap-led__on'
             } else {
                 ledButtonStyle = 'button-cap-led'
@@ -394,58 +400,64 @@ export const RoundButtonBase = (props: Props & Config) => {
 
     return (
         <svg x={x} y={y} className="button">
-            {buttonMode === 'push'
-                ? <RoundPushButtonBase buttonRadius={buttonRadius}
-                                       cutRadius={cutRadius}
-                                       onClick={handleOnClick}
-                                       onRelease={handleOnRelease}
-                                       className={classNames(['button-cap', ledButtonStyle])}/>
-                : <RotaryPotBase
-                    onIncrement={onIncrement}
-                    knobRadius={buttonRadius}
-                    resolution={resolution}
+            {buttonMode === 'push' ? (
+                <RoundPushButtonBase
+                    buttonRadius={buttonRadius}
+                    cutRadius={cutRadius}
+                    onClick={handleOnClick}
+                    onRelease={handleOnRelease}
+                    className={classNames(['button-cap', ledButtonStyle])}
                 />
-            }
-            {label && <text
-                x={labelPos.x}
-                y={labelPos.y}
-                className="button-label"
-                textAnchor={labelPos.textAnchor}
-                alignmentBaseline="middle"
-            >{label}</text>}
-            {ledPos.map((position, index) => <Fragment key={index}>
-                {!SHOW_CUT && ledRingColors && ledRingColors.length > index && <circle
-                    cx={position.x} cy={position.y} r={ledRadius + 1}
-                    fill={ledRingColors[index]}
-                />}
-
-                <circle
-                    cx={position.x} cy={position.y} r={ledRadius}
-                    className={
-                        classNames(
-                            'button-led',
-                            {
-                                'button-led__on': ledOn.length > index && ledOn[index]
-                            })
-                    }
-                />
-
-
-                {typeof ledLabels[index] === 'string' && <text
-                    x={position.labelX}
-                    y={position.labelY ?? position.y + 1.07}
-                    className="button-led-label"
-                    textAnchor={position.textAnchor}
+            ) : (
+                <RotaryPotBase onIncrement={onIncrement} knobRadius={buttonRadius} resolution={resolution} />
+            )}
+            {label && (
+                <text
+                    x={labelPos.x}
+                    y={labelPos.y}
+                    className="button-label"
+                    textAnchor={labelPos.textAnchor}
                     alignmentBaseline="middle"
-                >{ledLabels[index]}</text>}
-                {typeof ledLabels[index] !== 'string' &&
-                    <svg
-                        x={position.textAnchor === 'middle' ? position.labelX - 1.5 : position.labelX}
-                        y={position.labelY ?? position.y + 1.07}
-                    >
-                        {ledLabels[index]}
-                    </svg>}
-            </Fragment>)}
+                >
+                    {label}
+                </text>
+            )}
+            {ledPos.map((position, index) => (
+                <Fragment key={index}>
+                    {!SHOW_CUT && ledRingColors && ledRingColors.length > index && (
+                        <circle cx={position.x} cy={position.y} r={ledRadius + 1} fill={ledRingColors[index]} />
+                    )}
+
+                    <circle
+                        cx={position.x}
+                        cy={position.y}
+                        r={ledRadius}
+                        className={classNames('button-led', {
+                            'button-led__on': ledOn.length > index && ledOn[index],
+                        })}
+                    />
+
+                    {typeof ledLabels[index] === 'string' && (
+                        <text
+                            x={position.labelX}
+                            y={position.labelY ?? position.y + 1.07}
+                            className="button-led-label"
+                            textAnchor={position.textAnchor}
+                            alignmentBaseline="middle"
+                        >
+                            {ledLabels[index]}
+                        </text>
+                    )}
+                    {typeof ledLabels[index] !== 'string' && (
+                        <svg
+                            x={position.textAnchor === 'middle' ? position.labelX - 1.5 : position.labelX}
+                            y={position.labelY ?? position.y + 1.07}
+                        >
+                            {ledLabels[index]}
+                        </svg>
+                    )}
+                </Fragment>
+            ))}
         </svg>
     )
 }

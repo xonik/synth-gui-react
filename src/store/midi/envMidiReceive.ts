@@ -6,21 +6,21 @@
  * in envApi.ts, but writes to Zustand instead of Redux.
  */
 
-import { voiceGroupStores } from '../patchStore'
-import { cc, nrpn, button } from '../../midi/midibus'
-import { ControllerConfigNRPN } from '../../midi/types'
+import { button, cc, nrpn } from '../../midi/midibus'
+import type { ControllerConfigNRPN } from '../../midi/types'
 import { envCtrls } from '../../synthcore/modules/env/envControllers'
+import { curveValuesUsed } from '../../synthcore/modules/env/generatedTypes'
 import { StageId } from '../../synthcore/modules/env/types'
-import { StageName } from '../modules/envActions'
 import {
-    setStageLevel,
-    setStageTime,
-    setStageEnabled,
-    setStageCurve,
+    type StageName,
     setInvert,
     setMaxLoops,
+    setStageCurve,
+    setStageEnabled,
+    setStageLevel,
+    setStageTime,
 } from '../modules/envActions'
-import { curveValuesUsed } from '../../synthcore/modules/env/generatedTypes'
+import { voiceGroupStores } from '../patchStore'
 import { withMidiReceive } from './midiGuard'
 
 const STAGE_ID_TO_NAME: Record<number, StageName> = {
@@ -54,7 +54,7 @@ function subscribeLevel() {
     const id = nrpn.subscribe((voiceGroupIndex: number, midiValue: number) => {
         if (currentReceivedEnvId < 0) return
 
-        const valuePart = midiValue & 0xFFFF
+        const valuePart = midiValue & 0xffff
         const stageId = midiValue >> 16
         const stageName = STAGE_ID_TO_NAME[stageId]
         if (!stageName) return
@@ -64,7 +64,7 @@ function subscribeLevel() {
         const value = bipolar ? (valuePart - 32767) / 32767 : valuePart / 65535
 
         withMidiReceive(() => {
-            store.getState().set(state => {
+            store.getState().set((state) => {
                 setStageLevel(state, currentReceivedEnvId, stageName, value)
             })
         })
@@ -77,7 +77,7 @@ function subscribeTime() {
     const id = nrpn.subscribe((voiceGroupIndex: number, midiValue: number) => {
         if (currentReceivedEnvId < 0) return
 
-        const valuePart = midiValue & 0xFFFF
+        const valuePart = midiValue & 0xffff
         const stageId = midiValue >> 16
         const stageName = STAGE_ID_TO_NAME[stageId]
         if (!stageName) return
@@ -85,9 +85,11 @@ function subscribeTime() {
         const value = valuePart / 65535
 
         withMidiReceive(() => {
-            storeForVoiceGroup(voiceGroupIndex).getState().set(state => {
-                setStageTime(state, currentReceivedEnvId, stageName, value)
-            })
+            storeForVoiceGroup(voiceGroupIndex)
+                .getState()
+                .set((state) => {
+                    setStageTime(state, currentReceivedEnvId, stageName, value)
+                })
         })
     }, ctrl)
     return () => nrpn.unsubscribe(ctrl, id)
@@ -102,7 +104,7 @@ function subscribeCurve() {
     const id = nrpn.subscribe((voiceGroupIndex: number, midiValue: number) => {
         if (currentReceivedEnvId < 0) return
 
-        const stageId = (midiValue >> 7)
+        const stageId = midiValue >> 7
         const curve = midiValue & 0b01111111
         const curveIndex = curveValuesUsed.indexOf(curve)
         if (curveIndex < 0) return
@@ -111,9 +113,11 @@ function subscribeCurve() {
         if (!stageName) return
 
         withMidiReceive(() => {
-            storeForVoiceGroup(voiceGroupIndex).getState().set(state => {
-                setStageCurve(state, currentReceivedEnvId, stageName, curveIndex, curveValuesUsed.length)
-            })
+            storeForVoiceGroup(voiceGroupIndex)
+                .getState()
+                .set((state) => {
+                    setStageCurve(state, currentReceivedEnvId, stageName, curveIndex, curveValuesUsed.length)
+                })
         })
     }, subCtrl)
     return () => nrpn.unsubscribe(subCtrl, id)
@@ -130,9 +134,11 @@ function subscribeToggleStage() {
         if (!stageName) return
 
         withMidiReceive(() => {
-            storeForVoiceGroup(voiceGroupIndex).getState().set(state => {
-                setStageEnabled(state, currentReceivedEnvId, stageName, enabled)
-            })
+            storeForVoiceGroup(voiceGroupIndex)
+                .getState()
+                .set((state) => {
+                    setStageEnabled(state, currentReceivedEnvId, stageName, enabled)
+                })
         })
     }, ctrl)
     return () => cc.unsubscribe(ctrl, id)
@@ -143,13 +149,15 @@ function subscribeOffset() {
     const id = nrpn.subscribe((voiceGroupIndex: number, midiValue: number) => {
         if (currentReceivedEnvId < 0) return
 
-        const valuePart = midiValue & 0xFFFF
+        const valuePart = midiValue & 0xffff
         const value = ctrl.bipolar ? (valuePart - 32767) / 32767 : valuePart / 65535
 
         withMidiReceive(() => {
-            storeForVoiceGroup(voiceGroupIndex).getState().set(state => {
-                state.envelopes[currentReceivedEnvId].offset = value
-            })
+            storeForVoiceGroup(voiceGroupIndex)
+                .getState()
+                .set((state) => {
+                    state.envelopes[currentReceivedEnvId].offset = value
+                })
         })
     }, ctrl)
     return () => nrpn.unsubscribe(ctrl, id)
@@ -161,9 +169,11 @@ function subscribeMaxLoops() {
         if (currentReceivedEnvId < 0) return
 
         withMidiReceive(() => {
-            storeForVoiceGroup(voiceGroupIndex).getState().set(state => {
-                setMaxLoops(state, currentReceivedEnvId, midiValue)
-            })
+            storeForVoiceGroup(voiceGroupIndex)
+                .getState()
+                .set((state) => {
+                    setMaxLoops(state, currentReceivedEnvId, midiValue)
+                })
         })
     }, ctrl)
     return () => cc.unsubscribe(ctrl, id)
@@ -178,9 +188,11 @@ function subscribeInvert() {
         if (value < 0) return
 
         withMidiReceive(() => {
-            storeForVoiceGroup(voiceGroupIndex).getState().set(state => {
-                setInvert(state, currentReceivedEnvId, value)
-            })
+            storeForVoiceGroup(voiceGroupIndex)
+                .getState()
+                .set((state) => {
+                    setInvert(state, currentReceivedEnvId, value)
+                })
         })
     }, ctrl)
     return () => button.unsubscribe(ctrl, id)
@@ -197,9 +209,11 @@ function subscribeButtonParam(
         if (value < 0) return
 
         withMidiReceive(() => {
-            storeForVoiceGroup(voiceGroupIndex).getState().set(state => {
-                state.envelopes[currentReceivedEnvId][field] = value
-            })
+            storeForVoiceGroup(voiceGroupIndex)
+                .getState()
+                .set((state) => {
+                    state.envelopes[currentReceivedEnvId][field] = value
+                })
         })
     }, ctrl)
     return () => button.unsubscribe(ctrl, id)
@@ -222,12 +236,12 @@ export function startEnvelopeMidiReceive() {
         subscribeButtonParam(envCtrls.RESET_ON_TRIGGER, 'resetOnTrigger'),
         subscribeButtonParam(envCtrls.RELEASE_MODE, 'releaseMode'),
         subscribeButtonParam(envCtrls.LOOP_MODE, 'loopMode'),
-        subscribeButtonParam(envCtrls.BIPOLAR, 'bipolar'),
+        subscribeButtonParam(envCtrls.BIPOLAR, 'bipolar')
     )
 }
 
 export function stopEnvelopeMidiReceive() {
-    unsubscribers.forEach(unsub => unsub())
+    unsubscribers.forEach((unsub) => unsub())
     unsubscribers = []
     currentReceivedEnvId = -1
 }

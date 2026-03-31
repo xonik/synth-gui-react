@@ -28,4 +28,3 @@ export default function useEventListener<K extends keyof WindowEventMap>(
         }
     }, [eventName, element, options])
 }
-

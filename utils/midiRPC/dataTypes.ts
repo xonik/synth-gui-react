@@ -13,10 +13,10 @@ export const KNOWN_DATATYPES = [
     'std::vector<int8_t>',
     'std::vector<int16_t>',
     'std::vector<uint8_t>',
-    'std::vector<uint16_t>'
-] as const;
-type DataTypeTuple = typeof KNOWN_DATATYPES;
-export type DataType = DataTypeTuple[number];
+    'std::vector<uint16_t>',
+] as const
+type DataTypeTuple = typeof KNOWN_DATATYPES
+export type DataType = DataTypeTuple[number]
 
 export function isDataType(value: string): value is DataType {
     return KNOWN_DATATYPES.includes(value as DataType)
@@ -29,18 +29,18 @@ export type CvDefinition = {
 }
 
 export type EnumValue = {
-    name: string,
-    value: number | undefined,
-    comment: string | undefined,
+    name: string
+    value: number | undefined
+    comment: string | undefined
 }
 
 export type EnumValueWithTargets = EnumValue & {
-    targets: string [],
-    description: string,
+    targets: string[]
+    description: string
 }
 
 export type EnumDef = {
-    name: string,
+    name: string
     comment: string | undefined
     values: EnumValue[]
 }

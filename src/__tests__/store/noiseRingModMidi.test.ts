@@ -1,18 +1,20 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.mock('../../synthcore/synthcoreMiddleware', () => ({
     synthcoreMiddleware: () => (next: any) => (action: any) => next(action),
 }))
 
+import { buttonMidiValues } from '../../midi/buttonMidiValues'
 import { button } from '../../midi/midibus'
-import { voiceGroupStores, createPatchStore } from '../../store/patchStore'
+import {
+    startNoiseRingModMidiReceive,
+    startNoiseRingModMidiSend,
+    stopNoiseRingModMidiReceive,
+    stopNoiseRingModMidiSend,
+} from '../../store/midi/noiseRingModMidi'
+import { createPatchStore, voiceGroupStores } from '../../store/patchStore'
 import noiseControllers from '../../synthcore/modules/noise/noiseControllers'
 import ringModControllers from '../../synthcore/modules/ringMod/ringModControllers'
-import { buttonMidiValues } from '../../midi/buttonMidiValues'
-import {
-    startNoiseRingModMidiReceive, stopNoiseRingModMidiReceive,
-    startNoiseRingModMidiSend, stopNoiseRingModMidiSend,
-} from '../../store/midi/noiseRingModMidi'
 
 const VG = 0
 
@@ -47,7 +49,9 @@ describe('simple button MIDI receive', () => {
         })
 
         it('sets colour to White from MIDI', () => {
-            getState().set(s => { s.noise.colour = 2 })
+            getState().set((s) => {
+                s.noise.colour = 2
+            })
             button.publish(VG, buttonMidiValues.NOISE_COLOUR_WHITE)
             expect(getState().noise.colour).toBe(0)
         })
@@ -65,7 +69,9 @@ describe('simple button MIDI receive', () => {
         })
 
         it('sets source to 1->2 from MIDI', () => {
-            getState().set(s => { s.ringMod.source = 2 })
+            getState().set((s) => {
+                s.ringMod.source = 2
+            })
             button.publish(VG, buttonMidiValues.RING_MOD_SOURCE_1_2)
             expect(getState().ringMod.source).toBe(0)
         })
@@ -73,7 +79,7 @@ describe('simple button MIDI receive', () => {
 })
 
 describe('simple button MIDI send', () => {
-    let sentValues: { ctrl: any, value: number }[] = []
+    let sentValues: { ctrl: any; value: number }[] = []
     const origSend = button.send
 
     beforeEach(() => {
@@ -91,20 +97,26 @@ describe('simple button MIDI send', () => {
     })
 
     it('sends noise colour change over MIDI', () => {
-        getState().set(s => { s.noise.colour = 1 })
+        getState().set((s) => {
+            s.noise.colour = 1
+        })
         expect(sentValues).toHaveLength(1)
         expect(sentValues[0].value).toBe(buttonMidiValues.NOISE_COLOUR_PINK)
     })
 
     it('sends ring mod source change over MIDI', () => {
-        getState().set(s => { s.ringMod.source = 2 })
+        getState().set((s) => {
+            s.ringMod.source = 2
+        })
         expect(sentValues).toHaveLength(1)
         expect(sentValues[0].value).toBe(buttonMidiValues.RING_MOD_SOURCE_VCO_2)
     })
 
     it('does not send when value unchanged', () => {
         const defaultColour = getState().noise.colour
-        getState().set(s => { s.noise.colour = defaultColour })
+        getState().set((s) => {
+            s.noise.colour = defaultColour
+        })
         expect(sentValues).toHaveLength(0)
     })
 })

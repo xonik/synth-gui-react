@@ -1,5 +1,4 @@
-export class FileNotFoundException extends Error {
-}
+export class FileNotFoundException extends Error {}
 
 export type FileTreeEntry = {
     key: string
@@ -8,14 +7,14 @@ export type FileTreeEntry = {
 }
 
 export type FileEntry = {
-    name: string,
-    keyOnDisk: string,
+    name: string
+    keyOnDisk: string
     type: 'file'
     parent?: FolderEntry
 }
 
 export type FolderEntry = {
-    name: string,
+    name: string
     type: 'folder'
     contents: (FileEntry | FolderEntry)[]
     parent?: FolderEntry

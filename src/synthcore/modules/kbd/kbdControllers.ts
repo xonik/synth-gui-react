@@ -1,7 +1,7 @@
+import { buttonMidiValues } from '../../../midi/buttonMidiValues'
 import CC from '../../../midi/mapCC'
-import { FuncProps, ControllerConfigCC, ControllerConfigButton } from '../../../midi/types'
+import type { ControllerConfigButton, ControllerConfigCC, FuncProps } from '../../../midi/types'
 import { ControllerIdDst, ControllerIdNonMod } from '../controllers/controllerIds'
-import {buttonMidiValues} from "../../../midi/buttonMidiValues";
 
 interface KbdControllers {
     props: FuncProps
@@ -18,45 +18,36 @@ const kbdControllers: KbdControllers = {
     props: { label: 'Keyboard' },
     PORTAMENTO: {
         id: ControllerIdDst.KBD_PORTAMENTO,
-        label: 'Portamento', shortLabel: 'Portam.',
+        label: 'Portamento',
+        shortLabel: 'Portam.',
         isDstDigi: true,
         type: 'pot',
-        cc: CC.KBD_PORTAMENTO
+        cc: CC.KBD_PORTAMENTO,
     },
     UNISON_DETUNE: {
         id: ControllerIdDst.KBD_UNISON_DETUNE,
         label: 'Detune',
         isDstDigi: true,
         type: 'pot',
-        cc: CC.KBD_UNISON_DETUNE
+        cc: CC.KBD_UNISON_DETUNE,
     },
     HOLD: {
         id: ControllerIdNonMod.KBD_HOLD,
         label: 'Hold',
         type: 'button',
-        values: [
-            buttonMidiValues.KBD_HOLD_OFF,
-            buttonMidiValues.KBD_HOLD_ON,
-        ],
+        values: [buttonMidiValues.KBD_HOLD_OFF, buttonMidiValues.KBD_HOLD_ON],
     },
     CHORD: {
         id: ControllerIdNonMod.KBD_CHORD,
         label: 'Chord',
         type: 'button',
-        values: [
-            buttonMidiValues.KBD_CHORD_OFF,
-            buttonMidiValues.KBD_CHORD_ON,
-        ],
+        values: [buttonMidiValues.KBD_CHORD_OFF, buttonMidiValues.KBD_CHORD_ON],
     },
     MODE: {
         id: ControllerIdNonMod.KBD_MODE,
         label: 'Mode',
         type: 'button',
-        values: [
-            buttonMidiValues.KBD_MODE_SOLO,
-            buttonMidiValues.KBD_MODE_UNISON,
-            buttonMidiValues.KBD_MODE_POLY,
-        ],
+        values: [buttonMidiValues.KBD_MODE_SOLO, buttonMidiValues.KBD_MODE_UNISON, buttonMidiValues.KBD_MODE_POLY],
     },
     TRANSPOSE: {
         id: ControllerIdNonMod.KBD_TRANSPOSE,
@@ -74,10 +65,7 @@ const kbdControllers: KbdControllers = {
         id: ControllerIdNonMod.KBD_VOICE_STEALING,
         label: 'Voice stealing',
         type: 'button',
-        values: [
-            buttonMidiValues.KBD_VOICE_STEALING_OFF,
-            buttonMidiValues.KBD_VOICE_STEALING_ON,
-        ],
+        values: [buttonMidiValues.KBD_VOICE_STEALING_OFF, buttonMidiValues.KBD_VOICE_STEALING_ON],
     },
 }
 

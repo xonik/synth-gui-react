@@ -1,13 +1,11 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 // We test the mapper logic directly by reimplementing the pure math from commonMidiApi.
 // This captures the contracts without needing Redux imports.
 
 describe('MIDI value mappers (contract tests)', () => {
-
     describe('CC mapper (7-bit)', () => {
-        const ccToValue = (midiValue: number, bipolar: boolean) =>
-            bipolar ? (midiValue - 64) / 127 : midiValue / 127
+        const ccToValue = (midiValue: number, bipolar: boolean) => (bipolar ? (midiValue - 64) / 127 : midiValue / 127)
 
         const valueToCc = (value: number, bipolar: boolean) =>
             bipolar ? Math.floor(63 * value + 64) : Math.floor(127 * value)
@@ -53,18 +51,16 @@ describe('MIDI value mappers (contract tests)', () => {
 
     describe('NRPN mapper (16-bit + 5-bit valueIndex)', () => {
         const nrpnToValue = (midiValue: number, bipolar: boolean) => {
-            const valuePart = midiValue & 0xFFFF
+            const valuePart = midiValue & 0xffff
             const valueIndex = midiValue >> 16
             const value = bipolar ? (valuePart - 32767) / 32767 : valuePart / 65535
             return { value, valueIndex }
         }
 
         const valueToNrpn = (value: number, bipolar: boolean, valueIndex?: number) => {
-            let midiValue = bipolar
-                ? Math.floor(32767 * value + 32767)
-                : Math.floor(65535 * value)
+            let midiValue = bipolar ? Math.floor(32767 * value + 32767) : Math.floor(65535 * value)
             if (valueIndex !== undefined && valueIndex >= 0 && valueIndex < 32) {
-                midiValue += (valueIndex << 16)
+                midiValue += valueIndex << 16
             }
             return midiValue
         }
@@ -120,12 +116,10 @@ describe('MIDI value mappers (contract tests)', () => {
             hiValue: (value >> 14) & 0b01111111,
         })
 
-        const decodeCorrected = (lo: number, mid: number, hi: number) =>
-            (hi << 14) + (mid << 7) + lo
+        const decodeCorrected = (lo: number, mid: number, hi: number) => (hi << 14) + (mid << 7) + lo
 
         // This is the CURRENT (buggy) decode in midibus.ts line 287
-        const decodeBuggy = (lo: number, mid: number, _hi: number) =>
-            (mid << 14) + (mid << 7) + lo
+        const decodeBuggy = (lo: number, mid: number, _hi: number) => (mid << 14) + (mid << 7) + lo
 
         it('encode/decode round-trips correctly with fixed decode', () => {
             for (const value of [0, 127, 128, 16383, 16384, 65535, 2097151]) {
@@ -149,9 +143,7 @@ describe('MIDI value mappers (contract tests)', () => {
                 const { loValue, midValue, hiValue } = encode(value)
                 expect(hiValue).toBe(0)
                 expect(midValue).toBe(0)
-                expect(decodeBuggy(loValue, midValue, hiValue)).toBe(
-                    decodeCorrected(loValue, midValue, hiValue)
-                )
+                expect(decodeBuggy(loValue, midValue, hiValue)).toBe(decodeCorrected(loValue, midValue, hiValue))
             }
         })
 

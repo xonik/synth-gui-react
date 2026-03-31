@@ -1,130 +1,143 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { SHOW_CUT } from "../../config";
+import { SHOW_CUT } from '../../config'
 
-export type Point = { x: number, y: number }
+export type Point = { x: number; y: number }
 
 interface Props {
-    onClick?: () => void;
-    knobRadius: number;
-    onIncrement?: (steps: number, stepSize: number) => void;
-    arc?: number;
+    onClick?: () => void
+    knobRadius: number
+    onIncrement?: (steps: number, stepSize: number) => void
+    arc?: number
     resolution?: number
     silver?: boolean
 }
 
 // 0 degrees is deltaX > 1, deltaY = +0
 const getAngle = (pointer: Point, center: Point) => {
-    const deltaX = pointer.x - center.x;
-    const deltaY = pointer.y - center.y;
-    return (2 * Math.PI + Math.atan(deltaY / deltaX) + (deltaX < 0 ? Math.PI : 0)) % (2 * Math.PI);
+    const deltaX = pointer.x - center.x
+    const deltaY = pointer.y - center.y
+    return (2 * Math.PI + Math.atan(deltaY / deltaX) + (deltaX < 0 ? Math.PI : 0)) % (2 * Math.PI)
 }
 
 const getValueChangeFromDiff = (angleDiff: number, ledArc: number) => {
-    const changeInDegrees = (360 * angleDiff) / (2 * Math.PI);
-    return changeInDegrees / ledArc;
+    const changeInDegrees = (360 * angleDiff) / (2 * Math.PI)
+    return changeInDegrees / ledArc
 }
 
 const distToCenter = (center: Point, pointer: Point) => {
-    const xDiff = (center.x - pointer.x);
-    const yDiff = (center.y - pointer.y);
-    return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+    const xDiff = center.x - pointer.x
+    const yDiff = center.y - pointer.y
+    return Math.sqrt(xDiff * xDiff + yDiff * yDiff)
 }
 
 const RotaryPot = ({ knobRadius, onClick, onIncrement, arc = 360, resolution = 1000, silver }: Props) => {
+    const stepSize = 1 / resolution
 
-    const stepSize = 1 / resolution;
-
-    const [center, setCenter] = useState<Point | null>(null);
-    const [previousAngle, setPreviousAngle] = useState<number | undefined>(undefined);
-    const [isDragging, setIsDragging] = useState(false);
+    const [center, setCenter] = useState<Point | null>(null)
+    const [previousAngle, setPreviousAngle] = useState<number | undefined>(undefined)
+    const [isDragging, setIsDragging] = useState(false)
 
     const svgRef = useRef<SVGCircleElement>(null)
 
     const updateCenter = useCallback(() => {
-        const bb = svgRef.current?.getBoundingClientRect();
-        let updatedCenter: { x: number, y: number };
+        const bb = svgRef.current?.getBoundingClientRect()
+        let updatedCenter: { x: number; y: number }
         if (bb) {
             updatedCenter = {
                 x: Math.round(bb.x + bb.width / 2),
-                y: Math.round(bb.y + bb.height / 2)
+                y: Math.round(bb.y + bb.height / 2),
             }
         } else {
             updatedCenter = { x: 0, y: 0 }
         }
-        setCenter(updatedCenter);
-    }, []);
+        setCenter(updatedCenter)
+    }, [])
 
-    const [accumulator, setAccumulator] = useState(0);
+    const [accumulator, setAccumulator] = useState(0)
 
-    const onMouseMove = useCallback((event: MouseEvent) => {
-        if (isDragging) {
-            if (!center) return
+    const onMouseMove = useCallback(
+        (event: MouseEvent) => {
+            if (isDragging) {
+                if (!center) return
 
-            if (distToCenter(center, { x: event.clientX, y: event.clientY }) > 20) {
-                // We won't start turning until we are a bit away from the center, that way we prevent the pot
-                // from jumping randomly if you click too close to the center and move the other way
-                const newAngle = getAngle({ x: event.clientX, y: event.clientY }, center);
-                if (previousAngle === undefined) {
-                    setPreviousAngle(newAngle);
-                    return
-                }
+                if (distToCenter(center, { x: event.clientX, y: event.clientY }) > 20) {
+                    // We won't start turning until we are a bit away from the center, that way we prevent the pot
+                    // from jumping randomly if you click too close to the center and move the other way
+                    const newAngle = getAngle({ x: event.clientX, y: event.clientY }, center)
+                    if (previousAngle === undefined) {
+                        setPreviousAngle(newAngle)
+                        return
+                    }
 
-                let angleDiff = newAngle - previousAngle
-                if (angleDiff > Math.PI) {
-                    angleDiff = angleDiff - 2 * Math.PI
-                } else if (angleDiff < -Math.PI) {
-                    angleDiff = angleDiff + 2 * Math.PI
-                }
+                    let angleDiff = newAngle - previousAngle
+                    if (angleDiff > Math.PI) {
+                        angleDiff = angleDiff - 2 * Math.PI
+                    } else if (angleDiff < -Math.PI) {
+                        angleDiff = angleDiff + 2 * Math.PI
+                    }
 
-                if (angleDiff !== 0) {
-                    setPreviousAngle(newAngle)
+                    if (angleDiff !== 0) {
+                        setPreviousAngle(newAngle)
 
-                    //  for later: event.shiftKey indicates if shift is down;
-                    const valueChange = getValueChangeFromDiff(angleDiff, arc)
+                        //  for later: event.shiftKey indicates if shift is down;
+                        const valueChange = getValueChangeFromDiff(angleDiff, arc)
 
-                    // TODO: Reset accumulator on external value change.
-                    let nextAccumulator = accumulator + valueChange;
-                    if (Math.abs(nextAccumulator) > stepSize) {
-                        const absSteps = Math.floor(Math.abs(nextAccumulator) / stepSize);
-                        const steps = valueChange > 0 ? absSteps : -absSteps;
-                        setAccumulator(nextAccumulator % stepSize);
-                        onIncrement && onIncrement(steps, stepSize);
-                    } else {
-                        setAccumulator(nextAccumulator)
+                        // TODO: Reset accumulator on external value change.
+                        const nextAccumulator = accumulator + valueChange
+                        if (Math.abs(nextAccumulator) > stepSize) {
+                            const absSteps = Math.floor(Math.abs(nextAccumulator) / stepSize)
+                            const steps = valueChange > 0 ? absSteps : -absSteps
+                            setAccumulator(nextAccumulator % stepSize)
+                            onIncrement && onIncrement(steps, stepSize)
+                        } else {
+                            setAccumulator(nextAccumulator)
+                        }
                     }
                 }
             }
-        }
-    }, [onIncrement, stepSize, accumulator, setAccumulator, center, arc, previousAngle, isDragging]);
+        },
+        [onIncrement, stepSize, accumulator, setAccumulator, center, arc, previousAngle, isDragging]
+    )
 
-    const onMouseDown = useCallback((event: React.MouseEvent<SVGCircleElement>) => {
-        updateCenter()
-        setPreviousAngle(undefined)
-        setIsDragging(true);
-        if (event.preventDefault) event.preventDefault();
-    }, [updateCenter]);
+    const onMouseDown = useCallback(
+        (event: React.MouseEvent<SVGCircleElement>) => {
+            updateCenter()
+            setPreviousAngle(undefined)
+            setIsDragging(true)
+            if (event.preventDefault) event.preventDefault()
+        },
+        [updateCenter]
+    )
 
     const onMouseUp = useCallback(() => {
-        if (isDragging) setIsDragging(false);
-    }, [isDragging]);
+        if (isDragging) setIsDragging(false)
+    }, [isDragging])
 
     // TODO: add and remove these on demand?
     useEffect(() => {
-        window.addEventListener("mousemove", onMouseMove)
-        window.addEventListener("mouseup", onMouseUp)
+        window.addEventListener('mousemove', onMouseMove)
+        window.addEventListener('mouseup', onMouseUp)
 
         return () => {
-            window.removeEventListener("mousemove", onMouseMove)
-            window.removeEventListener("mouseup", onMouseUp)
-        };
+            window.removeEventListener('mousemove', onMouseMove)
+            window.removeEventListener('mouseup', onMouseUp)
+        }
     }, [onMouseMove, onMouseUp])
 
-    return <>
-        <circle ref={svgRef} cx={0} cy={0} onClick={onClick} onMouseDown={onMouseDown}
+    return (
+        <>
+            <circle
+                ref={svgRef}
+                cx={0}
+                cy={0}
+                onClick={onClick}
+                onMouseDown={onMouseDown}
                 r={SHOW_CUT ? 6.9 / 2 : knobRadius}
-                className={silver ? 'pot-knob-silver' : 'pot-knob'}/>
-        {SHOW_CUT && <rect x={-8.5} y={-2.7/2} width="1.2" height="2.7" className="pot-key"/>}
-    </>
-};
+                className={silver ? 'pot-knob-silver' : 'pot-knob'}
+            />
+            {SHOW_CUT && <rect x={-8.5} y={-2.7 / 2} width="1.2" height="2.7" className="pot-key" />}
+        </>
+    )
+}
 
-export default RotaryPot;
+export default RotaryPot

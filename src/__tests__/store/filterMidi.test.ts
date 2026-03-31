@@ -1,19 +1,19 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.mock('../../synthcore/synthcoreMiddleware', () => ({
     synthcoreMiddleware: () => (next: any) => (action: any) => next(action),
 }))
 
-import { cc, button } from '../../midi/midibus'
-import { voiceGroupStores, createPatchStore } from '../../store/patchStore'
-import filtersControllers from '../../synthcore/modules/filters/filtersControllers'
 import { buttonMidiValues } from '../../midi/buttonMidiValues'
+import { button, cc } from '../../midi/midibus'
 import {
-    startFilterMidiSend,
-    stopFilterMidiSend,
     startFilterMidiReceive,
+    startFilterMidiSend,
     stopFilterMidiReceive,
+    stopFilterMidiSend,
 } from '../../store/midi/filterMidi'
+import { createPatchStore, voiceGroupStores } from '../../store/patchStore'
+import filtersControllers from '../../synthcore/modules/filters/filtersControllers'
 
 const VG = 0
 
@@ -73,8 +73,8 @@ describe('filter MIDI receive', () => {
 })
 
 describe('filter MIDI send', () => {
-    let sentCC: { ccNum: number, value: number }[] = []
-    let sentButtons: { ctrl: any, value: number }[] = []
+    let sentCC: { ccNum: number; value: number }[] = []
+    let sentButtons: { ctrl: any; value: number }[] = []
     const origCCSend = cc.send
     const origButtonSend = button.send
 
@@ -98,34 +98,44 @@ describe('filter MIDI send', () => {
     })
 
     it('sends LPF cutoff as CC', () => {
-        getState().set(s => { s.filters[0].cutoff = 0.6 })
-        const sent = sentCC.find(s => s.ccNum === filtersControllers.LPF.CUTOFF.cc)
+        getState().set((s) => {
+            s.filters[0].cutoff = 0.6
+        })
+        const sent = sentCC.find((s) => s.ccNum === filtersControllers.LPF.CUTOFF.cc)
         expect(sent).toBeDefined()
         expect(sent!.value).toBe(Math.floor(127 * 0.6))
     })
 
     it('sends SVF input as CC', () => {
-        getState().set(s => { s.filters[1].input = 0.8 })
-        const sent = sentCC.find(s => s.ccNum === filtersControllers.SVF.INPUT.cc)
+        getState().set((s) => {
+            s.filters[1].input = 0.8
+        })
+        const sent = sentCC.find((s) => s.ccNum === filtersControllers.SVF.INPUT.cc)
         expect(sent).toBeDefined()
         expect(sent!.value).toBe(Math.floor(127 * 0.8))
     })
 
     it('sends LPF filter type as button MIDI', () => {
-        getState().set(s => { s.filters[0].filterType = 1 })
-        const sent = sentButtons.find(s => s.value === buttonMidiValues.LPF_FILTER_TYPE_LADDER)
+        getState().set((s) => {
+            s.filters[0].filterType = 1
+        })
+        const sent = sentButtons.find((s) => s.value === buttonMidiValues.LPF_FILTER_TYPE_LADDER)
         expect(sent).toBeDefined()
     })
 
     it('sends SVF invert as button MIDI', () => {
-        getState().set(s => { s.filters[1].invert = 1 })
-        const sent = sentButtons.find(s => s.value === buttonMidiValues.SVF_INVERT_ON)
+        getState().set((s) => {
+            s.filters[1].invert = 1
+        })
+        const sent = sentButtons.find((s) => s.value === buttonMidiValues.SVF_INVERT_ON)
         expect(sent).toBeDefined()
     })
 
     it('does not send when value unchanged', () => {
         const defaultCutoff = getState().filters[0].cutoff
-        getState().set(s => { s.filters[0].cutoff = defaultCutoff })
-        expect(sentCC.find(s => s.ccNum === filtersControllers.LPF.CUTOFF.cc)).toBeUndefined()
+        getState().set((s) => {
+            s.filters[0].cutoff = defaultCutoff
+        })
+        expect(sentCC.find((s) => s.ccNum === filtersControllers.LPF.CUTOFF.cc)).toBeUndefined()
     })
 })

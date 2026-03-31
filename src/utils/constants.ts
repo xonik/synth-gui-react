@@ -1,4 +1,3 @@
-
 // refreshes per second
 export const DAC_REFRESH_RATE = 12000
 export const LFO_REFRESHES_PER_UNIT = 32

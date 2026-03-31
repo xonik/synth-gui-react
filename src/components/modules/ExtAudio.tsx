@@ -1,17 +1,18 @@
-import Header from '../misc/Header';
+import Header from '../misc/Header'
 
 interface Props {
-    x: number,
+    x: number
     y: number
 }
 
 const ExtAudio = ({ x, y }: Props) => {
+    const row1 = y
 
-    const row1 = y;
+    return (
+        <>
+            <Header label="Ext audio" x={x} y={row1} width={175} />
+        </>
+    )
+}
 
-    return <>
-        <Header label="Ext audio" x={x} y={row1} width={175}/>
-    </>;
-};
-
-export default ExtAudio;
+export default ExtAudio
