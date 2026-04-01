@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { sharedConfig } from '@/sharedConfig'
 import { CvOverrides } from './CvOverrides'
 import { CvRange } from './CvRange'
+import { MidiSettings } from './MidiSettings'
 import { SettingsButtons } from './SettingsButtons'
 import { Trimmers } from './Trimmers'
 import './Settings.scss'
@@ -36,6 +37,9 @@ const Settings = () => {
         case 'Settings':
             content = <SettingsButtons voice={voice} />
             break
+        case 'Midi':
+            content = <MidiSettings />
+            break
         default:
             content = null
     }
@@ -43,17 +47,20 @@ const Settings = () => {
     return (
         <div className="settings">
             <div className="settings-menu-row">
-                <div className="settings-menu-item" onClick={() => handleSelect('Trimmers')}>
+                <div className={`settings-menu-item${selected === 'Trimmers' ? ' active' : ''}`} onClick={() => handleSelect('Trimmers')}>
                     Trimmers
                 </div>
-                <div className="settings-menu-item" onClick={() => handleSelect('Overrides')}>
+                <div className={`settings-menu-item${selected === 'Overrides' ? ' active' : ''}`} onClick={() => handleSelect('Overrides')}>
                     Overrides
                 </div>
-                <div className="settings-menu-item" onClick={() => handleSelect('Ranges')}>
+                <div className={`settings-menu-item${selected === 'Ranges' ? ' active' : ''}`} onClick={() => handleSelect('Ranges')}>
                     Ranges
                 </div>
-                <div className="settings-menu-item" onClick={() => handleSelect('Settings')}>
+                <div className={`settings-menu-item${selected === 'Settings' ? ' active' : ''}`} onClick={() => handleSelect('Settings')}>
                     Settings
+                </div>
+                <div className={`settings-menu-item${selected === 'Midi' ? ' active' : ''}`} onClick={() => handleSelect('Midi')}>
+                    Midi
                 </div>
                 <select
                     className="settings-menu-voices"

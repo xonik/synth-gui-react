@@ -33,6 +33,55 @@ midibus.ts:191 {key: '1055775126', value: MIDIInput}
 midibus.ts:192 {key: '-746118775', value: MIDIOutput}
 midibus.ts:192 {key: '347087974', value: MIDIOutput}
  */
+export const MIDI_SELECTED_KEY = 'midi_selected_ids'
+
+type MidiSelectedIds = {
+    inputId: string | null
+    outputId: string | null
+}
+
+const loadSavedMidiIds = (): MidiSelectedIds => {
+    try {
+        const saved = localStorage.getItem(MIDI_SELECTED_KEY)
+        if (saved) return JSON.parse(saved)
+    } catch {}
+    return { inputId: null, outputId: null }
+}
+
+let storedMidiAccess: MIDIAccess | undefined
+
+export const getAvailableMidiInterfaces = () => {
+    if (!storedMidiAccess) return { inputs: [] as MIDIInput[], outputs: [] as MIDIOutput[] }
+    return {
+        inputs: Array.from(storedMidiAccess.inputs.values()),
+        outputs: Array.from(storedMidiAccess.outputs.values()),
+    }
+}
+
+export const getActiveMidiIds = () => ({
+    inputId: midiIn?.id ?? null,
+    outputId: midiOut?.id ?? null,
+})
+
+export const applyMidiSelection = (inputId: string | null, outputId: string | null) => {
+    if (!storedMidiAccess) return
+    if (inputId && storedMidiAccess.inputs.has(inputId)) {
+        midiIn = storedMidiAccess.inputs.get(inputId)
+        if (midiIn) midiIn.onmidimessage = receiveMidiMessage
+        console.log('Selected midi input', midiIn?.name)
+    } else {
+        midiIn = undefined
+        console.log('Selected midi input: none')
+    }
+    if (outputId && storedMidiAccess.outputs.has(outputId)) {
+        midiOut = storedMidiAccess.outputs.get(outputId)
+        console.log('Selected midi output', midiOut?.name)
+    } else {
+        midiOut = undefined
+        console.log('Selected midi output: none')
+    }
+}
+
 const midiConfig = {
     inputIds: [
         '-213316575', // Akai MPK25 Port 1/A
@@ -288,6 +337,7 @@ export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
 
 const updateSelectedMidi = async (midiAccess: MIDIAccess) => {
     console.log('UPDATING MIDI CONFIG')
+    storedMidiAccess = midiAccess
     midiAccess.inputs.forEach((value, key) => {
         console.log({ key, value })
     })
@@ -295,8 +345,17 @@ const updateSelectedMidi = async (midiAccess: MIDIAccess) => {
         console.log({ key, value })
     })
 
-    const foundInputId = midiConfig.inputIds.find((id) => midiAccess.inputs.has(id))
-    const foundOutputId = midiConfig.outputIds.find((id) => midiAccess.outputs.has(id))
+    const saved = loadSavedMidiIds()
+
+    const foundInputId =
+        saved.inputId && midiAccess.inputs.has(saved.inputId)
+            ? saved.inputId
+            : midiConfig.inputIds.find((id) => midiAccess.inputs.has(id))
+
+    const foundOutputId =
+        saved.outputId && midiAccess.outputs.has(saved.outputId)
+            ? saved.outputId
+            : midiConfig.outputIds.find((id) => midiAccess.outputs.has(id))
 
     if (foundInputId) {
         midiIn = midiAccess.inputs.get(foundInputId)
