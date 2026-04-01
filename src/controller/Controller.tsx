@@ -1,4 +1,4 @@
-import { ScreenId, useUiStore } from '../store/uiStore'
+import { ScreenId, useUiStore } from '@/store'
 import { DisplayButtons } from './components/DisplayButtons'
 import Env from './envelopes/Env'
 import LFO from './lfos/LFO'

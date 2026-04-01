@@ -1,4 +1,4 @@
-import { rotateAround } from '../../../utils/svg/rotateAround'
+import { rotateAround } from '@/utils/svg/rotateAround'
 import { SawRight } from '../../images/SawRight'
 import { Square } from '../../images/Square'
 import { Triangle } from '../../images/Triangle'

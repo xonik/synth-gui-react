@@ -50,7 +50,7 @@ export const useDrag = (
         if (isDragging) {
             setIsDragging(false)
         }
-    }, [isDragging, setIsDragging])
+    }, [isDragging])
 
     const onMouseDown = useCallback(
         (event: React.MouseEvent<HTMLElement>) => {

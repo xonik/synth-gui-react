@@ -1,7 +1,7 @@
-import { button, nrpn } from '../../midi/midibus'
-import type { ControllerConfigButton } from '../../midi/types'
+import { button, nrpn } from '@/midi/midibus'
+import type { ControllerConfigButton } from '@/midi/types'
+import { globalStore } from '@/store'
 import arpControllers from '../../synthcore/modules/arp/arpControllers'
-import { globalStore } from '../globalStore'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
 
 interface ButtonMapping {
@@ -92,6 +92,8 @@ export function startArpMidiReceive() {
 }
 
 export function stopArpMidiReceive() {
-    receiveUnsubscribers.forEach((unsub) => unsub())
+    receiveUnsubscribers.forEach((unsub) => {
+        unsub()
+    })
     receiveUnsubscribers = []
 }

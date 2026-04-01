@@ -379,24 +379,28 @@ export const RoundButtonBase = (props: Props & Config) => {
 
     // multiple leds for multi-state led buttons are simulated by blinking the led on the button
     const modes = props.ledModes || ctrl?.values?.length || 2
-    let ledButtonStyle
-    if (ledButton) {
-        if (radioButtonIndex !== undefined) {
-            if (ledOn[0]) {
-                ledButtonStyle = 'button-cap-led__on'
+
+    function getLedButtonStyle() {
+        if (ledButton) {
+            if (radioButtonIndex !== undefined) {
+                if (ledOn[0]) {
+                    return 'button-cap-led__on'
+                } else {
+                    return 'button-cap-led'
+                }
             } else {
-                ledButtonStyle = 'button-cap-led'
-            }
-        } else {
-            if (ledOnIndex === -1) {
-                ledButtonStyle = 'button-cap-led'
-            } else if (ledOnIndex === modes - 2) {
-                ledButtonStyle = 'button-cap-led__on'
-            } else {
-                ledButtonStyle = `button-cap-led__on-blink-${ledOnIndex}`
+                if (ledOnIndex === -1) {
+                    return 'button-cap-led'
+                } else if (ledOnIndex === modes - 2) {
+                    return 'button-cap-led__on'
+                } else {
+                    return `button-cap-led__on-blink-${ledOnIndex}`
+                }
             }
         }
     }
+
+    const ledButtonStyle = getLedButtonStyle()
 
     return (
         <svg x={x} y={y} className="button">
@@ -423,7 +427,7 @@ export const RoundButtonBase = (props: Props & Config) => {
                 </text>
             )}
             {ledPos.map((position, index) => (
-                <Fragment key={index}>
+                <Fragment key={`${position.x}-${position.y}`}>
                     {!SHOW_CUT && ledRingColors && ledRingColors.length > index && (
                         <circle cx={position.x} cy={position.y} r={ledRadius + 1} fill={ledRingColors[index]} />
                     )}

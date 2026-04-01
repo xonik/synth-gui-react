@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
-import { useUiStore } from '../../store/uiStore'
-import { setVoiceGroupIndex } from '../../synthcore/modules/voices/currentVoiceGroupIndex'
+import { useUiStore } from '@/store'
+import { setVoiceGroupIndex } from '@/synthcore/modules/voices/currentVoiceGroupIndex'
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
 import type { ModuleProps } from './types'
 
@@ -33,6 +33,7 @@ const VoiceSelector = ({ x, y, width }: ModuleProps) => {
     return (
         <>
             {Array.from({ length: 8 }, (_, i) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: Index will always be the same as it is generated right here
                 <VoiceButton key={i} x={offsetX + buttonDistance * i} y={buttonRow} index={i} label={`${i + 1}`} />
             ))}
         </>

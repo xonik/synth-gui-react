@@ -6,8 +6,8 @@
  * Handles all 3 oscillators: DCO1 (index 0), DCO2 (index 1), VCO (index 2).
  */
 
-import { button, cc } from '../../midi/midibus'
-import type { ControllerConfigButton, ControllerConfigCC } from '../../midi/types'
+import { button, cc } from '@/midi/midibus'
+import type { ControllerConfigButton, ControllerConfigCC } from '@/midi/types'
 import oscControllers from '../../synthcore/modules/osc/oscControllers'
 import { type OscillatorState, voiceGroupStores } from '../patchStore'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
@@ -119,7 +119,9 @@ export function startOscMidiSend() {
 }
 
 export function stopOscMidiSend() {
-    sendUnsubscribers.forEach((unsub) => unsub())
+    sendUnsubscribers.forEach((unsub) => {
+        unsub()
+    })
     sendUnsubscribers = []
 }
 
@@ -154,6 +156,8 @@ export function startOscMidiReceive() {
 }
 
 export function stopOscMidiReceive() {
-    receiveUnsubscribers.forEach((unsub) => unsub())
+    receiveUnsubscribers.forEach((unsub) => {
+        unsub()
+    })
     receiveUnsubscribers = []
 }

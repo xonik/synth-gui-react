@@ -6,12 +6,12 @@
  * which handles env select, NRPN encoding, CC encoding, etc.
  */
 
-import { envCtrls } from '../../synthcore/modules/env/envControllers'
-import { envParamSend } from '../../synthcore/modules/env/envMidiApi'
-import { NUMBER_OF_ENVELOPES, StageId } from '../../synthcore/modules/env/types'
-import { ApiSource } from '../../synthcore/types'
+import { type EnvelopeState, voiceGroupStores } from '@/store'
+import { envCtrls } from '@/synthcore/modules/env/envControllers'
+import { envParamSend } from '@/synthcore/modules/env/envMidiApi'
+import { NUMBER_OF_ENVELOPES, StageId } from '@/synthcore/modules/env/types'
+import { ApiSource } from '@/synthcore/types'
 import { STAGE_NAMES, type StageName } from '../modules/envActions'
-import { type EnvelopeState, voiceGroupStores } from '../patchStore'
 import { isMidiReceiving } from './midiGuard'
 
 const STAGE_NAME_TO_ID: Record<StageName, StageId> = {
@@ -251,6 +251,8 @@ export function startEnvelopeMidiSend() {
 }
 
 export function stopEnvelopeMidiSend() {
-    unsubscribers.forEach((unsub) => unsub())
+    unsubscribers.forEach((unsub) => {
+        unsub()
+    })
     unsubscribers = []
 }

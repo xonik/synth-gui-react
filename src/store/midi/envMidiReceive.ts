@@ -6,11 +6,12 @@
  * in envApi.ts, but writes to Zustand instead of Redux.
  */
 
-import { button, cc, nrpn } from '../../midi/midibus'
-import type { ControllerConfigNRPN } from '../../midi/types'
-import { envCtrls } from '../../synthcore/modules/env/envControllers'
-import { curveValuesUsed } from '../../synthcore/modules/env/generatedTypes'
-import { StageId } from '../../synthcore/modules/env/types'
+import { button, cc, nrpn } from '@/midi/midibus'
+import type { ControllerConfigNRPN } from '@/midi/types'
+import { voiceGroupStores } from '@/store'
+import { envCtrls } from '@/synthcore/modules/env/envControllers'
+import { curveValuesUsed } from '@/synthcore/modules/env/generatedTypes'
+import { StageId } from '@/synthcore/modules/env/types'
 import {
     type StageName,
     setInvert,
@@ -20,7 +21,6 @@ import {
     setStageLevel,
     setStageTime,
 } from '../modules/envActions'
-import { voiceGroupStores } from '../patchStore'
 import { withMidiReceive } from './midiGuard'
 
 const STAGE_ID_TO_NAME: Record<number, StageName> = {
@@ -241,7 +241,9 @@ export function startEnvelopeMidiReceive() {
 }
 
 export function stopEnvelopeMidiReceive() {
-    unsubscribers.forEach((unsub) => unsub())
+    unsubscribers.forEach((unsub) => {
+        unsub()
+    })
     unsubscribers = []
     currentReceivedEnvId = -1
 }

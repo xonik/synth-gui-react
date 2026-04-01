@@ -1,7 +1,7 @@
-import { button, cc } from '../../midi/midibus'
-import type { ControllerConfigButton, ControllerConfigCC } from '../../midi/types'
+import { button, cc } from '@/midi/midibus'
+import type { ControllerConfigButton, ControllerConfigCC } from '@/midi/types'
+import { type VoiceGroupPatch, voiceGroupStores } from '@/store'
 import commonFxControllers from '../../synthcore/modules/commonFx/commonFxControllers'
-import { type VoiceGroupPatch, voiceGroupStores } from '../patchStore'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
 
 interface CCMapping {
@@ -199,7 +199,9 @@ export function startCommonFxMidiSend() {
 }
 
 export function stopCommonFxMidiSend() {
-    sendUnsubscribers.forEach((unsub) => unsub())
+    sendUnsubscribers.forEach((unsub) => {
+        unsub()
+    })
     sendUnsubscribers = []
 }
 
@@ -235,6 +237,8 @@ export function startCommonFxMidiReceive() {
 }
 
 export function stopCommonFxMidiReceive() {
-    receiveUnsubscribers.forEach((unsub) => unsub())
+    receiveUnsubscribers.forEach((unsub) => {
+        unsub()
+    })
     receiveUnsubscribers = []
 }

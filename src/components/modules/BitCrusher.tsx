@@ -1,4 +1,4 @@
-import { useButton, usePot } from '../../store/hooks'
+import { useButton, usePot } from '@/store'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import Header from '../misc/Header'
 import RotaryPot12 from '../pots/RotaryPot12'

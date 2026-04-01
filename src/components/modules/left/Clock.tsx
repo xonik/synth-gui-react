@@ -1,5 +1,5 @@
-import { POT_DISTANCE_L, POT_DISTANCE_M, POT_OFFSET_Y } from '../../../constants'
-import { useGlobalButton, useGlobalPot } from '../../../store/hooks'
+import { POT_DISTANCE_L, POT_DISTANCE_M, POT_OFFSET_Y } from '@/constants'
+import { useGlobalButton, useGlobalPot } from '@/store/hooks'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { ModuleBorder } from '../../misc/ModuleBorder'
 import SubHeader from '../../misc/SubHeader'

@@ -1,8 +1,8 @@
-import { button } from '../../midi/midibus'
-import type { ControllerConfigButton } from '../../midi/types'
+import { button } from '@/midi/midibus'
+import type { ControllerConfigButton } from '@/midi/types'
+import { voiceGroupStores } from '@/store'
 import noiseControllers from '../../synthcore/modules/noise/noiseControllers'
 import ringModControllers from '../../synthcore/modules/ringMod/ringModControllers'
-import { voiceGroupStores } from '../patchStore'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
 
 function sendButton(voiceGroupIndex: number, ctrl: ControllerConfigButton, value: number) {
@@ -64,7 +64,9 @@ export function startNoiseRingModMidiSend() {
 }
 
 export function stopNoiseRingModMidiSend() {
-    sendUnsubscribers.forEach((unsub) => unsub())
+    sendUnsubscribers.forEach((unsub) => {
+        unsub()
+    })
     sendUnsubscribers = []
 }
 
@@ -82,6 +84,8 @@ export function startNoiseRingModMidiReceive() {
 }
 
 export function stopNoiseRingModMidiReceive() {
-    receiveUnsubscribers.forEach((unsub) => unsub())
+    receiveUnsubscribers.forEach((unsub) => {
+        unsub()
+    })
     receiveUnsubscribers = []
 }

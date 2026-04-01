@@ -5,10 +5,10 @@ import {
     POT_DISTANCE_S,
     POT_OFFSET_Y,
     ROW_HEIGHT,
-} from '../../../constants'
-import { useButton, usePot } from '../../../store/hooks'
-import type { VoiceGroupPatch } from '../../../store/patchStore'
-import { dbLevelResponseMapper } from '../../../synthcore/modules/common/responseMappers'
+} from '@/constants'
+import type { VoiceGroupPatch } from '@/store'
+import { useButton, usePot } from '@/store'
+import { dbLevelResponseMapper } from '@/synthcore/modules/common/responseMappers'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { ModuleBorder } from '../../misc/ModuleBorder'
 import SubHeader from '../../misc/SubHeader'

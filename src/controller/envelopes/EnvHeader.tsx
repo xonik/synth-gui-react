@@ -1,7 +1,7 @@
 import CtrlHeader from '@/controller/components/CtrlHeader'
-import { useUiStore } from '../../store'
-import { useEnvStages } from '../../store/modules/useEnvelope'
-import { StageId } from '../../synthcore/modules/env/types'
+import { useUiStore } from '@/store'
+import { useEnvStages } from '@/store/modules/useEnvelope'
+import { StageId } from '@/synthcore/modules/env/types'
 import { stageNames } from './utils'
 import '../components/CtrlHeader.scss'
 

@@ -1,5 +1,5 @@
-import { BUTTON_DISTANCE_S, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from '../../../constants'
-import { useButton, usePot } from '../../../store/hooks'
+import { BUTTON_DISTANCE_S, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from '@/constants'
+import { useButton, usePot } from '@/store'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import Display from '../../misc/Display'
 import { ModuleBorder } from '../../misc/ModuleBorder'

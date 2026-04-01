@@ -1,6 +1,5 @@
 import { useCallback } from 'react'
-import { useVoiceGroupStore, voiceGroupStores } from '../../store/patchStore'
-import { useUiStore } from '../../store/uiStore'
+import { useUiStore, useVoiceGroupStore, voiceGroupStores } from '@/store'
 import Button from '../components/Button'
 import { CtrlOptions } from '../components/CtrlOptions'
 

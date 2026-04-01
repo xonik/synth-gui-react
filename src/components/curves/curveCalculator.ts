@@ -1,8 +1,8 @@
 // All functions are rising between 0, 0 and 1, 1
 
 import { curveNames } from '@/components/curves/shortCurveNames'
-import type { ControllerConfig } from '../../midi/types'
-import { Curve } from '../../synthcore/generatedTypes'
+import type { ControllerConfig } from '@/midi/types'
+import { Curve } from '@/synthcore/generatedTypes'
 
 export const exponentialFunc = (sharpness: number) => {
     const a = 1 / (Math.exp(sharpness) - 1)

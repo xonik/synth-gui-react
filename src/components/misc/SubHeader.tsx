@@ -46,7 +46,7 @@ const SubHeader = ({
     const paddingRight = padding !== 'left' ? BORDER_MARGIN : 0
 
     let labelPosition: PositionAlign
-    let labelCenter
+    let labelCenter: number
 
     if (isNumeric(inputLabelPos)) {
         labelPosition = 'center'
@@ -96,12 +96,15 @@ const getLabelBackground = (x: number, y: number, labelWidth: number, center: nu
     const leftOffset = labelPosition === 'left' ? 0 : -offset
     const rightOffset = labelPosition === 'right' ? 0 : offset
 
-    let mapper
-    if (labelPosition === 'left') {
-        mapper = ([x0, y0]: Array<number>) => [x + BORDER_MARGIN + x0, y + BORDER_MARGIN + y0]
-    } else {
-        mapper = ([x0, y0]: Array<number>) => [center - labelWidth / 2 + x0, y + BORDER_MARGIN + y0]
+    function getLabelPositionMapper() {
+        if (labelPosition === 'left') {
+            return ([x0, y0]: Array<number>) => [x + BORDER_MARGIN + x0, y + BORDER_MARGIN + y0]
+        } else {
+            return ([x0, y0]: Array<number>) => [center - labelWidth / 2 + x0, y + BORDER_MARGIN + y0]
+        }
     }
+
+    const mapper = getLabelPositionMapper()
 
     return [
         [leftOffset, 0],

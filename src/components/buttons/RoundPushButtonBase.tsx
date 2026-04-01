@@ -1,4 +1,4 @@
-import { SHOW_CUT } from '../../config'
+import { SHOW_CUT } from '@/config'
 import './RoundButton.scss'
 
 interface Props {

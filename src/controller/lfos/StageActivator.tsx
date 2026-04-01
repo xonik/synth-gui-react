@@ -1,8 +1,7 @@
 import { CtrlOptions } from '@/controller/components/CtrlOptions'
-import { isLfoStageToggleable, LFO_STAGE_NAMES } from '../../store/modules/lfoActions'
-import { useLfoStageToggle } from '../../store/modules/useLfo'
-import { useVoiceGroupStore } from '../../store/patchStore'
-import { useUiStore } from '../../store/uiStore'
+import { useUiStore, useVoiceGroupStore } from '@/store'
+import { isLfoStageToggleable, LFO_STAGE_NAMES } from '@/store/modules/lfoActions'
+import { useLfoStageToggle } from '@/store/modules/useLfo'
 import Button from '../components/Button'
 
 interface Props {

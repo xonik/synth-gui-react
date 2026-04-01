@@ -1,9 +1,8 @@
 import classNames from 'classnames'
 import { forwardRef, useCallback, useContext, useEffect, useRef, useState } from 'react'
-import { useVoiceGroupStore } from '../../store/patchStore'
-import { useUiStore } from '../../store/uiStore'
-import { digitalModSources, modDst } from '../../synthcore/modules/mods/utils'
-import type { Point } from '../../utils/types'
+import { useUiStore, useVoiceGroupStore } from '@/store'
+import { digitalModSources, modDst } from '@/synthcore/modules/mods/utils'
+import type { Point } from '@/utils/types'
 import { ScrollingSyncNodeContext } from '../utils/scrollsync/ScrollSyncNode'
 import AmountBar from './AmountBar'
 import type { DraggableElementProps } from './types'
@@ -59,6 +58,8 @@ const AmountCell = ({ sourceIndex, funcIndex, funcCtrlIndex, paramIndex, sourceI
 
     const cellRef = useRef<HTMLDivElement>(null)
 
+    // TODO: Claude fix - is it a problem to add onSelected here?
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
         if (isSelectedCell && cellRef.current) {
             const { offsetWidth, offsetLeft } = cellRef.current
@@ -108,10 +109,11 @@ const AmountsRow = ({ sourceId, sourceIndex }: RowProps) => {
     return (
         <div className="mod-ctrl__dsts" ref={ref}>
             {dstGroup.map((func, funcIndex) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: group ordering won't change and we currently don't have an id anyway
                 <div className="mod-ctrl__amount-group" key={funcIndex}>
                     {func.map((dstParam, paramIndex) => (
                         <AmountCell
-                            key={paramIndex}
+                            key={dstParam.id}
                             sourceIndex={sourceIndex}
                             funcIndex={funcIndex}
                             funcCtrlIndex={modDst.funcProps[dstGroupId][funcIndex].ctrlIndex || 0}
@@ -131,7 +133,7 @@ const AmountsTable = forwardRef<HTMLDivElement, DraggableElementProps>(({ onMous
     return (
         <div className="mod-ctrl__amounts" ref={tableRef} onMouseDown={onMouseDown} onMouseMove={onMouseMove}>
             {digitalModSources.map((source, sourceIndex) => (
-                <AmountsRow key={sourceIndex} sourceIndex={sourceIndex} sourceId={source.id} />
+                <AmountsRow key={source.id} sourceIndex={sourceIndex} sourceId={source.id} />
             ))}
         </div>
     )

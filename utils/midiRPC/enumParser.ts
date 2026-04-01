@@ -62,7 +62,7 @@ type EnumStart = {
 
 export const findEnums = (lines: string[]) => {
     let insideEnum = false
-    let enumStart
+    let enumStart: EnumStart | undefined
     let enumValues: EnumValue[] = []
     let enums: EnumDef[] = []
     for (let i = 0; i < lines.length; i++) {

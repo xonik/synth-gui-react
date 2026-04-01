@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import type { TextAnchor } from '../../types'
+import type { TextAnchor } from '@/types'
 import './Led.scss'
 
 type LabelPosition = 'left' | 'right' | 'top' | 'bottom' | undefined

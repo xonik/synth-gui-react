@@ -103,7 +103,7 @@ export const button = {
         if (loopback) {
             button.publish(voiceGroupIndex, value)
         }
-        if (true || midiOut) {
+        if (midiOut) {
             // serialize value - button value is split across multiple CCs so
             // we need to pick the correct one.
             const buttonMidiCC = buttonCCs[Math.floor(value / 128)]
@@ -288,8 +288,12 @@ export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
 
 const updateSelectedMidi = async (midiAccess: MIDIAccess) => {
     console.log('UPDATING MIDI CONFIG')
-    midiAccess.inputs.forEach((value, key) => console.log({ key, value }))
-    midiAccess.outputs.forEach((value, key) => console.log({ key, value }))
+    midiAccess.inputs.forEach((value, key) => {
+        console.log({ key, value })
+    })
+    midiAccess.outputs.forEach((value, key) => {
+        console.log({ key, value })
+    })
 
     const foundInputId = midiConfig.inputIds.find((id) => midiAccess.inputs.has(id))
     const foundOutputId = midiConfig.outputIds.find((id) => midiAccess.outputs.has(id))

@@ -1,5 +1,5 @@
 import CtrlHeader from '@/controller/components/CtrlHeader'
-import { useUiStore } from '../../store/uiStore'
+import { useUiStore } from '@/store'
 import '../components/CtrlHeader.scss'
 
 const LfoHeader = () => {

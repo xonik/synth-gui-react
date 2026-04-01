@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
-import { getCurveFunc } from '../../components/curves/curveCalculator'
-import { type DisplayStage, useEnvParam, useEnvStages } from '../../store/modules/useEnvelope'
-import { envCtrls } from '../../synthcore/modules/env/envControllers'
-import { StageId } from '../../synthcore/modules/env/types'
-import type { Point } from '../../utils/types'
+import { getCurveFunc } from '@/components/curves/curveCalculator'
+import { type DisplayStage, useEnvParam, useEnvStages } from '@/store/modules/useEnvelope'
+import { envCtrls } from '@/synthcore/modules/env/envControllers'
+import { StageId } from '@/synthcore/modules/env/types'
+import type { Point } from '@/utils/types'
 import { getPoints } from './utils'
 
 export type StageBackground = {

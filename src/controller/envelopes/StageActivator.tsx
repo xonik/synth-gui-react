@@ -1,7 +1,7 @@
 import { CtrlOptions } from '@/controller/components/CtrlOptions'
-import type { StageName } from '../../store/modules/envActions'
-import { useEnvStages, useEnvStageToggle } from '../../store/modules/useEnvelope'
-import { StageId } from '../../synthcore/modules/env/types'
+import type { StageName } from '@/store/modules/envActions'
+import { useEnvStages, useEnvStageToggle } from '@/store/modules/useEnvelope'
+import { StageId } from '@/synthcore/modules/env/types'
 import Button from '../components/Button'
 import { stageNames } from './utils'
 

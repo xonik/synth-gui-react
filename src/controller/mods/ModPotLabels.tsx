@@ -1,6 +1,5 @@
-import { useVoiceGroupStore } from '../../store/patchStore'
-import { useUiStore } from '../../store/uiStore'
-import { digitalModSources, modDst } from '../../synthcore/modules/mods/utils'
+import { useUiStore, useVoiceGroupStore } from '@/store'
+import { digitalModSources, modDst } from '@/synthcore/modules/mods/utils'
 import '../components/PotLabels.scss'
 
 const ModPotLabels = () => {
@@ -33,14 +32,14 @@ const ModPotLabels = () => {
         <div className="pot-labels pot-labels--two-rows">
             <div className="pot-labels__row">
                 {values.map((value, index) => (
-                    <div key={index} className="pot-labels__label">
+                    <div key={labels[index]} className="pot-labels__label">
                         {value}
                     </div>
                 ))}
             </div>
             <div className="pot-labels__row">
-                {labels.map((label, index) => (
-                    <div key={index} className="pot-labels__label">
+                {labels.map((label) => (
+                    <div key={label} className="pot-labels__label">
                         {label}
                     </div>
                 ))}

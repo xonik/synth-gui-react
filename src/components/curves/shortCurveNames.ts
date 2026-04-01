@@ -1,5 +1,5 @@
-import type { ControllerConfig } from '../../midi/types'
-import { Curve } from '../../synthcore/generatedTypes'
+import type { ControllerConfig } from '@/midi/types'
+import { Curve } from '@/synthcore/generatedTypes'
 
 export const getCurveName = (ctrl: ControllerConfig, curveIndex: number) => {
     const curve: Curve = ctrl.values?.[curveIndex] || 0

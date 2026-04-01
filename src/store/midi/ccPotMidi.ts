@@ -1,6 +1,6 @@
-import { cc } from '../../midi/midibus'
-import type { ControllerConfigCC } from '../../midi/types'
-import { type VoiceGroupPatch, voiceGroupStores } from '../patchStore'
+import { cc } from '@/midi/midibus'
+import type { ControllerConfigCC } from '@/midi/types'
+import { type VoiceGroupPatch, voiceGroupStores } from '@/store'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
 
 export interface CCPotMapping {
@@ -56,7 +56,9 @@ export function createCCPotMidiSend(mappings: CCPotMapping[]) {
     }
 
     function stop() {
-        unsubscribers.forEach((unsub) => unsub())
+        unsubscribers.forEach((unsub) => {
+            unsub()
+        })
         unsubscribers = []
     }
 
@@ -85,7 +87,9 @@ export function createCCPotMidiReceive(mappings: CCPotMapping[]) {
     }
 
     function stop() {
-        unsubscribers.forEach((unsub) => unsub())
+        unsubscribers.forEach((unsub) => {
+            unsub()
+        })
         unsubscribers = []
     }
 

@@ -11,9 +11,9 @@ const CtrlHeader = ({ leftOptionsLabel, centerLabels, rightOptionsLabel }: Props
         <div className="ctrl-header">
             <div className="ctrl-header__label ctrl-header__label--left">{leftOptionsLabel}</div>
             <div className="ctrl-header__stages">
-                {centerLabels.map((centerLabel, index) => {
+                {centerLabels.map((centerLabel) => {
                     return (
-                        <div key={`centerHeading${index}`} className="ctrl-header__stages__label">
+                        <div key={centerLabel} className="ctrl-header__stages__label">
                             {centerLabel}
                         </div>
                     )

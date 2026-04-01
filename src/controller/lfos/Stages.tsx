@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { Fragment, useCallback } from 'react'
-import { useUiStore } from '../../store/uiStore'
-import type { Point } from '../../utils/types'
+import { useUiStore } from '@/store'
+import type { Point } from '@/utils/types'
 import type { StageBackground } from './curveCalculator'
 import StagesCurve from './StagesCurve'
 import '../components/Stages.scss'
@@ -28,7 +28,7 @@ const Stages = ({ stageBackgrounds, points }: Props) => {
             {stageBackgrounds.map(({ from, to, id }, index) => {
                 const isLast = index === stageBackgrounds.length - 1
                 return (
-                    <Fragment key={`stage${index}`}>
+                    <Fragment key={`stage${id}`}>
                         <rect
                             x={from}
                             y={0}

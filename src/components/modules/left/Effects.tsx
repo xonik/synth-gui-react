@@ -5,8 +5,8 @@ import {
     POT_DISTANCE_S,
     POT_OFFSET_Y,
     ROW_HEIGHT,
-} from '../../../constants'
-import { useButton, usePot } from '../../../store/hooks'
+} from '@/constants'
+import { useButton, usePot } from '@/store'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { ModuleBorder } from '../../misc/ModuleBorder'
 import SubHeader from '../../misc/SubHeader'

@@ -243,7 +243,10 @@ const DCO2 = ({ x, y, height, width }: ModuleProps) => {
                 y={bottomRow + DUAL_LED_BUTTON_W_LABEL_OFFSET_Y}
                 ledPosition="top-horizontal"
                 ledCount={2}
-                ledLabels={[<Square x={0} y={0} width={3} height={2} />, <SawRight x={0} y={0} width={3} height={2} />]}
+                ledLabels={[
+                    <Square key="sqr" x={0} y={0} width={3} height={2} />,
+                    <SawRight key="saw" x={0} y={0} width={3} height={2} />,
+                ]}
                 label="Sub wave"
                 labelPosition="bottom"
                 value={subWaveValue}

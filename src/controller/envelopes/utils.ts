@@ -1,6 +1,6 @@
-import { getScaledPoints } from '../../components/curves/curveCalculator'
-import { LoopMode, ReleaseMode, StageId } from '../../synthcore/modules/env/types'
-import type { Point } from '../../utils/types'
+import { getScaledPoints } from '@/components/curves/curveCalculator'
+import { LoopMode, ReleaseMode, StageId } from '@/synthcore/modules/env/types'
+import type { Point } from '@/utils/types'
 
 export const getPoints = (curveFunc: (x: number) => number, reflectX?: boolean, reflectY?: boolean): Point[] => {
     const keypoints = 64

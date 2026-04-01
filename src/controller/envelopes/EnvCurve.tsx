@@ -1,5 +1,5 @@
+import type { Point } from '@/utils/types'
 import AnimatedCurve from '../../components/curves/AnimatedCurve'
-import type { Point } from '../../utils/types'
 import '../components/StageBlock.scss'
 
 interface Props {

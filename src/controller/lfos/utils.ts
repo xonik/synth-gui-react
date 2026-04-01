@@ -1,5 +1,5 @@
-import { getScaledPoints } from '../../components/curves/curveCalculator'
-import { LoopMode, StageId } from '../../synthcore/modules/lfo/types'
+import { getScaledPoints } from '@/components/curves/curveCalculator'
+import { LoopMode, StageId } from '@/synthcore/modules/lfo/types'
 
 export const keypoints = 64
 

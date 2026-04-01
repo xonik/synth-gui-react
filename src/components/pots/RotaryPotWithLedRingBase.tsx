@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import { useCallback } from 'react'
-import { SHOW_CUT } from '../../config'
+import { SHOW_CUT } from '@/config'
 import arc from '../../utils/svg/arc'
 import RotaryPotBase from './RotaryPotBase'
 import './RotaryPot.scss'
@@ -153,7 +153,7 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
 
                     return (
                         <circle
-                            key={led}
+                            key={angle}
                             cx={0}
                             cy={-ledRingRadius}
                             r={SHOW_CUT ? ledRadius * 2 : ledRadius}

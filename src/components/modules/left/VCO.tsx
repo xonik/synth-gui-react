@@ -6,10 +6,8 @@ import {
     POT_DISTANCE_S,
     POT_OFFSET_Y,
     ROW_HEIGHT,
-} from '../../../constants'
-import { useButton, usePot } from '../../../store/hooks'
-import { type VoiceGroupPatch, voiceGroupStores } from '../../../store/patchStore'
-import { useUiStore } from '../../../store/uiStore'
+} from '@/constants'
+import { useButton, usePot, useUiStore, type VoiceGroupPatch, voiceGroupStores } from '@/store'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { ModuleBorder } from '../../misc/ModuleBorder'

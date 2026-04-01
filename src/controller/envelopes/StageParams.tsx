@@ -1,6 +1,6 @@
 import classNames from 'classnames'
-import { type DisplayStage, useEnvStages } from '../../store/modules/useEnvelope'
-import { StageId } from '../../synthcore/modules/env/types'
+import { type DisplayStage, useEnvStages } from '@/store/modules/useEnvelope'
+import { StageId } from '@/synthcore/modules/env/types'
 import { Params } from '../components/Params'
 import './StageParams.scss'
 

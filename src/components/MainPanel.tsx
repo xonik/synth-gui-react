@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import { useEffect, useRef, useState } from 'react'
+import { SHOW_CENTER, SHOW_CUT, SHOW_GRID, SHOW_LEFT_2, SHOW_RIGHT } from '@/config'
 import { POT_DISTANCE_L, POT_DISTANCE_M, ROW_HEIGHT } from '@/constants'
-import { SHOW_CENTER, SHOW_CUT, SHOW_GRID, SHOW_LEFT_2, SHOW_RIGHT } from '../config'
 import Controller from '../controller/Controller'
 import Grid from './Grid'
 import { PanelScrew } from './misc/PanelScrew'

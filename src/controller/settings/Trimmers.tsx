@@ -91,7 +91,7 @@ export const Trimmers = ({ voice }: Props) => {
                 send(voice, persisted[voice][i])
             }
         }
-    }, [])
+    }, [voice])
 
     const updateValue = useCallback(
         (trimmer: number, value: number) => {
@@ -130,10 +130,12 @@ export const Trimmers = ({ voice }: Props) => {
                 <VerticalSelector label="Calibrate" setValue={updateValue} allSettings={currentSettings} trimmer={7} />
             </div>
             <div className="cv-range__params">
-                <button disabled={isSaved} onClick={onSave}>
+                <button type="button" disabled={isSaved} onClick={onSave}>
                     Save
                 </button>
-                <button onClick={onLoadAll}>Load/reset all</button>
+                <button type="button" onClick={onLoadAll}>
+                    Load/reset all
+                </button>
             </div>
         </div>
     )

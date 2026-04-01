@@ -1,4 +1,4 @@
-import { useUiStore } from '../../store/uiStore'
+import { useUiStore } from '@/store'
 import { useCurve } from './curveCalculator'
 import LfoOptionsLeft from './LfoOptionsLeft'
 import LfoOptionsRight from './LfoOptionsRight'

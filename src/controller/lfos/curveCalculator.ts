@@ -1,10 +1,9 @@
 import { useMemo } from 'react'
-import { getCurveFunc } from '../../components/curves/curveCalculator'
-import { useVoiceGroupStore } from '../../store/patchStore'
-import { useUiStore } from '../../store/uiStore'
-import { lfoCtrls } from '../../synthcore/modules/lfo/lfoControllers'
-import { type Stage, StageId } from '../../synthcore/modules/lfo/types'
-import type { Point } from '../../utils/types'
+import { getCurveFunc } from '@/components/curves/curveCalculator'
+import { useUiStore, useVoiceGroupStore } from '@/store'
+import { lfoCtrls } from '@/synthcore/modules/lfo/lfoControllers'
+import { type Stage, StageId } from '@/synthcore/modules/lfo/types'
+import type { Point } from '@/utils/types'
 import { getPoints, keypoints } from './utils'
 
 export type StageBackground = {
@@ -14,8 +13,8 @@ export type StageBackground = {
 }
 
 const getUnscaledLevels = (bipolar: boolean, invert: boolean, releaseEnabled: boolean) => {
-    let attackLevel
-    let releaseLevel
+    let attackLevel: number
+    let releaseLevel: number
 
     if (bipolar) {
         if (invert) {
@@ -93,8 +92,10 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
     )
 
     // Stages used for calculating points on the line
+    // TODO: Claude fix
     const contourStages: Stage[] = useMemo(
         () => [attackStage, releaseStage, stoppedStage],
+        // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
         [attackStage, releaseStage, stoppedStage]
     )
 

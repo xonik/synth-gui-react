@@ -1,16 +1,15 @@
 import { useCallback, useState } from 'react'
 import ReactSlider from 'react-slider'
-import { curveNames } from '../../components/curves/shortCurveNames'
-import { saveCvMapping, saveCvMappings, setCvParams, VOICE_ALL } from '../../midi/rpc/api'
-import { sharedConfig } from '../../sharedConfig'
+import { curveNames } from '@/components/curves/shortCurveNames'
+import { saveCvMapping, saveCvMappings, setCvParams, VOICE_ALL } from '@/midi/rpc/api'
+import { sharedConfig } from '@/sharedConfig'
+import { Curve } from '@/synthcore/generatedTypes'
 import { CV_CHANNELS, CVs } from './CvDefinitions'
 import CvResponseCurve from './CvResponseCurve'
 import { curveValuesUsed } from './generatedTypes'
 import './CvRange.scss'
 import '../components/StageBlock.scss'
 import '../components/Ctrl.scss'
-
-import { Curve } from '../../synthcore/generatedTypes'
 
 type RangeProps = {
     setRange: (value: number) => void
@@ -63,9 +62,9 @@ const CvSelector = ({ onSelect, cv }: CvSelectorProps) => {
 
     return (
         <select onChange={onOptionChangeHandler} value={cv} className={'cv-range__cv-selector'}>
-            {CVs.map((cv, index) => {
+            {CVs.map((cv) => {
                 return (
-                    <option key={index} value={cv.channel}>
+                    <option key={cv.channel} value={cv.channel}>
                         {cv.description} ({cv.channel})
                     </option>
                 )
@@ -218,9 +217,12 @@ export const CvRange = ({ voice }: Props) => {
         [cv, voice]
     )
 
-    const sendCv = (cvRange: CvRange, _v: number) => {
-        setCvParams(cvRange.cv, cvRange.start, cvRange.end, cvRange.curve, cvRange.reverse, voice)
-    }
+    const sendCv = useCallback(
+        (cvRange: CvRange, _v: number) => {
+            setCvParams(cvRange.cv, cvRange.start, cvRange.end, cvRange.curve, cvRange.reverse, voice)
+        },
+        [voice]
+    )
 
     const onSave = useCallback(() => {
         setAllCvs((prev) => {
@@ -255,12 +257,12 @@ export const CvRange = ({ voice }: Props) => {
             updateSaved(true)
             return updated
         })
-    }, [cv, voice, updateSaved])
+    }, [cv, voice, updateSaved, sendCv])
 
     const onLoadAll = useCallback(() => {
         const persisted = load()
         sendAll(voice, persisted[voice], 0)
-    }, [])
+    }, [voice])
 
     const updateStart = useCallback(
         (start: number) => {
@@ -279,7 +281,7 @@ export const CvRange = ({ voice }: Props) => {
                 return updated
             })
         },
-        [cv, voice, updateSaved]
+        [cv, voice, updateSaved, sendCv]
     )
 
     const updateEnd = useCallback(
@@ -299,7 +301,7 @@ export const CvRange = ({ voice }: Props) => {
                 return updated
             })
         },
-        [cv, voice, updateSaved]
+        [cv, voice, updateSaved, sendCv]
     )
 
     const updateCurve = useCallback(
@@ -319,7 +321,7 @@ export const CvRange = ({ voice }: Props) => {
                 return updated
             })
         },
-        [cv, voice, updateSaved]
+        [cv, voice, updateSaved, sendCv]
     )
 
     const updateReverse = useCallback(
@@ -339,7 +341,7 @@ export const CvRange = ({ voice }: Props) => {
                 return updated
             })
         },
-        [cv, voice, updateSaved]
+        [cv, voice, updateSaved, sendCv]
     )
 
     // For display, use the first voice if "All" is selected
@@ -362,13 +364,15 @@ export const CvRange = ({ voice }: Props) => {
                 <CvCurveSelector onSelect={updateCurve} curve={currentCvs[cv].curve} />
                 <CvSelector onSelect={setCv} cv={cv} />
                 <CvReverseCheckbox onChange={updateReverse} reverse={currentCvs[cv].reverse} />
-                <button disabled={currentSaved[cv]} onClick={onSave}>
+                <button type="button" disabled={currentSaved[cv]} onClick={onSave}>
                     Save
                 </button>
-                <button disabled={currentSaved[cv]} onClick={onReset}>
+                <button type="button" disabled={currentSaved[cv]} onClick={onReset}>
                     Reset
                 </button>
-                <button onClick={onLoadAll}>Ld all</button>
+                <button type="button" onClick={onLoadAll}>
+                    Ld all
+                </button>
                 <div className="cv-range__nowrap">
                     V: {getAsVolts(currentCvs[cv].start)} - {getAsVolts(currentCvs[cv].end)}
                 </div>

@@ -1,5 +1,5 @@
-import { SHOW_CUT } from '../../../config'
-import { POT_DISTANCE_L, POT_DISTANCE_M, ROW_HEIGHT } from '../../../constants'
+import { SHOW_CUT } from '@/config'
+import { POT_DISTANCE_L, POT_DISTANCE_M, ROW_HEIGHT } from '@/constants'
 import Arpeggiator from './Arpeggiator'
 import Clock from './Clock'
 import DCO1 from './DCO1'

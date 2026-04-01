@@ -8,12 +8,11 @@ import {
     measureVcoOctaves,
     toggleVoicePower,
     tuneVco,
-} from '../../midi/rpc/api'
-import { useVoiceGroupStore, voiceGroupStores } from '../../store/patchStore'
-import { useUiStore } from '../../store/uiStore'
+} from '@/midi/rpc/api'
+import { sharedConfig } from '@/sharedConfig'
+import { useUiStore, useVoiceGroupStore, voiceGroupStores } from '@/store'
 import Button from '../components/Button'
 import './SettingsButtons.scss'
-import { sharedConfig } from '../../sharedConfig'
 
 type Props = { voice: number }
 

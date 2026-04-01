@@ -1,8 +1,8 @@
 import classNames from 'classnames'
 import { useMemo } from 'react'
 import { animated, useSpring } from 'react-spring'
-import { getPointsString } from '../../utils/svg/pointsString'
-import type { Point } from '../../utils/types'
+import { getPointsString } from '@/utils/svg/pointsString'
+import type { Point } from '@/utils/types'
 import './AnimatedCurve.scss'
 
 interface Props {

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
+import { sharedConfig } from '@/sharedConfig'
 import { CvOverrides } from './CvOverrides'
 import { CvRange } from './CvRange'
 import { SettingsButtons } from './SettingsButtons'
 import { Trimmers } from './Trimmers'
 import './Settings.scss'
-import { sharedConfig } from '../../sharedConfig'
 
 const MENU_KEY = 'settings_selected_menu'
 
@@ -22,7 +22,7 @@ const Settings = () => {
         localStorage.setItem(MENU_KEY, menu)
     }
 
-    let content
+    let content: JSX.Element | null
     switch (selected) {
         case 'Trimmers':
             content = <Trimmers voice={voice} />
@@ -61,6 +61,7 @@ const Settings = () => {
                     onChange={(e) => setVoice(Number(e.target.value))}
                 >
                     {Array.from({ length: sharedConfig.VOICE_COUNT.value }, (_, i) => (
+                        // biome-ignore lint/suspicious/noArrayIndexKey: Index will always be the same as it is generated right here
                         <option key={i} value={i}>
                             Voice {i + 1}
                         </option>

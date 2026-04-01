@@ -6,8 +6,8 @@
  * Handles both filters: LPF (index 0) and SVF (index 1).
  */
 
-import { button, cc, nrpn } from '../../midi/midibus'
-import type { ControllerConfigButton, ControllerConfigCC, ControllerConfigNRPN } from '../../midi/types'
+import { button, cc, nrpn } from '@/midi/midibus'
+import type { ControllerConfigButton, ControllerConfigCC, ControllerConfigNRPN } from '@/midi/types'
 import filtersControllers from '../../synthcore/modules/filters/filtersControllers'
 import { type FilterState, voiceGroupStores } from '../patchStore'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
@@ -119,7 +119,9 @@ export function startFilterMidiSend() {
 }
 
 export function stopFilterMidiSend() {
-    sendUnsubscribers.forEach((unsub) => unsub())
+    sendUnsubscribers.forEach((unsub) => {
+        unsub()
+    })
     sendUnsubscribers = []
 }
 
@@ -166,6 +168,8 @@ export function startFilterMidiReceive() {
 }
 
 export function stopFilterMidiReceive() {
-    receiveUnsubscribers.forEach((unsub) => unsub())
+    receiveUnsubscribers.forEach((unsub) => {
+        unsub()
+    })
     receiveUnsubscribers = []
 }

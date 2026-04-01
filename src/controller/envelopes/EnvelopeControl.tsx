@@ -1,4 +1,4 @@
-import { useUiStore } from '../../store'
+import { useUiStore } from '@/store'
 import { useEnvCurve } from './curveCalculator'
 import EnvOptionsLeft from './EnvOptionsLeft'
 import StageActivator from './StageActivator'

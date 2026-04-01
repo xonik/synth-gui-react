@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { BORDER_MARGIN } from '../../constants'
+import { BORDER_MARGIN } from '@/constants'
 import './ModuleBorder.scss'
 
 type Props = {

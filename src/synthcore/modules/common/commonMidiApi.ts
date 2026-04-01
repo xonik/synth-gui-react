@@ -161,27 +161,33 @@ export const paramSend: ParamSendFunc = (
         return
     }
 
+    function getMidiValueFromCCMapper(value: number, ctrl: ControllerConfig) {
+        if (ctrl.range) {
+            return (outputMapper || ccWithRangeMapper.output)(value, ctrl)
+        } else {
+            return (outputMapper || ccMapper.output)(value, ctrl)
+        }
+    }
+
+    function getMidiValueFromNrpnMapper(value: number, ctrl: ControllerConfig) {
+        if (ctrl.range) {
+            return (outputMapper || nrpnWithRangeMapper.output)(value, ctrl)
+        } else {
+            return (outputMapper || nrpnMapper.output)(value, ctrl, valueIndex)
+        }
+    }
+
     console.log('Sending ctrl', ctrl)
     if (ctrl.type === 'button') {
         logger.midi(`Setting paramSend button value for ${ctrl.label} to ${value}`)
         const buttonValue = ccWithValueMapper.output(value, ctrl)
         button.send(voiceGroupIndex, ctrl as ControllerConfigButton, buttonValue)
     } else if (Object.hasOwn(ctrl, 'cc')) {
-        let midiValue
-        if (ctrl.range) {
-            midiValue = (outputMapper || ccWithRangeMapper.output)(value, ctrl)
-        } else {
-            midiValue = (outputMapper || ccMapper.output)(value, ctrl)
-        }
+        const midiValue = getMidiValueFromCCMapper(value, ctrl)
         logger.midi(`Setting paramSend cc value for ${ctrl.label} to ${value} (${midiValue})`)
         cc.send(voiceGroupIndex, ctrl as ControllerConfigCC, midiValue)
     } else if (Object.hasOwn(ctrl, 'addr')) {
-        let midiValue
-        if (ctrl.range) {
-            midiValue = (outputMapper || nrpnWithRangeMapper.output)(value, ctrl)
-        } else {
-            midiValue = (outputMapper || nrpnMapper.output)(value, ctrl, valueIndex)
-        }
+        const midiValue = getMidiValueFromNrpnMapper(value, ctrl)
         logger.midi(`Setting paramSend nrpn value for ${ctrl.label} to ${value} (${midiValue})`)
         nrpn.send(voiceGroupIndex, ctrl as ControllerConfigNRPN, midiValue)
     }

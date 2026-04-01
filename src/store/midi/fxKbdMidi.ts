@@ -167,7 +167,9 @@ export function startFxKbdMidiSend() {
 }
 
 export function stopFxKbdMidiSend() {
-    sendUnsubscribers.forEach((unsub) => unsub())
+    sendUnsubscribers.forEach((unsub) => {
+        unsub()
+    })
     sendUnsubscribers = []
 }
 
@@ -203,6 +205,8 @@ export function startFxKbdMidiReceive() {
 }
 
 export function stopFxKbdMidiReceive() {
-    receiveUnsubscribers.forEach((unsub) => unsub())
+    receiveUnsubscribers.forEach((unsub) => {
+        unsub()
+    })
     receiveUnsubscribers = []
 }

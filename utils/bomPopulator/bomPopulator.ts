@@ -366,5 +366,7 @@ const extededParts = parts.filter((part) => part.lcscPart?.extended)
 if (extededParts) {
     // TODO: This is inaccurate when it comes to multiParts
     console.log('Extended parts:')
-    extededParts.forEach((part) => console.log(`${part.ids.length} - ${part.line}${part.lcscPart?.id}`))
+    extededParts.forEach((part) => {
+        console.log(`${part.ids.length} - ${part.line}${part.lcscPart?.id}`)
+    })
 }

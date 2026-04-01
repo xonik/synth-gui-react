@@ -1,6 +1,6 @@
 import { SHOW_CUT } from '@/config'
-import { POT_DISTANCE_L, POT_DISTANCE_M, ROW_HEIGHT } from '../../../constants'
-import { useUiStore } from '../../../store/uiStore'
+import { POT_DISTANCE_L, POT_DISTANCE_M, ROW_HEIGHT } from '@/constants'
+import { useUiStore } from '@/store'
 import Chorus from './Chorus'
 import DigitalFX from './DigitalFX'
 import Envelope from './Envelope'

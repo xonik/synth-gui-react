@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback, useContext, useEffect, useRef } from 'react'
-import { useDrag } from '../../../hooks'
+import { useDrag } from '@/hooks'
 import { ScrollingSyncerContext } from './ScrollSync'
 import { getMovingAxis, toArray } from './utils'
 

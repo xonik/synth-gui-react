@@ -1,7 +1,7 @@
 import classNames from 'classnames'
-import type { ControllerConfig } from '../../midi/types'
-import { useUiStore } from '../../store/uiStore'
-import { modDst, shortLabel } from '../../synthcore/modules/mods/utils'
+import type { ControllerConfig } from '@/midi/types'
+import { useUiStore } from '@/store'
+import { modDst, shortLabel } from '@/synthcore/modules/mods/utils'
 import type { DraggableElementProps } from './types'
 
 interface DstLabelProps {
@@ -34,6 +34,7 @@ const DstLabels = ({ onMouseDown, onMouseMove }: DraggableElementProps) => {
         <div className="mod-ctrl__dsts" onMouseDown={onMouseDown} onMouseMove={onMouseMove}>
             {dstGroup.map((func, funcIndex) => {
                 return (
+                    // biome-ignore lint/suspicious/noArrayIndexKey: group ordering won't change and we currently don't have an id anyway
                     <div className="mod-ctrl__dst" key={funcIndex}>
                         {
                             <div className="mod-ctrl__dst__func">
@@ -43,7 +44,7 @@ const DstLabels = ({ onMouseDown, onMouseMove }: DraggableElementProps) => {
                         <div className="mod-ctrl__dst__props">
                             {func.map((controller, paramIndex) => (
                                 <DstLabel
-                                    key={paramIndex}
+                                    key={controller.id}
                                     dst={controller}
                                     paramIndex={paramIndex}
                                     funcIndex={funcIndex}

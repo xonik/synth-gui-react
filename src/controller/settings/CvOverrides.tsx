@@ -44,8 +44,8 @@ const CvSelector = ({ onSelect, cv }: CvSelectorProps) => {
 
     return (
         <select onChange={onOptionChangeHandler} value={cv}>
-            {CVs.map((cv, index) => (
-                <option key={index} value={cv.channel}>
+            {CVs.map((cv) => (
+                <option key={cv.channel} value={cv.channel}>
                     {cv.description} ({cv.channel})
                 </option>
             ))}
@@ -116,8 +116,12 @@ export const CvOverrides = ({ voice }: Props) => {
             </div>
             <div className="cv-range__params">
                 <CvSelector onSelect={setCv} cv={cv} />
-                <button onClick={onRelease}>Release</button>
-                <button onClick={onReleaseAll}>Release all</button>
+                <button type="button" onClick={onRelease}>
+                    Release
+                </button>
+                <button type="button" onClick={onReleaseAll}>
+                    Release all
+                </button>
                 <div>Voltage: {getAsVolts(currentCVs[cv].value)}</div>
             </div>
         </div>

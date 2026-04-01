@@ -37,7 +37,7 @@ const Stages = ({ envId, points, stageBackgrounds }: Props) => {
             {stageBackgrounds.map(({ from, to, id }, index) => {
                 const isLast = index === stageBackgrounds.length - 1
                 return (
-                    <Fragment key={`stage${index}`}>
+                    <Fragment key={`stage${id}`}>
                         <rect
                             x={from}
                             y={0}
