@@ -397,6 +397,8 @@ const onMIDIFailure = () => {
 
 if (navigator.requestMIDIAccess) {
     navigator.requestMIDIAccess({ sysex: true }).then(onMIDISuccess, onMIDIFailure)
+    window.addEventListener('beforeunload', () => {
+        midiIn?.close()
+        midiOut?.close()
+    })
 }
-
-//TODO: Close midi connection on app close!
