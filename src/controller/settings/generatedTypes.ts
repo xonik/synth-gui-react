@@ -1,5 +1,5 @@
 // GENERATED FILE, DO NOT EDIT
-import { Curve } from '../../synthcore/generatedTypes'
+import { Curve } from '@/synthcore/generatedTypes'
 
 export const curveValuesUsed = [
     Curve.COSINE,

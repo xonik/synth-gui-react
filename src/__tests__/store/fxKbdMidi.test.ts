@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-vi.mock('../../synthcore/synthcoreMiddleware', () => ({
+vi.mock('@/synthcore/synthcoreMiddleware', () => ({
     synthcoreMiddleware: () => (next: any) => (action: any) => next(action),
 }))
 
@@ -13,8 +13,8 @@ import {
     stopFxKbdMidiSend,
 } from '../../store/midi/fxKbdMidi'
 import { createPatchStore, voiceGroupStores } from '../../store/patchStore'
-import fxControllers from '../../synthcore/modules/fx/fxControllers'
-import kbdControllers from '../../synthcore/modules/kbd/kbdControllers'
+import fxControllers from '@/synthcore/modules/fx/fxControllers'
+import kbdControllers from '@/synthcore/modules/kbd/kbdControllers'
 
 const VG = 0
 

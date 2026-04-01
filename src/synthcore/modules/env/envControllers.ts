@@ -8,8 +8,8 @@ import {
     type FuncProps,
     MidiGroup,
 } from '@/midi/types'
-import CC from '../../../midi/mapCC'
-import NRPN from '../../../midi/mapNRPN'
+import CC from '@/midi/mapCC'
+import NRPN from '@/midi/mapNRPN'
 import { dbLevelResponseMapper, timeResponseMapper } from '../common/responseMappers'
 import {
     ControllerIdEnvDst,

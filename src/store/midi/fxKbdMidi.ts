@@ -1,8 +1,8 @@
 import { button, cc } from '@/midi/midibus'
 import type { ControllerConfigButton, ControllerConfigCC } from '@/midi/types'
 import { type VoiceGroupPatch, voiceGroupStores } from '@/store'
-import fxControllers from '../../synthcore/modules/fx/fxControllers'
-import kbdControllers from '../../synthcore/modules/kbd/kbdControllers'
+import fxControllers from '@/synthcore/modules/fx/fxControllers'
+import kbdControllers from '@/synthcore/modules/kbd/kbdControllers'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
 
 interface CCMapping {

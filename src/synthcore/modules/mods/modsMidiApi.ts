@@ -1,6 +1,6 @@
 import { cc, nrpn } from '@/midi/midibus'
 import { shouldSend } from '@/midi/utils'
-import logger from '../../../utils/logger'
+import logger from '@/utils/logger'
 import { ApiSource } from '../../types'
 import { toggleParamReceive, toggleParamSend } from '../common/commonMidiApi'
 import controllers from '../controllers/controllers'

@@ -6,7 +6,7 @@ import { KeyboardProvider } from '@/libs/react-keyed-file-browser/input/Keyboard
 import type { FileBrowserTree, FileBrowserTreeNode } from '@/libs/react-keyed-file-browser/types'
 import { useUiStore } from '@/store'
 import { Icons, RawFileBrowser } from '../../libs/react-keyed-file-browser'
-import patchStorageApi from '../../synthcore/modules/patchStorage/patchStorageApi'
+import patchStorageApi from '@/synthcore/modules/patchStorage/patchStorageApi'
 import './PatchBrowser.scss'
 
 type State = {

@@ -1,6 +1,6 @@
-import { buttonMidiValues } from '../../../midi/buttonMidiValues'
-import CC from '../../../midi/mapCC'
-import NRPN from '../../../midi/mapNRPN'
+import { buttonMidiValues } from '@/midi/buttonMidiValues'
+import CC from '@/midi/mapCC'
+import NRPN from '@/midi/mapNRPN'
 import {
     type ControllerConfig,
     type ControllerConfigButton,
@@ -9,7 +9,7 @@ import {
     type ControllerConfigNRPNWithValue,
     type FuncProps,
     MidiGroup,
-} from '../../../midi/types'
+} from '@/midi/types'
 import { timeResponseMapper } from '../common/responseMappers'
 import {
     ControllerIdLfoDst,

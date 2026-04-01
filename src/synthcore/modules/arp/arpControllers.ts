@@ -1,7 +1,7 @@
 import { buttonMidiValues } from '@/midi/buttonMidiValues'
+import NRPN from '@/midi/mapNRPN'
+import type { ControllerConfig, ControllerConfigButton, ControllerConfigNRPN, FuncProps } from '@/midi/types'
 import { sharedConfig } from '@/sharedConfig'
-import NRPN from '../../../midi/mapNRPN'
-import type { ControllerConfig, ControllerConfigButton, ControllerConfigNRPN, FuncProps } from '../../../midi/types'
 import { ControllerIdNonMod, ControllerIdNonModPots, ControllerIdSrc } from '../controllers/controllerIds'
 
 interface ArpControllers {

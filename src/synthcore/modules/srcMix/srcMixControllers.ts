@@ -1,6 +1,6 @@
-import { buttonMidiValues } from '../../../midi/buttonMidiValues'
-import CC from '../../../midi/mapCC'
-import type { ControllerConfigButton, ControllerConfigCC, FuncProps } from '../../../midi/types'
+import { buttonMidiValues } from '@/midi/buttonMidiValues'
+import CC from '@/midi/mapCC'
+import type { ControllerConfigButton, ControllerConfigCC, FuncProps } from '@/midi/types'
 import { dbLevelResponseMapper } from '../common/responseMappers'
 import { ControllerIdDst, ControllerIdNonMod } from '../controllers/controllerIds'
 

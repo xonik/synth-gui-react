@@ -1,5 +1,5 @@
-import { buttonMidiValues } from '../../../midi/buttonMidiValues'
-import type { ControllerConfigButton, FuncProps } from '../../../midi/types'
+import { buttonMidiValues } from '@/midi/buttonMidiValues'
+import type { ControllerConfigButton, FuncProps } from '@/midi/types'
 import { ControllerIdNonMod } from '../controllers/controllerIds'
 
 interface VoicesControllers {

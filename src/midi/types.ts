@@ -1,4 +1,4 @@
-import type { ControllerId } from '../synthcore/modules/controllers/controllerIds'
+import type { ControllerId } from '@/synthcore/modules/controllers/controllerIds'
 
 export enum MidiGroup {
     ENV,

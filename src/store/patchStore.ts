@@ -12,7 +12,7 @@
 import { useStore } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 import { createStore, type StoreApi } from 'zustand/vanilla'
-import { VOICE_GROUPS } from '../utils/constants'
+import { VOICE_GROUPS } from '@/utils/constants'
 
 export interface EnvelopeStageState {
     time: number

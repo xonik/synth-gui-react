@@ -1,5 +1,5 @@
 import deepmerge from 'deepmerge'
-import type { ControllerConfig } from '../../../midi/types'
+import type { ControllerConfig } from '@/midi/types'
 import type { Controllers } from './types'
 
 export const mergeControllers = (controllers: Controllers[]): Controllers =>

@@ -1,4 +1,4 @@
-import { VOICE_GROUPS } from '../utils/constants'
+import { VOICE_GROUPS } from '@/utils/constants'
 
 interface MidiSettings {
     globalMidiChannel: number

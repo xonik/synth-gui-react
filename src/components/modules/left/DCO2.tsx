@@ -7,9 +7,9 @@ import {
     POT_OFFSET_Y,
     ROW_HEIGHT,
 } from '../../../constants'
-import { useButton, usePot } from '../../../store/hooks'
-import { type VoiceGroupPatch, voiceGroupStores } from '../../../store/patchStore'
-import { useUiStore } from '../../../store/uiStore'
+import { useButton, usePot } from '@/store/hooks'
+import { type VoiceGroupPatch, voiceGroupStores } from '@/store/patchStore'
+import { useUiStore } from '@/store/uiStore'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { SawRight } from '../../images/SawRight'

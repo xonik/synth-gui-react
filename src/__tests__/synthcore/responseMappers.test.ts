@@ -3,7 +3,7 @@ import {
     dbLevelResponseMapper,
     timeResponseMapper,
     uniBipolarLevelResponseMapper,
-} from '../../synthcore/modules/common/responseMappers'
+} from '@/synthcore/modules/common/responseMappers'
 
 describe('responseMappers', () => {
     describe('dbLevelResponseMapper', () => {

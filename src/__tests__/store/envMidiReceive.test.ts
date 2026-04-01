@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-vi.mock('../../synthcore/synthcoreMiddleware', () => ({
+vi.mock('@/synthcore/synthcoreMiddleware', () => ({
     synthcoreMiddleware: () => (next: any) => (action: any) => next(action),
 }))
 
@@ -8,9 +8,9 @@ import { buttonMidiValues } from '../../midi/buttonMidiValues'
 import { button, cc, nrpn } from '../../midi/midibus'
 import { startEnvelopeMidiReceive, stopEnvelopeMidiReceive } from '../../store/midi/envMidiReceive'
 import { createPatchStore, voiceGroupStores } from '../../store/patchStore'
-import { envCtrls } from '../../synthcore/modules/env/envControllers'
-import { curveValuesUsed } from '../../synthcore/modules/env/generatedTypes'
-import { StageId } from '../../synthcore/modules/env/types'
+import { envCtrls } from '@/synthcore/modules/env/envControllers'
+import { curveValuesUsed } from '@/synthcore/modules/env/generatedTypes'
+import { StageId } from '@/synthcore/modules/env/types'
 
 const VG = 0
 const ENV = 0

@@ -1,5 +1,5 @@
-import { type ModRoutingSelection, useUiStore } from '../../../store/uiStore'
-import { getBounded, step } from '../../../store/utils'
+import { type ModRoutingSelection, useUiStore } from '@/store/uiStore'
+import { getBounded, step } from '@/store/utils'
 import { ApiSource } from '../../types'
 import mainDisplayControllers from '../mainDisplay/mainDisplayControllers'
 import modsApi from './modsApi'

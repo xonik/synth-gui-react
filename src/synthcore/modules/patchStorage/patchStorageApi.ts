@@ -1,4 +1,4 @@
-import { type VoiceGroupPatch, voiceGroupStores } from '../../../store/patchStore'
+import { type VoiceGroupPatch, voiceGroupStores } from '@/store/patchStore'
 import modsApi from '../mods/modsApi'
 import { getVoiceGroupIndex } from '../voices/currentVoiceGroupIndex'
 import patchFileServerFacade from './patchFileServerFacade'

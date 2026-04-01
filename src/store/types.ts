@@ -8,9 +8,9 @@
  * - Response mappers applied at read time via hooks, not stored as dual state
  */
 
-export type { Curve } from '../synthcore/generatedTypes'
+export type { Curve } from '@/synthcore/generatedTypes'
 // Re-export existing enums that are still valid
-export { StageId } from '../synthcore/modules/env/types'
+export { StageId } from '@/synthcore/modules/env/types'
 
 /**
  * Source of a state change — used to prevent MIDI feedback loops

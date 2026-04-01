@@ -1,4 +1,4 @@
-import { ScreenId, useUiStore } from '../../../store/uiStore'
+import { ScreenId, useUiStore } from '@/store/uiStore'
 import type { ApiSource } from '../../types'
 import { mainDisplayEnvApi, mainDisplayEnvPotResolutions } from '../env/envMainDisplayApi'
 import { mainDisplayLfoApi, mainDisplayLfoPotResolutions } from '../lfo/lfoMainDisplayApi'

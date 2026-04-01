@@ -1,5 +1,5 @@
-import outControllers from '../../synthcore/modules/out/outControllers'
-import postMixControllers from '../../synthcore/modules/postMix/postMixControllers'
+import outControllers from '@/synthcore/modules/out/outControllers'
+import postMixControllers from '@/synthcore/modules/postMix/postMixControllers'
 import { type CCPotMapping, createCCPotMidiReceive, createCCPotMidiSend } from './ccPotMidi'
 
 const outputMappings: CCPotMapping[] = [

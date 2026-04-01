@@ -29,7 +29,7 @@ export {
     resetCurrentVoiceGroup,
     serializePatch,
 } from './patchSerializer'
-export type { EnvelopeState, LfoState, PatchStore, VoiceGroupPatch } from './patchStore'
+export type { EnvelopeState, LfoStages, LfoState, OscillatorState, PatchStore, VoiceGroupPatch } from './patchStore'
 export { defaultVoiceGroupPatch, useVoiceGroupStore, voiceGroupStores } from './patchStore'
 export type { ParamConfig, ResponseMapper } from './types'
 export { ScreenId, useUiStore } from './uiStore'

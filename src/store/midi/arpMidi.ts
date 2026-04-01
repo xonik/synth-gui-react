@@ -1,7 +1,7 @@
 import { button, nrpn } from '@/midi/midibus'
 import type { ControllerConfigButton } from '@/midi/types'
 import { globalStore } from '@/store'
-import arpControllers from '../../synthcore/modules/arp/arpControllers'
+import arpControllers from '@/synthcore/modules/arp/arpControllers'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
 
 interface ButtonMapping {

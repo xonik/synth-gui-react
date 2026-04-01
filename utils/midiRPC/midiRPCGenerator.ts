@@ -81,7 +81,7 @@ writeToFile(
 )
 writeToFile(
     `${jsRoot}/src/controller/settings/generatedTypes.ts`,
-    generateCurveUsageList(curveEnums.enum, curveEnums.cvmaps, '../../synthcore')
+    generateCurveUsageList(curveEnums.enum, curveEnums.cvmaps, '@/synthcore')
 )
 writeToFile(`${jsRoot}/src/synthcore/generatedTypes.ts`, generateEnumTs(curveEnums.enum))
 

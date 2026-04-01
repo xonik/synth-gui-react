@@ -1,6 +1,6 @@
 import { button, nrpn } from '@/midi/midibus'
 import { globalStore } from '@/store'
-import masterClockControllers from '../../synthcore/modules/masterClock/masterClockControllers'
+import masterClockControllers from '@/synthcore/modules/masterClock/masterClockControllers'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
 
 let sendUnsub: (() => void) | undefined

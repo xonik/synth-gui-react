@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-vi.mock('../../synthcore/synthcoreMiddleware', () => ({
+vi.mock('@/synthcore/synthcoreMiddleware', () => ({
     synthcoreMiddleware: () => (next: any) => (action: any) => next(action),
 }))
 
@@ -8,7 +8,7 @@ import { buttonMidiValues } from '@/midi/buttonMidiValues'
 import { button, cc } from '@/midi/midibus'
 import { startOscMidiReceive, startOscMidiSend, stopOscMidiReceive, stopOscMidiSend } from '@/store/midi/oscMidi'
 import { createPatchStore, voiceGroupStores } from '@/store/patchStore'
-import oscControllers from '../../synthcore/modules/osc/oscControllers'
+import oscControllers from '@/synthcore/modules/osc/oscControllers'
 
 const VG = 0
 

@@ -2,7 +2,7 @@ import { button, cc, nrpn } from '@/midi/midibus'
 import type { ControllerConfig, ControllerConfigButton, ControllerConfigCC, ControllerConfigNRPN } from '@/midi/types'
 import { shouldSend } from '@/midi/utils'
 import { getBounded } from '@/store/utils'
-import logger from '../../../utils/logger'
+import logger from '@/utils/logger'
 import { ApiSource } from '../../types'
 import type { NumericInputProperty } from './types'
 

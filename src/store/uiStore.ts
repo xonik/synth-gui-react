@@ -10,7 +10,7 @@
  */
 
 import { create } from 'zustand'
-import { StageId } from '../synthcore/modules/env/types'
+import { StageId } from '@/synthcore/modules/env/types'
 
 // Screen IDs for the main touch display
 export enum ScreenId {

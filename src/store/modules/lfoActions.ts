@@ -1,5 +1,5 @@
-import { StageId } from '../../synthcore/modules/lfo/types'
-import type { LfoStages, VoiceGroupPatch } from '../patchStore'
+import type { LfoStages, VoiceGroupPatch } from '@/store'
+import { StageId } from '@/synthcore/modules/lfo/types'
 
 export type LfoStageName = keyof LfoStages
 

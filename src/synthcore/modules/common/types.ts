@@ -1,4 +1,4 @@
-import type { ControllerConfig } from '../../../midi/types'
+import type { ControllerConfig } from '@/midi/types'
 import type { ApiSource, ControllerGroupIds } from '../../types'
 
 export type NumericInputProperty = {

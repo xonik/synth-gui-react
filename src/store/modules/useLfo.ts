@@ -1,6 +1,5 @@
 import { useCallback } from 'react'
-import { voiceGroupStores } from '../patchStore'
-import { useUiStore } from '../uiStore'
+import { useUiStore, voiceGroupStores } from '@/store'
 import { type LfoStageName, toggleLfoStageEnabled } from './lfoActions'
 
 export function useLfoStageToggle(lfoId: number) {

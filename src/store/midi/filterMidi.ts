@@ -8,7 +8,7 @@
 
 import { button, cc, nrpn } from '@/midi/midibus'
 import type { ControllerConfigButton, ControllerConfigCC, ControllerConfigNRPN } from '@/midi/types'
-import filtersControllers from '../../synthcore/modules/filters/filtersControllers'
+import filtersControllers from '@/synthcore/modules/filters/filtersControllers'
 import { type FilterState, voiceGroupStores } from '../patchStore'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
 

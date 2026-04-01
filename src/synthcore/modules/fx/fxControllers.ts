@@ -1,6 +1,6 @@
-import { buttonMidiValues } from '../../../midi/buttonMidiValues'
-import CC from '../../../midi/mapCC'
-import type { ControllerConfigButton, ControllerConfigCC, FuncProps } from '../../../midi/types'
+import { buttonMidiValues } from '@/midi/buttonMidiValues'
+import CC from '@/midi/mapCC'
+import type { ControllerConfigButton, ControllerConfigCC, FuncProps } from '@/midi/types'
 import { ControllerIdDst, ControllerIdNonMod } from '../controllers/controllerIds'
 
 interface FxControllers {

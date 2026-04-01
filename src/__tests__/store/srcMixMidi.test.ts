@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-vi.mock('../../synthcore/synthcoreMiddleware', () => ({
+vi.mock('@/synthcore/synthcoreMiddleware', () => ({
     synthcoreMiddleware: () => (next: any) => (action: any) => next(action),
 }))
 
@@ -13,7 +13,7 @@ import {
     stopSrcMixMidiSend,
 } from '../../store/midi/srcMixMidi'
 import { createPatchStore, voiceGroupStores } from '../../store/patchStore'
-import srcMixControllers from '../../synthcore/modules/srcMix/srcMixControllers'
+import srcMixControllers from '@/synthcore/modules/srcMix/srcMixControllers'
 
 const VG = 0
 

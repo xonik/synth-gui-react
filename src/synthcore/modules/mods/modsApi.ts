@@ -1,6 +1,6 @@
 import { useUiStore } from '@/store'
 import { getBounded, getQuantized } from '@/store/utils'
-import { voiceGroupStores as zustandStores } from '../../../store/patchStore'
+import { voiceGroupStores as zustandStores } from '@/store/patchStore'
 import type { ApiSource } from '../../types'
 import { paramReceive, paramSend } from '../common/commonMidiApi'
 import type { ButtonInputProperty, NumericInputProperty } from '../common/types'

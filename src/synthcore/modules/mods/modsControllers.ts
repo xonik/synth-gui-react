@@ -1,7 +1,7 @@
-import { buttonMidiValues } from '../../../midi/buttonMidiValues'
-import CC from '../../../midi/mapCC'
-import NRPN from '../../../midi/mapNRPN'
-import type { ControllerConfigButton, ControllerConfigCC, ControllerConfigNRPN, FuncProps } from '../../../midi/types'
+import { buttonMidiValues } from '@/midi/buttonMidiValues'
+import CC from '@/midi/mapCC'
+import NRPN from '@/midi/mapNRPN'
+import type { ControllerConfigButton, ControllerConfigCC, ControllerConfigNRPN, FuncProps } from '@/midi/types'
 import { ControllerIdNonMod, ControllerIdNonModPots } from '../controllers/controllerIds'
 
 interface ModsControllers {

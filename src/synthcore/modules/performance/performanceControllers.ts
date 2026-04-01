@@ -1,4 +1,4 @@
-import type { ControllerConfig, FuncProps } from '../../../midi/types'
+import type { ControllerConfig, FuncProps } from '@/midi/types'
 import { ControllerIdSrc } from '../controllers/controllerIds'
 
 interface PerformanceControllers {

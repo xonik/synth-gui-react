@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-vi.mock('../../synthcore/synthcoreMiddleware', () => ({
+vi.mock('@/synthcore/synthcoreMiddleware', () => ({
     synthcoreMiddleware: () => (next: any) => (action: any) => next(action),
 }))
 
@@ -13,7 +13,7 @@ import {
     stopFilterMidiSend,
 } from '../../store/midi/filterMidi'
 import { createPatchStore, voiceGroupStores } from '../../store/patchStore'
-import filtersControllers from '../../synthcore/modules/filters/filtersControllers'
+import filtersControllers from '@/synthcore/modules/filters/filtersControllers'
 
 const VG = 0
 

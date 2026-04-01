@@ -6,10 +6,9 @@
  */
 
 import { useCallback, useMemo } from 'react'
-import { useUiStore } from '@/store'
+import { type EnvelopeState, useUiStore, useVoiceGroupStore, type VoiceGroupPatch, voiceGroupStores } from '@/store'
 import { dbLevelResponseMapper, timeResponseMapper } from '@/synthcore/modules/common/responseMappers'
 import { StageId } from '@/synthcore/modules/env/types'
-import { type EnvelopeState, useVoiceGroupStore, type VoiceGroupPatch, voiceGroupStores } from '../patchStore'
 import { getBounded } from '../utils'
 import {
     STAGE_NAMES,

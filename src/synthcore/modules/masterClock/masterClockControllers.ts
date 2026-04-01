@@ -1,7 +1,7 @@
-import { buttonMidiValues } from '../../../midi/buttonMidiValues'
-import NRPN from '../../../midi/mapNRPN'
-import type { ControllerConfigButton, ControllerConfigNRPN, FuncProps } from '../../../midi/types'
-import { sharedConfig } from '../../../sharedConfig'
+import { buttonMidiValues } from '@/midi/buttonMidiValues'
+import NRPN from '@/midi/mapNRPN'
+import type { ControllerConfigButton, ControllerConfigNRPN, FuncProps } from '@/midi/types'
+import { sharedConfig } from '@/sharedConfig'
 import { ControllerIdNonMod, ControllerIdNonModPots } from '../controllers/controllerIds'
 
 interface MasterClockControllers {

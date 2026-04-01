@@ -1,7 +1,7 @@
-import { buttonMidiValues } from '../../../midi/buttonMidiValues'
-import CC from '../../../midi/mapCC'
-import NRPN from '../../../midi/mapNRPN'
-import type { ControllerConfigButton, ControllerConfigCC, ControllerConfigNRPN, FuncProps } from '../../../midi/types'
+import { buttonMidiValues } from '@/midi/buttonMidiValues'
+import CC from '@/midi/mapCC'
+import NRPN from '@/midi/mapNRPN'
+import type { ControllerConfigButton, ControllerConfigCC, ControllerConfigNRPN, FuncProps } from '@/midi/types'
 import { ControllerIdDst, ControllerIdNonMod } from '../controllers/controllerIds'
 
 interface OscControllers {

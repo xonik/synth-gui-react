@@ -1,5 +1,5 @@
-import CC from '../../../midi/mapCC'
-import type { ControllerConfigCC, FuncProps } from '../../../midi/types'
+import CC from '@/midi/mapCC'
+import type { ControllerConfigCC, FuncProps } from '@/midi/types'
 import { ControllerIdNonModPots } from '../controllers/controllerIds'
 
 interface OutControllers {

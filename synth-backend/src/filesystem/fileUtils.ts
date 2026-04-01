@@ -33,10 +33,8 @@ export const getPathParts = (path: string) => {
 }
 
 export const getFilesRecursively = (folder: FolderEntry): FileEntry[] => {
-    // @ts-expect-error
     const files: FileEntry[] = folder.contents.filter((child) => isFile(child))
 
-    // @ts-expect-error
     const folders: FolderEntry[] = folder.contents.filter((child) => !isFile(child))
 
     const childFiles = folders.flatMap((childFolder) => getFilesRecursively(childFolder))

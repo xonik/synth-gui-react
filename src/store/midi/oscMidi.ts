@@ -8,8 +8,8 @@
 
 import { button, cc } from '@/midi/midibus'
 import type { ControllerConfigButton, ControllerConfigCC } from '@/midi/types'
-import oscControllers from '../../synthcore/modules/osc/oscControllers'
-import { type OscillatorState, voiceGroupStores } from '../patchStore'
+import { type OscillatorState, voiceGroupStores } from '@/store'
+import oscControllers from '@/synthcore/modules/osc/oscControllers'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
 
 type OscField = keyof OscillatorState

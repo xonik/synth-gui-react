@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
-//import './midi/cppControllerConfigGenerator';
 import midiApi from './midi/midiApi'
 import * as serviceWorker from './serviceWorker'
 import { startArpMidiReceive, startArpMidiSend } from './store/midi/arpMidi'

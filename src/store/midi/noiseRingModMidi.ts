@@ -1,8 +1,8 @@
 import { button } from '@/midi/midibus'
 import type { ControllerConfigButton } from '@/midi/types'
 import { voiceGroupStores } from '@/store'
-import noiseControllers from '../../synthcore/modules/noise/noiseControllers'
-import ringModControllers from '../../synthcore/modules/ringMod/ringModControllers'
+import noiseControllers from '@/synthcore/modules/noise/noiseControllers'
+import ringModControllers from '@/synthcore/modules/ringMod/ringModControllers'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
 
 function sendButton(voiceGroupIndex: number, ctrl: ControllerConfigButton, value: number) {

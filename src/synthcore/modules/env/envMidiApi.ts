@@ -3,7 +3,7 @@
 import { cc, lastSentMidiGroup } from '@/midi/midibus'
 import { type ControllerConfig, type ControllerConfigButton, type ControllerConfigCC, MidiGroup } from '@/midi/types'
 import { shouldSend } from '@/midi/utils'
-import logger from '../../../utils/logger'
+import logger from '@/utils/logger'
 import type { ApiSource } from '../../types'
 import { type ParamReceiveFunc, type ParamSendFunc, paramReceive, paramSend } from '../common/commonMidiApi'
 import type { NumericInputProperty } from '../common/types'

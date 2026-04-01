@@ -1,4 +1,4 @@
-import type { FileBrowserTree } from '../../../libs/react-keyed-file-browser/types'
+import type { FileBrowserTree } from '@/libs/react-keyed-file-browser/types'
 import type { Patch } from './types'
 
 const patchRoot = '/patch'

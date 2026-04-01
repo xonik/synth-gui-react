@@ -1,4 +1,4 @@
-import { getLinearToDBMapper, getLinearToExpMapper, getMapperWithFade, inverse } from '../../../midi/slopeCalculator'
+import { getLinearToDBMapper, getLinearToExpMapper, getMapperWithFade, inverse } from '@/midi/slopeCalculator'
 
 export const dbLevelResponseMapper = (() => {
     // Env level in range 0 to 1.

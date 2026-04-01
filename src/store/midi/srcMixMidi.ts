@@ -1,7 +1,7 @@
 import { button, cc } from '@/midi/midibus'
 import type { ControllerConfigButton, ControllerConfigCC } from '@/midi/types'
 import { voiceGroupStores } from '@/store'
-import srcMixControllers from '../../synthcore/modules/srcMix/srcMixControllers'
+import srcMixControllers from '@/synthcore/modules/srcMix/srcMixControllers'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
 
 type LevelField = 'levelOsc1' | 'levelOsc2' | 'levelOsc3' | 'levelNoise' | 'levelRingMod' | 'levelExtAudio'
