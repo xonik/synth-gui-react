@@ -4,7 +4,6 @@ import { useUiStore } from '@/store'
 import { useEnvLevel, useEnvStageEnabled, useEnvTime, useEnvToggle } from '@/store/modules/useEnvelope'
 import { ControllerIdSrc } from '@/synthcore/modules/controllers/controllerIds'
 import { envCtrls } from '@/synthcore/modules/env/envControllers'
-import { trySelectDst, trySelectSource } from '@/synthcore/modules/mods/modRoutingInterceptor'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { ModuleBorder } from '../../misc/ModuleBorder'
@@ -39,12 +38,6 @@ const EnvTimePot = ({
     disabled?: boolean
 }) => {
     const { displayValue, increment } = useEnvTime(envId, stageName)
-    const hwSrcId = ControllerIdSrc.ENVELOPE1 + envId
-    const wrappedIncrement = (inc: number) => {
-        if (trySelectSource(hwSrcId)) return
-        if (trySelectDst(ctrlId, envId)) return
-        increment(inc)
-    }
     return (
         <RotaryPot12
             ledMode="single"
@@ -52,7 +45,10 @@ const EnvTimePot = ({
             x={x}
             y={y}
             value={displayValue}
-            onValueIncrement={wrappedIncrement}
+            hwSourceId={ControllerIdSrc.ENVELOPE1 + envId}
+            ctrlId={ctrlId}
+            ctrlIndex={envId}
+            onValueIncrement={increment}
             disabled={disabled}
         />
     )
@@ -76,12 +72,6 @@ const EnvLevelPot = ({
     disabled?: boolean
 }) => {
     const { displayValue, bipolar, increment } = useEnvLevel(envId, stageName)
-    const hwSrcId = ControllerIdSrc.ENVELOPE1 + envId
-    const wrappedIncrement = (inc: number) => {
-        if (trySelectSource(hwSrcId)) return
-        if (trySelectDst(ctrlId, envId)) return
-        increment(inc)
-    }
     return (
         <RotaryPot12
             ledMode="multi"
@@ -90,7 +80,10 @@ const EnvLevelPot = ({
             y={y}
             value={displayValue}
             potMode={bipolar ? 'pan' : 'normal'}
-            onValueIncrement={wrappedIncrement}
+            hwSourceId={ControllerIdSrc.ENVELOPE1 + envId}
+            ctrlId={ctrlId}
+            ctrlIndex={envId}
+            onValueIncrement={increment}
             disabled={disabled}
         />
     )
@@ -110,11 +103,6 @@ const EnvToggleButton = ({
     y: number
 }) => {
     const { value, toggle } = useEnvToggle(envId, param)
-    const hwSrcId = ControllerIdSrc.ENVELOPE1 + envId
-    const wrappedToggle = () => {
-        if (trySelectSource(hwSrcId)) return
-        toggle()
-    }
     return (
         <RoundLedPushButton8
             label={label}
@@ -122,7 +110,8 @@ const EnvToggleButton = ({
             y={y}
             labelPosition="bottom-pot"
             value={value}
-            onButtonClick={wrappedToggle}
+            hwSourceId={ControllerIdSrc.ENVELOPE1 + envId}
+            onButtonClick={toggle}
         />
     )
 }
@@ -272,14 +261,9 @@ const Envelope = ({ x, y, height, width, label, header, showSelect = false, envI
                 y={bottomRowY}
                 labelPosition="bottom-pot"
                 momentary
-                onButtonClick={() => {
-                    if (trySelectSource(envHwSrcId)) return
-                    button.send(voiceGroupIndex, envCtrls.ENV_GATE, envCtrls.ENV_GATE.values[0])
-                }}
-                onButtonRelease={() => {
-                    if (trySelectSource(envHwSrcId)) return
-                    button.send(voiceGroupIndex, envCtrls.ENV_GATE, envCtrls.ENV_GATE.values[1])
-                }}
+                hwSourceId={envHwSrcId}
+                onButtonClick={() => button.send(voiceGroupIndex, envCtrls.ENV_GATE, envCtrls.ENV_GATE.values[0])}
+                onButtonRelease={() => button.send(voiceGroupIndex, envCtrls.ENV_GATE, envCtrls.ENV_GATE.values[1])}
             />
         </>
     )

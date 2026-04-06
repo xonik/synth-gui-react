@@ -1,8 +1,14 @@
 import classNames from 'classnames'
 import { Fragment, useCallback } from 'react'
-import { SHOW_CUT } from '../../config'
-import type { ControllerConfig } from '../../midi/types'
-import type { TextAnchor } from '../../types'
+import { SHOW_CUT } from '@/config'
+import type { ControllerConfig } from '@/midi/types'
+import { useUiStore } from '@/store'
+import {
+    ROUTE_SOURCE_ACTIVE,
+    trySelectSource,
+    useModRoutingFlash,
+} from '@/synthcore/modules/mods/modRoutingInterceptor'
+import type { TextAnchor } from '@/types'
 import RotaryPotBase from '../pots/RotaryPotBase'
 import RoundPushButtonBase from './RoundPushButtonBase'
 import './RoundButton.scss'
@@ -76,6 +82,9 @@ export interface Props {
 
     // Number of value states for ledButton blink logic (replaces ctrl.values.length)
     ledModes?: number
+
+    // Routing: if set, pressing this button selects the module as mod source
+    hwSourceId?: number
 }
 
 type LabelPos = {
@@ -307,7 +316,11 @@ export const RoundButtonBase = (props: Props & Config) => {
         onButtonClick,
         onButtonRelease,
         onIncrement: onIncrementProp,
+        hwSourceId,
     } = props
+
+    const { getSourceFlash } = useModRoutingFlash()
+    const flashMode = hwSourceId !== undefined ? getSourceFlash(hwSourceId) : undefined
 
     const currentValue = value ?? 0
 
@@ -329,16 +342,19 @@ export const RoundButtonBase = (props: Props & Config) => {
     )
 
     const handleOnClick = useCallback(() => {
+        if (hwSourceId !== undefined && trySelectSource(hwSourceId)) return
         if (onButtonClick) {
             onButtonClick()
         }
-    }, [onButtonClick])
+    }, [hwSourceId, onButtonClick])
 
     const handleOnRelease = useCallback(() => {
+        // Skip release too when source routing is active, so momentary buttons don't fire
+        if (hwSourceId !== undefined && useUiStore.getState().modRouteButton === ROUTE_SOURCE_ACTIVE) return
         if (onButtonRelease) {
             onButtonRelease()
         }
-    }, [onButtonRelease])
+    }, [hwSourceId, onButtonRelease])
 
     const ledOn: boolean[] = []
     for (let i = 0; i < (ledCount || (ctrl?.values?.length || 2) - 1); i++) {
@@ -402,8 +418,10 @@ export const RoundButtonBase = (props: Props & Config) => {
 
     const ledButtonStyle = getLedButtonStyle()
 
+    const buttonClass = flashMode ? `button button--routing-${flashMode}` : 'button'
+
     return (
-        <svg x={x} y={y} className="button">
+        <svg x={x} y={y} className={buttonClass}>
             {buttonMode === 'push' ? (
                 <RoundPushButtonBase
                     buttonRadius={buttonRadius}

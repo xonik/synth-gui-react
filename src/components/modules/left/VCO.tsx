@@ -8,6 +8,7 @@ import {
     ROW_HEIGHT,
 } from '@/constants'
 import { useButton, usePot, useUiStore, type VoiceGroupPatch, voiceGroupStores } from '@/store'
+import oscControllers from '@/synthcore/modules/osc/oscControllers'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { ModuleBorder } from '../../misc/ModuleBorder'
@@ -26,6 +27,7 @@ const OscPot = ({
     y,
     label,
     ledMode = 'single' as const,
+    ctrlId,
     selector,
     mutator,
 }: {
@@ -33,11 +35,12 @@ const OscPot = ({
     y: number
     label: string
     ledMode?: 'single' | 'multi'
+    ctrlId?: number
     selector: (s: VoiceGroupPatch) => number
     mutator: (s: VoiceGroupPatch, v: number) => void
 }) => {
     const { displayValue, increment } = usePot(selector, mutator)
-    return <RotaryPot12 x={x} y={y} ledMode={ledMode} label={label} value={displayValue} onValueIncrement={increment} />
+    return <RotaryPot12 x={x} y={y} ledMode={ledMode} label={label} value={displayValue} ctrlId={ctrlId} onValueIncrement={increment} />
 }
 
 const OscTogglePot = ({
@@ -167,6 +170,7 @@ const VCO = ({ x, y, height, width }: ModuleProps) => {
                 x={col4}
                 y={topRow}
                 label="Note"
+                ctrlId={oscControllers.VCO.NOTE.id}
                 selector={(s) => s.oscillators[OSC].note}
                 mutator={(s, v) => {
                     s.oscillators[OSC].note = v
@@ -177,6 +181,7 @@ const VCO = ({ x, y, height, width }: ModuleProps) => {
                 x={col4}
                 y={bottomRow}
                 label="Detune"
+                ctrlId={oscControllers.VCO.DETUNE.id}
                 selector={(s) => s.oscillators[OSC].detune}
                 mutator={(s, v) => {
                     s.oscillators[OSC].detune = v
@@ -221,6 +226,7 @@ const VCO = ({ x, y, height, width }: ModuleProps) => {
                 ledMode="single"
                 label="Waveform"
                 value={waveformValue}
+                ctrlId={oscControllers.VCO.WAVEFORM.id}
                 onValueIncrement={waveformIncrement}
             />
 
@@ -231,6 +237,7 @@ const VCO = ({ x, y, height, width }: ModuleProps) => {
                 y={topRow}
                 ledMode="multi"
                 label="FM"
+                ctrlId={oscControllers.VCO.FM_AMT.id}
                 selector={(s) => s.oscillators[OSC].fmAmt}
                 mutator={(s, v) => {
                     s.oscillators[OSC].fmAmt = v
@@ -253,6 +260,7 @@ const VCO = ({ x, y, height, width }: ModuleProps) => {
                 x={col8}
                 y={bottomRow}
                 label="Pulse width"
+                ctrlId={oscControllers.VCO.PW.id}
                 selector={(s) => s.oscillators[OSC].pw}
                 mutator={(s, v) => {
                     s.oscillators[OSC].pw = v

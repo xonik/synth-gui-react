@@ -1,6 +1,7 @@
 import { useCallback } from 'react'
 import { POT_DISTANCE_M, POT_OFFSET_Y } from '@/constants'
 import { useButton, usePatchValue, usePot, useUiStore, voiceGroupStores } from '@/store'
+import kbdControllers from '@/synthcore/modules/kbd/kbdControllers'
 import RoundLedPushButton8 from '../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import Led from '../leds/Led'
@@ -135,6 +136,7 @@ export const Keyboard = ({ x, y, height, width }: ModuleProps) => {
                 y={row1}
                 ledMode="single"
                 label="Portamento"
+                ctrlId={kbdControllers.PORTAMENTO.id}
                 value={portValue}
                 onValueIncrement={portIncrement}
             />
@@ -174,6 +176,7 @@ export const Keyboard = ({ x, y, height, width }: ModuleProps) => {
                 y={row1}
                 ledMode="single"
                 label="Unison detune"
+                ctrlId={kbdControllers.UNISON_DETUNE.id}
                 value={detuneValue}
                 onValueIncrement={detuneIncrement}
             />

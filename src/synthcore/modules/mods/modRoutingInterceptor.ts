@@ -4,10 +4,14 @@ import { digitalModSources, modDst } from './utils'
 export const ROUTE_SOURCE_ACTIVE = 1
 export const ROUTE_DST_ACTIVE = 2
 
+export type FlashMode = 'candidate' | 'selected' | undefined
+
 // ── Source lookup ────────────────────────────────────────────────────────────
 // Maps hardware source controller id → index in digitalModSources.
 const sourceIndexLookup = new Map<number, number>()
-digitalModSources.forEach((src, idx) => sourceIndexLookup.set(src.id, idx))
+digitalModSources.forEach((src, idx) => {
+    sourceIndexLookup.set(src.id, idx)
+})
 
 // ── Destination lookup ───────────────────────────────────────────────────────
 // Maps "ctrlId:ctrlIndex" → location in modDst hierarchy.
@@ -38,6 +42,7 @@ export const trySelectSource = (hwSourceId: number): boolean => {
     const idx = sourceIndexLookup.get(hwSourceId)
     if (idx !== undefined) {
         useUiStore.getState().setModRouting({ sourceId: idx })
+        useUiStore.getState().setRoutingSourceSelected(true)
     }
     return true
 }
@@ -52,5 +57,46 @@ export const trySelectDst = (ctrlId: number, ctrlIndex: number): boolean => {
     const location = dstLookup.get(`${ctrlId}:${ctrlIndex}`)
     if (!location) return false
     useUiStore.getState().setModRouting(location)
+    useUiStore.getState().setRoutingDstSelected(true)
     return true
+}
+
+/**
+ * React hook that returns helpers for computing flash state.
+ * Call once per component, then use getSourceFlash / getDstFlash per control.
+ */
+export const useModRoutingFlash = () => {
+    const modRouteButton = useUiStore((s) => s.modRouteButton)
+    const routingSourceSelected = useUiStore((s) => s.routingSourceSelected)
+    const routingDstSelected = useUiStore((s) => s.routingDstSelected)
+    const selectedSourceId = useUiStore((s) => s.modRouting.sourceId)
+    const selectedDstGroupId = useUiStore((s) => s.modRouting.dstGroupId)
+    const selectedDstFuncId = useUiStore((s) => s.modRouting.dstFuncId)
+    const selectedDstParamId = useUiStore((s) => s.modRouting.dstParamId)
+
+    const getSourceFlash = (hwSourceId: number): FlashMode => {
+        if (modRouteButton !== ROUTE_SOURCE_ACTIVE) return undefined
+        const idx = sourceIndexLookup.get(hwSourceId)
+        if (idx === undefined) return undefined
+        if (!routingSourceSelected) return 'candidate'
+        return idx === selectedSourceId ? 'selected' : undefined
+    }
+
+    const getDstFlash = (ctrlId: number, ctrlIndex: number): FlashMode => {
+        if (modRouteButton !== ROUTE_DST_ACTIVE) return undefined
+        const key = `${ctrlId}:${ctrlIndex}`
+        const location = dstLookup.get(key)
+        if (!location) return undefined
+        if (!routingDstSelected) return 'candidate'
+        if (
+            location.dstGroupId === selectedDstGroupId &&
+            location.dstFuncId === selectedDstFuncId &&
+            location.dstParamId === selectedDstParamId
+        ) {
+            return 'selected'
+        }
+        return undefined
+    }
+
+    return { getSourceFlash, getDstFlash }
 }

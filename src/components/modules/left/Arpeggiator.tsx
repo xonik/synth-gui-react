@@ -2,7 +2,6 @@ import { POT_DISTANCE_L, POT_DISTANCE_M, POT_DISTANCE_S, POT_OFFSET_Y, ROW_HEIGH
 import { useGlobalButton, useGlobalPot } from '@/store/hooks'
 import arpControllers from '@/synthcore/modules/arp/arpControllers'
 import { ControllerIdSrc } from '@/synthcore/modules/controllers/controllerIds'
-import { trySelectDst, trySelectSource } from '@/synthcore/modules/mods/modRoutingInterceptor'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { ModuleBorder } from '../../misc/ModuleBorder'
@@ -20,18 +19,6 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
     const col3 = col1 + POT_DISTANCE_L
 
     const arpHwSourceId = ControllerIdSrc.ARP
-
-    // BPM has isDstDigi so wraps both source and dest routing.
-    // All other arp controls only source-route (no isDstDigi).
-    const withRateRouting = (handler: (inc: number) => void) => (inc: number) => {
-        if (trySelectSource(arpHwSourceId)) return
-        if (trySelectDst(arpControllers.BPM.id, 0)) return
-        handler(inc)
-    }
-    const withButtonRouting = (handler: () => void) => () => {
-        if (trySelectSource(arpHwSourceId)) return
-        handler()
-    }
 
     const { displayValue: rateValue, increment: rateIncrement } = useGlobalPot(
         (s) => s.arp.bpm,
@@ -86,7 +73,10 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
                 x={col2}
                 y={row2}
                 value={rateValue}
-                onValueIncrement={withRateRouting(rateIncrement)}
+                hwSourceId={arpHwSourceId}
+                ctrlId={arpControllers.BPM.id}
+                ctrlIndex={0}
+                onValueIncrement={rateIncrement}
             />
 
             {/* Let sync source be settable from main panel */}
@@ -97,7 +87,8 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
                 label="Sync"
                 ledModes={3}
                 value={syncValue}
-                onButtonClick={withButtonRouting(syncToggle)}
+                hwSourceId={arpHwSourceId}
+                onButtonClick={syncToggle}
             />
 
             <RoundPushButton8
@@ -110,7 +101,8 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
                 ledLabels={['Up', 'Down', 'Random']}
                 ledCycleBinary
                 value={modeValue}
-                onButtonClick={withButtonRouting(modeToggle)}
+                hwSourceId={arpHwSourceId}
+                onButtonClick={modeToggle}
             />
 
             <RoundPushButton8
@@ -122,7 +114,8 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
                 ledPosition="right"
                 ledLabels={['1 oct', '2 oct', '3 oct']}
                 value={rangeValue}
-                onButtonClick={withButtonRouting(rangeToggle)}
+                hwSourceId={arpHwSourceId}
+                onButtonClick={rangeToggle}
             />
 
             <RoundLedPushButton8
@@ -131,7 +124,8 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
                 y={row3}
                 label="On"
                 value={onOffValue}
-                onButtonClick={withButtonRouting(onOffToggle)}
+                hwSourceId={arpHwSourceId}
+                onButtonClick={onOffToggle}
             />
 
             <RoundLedPushButton8
@@ -140,7 +134,8 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
                 y={row3}
                 label="Sequence"
                 value={sequenceValue}
-                onButtonClick={withButtonRouting(sequenceToggle)}
+                hwSourceId={arpHwSourceId}
+                onButtonClick={sequenceToggle}
             />
         </>
     )

@@ -14,8 +14,12 @@ const Route = ({ x, y, height, width }: ModuleProps) => {
     const amount = useUiStore((s) => s.modAmount)
     const setAmount = useUiStore((s) => s.setModAmount)
 
-    const onRouteClick = useCallback(() => {
-        setRouteButton((routeButton + 1) % 3)
+    const onSourceClick = useCallback(() => {
+        setRouteButton(routeButton === 1 ? 0 : 1)
+    }, [routeButton, setRouteButton])
+
+    const onDestClick = useCallback(() => {
+        setRouteButton(routeButton === 2 ? 0 : 2)
     }, [routeButton, setRouteButton])
 
     const onAmountIncrement = useCallback(
@@ -39,20 +43,18 @@ const Route = ({ x, y, height, width }: ModuleProps) => {
                 labelPosition="bottom-pot"
                 x={col1}
                 y={y + POT_OFFSET_Y}
-                hasOff
                 label="Source"
-                value={routeButton}
-                onButtonClick={onRouteClick}
+                value={routeButton === 1 ? 1 : 0}
+                onButtonClick={onSourceClick}
             />
 
             <RoundLedPushButton8
                 labelPosition="bottom-pot"
                 x={col2}
                 y={y + POT_OFFSET_Y}
-                hasOff
                 label="Dest"
-                value={routeButton}
-                onButtonClick={onRouteClick}
+                value={routeButton === 2 ? 1 : 0}
+                onButtonClick={onDestClick}
             />
 
             <RotaryPot12
