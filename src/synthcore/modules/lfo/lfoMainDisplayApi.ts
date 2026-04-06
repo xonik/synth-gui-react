@@ -21,14 +21,14 @@ export const mainDisplayLfoPotResolutions = {
 export const mainDisplayLfoApi = {
     handleMainDisplayController: (voiceGroupIndex: number, ctrlId: number, increment: number) => {
         const uiState = useUiStore.getState()
-        const lfoId = uiState.selectedLfoId
+        const lfoId = uiState.selectedLfoScreenId
         const shiftOn = uiState.shiftOn
 
         const lfo = voiceGroupStores[voiceGroupIndex].getState().lfos[lfoId]
 
         if (ctrlId === mainDisplayControllers.POT1.id) {
             const newLfoId = getBounded(lfoId + step(increment), 0, NUMBER_OF_LFOS - 1)
-            useUiStore.getState().selectLfo(newLfoId)
+            useUiStore.getState().selectLfoScreen(newLfoId)
         } else if (ctrlId === mainDisplayControllers.POT2.id) {
             if (!shiftOn) {
                 const newRate = getBounded(lfo.rate + increment, 0, 1)

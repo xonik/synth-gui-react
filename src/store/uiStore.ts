@@ -50,6 +50,7 @@ export interface UiState {
 
     // LFO editor
     selectedLfoId: number
+    selectedLfoScreenId: number
     selectedLfoStageId: number
 
     // Modulation routing
@@ -69,6 +70,7 @@ export interface UiActions {
     selectEnv: (envId: number) => void
     selectEnvStage: (stageId: StageId) => void
     selectLfo: (lfoId: number) => void
+    selectLfoScreen: (lfoId: number) => void
     selectLfoStage: (stageId: number) => void
     setModRouting: (routing: Partial<ModRoutingSelection>) => void
     setModRouteButton: (value: number) => void
@@ -85,6 +87,7 @@ export const useUiStore = create<UiState & UiActions>((set) => ({
     selectedEnvId: 0,
     selectedEnvStageId: StageId.ATTACK,
     selectedLfoId: 0,
+    selectedLfoScreenId: 0,
     selectedLfoStageId: 0,
     modRouting: {
         sourceId: undefined,
@@ -118,6 +121,7 @@ export const useUiStore = create<UiState & UiActions>((set) => ({
     selectEnvStage: (stageId) => set({ selectedEnvStageId: stageId }),
 
     selectLfo: (lfoId) => set({ selectedLfoId: lfoId }),
+    selectLfoScreen: (lfoId) => set({ selectedLfoScreenId: lfoId }),
     selectLfoStage: (stageId) => set({ selectedLfoStageId: stageId }),
 
     setModRouting: (routing) =>

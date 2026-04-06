@@ -3,7 +3,7 @@ import { useUiStore } from '@/store'
 import '../components/CtrlHeader.scss'
 
 const LfoHeader = () => {
-    const lfoId = useUiStore((s) => s.selectedLfoId)
+    const lfoId = useUiStore((s) => s.selectedLfoScreenId)
     return <CtrlHeader leftOptionsLabel={`LFO ${lfoId + 1}`} centerLabels={[]} rightOptionsLabel="Stages" />
 }
 

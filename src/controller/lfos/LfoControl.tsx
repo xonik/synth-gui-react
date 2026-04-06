@@ -8,7 +8,7 @@ import Stages from './Stages'
 import '../components/Ctrl.scss'
 
 const LfoControl = () => {
-    const lfoId = useUiStore((s) => s.selectedLfoId)
+    const lfoId = useUiStore((s) => s.selectedLfoScreenId)
     const [points, stageBackgrounds] = useCurve(lfoId)
 
     return (
