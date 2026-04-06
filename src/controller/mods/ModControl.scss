@@ -33,6 +33,14 @@
   $highlit-row-col-color: $graph-selection-bg;
   $highlit-cell-color: rgba($accent-primary, 0.25);
 
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
   &__header {
     display: flex;
     flex-direction: row;
