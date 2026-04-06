@@ -25,10 +25,10 @@ const Stages = ({ stageBackgrounds, points }: Props) => {
     return (
         <svg x={0} y={0}>
             {<line x1={0} y1={0.5} x2={1} y2={0.5} className={'stages-center-line'} />}
-            {stageBackgrounds.map(({ from, to, id }, index) => {
+            {stageBackgrounds.map(({ from, to, id, stageIndex }, index) => {
                 const isLast = index === stageBackgrounds.length - 1
                 return (
-                    <Fragment key={`stage${id}`}>
+                    <Fragment key={`stage${id}-${stageIndex}`}>
                         <rect
                             x={from}
                             y={0}

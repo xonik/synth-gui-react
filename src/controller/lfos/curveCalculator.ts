@@ -10,6 +10,7 @@ export type StageBackground = {
     from: number
     to: number
     id: StageId
+    stageIndex: number
 }
 
 const getUnscaledLevels = (bipolar: boolean, invert: boolean, releaseEnabled: boolean) => {
@@ -122,6 +123,7 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
 
     // TODO: Calculate correct delay level from phase offset.
     // See issue #27 for details.
+    let stageIndex = 0
 
     const [points, stageBackgrounds] = useMemo(() => {
         const delayDelta = delayEnabled ? baseStageWidth : 0
@@ -132,7 +134,7 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
         const attackValues = pointsPerStage[0]
         const releaseValues = pointsPerStage[1]
 
-        const sections: { from: number; to: number; id: StageId }[] = []
+        const sections: { from: number; to: number; id: StageId; stageIndex: number }[] = []
 
         // Starting point in stage when not starting at beginning
         let phasePointStart = xOffset !== 0 ? Math.floor(keypoints * offsetInStage) : 0
@@ -146,7 +148,7 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
 
         // Delay stage rectangle
         if (delayEnabled) {
-            sections.push({ from: 0, to: currentX, id: StageId.DELAY })
+            sections.push({ from: 0, to: currentX, id: StageId.DELAY, stageIndex: stageIndex++ })
         }
 
         const cycle: { y: number; inc: number; stageId: StageId }[] = []
@@ -187,7 +189,12 @@ export const useCurve = (lfoId: number): [Point[], StageBackground[]] => {
 
                 // Create background sections
                 if (prevStageId !== value.stageId || index === subArray.length - 1) {
-                    sections.push({ from: prevX, to: currentX, id: prevStageId })
+                    sections.push({
+                        from: prevX,
+                        to: currentX,
+                        id: prevStageId,
+                        stageIndex: stageIndex++,
+                    })
                     prevX = currentX
                     prevStageId = value.stageId
                 }
