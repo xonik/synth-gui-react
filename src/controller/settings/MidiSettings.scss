@@ -1,0 +1,76 @@
+@import '../constants';
+
+.midi-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem 2rem;
+
+  &__section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__label {
+    width: 80px;
+    color: $text-mid;
+    font-size: 0.85em;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  &__select {
+    background: $bg-mid;
+    color: $text-bright;
+    border: 1px solid $bg-highlight;
+    border-radius: 3px;
+    padding: 4px 8px;
+    min-width: 260px;
+    font-size: 0.9em;
+    cursor: pointer;
+
+    &:hover {
+      border-color: $accent-primary-dim;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $accent-primary;
+    }
+  }
+
+  &__save {
+    align-self: flex-start;
+    margin-top: 0.5rem;
+    padding: 6px 20px;
+    background: $bg-mid;
+    color: $accent-primary;
+    border: 1px solid $accent-primary-dim;
+    border-radius: 3px;
+    font-size: 0.85em;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+
+    &:hover:not(:disabled) {
+      background: $bg-highlight;
+      border-color: $accent-primary;
+    }
+
+    &:active:not(:disabled) {
+      background: $accent-primary-dim;
+      color: $bg-dark;
+    }
+
+    &:disabled {
+      color: $text-dim;
+      border-color: $bg-highlight;
+      cursor: default;
+    }
+  }
+}

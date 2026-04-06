@@ -3,8 +3,10 @@ import { BUTTON_DISTANCE_S, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from '@/c
 import { buttonMidiValues } from '@/midi/buttonMidiValues'
 import { button } from '@/midi/midibus'
 import { useButton, usePot, useUiStore } from '@/store'
+import { ControllerIdSrc } from '@/synthcore/modules/controllers/controllerIds'
 import { timeResponseMapper } from '@/synthcore/modules/common/responseMappers'
 import { lfoCtrls } from '@/synthcore/modules/lfo/lfoControllers'
+import { trySelectDst, trySelectSource } from '@/synthcore/modules/mods/modRoutingInterceptor'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { Random } from '../../images/Random'
@@ -31,6 +33,22 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
     const selectLfo = useUiStore((s) => s.selectLfo)
     const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
 
+    const lfoHwSourceId = ControllerIdSrc.LFO1 + lfoId
+
+    // Wraps a pot increment: intercepts for source then dest routing when active.
+    const withPotRouting = (ctrlId: number, handler: (inc: number) => void) => (inc: number) => {
+        if (trySelectSource(lfoHwSourceId)) return
+        if (trySelectDst(ctrlId, lfoId)) return
+        handler(inc)
+    }
+
+    // Wraps a button toggle: intercepts for source routing only (buttons have no isDstDigi).
+    const withButtonRouting = (handler: () => void) => () => {
+        if (trySelectSource(lfoHwSourceId)) return
+        handler()
+    }
+
+    // The LFO selector button is intentionally NOT wrapped — it must never trigger routing.
     const onSelectLfo = useCallback(() => {
         selectLfo((lfoId + 1) % 3)
     }, [lfoId, selectLfo])
@@ -120,7 +138,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 y={row1}
                 labelPosition="bottom-pot"
                 value={syncValue}
-                onButtonClick={syncToggle}
+                onButtonClick={withButtonRouting(syncToggle)}
             />
 
             <RoundPushButton8
@@ -141,7 +159,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 x={col2}
                 y={row1}
                 value={rateValue}
-                onValueIncrement={rateIncrement}
+                onValueIncrement={withPotRouting(lfoCtrls.RATE.id, rateIncrement)}
             />
 
             <RotaryPot12
@@ -150,7 +168,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 x={col3}
                 y={row1}
                 value={depthValue}
-                onValueIncrement={depthIncrement}
+                onValueIncrement={withPotRouting(lfoCtrls.DEPTH.id, depthIncrement)}
             />
 
             <RotaryPot12
@@ -159,7 +177,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 x={col4}
                 y={row1}
                 value={balanceValue}
-                onValueIncrement={balanceIncrement}
+                onValueIncrement={withPotRouting(lfoCtrls.BALANCE.id, balanceIncrement)}
             />
 
             <RotaryPot12
@@ -168,7 +186,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 x={col5}
                 y={row1}
                 value={delayValue}
-                onValueIncrement={delayIncrement}
+                onValueIncrement={withPotRouting(lfoCtrls.DELAY.id, delayIncrement)}
             />
 
             <RoundLedPushButton8
@@ -177,7 +195,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 y={row2}
                 labelPosition="bottom-pot"
                 value={bipolarValue}
-                onButtonClick={bipolarToggle}
+                onButtonClick={withButtonRouting(bipolarToggle)}
             />
 
             <RoundLedPushButton8
@@ -186,7 +204,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 y={row2}
                 labelPosition="bottom-pot"
                 value={invertValue}
-                onButtonClick={invertToggle}
+                onButtonClick={withButtonRouting(invertToggle)}
             />
 
             <RoundLedPushButton8
@@ -195,7 +213,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 y={row2}
                 labelPosition="bottom-pot"
                 value={loopValue}
-                onButtonClick={loopToggle}
+                onButtonClick={withButtonRouting(loopToggle)}
             />
 
             <RoundLedPushButton8
@@ -204,7 +222,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 y={row2}
                 labelPosition="bottom-pot"
                 value={resetValue}
-                onButtonClick={resetToggle}
+                onButtonClick={withButtonRouting(resetToggle)}
             />
 
             <RoundPushButton8
@@ -223,7 +241,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                     'Other',
                 ]}
                 value={shapeValue}
-                onButtonClick={shapeToggle}
+                onButtonClick={withButtonRouting(shapeToggle)}
             />
 
             <RoundPushButton8
@@ -231,7 +249,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 x={col2 + BUTTON_DISTANCE_S * 6}
                 y={row1}
                 labelPosition="bottom-pot"
-                onButtonClick={onTrigger}
+                onButtonClick={withButtonRouting(onTrigger)}
             />
         </>
     )
