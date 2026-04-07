@@ -5,6 +5,7 @@ export type Point = { x: number; y: number }
 
 interface Props {
     onClick?: () => void
+    onDragStart?: () => void
     knobRadius: number
     onIncrement?: (steps: number, stepSize: number) => void
     arc?: number
@@ -30,12 +31,16 @@ const distToCenter = (center: Point, pointer: Point) => {
     return Math.sqrt(xDiff * xDiff + yDiff * yDiff)
 }
 
-const RotaryPot = ({ knobRadius, onClick, onIncrement, arc = 360, resolution = 1000, silver }: Props) => {
+const RotaryPot = ({ knobRadius, onClick, onDragStart, onIncrement, arc = 360, resolution = 1000, silver }: Props) => {
     const stepSize = 1 / resolution
 
     const [center, setCenter] = useState<Point | null>(null)
     const [previousAngle, setPreviousAngle] = useState<number | undefined>(undefined)
     const [isDragging, setIsDragging] = useState(false)
+
+    // Tracks whether the pot actually rotated during the current press. If it did,
+    // the click handler is suppressed on mouse-up to prevent click-after-turn races.
+    const hasRotated = useRef(false)
 
     const svgRef = useRef<SVGCircleElement>(null)
 
@@ -88,6 +93,7 @@ const RotaryPot = ({ knobRadius, onClick, onIncrement, arc = 360, resolution = 1
                             const absSteps = Math.floor(Math.abs(nextAccumulator) / stepSize)
                             const steps = valueChange > 0 ? absSteps : -absSteps
                             setAccumulator(nextAccumulator % stepSize)
+                            hasRotated.current = true
                             onIncrement?.(steps, stepSize)
                         } else {
                             setAccumulator(nextAccumulator)
@@ -104,14 +110,20 @@ const RotaryPot = ({ knobRadius, onClick, onIncrement, arc = 360, resolution = 1
             updateCenter()
             setPreviousAngle(undefined)
             setIsDragging(true)
+            hasRotated.current = false
+            onDragStart?.()
             if (event.preventDefault) event.preventDefault()
         },
-        [updateCenter]
+        [updateCenter, onDragStart]
     )
 
     const onMouseUp = useCallback(() => {
         if (isDragging) setIsDragging(false)
     }, [isDragging])
+
+    const handleClick = useCallback(() => {
+        if (!hasRotated.current) onClick?.()
+    }, [onClick])
 
     // TODO: add and remove these on demand?
     useEffect(() => {
@@ -130,7 +142,7 @@ const RotaryPot = ({ knobRadius, onClick, onIncrement, arc = 360, resolution = 1
                 ref={svgRef}
                 cx={0}
                 cy={0}
-                onClick={onClick}
+                onClick={handleClick}
                 onMouseDown={onMouseDown}
                 r={SHOW_CUT ? 6.9 / 2 : knobRadius}
                 className={silver ? 'pot-knob-silver' : 'pot-knob'}

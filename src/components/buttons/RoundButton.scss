@@ -1,18 +1,18 @@
 @import '../constants';
 
 @keyframes routing-led-flash {
-  0%, 49.9% { fill: red; stroke: red; }
-  50%, 100% { fill: #500000; stroke: #500000; }
+  0%, 49.9% { fill: $routing-led-on; stroke: $routing-led-on; }
+  50%, 100% { fill: $routing-led-flash-off; stroke: $routing-led-flash-off; }
 }
 
 .button--routing-candidate .button-cap {
-  fill: red;
-  stroke: red;
+  fill: $routing-led-on;
+  stroke: $routing-led-on;
 }
 
 .button--routing-dimmed .button-cap {
-  fill: #aa0000;
-  stroke: #aa0000;
+  fill: $routing-led-dim;
+  stroke: $routing-led-dim;
 }
 
 .button--routing-selected .button-cap {

@@ -1,7 +1,8 @@
 import classNames from 'classnames'
-import { useCallback } from 'react'
+import { useCallback, useRef } from 'react'
 import { SHOW_CUT } from '@/config'
-import { trySelectDst, trySelectSource, useModRoutingFlash } from '@/synthcore/modules/mods/modRoutingInterceptor'
+import { getCanDeselect, trySelectDst, trySelectSource, useModRoutingFlash } from '@/synthcore/modules/mods/modRoutingInterceptor'
+import { useUiStore } from '@/store/uiStore'
 import arc from '../../utils/svg/arc'
 import RotaryPotBase from './RotaryPotBase'
 import './RotaryPot.scss'
@@ -101,6 +102,9 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
     // Position should be in the range 0-1 in all modes but pan. In pan the range is -0.5 - 0.5
     const { x, y, ledMode = 'single', potMode = 'normal', label, value, disabled, silver, hwSourceId, ctrlId, ctrlIndex = 0, onValueIncrement } = props
 
+    const gestureCanDeselect = useRef(false)
+    const gestureHasDeselected = useRef(false)
+
     const { getSourceFlash, getDstFlash } = useModRoutingFlash()
     const flashMode = hwSourceId !== undefined
         ? (getSourceFlash(hwSourceId) ?? (ctrlId !== undefined ? getDstFlash(ctrlId, ctrlIndex) : undefined))
@@ -125,11 +129,27 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
 
     const negLedPosition = centerLed - (ledPosition - centerLed)
 
+    const onDragStart = useCallback(() => {
+        gestureCanDeselect.current = getCanDeselect()
+        gestureHasDeselected.current = false
+    }, [])
+
     const onIncrement = useCallback(
         (steps: number, stepSize: number) => {
             if (disabled) return
             if (hwSourceId !== undefined && trySelectSource(hwSourceId)) return
-            if (ctrlId !== undefined && trySelectDst(ctrlId, ctrlIndex)) return
+            if (ctrlId !== undefined) {
+                if (gestureHasDeselected.current) return
+                const soloedBefore = useUiStore.getState().soloedDst
+                const isSoloed = soloedBefore?.ctrlId === ctrlId && soloedBefore?.ctrlIndex === ctrlIndex
+                const consumed = trySelectDst(ctrlId, ctrlIndex, false, gestureCanDeselect.current)
+                if (consumed) {
+                    if (isSoloed && gestureCanDeselect.current) {
+                        gestureHasDeselected.current = true
+                    }
+                    return
+                }
+            }
             const delta = potMode === 'pan' ? steps * (stepSize * 2) : steps * stepSize
             if (onValueIncrement) {
                 onValueIncrement(delta)
@@ -148,7 +168,7 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
 
     return (
         <svg x={x} y={y} className={potClass}>
-            <RotaryPotBase knobRadius={knobRadius} onClick={onPotClick} onIncrement={onIncrement} arc={ledArc} silver={silver} />
+            <RotaryPotBase knobRadius={knobRadius} onClick={onPotClick} onDragStart={onDragStart} onIncrement={onIncrement} arc={ledArc} silver={silver} />
             <path d={windowArc} className="pot-ring-window" strokeWidth={windowWidth} />
             {!SHOW_CUT &&
                 ledAngles.map((angle, led) => {

@@ -34,19 +34,19 @@ modDst.dsts.forEach((group, gIdx) => {
     })
 })
 
-// ── Deselect guard ───────────────────────────────────────────────────────────
-// Tracks when a destination was last selected. A second interaction on the same
-// destination deselects it only after this delay has elapsed, preventing rapid
-// pot turns from immediately toggling the selection back off.
+// ── Deselect timing ──────────────────────────────────────────────────────────
+// soloedDstSetAt: timestamp of when the current destination was soloed.
+// getCanDeselect() is called once at drag-start; the result is passed into
+// trySelectDst so the decision is fixed for the entire gesture and cannot
+// flip mid-drag when the 600ms window expires.
 const DESELECT_DELAY_MS = 600
-let soloedDstSelectedAt = 0
+let soloedDstSetAt = 0
+
+export const getCanDeselect = (): boolean => Date.now() - soloedDstSetAt >= DESELECT_DELAY_MS
 
 const getSourceCtrlId = (sourceIndex: number): number => digitalModSources[sourceIndex].id
 
 const getMods = (voiceGroupIndex: number) => voiceGroupStores[voiceGroupIndex].getState().mods
-
-const getModAmount = (voiceGroupIndex: number, sourceCtrlId: number, ctrlId: number, ctrlIndex: number): number =>
-    getMods(voiceGroupIndex)?.[sourceCtrlId]?.[ctrlId]?.[ctrlIndex] ?? 0
 
 /**
  * When Route→Source is active, selects hwSourceId as the mod source and
@@ -80,7 +80,6 @@ export const trySelectSource = (hwSourceId: number): boolean => {
         if (autoLocation) uiStore.setModRouting(autoLocation)
         uiStore.setSoloedDst(autoDst)
         uiStore.setRoutingDstSelected(true)
-        soloedDstSelectedAt = Date.now()
     }
 
     return true
@@ -88,16 +87,23 @@ export const trySelectSource = (hwSourceId: number): boolean => {
 
 /**
  * When Route→Dest is active, selects or deselects the controller as the mod destination.
- * - First interaction: solos the destination for amount editing.
- * - Second interaction on the same destination: deselects and zeroes the mod amount.
- *   - fromClick=true (explicit click): deselects immediately, no delay.
- *   - fromClick=false (pot turn): deselects only after DESELECT_DELAY_MS has elapsed,
- *     preventing rapid turn events from bouncing the selection back off.
- * Only consumes the interaction (returns true) if the controller has isDstDigi.
+ *
+ * Turn behaviour (fromClick=false):
+ *   - canDeselect is computed once at drag-start via getCanDeselect() and passed in.
+ *     This prevents mid-gesture flips when the 600ms window expires during a long drag.
+ *   - If isSameDst and canDeselect: deselect immediately.
+ *   - If isSameDst and !canDeselect: consume but no-op (too soon after soloing).
+ *
+ * Click behaviour (fromClick=true, fired only when no rotation occurred):
+ *   - On soloed pot: deselects immediately (always allowed).
+ *   - On other pot: solos it immediately.
+ *
+ * Only consumes (returns true) if the controller is in dstLookup.
  */
-export const trySelectDst = (ctrlId: number, ctrlIndex: number, fromClick = false): boolean => {
+export const trySelectDst = (ctrlId: number, ctrlIndex: number, fromClick = false, canDeselect = false): boolean => {
     if (useUiStore.getState().modRouteButton !== ROUTE_DST_ACTIVE) return false
-    if (!dstLookup.has(`${ctrlId}:${ctrlIndex}`)) return false
+    const key = `${ctrlId}:${ctrlIndex}`
+    if (!dstLookup.has(key)) return false
 
     const uiStore = useUiStore.getState()
     const sourceIndex = uiStore.modRouting.sourceId
@@ -105,16 +111,12 @@ export const trySelectDst = (ctrlId: number, ctrlIndex: number, fromClick = fals
 
     const soloedDst = uiStore.soloedDst
     const isSameDst = soloedDst?.ctrlId === ctrlId && soloedDst?.ctrlIndex === ctrlIndex
-    const now = Date.now()
-
-    const location = dstLookup.get(`${ctrlId}:${ctrlIndex}`)!
 
     if (isSameDst) {
-        if (!fromClick && now - soloedDstSelectedAt < DESELECT_DELAY_MS) {
-            // Pot turn within the delay window — still interacting, ignore
-            return true
+        if (!fromClick && !canDeselect) {
+            return true  // too soon after soloing — consume but do nothing
         }
-        // Deliberate deselect: remove the routing and clear the solo
+        // Click (always) or turn with canDeselect: remove routing and clear solo
         const sourceCtrlId = getSourceCtrlId(sourceIndex)
         const voiceGroupIndex = uiStore.currentVoiceGroupIndex
         voiceGroupStores[voiceGroupIndex].getState().set((state: any) => {
@@ -128,10 +130,11 @@ export const trySelectDst = (ctrlId: number, ctrlIndex: number, fromClick = fals
     }
 
     // New destination: update display routing and solo it for amount editing
+    const location = dstLookup.get(key)!
     uiStore.setModRouting(location)
     uiStore.setSoloedDst({ ctrlId, ctrlIndex })
     uiStore.setRoutingDstSelected(true)
-    soloedDstSelectedAt = now
+    soloedDstSetAt = Date.now()
     return true
 }
 
