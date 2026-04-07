@@ -138,11 +138,17 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
         [disabled, potMode, onValueIncrement, hwSourceId, ctrlId, ctrlIndex]
     )
 
+    const onPotClick = useCallback(() => {
+        if (disabled) return
+        if (hwSourceId !== undefined && trySelectSource(hwSourceId)) return
+        if (ctrlId !== undefined && trySelectDst(ctrlId, ctrlIndex, true)) return
+    }, [disabled, hwSourceId, ctrlId, ctrlIndex])
+
     const potClass = flashMode ? `pot pot--routing-${flashMode}` : 'pot'
 
     return (
         <svg x={x} y={y} className={potClass}>
-            <RotaryPotBase knobRadius={knobRadius} onIncrement={onIncrement} arc={ledArc} silver={silver} />
+            <RotaryPotBase knobRadius={knobRadius} onClick={onPotClick} onIncrement={onIncrement} arc={ledArc} silver={silver} />
             <path d={windowArc} className="pot-ring-window" strokeWidth={windowWidth} />
             {!SHOW_CUT &&
                 ledAngles.map((angle, led) => {

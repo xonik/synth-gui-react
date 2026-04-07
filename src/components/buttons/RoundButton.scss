@@ -6,7 +6,13 @@
 }
 
 .button--routing-candidate .button-cap {
-  animation: routing-led-flash 1.5s steps(2, jump-none) infinite;
+  fill: red;
+  stroke: red;
+}
+
+.button--routing-dimmed .button-cap {
+  fill: #aa0000;
+  stroke: #aa0000;
 }
 
 .button--routing-selected .button-cap {

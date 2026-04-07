@@ -1,7 +1,9 @@
 import { useCallback } from 'react'
 import { BUTTON_DISTANCE_S, POT_DISTANCE_L, POT_DISTANCE_M, POT_OFFSET_Y } from '@/constants'
 import { useUiStore } from '@/store'
+import { useVoiceGroupStore, voiceGroupStores } from '@/store/patchStore'
 import { getBounded } from '@/store/utils'
+import { digitalModSources } from '@/synthcore/modules/mods/utils'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
 import { ModuleBorder } from '../../misc/ModuleBorder'
 import SubHeader from '../../misc/SubHeader'
@@ -11,22 +13,40 @@ import type { ModuleProps } from '../types'
 const Route = ({ x, y, height, width }: ModuleProps) => {
     const routeButton = useUiStore((s) => s.modRouteButton)
     const setRouteButton = useUiStore((s) => s.setModRouteButton)
-    const amount = useUiStore((s) => s.modAmount)
-    const setAmount = useUiStore((s) => s.setModAmount)
+    const sourceIndex = useUiStore((s) => s.modRouting.sourceId)
+    const soloedDst = useUiStore((s) => s.soloedDst)
+    const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
+
+    const sourceCtrlId = sourceIndex !== undefined ? digitalModSources[sourceIndex].id : undefined
+
+    // Read the actual mod amount from patch state for the soloed destination
+    const modAmount = useVoiceGroupStore(voiceGroupIndex, (s) => {
+        if (sourceCtrlId === undefined || soloedDst === undefined) return 0
+        return s.mods?.[sourceCtrlId]?.[soloedDst.ctrlId]?.[soloedDst.ctrlIndex] ?? 0
+    })
 
     const onSourceClick = useCallback(() => {
         setRouteButton(routeButton === 1 ? 0 : 1)
     }, [routeButton, setRouteButton])
 
     const onDestClick = useCallback(() => {
+        // Don't allow entering dest mode without a source selected
+        if (sourceIndex === undefined) return
         setRouteButton(routeButton === 2 ? 0 : 2)
-    }, [routeButton, setRouteButton])
+    }, [routeButton, setRouteButton, sourceIndex])
 
     const onAmountIncrement = useCallback(
         (delta: number) => {
-            setAmount(getBounded(amount + delta, -1, 1))
+            if (sourceCtrlId === undefined || soloedDst === undefined) return
+            const current = voiceGroupStores[voiceGroupIndex].getState().mods?.[sourceCtrlId]?.[soloedDst.ctrlId]?.[soloedDst.ctrlIndex] ?? 0
+            const next = getBounded(current + delta, -1, 1)
+            voiceGroupStores[voiceGroupIndex].getState().set((state: any) => {
+                if (!state.mods[sourceCtrlId]) state.mods[sourceCtrlId] = {}
+                if (!state.mods[sourceCtrlId][soloedDst.ctrlId]) state.mods[sourceCtrlId][soloedDst.ctrlId] = {}
+                state.mods[sourceCtrlId][soloedDst.ctrlId][soloedDst.ctrlIndex] = next
+            })
         },
-        [amount, setAmount]
+        [sourceCtrlId, soloedDst, voiceGroupIndex]
     )
 
     const col1 = x + POT_DISTANCE_M / 2
@@ -35,7 +55,6 @@ const Route = ({ x, y, height, width }: ModuleProps) => {
 
     return (
         <>
-            {/*!SHOW_CUT && <rect x={x} y={y} width={64} height={ROW_HEIGHT - ROW_SPACING} className="module-background"/>*/}
             <ModuleBorder x={x} y={y} height={height} width={width} />
             <SubHeader label="Route" x={x} y={y} width={width} labelPosition="center" labelWidth={15} />
 
@@ -63,7 +82,8 @@ const Route = ({ x, y, height, width }: ModuleProps) => {
                 label="Amount"
                 x={col3}
                 y={y + POT_OFFSET_Y}
-                value={amount}
+                value={modAmount}
+                disabled={soloedDst === undefined}
                 onValueIncrement={onAmountIncrement}
             />
         </>

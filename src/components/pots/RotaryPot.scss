@@ -6,7 +6,13 @@
 }
 
 .pot--routing-candidate .pot-ring-led {
-  animation: routing-led-flash 1.5s steps(2, jump-none) infinite;
+  fill: red;
+  stroke: red;
+}
+
+.pot--routing-dimmed .pot-ring-led {
+  fill: #aa0000;
+  stroke: #aa0000;
 }
 
 .pot--routing-selected .pot-ring-led {
