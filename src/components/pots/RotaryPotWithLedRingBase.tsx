@@ -2,7 +2,6 @@ import classNames from 'classnames'
 import { useCallback, useRef } from 'react'
 import { SHOW_CUT } from '@/config'
 import { getCanDeselect, trySelectDst, trySelectSource, useModRoutingFlash } from '@/synthcore/modules/mods/modRoutingInterceptor'
-import { useUiStore } from '@/store/uiStore'
 import arc from '../../utils/svg/arc'
 import RotaryPotBase from './RotaryPotBase'
 import './RotaryPot.scss'
@@ -103,7 +102,7 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
     const { x, y, ledMode = 'single', potMode = 'normal', label, value, disabled, silver, hwSourceId, ctrlId, ctrlIndex = 0, onValueIncrement } = props
 
     const gestureCanDeselect = useRef(false)
-    const gestureHasDeselected = useRef(false)
+    const gestureHasInteracted = useRef(false)
 
     const { getSourceFlash, getDstFlash } = useModRoutingFlash()
     const flashMode = hwSourceId !== undefined
@@ -131,7 +130,7 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
 
     const onDragStart = useCallback(() => {
         gestureCanDeselect.current = getCanDeselect()
-        gestureHasDeselected.current = false
+        gestureHasInteracted.current = false
     }, [])
 
     const onIncrement = useCallback(
@@ -139,14 +138,10 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
             if (disabled) return
             if (hwSourceId !== undefined && trySelectSource(hwSourceId)) return
             if (ctrlId !== undefined) {
-                if (gestureHasDeselected.current) return
-                const soloedBefore = useUiStore.getState().soloedDst
-                const isSoloed = soloedBefore?.ctrlId === ctrlId && soloedBefore?.ctrlIndex === ctrlIndex
+                if (gestureHasInteracted.current) return
                 const consumed = trySelectDst(ctrlId, ctrlIndex, false, gestureCanDeselect.current)
                 if (consumed) {
-                    if (isSoloed && gestureCanDeselect.current) {
-                        gestureHasDeselected.current = true
-                    }
+                    gestureHasInteracted.current = true
                     return
                 }
             }
