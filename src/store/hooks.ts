@@ -15,10 +15,31 @@
 
 import { useCallback, useMemo } from 'react'
 import { type GlobalPatchState, globalStore, useGlobalStore } from './globalStore'
+import { notifyParamChange } from './paramPopupStore'
 import { useVoiceGroupStore, type VoiceGroupPatch, voiceGroupStores } from './patchStore'
 import type { ResponseMapper } from './types'
+import type { ScreenId } from './uiStore'
 import { useUiStore } from './uiStore'
 import { getBounded } from './utils'
+
+/**
+ * Popup metadata for panel controls. When provided, changing the parameter
+ * will show a temporary popup in the display with the parameter info.
+ */
+export interface PopupConfig {
+    /** Human-readable module name (e.g. "Osc 1", "LPF") */
+    moduleName: string
+    /** Human-readable parameter label (e.g. "Cutoff", "Rate") */
+    paramLabel: string
+    /** The ScreenId this module maps to — popup is suppressed on this screen */
+    screen?: ScreenId
+    /** Optional formatter for the display value. Defaults to 2-decimal fixed. */
+    formatValue?: (value: number) => string
+}
+
+function defaultFormatValue(value: number): string {
+    return value.toFixed(2)
+}
 
 /**
  * Get a value from the current voice group's patch store using a typed selector.
@@ -52,12 +73,13 @@ export function usePot(
     options?: {
         responseMapper?: ResponseMapper
         bipolar?: boolean
+        popup?: PopupConfig
     }
 ) {
     const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
     const rawValue = useVoiceGroupStore(voiceGroupIndex, selector)
 
-    const { responseMapper, bipolar } = options ?? {}
+    const { responseMapper, bipolar, popup } = options ?? {}
 
     const displayValue = useMemo(() => {
         if (responseMapper) {
@@ -73,8 +95,12 @@ export function usePot(
             voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                 mutator(state, newRaw)
             })
+            if (popup) {
+                const fmt = popup.formatValue ?? defaultFormatValue
+                notifyParamChange(popup.moduleName, popup.paramLabel, fmt(bounded), popup.screen)
+            }
         },
-        [voiceGroupIndex, mutator, responseMapper, bipolar]
+        [voiceGroupIndex, mutator, responseMapper, bipolar, popup]
     )
 
     const increment = useCallback(
@@ -84,8 +110,12 @@ export function usePot(
             voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                 mutator(state, newRaw)
             })
+            if (popup) {
+                const fmt = popup.formatValue ?? defaultFormatValue
+                notifyParamChange(popup.moduleName, popup.paramLabel, fmt(newDisplay), popup.screen)
+            }
         },
-        [voiceGroupIndex, mutator, displayValue, responseMapper, bipolar]
+        [voiceGroupIndex, mutator, displayValue, responseMapper, bipolar, popup]
     )
 
     return { displayValue, rawValue, set, increment }
@@ -105,41 +135,46 @@ export function useButton(
     selector: (state: VoiceGroupPatch) => number,
     mutator: (state: VoiceGroupPatch, value: number) => void,
     numValues: number,
-    options?: { loop?: boolean }
+    options?: { loop?: boolean; popup?: PopupConfig }
 ) {
     const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
     const value = useVoiceGroupStore(voiceGroupIndex, selector)
 
     const loop = options?.loop ?? true
+    const popup = options?.popup
 
     const toggle = useCallback(() => {
         const store = voiceGroupStores[voiceGroupIndex].getState()
         const current = selector(store)
+        let next: number
         if (numValues === 1) {
-            store.set((state) => {
-                mutator(state, 0)
-            })
+            next = 0
         } else if (loop) {
-            store.set((state) => {
-                mutator(state, (current + 1) % numValues)
-            })
+            next = (current + 1) % numValues
         } else {
-            const next = current + 1
-            if (next < numValues) {
-                store.set((state) => {
-                    mutator(state, next)
-                })
-            }
+            next = current + 1
+            if (next >= numValues) return
         }
-    }, [voiceGroupIndex, selector, mutator, numValues, loop])
+        store.set((state) => {
+            mutator(state, next)
+        })
+        if (popup) {
+            const fmt = popup.formatValue ?? defaultFormatValue
+            notifyParamChange(popup.moduleName, popup.paramLabel, fmt(next), popup.screen)
+        }
+    }, [voiceGroupIndex, selector, mutator, numValues, loop, popup])
 
     const set = useCallback(
         (newValue: number) => {
             voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                 mutator(state, newValue)
             })
+            if (popup) {
+                const fmt = popup.formatValue ?? defaultFormatValue
+                notifyParamChange(popup.moduleName, popup.paramLabel, fmt(newValue), popup.screen)
+            }
         },
-        [voiceGroupIndex, mutator]
+        [voiceGroupIndex, mutator, popup]
     )
 
     return { value, toggle, set }
@@ -154,10 +189,11 @@ export function useGlobalPot(
     options?: {
         responseMapper?: ResponseMapper
         bipolar?: boolean
+        popup?: PopupConfig
     }
 ) {
     const rawValue = useGlobalStore(selector)
-    const { responseMapper, bipolar } = options ?? {}
+    const { responseMapper, bipolar, popup } = options ?? {}
 
     const displayValue = useMemo(() => {
         if (responseMapper) {
@@ -173,8 +209,12 @@ export function useGlobalPot(
             globalStore.getState().set((state) => {
                 mutator(state, newRaw)
             })
+            if (popup) {
+                const fmt = popup.formatValue ?? defaultFormatValue
+                notifyParamChange(popup.moduleName, popup.paramLabel, fmt(newDisplay), popup.screen)
+            }
         },
-        [mutator, displayValue, responseMapper, bipolar]
+        [mutator, displayValue, responseMapper, bipolar, popup]
     )
 
     return { displayValue, rawValue, increment }
@@ -186,16 +226,23 @@ export function useGlobalPot(
 export function useGlobalButton(
     selector: (state: GlobalPatchState) => number,
     mutator: (state: GlobalPatchState, value: number) => void,
-    numValues: number
+    numValues: number,
+    options?: { popup?: PopupConfig }
 ) {
     const value = useGlobalStore(selector)
+    const popup = options?.popup
 
     const toggle = useCallback(() => {
         const current = selector(globalStore.getState())
+        const next = (current + 1) % numValues
         globalStore.getState().set((state) => {
-            mutator(state, (current + 1) % numValues)
+            mutator(state, next)
         })
-    }, [selector, mutator, numValues])
+        if (popup) {
+            const fmt = popup.formatValue ?? defaultFormatValue
+            notifyParamChange(popup.moduleName, popup.paramLabel, fmt(next), popup.screen)
+        }
+    }, [selector, mutator, numValues, popup])
 
     return { value, toggle }
 }

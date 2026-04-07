@@ -1,5 +1,6 @@
 import { POT_DISTANCE_L, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from '@/constants'
 import { useButton } from '@/store'
+import { ScreenId } from '@/store/uiStore'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { ModuleBorder } from '../../misc/ModuleBorder'
 import SubHeader from '../../misc/SubHeader'
@@ -18,14 +19,16 @@ const NoiseAndRing = ({ x, y, width, height }: ModuleProps) => {
         (s, v) => {
             s.noise.colour = v
         },
-        3
+        3,
+        { popup: { moduleName: 'Noise', paramLabel: 'Colour', screen: ScreenId.OSC } }
     )
     const { value: sourceValue, toggle: sourceToggle } = useButton(
         (s) => s.ringMod.source,
         (s, v) => {
             s.ringMod.source = v
         },
-        3
+        3,
+        { popup: { moduleName: 'Ring Mod', paramLabel: 'Source', screen: ScreenId.OSC } }
     )
 
     return (

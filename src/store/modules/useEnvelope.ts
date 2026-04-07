@@ -6,7 +6,15 @@
  */
 
 import { useCallback, useMemo } from 'react'
-import { type EnvelopeState, useUiStore, useVoiceGroupStore, type VoiceGroupPatch, voiceGroupStores } from '@/store'
+import {
+    type EnvelopeState,
+    ScreenId,
+    useUiStore,
+    useVoiceGroupStore,
+    type VoiceGroupPatch,
+    voiceGroupStores,
+} from '@/store'
+import { notifyParamChange } from '@/store/paramPopupStore'
 import { dbLevelResponseMapper, timeResponseMapper } from '@/synthcore/modules/common/responseMappers'
 import { StageId } from '@/synthcore/modules/env/types'
 import { getBounded } from '../utils'
@@ -32,6 +40,7 @@ export function useEnvTime(envId: number, stageName: StageName) {
             voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                 setStageTime(state, envId, stageName, newRaw)
             })
+            notifyParamChange(`Env ${envId + 1}`, `${stageName} time`, newDisplay.toFixed(2), ScreenId.ENV)
         },
         [voiceGroupIndex, envId, stageName, displayValue]
     )
@@ -53,6 +62,7 @@ export function useEnvLevel(envId: number, stageName: StageName) {
             voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                 setStageLevel(state, envId, stageName, newRaw)
             })
+            notifyParamChange(`Env ${envId + 1}`, `${stageName} level`, newDisplay.toFixed(2), ScreenId.ENV)
         },
         [voiceGroupIndex, envId, stageName, displayValue, bipolar]
     )
@@ -76,6 +86,9 @@ export function useEnvToggle(
                 state.envelopes[envId][param] = current === 0 ? 1 : 0
             }
         })
+        const store = voiceGroupStores[voiceGroupIndex].getState()
+        const newValue = store.envelopes[envId][param] as number
+        notifyParamChange(`Env ${envId + 1}`, param, newValue === 1 ? 'On' : 'Off', ScreenId.ENV)
     }, [voiceGroupIndex, envId, param])
 
     return { value, toggle }

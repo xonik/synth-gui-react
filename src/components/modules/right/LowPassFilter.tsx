@@ -2,6 +2,8 @@ import { POT_DISTANCE_L, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from '@/cons
 import type { VoiceGroupPatch } from '@/store'
 import { useButton, usePot } from '@/store'
 import filtersControllers from '@/synthcore/modules/filters/filtersControllers'
+import type { PopupConfig } from '@/store/hooks'
+import { ScreenId } from '@/store/uiStore'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { HorizontalDividerLine } from '../../misc/HorizontalDividerLine'
@@ -14,6 +16,12 @@ import './LowPassFilter.scss'
 import '../Modules.scss'
 
 const FILTER = 0
+
+const popup = (paramLabel: string): PopupConfig => ({
+    moduleName: 'LPF',
+    paramLabel,
+    screen: ScreenId.FILTER,
+})
 
 const FilterPot = ({
     x,
@@ -34,7 +42,7 @@ const FilterPot = ({
     mutator: (s: VoiceGroupPatch, v: number) => void
     Large?: boolean
 }) => {
-    const { displayValue, increment } = usePot(selector, mutator)
+    const { displayValue, increment } = usePot(selector, mutator, { popup: popup(label) })
     if (Large) {
         return (
             <RotaryPot21
@@ -69,42 +77,48 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
         (s, v) => {
             s.filters[FILTER].fmMode = v
         },
-        3
+        3,
+        { popup: popup('FM mode') }
     )
     const { value: filterTypeValue, toggle: filterTypeToggle } = useButton(
         (s) => s.filters[FILTER].filterType,
         (s, v) => {
             s.filters[FILTER].filterType = v
         },
-        2
+        2,
+        { popup: popup('Type') }
     )
     const { value: slopeValue, toggle: slopeToggle } = useButton(
         (s) => s.filters[FILTER].slope,
         (s, v) => {
             s.filters[FILTER].slope = v
         },
-        2
+        2,
+        { popup: popup('Slope') }
     )
     const { value: fmSrcValue, toggle: fmSrcToggle } = useButton(
         (s) => s.filters[FILTER].fmSrc,
         (s, v) => {
             s.filters[FILTER].fmSrc = v
         },
-        2
+        2,
+        { popup: popup('FM src') }
     )
     const { value: routingValue, toggle: routingToggle } = useButton(
         (s) => s.filters[FILTER].routing,
         (s, v) => {
             s.filters[FILTER].routing = v
         },
-        2
+        2,
+        { popup: popup('Routing') }
     )
     const { value: linkCutoffValue, toggle: linkCutoffToggle } = useButton(
         (s) => s.filters[FILTER].linkCutoff,
         (s, v) => {
             s.filters[FILTER].linkCutoff = v
         },
-        2
+        2,
+        { popup: popup('Link cutoff') }
     )
 
     return (

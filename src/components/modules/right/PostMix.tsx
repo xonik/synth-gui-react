@@ -2,12 +2,18 @@ import { POT_DISTANCE_L, POT_OFFSET_Y, ROW_HEIGHT } from '@/constants'
 import type { VoiceGroupPatch } from '@/store'
 import { usePot } from '@/store'
 import postMixControllers from '@/synthcore/modules/postMix/postMixControllers'
+import type { PopupConfig } from '@/store/hooks'
 import { ModuleBorder } from '../../misc/ModuleBorder'
 import SubHeader from '../../misc/SubHeader'
 import RotaryPot12 from '../../pots/RotaryPot12'
 import type { LedMode, PotMode } from '../../pots/RotaryPotWithLedRingBase'
 import type { ModuleProps } from '../types'
 import '../Modules.scss'
+
+const popup = (paramLabel: string): PopupConfig => ({
+    moduleName: 'Post Mix',
+    paramLabel,
+})
 
 const PostMixPot = ({
     x,
@@ -30,7 +36,7 @@ const PostMixPot = ({
     mutator: (s: VoiceGroupPatch, v: number) => void
     bipolar?: boolean
 }) => {
-    const { displayValue, increment } = usePot(selector, mutator, bipolar ? { bipolar: true } : undefined)
+    const { displayValue, increment } = usePot(selector, mutator, bipolar ? { bipolar: true, popup: popup(label) } : { popup: popup(label) })
     return (
         <RotaryPot12
             label={label}

@@ -9,6 +9,9 @@ import {
 } from '@/constants'
 import { useButton, usePot, useUiStore, type VoiceGroupPatch, voiceGroupStores } from '@/store'
 import oscControllers from '@/synthcore/modules/osc/oscControllers'
+import type { PopupConfig } from '@/store/hooks'
+import { ScreenId } from '@/store/uiStore'
+import { notifyParamChange } from '@/store/paramPopupStore'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { ModuleBorder } from '../../misc/ModuleBorder'
@@ -21,6 +24,12 @@ import { WaveformIconsRing } from './WaveformIconsRing'
 import '../Modules.scss'
 
 const OSC = 2
+
+const popup = (paramLabel: string): PopupConfig => ({
+    moduleName: 'Osc 3',
+    paramLabel,
+    screen: ScreenId.OSC,
+})
 
 const OscPot = ({
     x,
@@ -39,7 +48,7 @@ const OscPot = ({
     selector: (s: VoiceGroupPatch) => number
     mutator: (s: VoiceGroupPatch, v: number) => void
 }) => {
-    const { displayValue, increment } = usePot(selector, mutator)
+    const { displayValue, increment } = usePot(selector, mutator, { popup: popup(label) })
     return <RotaryPot12 x={x} y={y} ledMode={ledMode} label={label} value={displayValue} ctrlId={ctrlId} onValueIncrement={increment} />
 }
 
@@ -57,14 +66,16 @@ const OscTogglePot = ({
     mutator: (s: VoiceGroupPatch, v: number) => void
 }) => {
     const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
-    const { value } = useButton(selector, mutator, 2)
+    const { value } = useButton(selector, mutator, 2, { popup: popup(label) })
     const onIncrement = useCallback(
         (delta: number) => {
+            const newValue = delta > 0 ? 1 : 0
             voiceGroupStores[voiceGroupIndex].getState().set((state) => {
-                mutator(state, delta > 0 ? 1 : 0)
+                mutator(state, newValue)
             })
+            notifyParamChange('Osc 3', label, String(newValue), ScreenId.OSC)
         },
-        [voiceGroupIndex, mutator]
+        [voiceGroupIndex, mutator, label]
     )
     return <RotaryPot12 x={x} y={y} label={label} value={value} onValueIncrement={onIncrement} />
 }
@@ -89,41 +100,47 @@ const VCO = ({ x, y, height, width }: ModuleProps) => {
         (s, v) => {
             s.oscillators[OSC].syncSrc = v
         },
-        2
+        2,
+        { popup: popup('Sync src') }
     )
     const { value: syncValue, toggle: syncToggle } = useButton(
         (s) => s.oscillators[OSC].sync,
         (s, v) => {
             s.oscillators[OSC].sync = v
         },
-        3
+        3,
+        { popup: popup('Sync') }
     )
     const { value: extCvValue, toggle: extCvToggle } = useButton(
         (s) => s.oscillators[OSC].extCv,
         (s, v) => {
             s.oscillators[OSC].extCv = v
         },
-        2
+        2,
+        { popup: popup('Ext CV') }
     )
     const { displayValue: waveformValue, increment: waveformIncrement } = usePot(
         (s) => s.oscillators[OSC].waveform,
         (s, v) => {
             s.oscillators[OSC].waveform = v
-        }
+        },
+        { popup: popup('Waveform') }
     )
     const { value: fmSrcValue, toggle: fmSrcToggle } = useButton(
         (s) => s.oscillators[OSC].fmSrc,
         (s, v) => {
             s.oscillators[OSC].fmSrc = v
         },
-        2
+        2,
+        { popup: popup('FM src') }
     )
     const { value: fmModeValue, toggle: fmModeToggle } = useButton(
         (s) => s.oscillators[OSC].fmMode,
         (s, v) => {
             s.oscillators[OSC].fmMode = v
         },
-        3
+        3,
+        { popup: popup('FM mode') }
     )
 
     return (

@@ -8,6 +8,8 @@ import {
 } from '@/constants'
 import type { VoiceGroupPatch } from '@/store'
 import { useButton, usePot } from '@/store'
+import type { PopupConfig } from '@/store/hooks'
+import { ScreenId } from '@/store/uiStore'
 import { dbLevelResponseMapper } from '@/synthcore/modules/common/responseMappers'
 import srcMixControllers from '@/synthcore/modules/srcMix/srcMixControllers'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
@@ -16,6 +18,12 @@ import SubHeader from '../../misc/SubHeader'
 import RotaryPot12 from '../../pots/RotaryPot12'
 import type { ModuleProps } from '../types'
 import '../Modules.scss'
+
+const popup = (paramLabel: string): PopupConfig => ({
+    moduleName: 'Src Mix',
+    paramLabel,
+    screen: ScreenId.OSC,
+})
 
 const SrcMixLevelPot = ({
     x,
@@ -32,7 +40,7 @@ const SrcMixLevelPot = ({
     selector: (s: VoiceGroupPatch) => number
     mutator: (s: VoiceGroupPatch, v: number) => void
 }) => {
-    const { displayValue, increment } = usePot(selector, mutator, { responseMapper: dbLevelResponseMapper })
+    const { displayValue, increment } = usePot(selector, mutator, { responseMapper: dbLevelResponseMapper, popup: popup(label) })
     return <RotaryPot12 ledMode="multi" label={label} x={x} y={y} value={displayValue} ctrlId={ctrlId} onValueIncrement={increment} />
 }
 
@@ -47,7 +55,7 @@ const SrcMixOutButton = ({
     selector: (s: VoiceGroupPatch) => number
     mutator: (s: VoiceGroupPatch, v: number) => void
 }) => {
-    const { value, toggle } = useButton(selector, mutator, 4)
+    const { value, toggle } = useButton(selector, mutator, 4, { popup: popup('To') })
     return (
         <RoundPushButton8
             x={x}

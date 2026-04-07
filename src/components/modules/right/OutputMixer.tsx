@@ -1,12 +1,18 @@
 import { POT_DISTANCE_L, POT_OFFSET_Y, ROW_HEIGHT } from '@/constants'
 import type { VoiceGroupPatch } from '@/store'
 import { usePot } from '@/store'
+import type { PopupConfig } from '@/store/hooks'
 import { ModuleBorder } from '../../misc/ModuleBorder'
 import SubHeader from '../../misc/SubHeader'
 import RotaryPot12 from '../../pots/RotaryPot12'
 import type { PotMode } from '../../pots/RotaryPotWithLedRingBase'
 import type { ModuleProps } from '../types'
 import '../Modules.scss'
+
+const popup = (paramLabel: string): PopupConfig => ({
+    moduleName: 'Output',
+    paramLabel,
+})
 
 const MixPot = ({
     x,
@@ -23,7 +29,7 @@ const MixPot = ({
     selector: (s: VoiceGroupPatch) => number
     mutator: (s: VoiceGroupPatch, v: number) => void
 }) => {
-    const { displayValue, increment } = usePot(selector, mutator)
+    const { displayValue, increment } = usePot(selector, mutator, { popup: popup(label) })
     return (
         <RotaryPot12
             ledMode="multi"

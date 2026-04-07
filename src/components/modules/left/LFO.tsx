@@ -4,6 +4,8 @@ import { buttonMidiValues } from '@/midi/buttonMidiValues'
 import { button } from '@/midi/midibus'
 import { useButton, usePot, useUiStore } from '@/store'
 import { ControllerIdSrc } from '@/synthcore/modules/controllers/controllerIds'
+import type { PopupConfig } from '@/store/hooks'
+import { ScreenId } from '@/store/uiStore'
 import { timeResponseMapper } from '@/synthcore/modules/common/responseMappers'
 import { lfoCtrls } from '@/synthcore/modules/lfo/lfoControllers'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
@@ -29,6 +31,13 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
     const row2 = row1 + ROW_HEIGHT
 
     const lfoId = useUiStore((s) => s.selectedLfoId)
+
+    const popup = (paramLabel: string): PopupConfig => ({
+        moduleName: `LFO ${lfoId + 1}`,
+        paramLabel,
+        screen: ScreenId.LFO,
+    })
+
     const selectLfo = useUiStore((s) => s.selectLfo)
     const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
 
@@ -48,68 +57,76 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
         (s, v) => {
             s.lfos[lfoId].rate = v
         },
-        { responseMapper: timeResponseMapper }
+        { responseMapper: timeResponseMapper, popup: popup('Rate') }
     )
     const { displayValue: depthValue, increment: depthIncrement } = usePot(
         (s) => s.lfos[lfoId].depth,
         (s, v) => {
             s.lfos[lfoId].depth = v
-        }
+        },
+        { popup: popup('Depth') }
     )
     const { displayValue: balanceValue, increment: balanceIncrement } = usePot(
         (s) => s.lfos[lfoId].balance,
         (s, v) => {
             s.lfos[lfoId].balance = v
-        }
+        },
+        { popup: popup('Balance') }
     )
     const { displayValue: delayValue, increment: delayIncrement } = usePot(
         (s) => s.lfos[lfoId].delay,
         (s, v) => {
             s.lfos[lfoId].delay = v
         },
-        { responseMapper: timeResponseMapper }
+        { responseMapper: timeResponseMapper, popup: popup('Delay') }
     )
     const { value: shapeValue, toggle: shapeToggle } = useButton(
         (s) => s.lfos[lfoId].shape,
         (s, v) => {
             s.lfos[lfoId].shape = v
         },
-        6
+        6,
+        { popup: popup('Shape') }
     )
     const { value: syncValue, toggle: syncToggle } = useButton(
         (s) => s.lfos[lfoId].sync,
         (s, v) => {
             s.lfos[lfoId].sync = v
         },
-        2
+        2,
+        { popup: popup('Sync') }
     )
     const { value: resetValue, toggle: resetToggle } = useButton(
         (s) => s.lfos[lfoId].reset,
         (s, v) => {
             s.lfos[lfoId].reset = v
         },
-        2
+        2,
+        { popup: popup('Reset') }
     )
     const { value: loopValue, toggle: loopToggle } = useButton(
         (s) => s.lfos[lfoId].loop,
         (s, v) => {
             s.lfos[lfoId].loop = v
         },
-        2
+        2,
+        { popup: popup('Loop') }
     )
     const { value: invertValue, toggle: invertToggle } = useButton(
         (s) => s.lfos[lfoId].invert,
         (s, v) => {
             s.lfos[lfoId].invert = v
         },
-        2
+        2,
+        { popup: popup('Invert') }
     )
     const { value: bipolarValue, toggle: bipolarToggle } = useButton(
         (s) => s.lfos[lfoId].bipolar,
         (s, v) => {
             s.lfos[lfoId].bipolar = v
         },
-        2
+        2,
+        { popup: popup('Bipolar') }
     )
 
     return (

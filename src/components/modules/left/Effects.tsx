@@ -7,6 +7,8 @@ import {
     ROW_HEIGHT,
 } from '@/constants'
 import { useButton, usePot } from '@/store'
+import type { PopupConfig } from '@/store/hooks'
+import { ScreenId } from '@/store/uiStore'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { ModuleBorder } from '../../misc/ModuleBorder'
 import SubHeader from '../../misc/SubHeader'
@@ -15,57 +17,71 @@ import type { ModuleProps } from '../types'
 import '../Modules.scss'
 
 const Effects = ({ x, y, height, width }: ModuleProps) => {
+    const popup = (moduleName: string, paramLabel: string): PopupConfig => ({
+        moduleName,
+        paramLabel,
+        screen: ScreenId.FX,
+    })
+
     const { displayValue: driveValue, increment: driveIncrement } = usePot(
         (s) => s.fx.distortion.drive,
         (s, v) => {
             s.fx.distortion.drive = v
-        }
+        },
+        { popup: popup('Distort', 'Drive') }
     )
     const { displayValue: levelValue, increment: levelIncrement } = usePot(
         (s) => s.fx.distortion.level,
         (s, v) => {
             s.fx.distortion.level = v
-        }
+        },
+        { popup: popup('Distort', 'Level') }
     )
     const { value: distInValue, toggle: distInToggle } = useButton(
         (s) => s.fx.distortion.in,
         (s, v) => {
             s.fx.distortion.in = v
         },
-        2
+        2,
+        { popup: popup('Distort', 'In') }
     )
     const { value: distOutValue, toggle: distOutToggle } = useButton(
         (s) => s.fx.distortion.out,
         (s, v) => {
             s.fx.distortion.out = v
         },
-        4
+        4,
+        { popup: popup('Distort', 'Out') }
     )
     const { displayValue: bitsValue, increment: bitsIncrement } = usePot(
         (s) => s.fx.bitCrusher.bits,
         (s, v) => {
             s.fx.bitCrusher.bits = v
-        }
+        },
+        { popup: popup('Crush', 'Bits') }
     )
     const { displayValue: rateValue, increment: rateIncrement } = usePot(
         (s) => s.fx.bitCrusher.rate,
         (s, v) => {
             s.fx.bitCrusher.rate = v
-        }
+        },
+        { popup: popup('Crush', 'Rate') }
     )
     const { value: crushInValue, toggle: crushInToggle } = useButton(
         (s) => s.fx.bitCrusher.in,
         (s, v) => {
             s.fx.bitCrusher.in = v
         },
-        2
+        2,
+        { popup: popup('Crush', 'In') }
     )
     const { value: crushOutValue, toggle: crushOutToggle } = useButton(
         (s) => s.fx.bitCrusher.out,
         (s, v) => {
             s.fx.bitCrusher.out = v
         },
-        4
+        4,
+        { popup: popup('Crush', 'Out') }
     )
 
     const row1 = y

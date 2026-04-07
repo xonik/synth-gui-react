@@ -1,5 +1,6 @@
 import { ScreenId, useUiStore } from '@/store'
 import { DisplayButtons } from './components/DisplayButtons'
+import ParamPopup from './components/ParamPopup'
 import Env from './envelopes/Env'
 import LFO from './lfos/LFO'
 import Mod from './mods/Mod'
@@ -21,6 +22,7 @@ const Controller = () => {
                 {currScreen === ScreenId.SETTINGS && <Settings />}
                 {currScreen === ScreenId.LOAD && <PatchBrowser mode="load" />}
                 {currScreen === ScreenId.SAVE && <PatchBrowser mode="save" />}
+                <ParamPopup />
             </div>
         </>
     )

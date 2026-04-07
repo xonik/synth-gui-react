@@ -1,4 +1,6 @@
 import { useButton, usePot } from '@/store'
+import type { PopupConfig } from '@/store/hooks'
+import { ScreenId } from '@/store/uiStore'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import Header from '../misc/Header'
 import RotaryPot12 from '../pots/RotaryPot12'
@@ -7,6 +9,12 @@ interface Props {
     x: number
     y: number
 }
+
+const popup = (paramLabel: string): PopupConfig => ({
+    moduleName: 'Bit Crush',
+    paramLabel,
+    screen: ScreenId.FX,
+})
 
 const BitCrusher = ({ x, y }: Props) => {
     const row1 = 10
@@ -21,19 +29,22 @@ const BitCrusher = ({ x, y }: Props) => {
         (s, v) => {
             s.fx.bitCrusher.in = v
         },
-        2
+        2,
+        { popup: popup('In') }
     )
     const { displayValue: bitsValue, increment: bitsIncrement } = usePot(
         (s) => s.fx.bitCrusher.bits,
         (s, v) => {
             s.fx.bitCrusher.bits = v
-        }
+        },
+        { popup: popup('Bits') }
     )
     const { displayValue: rateValue, increment: rateIncrement } = usePot(
         (s) => s.fx.bitCrusher.rate,
         (s, v) => {
             s.fx.bitCrusher.rate = v
-        }
+        },
+        { popup: popup('Rate') }
     )
 
     return (

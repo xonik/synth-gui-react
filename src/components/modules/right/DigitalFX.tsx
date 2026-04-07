@@ -1,5 +1,7 @@
 import { BUTTON_DISTANCE_S, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from '@/constants'
 import { useButton, usePot } from '@/store'
+import type { PopupConfig } from '@/store/hooks'
+import { ScreenId } from '@/store/uiStore'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import Display from '../../misc/Display'
 import { ModuleBorder } from '../../misc/ModuleBorder'
@@ -7,6 +9,12 @@ import SubHeader from '../../misc/SubHeader'
 import RotaryPotWOLeds10 from '../../pots/RotaryPotWOLeds10'
 import type { ModuleProps } from '../types'
 import '../Modules.scss'
+
+const popup = (paramLabel: string): PopupConfig => ({
+    moduleName: 'DSP',
+    paramLabel,
+    screen: ScreenId.FX,
+})
 
 const DigitalFX = ({ x, y, height, width }: ModuleProps) => {
     const displayHeight = 30
@@ -29,31 +37,36 @@ const DigitalFX = ({ x, y, height, width }: ModuleProps) => {
         (s, v) => {
             s.commonFx.dsp2.source = v
         },
-        2
+        2,
+        { popup: popup('Source') }
     )
     const { increment: param1Increment } = usePot(
         (s) => s.commonFx.dsp2.param1,
         (s, v) => {
             s.commonFx.dsp2.param1 = v
-        }
+        },
+        { popup: popup('Param 1') }
     )
     const { increment: param2Increment } = usePot(
         (s) => s.commonFx.dsp2.param2,
         (s, v) => {
             s.commonFx.dsp2.param2 = v
-        }
+        },
+        { popup: popup('Param 2') }
     )
     const { increment: param3Increment } = usePot(
         (s) => s.commonFx.dsp2.param3,
         (s, v) => {
             s.commonFx.dsp2.param3 = v
-        }
+        },
+        { popup: popup('Param 3') }
     )
     const { increment: effectIncrement } = usePot(
         (s) => s.commonFx.dsp2.effect,
         (s, v) => {
             s.commonFx.dsp2.effect = v
-        }
+        },
+        { popup: popup('Effect') }
     )
 
     return (
