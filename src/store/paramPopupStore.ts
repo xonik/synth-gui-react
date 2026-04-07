@@ -8,8 +8,8 @@
  * - The current display screen already shows the relevant module
  */
 
-import { createStore, type StoreApi } from 'zustand/vanilla'
 import { useStore } from 'zustand'
+import { createStore, type StoreApi } from 'zustand/vanilla'
 import { isMidiReceiving } from './midi/midiGuard'
 import { type ScreenId, useUiStore } from './uiStore'
 
@@ -28,7 +28,7 @@ export interface ParamPopupActions {
 export type ParamPopupStore = ParamPopupState & ParamPopupActions
 
 /** How long the popup stays visible after the last parameter change (ms) */
-const POPUP_TIMEOUT_MS = 1500
+const POPUP_TIMEOUT_MS = 500
 
 let timeoutId: ReturnType<typeof setTimeout> | null = null
 
@@ -71,12 +71,7 @@ export function useParamPopupStore<T>(selector: (state: ParamPopupStore) => T): 
  * @param paramValue  - Formatted display value (e.g. "0.73")
  * @param screen      - The ScreenId this module maps to, for suppression
  */
-export function notifyParamChange(
-    moduleName: string,
-    paramName: string,
-    paramValue: string,
-    screen?: ScreenId
-): void {
+export function notifyParamChange(moduleName: string, paramName: string, paramValue: string, screen?: ScreenId): void {
     // Don't show popup for MIDI-received changes
     if (isMidiReceiving()) return
 
@@ -88,4 +83,3 @@ export function notifyParamChange(
 
     paramPopupStore.getState().show(moduleName, paramName, paramValue)
 }
-
