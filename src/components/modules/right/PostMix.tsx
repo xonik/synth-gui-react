@@ -1,6 +1,7 @@
 import { POT_DISTANCE_L, POT_OFFSET_Y, ROW_HEIGHT } from '@/constants'
 import type { VoiceGroupPatch } from '@/store'
 import { usePot } from '@/store'
+import postMixControllers from '@/synthcore/modules/postMix/postMixControllers'
 import { ModuleBorder } from '../../misc/ModuleBorder'
 import SubHeader from '../../misc/SubHeader'
 import RotaryPot12 from '../../pots/RotaryPot12'
@@ -14,6 +15,7 @@ const PostMixPot = ({
     label,
     potMode = 'normal',
     ledMode = 'multi',
+    ctrlId,
     selector,
     mutator,
     bipolar,
@@ -23,6 +25,7 @@ const PostMixPot = ({
     label: string
     potMode?: PotMode
     ledMode?: LedMode
+    ctrlId?: number
     selector: (s: VoiceGroupPatch) => number
     mutator: (s: VoiceGroupPatch, v: number) => void
     bipolar?: boolean
@@ -35,6 +38,7 @@ const PostMixPot = ({
             y={y}
             potMode={potMode}
             ledMode={ledMode}
+            ctrlId={ctrlId}
             value={displayValue}
             onValueIncrement={increment}
         />
@@ -54,6 +58,7 @@ const PostMix = ({ x, y, height, width }: ModuleProps) => {
                 x={center}
                 y={offsetY}
                 label="SVF"
+                ctrlId={postMixControllers.SVF.id}
                 selector={(s) => s.postMix.svf}
                 mutator={(s, v) => {
                     s.postMix.svf = v
@@ -63,6 +68,7 @@ const PostMix = ({ x, y, height, width }: ModuleProps) => {
                 x={center}
                 y={offsetY + ROW_HEIGHT}
                 label="LPF"
+                ctrlId={postMixControllers.LPF.id}
                 selector={(s) => s.postMix.lpf}
                 mutator={(s, v) => {
                     s.postMix.lpf = v
@@ -72,6 +78,7 @@ const PostMix = ({ x, y, height, width }: ModuleProps) => {
                 x={center}
                 y={offsetY + ROW_HEIGHT * 2}
                 label="Sine 1"
+                ctrlId={postMixControllers.SINE1.id}
                 selector={(s) => s.postMix.sine1}
                 mutator={(s, v) => {
                     s.postMix.sine1 = v
@@ -81,6 +88,7 @@ const PostMix = ({ x, y, height, width }: ModuleProps) => {
                 x={center}
                 y={offsetY + ROW_HEIGHT * 3}
                 label="Sine 2"
+                ctrlId={postMixControllers.SINE2.id}
                 selector={(s) => s.postMix.sine2}
                 mutator={(s, v) => {
                     s.postMix.sine2 = v
@@ -109,6 +117,7 @@ const PostMix = ({ x, y, height, width }: ModuleProps) => {
                 potMode="pan"
                 ledMode="single"
                 bipolar
+                ctrlId={postMixControllers.PAN.id}
                 selector={(s) => s.postMix.pan}
                 mutator={(s, v) => {
                     s.postMix.pan = v
@@ -118,6 +127,7 @@ const PostMix = ({ x, y, height, width }: ModuleProps) => {
                 x={center}
                 y={offsetY2 + ROW_HEIGHT}
                 label="Amt"
+                ctrlId={postMixControllers.AMOUNT.id}
                 selector={(s) => s.postMix.amount}
                 mutator={(s, v) => {
                     s.postMix.amount = v
@@ -127,6 +137,7 @@ const PostMix = ({ x, y, height, width }: ModuleProps) => {
                 x={center}
                 y={offsetY2 + ROW_HEIGHT * 2}
                 label="FX1 send"
+                ctrlId={postMixControllers.FX1_SEND.id}
                 selector={(s) => s.postMix.fx1Send}
                 mutator={(s, v) => {
                     s.postMix.fx1Send = v
@@ -136,6 +147,7 @@ const PostMix = ({ x, y, height, width }: ModuleProps) => {
                 x={center}
                 y={offsetY2 + ROW_HEIGHT * 3}
                 label="FX2 send"
+                ctrlId={postMixControllers.FX2_SEND.id}
                 selector={(s) => s.postMix.fx2Send}
                 mutator={(s, v) => {
                     s.postMix.fx2Send = v

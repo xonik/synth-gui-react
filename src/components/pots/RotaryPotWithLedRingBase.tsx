@@ -1,6 +1,7 @@
 import classNames from 'classnames'
-import { useCallback } from 'react'
+import { useCallback, useRef } from 'react'
 import { SHOW_CUT } from '@/config'
+import { getCanDeselect, trySelectDst, trySelectSource, useModRoutingFlash } from '@/synthcore/modules/mods/modRoutingInterceptor'
 import arc from '../../utils/svg/arc'
 import RotaryPotBase from './RotaryPotBase'
 import './RotaryPot.scss'
@@ -18,6 +19,11 @@ export interface Props {
     value?: number
     disabled?: boolean
     silver?: boolean
+    // Routing: if hwSourceId is set, touching this pot selects the module as mod source.
+    // If ctrlId/ctrlIndex are set and the ctrl is in dstLookup, touching it selects it as mod destination.
+    hwSourceId?: number
+    ctrlId?: number
+    ctrlIndex?: number
     onValueIncrement?: (delta: number) => void
 }
 
@@ -93,7 +99,15 @@ const getLedPos = (centerLed: number, ledCount: number, mode: PotMode, position:
 
 const RotaryPotWithLedRingBase = (props: Props & Config) => {
     // Position should be in the range 0-1 in all modes but pan. In pan the range is -0.5 - 0.5
-    const { x, y, ledMode = 'single', potMode = 'normal', label, value, disabled, silver, onValueIncrement } = props
+    const { x, y, ledMode = 'single', potMode = 'normal', label, value, disabled, silver, hwSourceId, ctrlId, ctrlIndex = 0, onValueIncrement } = props
+
+    const gestureCanDeselect = useRef(false)
+    const gestureHasInteracted = useRef(false)
+
+    const { getSourceFlash, getDstFlash } = useModRoutingFlash()
+    const flashMode = hwSourceId !== undefined
+        ? (getSourceFlash(hwSourceId) ?? (ctrlId !== undefined ? getDstFlash(ctrlId, ctrlIndex) : undefined))
+        : (ctrlId !== undefined ? getDstFlash(ctrlId, ctrlIndex) : undefined)
 
     const {
         ledRadius,
@@ -114,21 +128,42 @@ const RotaryPotWithLedRingBase = (props: Props & Config) => {
 
     const negLedPosition = centerLed - (ledPosition - centerLed)
 
+    const onDragStart = useCallback(() => {
+        gestureCanDeselect.current = getCanDeselect()
+        gestureHasInteracted.current = false
+    }, [])
+
     const onIncrement = useCallback(
         (steps: number, stepSize: number) => {
             if (disabled) return
-
+            if (hwSourceId !== undefined && trySelectSource(hwSourceId)) return
+            if (ctrlId !== undefined) {
+                if (gestureHasInteracted.current) return
+                const consumed = trySelectDst(ctrlId, ctrlIndex, false, gestureCanDeselect.current)
+                if (consumed) {
+                    gestureHasInteracted.current = true
+                    return
+                }
+            }
             const delta = potMode === 'pan' ? steps * (stepSize * 2) : steps * stepSize
             if (onValueIncrement) {
                 onValueIncrement(delta)
             }
         },
-        [disabled, potMode, onValueIncrement]
+        [disabled, potMode, onValueIncrement, hwSourceId, ctrlId, ctrlIndex]
     )
 
+    const onPotClick = useCallback(() => {
+        if (disabled) return
+        if (hwSourceId !== undefined && trySelectSource(hwSourceId)) return
+        if (ctrlId !== undefined && trySelectDst(ctrlId, ctrlIndex, true)) return
+    }, [disabled, hwSourceId, ctrlId, ctrlIndex])
+
+    const potClass = flashMode ? `pot pot--routing-${flashMode}` : 'pot'
+
     return (
-        <svg x={x} y={y} className="pot">
-            <RotaryPotBase knobRadius={knobRadius} onIncrement={onIncrement} arc={ledArc} silver={silver} />
+        <svg x={x} y={y} className={potClass}>
+            <RotaryPotBase knobRadius={knobRadius} onClick={onPotClick} onDragStart={onDragStart} onIncrement={onIncrement} arc={ledArc} silver={silver} />
             <path d={windowArc} className="pot-ring-window" strokeWidth={windowWidth} />
             {!SHOW_CUT &&
                 ledAngles.map((angle, led) => {

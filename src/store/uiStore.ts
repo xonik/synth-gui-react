@@ -57,6 +57,9 @@ export interface UiState {
     modRouting: ModRoutingSelection
     modRouteButton: number
     modAmount: number
+    routingSourceSelected: boolean
+    routingDstSelected: boolean
+    soloedDst: { ctrlId: number; ctrlIndex: number } | undefined
 
     // Envelope 3/4/5 selector
     selectedEnv3Id: number
@@ -75,6 +78,9 @@ export interface UiActions {
     setModRouting: (routing: Partial<ModRoutingSelection>) => void
     setModRouteButton: (value: number) => void
     setModAmount: (value: number) => void
+    setRoutingSourceSelected: (selected: boolean) => void
+    setRoutingDstSelected: (selected: boolean) => void
+    setSoloedDst: (dst: { ctrlId: number; ctrlIndex: number } | undefined) => void
     selectEnv3Id: (id: number) => void
 }
 
@@ -97,6 +103,9 @@ export const useUiStore = create<UiState & UiActions>((set) => ({
     },
     modRouteButton: 0,
     modAmount: 0,
+    routingSourceSelected: false,
+    routingDstSelected: false,
+    soloedDst: undefined,
     selectedEnv3Id: 2,
 
     // Actions
@@ -129,9 +138,19 @@ export const useUiStore = create<UiState & UiActions>((set) => ({
             modRouting: { ...state.modRouting, ...routing },
         })),
 
-    setModRouteButton: (value) => set({ modRouteButton: value }),
+    setModRouteButton: (value) =>
+        set((state) => ({
+            modRouteButton: value,
+            routingSourceSelected: value === 1 ? false : state.routingSourceSelected,
+            routingDstSelected: value === 2 ? false : state.routingDstSelected,
+            soloedDst: value !== 2 ? undefined : state.soloedDst,
+        })),
 
     setModAmount: (value) => set({ modAmount: value }),
+
+    setRoutingSourceSelected: (selected) => set({ routingSourceSelected: selected }),
+    setRoutingDstSelected: (selected) => set({ routingDstSelected: selected }),
+    setSoloedDst: (dst) => set({ soloedDst: dst }),
 
     selectEnv3Id: (id) => set({ selectedEnv3Id: id }),
 }))

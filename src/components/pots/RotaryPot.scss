@@ -1,5 +1,24 @@
 @import '../constants';
 
+@keyframes routing-led-flash {
+  0%, 49.9% { fill: $routing-led-on; stroke: $routing-led-on; }
+  50%, 100% { fill: $routing-led-flash-off; stroke: $routing-led-flash-off; }
+}
+
+.pot--routing-candidate .pot-ring-led {
+  fill: $routing-led-on;
+  stroke: $routing-led-on;
+}
+
+.pot--routing-dimmed .pot-ring-led {
+  fill: $routing-led-dim;
+  stroke: $routing-led-dim;
+}
+
+.pot--routing-selected .pot-ring-led {
+  animation: routing-led-flash 0.7s steps(2, jump-none) infinite;
+}
+
 .pot {
   &-knob {
     stroke: black;

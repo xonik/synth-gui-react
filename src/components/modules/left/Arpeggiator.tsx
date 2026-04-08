@@ -1,5 +1,7 @@
 import { POT_DISTANCE_L, POT_DISTANCE_M, POT_DISTANCE_S, POT_OFFSET_Y, ROW_HEIGHT } from '@/constants'
 import { useGlobalButton, useGlobalPot } from '@/store/hooks'
+import arpControllers from '@/synthcore/modules/arp/arpControllers'
+import { ControllerIdSrc } from '@/synthcore/modules/controllers/controllerIds'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { ModuleBorder } from '../../misc/ModuleBorder'
@@ -15,6 +17,8 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
     const col1 = x + POT_DISTANCE_M / 2
     const col2 = col1 + POT_DISTANCE_S
     const col3 = col1 + POT_DISTANCE_L
+
+    const arpHwSourceId = ControllerIdSrc.ARP
 
     const { displayValue: rateValue, increment: rateIncrement } = useGlobalPot(
         (s) => s.arp.bpm,
@@ -69,6 +73,9 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
                 x={col2}
                 y={row2}
                 value={rateValue}
+                hwSourceId={arpHwSourceId}
+                ctrlId={arpControllers.BPM.id}
+                ctrlIndex={0}
                 onValueIncrement={rateIncrement}
             />
 
@@ -80,6 +87,7 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
                 label="Sync"
                 ledModes={3}
                 value={syncValue}
+                hwSourceId={arpHwSourceId}
                 onButtonClick={syncToggle}
             />
 
@@ -93,6 +101,7 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
                 ledLabels={['Up', 'Down', 'Random']}
                 ledCycleBinary
                 value={modeValue}
+                hwSourceId={arpHwSourceId}
                 onButtonClick={modeToggle}
             />
 
@@ -105,6 +114,7 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
                 ledPosition="right"
                 ledLabels={['1 oct', '2 oct', '3 oct']}
                 value={rangeValue}
+                hwSourceId={arpHwSourceId}
                 onButtonClick={rangeToggle}
             />
 
@@ -114,6 +124,7 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
                 y={row3}
                 label="On"
                 value={onOffValue}
+                hwSourceId={arpHwSourceId}
                 onButtonClick={onOffToggle}
             />
 
@@ -123,6 +134,7 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
                 y={row3}
                 label="Sequence"
                 value={sequenceValue}
+                hwSourceId={arpHwSourceId}
                 onButtonClick={sequenceToggle}
             />
         </>

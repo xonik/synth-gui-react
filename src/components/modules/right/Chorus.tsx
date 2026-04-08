@@ -1,5 +1,6 @@
 import { POT_DISTANCE_L, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from '@/constants'
 import { useButton, usePot } from '@/store'
+import commonFxControllers from '@/synthcore/modules/commonFx/commonFxControllers'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { ModuleBorder } from '../../misc/ModuleBorder'
 import SubHeader from '../../misc/SubHeader'
@@ -73,6 +74,7 @@ const Chorus = ({ x, y, height, width }: ModuleProps) => {
                 label="Rate"
                 x={col1}
                 y={row1}
+                ctrlId={commonFxControllers.CHORUS.RATE.id}
                 value={rateValue}
                 onValueIncrement={rateIncrement}
             />
@@ -82,6 +84,7 @@ const Chorus = ({ x, y, height, width }: ModuleProps) => {
                 label="Depth"
                 x={col2}
                 y={row1}
+                ctrlId={commonFxControllers.CHORUS.DEPTH.id}
                 value={depthValue}
                 onValueIncrement={depthIncrement}
             />

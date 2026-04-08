@@ -2,6 +2,7 @@ import { BUTTON_DISTANCE_S, POT_DISTANCE_L, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HE
 import { button } from '@/midi/midibus'
 import { useUiStore } from '@/store'
 import { useEnvLevel, useEnvStageEnabled, useEnvTime, useEnvToggle } from '@/store/modules/useEnvelope'
+import { ControllerIdSrc } from '@/synthcore/modules/controllers/controllerIds'
 import { envCtrls } from '@/synthcore/modules/env/envControllers'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
@@ -21,6 +22,7 @@ type Props = ModuleProps & {
 
 const EnvTimePot = ({
     envId,
+    ctrlId,
     stageName,
     label,
     x,
@@ -28,6 +30,7 @@ const EnvTimePot = ({
     disabled,
 }: {
     envId: number
+    ctrlId: number
     stageName: 'delay' | 'attack' | 'decay1' | 'decay2' | 'sustain' | 'release1' | 'release2'
     label: string
     x: number
@@ -42,6 +45,9 @@ const EnvTimePot = ({
             x={x}
             y={y}
             value={displayValue}
+            hwSourceId={ControllerIdSrc.ENVELOPE1 + envId}
+            ctrlId={ctrlId}
+            ctrlIndex={envId}
             onValueIncrement={increment}
             disabled={disabled}
         />
@@ -50,6 +56,7 @@ const EnvTimePot = ({
 
 const EnvLevelPot = ({
     envId,
+    ctrlId,
     stageName,
     label,
     x,
@@ -57,6 +64,7 @@ const EnvLevelPot = ({
     disabled,
 }: {
     envId: number
+    ctrlId: number
     stageName: 'delay' | 'attack' | 'decay1' | 'decay2' | 'sustain' | 'release1' | 'release2'
     label: string
     x: number
@@ -72,6 +80,9 @@ const EnvLevelPot = ({
             y={y}
             value={displayValue}
             potMode={bipolar ? 'pan' : 'normal'}
+            hwSourceId={ControllerIdSrc.ENVELOPE1 + envId}
+            ctrlId={ctrlId}
+            ctrlIndex={envId}
             onValueIncrement={increment}
             disabled={disabled}
         />
@@ -99,6 +110,7 @@ const EnvToggleButton = ({
             y={y}
             labelPosition="bottom-pot"
             value={value}
+            hwSourceId={ControllerIdSrc.ENVELOPE1 + envId}
             onButtonClick={toggle}
         />
     )
@@ -130,6 +142,7 @@ const Envelope = ({ x, y, height, width, label, header, showSelect = false, envI
     const potDistance = POT_DISTANCE_M
 
     const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
+    const envHwSrcId = ControllerIdSrc.ENVELOPE1 + envId
     const delayDisabled = useEnvStageEnabled(envId, 'delay') === 0
     const decay1Disabled = useEnvStageEnabled(envId, 'decay1') === 0
     const decay2Disabled = useEnvStageEnabled(envId, 'decay2') === 0
@@ -150,9 +163,10 @@ const Envelope = ({ x, y, height, width, label, header, showSelect = false, envI
                 {label}
             </text>
 
-            <EnvTimePot envId={envId} stageName="attack" label="Attack" x={firstPotX + potDistance * 1} y={topRowY} />
+            <EnvTimePot envId={envId} ctrlId={envCtrls.ATTACK_TIME.id} stageName="attack" label="Attack" x={firstPotX + potDistance * 1} y={topRowY} />
             <EnvTimePot
                 envId={envId}
+                ctrlId={envCtrls.DECAY1_TIME.id}
                 stageName="decay1"
                 label="Decay"
                 x={firstPotX + potDistance * 2}
@@ -161,6 +175,7 @@ const Envelope = ({ x, y, height, width, label, header, showSelect = false, envI
             />
             <EnvLevelPot
                 envId={envId}
+                ctrlId={envCtrls.SUSTAIN_LEVEL.id}
                 stageName="sustain"
                 label="Sustain"
                 x={firstPotX + potDistance * 3}
@@ -169,6 +184,7 @@ const Envelope = ({ x, y, height, width, label, header, showSelect = false, envI
             />
             <EnvTimePot
                 envId={envId}
+                ctrlId={envCtrls.RELEASE1_TIME.id}
                 stageName="release1"
                 label="Release"
                 x={firstPotX + potDistance * 4}
@@ -180,6 +196,7 @@ const Envelope = ({ x, y, height, width, label, header, showSelect = false, envI
 
             <EnvTimePot
                 envId={envId}
+                ctrlId={envCtrls.DELAY_TIME.id}
                 stageName="delay"
                 label="Delay"
                 x={firstPotX}
@@ -188,6 +205,7 @@ const Envelope = ({ x, y, height, width, label, header, showSelect = false, envI
             />
             <EnvLevelPot
                 envId={envId}
+                ctrlId={envCtrls.DECAY2_LEVEL.id}
                 stageName="decay2"
                 label="D2 Level"
                 x={firstPotX + potDistance * 1}
@@ -196,6 +214,7 @@ const Envelope = ({ x, y, height, width, label, header, showSelect = false, envI
             />
             <EnvTimePot
                 envId={envId}
+                ctrlId={envCtrls.DECAY2_TIME.id}
                 stageName="decay2"
                 label="Decay 2"
                 x={firstPotX + potDistance * 2}
@@ -204,6 +223,7 @@ const Envelope = ({ x, y, height, width, label, header, showSelect = false, envI
             />
             <EnvLevelPot
                 envId={envId}
+                ctrlId={envCtrls.RELEASE2_LEVEL.id}
                 stageName="release2"
                 label="R2 Level"
                 x={firstPotX + potDistance * 3}
@@ -212,6 +232,7 @@ const Envelope = ({ x, y, height, width, label, header, showSelect = false, envI
             />
             <EnvTimePot
                 envId={envId}
+                ctrlId={envCtrls.RELEASE2_TIME.id}
                 stageName="release2"
                 label="Release 2"
                 x={firstPotX + potDistance * 4}
@@ -240,6 +261,7 @@ const Envelope = ({ x, y, height, width, label, header, showSelect = false, envI
                 y={bottomRowY}
                 labelPosition="bottom-pot"
                 momentary
+                hwSourceId={envHwSrcId}
                 onButtonClick={() => button.send(voiceGroupIndex, envCtrls.ENV_GATE, envCtrls.ENV_GATE.values[0])}
                 onButtonRelease={() => button.send(voiceGroupIndex, envCtrls.ENV_GATE, envCtrls.ENV_GATE.values[1])}
             />

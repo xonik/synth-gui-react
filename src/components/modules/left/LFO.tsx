@@ -3,6 +3,7 @@ import { BUTTON_DISTANCE_S, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from '@/c
 import { buttonMidiValues } from '@/midi/buttonMidiValues'
 import { button } from '@/midi/midibus'
 import { useButton, usePot, useUiStore } from '@/store'
+import { ControllerIdSrc } from '@/synthcore/modules/controllers/controllerIds'
 import { timeResponseMapper } from '@/synthcore/modules/common/responseMappers'
 import { lfoCtrls } from '@/synthcore/modules/lfo/lfoControllers'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
@@ -31,6 +32,9 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
     const selectLfo = useUiStore((s) => s.selectLfo)
     const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
 
+    const lfoHwSourceId = ControllerIdSrc.LFO1 + lfoId
+
+    // The LFO selector button is intentionally NOT given hwSourceId — it must never trigger routing.
     const onSelectLfo = useCallback(() => {
         selectLfo((lfoId + 1) % 3)
     }, [lfoId, selectLfo])
@@ -120,6 +124,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 y={row1}
                 labelPosition="bottom-pot"
                 value={syncValue}
+                hwSourceId={lfoHwSourceId}
                 onButtonClick={syncToggle}
             />
 
@@ -141,6 +146,9 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 x={col2}
                 y={row1}
                 value={rateValue}
+                hwSourceId={lfoHwSourceId}
+                ctrlId={lfoCtrls.RATE.id}
+                ctrlIndex={lfoId}
                 onValueIncrement={rateIncrement}
             />
 
@@ -150,6 +158,9 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 x={col3}
                 y={row1}
                 value={depthValue}
+                hwSourceId={lfoHwSourceId}
+                ctrlId={lfoCtrls.DEPTH.id}
+                ctrlIndex={lfoId}
                 onValueIncrement={depthIncrement}
             />
 
@@ -159,6 +170,9 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 x={col4}
                 y={row1}
                 value={balanceValue}
+                hwSourceId={lfoHwSourceId}
+                ctrlId={lfoCtrls.BALANCE.id}
+                ctrlIndex={lfoId}
                 onValueIncrement={balanceIncrement}
             />
 
@@ -168,6 +182,9 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 x={col5}
                 y={row1}
                 value={delayValue}
+                hwSourceId={lfoHwSourceId}
+                ctrlId={lfoCtrls.DELAY.id}
+                ctrlIndex={lfoId}
                 onValueIncrement={delayIncrement}
             />
 
@@ -177,6 +194,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 y={row2}
                 labelPosition="bottom-pot"
                 value={bipolarValue}
+                hwSourceId={lfoHwSourceId}
                 onButtonClick={bipolarToggle}
             />
 
@@ -186,6 +204,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 y={row2}
                 labelPosition="bottom-pot"
                 value={invertValue}
+                hwSourceId={lfoHwSourceId}
                 onButtonClick={invertToggle}
             />
 
@@ -195,6 +214,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 y={row2}
                 labelPosition="bottom-pot"
                 value={loopValue}
+                hwSourceId={lfoHwSourceId}
                 onButtonClick={loopToggle}
             />
 
@@ -204,6 +224,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 y={row2}
                 labelPosition="bottom-pot"
                 value={resetValue}
+                hwSourceId={lfoHwSourceId}
                 onButtonClick={resetToggle}
             />
 
@@ -223,6 +244,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                     'Other',
                 ]}
                 value={shapeValue}
+                hwSourceId={lfoHwSourceId}
                 onButtonClick={shapeToggle}
             />
 
@@ -231,6 +253,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 x={col2 + BUTTON_DISTANCE_S * 6}
                 y={row1}
                 labelPosition="bottom-pot"
+                hwSourceId={lfoHwSourceId}
                 onButtonClick={onTrigger}
             />
         </>

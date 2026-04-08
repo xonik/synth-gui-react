@@ -9,6 +9,7 @@ import {
 import type { VoiceGroupPatch } from '@/store'
 import { useButton, usePot } from '@/store'
 import { dbLevelResponseMapper } from '@/synthcore/modules/common/responseMappers'
+import srcMixControllers from '@/synthcore/modules/srcMix/srcMixControllers'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { ModuleBorder } from '../../misc/ModuleBorder'
 import SubHeader from '../../misc/SubHeader'
@@ -20,17 +21,19 @@ const SrcMixLevelPot = ({
     x,
     y,
     label,
+    ctrlId,
     selector,
     mutator,
 }: {
     x: number
     y: number
     label: string
+    ctrlId?: number
     selector: (s: VoiceGroupPatch) => number
     mutator: (s: VoiceGroupPatch, v: number) => void
 }) => {
     const { displayValue, increment } = usePot(selector, mutator, { responseMapper: dbLevelResponseMapper })
-    return <RotaryPot12 ledMode="multi" label={label} x={x} y={y} value={displayValue} onValueIncrement={increment} />
+    return <RotaryPot12 ledMode="multi" label={label} x={x} y={y} value={displayValue} ctrlId={ctrlId} onValueIncrement={increment} />
 }
 
 const SrcMixOutButton = ({
@@ -65,6 +68,7 @@ const MixerChannel = ({
     x,
     y,
     label,
+    ctrlId,
     levelSelector,
     levelMutator,
     outSelector,
@@ -73,6 +77,7 @@ const MixerChannel = ({
     x: number
     y: number
     label: string
+    ctrlId?: number
     levelSelector: (s: VoiceGroupPatch) => number
     levelMutator: (s: VoiceGroupPatch, v: number) => void
     outSelector: (s: VoiceGroupPatch) => number
@@ -80,7 +85,7 @@ const MixerChannel = ({
 }) => {
     return (
         <>
-            <SrcMixLevelPot x={x} y={y} label={label} selector={levelSelector} mutator={levelMutator} />
+            <SrcMixLevelPot x={x} y={y} label={label} ctrlId={ctrlId} selector={levelSelector} mutator={levelMutator} />
             <SrcMixOutButton x={x + POT_DISTANCE_S} y={y} selector={outSelector} mutator={outMutator} />
         </>
     )
@@ -105,6 +110,7 @@ const SourceMixer = ({ x, y, height, width }: ModuleProps) => {
                 x={col1}
                 y={row1}
                 label="Osc 1"
+                ctrlId={srcMixControllers.LEVEL_OSC1.id}
                 levelSelector={(s) => s.srcMix.levelOsc1}
                 levelMutator={(s, v) => {
                     s.srcMix.levelOsc1 = v
@@ -118,6 +124,7 @@ const SourceMixer = ({ x, y, height, width }: ModuleProps) => {
                 x={col1}
                 y={row2}
                 label="Osc 2"
+                ctrlId={srcMixControllers.LEVEL_OSC2.id}
                 levelSelector={(s) => s.srcMix.levelOsc2}
                 levelMutator={(s, v) => {
                     s.srcMix.levelOsc2 = v
@@ -131,6 +138,7 @@ const SourceMixer = ({ x, y, height, width }: ModuleProps) => {
                 x={col1}
                 y={row3}
                 label="Osc 3"
+                ctrlId={srcMixControllers.LEVEL_OSC3.id}
                 levelSelector={(s) => s.srcMix.levelOsc3}
                 levelMutator={(s, v) => {
                     s.srcMix.levelOsc3 = v
@@ -145,6 +153,7 @@ const SourceMixer = ({ x, y, height, width }: ModuleProps) => {
                 x={col2}
                 y={row1}
                 label="Noise"
+                ctrlId={srcMixControllers.LEVEL_NOISE.id}
                 levelSelector={(s) => s.srcMix.levelNoise}
                 levelMutator={(s, v) => {
                     s.srcMix.levelNoise = v
@@ -158,6 +167,7 @@ const SourceMixer = ({ x, y, height, width }: ModuleProps) => {
                 x={col2}
                 y={row2}
                 label="Ring mod"
+                ctrlId={srcMixControllers.LEVEL_RING_MOD.id}
                 levelSelector={(s) => s.srcMix.levelRingMod}
                 levelMutator={(s, v) => {
                     s.srcMix.levelRingMod = v
@@ -171,6 +181,7 @@ const SourceMixer = ({ x, y, height, width }: ModuleProps) => {
                 x={col2}
                 y={row3}
                 label="Ext audio"
+                ctrlId={srcMixControllers.LEVEL_EXT_AUDIO.id}
                 levelSelector={(s) => s.srcMix.levelExtAudio}
                 levelMutator={(s, v) => {
                     s.srcMix.levelExtAudio = v

@@ -1,5 +1,6 @@
 import { POT_DISTANCE_L, POT_DISTANCE_M, POT_OFFSET_Y } from '@/constants'
 import { useGlobalButton, useGlobalPot } from '@/store/hooks'
+import masterClockControllers from '@/synthcore/modules/masterClock/masterClockControllers'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { ModuleBorder } from '../../misc/ModuleBorder'
 import SubHeader from '../../misc/SubHeader'
@@ -48,6 +49,7 @@ const Clock = ({ x, y, height, width }: ModuleProps) => {
                 label="Rate"
                 x={col2}
                 y={row2}
+                ctrlId={masterClockControllers.RATE.id}
                 value={rateValue}
                 onValueIncrement={rateIncrement}
             />

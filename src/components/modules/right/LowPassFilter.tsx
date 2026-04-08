@@ -1,6 +1,7 @@
 import { POT_DISTANCE_L, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from '@/constants'
 import type { VoiceGroupPatch } from '@/store'
 import { useButton, usePot } from '@/store'
+import filtersControllers from '@/synthcore/modules/filters/filtersControllers'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { HorizontalDividerLine } from '../../misc/HorizontalDividerLine'
@@ -19,6 +20,7 @@ const FilterPot = ({
     y,
     label,
     ledMode = 'multi' as const,
+    ctrlId,
     selector,
     mutator,
     Large,
@@ -27,6 +29,7 @@ const FilterPot = ({
     y: number
     label: string
     ledMode?: 'single' | 'multi'
+    ctrlId?: number
     selector: (s: VoiceGroupPatch) => number
     mutator: (s: VoiceGroupPatch, v: number) => void
     Large?: boolean
@@ -40,11 +43,12 @@ const FilterPot = ({
                 ledMode={ledMode}
                 label={label}
                 value={displayValue}
+                ctrlId={ctrlId}
                 onValueIncrement={increment}
             />
         )
     }
-    return <RotaryPot12 x={x} y={y} ledMode={ledMode} label={label} value={displayValue} onValueIncrement={increment} />
+    return <RotaryPot12 x={x} y={y} ledMode={ledMode} label={label} value={displayValue} ctrlId={ctrlId} onValueIncrement={increment} />
 }
 
 const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
@@ -122,6 +126,7 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
                 ledMode="single"
                 label="Cutoff"
                 Large
+                ctrlId={filtersControllers.LPF.CUTOFF.id}
                 selector={(s) => s.filters[FILTER].cutoff}
                 mutator={(s, v) => {
                     s.filters[FILTER].cutoff = v
@@ -132,6 +137,7 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
                 x={col1}
                 y={topRow}
                 label="In dry/wet"
+                ctrlId={filtersControllers.LPF.INPUT.id}
                 selector={(s) => s.filters[FILTER].input}
                 mutator={(s, v) => {
                     s.filters[FILTER].input = v
@@ -142,6 +148,7 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
                 x={col3}
                 y={topRow}
                 label="Resonance"
+                ctrlId={filtersControllers.LPF.RESONANCE.id}
                 selector={(s) => s.filters[FILTER].resonance}
                 mutator={(s, v) => {
                     s.filters[FILTER].resonance = v
@@ -152,6 +159,7 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
                 x={col5}
                 y={topRow}
                 label="FM"
+                ctrlId={filtersControllers.LPF.FM_AMT.id}
                 selector={(s) => s.filters[FILTER].fmAmt}
                 mutator={(s, v) => {
                     s.filters[FILTER].fmAmt = v
@@ -234,6 +242,7 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
                 x={col1}
                 y={bottomRow2}
                 label="Keyboard"
+                ctrlId={filtersControllers.LPF.KBD_AMT.id}
                 selector={(s) => s.filters[FILTER].kbdAmt}
                 mutator={(s, v) => {
                     s.filters[FILTER].kbdAmt = v
@@ -244,6 +253,7 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
                 x={col2}
                 y={bottomRow2}
                 label="LFO"
+                ctrlId={filtersControllers.LPF.LFO_AMT.id}
                 selector={(s) => s.filters[FILTER].lfoAmt}
                 mutator={(s, v) => {
                     s.filters[FILTER].lfoAmt = v
@@ -254,6 +264,7 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
                 x={col4}
                 y={bottomRow2}
                 label="Wheel amt"
+                ctrlId={filtersControllers.LPF.WHEEL_AMT.id}
                 selector={(s) => s.filters[FILTER].wheelAmt}
                 mutator={(s, v) => {
                     s.filters[FILTER].wheelAmt = v
@@ -264,6 +275,7 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
                 x={col5}
                 y={bottomRow2}
                 label="Envelope"
+                ctrlId={filtersControllers.LPF.ENV_AMT.id}
                 selector={(s) => s.filters[FILTER].envAmt}
                 mutator={(s, v) => {
                     s.filters[FILTER].envAmt = v

@@ -10,6 +10,7 @@ import {
 import { useButton, usePot } from '@/store/hooks'
 import { type VoiceGroupPatch, voiceGroupStores } from '@/store/patchStore'
 import { useUiStore } from '@/store/uiStore'
+import oscControllers from '@/synthcore/modules/osc/oscControllers'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { SawRight } from '../../images/SawRight'
@@ -56,6 +57,7 @@ const OscPot = ({
     y,
     label,
     ledMode = 'single' as const,
+    ctrlId,
     selector,
     mutator,
 }: {
@@ -63,11 +65,12 @@ const OscPot = ({
     y: number
     label: string
     ledMode?: 'single' | 'multi'
+    ctrlId?: number
     selector: (s: VoiceGroupPatch) => number
     mutator: (s: VoiceGroupPatch, v: number) => void
 }) => {
     const { displayValue, increment } = usePot(selector, mutator)
-    return <RotaryPot12 x={x} y={y} ledMode={ledMode} label={label} value={displayValue} onValueIncrement={increment} />
+    return <RotaryPot12 x={x} y={y} ledMode={ledMode} label={label} value={displayValue} ctrlId={ctrlId} onValueIncrement={increment} />
 }
 
 const DCO1 = ({ x, y, height, width }: ModuleProps) => {
@@ -171,6 +174,7 @@ const DCO1 = ({ x, y, height, width }: ModuleProps) => {
                 y={topRow}
                 ledMode="single"
                 label="Note"
+                ctrlId={oscControllers.DCO1.NOTE.id}
                 selector={(s) => s.oscillators[OSC].note}
                 mutator={(s, v) => {
                     s.oscillators[OSC].note = v
@@ -182,6 +186,7 @@ const DCO1 = ({ x, y, height, width }: ModuleProps) => {
                 y={bottomRow}
                 ledMode="single"
                 label="Detune"
+                ctrlId={oscControllers.DCO1.DETUNE.id}
                 selector={(s) => s.oscillators[OSC].detune}
                 mutator={(s, v) => {
                     s.oscillators[OSC].detune = v
@@ -226,6 +231,7 @@ const DCO1 = ({ x, y, height, width }: ModuleProps) => {
                 ledMode="single"
                 label="Waveform"
                 value={wfValue}
+                ctrlId={oscControllers.DCO1.WAVEFORM.id}
                 onValueIncrement={wfIncrement}
             />
 
@@ -260,6 +266,7 @@ const DCO1 = ({ x, y, height, width }: ModuleProps) => {
                 y={topRow}
                 ledMode="multi"
                 label="Sub -1"
+                ctrlId={oscControllers.DCO1.SUB1.id}
                 selector={(s) => s.oscillators[OSC].sub1}
                 mutator={(s, v) => {
                     s.oscillators[OSC].sub1 = v
@@ -271,6 +278,7 @@ const DCO1 = ({ x, y, height, width }: ModuleProps) => {
                 y={bottomRow}
                 ledMode="single"
                 label="Pulse width"
+                ctrlId={oscControllers.DCO1.PW.id}
                 selector={(s) => s.oscillators[OSC].pw}
                 mutator={(s, v) => {
                     s.oscillators[OSC].pw = v
@@ -282,6 +290,7 @@ const DCO1 = ({ x, y, height, width }: ModuleProps) => {
                 y={topRow}
                 ledMode="multi"
                 label="Sub -2"
+                ctrlId={oscControllers.DCO1.SUB2.id}
                 selector={(s) => s.oscillators[OSC].sub2}
                 mutator={(s, v) => {
                     s.oscillators[OSC].sub2 = v
