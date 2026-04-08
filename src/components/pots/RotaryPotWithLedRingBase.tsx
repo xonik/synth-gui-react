@@ -1,6 +1,7 @@
 import classNames from 'classnames'
-import { useCallback, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { SHOW_CUT } from '@/config'
+import { notifyParamChangeById } from '@/store/paramPopupStore'
 import { getCanDeselect, trySelectDst, trySelectSource, useModRoutingFlash } from '@/synthcore/modules/mods/modRoutingInterceptor'
 import arc from '../../utils/svg/arc'
 import RotaryPotBase from './RotaryPotBase'
@@ -100,6 +101,14 @@ const getLedPos = (centerLed: number, ledCount: number, mode: PotMode, position:
 const RotaryPotWithLedRingBase = (props: Props & Config) => {
     // Position should be in the range 0-1 in all modes but pan. In pan the range is -0.5 - 0.5
     const { x, y, ledMode = 'single', potMode = 'normal', label, value, disabled, silver, hwSourceId, ctrlId, ctrlIndex = 0, onValueIncrement } = props
+
+    const prevValueRef = useRef(value)
+    useEffect(() => {
+        if (prevValueRef.current !== value && ctrlId !== undefined && value !== undefined) {
+            notifyParamChangeById(ctrlId, value)
+        }
+        prevValueRef.current = value
+    }, [value, ctrlId])
 
     const gestureCanDeselect = useRef(false)
     const gestureHasInteracted = useRef(false)

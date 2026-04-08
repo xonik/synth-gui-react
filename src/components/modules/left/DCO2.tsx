@@ -8,12 +8,9 @@ import {
     ROW_HEIGHT,
 } from '../../../constants'
 import { useButton, usePot } from '@/store/hooks'
-import type { PopupConfig } from '@/store/hooks'
 import { type VoiceGroupPatch, voiceGroupStores } from '@/store/patchStore'
-import { ScreenId } from '@/store/uiStore'
 import { useUiStore } from '@/store/uiStore'
 import oscControllers from '@/synthcore/modules/osc/oscControllers'
-import { notifyParamChange } from '@/store/paramPopupStore'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { SawRight } from '../../images/SawRight'
@@ -29,12 +26,6 @@ import '../Modules.scss'
 
 const OSC = 1
 
-const popup = (paramLabel: string): PopupConfig => ({
-    moduleName: 'Osc 2',
-    paramLabel,
-    screen: ScreenId.OSC,
-})
-
 const OscPot = ({
     x,
     y,
@@ -48,11 +39,11 @@ const OscPot = ({
     y: number
     label: string
     ledMode?: 'single' | 'multi'
-    ctrlId?: number
+    ctrlId: number
     selector: (s: VoiceGroupPatch) => number
     mutator: (s: VoiceGroupPatch, v: number) => void
 }) => {
-    const { displayValue, increment } = usePot(selector, mutator, { popup: popup(label) })
+    const { displayValue, increment } = usePot(selector, mutator)
     return <RotaryPot12 x={x} y={y} ledMode={ledMode} label={label} value={displayValue} ctrlId={ctrlId} onValueIncrement={increment} />
 }
 
@@ -60,28 +51,29 @@ const OscTogglePot = ({
     x,
     y,
     label,
+    ctrlId,
     selector,
     mutator,
 }: {
     x: number
     y: number
     label: string
+    ctrlId: number
     selector: (s: VoiceGroupPatch) => number
     mutator: (s: VoiceGroupPatch, v: number) => void
 }) => {
     const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
-    const { value } = useButton(selector, mutator, 2, { popup: popup(label) })
+    const { value } = useButton(selector, mutator, 2)
     const onIncrement = useCallback(
         (delta: number) => {
             const newValue = delta > 0 ? 1 : 0
             voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                 mutator(state, newValue)
             })
-            notifyParamChange('Osc 2', label, String(newValue), ScreenId.OSC)
         },
-        [voiceGroupIndex, mutator, label]
+        [voiceGroupIndex, mutator]
     )
-    return <RotaryPot12 x={x} y={y} label={label} value={value} onValueIncrement={onIncrement} />
+    return <RotaryPot12 x={x} y={y} label={label} value={value} ctrlId={ctrlId} onValueIncrement={onIncrement} />
 }
 
 const DCO2 = ({ x, y, height, width }: ModuleProps) => {
@@ -90,47 +82,41 @@ const DCO2 = ({ x, y, height, width }: ModuleProps) => {
         (s, v) => {
             s.oscillators[OSC].mode = v
         },
-        3,
-        { popup: popup('Mode') }
+        3
     )
     const { value: syncValue, toggle: syncToggle } = useButton(
         (s) => s.oscillators[OSC].sync,
         (s, v) => {
             s.oscillators[OSC].sync = v
         },
-        3,
-        { popup: popup('Sync') }
+        3
     )
     const { value: sawInvValue, toggle: sawInvToggle } = useButton(
         (s) => s.oscillators[OSC].sawInv,
         (s, v) => {
             s.oscillators[OSC].sawInv = v
         },
-        2,
-        { popup: popup('Inv saw') }
+        2
     )
     const { value: preFilterSineValue, toggle: preFilterSineToggle } = useButton(
         (s) => s.oscillators[OSC].preFilterSine,
         (s, v) => {
             s.oscillators[OSC].preFilterSine = v
         },
-        2,
-        { popup: popup('Sine') }
+        2
     )
     const { value: subWaveValue, toggle: subWaveToggle } = useButton(
         (s) => s.oscillators[OSC].subWave,
         (s, v) => {
             s.oscillators[OSC].subWave = v
         },
-        2,
-        { popup: popup('Sub wave') }
+        2
     )
     const { displayValue: wfValue, increment: wfIncrement } = usePot(
         (s) => s.oscillators[OSC].waveform,
         (s, v) => {
             s.oscillators[OSC].waveform = v
-        },
-        { popup: popup('Waveform') }
+        }
     )
 
     const topRow = y + POT_OFFSET_Y
@@ -163,6 +149,7 @@ const DCO2 = ({ x, y, height, width }: ModuleProps) => {
                 label="Mode"
                 labelPosition="bottom-pot"
                 value={modeValue}
+                ctrlId={oscControllers.DCO2.MODE.id}
                 onButtonClick={modeToggle}
             />
 
@@ -170,6 +157,7 @@ const DCO2 = ({ x, y, height, width }: ModuleProps) => {
                 x={col2}
                 y={topRow}
                 label="Keyboard"
+                ctrlId={oscControllers.DCO2.KBD.id}
                 selector={(s) => s.oscillators[OSC].kbd}
                 mutator={(s, v) => {
                     s.oscillators[OSC].kbd = v
@@ -180,6 +168,7 @@ const DCO2 = ({ x, y, height, width }: ModuleProps) => {
                 x={col3}
                 y={topRow}
                 label="LFO"
+                ctrlId={oscControllers.DCO2.LFO.id}
                 selector={(s) => s.oscillators[OSC].lfo}
                 mutator={(s, v) => {
                     s.oscillators[OSC].lfo = v
@@ -218,6 +207,7 @@ const DCO2 = ({ x, y, height, width }: ModuleProps) => {
                 labelPosition="bottom-pot"
                 hasOff
                 value={syncValue}
+                ctrlId={oscControllers.DCO2.SYNC.id}
                 onButtonClick={syncToggle}
             />
 
@@ -225,6 +215,7 @@ const DCO2 = ({ x, y, height, width }: ModuleProps) => {
                 x={col3}
                 y={bottomRow}
                 label="Wheel"
+                ctrlId={oscControllers.DCO2.WHEEL.id}
                 selector={(s) => s.oscillators[OSC].wheel}
                 mutator={(s, v) => {
                     s.oscillators[OSC].wheel = v
@@ -237,6 +228,7 @@ const DCO2 = ({ x, y, height, width }: ModuleProps) => {
                 label="Inv saw"
                 labelPosition="bottom"
                 value={sawInvValue}
+                ctrlId={oscControllers.DCO2.SAW_INV.id}
                 onButtonClick={sawInvToggle}
             />
 
@@ -258,6 +250,7 @@ const DCO2 = ({ x, y, height, width }: ModuleProps) => {
                 label="Sine"
                 labelPosition="bottom"
                 value={preFilterSineValue}
+                ctrlId={oscControllers.DCO2.PRE_FILTER_SINE.id}
                 onButtonClick={preFilterSineToggle}
             />
 
@@ -273,6 +266,7 @@ const DCO2 = ({ x, y, height, width }: ModuleProps) => {
                 label="Sub wave"
                 labelPosition="bottom"
                 value={subWaveValue}
+                ctrlId={oscControllers.DCO2.SUB_WAVE.id}
                 onButtonClick={subWaveToggle}
             />
 

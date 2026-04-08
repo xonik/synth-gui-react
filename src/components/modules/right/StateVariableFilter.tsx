@@ -2,9 +2,6 @@ import { useCallback } from 'react'
 import { POT_DISTANCE_L, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from '@/constants'
 import { useButton, usePot, useUiStore, type VoiceGroupPatch, voiceGroupStores } from '@/store'
 import filtersControllers from '@/synthcore/modules/filters/filtersControllers'
-import type { PopupConfig } from '@/store/hooks'
-import { ScreenId } from '@/store/uiStore'
-import { notifyParamChange } from '@/store/paramPopupStore'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import RoundRotaryButton17 from '../../buttons/RoundRotaryButton17'
@@ -18,12 +15,6 @@ import './StateVariableFilter.scss'
 import '../Modules.scss'
 
 const FILTER = 1
-
-const popup = (paramLabel: string): PopupConfig => ({
-    moduleName: 'SVF',
-    paramLabel,
-    screen: ScreenId.FILTER,
-})
 
 const FilterPot = ({
     x,
@@ -44,7 +35,7 @@ const FilterPot = ({
     mutator: (s: VoiceGroupPatch, v: number) => void
     Large?: boolean
 }) => {
-    const { displayValue, increment } = usePot(selector, mutator, { popup: popup(label) })
+    const { displayValue, increment } = usePot(selector, mutator)
     if (Large) {
         return (
             <RotaryPot21
@@ -79,16 +70,14 @@ const StateVariableFilter = ({ x, y, height, width }: ModuleProps) => {
         (s, v) => {
             s.filters[FILTER].fmMode = v
         },
-        3,
-        { popup: popup('FM mode') }
+        3
     )
     const { value: fmSrcValue, toggle: fmSrcToggle } = useButton(
         (s) => s.filters[FILTER].fmSrc,
         (s, v) => {
             s.filters[FILTER].fmSrc = v
         },
-        2,
-        { popup: popup('FM src') }
+        2
     )
     const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
     const slopeValue = useButton(
@@ -107,7 +96,6 @@ const StateVariableFilter = ({ x, y, height, width }: ModuleProps) => {
                 store.set((state) => {
                     state.filters[FILTER].slope = next
                 })
-                notifyParamChange('SVF', 'Slope', String(next), ScreenId.FILTER)
             }
         },
         [voiceGroupIndex]
@@ -117,8 +105,7 @@ const StateVariableFilter = ({ x, y, height, width }: ModuleProps) => {
         (s, v) => {
             s.filters[FILTER].invert = v
         },
-        2,
-        { popup: popup('Invert') }
+        2
     )
 
     // modes:
@@ -204,6 +191,7 @@ const StateVariableFilter = ({ x, y, height, width }: ModuleProps) => {
                 labelPosition="bottom"
                 hasOff
                 value={fmModeValue}
+                ctrlId={filtersControllers.SVF.FM_MODE.id}
                 onButtonClick={fmModeToggle}
             />
 
@@ -216,6 +204,7 @@ const StateVariableFilter = ({ x, y, height, width }: ModuleProps) => {
                 label="FM src"
                 labelPosition="bottom"
                 value={fmSrcValue}
+                ctrlId={filtersControllers.SVF.FM_SRC.id}
                 onButtonClick={fmSrcToggle}
             />
 
@@ -240,6 +229,7 @@ const StateVariableFilter = ({ x, y, height, width }: ModuleProps) => {
                 ]}
                 resolution={10}
                 value={slopeValue}
+                ctrlId={filtersControllers.SVF.SLOPE.id}
                 onIncrement={slopeIncrement}
             />
 
@@ -295,6 +285,7 @@ const StateVariableFilter = ({ x, y, height, width }: ModuleProps) => {
                 label="Invert"
                 labelPosition="bottom"
                 value={invertValue}
+                ctrlId={filtersControllers.SVF.INVERT.id}
                 onButtonClick={invertToggle}
             />
         </>

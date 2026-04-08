@@ -2,8 +2,6 @@ import { POT_DISTANCE_L, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from '@/cons
 import type { VoiceGroupPatch } from '@/store'
 import { useButton, usePot } from '@/store'
 import filtersControllers from '@/synthcore/modules/filters/filtersControllers'
-import type { PopupConfig } from '@/store/hooks'
-import { ScreenId } from '@/store/uiStore'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { HorizontalDividerLine } from '../../misc/HorizontalDividerLine'
@@ -16,12 +14,6 @@ import './LowPassFilter.scss'
 import '../Modules.scss'
 
 const FILTER = 0
-
-const popup = (paramLabel: string): PopupConfig => ({
-    moduleName: 'LPF',
-    paramLabel,
-    screen: ScreenId.FILTER,
-})
 
 const FilterPot = ({
     x,
@@ -42,7 +34,7 @@ const FilterPot = ({
     mutator: (s: VoiceGroupPatch, v: number) => void
     Large?: boolean
 }) => {
-    const { displayValue, increment } = usePot(selector, mutator, { popup: popup(label) })
+    const { displayValue, increment } = usePot(selector, mutator)
     if (Large) {
         return (
             <RotaryPot21
@@ -77,48 +69,42 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
         (s, v) => {
             s.filters[FILTER].fmMode = v
         },
-        3,
-        { popup: popup('FM mode') }
+        3
     )
     const { value: filterTypeValue, toggle: filterTypeToggle } = useButton(
         (s) => s.filters[FILTER].filterType,
         (s, v) => {
             s.filters[FILTER].filterType = v
         },
-        2,
-        { popup: popup('Type') }
+        2
     )
     const { value: slopeValue, toggle: slopeToggle } = useButton(
         (s) => s.filters[FILTER].slope,
         (s, v) => {
             s.filters[FILTER].slope = v
         },
-        2,
-        { popup: popup('Slope') }
+        2
     )
     const { value: fmSrcValue, toggle: fmSrcToggle } = useButton(
         (s) => s.filters[FILTER].fmSrc,
         (s, v) => {
             s.filters[FILTER].fmSrc = v
         },
-        2,
-        { popup: popup('FM src') }
+        2
     )
     const { value: routingValue, toggle: routingToggle } = useButton(
         (s) => s.filters[FILTER].routing,
         (s, v) => {
             s.filters[FILTER].routing = v
         },
-        2,
-        { popup: popup('Routing') }
+        2
     )
     const { value: linkCutoffValue, toggle: linkCutoffToggle } = useButton(
         (s) => s.filters[FILTER].linkCutoff,
         (s, v) => {
             s.filters[FILTER].linkCutoff = v
         },
-        2,
-        { popup: popup('Link cutoff') }
+        2
     )
 
     return (
@@ -189,6 +175,7 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
                 label="FM mode"
                 labelPosition="bottom"
                 hasOff
+                ctrlId={filtersControllers.LPF.FM_MODE.id}
                 value={fmModeValue}
                 onButtonClick={fmModeToggle}
             />
@@ -201,6 +188,7 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
                 ledLabels={['OTA', 'Ladder']}
                 label="Filter"
                 labelPosition="bottom"
+                ctrlId={filtersControllers.LPF.FILTER_TYPE.id}
                 value={filterTypeValue}
                 onButtonClick={filterTypeToggle}
             />
@@ -213,6 +201,7 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
                 ledLabels={['12dB', '24dB']}
                 label="Slope"
                 labelPosition="bottom"
+                ctrlId={filtersControllers.LPF.SLOPE.id}
                 value={slopeValue}
                 onButtonClick={slopeToggle}
             />
@@ -225,6 +214,7 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
                 ledLabels={['Series', 'Parallel']}
                 label="Routing"
                 labelPosition="bottom"
+                ctrlId={filtersControllers.FILTERS.ROUTING.id}
                 value={routingValue}
                 onButtonClick={routingToggle}
             />
@@ -234,6 +224,7 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
                 y={bottomRow1}
                 label="Link cutoff"
                 labelPosition="bottom"
+                ctrlId={filtersControllers.FILTERS.LINK_CUTOFF.id}
                 value={linkCutoffValue}
                 onButtonClick={linkCutoffToggle}
             />
@@ -246,6 +237,7 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
                 ledLabels={['2', 'Ext']}
                 label="FM src"
                 labelPosition="bottom"
+                ctrlId={filtersControllers.LPF.FM_SRC.id}
                 value={fmSrcValue}
                 onButtonClick={fmSrcToggle}
             />

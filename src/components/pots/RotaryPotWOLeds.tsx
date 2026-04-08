@@ -1,4 +1,5 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
+import { notifyParamChangeById } from '@/store/paramPopupStore'
 import RotaryPotBase from './RotaryPotBase'
 import './RotaryPot.scss'
 
@@ -8,6 +9,8 @@ export interface Props {
     label?: string
     resolution?: number
     silver?: boolean
+    value?: number
+    ctrlId?: number
     onValueIncrement?: (delta: number) => void
 }
 
@@ -16,8 +19,16 @@ interface Config {
 }
 
 const RotaryPotWOLeds = (props: Props & Config) => {
-    const { x, y, label, knobRadius, resolution, silver, onValueIncrement } = props
+    const { x, y, label, knobRadius, resolution, silver, value, ctrlId, onValueIncrement } = props
     const labelY = knobRadius + 5
+
+    const prevValueRef = useRef(value)
+    useEffect(() => {
+        if (prevValueRef.current !== value && ctrlId !== undefined && value !== undefined) {
+            notifyParamChangeById(ctrlId, value)
+        }
+        prevValueRef.current = value
+    }, [value, ctrlId])
 
     const onIncrement = useCallback(
         (steps: number, stepSize: number) => {

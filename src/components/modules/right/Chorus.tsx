@@ -1,20 +1,12 @@
 import { POT_DISTANCE_L, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from '@/constants'
 import { useButton, usePot } from '@/store'
 import commonFxControllers from '@/synthcore/modules/commonFx/commonFxControllers'
-import type { PopupConfig } from '@/store/hooks'
-import { ScreenId } from '@/store/uiStore'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { ModuleBorder } from '../../misc/ModuleBorder'
 import SubHeader from '../../misc/SubHeader'
 import RotaryPot12 from '../../pots/RotaryPot12'
 import type { ModuleProps } from '../types'
 import '../Modules.scss'
-
-const popup = (paramLabel: string): PopupConfig => ({
-    moduleName: 'Chorus',
-    paramLabel,
-    screen: ScreenId.FX,
-})
 
 const Chorus = ({ x, y, height, width }: ModuleProps) => {
     const row1 = y + POT_OFFSET_Y
@@ -26,31 +18,27 @@ const Chorus = ({ x, y, height, width }: ModuleProps) => {
         (s) => s.commonFx.chorus.rate,
         (s, v) => {
             s.commonFx.chorus.rate = v
-        },
-        { popup: popup('Rate') }
+        }
     )
     const { displayValue: depthValue, increment: depthIncrement } = usePot(
         (s) => s.commonFx.chorus.depth,
         (s, v) => {
             s.commonFx.chorus.depth = v
-        },
-        { popup: popup('Depth') }
+        }
     )
     const { value: sourceValue, toggle: sourceToggle } = useButton(
         (s) => s.commonFx.chorus.source,
         (s, v) => {
             s.commonFx.chorus.source = v
         },
-        2,
-        { popup: popup('Source') }
+        2
     )
     const { value: modeValue, toggle: modeToggle } = useButton(
         (s) => s.commonFx.chorus.mode,
         (s, v) => {
             s.commonFx.chorus.mode = v
         },
-        2,
-        { popup: popup('Mode') }
+        2
     )
 
     return (
@@ -65,6 +53,7 @@ const Chorus = ({ x, y, height, width }: ModuleProps) => {
                 ledCount={2}
                 ledPosition="top-horizontal"
                 ledLabels={['FX1', 'FX2']}
+                ctrlId={commonFxControllers.CHORUS.SOURCE.id}
                 value={sourceValue}
                 onButtonClick={sourceToggle}
             />
@@ -77,6 +66,7 @@ const Chorus = ({ x, y, height, width }: ModuleProps) => {
                 ledCount={2}
                 ledPosition="top-horizontal"
                 ledLabels={['Chor', 'Vibr']}
+                ctrlId={commonFxControllers.CHORUS.MODE.id}
                 value={modeValue}
                 onButtonClick={modeToggle}
             />

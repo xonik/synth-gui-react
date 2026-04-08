@@ -1,6 +1,7 @@
 import { POT_DISTANCE_L, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from '@/constants'
 import { useButton } from '@/store'
-import { ScreenId } from '@/store/uiStore'
+import noiseControllers from '@/synthcore/modules/noise/noiseControllers'
+import ringModControllers from '@/synthcore/modules/ringMod/ringModControllers'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { ModuleBorder } from '../../misc/ModuleBorder'
 import SubHeader from '../../misc/SubHeader'
@@ -19,16 +20,14 @@ const NoiseAndRing = ({ x, y, width, height }: ModuleProps) => {
         (s, v) => {
             s.noise.colour = v
         },
-        3,
-        { popup: { moduleName: 'Noise', paramLabel: 'Colour', screen: ScreenId.OSC } }
+        3
     )
     const { value: sourceValue, toggle: sourceToggle } = useButton(
         (s) => s.ringMod.source,
         (s, v) => {
             s.ringMod.source = v
         },
-        3,
-        { popup: { moduleName: 'Ring Mod', paramLabel: 'Source', screen: ScreenId.OSC } }
+        3
     )
 
     return (
@@ -52,6 +51,7 @@ const NoiseAndRing = ({ x, y, width, height }: ModuleProps) => {
                 ledLabels={['White', 'Pink', 'Red']}
                 label=""
                 labelPosition="bottom"
+                ctrlId={noiseControllers.COLOUR.id}
                 value={colourValue}
                 onButtonClick={colourToggle}
             />
@@ -74,6 +74,7 @@ const NoiseAndRing = ({ x, y, width, height }: ModuleProps) => {
                 ledLabels={['1 -> 2', 'E -> 2', '3 -> 2']}
                 label=""
                 labelPosition="bottom"
+                ctrlId={ringModControllers.SOURCE.id}
                 value={sourceValue}
                 onButtonClick={sourceToggle}
             />

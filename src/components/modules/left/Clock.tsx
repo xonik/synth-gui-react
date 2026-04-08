@@ -1,19 +1,11 @@
 import { POT_DISTANCE_L, POT_DISTANCE_M, POT_OFFSET_Y } from '@/constants'
 import { useGlobalButton, useGlobalPot } from '@/store/hooks'
-import type { PopupConfig } from '@/store/hooks'
 import masterClockControllers from '@/synthcore/modules/masterClock/masterClockControllers'
-import { ScreenId } from '@/store/uiStore'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { ModuleBorder } from '../../misc/ModuleBorder'
 import SubHeader from '../../misc/SubHeader'
 import RotaryPot12 from '../../pots/RotaryPot12'
 import type { ModuleProps } from '../types'
-
-const popup = (paramLabel: string): PopupConfig => ({
-    moduleName: 'Clock',
-    paramLabel,
-    screen: ScreenId.ARP,
-})
 
 const Clock = ({ x, y, height, width }: ModuleProps) => {
     const row1 = y
@@ -26,15 +18,13 @@ const Clock = ({ x, y, height, width }: ModuleProps) => {
         (s, v) => {
             s.masterClock.source = v
         },
-        3,
-        { popup: popup('Source') }
+        3
     )
     const { displayValue: rateValue, increment: rateIncrement } = useGlobalPot(
         (s) => s.masterClock.rate,
         (s, v) => {
             s.masterClock.rate = v
-        },
-        { popup: popup('Rate') }
+        }
     )
 
     return (
@@ -50,6 +40,7 @@ const Clock = ({ x, y, height, width }: ModuleProps) => {
                 ledCount={3}
                 ledPosition="right"
                 ledLabels={['Int', 'Midi', 'Ext']}
+                ctrlId={masterClockControllers.SOURCE.id}
                 value={sourceValue}
                 onButtonClick={sourceToggle}
             />

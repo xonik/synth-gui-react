@@ -1,7 +1,8 @@
 import { POT_DISTANCE_L, POT_OFFSET_Y, ROW_HEIGHT } from '@/constants'
 import type { VoiceGroupPatch } from '@/store'
 import { usePot } from '@/store'
-import type { PopupConfig } from '@/store/hooks'
+import commonFxControllers from '@/synthcore/modules/commonFx/commonFxControllers'
+import outControllers from '@/synthcore/modules/out/outControllers'
 import { ModuleBorder } from '../../misc/ModuleBorder'
 import SubHeader from '../../misc/SubHeader'
 import RotaryPot12 from '../../pots/RotaryPot12'
@@ -9,16 +10,12 @@ import type { PotMode } from '../../pots/RotaryPotWithLedRingBase'
 import type { ModuleProps } from '../types'
 import '../Modules.scss'
 
-const popup = (paramLabel: string): PopupConfig => ({
-    moduleName: 'Output',
-    paramLabel,
-})
-
 const MixPot = ({
     x,
     y,
     label,
     potMode = 'normal',
+    ctrlId,
     selector,
     mutator,
 }: {
@@ -26,10 +23,11 @@ const MixPot = ({
     y: number
     label: string
     potMode?: PotMode
+    ctrlId?: number
     selector: (s: VoiceGroupPatch) => number
     mutator: (s: VoiceGroupPatch, v: number) => void
 }) => {
-    const { displayValue, increment } = usePot(selector, mutator, { popup: popup(label) })
+    const { displayValue, increment } = usePot(selector, mutator)
     return (
         <RotaryPot12
             ledMode="multi"
@@ -37,6 +35,7 @@ const MixPot = ({
             x={x}
             y={y}
             potMode={potMode}
+            ctrlId={ctrlId}
             value={displayValue}
             onValueIncrement={increment}
         />
@@ -56,6 +55,7 @@ const OutputMixer = ({ x, y, height, width }: ModuleProps) => {
                 x={center}
                 y={topPotY}
                 label="Volume"
+                ctrlId={outControllers.VOLUME.id}
                 selector={(s) => s.output.volume}
                 mutator={(s, v) => {
                     s.output.volume = v
@@ -66,6 +66,7 @@ const OutputMixer = ({ x, y, height, width }: ModuleProps) => {
                 x={center}
                 y={topPotY + ROW_HEIGHT}
                 label="Headphones"
+                ctrlId={outControllers.HEADPHONES.id}
                 selector={(s) => s.output.headphones}
                 mutator={(s, v) => {
                     s.output.headphones = v
@@ -77,6 +78,7 @@ const OutputMixer = ({ x, y, height, width }: ModuleProps) => {
                 y={topPotY + ROW_HEIGHT * 2}
                 label="Spread"
                 potMode="spread"
+                ctrlId={outControllers.SPREAD.id}
                 selector={(s) => s.output.spread}
                 mutator={(s, v) => {
                     s.output.spread = v
@@ -102,6 +104,7 @@ const OutputMixer = ({ x, y, height, width }: ModuleProps) => {
                 x={center}
                 y={topPotY + ROW_HEIGHT * 4}
                 label="DSP 1"
+                ctrlId={commonFxControllers.FX_MIX.LEVEL_DSP1.id}
                 selector={(s) => s.commonFx.fxMix.levelDsp1}
                 mutator={(s, v) => {
                     s.commonFx.fxMix.levelDsp1 = v
@@ -112,6 +115,7 @@ const OutputMixer = ({ x, y, height, width }: ModuleProps) => {
                 x={center}
                 y={topPotY + ROW_HEIGHT * 5}
                 label="DSP 2"
+                ctrlId={commonFxControllers.FX_MIX.LEVEL_DSP2.id}
                 selector={(s) => s.commonFx.fxMix.levelDsp2}
                 mutator={(s, v) => {
                     s.commonFx.fxMix.levelDsp2 = v
@@ -122,6 +126,7 @@ const OutputMixer = ({ x, y, height, width }: ModuleProps) => {
                 x={center}
                 y={topPotY + ROW_HEIGHT * 6}
                 label="Chorus"
+                ctrlId={commonFxControllers.FX_MIX.LEVEL_CHORUS.id}
                 selector={(s) => s.commonFx.fxMix.levelChorus}
                 mutator={(s, v) => {
                     s.commonFx.fxMix.levelChorus = v
@@ -132,6 +137,7 @@ const OutputMixer = ({ x, y, height, width }: ModuleProps) => {
                 x={center}
                 y={topPotY + ROW_HEIGHT * 7}
                 label="Bit crusher"
+                ctrlId={commonFxControllers.FX_MIX.LEVEL_BIT_CRUSHER.id}
                 selector={(s) => s.commonFx.fxMix.levelBitCrusher}
                 mutator={(s, v) => {
                     s.commonFx.fxMix.levelBitCrusher = v

@@ -168,7 +168,7 @@ const oscControllers: OscControllers = {
         },
         PRE_FILTER_SINE: {
             id: ControllerIdNonMod.DCO1_PRE_FILTER_SINE,
-            label: 'Saw invert',
+            label: 'Sine toggle',
             type: 'button',
             values: [buttonMidiValues.OSC1_PRE_FILTER_SINE_OFF, buttonMidiValues.OSC1_PRE_FILTER_SINE_ON],
         },
@@ -277,7 +277,7 @@ const oscControllers: OscControllers = {
         },
         PRE_FILTER_SINE: {
             id: ControllerIdNonMod.DCO2_PRE_FILTER_SINE,
-            label: 'Saw invert',
+            label: 'Sine toggle',
             type: 'button',
             values: [buttonMidiValues.OSC2_PRE_FILTER_SINE_OFF, buttonMidiValues.OSC2_PRE_FILTER_SINE_ON],
         },

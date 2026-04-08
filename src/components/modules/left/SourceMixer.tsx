@@ -8,8 +8,6 @@ import {
 } from '@/constants'
 import type { VoiceGroupPatch } from '@/store'
 import { useButton, usePot } from '@/store'
-import type { PopupConfig } from '@/store/hooks'
-import { ScreenId } from '@/store/uiStore'
 import { dbLevelResponseMapper } from '@/synthcore/modules/common/responseMappers'
 import srcMixControllers from '@/synthcore/modules/srcMix/srcMixControllers'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
@@ -18,12 +16,6 @@ import SubHeader from '../../misc/SubHeader'
 import RotaryPot12 from '../../pots/RotaryPot12'
 import type { ModuleProps } from '../types'
 import '../Modules.scss'
-
-const popup = (paramLabel: string): PopupConfig => ({
-    moduleName: 'Src Mix',
-    paramLabel,
-    screen: ScreenId.OSC,
-})
 
 const SrcMixLevelPot = ({
     x,
@@ -40,22 +32,24 @@ const SrcMixLevelPot = ({
     selector: (s: VoiceGroupPatch) => number
     mutator: (s: VoiceGroupPatch, v: number) => void
 }) => {
-    const { displayValue, increment } = usePot(selector, mutator, { responseMapper: dbLevelResponseMapper, popup: popup(label) })
+    const { displayValue, increment } = usePot(selector, mutator, { responseMapper: dbLevelResponseMapper })
     return <RotaryPot12 ledMode="multi" label={label} x={x} y={y} value={displayValue} ctrlId={ctrlId} onValueIncrement={increment} />
 }
 
 const SrcMixOutButton = ({
     x,
     y,
+    ctrlId,
     selector,
     mutator,
 }: {
     x: number
     y: number
+    ctrlId?: number
     selector: (s: VoiceGroupPatch) => number
     mutator: (s: VoiceGroupPatch, v: number) => void
 }) => {
-    const { value, toggle } = useButton(selector, mutator, 4, { popup: popup('To') })
+    const { value, toggle } = useButton(selector, mutator, 4)
     return (
         <RoundPushButton8
             x={x}
@@ -66,6 +60,7 @@ const SrcMixOutButton = ({
             label="To"
             labelPosition="bottom"
             hasOff
+            ctrlId={ctrlId}
             value={value}
             onButtonClick={toggle}
         />
@@ -77,6 +72,7 @@ const MixerChannel = ({
     y,
     label,
     ctrlId,
+    outCtrlId,
     levelSelector,
     levelMutator,
     outSelector,
@@ -86,6 +82,7 @@ const MixerChannel = ({
     y: number
     label: string
     ctrlId?: number
+    outCtrlId?: number
     levelSelector: (s: VoiceGroupPatch) => number
     levelMutator: (s: VoiceGroupPatch, v: number) => void
     outSelector: (s: VoiceGroupPatch) => number
@@ -94,7 +91,7 @@ const MixerChannel = ({
     return (
         <>
             <SrcMixLevelPot x={x} y={y} label={label} ctrlId={ctrlId} selector={levelSelector} mutator={levelMutator} />
-            <SrcMixOutButton x={x + POT_DISTANCE_S} y={y} selector={outSelector} mutator={outMutator} />
+            <SrcMixOutButton x={x + POT_DISTANCE_S} y={y} ctrlId={outCtrlId} selector={outSelector} mutator={outMutator} />
         </>
     )
 }
@@ -119,6 +116,7 @@ const SourceMixer = ({ x, y, height, width }: ModuleProps) => {
                 y={row1}
                 label="Osc 1"
                 ctrlId={srcMixControllers.LEVEL_OSC1.id}
+                outCtrlId={srcMixControllers.OUT_OSC1.id}
                 levelSelector={(s) => s.srcMix.levelOsc1}
                 levelMutator={(s, v) => {
                     s.srcMix.levelOsc1 = v

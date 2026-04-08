@@ -1,21 +1,13 @@
 import { POT_DISTANCE_L, POT_DISTANCE_M, POT_DISTANCE_S, POT_OFFSET_Y, ROW_HEIGHT } from '@/constants'
 import { useGlobalButton, useGlobalPot } from '@/store/hooks'
-import type { PopupConfig } from '@/store/hooks'
 import arpControllers from '@/synthcore/modules/arp/arpControllers'
 import { ControllerIdSrc } from '@/synthcore/modules/controllers/controllerIds'
-import { ScreenId } from '@/store/uiStore'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { ModuleBorder } from '../../misc/ModuleBorder'
 import SubHeader from '../../misc/SubHeader'
 import RotaryPot12 from '../../pots/RotaryPot12'
 import type { ModuleProps } from '../types'
-
-const popup = (paramLabel: string): PopupConfig => ({
-    moduleName: 'Arp',
-    paramLabel,
-    screen: ScreenId.ARP,
-})
 
 const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
     const row1 = y
@@ -32,48 +24,42 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
         (s) => s.arp.bpm,
         (s, v) => {
             s.arp.bpm = v
-        },
-        { popup: popup('Rate') }
+        }
     )
     const { value: syncValue, toggle: syncToggle } = useGlobalButton(
         (s) => s.arp.sync,
         (s, v) => {
             s.arp.sync = v
         },
-        3,
-        { popup: popup('Sync') }
+        3
     )
     const { value: modeValue, toggle: modeToggle } = useGlobalButton(
         (s) => s.arp.mode,
         (s, v) => {
             s.arp.mode = v
         },
-        4,
-        { popup: popup('Mode') }
+        4
     )
     const { value: rangeValue, toggle: rangeToggle } = useGlobalButton(
         (s) => s.arp.range,
         (s, v) => {
             s.arp.range = v
         },
-        3,
-        { popup: popup('Range') }
+        3
     )
     const { value: onOffValue, toggle: onOffToggle } = useGlobalButton(
         (s) => s.arp.onOff,
         (s, v) => {
             s.arp.onOff = v
         },
-        2,
-        { popup: popup('On/Off') }
+        2
     )
     const { value: sequenceValue, toggle: sequenceToggle } = useGlobalButton(
         (s) => s.arp.sequence,
         (s, v) => {
             s.arp.sequence = v
         },
-        2,
-        { popup: popup('Sequence') }
+        2
     )
 
     return (
@@ -100,6 +86,7 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
                 y={row2}
                 label="Sync"
                 ledModes={3}
+                ctrlId={arpControllers.SYNC.id}
                 value={syncValue}
                 hwSourceId={arpHwSourceId}
                 onButtonClick={syncToggle}
@@ -114,6 +101,7 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
                 ledPosition="right"
                 ledLabels={['Up', 'Down', 'Random']}
                 ledCycleBinary
+                ctrlId={arpControllers.MODE.id}
                 value={modeValue}
                 hwSourceId={arpHwSourceId}
                 onButtonClick={modeToggle}
@@ -127,6 +115,7 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
                 ledCount={3}
                 ledPosition="right"
                 ledLabels={['1 oct', '2 oct', '3 oct']}
+                ctrlId={arpControllers.RANGE.id}
                 value={rangeValue}
                 hwSourceId={arpHwSourceId}
                 onButtonClick={rangeToggle}
@@ -137,6 +126,7 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
                 x={col1}
                 y={row3}
                 label="On"
+                ctrlId={arpControllers.ON_OFF.id}
                 value={onOffValue}
                 hwSourceId={arpHwSourceId}
                 onButtonClick={onOffToggle}
@@ -147,6 +137,7 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
                 x={col2}
                 y={row3}
                 label="Sequence"
+                ctrlId={arpControllers.SEQUENCE.id}
                 value={sequenceValue}
                 hwSourceId={arpHwSourceId}
                 onButtonClick={sequenceToggle}

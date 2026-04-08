@@ -7,8 +7,7 @@ import {
     ROW_HEIGHT,
 } from '@/constants'
 import { useButton, usePot } from '@/store'
-import type { PopupConfig } from '@/store/hooks'
-import { ScreenId } from '@/store/uiStore'
+import fxControllers from '@/synthcore/modules/fx/fxControllers'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { ModuleBorder } from '../../misc/ModuleBorder'
 import SubHeader from '../../misc/SubHeader'
@@ -17,71 +16,57 @@ import type { ModuleProps } from '../types'
 import '../Modules.scss'
 
 const Effects = ({ x, y, height, width }: ModuleProps) => {
-    const popup = (moduleName: string, paramLabel: string): PopupConfig => ({
-        moduleName,
-        paramLabel,
-        screen: ScreenId.FX,
-    })
-
     const { displayValue: driveValue, increment: driveIncrement } = usePot(
         (s) => s.fx.distortion.drive,
         (s, v) => {
             s.fx.distortion.drive = v
-        },
-        { popup: popup('Distort', 'Drive') }
+        }
     )
     const { displayValue: levelValue, increment: levelIncrement } = usePot(
         (s) => s.fx.distortion.level,
         (s, v) => {
             s.fx.distortion.level = v
-        },
-        { popup: popup('Distort', 'Level') }
+        }
     )
     const { value: distInValue, toggle: distInToggle } = useButton(
         (s) => s.fx.distortion.in,
         (s, v) => {
             s.fx.distortion.in = v
         },
-        2,
-        { popup: popup('Distort', 'In') }
+        2
     )
     const { value: distOutValue, toggle: distOutToggle } = useButton(
         (s) => s.fx.distortion.out,
         (s, v) => {
             s.fx.distortion.out = v
         },
-        4,
-        { popup: popup('Distort', 'Out') }
+        4
     )
     const { displayValue: bitsValue, increment: bitsIncrement } = usePot(
         (s) => s.fx.bitCrusher.bits,
         (s, v) => {
             s.fx.bitCrusher.bits = v
-        },
-        { popup: popup('Crush', 'Bits') }
+        }
     )
     const { displayValue: rateValue, increment: rateIncrement } = usePot(
         (s) => s.fx.bitCrusher.rate,
         (s, v) => {
             s.fx.bitCrusher.rate = v
-        },
-        { popup: popup('Crush', 'Rate') }
+        }
     )
     const { value: crushInValue, toggle: crushInToggle } = useButton(
         (s) => s.fx.bitCrusher.in,
         (s, v) => {
             s.fx.bitCrusher.in = v
         },
-        2,
-        { popup: popup('Crush', 'In') }
+        2
     )
     const { value: crushOutValue, toggle: crushOutToggle } = useButton(
         (s) => s.fx.bitCrusher.out,
         (s, v) => {
             s.fx.bitCrusher.out = v
         },
-        4,
-        { popup: popup('Crush', 'Out') }
+        4
     )
 
     const row1 = y
@@ -121,6 +106,7 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
                 label="Drive"
                 x={col1}
                 y={row2}
+                ctrlId={fxControllers.DISTORTION.DRIVE.id}
                 value={driveValue}
                 onValueIncrement={driveIncrement}
             />
@@ -133,6 +119,7 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
                 ledRingColors={['#00bfa6', '#ff8700']}
                 label="From"
                 labelPosition="bottom"
+                ctrlId={fxControllers.DISTORTION.IN.id}
                 value={distInValue}
                 onButtonClick={distInToggle}
             />
@@ -142,6 +129,7 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
                 label="Level"
                 x={col1}
                 y={row3}
+                ctrlId={fxControllers.DISTORTION.LEVEL.id}
                 value={levelValue}
                 onValueIncrement={levelIncrement}
             />
@@ -155,6 +143,7 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
                 label="To"
                 labelPosition="bottom"
                 hasOff
+                ctrlId={fxControllers.DISTORTION.OUT.id}
                 value={distOutValue}
                 onButtonClick={distOutToggle}
             />
@@ -165,6 +154,7 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
                 label="Bits"
                 x={col3}
                 y={row2}
+                ctrlId={fxControllers.BIT_CRUSHER.BITS.id}
                 value={bitsValue}
                 onValueIncrement={bitsIncrement}
             />
@@ -177,6 +167,7 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
                 ledRingColors={['#00bfa6', '#ff8700']}
                 label="From"
                 labelPosition="bottom"
+                ctrlId={fxControllers.BIT_CRUSHER.IN.id}
                 value={crushInValue}
                 onButtonClick={crushInToggle}
             />
@@ -186,6 +177,7 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
                 label="Rate"
                 x={col3}
                 y={row3}
+                ctrlId={fxControllers.BIT_CRUSHER.RATE.id}
                 value={rateValue}
                 onValueIncrement={rateIncrement}
             />
@@ -199,6 +191,7 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
                 label="To"
                 labelPosition="bottom"
                 hasOff
+                ctrlId={fxControllers.BIT_CRUSHER.OUT.id}
                 value={crushOutValue}
                 onButtonClick={crushOutToggle}
             />

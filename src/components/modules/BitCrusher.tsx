@@ -1,6 +1,5 @@
 import { useButton, usePot } from '@/store'
-import type { PopupConfig } from '@/store/hooks'
-import { ScreenId } from '@/store/uiStore'
+import fxControllers from '@/synthcore/modules/fx/fxControllers'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import Header from '../misc/Header'
 import RotaryPot12 from '../pots/RotaryPot12'
@@ -9,12 +8,6 @@ interface Props {
     x: number
     y: number
 }
-
-const popup = (paramLabel: string): PopupConfig => ({
-    moduleName: 'Bit Crush',
-    paramLabel,
-    screen: ScreenId.FX,
-})
 
 const BitCrusher = ({ x, y }: Props) => {
     const row1 = 10
@@ -29,22 +22,19 @@ const BitCrusher = ({ x, y }: Props) => {
         (s, v) => {
             s.fx.bitCrusher.in = v
         },
-        2,
-        { popup: popup('In') }
+        2
     )
     const { displayValue: bitsValue, increment: bitsIncrement } = usePot(
         (s) => s.fx.bitCrusher.bits,
         (s, v) => {
             s.fx.bitCrusher.bits = v
-        },
-        { popup: popup('Bits') }
+        }
     )
     const { displayValue: rateValue, increment: rateIncrement } = usePot(
         (s) => s.fx.bitCrusher.rate,
         (s, v) => {
             s.fx.bitCrusher.rate = v
-        },
-        { popup: popup('Rate') }
+        }
     )
 
     return (
@@ -56,6 +46,7 @@ const BitCrusher = ({ x, y }: Props) => {
                 ledCount={2}
                 ledPosition="top"
                 ledLabels={['FX1', 'FX2']}
+                ctrlId={fxControllers.BIT_CRUSHER.IN.id}
                 value={sourceValue}
                 onButtonClick={sourceToggle}
             />
@@ -65,6 +56,7 @@ const BitCrusher = ({ x, y }: Props) => {
                 label="Bits"
                 x={col2}
                 y={row2}
+                ctrlId={fxControllers.BIT_CRUSHER.BITS.id}
                 value={bitsValue}
                 onValueIncrement={bitsIncrement}
             />
@@ -74,6 +66,7 @@ const BitCrusher = ({ x, y }: Props) => {
                 label="Rate"
                 x={col3}
                 y={row2}
+                ctrlId={fxControllers.BIT_CRUSHER.RATE.id}
                 value={rateValue}
                 onValueIncrement={rateIncrement}
             />

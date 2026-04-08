@@ -12,6 +12,7 @@ import { useStore } from 'zustand'
 import { createStore, type StoreApi } from 'zustand/vanilla'
 import { isMidiReceiving } from './midi/midiGuard'
 import { type ScreenId, useUiStore } from './uiStore'
+import { getPopupInfo } from './controllerRegistry'
 
 export interface ParamPopupState {
     visible: boolean
@@ -82,4 +83,11 @@ export function notifyParamChange(moduleName: string, paramName: string, paramVa
     }
 
     paramPopupStore.getState().show(moduleName, paramName, paramValue)
+}
+
+export function notifyParamChangeById(ctrlId: number, value: number, formatValue?: (v: number) => string): void {
+    const info = getPopupInfo(ctrlId)
+    if (!info) return
+    const fmt = formatValue ?? ((v: number) => v.toFixed(2))
+    notifyParamChange(info.moduleName, info.paramLabel, fmt(value), info.screen)
 }
