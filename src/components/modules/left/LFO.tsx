@@ -29,6 +29,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
     const row2 = row1 + ROW_HEIGHT
 
     const lfoId = useUiStore((s) => s.selectedLfoId)
+
     const selectLfo = useUiStore((s) => s.selectLfo)
     const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
 
@@ -125,6 +126,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 labelPosition="bottom-pot"
                 value={syncValue}
                 hwSourceId={lfoHwSourceId}
+                ctrlId={lfoCtrls.SYNC.id}
                 onButtonClick={syncToggle}
             />
 
@@ -195,6 +197,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 labelPosition="bottom-pot"
                 value={bipolarValue}
                 hwSourceId={lfoHwSourceId}
+                ctrlId={lfoCtrls.BIPOLAR.id}
                 onButtonClick={bipolarToggle}
             />
 
@@ -205,6 +208,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 labelPosition="bottom-pot"
                 value={invertValue}
                 hwSourceId={lfoHwSourceId}
+                ctrlId={lfoCtrls.INVERT.id}
                 onButtonClick={invertToggle}
             />
 
@@ -215,6 +219,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 labelPosition="bottom-pot"
                 value={loopValue}
                 hwSourceId={lfoHwSourceId}
+                ctrlId={lfoCtrls.LOOP.id}
                 onButtonClick={loopToggle}
             />
 
@@ -225,6 +230,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 labelPosition="bottom-pot"
                 value={resetValue}
                 hwSourceId={lfoHwSourceId}
+                ctrlId={lfoCtrls.RESET.id}
                 onButtonClick={resetToggle}
             />
 
@@ -245,6 +251,7 @@ const LFO = ({ x, y, height, width }: ModuleProps) => {
                 ]}
                 value={shapeValue}
                 hwSourceId={lfoHwSourceId}
+                ctrlId={lfoCtrls.SHAPE.id}
                 onButtonClick={shapeToggle}
             />
 

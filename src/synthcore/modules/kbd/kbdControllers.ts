@@ -36,18 +36,21 @@ const kbdControllers: KbdControllers = {
         label: 'Hold',
         type: 'button',
         values: [buttonMidiValues.KBD_HOLD_OFF, buttonMidiValues.KBD_HOLD_ON],
+        valueLabels: ['Off', 'On'],
     },
     CHORD: {
         id: ControllerIdNonMod.KBD_CHORD,
         label: 'Chord',
         type: 'button',
         values: [buttonMidiValues.KBD_CHORD_OFF, buttonMidiValues.KBD_CHORD_ON],
+        valueLabels: ['Off', 'On'],
     },
     MODE: {
         id: ControllerIdNonMod.KBD_MODE,
         label: 'Mode',
         type: 'button',
         values: [buttonMidiValues.KBD_MODE_SOLO, buttonMidiValues.KBD_MODE_UNISON, buttonMidiValues.KBD_MODE_POLY],
+        valueLabels: ['Solo', 'Unison', 'Poly'],
     },
     TRANSPOSE: {
         id: ControllerIdNonMod.KBD_TRANSPOSE,
@@ -60,12 +63,14 @@ const kbdControllers: KbdControllers = {
             buttonMidiValues.TRANSPOSE_POS_1,
             buttonMidiValues.TRANSPOSE_POS_2,
         ],
+        valueLabels: ['-2', '-1', '0', '+1', '+2'],
     },
     VOICE_STEALING: {
         id: ControllerIdNonMod.KBD_VOICE_STEALING,
         label: 'Voice stealing',
         type: 'button',
         values: [buttonMidiValues.KBD_VOICE_STEALING_OFF, buttonMidiValues.KBD_VOICE_STEALING_ON],
+        valueLabels: ['Off', 'On'],
     },
 }
 

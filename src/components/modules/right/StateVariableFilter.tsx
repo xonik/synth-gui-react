@@ -191,6 +191,7 @@ const StateVariableFilter = ({ x, y, height, width }: ModuleProps) => {
                 labelPosition="bottom"
                 hasOff
                 value={fmModeValue}
+                ctrlId={filtersControllers.SVF.FM_MODE.id}
                 onButtonClick={fmModeToggle}
             />
 
@@ -203,6 +204,7 @@ const StateVariableFilter = ({ x, y, height, width }: ModuleProps) => {
                 label="FM src"
                 labelPosition="bottom"
                 value={fmSrcValue}
+                ctrlId={filtersControllers.SVF.FM_SRC.id}
                 onButtonClick={fmSrcToggle}
             />
 
@@ -227,6 +229,7 @@ const StateVariableFilter = ({ x, y, height, width }: ModuleProps) => {
                 ]}
                 resolution={10}
                 value={slopeValue}
+                ctrlId={filtersControllers.SVF.SLOPE.id}
                 onIncrement={slopeIncrement}
             />
 
@@ -282,6 +285,7 @@ const StateVariableFilter = ({ x, y, height, width }: ModuleProps) => {
                 label="Invert"
                 labelPosition="bottom"
                 value={invertValue}
+                ctrlId={filtersControllers.SVF.INVERT.id}
                 onButtonClick={invertToggle}
             />
         </>

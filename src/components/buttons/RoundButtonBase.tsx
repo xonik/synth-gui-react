@@ -1,8 +1,9 @@
 import classNames from 'classnames'
-import { Fragment, useCallback } from 'react'
+import { Fragment, useCallback, useEffect, useRef } from 'react'
 import { SHOW_CUT } from '@/config'
 import type { ControllerConfig } from '@/midi/types'
 import { useUiStore } from '@/store'
+import { notifyParamChangeById } from '@/store/paramPopupStore'
 import {
     ROUTE_SOURCE_ACTIVE,
     trySelectSource,
@@ -85,6 +86,9 @@ export interface Props {
 
     // Routing: if set, pressing this button selects the module as mod source
     hwSourceId?: number
+
+    // Controller ID for popup notification on value change
+    ctrlId?: number
 }
 
 type LabelPos = {
@@ -317,7 +321,16 @@ export const RoundButtonBase = (props: Props & Config) => {
         onButtonRelease,
         onIncrement: onIncrementProp,
         hwSourceId,
+        ctrlId,
     } = props
+
+    const prevValueRef = useRef(value)
+    useEffect(() => {
+        if (prevValueRef.current !== value && ctrlId !== undefined && value !== undefined) {
+            notifyParamChangeById(ctrlId, value)
+        }
+        prevValueRef.current = value
+    }, [value, ctrlId])
 
     const { getSourceFlash } = useModRoutingFlash()
     const flashMode = hwSourceId !== undefined ? getSourceFlash(hwSourceId) : undefined

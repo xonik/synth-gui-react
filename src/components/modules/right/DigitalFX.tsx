@@ -1,5 +1,6 @@
 import { BUTTON_DISTANCE_S, POT_DISTANCE_M, POT_OFFSET_Y, ROW_HEIGHT } from '@/constants'
 import { useButton, usePot } from '@/store'
+import commonFxControllers from '@/synthcore/modules/commonFx/commonFxControllers'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import Display from '../../misc/Display'
 import { ModuleBorder } from '../../misc/ModuleBorder'
@@ -31,25 +32,25 @@ const DigitalFX = ({ x, y, height, width }: ModuleProps) => {
         },
         2
     )
-    const { increment: param1Increment } = usePot(
+    const { displayValue: param1Value, increment: param1Increment } = usePot(
         (s) => s.commonFx.dsp2.param1,
         (s, v) => {
             s.commonFx.dsp2.param1 = v
         }
     )
-    const { increment: param2Increment } = usePot(
+    const { displayValue: param2Value, increment: param2Increment } = usePot(
         (s) => s.commonFx.dsp2.param2,
         (s, v) => {
             s.commonFx.dsp2.param2 = v
         }
     )
-    const { increment: param3Increment } = usePot(
+    const { displayValue: param3Value, increment: param3Increment } = usePot(
         (s) => s.commonFx.dsp2.param3,
         (s, v) => {
             s.commonFx.dsp2.param3 = v
         }
     )
-    const { increment: effectIncrement } = usePot(
+    const { displayValue: effectValue, increment: effectIncrement } = usePot(
         (s) => s.commonFx.dsp2.effect,
         (s, v) => {
             s.commonFx.dsp2.effect = v
@@ -68,6 +69,7 @@ const DigitalFX = ({ x, y, height, width }: ModuleProps) => {
                 ledCount={2}
                 labelPosition="bottom-pot"
                 ledPosition="top-horizontal-no-label"
+                ctrlId={commonFxControllers.DSP2.SOURCE.id}
                 value={sourceValue}
                 onButtonClick={sourceToggle}
             />
@@ -80,19 +82,20 @@ const DigitalFX = ({ x, y, height, width }: ModuleProps) => {
                 ledLabels={['FX1', 'FX2']}
                 labelPosition="bottom-pot"
                 ledPosition="top-horizontal"
+                ctrlId={commonFxControllers.DSP2.SOURCE.id}
                 value={sourceValue}
                 onButtonClick={sourceToggle}
             />
 
             {<Display x={displayX} y={displayY} width={displayWidth} height={displayHeight} />}
 
-            <RotaryPotWOLeds10 x={col2} y={row2} onValueIncrement={param1Increment} />
+            <RotaryPotWOLeds10 x={col2} y={row2} ctrlId={commonFxControllers.DSP2.PARAM1.id} value={param1Value} onValueIncrement={param1Increment} />
 
-            <RotaryPotWOLeds10 x={col3} y={row2} onValueIncrement={param2Increment} />
+            <RotaryPotWOLeds10 x={col3} y={row2} ctrlId={commonFxControllers.DSP2.PARAM2.id} value={param2Value} onValueIncrement={param2Increment} />
 
-            <RotaryPotWOLeds10 x={col4} y={row2} onValueIncrement={param3Increment} />
+            <RotaryPotWOLeds10 x={col4} y={row2} ctrlId={commonFxControllers.DSP2.PARAM3.id} value={param3Value} onValueIncrement={param3Increment} />
 
-            <RotaryPotWOLeds10 x={col5} y={row1} label="Effect" onValueIncrement={effectIncrement} />
+            <RotaryPotWOLeds10 x={col5} y={row1} label="Effect" ctrlId={commonFxControllers.DSP2.EFFECT.id} value={effectValue} onValueIncrement={effectIncrement} />
         </>
     )
 }

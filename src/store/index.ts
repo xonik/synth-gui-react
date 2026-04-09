@@ -20,6 +20,7 @@
 export type { GlobalPatchState } from './globalStore'
 export { globalStore, useGlobalStore } from './globalStore'
 export { useButton, usePatchValue, usePot } from './hooks'
+export { paramPopupStore, useParamPopupStore } from './paramPopupStore'
 export {
     createPatchFile,
     deserializePatch,

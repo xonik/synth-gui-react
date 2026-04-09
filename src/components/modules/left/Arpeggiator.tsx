@@ -86,6 +86,7 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
                 y={row2}
                 label="Sync"
                 ledModes={3}
+                ctrlId={arpControllers.SYNC.id}
                 value={syncValue}
                 hwSourceId={arpHwSourceId}
                 onButtonClick={syncToggle}
@@ -100,6 +101,7 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
                 ledPosition="right"
                 ledLabels={['Up', 'Down', 'Random']}
                 ledCycleBinary
+                ctrlId={arpControllers.MODE.id}
                 value={modeValue}
                 hwSourceId={arpHwSourceId}
                 onButtonClick={modeToggle}
@@ -113,6 +115,7 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
                 ledCount={3}
                 ledPosition="right"
                 ledLabels={['1 oct', '2 oct', '3 oct']}
+                ctrlId={arpControllers.RANGE.id}
                 value={rangeValue}
                 hwSourceId={arpHwSourceId}
                 onButtonClick={rangeToggle}
@@ -123,6 +126,7 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
                 x={col1}
                 y={row3}
                 label="On"
+                ctrlId={arpControllers.ON_OFF.id}
                 value={onOffValue}
                 hwSourceId={arpHwSourceId}
                 onButtonClick={onOffToggle}
@@ -133,6 +137,7 @@ const Arpeggiator = ({ x, y, height, width }: ModuleProps) => {
                 x={col2}
                 y={row3}
                 label="Sequence"
+                ctrlId={arpControllers.SEQUENCE.id}
                 value={sequenceValue}
                 hwSourceId={arpHwSourceId}
                 onButtonClick={sequenceToggle}

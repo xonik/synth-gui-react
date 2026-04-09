@@ -41,6 +41,7 @@ export interface ControllerConfig {
 
 export interface ControllerConfigButton extends ControllerConfig {
     readonly values: number[]
+    readonly valueLabels: readonly string[]
 }
 
 export interface ControllerConfigCC extends ControllerConfig {

@@ -35,7 +35,7 @@ const OscPot = ({
     y: number
     label: string
     ledMode?: 'single' | 'multi'
-    ctrlId?: number
+    ctrlId: number
     selector: (s: VoiceGroupPatch) => number
     mutator: (s: VoiceGroupPatch, v: number) => void
 }) => {
@@ -47,12 +47,14 @@ const OscTogglePot = ({
     x,
     y,
     label,
+    ctrlId,
     selector,
     mutator,
 }: {
     x: number
     y: number
     label: string
+    ctrlId: number
     selector: (s: VoiceGroupPatch) => number
     mutator: (s: VoiceGroupPatch, v: number) => void
 }) => {
@@ -60,13 +62,14 @@ const OscTogglePot = ({
     const { value } = useButton(selector, mutator, 2)
     const onIncrement = useCallback(
         (delta: number) => {
+            const newValue = delta > 0 ? 1 : 0
             voiceGroupStores[voiceGroupIndex].getState().set((state) => {
-                mutator(state, delta > 0 ? 1 : 0)
+                mutator(state, newValue)
             })
         },
         [voiceGroupIndex, mutator]
     )
-    return <RotaryPot12 x={x} y={y} label={label} value={value} onValueIncrement={onIncrement} />
+    return <RotaryPot12 x={x} y={y} label={label} value={value} ctrlId={ctrlId} onValueIncrement={onIncrement} />
 }
 
 const VCO = ({ x, y, height, width }: ModuleProps) => {
@@ -143,6 +146,7 @@ const VCO = ({ x, y, height, width }: ModuleProps) => {
                 label="Sync src"
                 labelPosition="bottom-pot"
                 value={syncSrcValue}
+                ctrlId={oscControllers.VCO.SYNC_SRC.id}
                 onButtonClick={syncSrcToggle}
             />
 
@@ -150,6 +154,7 @@ const VCO = ({ x, y, height, width }: ModuleProps) => {
                 x={col2}
                 y={topRow}
                 label="Keyboard"
+                ctrlId={oscControllers.VCO.KBD.id}
                 selector={(s) => s.oscillators[OSC].kbd}
                 mutator={(s, v) => {
                     s.oscillators[OSC].kbd = v
@@ -160,6 +165,7 @@ const VCO = ({ x, y, height, width }: ModuleProps) => {
                 x={col3}
                 y={topRow}
                 label="LFO"
+                ctrlId={oscControllers.VCO.LFO.id}
                 selector={(s) => s.oscillators[OSC].lfo}
                 mutator={(s, v) => {
                     s.oscillators[OSC].lfo = v
@@ -198,6 +204,7 @@ const VCO = ({ x, y, height, width }: ModuleProps) => {
                 labelPosition="bottom-pot"
                 hasOff
                 value={syncValue}
+                ctrlId={oscControllers.VCO.SYNC.id}
                 onButtonClick={syncToggle}
             />
 
@@ -207,6 +214,7 @@ const VCO = ({ x, y, height, width }: ModuleProps) => {
                 label="Ext CV"
                 labelPosition="bottom-pot"
                 value={extCvValue}
+                ctrlId={oscControllers.VCO.EXT_CV.id}
                 onButtonClick={extCvToggle}
             />
 
@@ -214,6 +222,7 @@ const VCO = ({ x, y, height, width }: ModuleProps) => {
                 x={col3}
                 y={bottomRow}
                 label="Wheel"
+                ctrlId={oscControllers.VCO.WHEEL.id}
                 selector={(s) => s.oscillators[OSC].wheel}
                 mutator={(s, v) => {
                     s.oscillators[OSC].wheel = v
@@ -253,6 +262,7 @@ const VCO = ({ x, y, height, width }: ModuleProps) => {
                 label="FM src"
                 labelPosition="bottom"
                 value={fmSrcValue}
+                ctrlId={oscControllers.VCO.FM_SRC.id}
                 onButtonClick={fmSrcToggle}
             />
 
@@ -277,6 +287,7 @@ const VCO = ({ x, y, height, width }: ModuleProps) => {
                 labelPosition="bottom"
                 hasOff
                 value={fmModeValue}
+                ctrlId={oscControllers.VCO.FM_MODE.id}
                 onButtonClick={fmModeToggle}
             />
         </>

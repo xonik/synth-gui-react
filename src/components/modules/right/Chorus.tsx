@@ -53,6 +53,7 @@ const Chorus = ({ x, y, height, width }: ModuleProps) => {
                 ledCount={2}
                 ledPosition="top-horizontal"
                 ledLabels={['FX1', 'FX2']}
+                ctrlId={commonFxControllers.CHORUS.SOURCE.id}
                 value={sourceValue}
                 onButtonClick={sourceToggle}
             />
@@ -65,6 +66,7 @@ const Chorus = ({ x, y, height, width }: ModuleProps) => {
                 ledCount={2}
                 ledPosition="top-horizontal"
                 ledLabels={['Chor', 'Vibr']}
+                ctrlId={commonFxControllers.CHORUS.MODE.id}
                 value={modeValue}
                 onButtonClick={modeToggle}
             />

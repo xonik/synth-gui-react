@@ -39,11 +39,13 @@ const SrcMixLevelPot = ({
 const SrcMixOutButton = ({
     x,
     y,
+    ctrlId,
     selector,
     mutator,
 }: {
     x: number
     y: number
+    ctrlId?: number
     selector: (s: VoiceGroupPatch) => number
     mutator: (s: VoiceGroupPatch, v: number) => void
 }) => {
@@ -58,6 +60,7 @@ const SrcMixOutButton = ({
             label="To"
             labelPosition="bottom"
             hasOff
+            ctrlId={ctrlId}
             value={value}
             onButtonClick={toggle}
         />
@@ -69,6 +72,7 @@ const MixerChannel = ({
     y,
     label,
     ctrlId,
+    outCtrlId,
     levelSelector,
     levelMutator,
     outSelector,
@@ -78,6 +82,7 @@ const MixerChannel = ({
     y: number
     label: string
     ctrlId?: number
+    outCtrlId?: number
     levelSelector: (s: VoiceGroupPatch) => number
     levelMutator: (s: VoiceGroupPatch, v: number) => void
     outSelector: (s: VoiceGroupPatch) => number
@@ -86,7 +91,7 @@ const MixerChannel = ({
     return (
         <>
             <SrcMixLevelPot x={x} y={y} label={label} ctrlId={ctrlId} selector={levelSelector} mutator={levelMutator} />
-            <SrcMixOutButton x={x + POT_DISTANCE_S} y={y} selector={outSelector} mutator={outMutator} />
+            <SrcMixOutButton x={x + POT_DISTANCE_S} y={y} ctrlId={outCtrlId} selector={outSelector} mutator={outMutator} />
         </>
     )
 }
@@ -111,6 +116,7 @@ const SourceMixer = ({ x, y, height, width }: ModuleProps) => {
                 y={row1}
                 label="Osc 1"
                 ctrlId={srcMixControllers.LEVEL_OSC1.id}
+                outCtrlId={srcMixControllers.OUT_OSC1.id}
                 levelSelector={(s) => s.srcMix.levelOsc1}
                 levelMutator={(s, v) => {
                     s.srcMix.levelOsc1 = v

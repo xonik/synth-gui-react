@@ -18,6 +18,7 @@ const ringModControllers: RingModControllers = {
             buttonMidiValues.RING_MOD_SOURCE_EXT_2,
             buttonMidiValues.RING_MOD_SOURCE_VCO_2,
         ],
+        valueLabels: ['1 → 2', 'Ext → 2', '3 → 2'],
     },
 }
 

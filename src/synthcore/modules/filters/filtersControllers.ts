@@ -114,12 +114,14 @@ const filtersControllers: FiltersControllers = {
             label: 'Ext. CV',
             type: 'button',
             values: [buttonMidiValues.LPF_EXT_CV_OFF, buttonMidiValues.LPF_EXT_CV_ON],
+            valueLabels: ['Off', 'On'],
         },
         SLOPE: {
             id: ControllerIdNonMod.LPF_SLOPE,
             label: 'Slope',
             type: 'button',
             values: [buttonMidiValues.LPF_SLOPE_12DB, buttonMidiValues.LPF_SLOPE_24DB],
+            valueLabels: ['12dB', '24dB'],
         },
         FM_MODE: {
             id: ControllerIdNonMod.LPF_FM_MODE,
@@ -130,18 +132,21 @@ const filtersControllers: FiltersControllers = {
                 buttonMidiValues.LPF_FM_MODE_LIN,
                 buttonMidiValues.LPF_FM_MODE_LOG,
             ],
+            valueLabels: ['Off', 'Lin', 'Log'],
         },
         FILTER_TYPE: {
             id: ControllerIdNonMod.LPF_FILTER_TYPE,
             label: 'Filter type',
             type: 'button',
             values: [buttonMidiValues.LPF_FILTER_TYPE_OTA, buttonMidiValues.LPF_FILTER_TYPE_LADDER],
+            valueLabels: ['OTA', 'Ladder'],
         },
         FM_SRC: {
             id: ControllerIdNonMod.LPF_FM_SRC,
             label: 'FM src',
             type: 'button',
             values: [buttonMidiValues.LPF_FM_SRC_OSC_B, buttonMidiValues.LPF_FM_SRC_EXT_AUDIO],
+            valueLabels: ['Osc B', 'Ext'],
         },
     },
     FILTERS: {
@@ -151,12 +156,14 @@ const filtersControllers: FiltersControllers = {
             label: 'Link cutoff',
             type: 'button',
             values: [buttonMidiValues.FILTER_LINK_CUTOFF_OFF, buttonMidiValues.FILTER_LINK_CUTOFF_ON],
+            valueLabels: ['Off', 'On'],
         },
         ROUTING: {
             id: ControllerIdNonMod.FILTERS_ROUTING,
             label: 'Routing',
             type: 'button',
             values: [buttonMidiValues.FILTER_ROUTING_SERIES, buttonMidiValues.FILTER_ROUTING_PARALLEL],
+            valueLabels: ['Series', 'Parallel'],
         },
     },
     SVF: {
@@ -229,12 +236,14 @@ const filtersControllers: FiltersControllers = {
             label: 'Ext. CV',
             type: 'button',
             values: [buttonMidiValues.SVF_EXT_CV_OFF, buttonMidiValues.SVF_EXT_CV_ON],
+            valueLabels: ['Off', 'On'],
         },
         INVERT: {
             id: ControllerIdNonMod.SVF_INVERT,
             label: 'Invert',
             type: 'button',
             values: [buttonMidiValues.SVF_INVERT_OFF, buttonMidiValues.SVF_INVERT_ON],
+            valueLabels: ['Off', 'On'],
         },
         SLOPE: {
             id: ControllerIdNonMod.SVF_SLOPE,
@@ -252,6 +261,7 @@ const filtersControllers: FiltersControllers = {
                 buttonMidiValues.SVF_SLOPE_NOTCH,
                 buttonMidiValues.SVF_SLOPE_AP,
             ],
+            valueLabels: ['12dB LP', '24dB LP', '12dB BP', '24dB BP', 'LP + BP', '12dB HP', '24dB HP', 'HP + BP', 'Notch', 'AP'],
         },
         FM_MODE: {
             id: ControllerIdNonMod.SVF_FM_MODE,
@@ -262,12 +272,14 @@ const filtersControllers: FiltersControllers = {
                 buttonMidiValues.SVF_FM_MODE_LIN,
                 buttonMidiValues.SVF_FM_MODE_LOG,
             ],
+            valueLabels: ['Off', 'Lin', 'Log'],
         },
         FM_SRC: {
             id: ControllerIdNonMod.SVF_FM_SRC,
             label: 'FM src',
             type: 'button',
             values: [buttonMidiValues.SVF_FM_SRC_OSC_B, buttonMidiValues.SVF_FM_SRC_EXT_AUDIO],
+            valueLabels: ['Osc B', 'Ext'],
         },
     },
 }

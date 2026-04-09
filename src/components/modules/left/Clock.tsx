@@ -40,6 +40,7 @@ const Clock = ({ x, y, height, width }: ModuleProps) => {
                 ledCount={3}
                 ledPosition="right"
                 ledLabels={['Int', 'Midi', 'Ext']}
+                ctrlId={masterClockControllers.SOURCE.id}
                 value={sourceValue}
                 onButtonClick={sourceToggle}
             />

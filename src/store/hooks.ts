@@ -115,22 +115,18 @@ export function useButton(
     const toggle = useCallback(() => {
         const store = voiceGroupStores[voiceGroupIndex].getState()
         const current = selector(store)
+        let next: number
         if (numValues === 1) {
-            store.set((state) => {
-                mutator(state, 0)
-            })
+            next = 0
         } else if (loop) {
-            store.set((state) => {
-                mutator(state, (current + 1) % numValues)
-            })
+            next = (current + 1) % numValues
         } else {
-            const next = current + 1
-            if (next < numValues) {
-                store.set((state) => {
-                    mutator(state, next)
-                })
-            }
+            next = current + 1
+            if (next >= numValues) return
         }
+        store.set((state) => {
+            mutator(state, next)
+        })
     }, [voiceGroupIndex, selector, mutator, numValues, loop])
 
     const set = useCallback(
@@ -192,8 +188,9 @@ export function useGlobalButton(
 
     const toggle = useCallback(() => {
         const current = selector(globalStore.getState())
+        const next = (current + 1) % numValues
         globalStore.getState().set((state) => {
-            mutator(state, (current + 1) % numValues)
+            mutator(state, next)
         })
     }, [selector, mutator, numValues])
 

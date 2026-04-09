@@ -7,6 +7,7 @@ import {
     ROW_HEIGHT,
 } from '@/constants'
 import { useButton, usePot } from '@/store'
+import fxControllers from '@/synthcore/modules/fx/fxControllers'
 import RoundPushButton8 from '../../buttons/RoundPushButton8'
 import { ModuleBorder } from '../../misc/ModuleBorder'
 import SubHeader from '../../misc/SubHeader'
@@ -105,6 +106,7 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
                 label="Drive"
                 x={col1}
                 y={row2}
+                ctrlId={fxControllers.DISTORTION.DRIVE.id}
                 value={driveValue}
                 onValueIncrement={driveIncrement}
             />
@@ -117,6 +119,7 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
                 ledRingColors={['#00bfa6', '#ff8700']}
                 label="From"
                 labelPosition="bottom"
+                ctrlId={fxControllers.DISTORTION.IN.id}
                 value={distInValue}
                 onButtonClick={distInToggle}
             />
@@ -126,6 +129,7 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
                 label="Level"
                 x={col1}
                 y={row3}
+                ctrlId={fxControllers.DISTORTION.LEVEL.id}
                 value={levelValue}
                 onValueIncrement={levelIncrement}
             />
@@ -139,6 +143,7 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
                 label="To"
                 labelPosition="bottom"
                 hasOff
+                ctrlId={fxControllers.DISTORTION.OUT.id}
                 value={distOutValue}
                 onButtonClick={distOutToggle}
             />
@@ -149,6 +154,7 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
                 label="Bits"
                 x={col3}
                 y={row2}
+                ctrlId={fxControllers.BIT_CRUSHER.BITS.id}
                 value={bitsValue}
                 onValueIncrement={bitsIncrement}
             />
@@ -161,6 +167,7 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
                 ledRingColors={['#00bfa6', '#ff8700']}
                 label="From"
                 labelPosition="bottom"
+                ctrlId={fxControllers.BIT_CRUSHER.IN.id}
                 value={crushInValue}
                 onButtonClick={crushInToggle}
             />
@@ -170,6 +177,7 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
                 label="Rate"
                 x={col3}
                 y={row3}
+                ctrlId={fxControllers.BIT_CRUSHER.RATE.id}
                 value={rateValue}
                 onValueIncrement={rateIncrement}
             />
@@ -183,6 +191,7 @@ const Effects = ({ x, y, height, width }: ModuleProps) => {
                 label="To"
                 labelPosition="bottom"
                 hasOff
+                ctrlId={fxControllers.BIT_CRUSHER.OUT.id}
                 value={crushOutValue}
                 onButtonClick={crushOutToggle}
             />

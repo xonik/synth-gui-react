@@ -175,6 +175,7 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
                 label="FM mode"
                 labelPosition="bottom"
                 hasOff
+                ctrlId={filtersControllers.LPF.FM_MODE.id}
                 value={fmModeValue}
                 onButtonClick={fmModeToggle}
             />
@@ -187,6 +188,7 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
                 ledLabels={['OTA', 'Ladder']}
                 label="Filter"
                 labelPosition="bottom"
+                ctrlId={filtersControllers.LPF.FILTER_TYPE.id}
                 value={filterTypeValue}
                 onButtonClick={filterTypeToggle}
             />
@@ -199,6 +201,7 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
                 ledLabels={['12dB', '24dB']}
                 label="Slope"
                 labelPosition="bottom"
+                ctrlId={filtersControllers.LPF.SLOPE.id}
                 value={slopeValue}
                 onButtonClick={slopeToggle}
             />
@@ -211,6 +214,7 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
                 ledLabels={['Series', 'Parallel']}
                 label="Routing"
                 labelPosition="bottom"
+                ctrlId={filtersControllers.FILTERS.ROUTING.id}
                 value={routingValue}
                 onButtonClick={routingToggle}
             />
@@ -220,6 +224,7 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
                 y={bottomRow1}
                 label="Link cutoff"
                 labelPosition="bottom"
+                ctrlId={filtersControllers.FILTERS.LINK_CUTOFF.id}
                 value={linkCutoffValue}
                 onButtonClick={linkCutoffToggle}
             />
@@ -232,6 +237,7 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
                 ledLabels={['2', 'Ext']}
                 label="FM src"
                 labelPosition="bottom"
+                ctrlId={filtersControllers.LPF.FM_SRC.id}
                 value={fmSrcValue}
                 onButtonClick={fmSrcToggle}
             />

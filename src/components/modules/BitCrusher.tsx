@@ -1,4 +1,5 @@
 import { useButton, usePot } from '@/store'
+import fxControllers from '@/synthcore/modules/fx/fxControllers'
 import RoundPushButton8 from '../buttons/RoundPushButton8'
 import Header from '../misc/Header'
 import RotaryPot12 from '../pots/RotaryPot12'
@@ -45,6 +46,7 @@ const BitCrusher = ({ x, y }: Props) => {
                 ledCount={2}
                 ledPosition="top"
                 ledLabels={['FX1', 'FX2']}
+                ctrlId={fxControllers.BIT_CRUSHER.IN.id}
                 value={sourceValue}
                 onButtonClick={sourceToggle}
             />
@@ -54,6 +56,7 @@ const BitCrusher = ({ x, y }: Props) => {
                 label="Bits"
                 x={col2}
                 y={row2}
+                ctrlId={fxControllers.BIT_CRUSHER.BITS.id}
                 value={bitsValue}
                 onValueIncrement={bitsIncrement}
             />
@@ -63,6 +66,7 @@ const BitCrusher = ({ x, y }: Props) => {
                 label="Rate"
                 x={col3}
                 y={row2}
+                ctrlId={fxControllers.BIT_CRUSHER.RATE.id}
                 value={rateValue}
                 onValueIncrement={rateIncrement}
             />

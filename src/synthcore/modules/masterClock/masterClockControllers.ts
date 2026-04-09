@@ -33,6 +33,7 @@ const masterClockControllers: MasterClockControllers = {
             buttonMidiValues.MASTER_CLOCK_SRC_MIDI,
             buttonMidiValues.MASTER_CLOCK_SRC_EXT,
         ],
+        valueLabels: ['Int', 'MIDI', 'Ext'],
         global: true,
     },
 }
