@@ -18,6 +18,7 @@ const noiseControllers: NoiseControllers = {
             buttonMidiValues.NOISE_COLOUR_PINK,
             buttonMidiValues.NOISE_COLOUR_RED,
         ],
+        valueLabels: ['White', 'Pink', 'Red'],
     },
 }
 

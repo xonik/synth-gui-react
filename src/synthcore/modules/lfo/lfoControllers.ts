@@ -88,6 +88,7 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         values: [
             // TODO!
         ],
+        valueLabels: [],
     },
     SHAPE: {
         id: ControllerIdLfoNonMod.LFO_SHAPE,
@@ -101,18 +102,21 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
             buttonMidiValues.LFO_SHAPE_RANDOM,
             buttonMidiValues.LFO_SHAPE_CUSTOM,
         ],
+        valueLabels: ['Saw', 'Triangle', 'Square', 'Sine', 'Random', 'Custom'],
     },
     SYNC: {
         id: ControllerIdLfoNonMod.LFO_SYNC,
         label: 'Sync',
         type: 'button',
         values: [buttonMidiValues.LFO_SYNC_OFF, buttonMidiValues.LFO_SYNC_ON],
+        valueLabels: ['Off', 'On'],
     },
     RESET: {
         id: ControllerIdLfoNonMod.LFO_RESET,
         label: 'Reset',
         type: 'button',
         values: [buttonMidiValues.LFO_RESET_OFF, buttonMidiValues.LFO_RESET_ON],
+        valueLabels: ['Off', 'On'],
     },
     OUTPUT: {
         // does not have a midi mapping as it is only used as a modulation source
@@ -133,24 +137,28 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         label: 'Bipolar',
         type: 'button',
         values: [buttonMidiValues.LFO_BIPOLAR_OFF, buttonMidiValues.LFO_BIPOLAR_ON],
+        valueLabels: ['Off', 'On'],
     },
     INVERT: {
         id: ControllerIdLfoNonMod.LFO_INVERT,
         label: 'Invert',
         type: 'button',
         values: [buttonMidiValues.LFO_INVERT_OFF, buttonMidiValues.LFO_INVERT_ON],
+        valueLabels: ['Off', 'On'],
     },
     GATE: {
         id: ControllerIdLfoNonMod.LFO_GATE,
         label: 'Trigger',
         type: 'button',
         values: [buttonMidiValues.LFO_TRIGGER, buttonMidiValues.LFO_RELEASE],
+        valueLabels: ['Trigger', 'Release'],
     },
     LOOP: {
         id: ControllerIdLfoNonMod.LFO_LOOP,
         label: 'Loop on/off',
         type: 'button',
         values: [buttonMidiValues.LFO_LOOP_OFF, buttonMidiValues.LFO_LOOP_ON],
+        valueLabels: ['Off', 'On'],
     },
     LOOP_MODE: {
         id: ControllerIdLfoNonMod.LFO_LOOP_MODE,
@@ -161,6 +169,7 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
             buttonMidiValues.LFO_LOOP_MODE_COUNTED,
             buttonMidiValues.LFO_LOOP_MODE_INFINITE,
         ],
+        valueLabels: ['Counted', 'Infinite'],
     },
     MAX_LOOPS: { id: ControllerIdLfoNonMod.LFO_MAX_LOOPS, label: 'Max loops', type: 'pot', cc: CC.LFO_MAX_LOOPS },
     RESET_ON_TRIGGER: {
@@ -168,30 +177,35 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         label: 'Reset on trigger',
         type: 'button',
         values: [buttonMidiValues.LFO_RESET_ON_TRIGGER_OFF, buttonMidiValues.LFO_RESET_ON_TRIGGER_ON],
+        valueLabels: ['Off', 'On'],
     },
     RESET_ON_STOP: {
         id: ControllerIdLfoNonMod.LFO_RESET_ON_STOP,
         label: 'Reset on stop',
         type: 'button',
         values: [buttonMidiValues.LFO_RESET_ON_STOP_OFF, buttonMidiValues.LFO_RESET_ON_STOP_ON],
+        valueLabels: ['Off', 'On'],
     },
     RESET_LEVEL_ON_CLOCK: {
         id: ControllerIdLfoNonMod.LFO_RESET_LEVEL_ON_CLOCK,
         label: 'Reset level on clock',
         type: 'button',
         values: [buttonMidiValues.LFO_RESET_LEVEL_ON_CLOCK_OFF, buttonMidiValues.LFO_RESET_LEVEL_ON_CLOCK_ON],
+        valueLabels: ['Off', 'On'],
     },
     SYNC_TO_CLOCK: {
         id: ControllerIdLfoNonMod.LFO_SYNC_TO_CLOCK,
         label: 'Sync to clock',
         type: 'button',
         values: [buttonMidiValues.LFO_SYNC_TO_CLOCK_OFF, buttonMidiValues.LFO_SYNC_TO_CLOCK_ON],
+        valueLabels: ['Off', 'On'],
     },
     GATED: {
         id: ControllerIdLfoNonMod.LFO_GATED,
         label: 'Gated',
         type: 'button',
         values: [buttonMidiValues.LFO_GATED_OFF, buttonMidiValues.LFO_GATED_ON],
+        valueLabels: ['Off', 'On'],
     },
     CURVE: {
         id: ControllerIdLfoStageNonMod.LFO_CURVE,
@@ -237,6 +251,7 @@ const lfoControllers = (ctrlIndex: number): ControllersLfo => ({
         label: 'Random phase on trigger',
         type: 'pot',
         values: [buttonMidiValues.LFO_RANDOM_PHASE_OFF, buttonMidiValues.LFO_RANDOM_PHASE_ON],
+        valueLabels: ['Off', 'On'],
     }, // 4 bit stage, 7 bit on/off
 })
 

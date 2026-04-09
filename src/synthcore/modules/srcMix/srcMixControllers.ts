@@ -82,6 +82,7 @@ const srcMixControllers: SrcMixControllers = {
             buttonMidiValues.OSC1_OUT_B,
             buttonMidiValues.OSC1_OUT_BOTH,
         ],
+        valueLabels: ['Off', 'A', 'B', 'Both'],
     },
     OUT_OSC2: {
         id: ControllerIdNonMod.SRC_MIX_OUT_OSC2,
@@ -93,6 +94,7 @@ const srcMixControllers: SrcMixControllers = {
             buttonMidiValues.OSC2_OUT_B,
             buttonMidiValues.OSC2_OUT_BOTH,
         ],
+        valueLabels: ['Off', 'A', 'B', 'Both'],
     },
     OUT_OSC3: {
         id: ControllerIdNonMod.SRC_MIX_OUT_OSC3,
@@ -104,6 +106,7 @@ const srcMixControllers: SrcMixControllers = {
             buttonMidiValues.OSC3_OUT_B,
             buttonMidiValues.OSC3_OUT_BOTH,
         ],
+        valueLabels: ['Off', 'A', 'B', 'Both'],
     },
     OUT_NOISE: {
         id: ControllerIdNonMod.SRC_MIX_OUT_NOISE,
@@ -115,6 +118,7 @@ const srcMixControllers: SrcMixControllers = {
             buttonMidiValues.NOISE_OUT_B,
             buttonMidiValues.NOISE_OUT_BOTH,
         ],
+        valueLabels: ['Off', 'A', 'B', 'Both'],
     },
     OUT_RING_MOD: {
         id: ControllerIdNonMod.SRC_MIX_OUT_RING_MOD,
@@ -126,6 +130,7 @@ const srcMixControllers: SrcMixControllers = {
             buttonMidiValues.RING_MOD_OUT_B,
             buttonMidiValues.RING_MOD_OUT_BOTH,
         ],
+        valueLabels: ['Off', 'A', 'B', 'Both'],
     },
     OUT_EXT_AUDIO: {
         id: ControllerIdNonMod.SRC_MIX_OUT_EXT_AUDIO,
@@ -137,6 +142,7 @@ const srcMixControllers: SrcMixControllers = {
             buttonMidiValues.EXT_AUDIO_OUT_B,
             buttonMidiValues.EXT_AUDIO_OUT_BOTH,
         ],
+        valueLabels: ['Off', 'A', 'B', 'Both'],
     },
 }
 

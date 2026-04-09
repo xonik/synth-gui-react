@@ -40,24 +40,28 @@ const arpControllers: ArpControllers = {
         label: 'On/off',
         type: 'button',
         values: [buttonMidiValues.ARP_OFF, buttonMidiValues.ARP_ON],
+        valueLabels: ['Off', 'On'],
     },
     TRIGGER: {
         id: ControllerIdNonMod.ARP_TRIGGER,
         label: 'Trigger',
         type: 'button',
         values: [buttonMidiValues.ARP_TRIGGER_OFF, buttonMidiValues.ARP_TRIGGER_ON],
+        valueLabels: ['Off', 'On'],
     },
     SYNC: {
         id: ControllerIdNonMod.ARP_SYNC,
         label: 'Sync',
         type: 'button',
         values: [buttonMidiValues.ARP_SYNC_OFF, buttonMidiValues.ARP_SYNC_MASTER, buttonMidiValues.ARP_SYNC_EXT],
+        valueLabels: ['Off', 'Master', 'Ext'],
     },
     RANGE: {
         id: ControllerIdNonMod.ARP_RANGE,
         label: 'Range',
         type: 'button',
         values: [buttonMidiValues.ARP_RANGE_1, buttonMidiValues.ARP_RANGE_2, buttonMidiValues.ARP_RANGE_3],
+        valueLabels: ['1 oct', '2 oct', '3 oct'],
     },
     MODE: {
         id: ControllerIdNonMod.ARP_MODE,
@@ -69,6 +73,7 @@ const arpControllers: ArpControllers = {
             buttonMidiValues.ARP_MODE_UP_DOWN,
             buttonMidiValues.ARP_MODE_RANDOM,
         ],
+        valueLabels: ['Up', 'Down', 'Up/Down', 'Random'],
     },
     // Modes not selectable from the front panel
     EXTENDED_MODE: {
@@ -76,30 +81,35 @@ const arpControllers: ArpControllers = {
         label: 'Mode',
         type: 'button',
         values: [buttonMidiValues.ARP_MODE_UP_DOWN_REPEAT],
+        valueLabels: ['Up/Down repeat'],
     },
     SEQUENCE: {
         id: ControllerIdNonMod.ARP_SEQUENCE,
         label: 'Sequence',
         type: 'button',
         values: [buttonMidiValues.ARP_SEQ_OFF, buttonMidiValues.ARP_SEQ_ENTER, buttonMidiValues.ARP_SEQ_ON],
+        valueLabels: ['Off', 'Enter', 'On'],
     },
     NOTE_ORDERING: {
         id: ControllerIdNonMod.ARP_NOTE_ORDERING,
         label: 'Note ordering',
         type: 'button',
         values: [buttonMidiValues.ARP_NOTE_ORDERING_PRESSED, buttonMidiValues.ARP_NOTE_ORDERING_KEYBOARD],
+        valueLabels: ['Pressed', 'Keyboard'],
     },
     FUZZY_START: {
         id: ControllerIdNonMod.ARP_FUZZY_START,
         label: 'Fuzzy start',
         type: 'button',
         values: [buttonMidiValues.ARP_FUZZY_START_OFF, buttonMidiValues.ARP_FUZZY_START_ON],
+        valueLabels: ['Off', 'On'],
     },
     STOP_ON_RELEASE: {
         id: ControllerIdNonMod.ARP_STOP_ON_RELEASE,
         label: 'Fuzzy start',
         type: 'button',
         values: [buttonMidiValues.ARP_STOP_ON_RELEASE_OFF, buttonMidiValues.ARP_STOP_ON_RELEASE_ON],
+        valueLabels: ['Off', 'On'],
     },
     START_SYNC: {
         id: ControllerIdNonMod.ARP_START_SYNC,
@@ -116,6 +126,7 @@ const arpControllers: ArpControllers = {
             buttonMidiValues.ARP_START_RES_32ND_TRIPLET,
             buttonMidiValues.ARP_START_RES_MAX,
         ],
+        valueLabels: ['1/4', '1/4T', '1/8', '1/8T', '1/16', '1/16T', '1/32', '1/32T', 'Max'],
     },
     RESOLUTION: {
         id: ControllerIdNonMod.ARP_RESOLUTION,
@@ -132,6 +143,7 @@ const arpControllers: ArpControllers = {
             buttonMidiValues.ARP_RES_32ND_TRIPLET,
             buttonMidiValues.ARP_RES_MAX,
         ],
+        valueLabels: ['1/4', '1/4T', '1/8', '1/8T', '1/16', '1/16T', '1/32', '1/32T', 'Max'],
     },
     // Not a real controller, only used in modulation mappings when arp is a source
     OUTPUT: {

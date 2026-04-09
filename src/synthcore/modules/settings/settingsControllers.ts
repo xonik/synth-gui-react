@@ -15,12 +15,14 @@ const settingsControllers: SettingsControllers = {
         label: 'Calibrate DCO 1',
         type: 'button',
         values: [buttonMidiValues.CALIBRATE_DCO1],
+        valueLabels: ['Calibrate'],
     },
     CALIBRATE_DCO2: {
         id: ControllerIdNonMod.CALIBRATE_DCO2,
         label: 'Calibrate DCO 2',
         type: 'button',
         values: [buttonMidiValues.CALIBRATE_DCO2],
+        valueLabels: ['Calibrate'],
     },
 
     /*

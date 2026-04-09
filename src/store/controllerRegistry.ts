@@ -18,6 +18,7 @@ export type PopupInfo = {
     paramLabel: string
     moduleName: string
     screen?: ScreenId
+    valueLabels?: readonly string[]
 }
 
 const registry = new Map<number, PopupInfo>()
@@ -38,7 +39,8 @@ function registerGroup(group: Record<string, unknown>, screen?: ScreenId): void 
         ) {
             const id = (ctrl as Record<string, unknown>)['id'] as number
             const label = (ctrl as Record<string, unknown>)['label'] as string
-            registry.set(id, { paramLabel: label, moduleName, screen })
+            const valueLabels = (ctrl as Record<string, unknown>)['valueLabels'] as readonly string[] | undefined
+            registry.set(id, { paramLabel: label, moduleName, screen, valueLabels })
         }
     }
 }

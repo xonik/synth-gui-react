@@ -51,6 +51,7 @@ const fxControllers: FxControllers = {
                 buttonMidiValues.DISTORTION_IN_B,
                 //buttonMidiValues.DISTORTION_IN_BOTH,
             ],
+            valueLabels: ['A', 'B'],
         },
         OUT: {
             id: ControllerIdNonMod.DISTORTION_OUT,
@@ -62,6 +63,7 @@ const fxControllers: FxControllers = {
                 buttonMidiValues.DISTORTION_OUT_B,
                 buttonMidiValues.DISTORTION_OUT_BOTH,
             ],
+            valueLabels: ['Off', 'A', 'B', 'Both'],
         },
     },
     BIT_CRUSHER: {
@@ -85,6 +87,7 @@ const fxControllers: FxControllers = {
             label: 'Clip',
             type: 'button',
             values: [buttonMidiValues.BIT_CRUSHER_RECON_OFF, buttonMidiValues.BIT_CRUSHER_RECON_ON],
+            valueLabels: ['Off', 'On'],
         },
         LEVEL: {
             id: ControllerIdDst.BIT_CRUSHER_LEVEL,
@@ -104,6 +107,7 @@ const fxControllers: FxControllers = {
                 buttonMidiValues.BIT_CRUSHER_IN_B,
                 //buttonMidiValues.BIT_CRUSHER_IN_BOTH,
             ],
+            valueLabels: ['A', 'B'],
         },
         OUT: {
             id: ControllerIdNonMod.BIT_CRUSHER_OUT,
@@ -115,6 +119,7 @@ const fxControllers: FxControllers = {
                 buttonMidiValues.BIT_CRUSHER_OUT_B,
                 buttonMidiValues.BIT_CRUSHER_OUT_BOTH,
             ],
+            valueLabels: ['Off', 'A', 'B', 'Both'],
         },
     },
 }

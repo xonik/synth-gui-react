@@ -47,6 +47,7 @@ const mainDisplayControllers: MainDisplayControllers = {
             buttonMidiValues.MENU_FX,
             //TODO: ARP-meny?
         ],
+        valueLabels: ['LFO', 'Osc', 'Filter', 'Env', 'Mod', 'FX'],
         global: true,
     },
 
@@ -55,6 +56,7 @@ const mainDisplayControllers: MainDisplayControllers = {
         label: 'Home',
         type: 'button',
         values: [buttonMidiValues.FUNC_HOME],
+        valueLabels: ['Home'],
         global: true,
     },
     FUNC_SETTINGS: {
@@ -62,6 +64,7 @@ const mainDisplayControllers: MainDisplayControllers = {
         label: 'Setup',
         type: 'button',
         values: [buttonMidiValues.FUNC_SETTINGS],
+        valueLabels: ['Setup'],
         global: true,
     },
     FUNC_SHIFT: {
@@ -69,6 +72,7 @@ const mainDisplayControllers: MainDisplayControllers = {
         label: 'Shift',
         type: 'button',
         values: [buttonMidiValues.FUNC_SHIFT_OFF, buttonMidiValues.FUNC_SHIFT_ON],
+        valueLabels: ['Off', 'On'],
         global: true,
     },
     FUNC_PERFORM: {
@@ -76,6 +80,7 @@ const mainDisplayControllers: MainDisplayControllers = {
         label: 'Perform',
         type: 'button',
         values: [buttonMidiValues.FUNC_PERFORM],
+        valueLabels: ['Perform'],
         global: true,
     },
     FUNC_LOAD: {
@@ -83,6 +88,7 @@ const mainDisplayControllers: MainDisplayControllers = {
         label: 'Load',
         type: 'button',
         values: [buttonMidiValues.FUNC_LOAD],
+        valueLabels: ['Load'],
         global: true,
     },
     FUNC_SAVE: {
@@ -90,6 +96,7 @@ const mainDisplayControllers: MainDisplayControllers = {
         label: 'Save',
         type: 'button',
         values: [buttonMidiValues.FUNC_SAVE],
+        valueLabels: ['Save'],
         global: true,
     },
     FUNC_COMPARE: {
@@ -97,6 +104,7 @@ const mainDisplayControllers: MainDisplayControllers = {
         label: 'Compare',
         type: 'button',
         values: [buttonMidiValues.FUNC_COMPARE],
+        valueLabels: ['Compare'],
         global: true,
     },
     FUNC_ROUTE: {
@@ -104,6 +112,7 @@ const mainDisplayControllers: MainDisplayControllers = {
         label: 'Route',
         type: 'button',
         values: [buttonMidiValues.FUNC_ROUTE],
+        valueLabels: ['Route'],
         global: true,
     },
 }

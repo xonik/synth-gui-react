@@ -23,6 +23,7 @@ const voicesControllers: VoicesControllers = {
             buttonMidiValues.VOICE7,
             buttonMidiValues.VOICE8,
         ],
+        valueLabels: ['1', '2', '3', '4', '5', '6', '7', '8'],
         global: true,
     },
 }

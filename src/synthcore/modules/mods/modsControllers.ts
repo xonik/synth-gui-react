@@ -38,6 +38,7 @@ const modsControllers: ModsControllers = {
         label: 'From-To',
         type: 'button',
         values: [buttonMidiValues.ROUTE_OFF, buttonMidiValues.ROUTE_FROM_ON, buttonMidiValues.ROUTE_TO_ON],
+        valueLabels: ['Off', 'From on', 'To on'],
         global: true,
     },
 

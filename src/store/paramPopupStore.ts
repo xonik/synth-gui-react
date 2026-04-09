@@ -88,6 +88,12 @@ export function notifyParamChange(moduleName: string, paramName: string, paramVa
 export function notifyParamChangeById(ctrlId: number, value: number, formatValue?: (v: number) => string): void {
     const info = getPopupInfo(ctrlId)
     if (!info) return
-    const fmt = formatValue ?? ((v: number) => v.toFixed(2))
-    notifyParamChange(info.moduleName, info.paramLabel, fmt(value), info.screen)
+    let displayValue: string
+    if (info.valueLabels && Number.isInteger(value) && value >= 0 && value < info.valueLabels.length) {
+        displayValue = info.valueLabels[value]
+    } else {
+        const fmt = formatValue ?? ((v: number) => v.toFixed(2))
+        displayValue = fmt(value)
+    }
+    notifyParamChange(info.moduleName, info.paramLabel, displayValue, info.screen)
 }

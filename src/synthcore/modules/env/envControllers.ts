@@ -187,24 +187,28 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
             label: 'Env gate',
             type: 'button',
             values: [buttonMidiValues.ENV_TRIGGER, buttonMidiValues.ENV_RELEASE],
+            valueLabels: ['Trigger', 'Release'],
         },
         INVERT: {
             id: ControllerIdEnvNonMod.ENV_INVERT,
             label: 'Invert',
             type: 'button',
             values: [buttonMidiValues.ENV_INVERT_OFF, buttonMidiValues.ENV_INVERT_ON],
+            valueLabels: ['Off', 'On'],
         },
         VELOCITY: {
             id: ControllerIdEnvNonMod.ENV_VELOCITY,
             label: 'Velocity',
             type: 'button',
             values: [buttonMidiValues.ENV_VELOCITY_OFF, buttonMidiValues.ENV_VELOCITY_ON],
+            valueLabels: ['Off', 'On'],
         },
         RESET_ON_TRIGGER: {
             id: ControllerIdEnvNonMod.ENV_RESET_ON_TRIGGER,
             label: 'Reset on trigger',
             type: 'button',
             values: [buttonMidiValues.ENV_RESET_ON_TRIGGER_OFF, buttonMidiValues.ENV_RESET_ON_TRIGGER_ON],
+            valueLabels: ['Off', 'On'],
         },
         RELEASE_MODE: {
             id: ControllerIdEnvNonMod.ENV_RELEASE_MODE,
@@ -215,12 +219,14 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
                 buttonMidiValues.ENV_RELEASE_MODE_SKIP_R1,
                 buttonMidiValues.ENV_RELEASE_MODE_FREE_RUN,
             ],
+            valueLabels: ['Normal', 'Skip R1', 'Free run'],
         },
         LOOP: {
             id: ControllerIdEnvNonMod.ENV_LOOP,
             label: 'Loop on/off',
             type: 'button',
             values: [buttonMidiValues.ENV_LOOP_OFF, buttonMidiValues.ENV_LOOP_ON],
+            valueLabels: ['Off', 'On'],
         },
         LOOP_MODE: {
             id: ControllerIdEnvNonMod.ENV_LOOP_MODE,
@@ -231,12 +237,14 @@ const envControllers = (ctrlIndex: number): EnvControllers => {
                 buttonMidiValues.ENV_LOOP_MODE_COUNTED,
                 buttonMidiValues.ENV_LOOP_MODE_INFINITE,
             ],
+            valueLabels: ['Gated', 'Counted', 'Infinite'],
         },
         BIPOLAR: {
             id: ControllerIdEnvNonMod.ENV_BIPOLAR,
             label: 'Bipolar',
             type: 'button',
             values: [buttonMidiValues.ENV_BIPOLAR_OFF, buttonMidiValues.ENV_BIPOLAR_ON],
+            valueLabels: ['Off', 'On'],
         },
         OUTPUT: {
             // does not have a midi mapping as it is only used as a modulation source
