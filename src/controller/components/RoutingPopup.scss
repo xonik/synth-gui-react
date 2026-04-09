@@ -1,0 +1,41 @@
+@import '../constants';
+.routing-popup {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  pointer-events: none;
+  &__box {
+    background: rgba($bg-darkest, 0.88);
+    border: 1px solid rgba($accent-primary, 0.3);
+    border-radius: 6px;
+    padding: 12px 24px;
+    min-width: 160px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  }
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    & + & {
+      margin-top: 6px;
+    }
+  }
+  &__label {
+    font-size: 0.7rem;
+    color: $accent-primary;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+  }
+  &__value {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: $text-bright;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+}
