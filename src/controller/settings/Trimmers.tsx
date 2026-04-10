@@ -26,7 +26,7 @@ const VerticalSelector = ({ setValue, allSettings, trimmer, label }: SelectorPro
                 invert
                 value={allSettings[trimmer].value}
                 onChange={(value) => setValue(trimmer, value)}
-                renderThumb={(props, state) => <div {...props}>{((5 * state.valueNow) / 65535).toFixed(2)} V</div>}
+                renderThumb={({ key, ...props }, state) => <div key={key} {...props}>{((5 * state.valueNow) / 65535).toFixed(2)} V</div>}
             />
             <div className="cv-range__slider-label">{label}</div>
         </div>
