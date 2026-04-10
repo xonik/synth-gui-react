@@ -52,8 +52,8 @@ export interface Props {
     // Number of leds AROUND the button. If this is undefined but ledButton is true, the button itself is a led.
     ledCount?: number
 
-    // When selecting what leds to light up, use a binary counting: 0ff, 1, 2, 1 and 2, 3. etc. Makes it possible
-    // to show a combination of mode 1 and 2 for arpeggiator.
+    // When selecting what leds to light up, use a binary counting: 0ff, 1, 2, 1 and 2, 3. etc.
+    // Makes it possible to show a combination of mode 1 and 2 for arpeggiator.
     ledCycleBinary?: boolean
 
     // True if the first midi value is an off state, lets us switch off all diodes

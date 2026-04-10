@@ -492,7 +492,16 @@ export function createPatchStore(): StoreApi<PatchStore> {
             ...defaultVoiceGroupPatch(),
 
             set: (mutator: (state: VoiceGroupPatch) => void) => {
-                set(mutator)
+                set((state) => {
+                    const prevSync0 = state.oscillators[0].sync
+                    const prevSync1 = state.oscillators[1].sync
+                    mutator(state)
+                    if (state.oscillators[0].sync !== prevSync0) {
+                        state.oscillators[1].sync = 0
+                    } else if (state.oscillators[1].sync !== prevSync1) {
+                        state.oscillators[0].sync = 0
+                    }
+                })
             },
 
             loadPatch: (patch: VoiceGroupPatch) => {
