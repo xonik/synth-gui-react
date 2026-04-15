@@ -81,7 +81,7 @@ export const mainDisplayLfoApi = {
             if (lfo.loopMode !== LoopMode.COUNTED) {
                 return
             }
-            const newMaxLoops = getBounded(lfo.maxLoops + step(increment), 0, 127)
+            const newMaxLoops = getBounded(lfo.maxLoops + step(increment), 1, 127)
             voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                 state.lfos[lfoId].maxLoops = newMaxLoops
             })

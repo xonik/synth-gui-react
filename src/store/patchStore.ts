@@ -492,6 +492,9 @@ export function createPatchStore(): StoreApi<PatchStore> {
             ...defaultVoiceGroupPatch(),
 
             set: (mutator: (state: VoiceGroupPatch) => void) => {
+                // TODO - issue #47: functionality for setting a very specific thing in the
+                // store (OSC sync), does not feel right to check this here for every update?
+                // Is this really the best way to do this in zustand?
                 set((state) => {
                     const prevSync0 = state.oscillators[0].sync
                     const prevSync1 = state.oscillators[1].sync

@@ -152,17 +152,18 @@ export const button = {
         if (loopback) {
             button.publish(voiceGroupIndex, value)
         }
-        if (midiOut) {
-            // serialize value - button value is split across multiple CCs so
-            // we need to pick the correct one.
-            const buttonMidiCC = buttonCCs[Math.floor(value / 128)]
-            const buttonMidiValue = value % 128
 
-            const ccForChannel = status.CC + midiChannel
-            console.log(`Sending CC ${buttonMidiCC}`)
-            const data = [ccForChannel, buttonMidiCC, buttonMidiValue]
-            logger.midiMsg(data)
-            midiOut?.send(data)
+        // serialize value - button value is split across multiple CCs so
+        // we need to pick the correct one.
+        const buttonMidiCC = buttonCCs[Math.floor(value / 128)]
+        const buttonMidiValue = value % 128
+
+        const ccForChannel = status.CC + midiChannel
+        console.log(`Sending CC ${buttonMidiCC}`)
+        const data = [ccForChannel, buttonMidiCC, buttonMidiValue]
+        logger.midiMsg(data)
+        if (midiOut) {
+            midiOut.send(data)
         }
     },
 }
@@ -195,10 +196,10 @@ export const cc = {
         if (loopback) {
             cc.publish(voiceGroupIndex, controller.cc, value)
         }
+        const ccForChannel = status.CC + midiChannel
+        const data = [ccForChannel, controller.cc, value]
+        logger.midiMsg(data)
         if (midiOut) {
-            const ccForChannel = status.CC + midiChannel
-            const data = [ccForChannel, controller.cc, value]
-            logger.midiMsg(data)
             midiOut.send(data)
         }
     },
@@ -236,32 +237,33 @@ export const nrpn = {
         if (loopback) {
             nrpn.publish(voiceGroupIndex, controller.addr, value)
         }
-        if (midiOut) {
-            const loAddr = controller.addr & 0b01111111
-            const hiAddr = (controller.addr >> 7) & 0b01111111
 
-            const loValue = value & 0b01111111
-            const midValue = (value >> 7) & 0b01111111
-            const hiValue = (value >> 14) & 0b01111111
+        const loAddr = controller.addr & 0b01111111
+        const hiAddr = (controller.addr >> 7) & 0b01111111
 
-            const ccForChannel = status.CC + midiChannel
+        const loValue = value & 0b01111111
+        const midValue = (value >> 7) & 0b01111111
+        const hiValue = (value >> 14) & 0b01111111
 
-            const data = [ccForChannel, CC.NRPN_MSB, hiAddr, ccForChannel, CC.NRPN_LSB, loAddr]
-            if (value > 16383) {
-                data.push(ccForChannel)
-                data.push(CC.DATA_ENTRY_HSB)
-                data.push(hiValue)
-            }
-            if (value > 127) {
-                data.push(ccForChannel)
-                data.push(CC.DATA_ENTRY_MSB)
-                data.push(midValue)
-            }
+        const ccForChannel = status.CC + midiChannel
+
+        const data = [ccForChannel, CC.NRPN_MSB, hiAddr, ccForChannel, CC.NRPN_LSB, loAddr]
+        if (value > 16383) {
             data.push(ccForChannel)
-            data.push(CC.DATA_ENTRY_LSB)
-            data.push(loValue)
+            data.push(CC.DATA_ENTRY_HSB)
+            data.push(hiValue)
+        }
+        if (value > 127) {
+            data.push(ccForChannel)
+            data.push(CC.DATA_ENTRY_MSB)
+            data.push(midValue)
+        }
+        data.push(ccForChannel)
+        data.push(CC.DATA_ENTRY_LSB)
+        data.push(loValue)
 
-            logger.midiMsg(data)
+        logger.midiMsg(data)
+        if (midiOut) {
             midiOut.send(data)
         }
     },

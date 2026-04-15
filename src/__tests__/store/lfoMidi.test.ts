@@ -6,9 +6,9 @@ vi.mock('@/synthcore/synthcoreMiddleware', () => ({
 
 import { buttonMidiValues } from '@/midi/buttonMidiValues'
 import { button, cc, nrpn } from '@/midi/midibus'
+import { startLfoMidiReceive, startLfoMidiSend, stopLfoMidiReceive, stopLfoMidiSend } from '@/store/midi/lfoMidi'
 import { createPatchStore, voiceGroupStores } from '@/store/patchStore'
 import { lfoCtrls } from '@/synthcore/modules/lfo/lfoControllers'
-import { startLfoMidiReceive, startLfoMidiSend, stopLfoMidiReceive, stopLfoMidiSend } from '../../store/midi/lfoMidi'
 
 const VG = 0
 const LFO = 1
@@ -73,6 +73,11 @@ describe('LFO MIDI receive', () => {
     it('sets maxLoops from CC', () => {
         cc.publish(VG, (lfoCtrls.MAX_LOOPS as any).cc, 10)
         expect(getLfo().maxLoops).toBe(10)
+    })
+
+    it('bounds max loops to 1-127', () => {
+        cc.publish(VG, lfoCtrls.MAX_LOOPS.cc, 0)
+        expect(getLfo().maxLoops).toBe(1)
     })
 
     it('targets correct LFO after select', () => {
