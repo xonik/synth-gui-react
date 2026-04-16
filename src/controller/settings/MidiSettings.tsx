@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { applyMidiSelection, getActiveMidiIds, getAvailableMidiInterfaces, MIDI_SELECTED_KEY } from '../../midi/midibus'
+import { getMidiLogging, setMidiLogging } from '../../utils/logger'
 import './MidiSettings.scss'
 
 type MidiSelectedIds = {
@@ -23,6 +24,7 @@ export const MidiSettings = () => {
     const [initialInput, setInitialInput] = useState<string>('')
     const [initialOutput, setInitialOutput] = useState<string>('')
     const [saveConfirmed, setSaveConfirmed] = useState(false)
+    const [midiLogging, setMidiLoggingState] = useState(getMidiLogging)
 
     useEffect(() => {
         const active = getActiveMidiIds()
@@ -55,6 +57,11 @@ export const MidiSettings = () => {
         setSelectedOutput(id)
         const name = outputs.find((o) => o.id === id)?.name ?? 'none'
         console.log('MIDI Out selected:', name, id || '(none)')
+    }
+
+    const handleMidiLoggingChange = (enabled: boolean) => {
+        setMidiLogging(enabled)
+        setMidiLoggingState(enabled)
     }
 
     const hasChanged = selectedInput !== initialInput || selectedOutput !== initialOutput
@@ -112,6 +119,14 @@ export const MidiSettings = () => {
             <button type="button" className="midi-settings__save" onClick={handleSave} disabled={!canSave}>
                 {saveConfirmed ? 'Saved!' : 'Save'}
             </button>
+            <label className="midi-settings__toggle">
+                <input
+                    type="checkbox"
+                    checked={midiLogging}
+                    onChange={(e) => handleMidiLoggingChange(e.target.checked)}
+                />
+                {' '}Log MIDI traffic
+            </label>
         </div>
     )
 }

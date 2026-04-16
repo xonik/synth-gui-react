@@ -42,6 +42,18 @@
     }
   }
 
+  &__toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: $text-mid;
+    font-size: 0.85em;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
   &__save {
     align-self: flex-start;
     margin-top: 0.5rem;

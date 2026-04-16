@@ -61,6 +61,7 @@ function sendLfoSelect(voiceGroupIndex: number, lfoId: number) {
     ) {
         currentSentLfoId = lfoId
         lastSentLfoIdTimestamp = Date.now()
+        console.log(`Sending LFO id ${lfoId}`)
         cc.send(voiceGroupIndex, lfoCtrls.SELECT as ControllerConfigCC, lfoId)
     }
 }
