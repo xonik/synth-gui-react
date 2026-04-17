@@ -6,7 +6,9 @@ import {
     MidiGroup,
 } from '@/midi/types'
 import { type LfoState, voiceGroupStores } from '@/store'
+import { paramSend } from '@/synthcore/modules/common/commonMidiApi'
 import { lfoCtrls } from '@/synthcore/modules/lfo/lfoControllers'
+import { ApiSource } from '@/synthcore/types'
 import { LFO_STAGE_NAMES, STAGE_ID_TO_NAME, STAGE_NAME_TO_ID } from '../modules/lfoActions'
 import { isMidiReceiving, withMidiReceive } from './midiGuard'
 
@@ -104,15 +106,36 @@ function sendLfoParams(voiceGroupIndex: number, lfoId: number, lfo: LfoState, pr
 
             if (stage.curve !== prevStage.curve) {
                 ensureSelect()
-                const midiValue = (stageId << 7) + stage.curve
-                nrpn.send(voiceGroupIndex, lfoCtrls.CURVE, midiValue)
+                const curveOutputMapper = (curve: number, _cfg: unknown, valueIndex: number = 0) =>
+                    (valueIndex << 7) + curve
+                paramSend(
+                    {
+                        ctrl: lfoCtrls.CURVE,
+                        valueIndex: stageId,
+                        value: stage.curve,
+                        voiceGroupIndex,
+                        source: ApiSource.UI,
+                    },
+                    curveOutputMapper
+                )
             }
 
             if (stage.enabled !== prevStage.enabled) {
                 ensureSelect()
-                const enableBit = stage.enabled ? 0b1000 : 0
-                const midiValue = stageId | enableBit
-                cc.send(voiceGroupIndex, lfoCtrls.TOGGLE_STAGE as ControllerConfigCC, midiValue)
+                const stageEnabledOutputMapper = (enabled: number, _cfg: unknown, valueIndex: number = 0) => {
+                    const enableBit = enabled ? 0b1000 : 0
+                    return valueIndex | enableBit
+                }
+                paramSend(
+                    {
+                        ctrl: lfoCtrls.TOGGLE_STAGE,
+                        valueIndex: stageId,
+                        value: stage.enabled,
+                        voiceGroupIndex,
+                        source: ApiSource.UI,
+                    },
+                    stageEnabledOutputMapper
+                )
             }
         }
     }

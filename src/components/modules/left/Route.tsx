@@ -3,7 +3,9 @@ import { BUTTON_DISTANCE_S, POT_DISTANCE_L, POT_DISTANCE_M, POT_OFFSET_Y } from 
 import { useUiStore } from '@/store'
 import { useVoiceGroupStore, voiceGroupStores } from '@/store/patchStore'
 import { getBounded } from '@/store/utils'
+import modsApi from '@/synthcore/modules/mods/modsApi'
 import { digitalModSources } from '@/synthcore/modules/mods/utils'
+import { ApiSource } from '@/synthcore/types'
 import RoundLedPushButton8 from '../../buttons/RoundLedPushButton8'
 import { ModuleBorder } from '../../misc/ModuleBorder'
 import SubHeader from '../../misc/SubHeader'
@@ -40,11 +42,7 @@ const Route = ({ x, y, height, width }: ModuleProps) => {
             if (sourceCtrlId === undefined || soloedDst === undefined) return
             const current = voiceGroupStores[voiceGroupIndex].getState().mods?.[sourceCtrlId]?.[soloedDst.ctrlId]?.[soloedDst.ctrlIndex] ?? 0
             const next = getBounded(current + delta, -1, 1)
-            voiceGroupStores[voiceGroupIndex].getState().set((state: any) => {
-                if (!state.mods[sourceCtrlId]) state.mods[sourceCtrlId] = {}
-                if (!state.mods[sourceCtrlId][soloedDst.ctrlId]) state.mods[sourceCtrlId][soloedDst.ctrlId] = {}
-                state.mods[sourceCtrlId][soloedDst.ctrlId][soloedDst.ctrlIndex] = next
-            })
+            modsApi.setModValue(voiceGroupIndex, sourceCtrlId, soloedDst.ctrlId, soloedDst.ctrlIndex, next, ApiSource.UI)
         },
         [sourceCtrlId, soloedDst, voiceGroupIndex]
     )

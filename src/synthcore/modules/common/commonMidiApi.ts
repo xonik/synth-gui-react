@@ -165,7 +165,7 @@ export const paramSend: ParamSendFunc = (
         if (ctrl.range) {
             return (outputMapper || ccWithRangeMapper.output)(value, ctrl)
         } else {
-            return (outputMapper || ccMapper.output)(value, ctrl)
+            return (outputMapper || ccMapper.output)(value, ctrl, valueIndex)
         }
     }
 
