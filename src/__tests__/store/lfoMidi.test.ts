@@ -6,7 +6,8 @@ vi.mock('@/synthcore/synthcoreMiddleware', () => ({
 
 import { buttonMidiValues } from '@/midi/buttonMidiValues'
 import { button, cc, nrpn } from '@/midi/midibus'
-import { startLfoMidiReceive, startLfoMidiSend, stopLfoMidiReceive, stopLfoMidiSend } from '@/store/midi/lfoMidi'
+import { startLfoMidiReceive, stopLfoMidiReceive } from '@/store/midi/lfoMidiReceive'
+import { startLfoMidiSend, stopLfoMidiSend } from '@/store/midi/lfoMidiSend'
 import { createPatchStore, voiceGroupStores } from '@/store/patchStore'
 import { lfoCtrls } from '@/synthcore/modules/lfo/lfoControllers'
 
