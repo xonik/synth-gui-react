@@ -28,7 +28,11 @@ const VerticalRangeSelector = ({ setRange, value }: RangeProps) => {
             invert
             value={value}
             onChange={setRange}
-            renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
+            renderThumb={({ key, ...rest }, state) => (
+                <div key={key} {...rest}>
+                    {state.valueNow}
+                </div>
+            )}
         />
     )
 }

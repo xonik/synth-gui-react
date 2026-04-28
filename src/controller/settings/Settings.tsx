@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { sharedConfig } from '@/sharedConfig'
 import { CvOverrides } from './CvOverrides'
 import { CvRange } from './CvRange'
+import { DacSettings } from './DacSettings'
 import { MidiSettings } from './MidiSettings'
 import { SettingsButtons } from './SettingsButtons'
 import { Trimmers } from './Trimmers'
@@ -40,6 +41,9 @@ const Settings = () => {
         case 'Midi':
             content = <MidiSettings />
             break
+        case 'Dac':
+            content = <DacSettings voice={voice} />
+            break
         default:
             content = null
     }
@@ -61,6 +65,9 @@ const Settings = () => {
                 </div>
                 <div className={`settings-menu-item${selected === 'Midi' ? ' active' : ''}`} onClick={() => handleSelect('Midi')}>
                     Midi
+                </div>
+                <div className={`settings-menu-item${selected === 'Dac' ? ' active' : ''}`} onClick={() => handleSelect('Dac')}>
+                    Dac
                 </div>
                 <select
                     className="settings-menu-voices"
