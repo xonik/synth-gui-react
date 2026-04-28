@@ -17,7 +17,7 @@ const writeToFile = (path: string, contents: string) => {
 }
 
 const gitRoot = '/Users/joakim/git/xonik'
-const cppVoiceRoot = `${gitRoot}/xm8-voice-controller/xm8-voice-controller/`
+const cppVoiceRoot = `${gitRoot}/xm8-voice-controller/`
 const cppMainRoot = `${gitRoot}/xm8-main-controller/`
 
 const jsRoot = `${gitRoot}/synth-gui-react`
@@ -48,7 +48,7 @@ const cvs = parseCvDefinitionFile(cvPinsContents)
 const cvConfigContents = fs.readFileSync(`${cppVoiceRoot}src/physical/cv/cvConfig.h`, { encoding: 'utf8', flag: 'r' })
 const cvCount = parseCvConfigFile(cvConfigContents)
 
-const curveContents = fs.readFileSync(`${cppVoiceRoot}/curves.h`, { encoding: 'utf8', flag: 'r' })
+const curveContents = fs.readFileSync(`${cppVoiceRoot}src/curves.h`, { encoding: 'utf8', flag: 'r' })
 const curveEnums = parseCurves(curveContents)
 
 // Receivers on the voice and main controllers
