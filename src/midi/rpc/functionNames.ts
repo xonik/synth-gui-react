@@ -41,10 +41,5 @@ export enum FunctionNames {
   changeMidiSpeed = 37,
   toggleVoicePower = 38,
   voiceDacStopUpdates = 39,
-  voiceDacStartUpdates = 40,
-  voiceDacDisableInternalRef = 41,
-  voiceDacEnableInternalRefAPU = 42,
-  voiceDacEnableInternalRefDefaultMode = 43,
-  voiceDacPowerDown = 44,
-  voiceDacPowerUp = 45
+  voiceDacStartUpdates = 40
 }
