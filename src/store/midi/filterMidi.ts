@@ -54,6 +54,8 @@ const ccMappings: CCMapping[] = [
 const nrpnMappings: NrpnMapping[] = [
     // LPF
     { filterIndex: 0, field: 'wheelAmt', ctrl: filtersControllers.LPF.WHEEL_AMT },
+    // Shared (stored on filters[0])
+    { filterIndex: 0, field: 'lpfCutoffOffset', ctrl: filtersControllers.FILTERS.CUTOFF_OFFSET },
     // SVF
     { filterIndex: 1, field: 'wheelAmt', ctrl: filtersControllers.SVF.WHEEL_AMT },
 ]
@@ -102,7 +104,11 @@ export function startFilterMidiSend() {
 
                 for (const { filterIndex, field, ctrl } of nrpnMappings) {
                     if (state.filters[filterIndex][field] !== prev[filterIndex][field]) {
-                        nrpn.send(voiceGroupIndex, ctrl, Math.floor(65535 * state.filters[filterIndex][field]))
+                        const value = state.filters[filterIndex][field]
+                        const midiValue = ctrl.bipolar
+                            ? Math.floor((65535 * (value + 1)) / 2)
+                            : Math.floor(65535 * value)
+                        nrpn.send(voiceGroupIndex, ctrl, midiValue)
                     }
                 }
 
@@ -142,7 +148,9 @@ export function startFilterMidiReceive() {
 
     for (const { filterIndex, field, ctrl } of nrpnMappings) {
         const id = nrpn.subscribe((voiceGroupIndex: number, midiValue: number) => {
-            const value = midiValue / 65535
+            const value = ctrl.bipolar
+                ? (midiValue * 2) / 65535 - 1
+                : midiValue / 65535
             withMidiReceive(() => {
                 voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                     state.filters[filterIndex][field] = value

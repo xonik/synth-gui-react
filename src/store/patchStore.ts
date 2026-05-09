@@ -120,6 +120,7 @@ export interface FilterState {
     fmSrc: number
     invert: number
     linkCutoff: number
+    lpfCutoffOffset: number
     routing: number
 }
 
@@ -385,6 +386,7 @@ const defaultFilter = (): FilterState => ({
     fmSrc: 0,
     invert: 0,
     linkCutoff: 0,
+    lpfCutoffOffset: 0,
     routing: 0,
 })
 

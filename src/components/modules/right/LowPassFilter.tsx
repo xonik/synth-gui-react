@@ -9,6 +9,7 @@ import { ModuleBorder } from '../../misc/ModuleBorder'
 import SubHeader from '../../misc/SubHeader'
 import RotaryPot12 from '../../pots/RotaryPot12'
 import RotaryPot21 from '../../pots/RotaryPot21'
+import type { PotMode } from '../../pots/RotaryPotWithLedRingBase'
 import type { ModuleProps } from '../types'
 import './LowPassFilter.scss'
 import '../Modules.scss'
@@ -20,27 +21,32 @@ const FilterPot = ({
     y,
     label,
     ledMode = 'multi' as const,
+    potMode = 'normal' as const,
     ctrlId,
     selector,
     mutator,
+    bipolar,
     Large,
 }: {
     x: number
     y: number
     label: string
     ledMode?: 'single' | 'multi'
+    potMode?: PotMode
     ctrlId?: number
     selector: (s: VoiceGroupPatch) => number
     mutator: (s: VoiceGroupPatch, v: number) => void
+    bipolar?: boolean
     Large?: boolean
 }) => {
-    const { displayValue, increment } = usePot(selector, mutator)
+    const { displayValue, increment } = usePot(selector, mutator, bipolar ? { bipolar: true } : undefined)
     if (Large) {
         return (
             <RotaryPot21
                 x={x}
                 y={y}
                 ledMode={ledMode}
+                potMode={potMode}
                 label={label}
                 value={displayValue}
                 ctrlId={ctrlId}
@@ -48,7 +54,7 @@ const FilterPot = ({
             />
         )
     }
-    return <RotaryPot12 x={x} y={y} ledMode={ledMode} label={label} value={displayValue} ctrlId={ctrlId} onValueIncrement={increment} />
+    return <RotaryPot12 x={x} y={y} ledMode={ledMode} potMode={potMode} label={label} value={displayValue} ctrlId={ctrlId} onValueIncrement={increment} />
 }
 
 const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
@@ -103,9 +109,13 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
         (s) => s.filters[FILTER].linkCutoff,
         (s, v) => {
             s.filters[FILTER].linkCutoff = v
+            // Reset offset to center (0) on both enable and disable
+            s.filters[FILTER].lpfCutoffOffset = 0
         },
         2
     )
+
+    const isLinkCutoffOn = linkCutoffValue === 1
 
     return (
         <>
@@ -124,13 +134,17 @@ const LowPassFilter = ({ x, y, height, width }: ModuleProps) => {
                 x={col3}
                 y={centerRow}
                 ledMode="single"
-                label="Cutoff"
+                potMode={isLinkCutoffOn ? 'pan' : 'normal'}
+                bipolar={isLinkCutoffOn}
+                label={isLinkCutoffOn ? 'Offset' : 'Cutoff'}
                 Large
-                ctrlId={filtersControllers.LPF.CUTOFF.id}
-                selector={(s) => s.filters[FILTER].cutoff}
-                mutator={(s, v) => {
-                    s.filters[FILTER].cutoff = v
-                }}
+                ctrlId={isLinkCutoffOn ? filtersControllers.FILTERS.CUTOFF_OFFSET.id : filtersControllers.LPF.CUTOFF.id}
+                selector={isLinkCutoffOn
+                    ? (s) => s.filters[FILTER].lpfCutoffOffset
+                    : (s) => s.filters[FILTER].cutoff}
+                mutator={isLinkCutoffOn
+                    ? (s, v) => { s.filters[FILTER].lpfCutoffOffset = v }
+                    : (s, v) => { s.filters[FILTER].cutoff = v }}
             />
 
             <FilterPot

@@ -24,6 +24,7 @@ interface FiltersControllers {
     FILTERS: {
         props: FuncProps
         LINK_CUTOFF: ControllerConfigButton
+        CUTOFF_OFFSET: ControllerConfigNRPN
         ROUTING: ControllerConfigButton
     }
     SVF: {
@@ -157,6 +158,14 @@ const filtersControllers: FiltersControllers = {
             type: 'button',
             values: [buttonMidiValues.FILTER_LINK_CUTOFF_OFF, buttonMidiValues.FILTER_LINK_CUTOFF_ON],
             valueLabels: ['Off', 'On'],
+        },
+        CUTOFF_OFFSET: {
+            id: ControllerIdIntermediate.LPF_CUTOFF_OFFSET,
+            label: 'Cutoff offset',
+            shortLabel: 'Cut offs',
+            type: 'pot',
+            bipolar: true,
+            addr: NRPN.LPF_CUTOFF_OFFSET,
         },
         ROUTING: {
             id: ControllerIdNonMod.FILTERS_ROUTING,

@@ -341,71 +341,6 @@ export function dacStartUpdates(voice: number = VOICE_ALL) {
   sendSysex(sysexCommands.RPC, data)  
 }
 
-export function dacDisableInternalRef(voice: number = VOICE_ALL) {
-  const paramBytes: number[] = [
-    
-  ]
-  const data = [
-    ...splitInt8To7(voice),
-    ...splitTo7(FunctionNames.dacDisableInternalRef, 14),
-    ...paramBytes,
-  ]
-  logger.midi('RPC call to dacDisableInternalRef')
-  sendSysex(sysexCommands.RPC, data)  
-}
-
-export function dacEnableInternalRefAPU(voice: number = VOICE_ALL) {
-  const paramBytes: number[] = [
-    
-  ]
-  const data = [
-    ...splitInt8To7(voice),
-    ...splitTo7(FunctionNames.dacEnableInternalRefAPU, 14),
-    ...paramBytes,
-  ]
-  logger.midi('RPC call to dacEnableInternalRefAPU')
-  sendSysex(sysexCommands.RPC, data)  
-}
-
-export function dacEnableInternalRefDefaultMode(voice: number = VOICE_ALL) {
-  const paramBytes: number[] = [
-    
-  ]
-  const data = [
-    ...splitInt8To7(voice),
-    ...splitTo7(FunctionNames.dacEnableInternalRefDefaultMode, 14),
-    ...paramBytes,
-  ]
-  logger.midi('RPC call to dacEnableInternalRefDefaultMode')
-  sendSysex(sysexCommands.RPC, data)  
-}
-
-export function dacPowerDown(voice: number = VOICE_ALL) {
-  const paramBytes: number[] = [
-    
-  ]
-  const data = [
-    ...splitInt8To7(voice),
-    ...splitTo7(FunctionNames.dacPowerDown, 14),
-    ...paramBytes,
-  ]
-  logger.midi('RPC call to dacPowerDown')
-  sendSysex(sysexCommands.RPC, data)  
-}
-
-export function dacPowerUp(voice: number = VOICE_ALL) {
-  const paramBytes: number[] = [
-    
-  ]
-  const data = [
-    ...splitInt8To7(voice),
-    ...splitTo7(FunctionNames.dacPowerUp, 14),
-    ...paramBytes,
-  ]
-  logger.midi('RPC call to dacPowerUp')
-  sendSysex(sysexCommands.RPC, data)  
-}
-
 export function unisonDetuneFactor(factor: number, voice: number = VOICE_ALL) {
   const paramBytes: number[] = [
     ...jsToMidiEncoder['uint16_t'](factor)
@@ -651,6 +586,19 @@ export function voiceDacEnableInternalRefAPU(voiceCardId: number, voice: number 
     ...paramBytes,
   ]
   logger.midi('RPC call to voiceDacEnableInternalRefAPU')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
+export function voiceDacEnableInternalRefDefaultMode(voiceCardId: number, voice: number = VOICE_ALL) {
+  const paramBytes: number[] = [
+    ...jsToMidiEncoder['uint8_t'](voiceCardId)
+  ]
+  const data = [
+    ...splitInt8To7(voice),
+    ...splitTo7(FunctionNames.voiceDacEnableInternalRefDefaultMode, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to voiceDacEnableInternalRefDefaultMode')
   sendSysex(sysexCommands.RPC, data)  
 }
 

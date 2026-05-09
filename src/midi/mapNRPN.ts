@@ -26,6 +26,7 @@ const mapNRPN = {
     LPF_WHEEL_AMT: 24,
     ARP_BPM: 25,
     MASTER_CLOCK_RATE: 26,
+    LPF_CUTOFF_OFFSET: 27,
 }
 
 export default mapNRPN

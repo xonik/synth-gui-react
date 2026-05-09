@@ -85,8 +85,9 @@ const getLedPos = (centerLed: number, ledCount: number, mode: PotMode, position:
             return Math.abs(Math.ceil(position * (ledCount - 1) - 0.5))
         case 'pan': {
             // Done this way so that edge case for rounding is the same on both sides of center
-            // Pan is sentered when position is 0.5.
-            return centerLed + Math.round(centerLed * position)
+            // Pan is centered when position is 0. centerLed may be fractional for even ledCount,
+            // so round the final result to land on a valid integer LED index.
+            return Math.round(centerLed + centerLed * position)
         }
         case 'spread': {
             // Done this way so that edge case for rounding is the same on both sides of center

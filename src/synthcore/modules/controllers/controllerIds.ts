@@ -33,6 +33,7 @@ export enum ControllerIdIntermediate {
     LPF_ENV_AMT,
     LPF_LFO_AMT,
     LPF_KBD_AMT,
+    LPF_CUTOFF_OFFSET,
 
     SVF_FM_AMT,
     SVF_WHEEL_AMT,

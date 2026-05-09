@@ -262,6 +262,8 @@ export const nrpn = {
         data.push(CC.DATA_ENTRY_LSB)
         data.push(loValue)
 
+        console.log(`Sent ${value} as NRPN`)
+
         logger.midiMsg(data)
         if (midiOut) {
             midiOut.send(data)
