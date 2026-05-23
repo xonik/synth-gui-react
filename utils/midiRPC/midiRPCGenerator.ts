@@ -30,6 +30,8 @@ const voiceHeaderContents = fs.readFileSync(`${cppVoiceRoot}src/midiRPC/midiRPCF
     flag: 'r',
 })
 const voiceFuncs = parseCppHeaderFile(voiceHeaderContents)
+console.log('BOOOOOICES', voiceFuncs)
+
 
 // Functions that can be called on the main controller
 const mainHeaderContents = fs.readFileSync(`${cppMainRoot}src/midiRPC/midiRPCFunctions.h`, {

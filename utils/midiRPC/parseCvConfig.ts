@@ -8,7 +8,7 @@ export const parseCvConfigFile = (file: string): number => {
     throw Error('Could not find number of CVs')
 }
 
-const cvRegex = /^.*CV_CHANNELS=([0-9]+).*/
+const cvRegex = /^.*CV_CHANNELS = ([0-9]+).*/
 
 const parseLine = (line: string): number | undefined => {
     if (line.length > 0) {
