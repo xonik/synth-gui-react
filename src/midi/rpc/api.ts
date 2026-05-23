@@ -307,8 +307,6 @@ export function svfMeasureAmplitudeOnce(trimmerSettingRaw: number, windowUs: num
     ...jsToMidiEncoder['uint16_t'](trimmerSettingRaw),
     ...jsToMidiEncoder['uint32_t'](windowUs)
   ]
-
-  console.log(paramBytes)
   const data = [
     ...splitInt8To7(voice),
     ...splitTo7(FunctionNames.svfMeasureAmplitudeOnce, 14),
@@ -615,70 +613,5 @@ export function voiceDacStartUpdates(voiceCardId: number, voice: number = VOICE_
     ...paramBytes,
   ]
   logger.midi('RPC call to voiceDacStartUpdates')
-  sendSysex(sysexCommands.RPC, data)  
-}
-
-export function voiceDacDisableInternalRef(voiceCardId: number, voice: number = VOICE_ALL) {
-  const paramBytes: number[] = [
-    ...jsToMidiEncoder['uint8_t'](voiceCardId)
-  ]
-  const data = [
-    ...splitInt8To7(voice),
-    ...splitTo7(FunctionNames.voiceDacDisableInternalRef, 14),
-    ...paramBytes,
-  ]
-  logger.midi('RPC call to voiceDacDisableInternalRef')
-  sendSysex(sysexCommands.RPC, data)  
-}
-
-export function voiceDacEnableInternalRefAPU(voiceCardId: number, voice: number = VOICE_ALL) {
-  const paramBytes: number[] = [
-    ...jsToMidiEncoder['uint8_t'](voiceCardId)
-  ]
-  const data = [
-    ...splitInt8To7(voice),
-    ...splitTo7(FunctionNames.voiceDacEnableInternalRefAPU, 14),
-    ...paramBytes,
-  ]
-  logger.midi('RPC call to voiceDacEnableInternalRefAPU')
-  sendSysex(sysexCommands.RPC, data)  
-}
-
-export function voiceDacEnableInternalRefDefaultMode(voiceCardId: number, voice: number = VOICE_ALL) {
-  const paramBytes: number[] = [
-    ...jsToMidiEncoder['uint8_t'](voiceCardId)
-  ]
-  const data = [
-    ...splitInt8To7(voice),
-    ...splitTo7(FunctionNames.voiceDacEnableInternalRefDefaultMode, 14),
-    ...paramBytes,
-  ]
-  logger.midi('RPC call to voiceDacEnableInternalRefDefaultMode')
-  sendSysex(sysexCommands.RPC, data)  
-}
-
-export function voiceDacPowerDown(voiceCardId: number, voice: number = VOICE_ALL) {
-  const paramBytes: number[] = [
-    ...jsToMidiEncoder['uint8_t'](voiceCardId)
-  ]
-  const data = [
-    ...splitInt8To7(voice),
-    ...splitTo7(FunctionNames.voiceDacPowerDown, 14),
-    ...paramBytes,
-  ]
-  logger.midi('RPC call to voiceDacPowerDown')
-  sendSysex(sysexCommands.RPC, data)  
-}
-
-export function voiceDacPowerUp(voiceCardId: number, voice: number = VOICE_ALL) {
-  const paramBytes: number[] = [
-    ...jsToMidiEncoder['uint8_t'](voiceCardId)
-  ]
-  const data = [
-    ...splitInt8To7(voice),
-    ...splitTo7(FunctionNames.voiceDacPowerUp, 14),
-    ...paramBytes,
-  ]
-  logger.midi('RPC call to voiceDacPowerUp')
   sendSysex(sysexCommands.RPC, data)  
 }
