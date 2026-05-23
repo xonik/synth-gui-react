@@ -307,6 +307,8 @@ export function svfMeasureAmplitudeOnce(trimmerSettingRaw: number, windowUs: num
     ...jsToMidiEncoder['uint16_t'](trimmerSettingRaw),
     ...jsToMidiEncoder['uint32_t'](windowUs)
   ]
+
+  console.log(paramBytes)
   const data = [
     ...splitInt8To7(voice),
     ...splitTo7(FunctionNames.svfMeasureAmplitudeOnce, 14),
