@@ -316,6 +316,19 @@ export function svfMeasureAmplitudeOnce(trimmerSettingRaw: number, windowUs: num
   sendSysex(sysexCommands.RPC, data)  
 }
 
+export function svfFindPeak(voice: number = VOICE_ALL) {
+  const paramBytes: number[] = [
+    
+  ]
+  const data = [
+    ...splitInt8To7(voice),
+    ...splitTo7(FunctionNames.svfFindPeak, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to svfFindPeak')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
 export function svfMeasureVRefAll(voice: number = VOICE_ALL) {
   const paramBytes: number[] = [
     
