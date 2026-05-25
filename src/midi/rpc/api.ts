@@ -329,6 +329,20 @@ export function svfFindPeak(precisionBits: number, voice: number = VOICE_ALL) {
   sendSysex(sysexCommands.RPC, data)  
 }
 
+export function svfMeasureVRefAt(midiNote: number, precisionBits: number, voice: number = VOICE_ALL) {
+  const paramBytes: number[] = [
+    ...jsToMidiEncoder['uint8_t'](midiNote),
+    ...jsToMidiEncoder['uint8_t'](precisionBits)
+  ]
+  const data = [
+    ...splitInt8To7(voice),
+    ...splitTo7(FunctionNames.svfMeasureVRefAt, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to svfMeasureVRefAt')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
 export function svfMeasureVRefAll(voice: number = VOICE_ALL) {
   const paramBytes: number[] = [
     

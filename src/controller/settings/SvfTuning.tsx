@@ -2,7 +2,7 @@ import { useState } from 'react'
 import {
     svfFindPeak,
     svfMeasureAmplitudeOnce,
-    svfMeasureVRefAll,
+    svfMeasureVRefAt,
     svfSearchCutoffOne,
     tuneSvf,
 } from '@/midi/rpc/api'
@@ -17,6 +17,7 @@ export const SvfTuning = ({ voice }: Props) => {
     const [windowUs, setWindowUs] = useState(0)
     const [octave, setOctave] = useState(0)
     const [precisionBits, setPrecisionBits] = useState(16)
+    const [vRefNote, setVRefNote] = useState(64)
 
     return (
         <div className="settings-buttons">
@@ -26,8 +27,18 @@ export const SvfTuning = ({ voice }: Props) => {
                     <Button active onClick={() => tuneSvf(voice)}>
                         Tune
                     </Button>
-                    <Button active onClick={() => svfMeasureVRefAll(voice)}>
-                        Measure VRef all
+                    <label className="svf-tuning__field">
+                        VRef note (0-127)
+                        <input
+                            type="number"
+                            min={0}
+                            max={127}
+                            value={vRefNote}
+                            onChange={(e) => setVRefNote(Number(e.target.value))}
+                        />
+                    </label>
+                    <Button active onClick={() => svfMeasureVRefAt(vRefNote, precisionBits, voice)}>
+                        Measure VRef at
                     </Button>
                     <label className="svf-tuning__field">
                         Precision bits (1-16)
