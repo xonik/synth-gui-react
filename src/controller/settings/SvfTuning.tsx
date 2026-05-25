@@ -16,7 +16,7 @@ export const SvfTuning = ({ voice }: Props) => {
     const [trimmerSettingRaw, setTrimmerSettingRaw] = useState(0)
     const [windowUs, setWindowUs] = useState(0)
     const [octave, setOctave] = useState(0)
-    const [precisionBits, setPrecisionBits] = useState(0)
+    const [precisionBits, setPrecisionBits] = useState(16)
 
     return (
         <div className="settings-buttons">
@@ -30,11 +30,11 @@ export const SvfTuning = ({ voice }: Props) => {
                         Measure VRef all
                     </Button>
                     <label className="svf-tuning__field">
-                        Precision bits (0-255)
+                        Precision bits (1-16)
                         <input
                             type="number"
-                            min={0}
-                            max={255}
+                            min={1}
+                            max={16}
                             value={precisionBits}
                             onChange={(e) => setPrecisionBits(Number(e.target.value))}
                         />
