@@ -16,9 +16,11 @@ type Props = { voice: number }
 export const SvfTuning = ({ voice }: Props) => {
     const [trimmerSettingRaw, setTrimmerSettingRaw] = useState(0)
     const [windowUs, setWindowUs] = useState(0)
-    const [octave, setOctave] = useState(0)
+    const [searchMidiNote, setSearchMidiNote] = useState(64)
     const [precisionBits, setPrecisionBits] = useState(16)
     const [vRefNote, setVRefNote] = useState(64)
+    const [searchPrecisionBits, setSearchPrecisionBits] = useState(12)
+    const [vRefMilliVolts, setVRefMilliVolts] = useState(0)
 
     return (
         <div className="settings-buttons">
@@ -86,16 +88,34 @@ export const SvfTuning = ({ voice }: Props) => {
                 <div className="settings-buttons__column">
                     <div className="settings-buttons__column-heading">Search cutoff</div>
                     <label className="svf-tuning__field">
-                        Octave (0-255)
+                        Midi note (0-127)
                         <input
                             type="number"
                             min={0}
-                            max={255}
-                            value={octave}
-                            onChange={(e) => setOctave(Number(e.target.value))}
+                            max={127}
+                            value={searchMidiNote}
+                            onChange={(e) => setSearchMidiNote(Number(e.target.value))}
                         />
                     </label>
-                    <Button active onClick={() => svfSearchCutoffOne(octave, voice)}>
+                    <label className="svf-tuning__field">
+                        VRef (mV)
+                        <input
+                            type="number"
+                            min={0}
+                            value={vRefMilliVolts}
+                            onChange={(e) => setVRefMilliVolts(Number(e.target.value))}
+                        />
+                    </label>
+                    <label className="svf-tuning__field">
+                        Precision bits
+                        <input
+                            type="number"
+                            min={0}
+                            value={searchPrecisionBits}
+                            onChange={(e) => setSearchPrecisionBits(Number(e.target.value))}
+                        />
+                    </label>
+                    <Button active onClick={() => svfSearchCutoffOne(searchMidiNote, vRefMilliVolts, searchPrecisionBits, voice)}>
                         Search cutoff one
                     </Button>
                 </div>

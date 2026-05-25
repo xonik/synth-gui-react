@@ -356,9 +356,11 @@ export function svfMeasureVRefAll(precisionBits: number, voice: number = VOICE_A
   sendSysex(sysexCommands.RPC, data)  
 }
 
-export function svfSearchCutoffOne(octave: number, voice: number = VOICE_ALL) {
+export function svfSearchCutoffOne(midiNote: number, vRefMilliVolts: number, precisionBits: number, voice: number = VOICE_ALL) {
   const paramBytes: number[] = [
-    ...jsToMidiEncoder['uint8_t'](octave)
+    ...jsToMidiEncoder['uint8_t'](midiNote),
+    ...jsToMidiEncoder['uint16_t'](vRefMilliVolts),
+    ...jsToMidiEncoder['uint8_t'](precisionBits)
   ]
   const data = [
     ...splitInt8To7(voice),
