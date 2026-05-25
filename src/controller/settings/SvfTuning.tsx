@@ -2,6 +2,7 @@ import { useState } from 'react'
 import {
     svfFindPeak,
     svfMeasureAmplitudeOnce,
+    svfMeasureVRefAll,
     svfMeasureVRefAt,
     svfSearchCutoffOne,
     tuneSvf,
@@ -52,6 +53,9 @@ export const SvfTuning = ({ voice }: Props) => {
                     </label>
                     <Button active onClick={() => svfFindPeak(precisionBits, voice)}>
                         Find peak
+                    </Button>
+                    <Button active onClick={() => svfMeasureVRefAll(precisionBits, voice)}>
+                        Measure VRef all
                     </Button>
                 </div>
                 <div className="settings-buttons__column">

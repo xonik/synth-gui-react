@@ -343,9 +343,9 @@ export function svfMeasureVRefAt(midiNote: number, precisionBits: number, voice:
   sendSysex(sysexCommands.RPC, data)  
 }
 
-export function svfMeasureVRefAll(voice: number = VOICE_ALL) {
+export function svfMeasureVRefAll(precisionBits: number, voice: number = VOICE_ALL) {
   const paramBytes: number[] = [
-    
+    ...jsToMidiEncoder['uint8_t'](precisionBits)
   ]
   const data = [
     ...splitInt8To7(voice),
