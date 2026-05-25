@@ -289,9 +289,9 @@ export function manualTuneVcoStop(voice: number = VOICE_ALL) {
   sendSysex(sysexCommands.RPC, data)  
 }
 
-export function tuneSvf(voice: number = VOICE_ALL) {
+export function tuneSvf(precisionBits: number, voice: number = VOICE_ALL) {
   const paramBytes: number[] = [
-    
+    ...jsToMidiEncoder['uint8_t'](precisionBits)
   ]
   const data = [
     ...splitInt8To7(voice),

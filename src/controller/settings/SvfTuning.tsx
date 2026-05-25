@@ -27,7 +27,17 @@ export const SvfTuning = ({ voice }: Props) => {
             <div className="settings-buttons__columns">
                 <div className="settings-buttons__column">
                     <div className="settings-buttons__column-heading">SVF</div>
-                    <Button active onClick={() => tuneSvf(voice)}>
+                    <label className="svf-tuning__field">
+                        Precision bits (1-16)
+                        <input
+                            type="number"
+                            min={1}
+                            max={16}
+                            value={precisionBits}
+                            onChange={(e) => setPrecisionBits(Number(e.target.value))}
+                        />
+                    </label>
+                    <Button active onClick={() => tuneSvf(precisionBits, voice)}>
                         Tune
                     </Button>
                     <label className="svf-tuning__field">
@@ -43,16 +53,6 @@ export const SvfTuning = ({ voice }: Props) => {
                     <Button active onClick={() => svfMeasureVRefAt(vRefNote, precisionBits, voice)}>
                         Measure VRef at
                     </Button>
-                    <label className="svf-tuning__field">
-                        Precision bits (1-16)
-                        <input
-                            type="number"
-                            min={1}
-                            max={16}
-                            value={precisionBits}
-                            onChange={(e) => setPrecisionBits(Number(e.target.value))}
-                        />
-                    </label>
                     <Button active onClick={() => svfFindPeak(precisionBits, voice)}>
                         Find peak
                     </Button>
