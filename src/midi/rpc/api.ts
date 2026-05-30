@@ -289,8 +289,9 @@ export function manualTuneVcoStop(voice: number = VOICE_ALL) {
   sendSysex(sysexCommands.RPC, data)  
 }
 
-export function tuneSvf(precisionBits: number, voice: number = VOICE_ALL) {
+export function tuneSvf(target: number, precisionBits: number, voice: number = VOICE_ALL) {
   const paramBytes: number[] = [
+    ...jsToMidiEncoder['uint8_t'](target),
     ...jsToMidiEncoder['uint8_t'](precisionBits)
   ]
   const data = [
@@ -316,8 +317,9 @@ export function svfMeasureAmplitudeOnce(trimmerSettingRaw: number, windowUs: num
   sendSysex(sysexCommands.RPC, data)  
 }
 
-export function svfFindPeak(precisionBits: number, voice: number = VOICE_ALL) {
+export function svfFindPeak(target: number, precisionBits: number, voice: number = VOICE_ALL) {
   const paramBytes: number[] = [
+    ...jsToMidiEncoder['uint8_t'](target),
     ...jsToMidiEncoder['uint8_t'](precisionBits)
   ]
   const data = [
@@ -329,8 +331,9 @@ export function svfFindPeak(precisionBits: number, voice: number = VOICE_ALL) {
   sendSysex(sysexCommands.RPC, data)  
 }
 
-export function svfMeasureVRefAt(midiNote: number, precisionBits: number, voice: number = VOICE_ALL) {
+export function svfMeasureVRefAt(target: number, midiNote: number, precisionBits: number, voice: number = VOICE_ALL) {
   const paramBytes: number[] = [
+    ...jsToMidiEncoder['uint8_t'](target),
     ...jsToMidiEncoder['uint8_t'](midiNote),
     ...jsToMidiEncoder['uint8_t'](precisionBits)
   ]
@@ -343,8 +346,9 @@ export function svfMeasureVRefAt(midiNote: number, precisionBits: number, voice:
   sendSysex(sysexCommands.RPC, data)  
 }
 
-export function svfMeasureVRefAll(precisionBits: number, voice: number = VOICE_ALL) {
+export function svfMeasureVRefAll(target: number, precisionBits: number, voice: number = VOICE_ALL) {
   const paramBytes: number[] = [
+    ...jsToMidiEncoder['uint8_t'](target),
     ...jsToMidiEncoder['uint8_t'](precisionBits)
   ]
   const data = [
@@ -356,8 +360,9 @@ export function svfMeasureVRefAll(precisionBits: number, voice: number = VOICE_A
   sendSysex(sysexCommands.RPC, data)  
 }
 
-export function svfSearchCutoffOne(midiNote: number, vRefMilliVolts: number, precisionBits: number, voice: number = VOICE_ALL) {
+export function svfSearchCutoffOne(target: number, midiNote: number, vRefMilliVolts: number, precisionBits: number, voice: number = VOICE_ALL) {
   const paramBytes: number[] = [
+    ...jsToMidiEncoder['uint8_t'](target),
     ...jsToMidiEncoder['uint8_t'](midiNote),
     ...jsToMidiEncoder['uint16_t'](vRefMilliVolts),
     ...jsToMidiEncoder['uint8_t'](precisionBits)
