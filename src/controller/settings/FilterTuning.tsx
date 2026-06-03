@@ -9,7 +9,7 @@ import {
 } from '@/midi/rpc/api'
 import Button from '../components/Button'
 import './SettingsButtons.scss'
-import './SvfTuning.scss'
+import './FilterTuning.scss'
 
 enum FilterTarget {
     FT_SVF_LP12 = 0,
@@ -29,22 +29,22 @@ const filterTargetLabels: Record<FilterTarget, string> = {
     [FilterTarget.FT_LPF_MOOG_24]: 'LPF Moog 24',
 }
 
-type SvfActionKey = 'tune' | 'findPeak' | 'measureVRefAll' | 'measureVRefAt'
+type TuneActionKey = 'tune' | 'findPeak' | 'measureVRefAll' | 'measureVRefAt'
 
-const svfActionLabels: Record<SvfActionKey, string> = {
-    tune: 'Tune SVF',
+const tuneActionLabels: Record<TuneActionKey, string> = {
+    tune: 'Tune',
     findPeak: 'Find peak',
     measureVRefAll: 'Measure VRef all',
     measureVRefAt: 'Measure VRef at',
 }
 
-const svfActionKeys = Object.keys(svfActionLabels) as SvfActionKey[]
+const tuneActionKeys = Object.keys(tuneActionLabels) as TuneActionKey[]
 
 type Props = { voice: number }
 
-export const SvfTuning = ({ voice }: Props) => {
+export const FilterTuning = ({ voice }: Props) => {
     const [target, setTarget] = useState<FilterTarget>(FilterTarget.FT_SVF_LP12)
-    const [svfAction, setSvfAction] = useState<SvfActionKey>('tune')
+    const [tuneAction, setTuneAction] = useState<TuneActionKey>('tune')
     const [trimmerSettingRaw, setTrimmerSettingRaw] = useState(0)
     const [windowUs, setWindowUs] = useState(0)
     const [searchMidiNote, setSearchMidiNote] = useState(64)
@@ -54,7 +54,7 @@ export const SvfTuning = ({ voice }: Props) => {
     const [vRefMilliVolts, setVRefMilliVolts] = useState(0)
 
     const renderFilterTargetSelect = () => (
-        <label className="svf-tuning__field">
+        <label className="filter-tuning__field">
             Filter target
             <select
                 value={target}
@@ -69,8 +69,8 @@ export const SvfTuning = ({ voice }: Props) => {
         </label>
     )
 
-    const executeSvfAction = () => {
-        switch (svfAction) {
+    const executeTuneAction = () => {
+        switch (tuneAction) {
             case 'tune': tuneSvf(target, precisionBits, voice); break
             case 'findPeak': svfFindPeak(target, precisionBits, voice); break
             case 'measureVRefAll': svfMeasureVRefAll(target, precisionBits, voice); break
@@ -79,13 +79,13 @@ export const SvfTuning = ({ voice }: Props) => {
     }
 
     return (
-        <div className="settings-buttons svf-tuning">
+        <div className="settings-buttons filter-tuning">
             <div className="settings-buttons__columns">
                 <div className="settings-buttons__column">
-                    <div className="settings-buttons__column-heading">SVF tuning</div>
+                    <div className="settings-buttons__column-heading">Tuning</div>
                     {renderFilterTargetSelect()}
-                    <div className="svf-tuning__row">
-                        <label className="svf-tuning__field">
+                    <div className="filter-tuning__row">
+                        <label className="filter-tuning__field">
                             Bits
                             <input
                                 type="number"
@@ -95,7 +95,7 @@ export const SvfTuning = ({ voice }: Props) => {
                                 onChange={(e) => setPrecisionBits(Number(e.target.value))}
                             />
                         </label>
-                        <label className="svf-tuning__field">
+                        <label className="filter-tuning__field">
                             VRef note
                             <input
                                 type="number"
@@ -106,24 +106,24 @@ export const SvfTuning = ({ voice }: Props) => {
                             />
                         </label>
                     </div>
-                    <label className="svf-tuning__field">
+                    <label className="filter-tuning__field">
                         Action
                         <select
-                            value={svfAction}
-                            onChange={(e) => setSvfAction(e.target.value as SvfActionKey)}
+                            value={tuneAction}
+                            onChange={(e) => setTuneAction(e.target.value as TuneActionKey)}
                         >
-                            {svfActionKeys.map((key) => (
-                                <option key={key} value={key}>{svfActionLabels[key]}</option>
+                            {tuneActionKeys.map((key) => (
+                                <option key={key} value={key}>{tuneActionLabels[key]}</option>
                             ))}
                         </select>
                     </label>
-                    <Button active onClick={executeSvfAction}>
+                    <Button active onClick={executeTuneAction}>
                         Execute
                     </Button>
                 </div>
                 <div className="settings-buttons__column">
                     <div className="settings-buttons__column-heading">Amplitude</div>
-                    <label className="svf-tuning__field">
+                    <label className="filter-tuning__field">
                         Trimmer raw
                         <input
                             type="number"
@@ -133,7 +133,7 @@ export const SvfTuning = ({ voice }: Props) => {
                             onChange={(e) => setTrimmerSettingRaw(Number(e.target.value))}
                         />
                     </label>
-                    <label className="svf-tuning__field">
+                    <label className="filter-tuning__field">
                         Window (us)
                         <input
                             type="number"
@@ -149,8 +149,8 @@ export const SvfTuning = ({ voice }: Props) => {
                 <div className="settings-buttons__column">
                     <div className="settings-buttons__column-heading">Search cutoff</div>
                     {renderFilterTargetSelect()}
-                    <div className="svf-tuning__row">
-                        <label className="svf-tuning__field">
+                    <div className="filter-tuning__row">
+                        <label className="filter-tuning__field">
                             Bits
                             <input
                                 type="number"
@@ -159,7 +159,7 @@ export const SvfTuning = ({ voice }: Props) => {
                                 onChange={(e) => setSearchPrecisionBits(Number(e.target.value))}
                             />
                         </label>
-                        <label className="svf-tuning__field">
+                        <label className="filter-tuning__field">
                             VRef (mV)
                             <input
                                 type="number"
@@ -169,7 +169,7 @@ export const SvfTuning = ({ voice }: Props) => {
                             />
                         </label>
                     </div>
-                    <label className="svf-tuning__field">
+                    <label className="filter-tuning__field">
                         Midi note
                         <input
                             type="number"

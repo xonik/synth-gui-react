@@ -1,6 +1,6 @@
 @import '../constants';
 
-.settings-buttons.svf-tuning {
+.settings-buttons.filter-tuning {
   width: 100%;
   box-sizing: border-box;
   padding: 0 1em;
@@ -16,12 +16,12 @@
   }
 }
 
-.svf-tuning__row {
+.filter-tuning__row {
   display: flex;
   flex-direction: row;
   gap: 0.5em;
 
-  .svf-tuning__field {
+  .filter-tuning__field {
     flex: 1;
     min-width: 0;
   }
@@ -32,7 +32,7 @@
   }
 }
 
-.svf-tuning__field {
+.filter-tuning__field {
   display: flex;
   flex-direction: column;
   color: $text-bright;
