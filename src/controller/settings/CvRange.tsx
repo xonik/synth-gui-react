@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 import ReactSlider from 'react-slider'
 import { curveNames } from '@/components/curves/shortCurveNames'
-import { saveCvMapping, saveCvMappings, setCvParams, VOICE_ALL } from '@/midi/rpc/api'
+import { clearCvMapping, saveCvMapping, saveCvMappings, setCvParams, VOICE_ALL } from '@/midi/rpc/api'
 import { sharedConfig } from '@/sharedConfig'
 import { Curve } from '@/synthcore/generatedTypes'
 import { CV_CHANNELS, CVs } from './CvDefinitions'
@@ -200,6 +200,7 @@ function sendAll(voice: number, cvRanges: CvRange[], i: number) {
 export const CvRange = ({ voice }: Props) => {
     const [allCvs, setAllCvs] = useState<CvRange[][]>(load())
     const [cv, setCv] = useState<number>(0)
+    const [clearCv, setClearCv] = useState<number>(0)
     const [saved, setSaved] = useState<boolean[][]>(
         Array.from({ length: sharedConfig.VOICE_COUNT.value }, getInitialSaved)
     )
@@ -363,20 +364,33 @@ export const CvRange = ({ voice }: Props) => {
                     reverse={currentCvs[cv].reverse}
                 />
                 <VerticalRangeSelector setRange={updateEnd} value={currentCvs[cv].end} />
+                <div className="cv-range__side-buttons">
+                    <button type="button" disabled={currentSaved[cv]} onClick={onSave}>
+                        Save
+                    </button>
+                    <button type="button" disabled={currentSaved[cv]} onClick={onReset}>
+                        Reset
+                    </button>
+                    <button type="button" onClick={onLoadAll}>
+                        Ld all
+                    </button>
+                    <input
+                        type="number"
+                        min={0}
+                        max={63}
+                        value={clearCv}
+                        onChange={(e) => setClearCv(Number(e.target.value))}
+                        className="cv-range__clear-input"
+                    />
+                    <button type="button" onClick={() => clearCvMapping(clearCv, voice)}>
+                        Clear map
+                    </button>
+                </div>
             </div>
             <div className="cv-range__params">
                 <CvCurveSelector onSelect={updateCurve} curve={currentCvs[cv].curve} />
                 <CvSelector onSelect={setCv} cv={cv} />
                 <CvReverseCheckbox onChange={updateReverse} reverse={currentCvs[cv].reverse} />
-                <button type="button" disabled={currentSaved[cv]} onClick={onSave}>
-                    Save
-                </button>
-                <button type="button" disabled={currentSaved[cv]} onClick={onReset}>
-                    Reset
-                </button>
-                <button type="button" onClick={onLoadAll}>
-                    Ld all
-                </button>
                 <div className="cv-range__nowrap">
                     V: {getAsVolts(currentCvs[cv].start)} - {getAsVolts(currentCvs[cv].end)}
                 </div>

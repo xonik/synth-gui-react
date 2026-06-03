@@ -67,7 +67,7 @@ const Settings = () => {
                     Midi
                 </div>
                 <div className={`settings-menu-item${selected === 'Svf' ? ' active' : ''}`} onClick={() => handleSelect('Svf')}>
-                    Svf
+                    Filter
                 </div>
                 <select
                     className="settings-menu-voices"

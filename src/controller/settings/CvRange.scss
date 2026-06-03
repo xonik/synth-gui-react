@@ -37,6 +37,29 @@
     border-radius: 2px;
   }
 
+  &__side-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    align-self: flex-start;
+    padding-top: 0.25rem;
+
+    button {
+      white-space: nowrap;
+    }
+  }
+
+  &__clear-input {
+    width: 4rem;
+    background: $bg-darkest;
+    color: $text-bright;
+    border: 1px solid $bg-highlight;
+    border-radius: 3px;
+    padding: 0.2em 0.4em;
+    font: inherit;
+    box-sizing: border-box;
+  }
+
   &__params {
     color: $text-bright;
     display: flex;
@@ -51,7 +74,8 @@
     }
   }
   &__graph {
-    width: 100%;
+    flex: 1;
+    min-width: 0;
     height: 90%;
     margin: 0.5rem;
   }

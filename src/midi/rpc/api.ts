@@ -118,6 +118,19 @@ export function loadCvMappings(voice: number = VOICE_ALL) {
   sendSysex(sysexCommands.RPC, data)  
 }
 
+export function clearCvMapping(cv: number, voice: number = VOICE_ALL) {
+  const paramBytes: number[] = [
+    ...jsToMidiEncoder['uint8_t'](cv)
+  ]
+  const data = [
+    ...splitInt8To7(voice),
+    ...splitTo7(FunctionNames.clearCvMapping, 14),
+    ...paramBytes,
+  ]
+  logger.midi('RPC call to clearCvMapping')
+  sendSysex(sysexCommands.RPC, data)  
+}
+
 export function setTrimmerSetting(trimmer: number, value: number, voice: number = VOICE_ALL) {
   const paramBytes: number[] = [
     ...jsToMidiEncoder['uint8_t'](trimmer),

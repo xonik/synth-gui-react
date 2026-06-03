@@ -1,7 +1,35 @@
 @import '../constants';
 
-.svf-tuning__target {
-  margin-bottom: 1em;
+.settings-buttons.svf-tuning {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 1em;
+
+  .settings-buttons__columns {
+    gap: 1em;
+  }
+
+  .settings-buttons__column {
+    flex: 1 1 0;
+    min-width: 0;
+    margin: 0;
+  }
+}
+
+.svf-tuning__row {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+
+  .svf-tuning__field {
+    flex: 1;
+    min-width: 0;
+  }
+
+  input {
+    width: 100%;
+    box-sizing: border-box;
+  }
 }
 
 .svf-tuning__field {
