@@ -4,8 +4,10 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  width: 16em;
+  width: 100%;
   height: 100%;
+  box-sizing: border-box;
+  padding: 0 1em;
 
   &__column-heading {
     color: $accent-primary;
@@ -14,14 +16,6 @@
     margin-bottom: 0.5em;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-  }
-
-  &__column {
-    background: $bg-dark;
-    border-radius: 6px;
-    padding: 1em;
-    margin: 0 0.5em;
-    border: 1px solid $bg-highlight;
   }
 
   .gui-ctrl-button {
@@ -35,14 +29,19 @@
 
   &__columns {
     display: flex;
-    gap: 24px;
+    gap: 1em;
     margin-top: 12px;
   }
 
   &__column {
+    background: $bg-dark;
+    border-radius: 6px;
+    padding: 1em;
+    border: 1px solid $bg-highlight;
     display: flex;
     flex-direction: column;
     gap: 12px;
-    width: 100%;
+    flex: 1 1 0;
+    min-width: 0;
   }
 }
