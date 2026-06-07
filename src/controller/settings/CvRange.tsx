@@ -4,6 +4,7 @@ import { curveNames } from '@/components/curves/shortCurveNames'
 import { clearCvMapping, saveCvMapping, saveCvMappings, setCvParams, VOICE_ALL } from '@/midi/rpc/api'
 import { sharedConfig } from '@/sharedConfig'
 import { Curve } from '@/synthcore/generatedTypes'
+import Button from '../components/Button'
 import { CV_CHANNELS, CVs } from './CvDefinitions'
 import CvResponseCurve from './CvResponseCurve'
 import { curveValuesUsed } from './generatedTypes'
@@ -91,7 +92,7 @@ const CvCurveSelector = ({ onSelect, curve }: CvCurveSelectorProps) => {
     )
 
     return (
-        <select onChange={onOptionChangeHandler} value={curve}>
+        <select onChange={onOptionChangeHandler} value={curve} className={'cv-range__cv-selector'}>
             {curveValuesUsed.map((curve: Curve) => {
                 return (
                     <option key={curve} value={curve}>
@@ -355,25 +356,22 @@ export const CvRange = ({ voice }: Props) => {
 
     return (
         <div className="cv-range">
-            <div className="cv-range__graph-controls">
-                <VerticalRangeSelector setRange={updateStart} value={currentCvs[cv].start} />
-                <CvResponseCurve
-                    start={currentCvs[cv].start}
-                    end={currentCvs[cv].end}
-                    curve={currentCvs[cv].curve}
-                    reverse={currentCvs[cv].reverse}
-                />
-                <VerticalRangeSelector setRange={updateEnd} value={currentCvs[cv].end} />
+            <div className="cv-range__main">
+                <div className="cv-range__graph-controls">
+                    <VerticalRangeSelector setRange={updateStart} value={currentCvs[cv].start} />
+                    <CvResponseCurve
+                        start={currentCvs[cv].start}
+                        end={currentCvs[cv].end}
+                        curve={currentCvs[cv].curve}
+                        reverse={currentCvs[cv].reverse}
+                    />
+                    <VerticalRangeSelector setRange={updateEnd} value={currentCvs[cv].end} />
+                </div>
                 <div className="cv-range__side-buttons">
-                    <button type="button" disabled={currentSaved[cv]} onClick={onSave}>
-                        Save
-                    </button>
-                    <button type="button" disabled={currentSaved[cv]} onClick={onReset}>
-                        Reset
-                    </button>
-                    <button type="button" onClick={onLoadAll}>
+                    <div className="cv-range__side-buttons__heading">Memory</div>
+                    <Button active onClick={onLoadAll}>
                         Ld all
-                    </button>
+                    </Button>
                     <input
                         type="number"
                         min={0}
@@ -382,9 +380,9 @@ export const CvRange = ({ voice }: Props) => {
                         onChange={(e) => setClearCv(Number(e.target.value))}
                         className="cv-range__clear-input"
                     />
-                    <button type="button" onClick={() => clearCvMapping(clearCv, voice)}>
+                    <Button active onClick={() => clearCvMapping(clearCv, voice)}>
                         Clear map
-                    </button>
+                    </Button>
                 </div>
             </div>
             <div className="cv-range__params">
@@ -393,6 +391,22 @@ export const CvRange = ({ voice }: Props) => {
                 <CvReverseCheckbox onChange={updateReverse} reverse={currentCvs[cv].reverse} />
                 <div className="cv-range__nowrap">
                     V: {getAsVolts(currentCvs[cv].start)} - {getAsVolts(currentCvs[cv].end)}
+                </div>
+                <div className="cv-range__params__actions">
+                    <Button
+                        active={!currentSaved[cv]}
+                        disabled={currentSaved[cv]}
+                        onClick={currentSaved[cv] ? () => {} : onSave}
+                    >
+                        Save
+                    </Button>
+                    <Button
+                        active={!currentSaved[cv]}
+                        disabled={currentSaved[cv]}
+                        onClick={currentSaved[cv] ? () => {} : onReset}
+                    >
+                        Reset
+                    </Button>
                 </div>
             </div>
         </div>

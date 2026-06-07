@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react'
 import ReactSlider from 'react-slider'
 import { releaseCVOverride, releaseCVOverrides, setCVOverride, VOICE_ALL } from '../../midi/rpc/api'
 import { sharedConfig } from '../../sharedConfig'
+import Button from '../components/Button'
 import { CV_CHANNELS, CVs } from './CvDefinitions'
 import './CvRange.scss'
 
@@ -43,7 +44,7 @@ const CvSelector = ({ onSelect, cv }: CvSelectorProps) => {
     )
 
     return (
-        <select onChange={onOptionChangeHandler} value={cv}>
+        <select onChange={onOptionChangeHandler} value={cv} className={'cv-range__cv-selector'}>
             {CVs.map((cv) => (
                 <option key={cv.channel} value={cv.channel}>
                     {cv.description} ({cv.channel})
@@ -111,18 +112,22 @@ export const CvOverrides = ({ voice }: Props) => {
 
     return (
         <div className="cv-range">
-            <div className="cv-range__graph-controls">
-                <VerticalSelector setRange={updateCV} value={currentCVs[cv].value} />
+            <div className="cv-range__main">
+                <div className="cv-range__graph-controls">
+                    <VerticalSelector setRange={updateCV} value={currentCVs[cv].value} />
+                </div>
             </div>
             <div className="cv-range__params">
                 <CvSelector onSelect={setCv} cv={cv} />
-                <button type="button" onClick={onRelease}>
-                    Release
-                </button>
-                <button type="button" onClick={onReleaseAll}>
-                    Release all
-                </button>
-                <div>Voltage: {getAsVolts(currentCVs[cv].value)}</div>
+                <div className="cv-range__nowrap">Voltage: {getAsVolts(currentCVs[cv].value)}</div>
+                <div className="cv-range__params__actions">
+                    <Button active onClick={onRelease}>
+                        Release
+                    </Button>
+                    <Button active onClick={onReleaseAll}>
+                        Release all
+                    </Button>
+                </div>
             </div>
         </div>
     )

@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 import ReactSlider from 'react-slider'
 import { saveTrimmerSettings, setTrimmerSetting, VOICE_ALL } from '@/midi/rpc/api'
 import { sharedConfig } from '@/sharedConfig'
+import Button from '../components/Button'
 import { CV_CHANNELS } from './CvDefinitions'
 
 type SelectorProps = {
@@ -119,23 +120,31 @@ export const Trimmers = ({ voice }: Props) => {
 
     return (
         <div className="cv-range">
-            <div className="cv-range__graph-controls">
-                <VerticalSelector label="A Sym" setValue={updateValue} allSettings={currentSettings} trimmer={0} />
-                <VerticalSelector label="A Cent" setValue={updateValue} allSettings={currentSettings} trimmer={1} />
-                <VerticalSelector label="B Sym" setValue={updateValue} allSettings={currentSettings} trimmer={2} />
-                <VerticalSelector label="B Cent" setValue={updateValue} allSettings={currentSettings} trimmer={3} />
-                <VerticalSelector label="4P" setValue={updateValue} allSettings={currentSettings} trimmer={4} />
-                <VerticalSelector label="Reso" setValue={updateValue} allSettings={currentSettings} trimmer={5} />
-                <VerticalSelector label="2P" setValue={updateValue} allSettings={currentSettings} trimmer={6} />
-                <VerticalSelector label="Calibrate" setValue={updateValue} allSettings={currentSettings} trimmer={7} />
+            <div className="cv-range__main">
+                <div className="cv-range__graph-controls">
+                    <VerticalSelector label="A Sym" setValue={updateValue} allSettings={currentSettings} trimmer={0} />
+                    <VerticalSelector label="A Cent" setValue={updateValue} allSettings={currentSettings} trimmer={1} />
+                    <VerticalSelector label="B Sym" setValue={updateValue} allSettings={currentSettings} trimmer={2} />
+                    <VerticalSelector label="B Cent" setValue={updateValue} allSettings={currentSettings} trimmer={3} />
+                    <VerticalSelector label="4P" setValue={updateValue} allSettings={currentSettings} trimmer={4} />
+                    <VerticalSelector label="Reso" setValue={updateValue} allSettings={currentSettings} trimmer={5} />
+                    <VerticalSelector label="2P" setValue={updateValue} allSettings={currentSettings} trimmer={6} />
+                    <VerticalSelector label="Calibrate" setValue={updateValue} allSettings={currentSettings} trimmer={7} />
+                </div>
             </div>
             <div className="cv-range__params">
-                <button type="button" disabled={isSaved} onClick={onSave}>
-                    Save
-                </button>
-                <button type="button" onClick={onLoadAll}>
-                    Load/reset all
-                </button>
+                <div className="cv-range__params__actions">
+                    <Button
+                        active={!isSaved}
+                        disabled={isSaved}
+                        onClick={isSaved ? () => {} : onSave}
+                    >
+                        Save
+                    </Button>
+                    <Button active onClick={onLoadAll}>
+                        Load/reset all
+                    </Button>
+                </div>
             </div>
         </div>
     )
