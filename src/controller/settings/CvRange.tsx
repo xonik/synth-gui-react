@@ -5,7 +5,7 @@ import { clearCvMapping, saveCvMapping, saveCvMappings, setCvParams, VOICE_ALL }
 import { sharedConfig } from '@/sharedConfig'
 import { Curve } from '@/synthcore/generatedTypes'
 import Button from '../components/Button'
-import { CV_CHANNELS, CVs } from './CvDefinitions'
+import {CV_CHANNELS, type CvDefinition, CVs} from './CvDefinitions'
 import CvResponseCurve from './CvResponseCurve'
 import { curveValuesUsed } from './generatedTypes'
 import './CvRange.scss'
@@ -67,7 +67,7 @@ const CvSelector = ({ onSelect, cv }: CvSelectorProps) => {
 
     return (
         <select onChange={onOptionChangeHandler} value={cv} className={'cv-range__cv-selector'}>
-            {CVs.map((cv) => {
+            {CVs.filter(mappableCvs).map((cv) => {
                 return (
                     <option key={cv.channel} value={cv.channel}>
                         {cv.description} ({cv.channel})
@@ -76,6 +76,15 @@ const CvSelector = ({ onSelect, cv }: CvSelectorProps) => {
             })}
         </select>
     )
+}
+
+// These should never get a user defined map as they are either tuned by the software or used when tuning, so adding
+// a map will break the tuning algorithm.
+function mappableCvs(cv: CvDefinition) {
+    const blacklist = [
+        'CV_SVF_CUTOFF',    'CV_MOOG_CUTOFF',   'CV_JUNO_CUTOFF',
+        'CV_SVF_DRY_LEVEL', 'CV_LPF_DRY_LEVEL', 'CV_VCO_PITCH']
+    return !blacklist.includes(cv.name)
 }
 
 const CvCurveSelector = ({ onSelect, curve }: CvCurveSelectorProps) => {
@@ -381,7 +390,7 @@ export const CvRange = ({ voice }: Props) => {
                         className="cv-range__clear-input"
                     />
                     <Button active onClick={() => clearCvMapping(clearCv, voice)}>
-                        Clear map
+                        Clear single
                     </Button>
                 </div>
             </div>

@@ -19,7 +19,7 @@ export const parseCvDefinitionFile = (file: string): CvDefinition[] => {
     return cvs
 }
 
-const cvRegex = /^#define (CV_[A-Z_0-9]+) ([0-9]+) \/\/ ([0-9a-zA-Z ]+)/
+const cvRegex = /^#define (CV_[A-Z_0-9]+) ([0-9]+) +\/\/ ([0-9a-zA-Z ]+)/
 
 const parseLine = (line: string): CvDefinition | undefined => {
     if (line.length > 0) {

@@ -50,7 +50,7 @@ export const FIRST_DST = FIRST_INTERMEDIATE + INT_COUNT
 
 export enum ControllerIdDst {
     // Dsts
-    DCO1_PITCH = 27,
+    DCO1_PITCH = 28,
     DCO1_NOTE, // TODO: Not an output destination?
     DCO1_DETUNE,
     DCO1_WAVEFORM,
@@ -136,7 +136,7 @@ export const FIRST_ENV_DST = FIRST_DST + DST_COUNT
 
 export enum ControllerIdEnvDst {
     // LFO and ENV dsts
-    DELAY_TIME = 89,
+    DELAY_TIME = 90,
     ATTACK_TIME,
     DECAY1_TIME,
     DECAY2_TIME,
@@ -151,7 +151,7 @@ export const DST_ENV_COUNT = Object.keys(ControllerIdEnvDst).filter((o) => isNot
 export const FIRST_LFO_DST = FIRST_ENV_DST + DST_ENV_COUNT
 
 export enum ControllerIdLfoDst {
-    RATE = 99,
+    RATE = 100,
     DEPTH,
     DELAY,
     BALANCE,
@@ -164,7 +164,7 @@ export const FIRST_NON_MOD_POTS = FIRST_LFO_DST + DST_LFO_COUNT
 // controllers that affect stuff that is not part of the
 // modulation matrix, such as global pots (volume etc)
 export enum ControllerIdNonModPots {
-    MOD_AMOUNT = 105,
+    MOD_AMOUNT = 106,
     MASTER_CLOCK_RATE,
     ARP_BPM,
 
@@ -185,7 +185,7 @@ export const FIRST_NON_MOD = FIRST_NON_MOD_POTS + NON_MOD_POTS_COUNT
 
 export enum ControllerIdNonMod {
     // Non-modulatable controllers
-    DCO1_RANGE = 118,
+    DCO1_RANGE = 119,
     DCO1_SYNC,
     DCO1_MODE,
     DCO1_SUB_WAVE,
@@ -311,7 +311,7 @@ export enum ControllerIdNonMod {
 }
 
 export enum ControllerIdEnvNonMod {
-    ENV_RESET_ON_TRIGGER = 219,
+    ENV_RESET_ON_TRIGGER = 220,
     ENV_RELEASE_MODE,
     ENV_LOOP_MODE,
     ENV_MAX_LOOPS,
@@ -323,7 +323,7 @@ export enum ControllerIdEnvNonMod {
 export const ENV_NON_MOD_COUNT = Object.keys(ControllerIdEnvNonMod).filter((o) => isNotNumber(o)).length
 
 export enum ControllerIdEnvStageNonMod {
-    ENV_CURVE = 227,
+    ENV_CURVE = 228,
     ENV_TOGGLE_STAGE,
 }
 export const ENV_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdEnvStageNonMod).filter((o) =>
@@ -331,7 +331,7 @@ export const ENV_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdEnvStageNonMod).f
 ).length
 
 export enum ControllerIdLfoNonMod {
-    LFO_SHAPE = 229,
+    LFO_SHAPE = 230,
     LFO_SYNC,
     LFO_RESET,
     LFO_BIPOLAR,
@@ -350,7 +350,7 @@ export enum ControllerIdLfoNonMod {
 export const LFO_NON_MOD_COUNT = Object.keys(ControllerIdLfoNonMod).filter((o) => isNotNumber(o)).length
 
 export enum ControllerIdLfoStageNonMod {
-    LFO_CURVE = 244,
+    LFO_CURVE = 245,
     LFO_TOGGLE_STAGE,
 }
 export const LFO_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdLfoStageNonMod).filter((o) =>
