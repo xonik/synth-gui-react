@@ -1,38 +1,50 @@
-let id = 0;
-type MidiRPCCallback = (bytes: number[]) => void
+import logger from '../../utils/logger'
+import type { DataType } from './dataTypes'
 
+type MidiRPCCallback = (bytes: number[]) => void
+type NonVoidDataType = Exclude<DataType, 'void'>
+
+const TIMEOUT_MS = 5000
+
+let nextId = 0
 const callbacks: Map<number, MidiRPCCallback> = new Map()
 
-function callWithReturn<T>(label: string, funcToCall: (id: number, ...rest: any[]) => void, returnType: ReturnTypes) {
+export function call(label: string, funcToCall: () => void): void {
+    logger.midi(`RPC call to ${label}`)
+    funcToCall()
+}
 
-    const returnId = id++;
-    if(returnType === 'void'){
-        // TODO: No need to register callback, return
-    }
+export function callWithReturn<T>(
+    label: string,
+    funcToCall: (id: number) => void,
+    returnType: NonVoidDataType,
+): Promise<T> {
+    const returnId = nextId++
+    logger.midi(`RPC call to ${label} (id ${returnId})`)
 
-    return new Promise((resolve, reject) => {
+    return new Promise<T>((resolve, reject) => {
         const timerId = setTimeout(() => {
-            reject(new Error(`Timeout waiting for ${label} return`))
             callbacks.delete(returnId)
-        }, 5000)
+            reject(new Error(`Timeout waiting for ${label} return`))
+        }, TIMEOUT_MS)
 
-        const onReturn = (bytes: number[]) =>{
-            // TODO:
-            const value = deserializeMidi(bytes, returnType.)
-            console.log(`received return ${value} for ${label} return`)
+        callbacks.set(returnId, (bytes) => {
             clearTimeout(timerId)
+            // TODO: implement deserializeMidi
+            const value = deserializeMidi(bytes, returnType) as T
             resolve(value)
-        }
-        callbacks.set(returnId, onReturn)
+        })
 
-        funcToCall(returnId, rest)
+        funcToCall(returnId)
     })
 }
 
-function handleMidiRPCReturn(id: number, bytes: number[]){
+export function handleMidiRPCReturn(id: number, bytes: number[]) {
     const callback = callbacks.get(id)
     if (callback) {
         callbacks.delete(id)
         callback(bytes)
     }
 }
+
+declare function deserializeMidi(bytes: number[], type: NonVoidDataType): unknown
