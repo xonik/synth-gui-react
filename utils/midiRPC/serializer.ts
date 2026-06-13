@@ -100,3 +100,76 @@ export const jsToMidiEncoder: Record<DataType, (value: unknown) => number[]> = {
     'std::vector<uint8_t>': (value: unknown) => getUint8Array(value as number[]),
     'std::vector<uint16_t>': (value: unknown) => getUint16Array(value as number[]),
 }
+
+// ---- Deserialization (midi -> js) ----
+
+export type MidiCursor = { pos: number }
+
+const joinTo7 = (bytes: number[], cursor: MidiCursor, bits: number): number => {
+    const byteCount = Math.ceil(bits / 7)
+    let value = 0
+    for (let i = 0; i < byteCount; i++) {
+        value = (value << 7) | (bytes[cursor.pos + i] & 0x7f)
+    }
+    cursor.pos += byteCount
+    return value
+}
+
+export const getUint7 = (bytes: number[], cursor: MidiCursor): number => joinTo7(bytes, cursor, 7)
+export const getUint8 = (bytes: number[], cursor: MidiCursor): number => joinTo7(bytes, cursor, 8)
+export const getUint14 = (bytes: number[], cursor: MidiCursor): number => joinTo7(bytes, cursor, 14)
+export const getUint16 = (bytes: number[], cursor: MidiCursor): number => joinTo7(bytes, cursor, 16)
+export const getUint21 = (bytes: number[], cursor: MidiCursor): number => joinTo7(bytes, cursor, 21)
+export const getUint32 = (bytes: number[], cursor: MidiCursor): number => joinTo7(bytes, cursor, 32)
+
+export const getInt8 = (bytes: number[], cursor: MidiCursor): number => {
+    const unsigned = joinTo7(bytes, cursor, 8)
+    return unsigned >= 0x80 ? unsigned - 0x100 : unsigned
+}
+
+export const getInt16 = (bytes: number[], cursor: MidiCursor): number => {
+    const unsigned = joinTo7(bytes, cursor, 16)
+    return unsigned >= 0x8000 ? unsigned - 0x10000 : unsigned
+}
+
+export const getBool = (bytes: number[], cursor: MidiCursor): boolean => {
+    const byte = bytes[cursor.pos]
+    cursor.pos += 1
+    return byte === 1
+}
+
+const getVector = <T>(
+    bytes: number[],
+    cursor: MidiCursor,
+    readElement: (bytes: number[], cursor: MidiCursor) => T,
+): T[] => {
+    const length = getUint14(bytes, cursor)
+    const result: T[] = new Array(length)
+    for (let i = 0; i < length; i++) {
+        result[i] = readElement(bytes, cursor)
+    }
+    return result
+}
+
+type NonVoidDataType = Exclude<DataType, 'void'>
+
+export const midiToJsDecoder: Record<NonVoidDataType, (bytes: number[], cursor: MidiCursor) => unknown> = {
+    uint7_t: getUint7,
+    uint8_t: getUint8,
+    uint14_t: getUint14,
+    uint16_t: getUint16,
+    uint21_t: getUint21,
+    uint32_t: getUint32,
+    int8_t: getInt8,
+    int16_t: getInt16,
+    bool: getBool,
+    'std::vector<int8_t>': (bytes, cursor) => getVector(bytes, cursor, getInt8),
+    'std::vector<int16_t>': (bytes, cursor) => getVector(bytes, cursor, getInt16),
+    'std::vector<uint8_t>': (bytes, cursor) => getVector(bytes, cursor, getUint8),
+    'std::vector<uint16_t>': (bytes, cursor) => getVector(bytes, cursor, getUint16),
+}
+
+export function deserializeMidi(bytes: number[], type: NonVoidDataType): unknown {
+    const cursor: MidiCursor = { pos: 0 }
+    return midiToJsDecoder[type](bytes, cursor)
+}

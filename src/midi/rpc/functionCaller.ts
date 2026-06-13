@@ -1,5 +1,6 @@
 import logger from '../../utils/logger'
 import type { DataType } from './dataTypes'
+import { deserializeMidi } from './serializer'
 
 type MidiRPCCallback = (bytes: number[]) => void
 type NonVoidDataType = Exclude<DataType, 'void'>
@@ -30,7 +31,6 @@ export function callWithReturn<T>(
 
         callbacks.set(returnId, (bytes) => {
             clearTimeout(timerId)
-            // TODO: implement deserializeMidi
             const value = deserializeMidi(bytes, returnType) as T
             resolve(value)
         })
@@ -46,5 +46,3 @@ export function handleMidiRPCReturn(id: number, bytes: number[]) {
         callback(bytes)
     }
 }
-
-declare function deserializeMidi(bytes: number[], type: NonVoidDataType): unknown
