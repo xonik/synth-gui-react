@@ -78,6 +78,7 @@ export const lcscParts = [
     '15k,R,R0603,C22809,0,B',
     '15k,R,R0805,C17475,0,B',
     '18k,R,R0603,C25810,0,B',
+    '18k,R,R0402,C25762,0,B',
     '20k,R,R0402,C25765,0,B',
     '20k,R,R0603,C4184,0,B',
     '20k,R,R0805,C4328,0,B',
@@ -167,6 +168,7 @@ export const lcscParts = [
     '1.5n,C,C0603,C1595,0,B', //X7R
     '2.2n,C,C0402,C2987940,0,E', //C0G
     '2.2n,C,C0603,C1604,0,B', //X7R
+    '2.2u,C,C0603,C23630,0,B', //X5R
     '3.3n,C,C0402,C1518207,0,E', //C0G
     '3.3n,C,C0603,C1613,0,B', //X7R
     '3p,C,C0603,C46219,0,E', //C0G
@@ -248,7 +250,7 @@ export const lcscParts = [
     'MA03-1J,O,MA03-1J,C49257,0,E',
     'MA06-1JN,O,MA06N-1J,C6332199,0,E', // 6p single straight
     'MA06-1JC,O,MA06-1J,C6332199,0,E', // 6p single straight
-    'MA06-1JC-ANGLED,O,MA06-1J,C7501293,0,E', // 6p single straight
+    'MA06-1JC-ANGLED,O,MA06-1J,C7501293,0,E', // 6p single angled
     'MA07-1JC-ANGLED,O,MA07-1J,C706870,180,E', // 7p single angled
     'MA07-1JC-FEMALE-ANGLED,O,MA07-1J,C2935997,0,E', // 7p single angled female
     'MA07-1JP,O,SIP-PIN07-1J,C376125,0,E', // 7p single angled
@@ -256,6 +258,7 @@ export const lcscParts = [
     'MA07-1JN,O,SIP-PIN07-REV-1J,C376125,0,E', // 7p single angled
     'MA07-1JN,O,MA07N-1J,C376125,0,E', // 7p single angled
     'MA08-1JP,O,SIP-PIN08-1J,C492416,0,E', // 8p single angled
+    'MA09-1JN,O,MA09N-1J,C225484,0,E',
     'MA09-1JC-ANGLED,O,MA09-1J,C492417,180,E',
     'MA09-1JC-FEMALE-ANGLED,O,MA09-1J,C2897391,180,E',
     'ROUND-IC-PIN,O,MA08N-1J,C2889983,0,E', // 8p single, round IC pin header
@@ -296,6 +299,7 @@ export const lcscParts = [
     'MMBT3906LT1SMD,O,SOT23-BEC,C2143,90,E',
     'MCP9700TT,O,SOT23J,C127949,90,E',
     'ADS1115,O,MSOP10,C37593,0,E',
+    'PCM5102,O,TSSOP20,C1520792,0,E',
     'DAC8565,O,TSSOP16,C69596,0,E',
     'DAC8565F,O,DIL16-FM-CON,MULTI,0,E',
     'SN74LVC2T45,O,VSSOP8,C15741,90,E',
