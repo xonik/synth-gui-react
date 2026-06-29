@@ -5,6 +5,7 @@ import RoutingPopup from './components/RoutingPopup'
 import Env from './envelopes/Env'
 import LFO from './lfos/LFO'
 import Mod from './mods/Mod'
+import Oscillators from './oscillators/Oscillators'
 import PatchBrowser from './patches/PatchBrowser'
 import Settings from './settings/Settings'
 import './Controller.scss'
@@ -20,6 +21,7 @@ const Controller = () => {
                 {currScreen === ScreenId.LFO && <LFO />}
                 {currScreen === ScreenId.ENV && <Env />}
                 {currScreen === ScreenId.MOD && <Mod />}
+                {currScreen === ScreenId.OSC && <Oscillators />}
                 {currScreen === ScreenId.SETTINGS && <Settings />}
                 {currScreen === ScreenId.LOAD && <PatchBrowser mode="load" />}
                 {currScreen === ScreenId.SAVE && <PatchBrowser mode="save" />}

@@ -1,0 +1,293 @@
+@import '../constants';
+
+.wavetable-screen {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.4rem 0.75rem;
+    background: $bg-mid;
+    border-bottom: 1px solid $bg-highlight;
+    min-height: 36px;
+    flex-shrink: 0;
+  }
+
+  &__header-label {
+    color: $heading-color;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    min-height: 0;
+    gap: 0;
+  }
+
+  &__assign {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 0.75rem;
+    width: 200px;
+    flex-shrink: 0;
+    border-right: 1px solid $bg-highlight;
+  }
+
+  &__assign-heading {
+    color: $accent-primary;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid $bg-highlight;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  &__field-label {
+    color: $text-mid;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  &__wave-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    padding: 0.75rem;
+    overflow: hidden;
+  }
+
+  &__wave-list-heading {
+    color: $accent-primary;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid $bg-highlight;
+    flex-shrink: 0;
+  }
+
+  &__wave-list-scroll {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-track {
+      background: $bg-dark;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: $bg-highlight;
+      border-radius: 3px;
+    }
+  }
+
+  &__wave-list-empty {
+    color: $text-dim;
+    font-size: 0.85rem;
+    font-style: italic;
+    padding: 0.5rem 0;
+  }
+
+  &__wave-entry {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.4rem;
+    background: $bg-dark;
+    border: 1px solid $bg-highlight;
+    border-radius: 3px;
+
+    &:hover {
+      border-color: $accent-primary-dim;
+    }
+  }
+
+  &__wave-entry-name {
+    flex: 1;
+    color: $text-bright;
+    font-size: 0.82rem;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__wave-entry-bank {
+    color: $text-dim;
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+
+  &__wave-entry-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    flex-shrink: 0;
+  }
+}
+
+// Shared select style for wavetable screen
+.wt-select {
+  background: $bg-mid;
+  color: $text-bright;
+  border: 1px solid $bg-highlight;
+  border-radius: 3px;
+  padding: 3px 6px;
+  font-size: 0.85em;
+  width: 100%;
+  cursor: pointer;
+
+  &:hover {
+    border-color: $accent-primary-dim;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $accent-primary;
+  }
+
+  &--header {
+    width: 360px;
+    max-width: 45%;
+    flex-shrink: 0;
+  }
+}
+
+.wt-input {
+  background: $bg-mid;
+  color: $text-bright;
+  border: 1px solid $bg-highlight;
+  border-radius: 3px;
+  padding: 3px 6px;
+  font-size: 0.85em;
+  width: 100%;
+  min-width: 0;
+
+  &:hover {
+    border-color: $accent-primary-dim;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $accent-primary;
+  }
+
+  &--header {
+    width: 220px;
+    max-width: 35%;
+    flex-grow: 0;
+  }
+}
+
+// Shared small button style for wavetable screen
+.wt-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 7px;
+  background: $bg-mid;
+  color: $text-mid;
+  border: 1px solid $bg-highlight;
+  border-radius: 3px;
+  font-size: 0.78em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+  user-select: none;
+
+  &:hover {
+    border-color: $accent-primary-dim;
+    color: $text-bright;
+  }
+
+  &:active {
+    background: $accent-primary-dim;
+    color: $bg-darkest;
+    border-color: $accent-primary;
+  }
+
+  &--add {
+    background: $bg-mid;
+    color: $accent-primary;
+    border-color: $accent-primary-dim;
+    padding: 4px 12px;
+    width: 100%;
+    justify-content: center;
+    font-size: 0.82em;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-top: 0.3rem;
+
+    &:hover {
+      background: $bg-highlight;
+      border-color: $accent-primary;
+    }
+    &:active {
+      background: $accent-primary-dim;
+      color: $bg-darkest;
+    }
+  }
+
+  &--danger {
+    color: $accent-danger;
+    border-color: rgba($accent-danger, 0.4);
+
+    &:hover {
+      border-color: $accent-danger;
+      color: $accent-danger;
+    }
+    &:active {
+      background: rgba($accent-danger, 0.2);
+      color: $accent-danger;
+    }
+  }
+}
+
+.wt-position-select {
+  background: $bg-mid;
+  color: $text-mid;
+  border: 1px solid $bg-highlight;
+  border-radius: 3px;
+  padding: 2px 4px;
+  font-size: 0.78em;
+  width: 56px;
+  cursor: pointer;
+
+  &:hover {
+    border-color: $accent-primary-dim;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $accent-primary;
+  }
+}

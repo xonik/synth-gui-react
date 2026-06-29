@@ -84,6 +84,7 @@ export interface OscillatorState {
     pitch: number
     note: number
     detune: number
+    wavetable: number
     waveform: number
     sub1: number
     sub2: number
@@ -350,6 +351,7 @@ const defaultOscillator = (): OscillatorState => ({
     pitch: 0,
     note: 0,
     detune: 0,
+    wavetable: 0,
     waveform: 0,
     sub1: 0,
     sub2: 0,

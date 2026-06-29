@@ -34,3 +34,4 @@ export type { EnvelopeState, LfoStages, LfoState, OscillatorState, PatchStore, V
 export { defaultVoiceGroupPatch, useVoiceGroupStore, voiceGroupStores } from './patchStore'
 export type { ParamConfig, ResponseMapper } from './types'
 export { ScreenId, useUiStore } from './uiStore'
+export { useWavetableStore } from './wavetableStore'
