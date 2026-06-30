@@ -1,7 +1,14 @@
 import { buttonMidiValues } from '@/midi/buttonMidiValues'
 import CC from '@/midi/mapCC'
 import NRPN from '@/midi/mapNRPN'
-import type { ControllerConfigButton, ControllerConfigCC, ControllerConfigNRPN, FuncProps } from '@/midi/types'
+import { sysexCommands } from '@/midi/midibus'
+import type {
+    ControllerConfigButton,
+    ControllerConfigCC,
+    ControllerConfigNRPN,
+    ControllerConfigSysex,
+    FuncProps,
+} from '@/midi/types'
 import { ControllerIdDst, ControllerIdNonMod } from '../controllers/controllerIds'
 
 interface OscControllers {
@@ -61,6 +68,7 @@ interface OscControllers {
         LFO: ControllerConfigButton
         KBD: ControllerConfigButton
     }
+    WAVETABLE_SELECT: ControllerConfigSysex
 }
 
 const oscControllers: OscControllers = {
@@ -419,6 +427,13 @@ const oscControllers: OscControllers = {
             values: [buttonMidiValues.OSC3_KBD_OFF, buttonMidiValues.OSC3_KBD_ON],
             valueLabels: ['Off', 'On'],
         },
+    },
+    WAVETABLE_SELECT: {
+        id: ControllerIdNonMod.WAVETABLE_SELECT,
+        label: 'Wavetable select',
+        type: 'com',
+        command: sysexCommands.WAVETABLE_SELECT,
+        values: [],
     },
 }
 

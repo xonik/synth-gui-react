@@ -1,5 +1,5 @@
 import { useWavetableStore } from '@/store'
-import { bankNames, MAX_POSITION, WAVETABLE_COUNT, waveNames } from '@/synthcore/modules/osc/wavetableData'
+import { bankNames, MAX_POSITION, WAVETABLE_COUNT, waveNames } from '@/synthcore/modules/wavetable/wavetableData'
 import './WavetableScreen.scss'
 
 const positionOptions = Array.from({ length: MAX_POSITION + 1 }, (_, i) => i)
@@ -21,6 +21,7 @@ const WavetableScreen = () => {
         removeWave,
         moveWave,
         setWavePosition,
+        loadWavetable,
     } = useWavetableStore()
 
     const currentWaves = waveNames[selectedBank]
@@ -50,6 +51,9 @@ const WavetableScreen = () => {
                     value={wavetableNames[selectedWavetable]}
                     onChange={(e) => setWavetableName(selectedWavetable, e.target.value)}
                 />
+                <button type="button" className="wt-btn wt-btn--load" onClick={() => loadWavetable(selectedWavetable)}>
+                    Load whole
+                </button>
             </div>
 
             <div className="wavetable-screen__body">

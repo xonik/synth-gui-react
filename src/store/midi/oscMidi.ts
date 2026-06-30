@@ -6,7 +6,7 @@
  * Handles all 3 oscillators: DCO1 (index 0), DCO2 (index 1), VCO (index 2).
  */
 
-import { button, cc } from '@/midi/midibus'
+import { button, cc, sysex } from '@/midi/midibus'
 import type { ControllerConfigButton, ControllerConfigCC } from '@/midi/types'
 import { type OscillatorState, voiceGroupStores } from '@/store'
 import oscControllers from '@/synthcore/modules/osc/oscControllers'
@@ -111,6 +111,15 @@ export function startOscMidiSend() {
                         button.send(voiceGroupIndex, ctrl, ctrl.values[state.oscillators[oscIndex][field]])
                     }
                 }
+
+                for (let oscIndex = 0; oscIndex < state.oscillators.length; oscIndex++) {
+                    if (state.oscillators[oscIndex].wavetable !== prev[oscIndex].wavetable) {
+                        sysex.send(voiceGroupIndex, {
+                            ...oscControllers.WAVETABLE_SELECT,
+                            values: [voiceGroupIndex, oscIndex, state.oscillators[oscIndex].wavetable],
+                        })
+                    }
+                }
             }
         })
 
@@ -153,6 +162,16 @@ export function startOscMidiReceive() {
         }, ctrl)
         receiveUnsubscribers.push(() => button.unsubscribe(ctrl, id))
     }
+
+    const wavetableSelectCtrl = oscControllers.WAVETABLE_SELECT
+    const sysexId = sysex.subscribe((_voiceGroupIndex: number, [voiceGroupIndex, oscIndex, wavetableId]: number[]) => {
+        withMidiReceive(() => {
+            voiceGroupStores[voiceGroupIndex].getState().set((state) => {
+                state.oscillators[oscIndex].wavetable = wavetableId
+            })
+        })
+    }, wavetableSelectCtrl)
+    receiveUnsubscribers.push(() => sysex.unsubscribe(wavetableSelectCtrl, sysexId))
 }
 
 export function stopOscMidiReceive() {

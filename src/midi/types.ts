@@ -59,6 +59,13 @@ export interface ControllerConfigNRPNWithValue extends ControllerConfigNRPN {
     readonly values: number[]
 }
 
+export interface ControllerConfigSysex extends ControllerConfig {
+    // Sysex command byte identifying the message type
+    readonly command: number
+    // Payload bytes sent after the command (each must be a 7-bit MIDI value)
+    readonly values: number[]
+}
+
 export interface FuncProps {
     label: string
     shortLabel?: string

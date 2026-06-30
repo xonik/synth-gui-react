@@ -270,6 +270,24 @@
       color: $accent-danger;
     }
   }
+
+  &--load {
+    margin-left: auto;
+    color: $accent-primary;
+    border-color: $accent-primary-dim;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.78em;
+
+    &:hover {
+      background: $bg-highlight;
+      border-color: $accent-primary;
+    }
+    &:active {
+      background: $accent-primary-dim;
+      color: $bg-darkest;
+    }
+  }
 }
 
 .wt-position-select {

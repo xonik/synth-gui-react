@@ -16,6 +16,7 @@ import { startNoiseRingModMidiReceive, startNoiseRingModMidiSend } from './store
 import { startOscMidiReceive, startOscMidiSend } from './store/midi/oscMidi'
 import { startOutPostMixMidiReceive, startOutPostMixMidiSend } from './store/midi/outPostMixMidi'
 import { startSrcMixMidiReceive, startSrcMixMidiSend } from './store/midi/srcMixMidi'
+import { startWavetableMidiReceive } from './store/midi/wavetableMidi'
 
 midiApi.initReceive()
 startEnvelopeMidiSend()
@@ -40,6 +41,7 @@ startArpMidiSend()
 startArpMidiReceive()
 startCommonFxMidiSend()
 startCommonFxMidiReceive()
+startWavetableMidiReceive()
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 

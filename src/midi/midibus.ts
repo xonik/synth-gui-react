@@ -3,7 +3,13 @@ import CC, { buttonCCs } from './mapCC'
 import { getGlobalMidiChannel, getVoiceGroupIdFromMidiChannel, getVoiceGroupMidiChannel } from './midiSettings'
 import status from './midiStatus'
 import { handleMpk25 } from './mpk25translator'
-import type { ControllerConfigButton, ControllerConfigCC, ControllerConfigNRPN, MidiGroup } from './types'
+import type {
+    ControllerConfigButton,
+    ControllerConfigCC,
+    ControllerConfigNRPN,
+    ControllerConfigSysex,
+    MidiGroup,
+} from './types'
 
 // Use native DOM types for MIDI (instead of @types/webmidi which conflicts with built-in types)
 
@@ -25,6 +31,11 @@ type NRPNSubscriber = {
     id: number
     values: number[] | undefined
     callback: (voiceGroupIndex: number, value: number) => void
+}
+
+type SysexSubscriber = {
+    id: number
+    callback: (voiceGroupIndex: number, values: number[]) => void
 }
 
 /*
@@ -107,6 +118,11 @@ const midiConfig = {
 
 export const sysexCommands = {
     RPC: 0,
+    WAVETABLE_SELECT: 1,
+    WAVETABLE_ADD_WAVE: 2,
+    WAVETABLE_REMOVE_WAVE: 3,
+    WAVETABLE_MOVE_WAVE: 4,
+    WAVETABLE_LOAD: 5,
 }
 
 let midiOut: MIDIOutput | undefined
@@ -116,6 +132,7 @@ let idPool = 0
 let buttonSubscribers: ButtonSubscriber[] = []
 const ccSubscribers: { [key: number]: CCSubscriber[] } = {}
 const nrpnSubscribers: { [key: number]: NRPNSubscriber[] } = {}
+const sysexSubscribers: { [command: number]: SysexSubscriber[] } = {}
 
 const getChannel = (global: boolean, voiceGroupIndex: number) => {
     if (global) {
@@ -279,14 +296,51 @@ const currNRPN = {
     loValue: 0,
 }
 
+// Teensy may drop sysex messages longer than this, so callers must split larger payloads.
+export const SYSEX_MAX_LENGTH = 60
+
+// Number of bytes available for the command payload, accounting for the
+// SYSEX_START, address bytes, command byte and SYSEX_END framing.
+export const getMaxSysexPayloadLength = () => SYSEX_MAX_LENGTH - (midiConfig.sysexAddr.length + 3)
+
 export const sendSysex = (command: number, data: number[]) => {
     const midiBytes = [status.SYSEX_START, ...midiConfig.sysexAddr, command, ...data, status.SYSEX_END]
     console.log('sending sysex', midiBytes)
-    if (midiBytes.length > 60) {
+    if (midiBytes.length > SYSEX_MAX_LENGTH) {
         console.warn('Sysex message is more than 60 bytes, it may not work with teensy', midiBytes)
     }
 
     midiOut?.send(midiBytes)
+}
+
+export const sysex = {
+    subscribe: (callback: (voiceGroupIndex: number, values: number[]) => void, { command }: ControllerConfigSysex) => {
+        const id = idPool++
+        sysexSubscribers[command] = [...(sysexSubscribers[command] || []), { id, callback }]
+        return id
+    },
+    unsubscribe: (controller: ControllerConfigSysex, id: number) => {
+        const subscribersForCommand = sysexSubscribers[controller.command]
+        if (!subscribersForCommand) return
+        const index = subscribersForCommand.map((sub) => sub.id).indexOf(id)
+        if (index > -1) {
+            sysexSubscribers[controller.command] = [
+                ...subscribersForCommand.slice(0, index),
+                ...subscribersForCommand.slice(index + 1),
+            ]
+        }
+    },
+    publish: (voiceGroupIndex: number, command: number, values: number[]) => {
+        sysexSubscribers[command]?.forEach((subscriber) => {
+            subscriber.callback(voiceGroupIndex, values)
+        })
+    },
+    send: (voiceGroupIndex: number, controller: ControllerConfigSysex, loopback = false) => {
+        if (loopback) {
+            sysex.publish(voiceGroupIndex, controller.command, controller.values)
+        }
+        sendSysex(controller.command, controller.values)
+    },
 }
 
 export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
@@ -332,6 +386,20 @@ export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
             button.publish(voiceGroupId, buttonValue)
         } else {
             cc.publish(voiceGroupId, ccKey, ccValue)
+        }
+    } else if (midiStatus === status.SYSEX_START) {
+        // [SYSEX_START, ...sysexAddr, command, ...payload, SYSEX_END]
+        const headerLength = 1 + midiConfig.sysexAddr.length
+        const command = midiData[headerLength]
+        const hasEnd = midiData[midiData.length - 1] === status.SYSEX_END
+        const payloadEnd = hasEnd ? midiData.length - 1 : midiData.length
+        const values = Array.from(midiData.slice(headerLength + 1, payloadEnd))
+
+        if (sysexSubscribers[command]?.length) {
+            sysex.publish(-1, command, values)
+        } else {
+            console.log('Unhandled sysex message', midiData)
+            midiOut?.send(midiData)
         }
     } else {
         console.log('Unhandled MIDI message', midiData)

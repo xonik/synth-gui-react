@@ -308,10 +308,16 @@ export enum ControllerIdNonMod {
     // Config/settings, should not be part of CC system.
     CALIBRATE_DCO1,
     CALIBRATE_DCO2,
+
+    WAVETABLE_SELECT,
+    WAVETABLE_ADD_WAVE,
+    WAVETABLE_REMOVE_WAVE,
+    WAVETABLE_MOVE_WAVE,
+    WAVETABLE_LOAD,
 }
 
 export enum ControllerIdEnvNonMod {
-    ENV_RESET_ON_TRIGGER = 220,
+    ENV_RESET_ON_TRIGGER = 225,
     ENV_RELEASE_MODE,
     ENV_LOOP_MODE,
     ENV_MAX_LOOPS,
@@ -323,15 +329,13 @@ export enum ControllerIdEnvNonMod {
 export const ENV_NON_MOD_COUNT = Object.keys(ControllerIdEnvNonMod).filter((o) => isNotNumber(o)).length
 
 export enum ControllerIdEnvStageNonMod {
-    ENV_CURVE = 228,
+    ENV_CURVE = 233,
     ENV_TOGGLE_STAGE,
 }
-export const ENV_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdEnvStageNonMod).filter((o) =>
-    isNotNumber(o)
-).length
+export const ENV_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdEnvStageNonMod).filter((o) => isNotNumber(o)).length
 
 export enum ControllerIdLfoNonMod {
-    LFO_SHAPE = 230,
+    LFO_SHAPE = 235,
     LFO_SYNC,
     LFO_RESET,
     LFO_BIPOLAR,
@@ -350,12 +354,10 @@ export enum ControllerIdLfoNonMod {
 export const LFO_NON_MOD_COUNT = Object.keys(ControllerIdLfoNonMod).filter((o) => isNotNumber(o)).length
 
 export enum ControllerIdLfoStageNonMod {
-    LFO_CURVE = 245,
+    LFO_CURVE = 250,
     LFO_TOGGLE_STAGE,
 }
-export const LFO_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdLfoStageNonMod).filter((o) =>
-    isNotNumber(o)
-).length
+export const LFO_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdLfoStageNonMod).filter((o) => isNotNumber(o)).length
 
 export const NON_MOD_COUNT = Object.keys(ControllerIdNonMod).filter((o) => isNotNumber(o)).length
 

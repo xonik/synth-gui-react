@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { useUiStore, useVoiceGroupStore, useWavetableStore, voiceGroupStores } from '@/store'
-import { WAVETABLE_COUNT } from '@/synthcore/modules/osc/wavetableData'
+import { WAVETABLE_COUNT } from '@/synthcore/modules/wavetable/wavetableData'
 
 const OscControl = () => {
     const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
