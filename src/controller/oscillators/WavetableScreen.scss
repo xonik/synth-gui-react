@@ -234,6 +234,19 @@
     border-color: $accent-primary;
   }
 
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    color: $text-mid;
+    border-color: $bg-highlight;
+    background: $bg-mid;
+  }
+
+  &:disabled:hover {
+    border-color: $bg-highlight;
+    color: $text-mid;
+  }
+
   &--add {
     background: $bg-mid;
     color: $accent-primary;

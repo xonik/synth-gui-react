@@ -47,6 +47,18 @@ interface WavetableActions {
 
 const sortEntries = (entries: WaveEntry[]): WaveEntry[] => [...entries].sort((a, b) => a.position - b.position)
 
+/** Lowest free position at or above `position`, or -1 if none exists within bounds. */
+const firstFreeFrom = (entries: WaveEntry[], position: number): number => {
+    const occupied = new Set(entries.map((e) => e.position))
+    for (let p = position; p <= MAX_POSITION; p++) {
+        if (!occupied.has(p)) return p
+    }
+    return -1
+}
+
+/** Whether a wave can be inserted at `position` without cascading past MAX_POSITION. */
+const canInsertAt = (entries: WaveEntry[], position: number): boolean => firstFreeFrom(entries, position) !== -1
+
 /** Recursively bump any entry occupying `position` to `position + 1`, cascading as needed. */
 const bumpPosition = (entries: WaveEntry[], position: number): WaveEntry[] => {
     const conflictIndex = entries.findIndex((e) => e.position === position)
@@ -82,7 +94,8 @@ export const useWavetableStore = create<WavetableState & WavetableActions>((set,
     },
 
     addWave: () => {
-        const { selectedWavetable, selectedBank, selectedWave, selectedPosition } = get()
+        const { selectedWavetable, selectedBank, selectedWave, selectedPosition, wavetables } = get()
+        if (!canInsertAt(wavetables[selectedWavetable], selectedPosition)) return
         get().addWaveAt(selectedWavetable, selectedBank, selectedWave, selectedPosition)
         set({
             selectedPosition: Math.min(selectedPosition + 1, MAX_POSITION),
@@ -108,8 +121,15 @@ export const useWavetableStore = create<WavetableState & WavetableActions>((set,
     setWavePosition: (entryIndex, position) => {
         const { selectedWavetable, wavetables } = get()
         const entry = wavetables[selectedWavetable][entryIndex]
-        if (!entry) return
-        get().moveWaveTo(selectedWavetable, entry.position, position)
+        if (!entry || entry.position === position) return
+        // Check feasibility against the table without the moved entry: if the
+        // cascade can't fit below MAX_POSITION, don't move at all.
+        const others = wavetables[selectedWavetable].filter((_, i) => i !== entryIndex)
+        if (!canInsertAt(others, position)) return
+        // Re-insert at the new position so any occupants cascade up to the next
+        // free slots, rather than swapping with the entry currently there.
+        get().removeWaveAt(selectedWavetable, entry.position)
+        get().addWaveAt(selectedWavetable, entry.bankIndex, entry.waveIndex, position)
     },
 
     loadWavetable: (wavetableIndex) => {
@@ -118,6 +138,7 @@ export const useWavetableStore = create<WavetableState & WavetableActions>((set,
 
     addWaveAt: (wavetableIndex, bankIndex, waveIndex, position) => {
         const { wavetables } = get()
+        if (!canInsertAt(wavetables[wavetableIndex], position)) return
         const newWavetables = [...wavetables]
         newWavetables[wavetableIndex] = insertWave(wavetables[wavetableIndex], { bankIndex, waveIndex, position })
         set({ wavetables: newWavetables })

@@ -26,6 +26,8 @@ const WavetableScreen = () => {
 
     const currentWaves = waveNames[selectedBank]
     const currentTableEntries = wavetables[selectedWavetable]
+    const occupiedPositions = new Set(currentTableEntries.map((entry) => entry.position))
+    const canAdd = positionOptions.some((pos) => pos >= selectedPosition && !occupiedPositions.has(pos))
 
     return (
         <div className="wavetable-screen">
@@ -106,7 +108,7 @@ const WavetableScreen = () => {
                         </select>
                     </div>
 
-                    <button type="button" className="wt-btn wt-btn--add" onClick={addWave}>
+                    <button type="button" className="wt-btn wt-btn--add" onClick={addWave} disabled={!canAdd}>
                         Add
                     </button>
                 </div>
