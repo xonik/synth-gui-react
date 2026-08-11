@@ -85,6 +85,7 @@ export const lcscParts = [
     '22k,R,R0603,C31850,0,B',
     '22k,R,R0402,C25768,0,B',
     '22k,R,R0805,C17560,0,B',
+    '22R,R,R0402,C25092,0,B',
     '24k,R,R0402,C5141071,0,E',
     '24k,R,R0603,C23352,0,B',
     '25k,R,R0402,C25874,0,E',
@@ -184,11 +185,13 @@ export const lcscParts = [
     '10n,C,C0402,C15195,0,B', //X7R
     '10u,C,C0603,C96446,0,B', //X5R, 25V
     '10u,C,E2-5,C2960200,0,E',
-    '10u,O,CAPAE660X610N,C134805,0,E',
+    '10u,C,CAPAE660X610N,C134805,0,E',
+    '10u,C,UD-4X58_NICHICON,C3357,0,B',
     '22p,C,C0603,C1653,0,B', //C0G
     '22n,C,C0805,C1729,0,B', //X7R
     '22n,C,C0402,C1532,0,B', //X7R
     '22u,C,C0805,C45783,0,B', //X5R, 25V
+    '22u,C,UD-4X58_NICHICON,C3356,0,B',
     '30p,C,C0603,C1658,0,B', //C0G
     '33p,C,C0603,C1663,0,B', //C0G
     '33p,C,C0402,C1562,0,B', //C0G
@@ -299,6 +302,7 @@ export const lcscParts = [
     'MMBT3906,O,SOT23-BEC,C2143,90,E',
     'MMBT3906LT1SMD,O,SOT23-BEC,C2143,90,E',
     'MCP9700TT,O,SOT23J,C127949,90,E',
+    'PIC16F18325ST,O,TSSOP14,C637243,0,E',
     'ADS1115,O,MSOP10,C37593,0,E',
     'PCM5102,O,TSSOP20,C1520792,0,E',
     'DAC8565,O,TSSOP16,C69596,0,E',
@@ -308,6 +312,7 @@ export const lcscParts = [
     'REF03Z,O,DIL08,C305904,0,E',
     'H11L1M,O,DIL06,C146584,0,E',
     'FLASH-W25Q128JVF,O,DIL08J-FLAT,C305904,0,E',
+    '6N137-JS,O,SO08,C20612601,0,E',
     'LM311D,O,SO08,C12597,0,E',
     'LM311T,O,TSSOP8,C2876875,90,E', // Veldig få på lager
     'TCA9539PW,O,TSSOP24,C2687996,0,E', // PCA is cheaper. May reconsider and use real TCA instead.
@@ -322,6 +327,9 @@ export const lcscParts = [
     '25k,O,RTRIM3296X_J,C111789,180,E',
     '500R,R,RTRIM3296X,C118913,0,E',
     'CHIP-LED0603,O,CHIP-LED0603,C2286,90,B',
+    'RED-C84256,O,CHIPLED_0805,C84256,0,B',
+    'YELLOW-C2296,O,CHIPLED_0805,C2296,0,B',
+    'GREEN-C2297,O,CHIPLED_0805,C2297,0,B',
     '2516-5,O,PAK100/2500-5-16,C146623,180,E',
     'WAVESHAPER-V2.2HR,O,XM8-WAVESHAPER-V2.2HR,C7499337,0,E',
     'MOOG-VCF-V1.2,O,XM8-MOOG-VCF-V1.2H-TOP,C7499334,0,E',
@@ -405,7 +413,8 @@ function getPartType(shortType: string): PartType {
 
 export function getLcscPart(value: string, footprint: string, type: PartType): LibPart | undefined {
     return lcscParts.find((libPart) => {
-        const found = value === libPart.value && type === libPart.type && footprint === libPart.footprint
+        const found = value.toLocaleLowerCase() === libPart.value.toLocaleLowerCase() &&
+          type === libPart.type && footprint.replace(',','') === libPart.footprint
         return found
     })
 }
