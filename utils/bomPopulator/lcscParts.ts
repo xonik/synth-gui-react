@@ -109,7 +109,7 @@ export const lcscParts = [
     '51R,R,R0805,C17738,0,B',
     '56k,R,R0603,C23206,0,B',
     '56k,R,R0805,C17756,0,E',
-    '68k,R,R0402,C36871,0,E',
+    '68k,R,R0402,C2909379,0,E',
     '68k,R,R0603,C23231,0,B',
     '68k,R,R0805,C17801,0,B',
     '75k,R,R0603,C23242,0,B',
@@ -316,6 +316,7 @@ export const lcscParts = [
     'LM311D,O,SO08,C12597,0,E',
     'LM311T,O,TSSOP8,C2876875,90,E', // Veldig få på lager
     'TCA9539PW,O,TSSOP24,C2687996,0,E', // PCA is cheaper. May reconsider and use real TCA instead.
+    'MCP4922MSSOP,O,TSSOP14,C627414,270,E', // 12bit DAC
     '4CH-MIXER-3364-2,O,XM8-4CH-MIXER-3364-V,C124407,0,E',
     'SVF-CELL-V1.0V,O,XM8-SVF-CELL-V1.XV,C2932672,0,E', // 7p x 3
     'SVF-CELL-V1.1V,O,XM8-SVF-CELL-V1.XV,MULTI,0,E',
