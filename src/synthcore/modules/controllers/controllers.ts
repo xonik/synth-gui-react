@@ -19,6 +19,7 @@ import ringModControllers from '../ringMod/ringModControllers'
 import settingsControllers from '../settings/settingsControllers'
 import srcMixControllers from '../srcMix/srcMixControllers'
 import voicesControllers from '../voices/voicesControllers'
+import wavetableControllers from "@/synthcore/modules/wavetable/wavetableControllers";
 
 // controller functions grouped by type
 export const controllerGroups = {
@@ -123,6 +124,7 @@ const controllers = {
     OUTPUT: outControllers,
     PERFORMANCE: performanceControllers,
     SETTINGS: settingsControllers,
+    WAVETABLE: wavetableControllers,
 }
 
 export default controllers

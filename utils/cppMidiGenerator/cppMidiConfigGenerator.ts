@@ -251,6 +251,9 @@ const generateCppFiles = () => {
     const comEnum: string[] = []
     const comCC: string[] = []
 
+    const comSysexEnum: string[] = []
+    const comSysexCmd: string[] = []
+
     const potNrpnEnum: string[] = []
     const potNrpn: string[] = []
 
@@ -274,6 +277,19 @@ const generateCppFiles = () => {
 
     Object.entries(controllers).forEach(([controllerGroupKey, controllersList]) => {
         Object.entries(controllersList)
+            .filter(([_controllerKey, controller]) => controller.command !== undefined)
+            .forEach(([controllerKey, controller]) => {
+                if (controller.type === 'com') {
+                    comSysexEnum.push(`COM_SYSEX_${controllerGroupKey}_${controllerKey}`)
+                    comSysexCmd.push(`${controller.command} /* ${controllerGroupKey}_${controllerKey} */`)
+                } else {
+                    console.log('missing controller type', { controllerGroupKey, controllerKey, controller })
+                }
+            })
+    })
+
+    Object.entries(controllers).forEach(([controllerGroupKey, controllersList]) => {
+        Object.entries(controllersList)
             .filter(([_controllerKey, controller]) => controller.addr !== undefined)
             .forEach(([controllerKey, controller]) => {
                 if (controller.type === 'pot') {
@@ -287,6 +303,9 @@ const generateCppFiles = () => {
 
     const comEnumFileContents = `enum Com: char {\n  ${comEnum.join(',\n  ')}\n};`
     const comCCFileContents = `const char comCC[${comCC.length}] = {\n  ${comCC.join(',\n  ')}\n};`
+
+    const comSysexEnumFileContents = `enum ComSysex: char {\n  ${comSysexEnum.join(',\n  ')}\n};`
+    const comSysexCmdFileContents = `const char comSysexCmd[${comSysexCmd.length}] = {\n  ${comSysexCmd.join(',\n  ')}\n};`
 
     const potEnumFileContents = `enum Pot: char {\n  ${potEnum.join(',\n  ')}\n};`
     const potCCFileContents = `const char potCC[${potCC.length}] = {\n  ${potCC.join(',\n  ')}\n};`
@@ -307,6 +326,8 @@ const generateCppFiles = () => {
     writeToFile(`${outputRootMidiMain}/midiPotsCC.h`, potCCFileContents)
     writeToFile(`${outputRootMidiMain}/midiCom.h`, comEnumFileContents)
     writeToFile(`${outputRootMidiMain}/midiComCC.h`, comCCFileContents)
+    writeToFile(`${outputRootMidiMain}/midiComSysex.h`, comSysexEnumFileContents)
+    writeToFile(`${outputRootMidiMain}/midiComSysexCmd.h`, comSysexCmdFileContents)
     writeToFile(`${outputRootMidiMain}/midiPotsNrpnEnum.h`, potEnumNrpnFileContents)
     writeToFile(`${outputRootMidiMain}/midiPotsNrpn.h`, potNrpnFileContents)
 }

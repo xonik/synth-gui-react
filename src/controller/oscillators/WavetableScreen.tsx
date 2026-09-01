@@ -21,7 +21,7 @@ const WavetableScreen = () => {
         removeWave,
         moveWave,
         setWavePosition,
-        loadWavetable,
+        updateWavetable,
     } = useWavetableStore()
 
     const currentWaves = waveNames[selectedBank]
@@ -53,7 +53,7 @@ const WavetableScreen = () => {
                     value={wavetableNames[selectedWavetable]}
                     onChange={(e) => setWavetableName(selectedWavetable, e.target.value)}
                 />
-                <button type="button" className="wt-btn wt-btn--load" onClick={() => loadWavetable(selectedWavetable)}>
+                <button type="button" className="wt-btn wt-btn--load" onClick={() => updateWavetable(selectedWavetable)}>
                     Load whole
                 </button>
             </div>

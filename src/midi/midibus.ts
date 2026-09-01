@@ -119,10 +119,7 @@ const midiConfig = {
 export const sysexCommands = {
     RPC: 0,
     WAVETABLE_SELECT: 1,
-    WAVETABLE_ADD_WAVE: 2,
-    WAVETABLE_REMOVE_WAVE: 3,
-    WAVETABLE_MOVE_WAVE: 4,
-    WAVETABLE_LOAD: 5,
+    WAVETABLE_UPDATE: 2,
 }
 
 let midiOut: MIDIOutput | undefined

@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { isMidiReceiving } from '@/store/midi/midiGuard'
-import { sendAddWave, sendLoadWavetable, sendMoveWave, sendRemoveWave } from '@/store/midi/wavetableMidi'
+import { updateWavetable } from '@/store/midi/wavetableMidi'
 import {
     defaultWavetableNames,
     MAX_POSITION,
@@ -35,7 +35,7 @@ interface WavetableActions {
     removeWave: (entryIndex: number) => void
     moveWave: (entryIndex: number, direction: 'up' | 'down') => void
     setWavePosition: (entryIndex: number, position: number) => void
-    loadWavetable: (wavetableIndex: number) => void
+    updateWavetable: (wavetableIndex: number) => void
 
     // Core mutators keyed by explicit wavetable/position. Shared by the GUI
     // actions and by MIDI receive; they emit MIDI unless a receive is in flight.
@@ -132,7 +132,7 @@ export const useWavetableStore = create<WavetableState & WavetableActions>((set,
         get().addWaveAt(selectedWavetable, entry.bankIndex, entry.waveIndex, position)
     },
 
-    loadWavetable: (wavetableIndex) => {
+    updateWavetable: (wavetableIndex) => {
         get().loadWavetableEntries(wavetableIndex, get().wavetables[wavetableIndex])
     },
 
@@ -144,7 +144,7 @@ export const useWavetableStore = create<WavetableState & WavetableActions>((set,
         set({ wavetables: newWavetables })
 
         if (!isMidiReceiving()) {
-            sendAddWave(wavetableIndex, bankIndex, waveIndex, position)
+            updateWavetable(wavetableIndex, newWavetables[wavetableIndex])
         }
     },
 
@@ -155,7 +155,7 @@ export const useWavetableStore = create<WavetableState & WavetableActions>((set,
         set({ wavetables: newWavetables })
 
         if (!isMidiReceiving()) {
-            sendRemoveWave(wavetableIndex, position)
+            updateWavetable(wavetableIndex, newWavetables[wavetableIndex])
         }
     },
 
@@ -176,7 +176,7 @@ export const useWavetableStore = create<WavetableState & WavetableActions>((set,
         set({ wavetables: newWavetables })
 
         if (!isMidiReceiving()) {
-            sendMoveWave(wavetableIndex, fromPosition, toPosition)
+            updateWavetable(wavetableIndex, newWavetables[wavetableIndex])
         }
     },
 
@@ -188,7 +188,7 @@ export const useWavetableStore = create<WavetableState & WavetableActions>((set,
         set({ wavetables: newWavetables })
 
         if (!isMidiReceiving()) {
-            sendLoadWavetable(wavetableIndex, sorted)
+            updateWavetable(wavetableIndex, sorted)
         }
     },
 }))

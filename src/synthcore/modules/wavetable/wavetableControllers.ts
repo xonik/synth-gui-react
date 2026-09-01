@@ -4,40 +4,19 @@ import { ControllerIdNonMod } from '../controllers/controllerIds'
 
 interface WavetableControllers {
     props: FuncProps
-    ADD_WAVE: ControllerConfigSysex
-    REMOVE_WAVE: ControllerConfigSysex
-    MOVE_WAVE: ControllerConfigSysex
-    LOAD: ControllerConfigSysex
+    UPDATE: ControllerConfigSysex
 }
 
+// NB: Currently, wavetable is not stored on the main/voice controller. Instead, the whole
+// table is sent on every change and when selected for an oscillator.
+// The waveforms are stored on the voice controllers though.
 const wavetableControllers: WavetableControllers = {
     props: { label: 'Wavetable' },
-    ADD_WAVE: {
-        id: ControllerIdNonMod.WAVETABLE_ADD_WAVE,
-        label: 'Add wave',
+    UPDATE: {
+        id: ControllerIdNonMod.WAVETABLE_UPDATE,
+        label: 'Update wavetable',
         type: 'com',
-        command: sysexCommands.WAVETABLE_ADD_WAVE,
-        values: [],
-    },
-    REMOVE_WAVE: {
-        id: ControllerIdNonMod.WAVETABLE_REMOVE_WAVE,
-        label: 'Remove wave',
-        type: 'com',
-        command: sysexCommands.WAVETABLE_REMOVE_WAVE,
-        values: [],
-    },
-    MOVE_WAVE: {
-        id: ControllerIdNonMod.WAVETABLE_MOVE_WAVE,
-        label: 'Move wave',
-        type: 'com',
-        command: sysexCommands.WAVETABLE_MOVE_WAVE,
-        values: [],
-    },
-    LOAD: {
-        id: ControllerIdNonMod.WAVETABLE_LOAD,
-        label: 'Load wavetable',
-        type: 'com',
-        command: sysexCommands.WAVETABLE_LOAD,
+        command: sysexCommands.WAVETABLE_UPDATE,
         values: [],
     },
 }
