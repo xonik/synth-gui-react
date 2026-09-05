@@ -1,9 +1,10 @@
 import { useCallback, useState } from 'react'
 import ReactSlider from 'react-slider'
-import { saveTrimmerSettings, setTrimmerSetting, VOICE_ALL } from '@/midi/rpc/api'
+import { saveTrimmerSettings, setTrimmerSetting } from '@/midi/rpc/api'
 import { sharedConfig } from '@/sharedConfig'
 import Button from '../components/Button'
 import { CV_CHANNELS } from './CvDefinitions'
+import { routeForVoice, VOICE_ALL } from './voiceRouting'
 
 type SelectorProps = {
     setValue: (trimmer: number, value: number) => void
@@ -67,7 +68,7 @@ const loadFromLocalStorage = () => {
 function send(voice: number, trimmerSetting: TrimmerSetting) {
     const { trimmer, value } = trimmerSetting
     console.log(voice, trimmer, value)
-    setTrimmerSetting(trimmer, value, voice)
+    setTrimmerSetting(trimmer, value, routeForVoice(voice))
 }
 
 export const Trimmers = ({ voice }: Props) => {

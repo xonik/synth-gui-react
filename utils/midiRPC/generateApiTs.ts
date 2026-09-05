@@ -7,19 +7,6 @@ import { jsToMidiEncoder, splitTo7 } from './serializer'
 import { FunctionNames } from './functionNames'
 import { sendSysex, sysexCommands, type Route } from '../midibus'
 import { call, callWithReturn } from './functionCaller'
-import { sharedConfig } from '@/sharedConfig'
-
-export const VOICE_ALL = -1
-
-const resolveRoutingTarget = (voice: number): Route => {
-  const route: Route =
-    voice === VOICE_ALL
-      ? { type: 'all' }
-      : voice >= 0 && voice < sharedConfig.VOICE_COUNT.value
-        ? { type: 'voice', index: voice }
-        : { type: 'all' }
-  return route
-}
 
 ${funcs.map(functionMapper).join('\n\n')}
 `
@@ -28,7 +15,7 @@ ${funcs.map(functionMapper).join('\n\n')}
 const functionMapper = (func: Func) => {
     const params = func.params.map(({ name, type }) => `${name}: ${dataTypeMap[type].jsType}`)
     const paramBytes = func.params.map(({ name, type }) => `...jsToMidiEncoder['${type}'](${name})`)
-    const paramList = `${params.join(', ')}${params.length > 0 ? ', ' : ''}voice: number = VOICE_ALL`
+    const paramList = `${params.join(', ')}${params.length > 0 ? ', ' : ''}route: Route = { type: '${func.defaultRoute.type}' }`
 
     const paramBytesBlock = `    const paramBytes: number[] = [
       ${paramBytes.join(',\n      ')}
@@ -45,7 +32,7 @@ ${paramBytesBlock}
     const data = [
       ${dataItems.join(',\n      ')},
     ]
-        sendSysex(resolveRoutingTarget(voice), sysexCommands.RPC, data)
+        sendSysex(route, sysexCommands.RPC, data)
   })
 }`
     }
@@ -62,7 +49,7 @@ ${paramBytesBlock}
     const data = [
       ${dataItems.join(',\n      ')},
     ]
-    sendSysex(resolveRoutingTarget(voice), sysexCommands.RPC, data)
+    sendSysex(route, sysexCommands.RPC, data)
   }, '${func.returnType}')
 }`
 }

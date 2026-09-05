@@ -20,14 +20,14 @@ ${mainFuncs.map(functionMapper).join('\n\n')}
 }
 
 function getDataToSendJoining(paramReserves: string[], paramCombines: string[]) {
-    return `dataToSend.reserve(dataToSend.size() + ${paramReserves.join(' + ')});
+    return `dataToSend.reserve(${paramReserves.join(' + ')});
         ${paramCombines.join('\n        ')}`
 }
 
 const functionMapper = (func: Func) => {
     const params = ['int8_t voice', ...func.params.map(({ name, type }) => `${dataTypeMap[type].cppType} ${name}`)]
 
-    const paramWithFuncId = [
+    const paramWithFuncId    = [
         {
             name: 'functionId',
             type: 'uint8_t',
@@ -51,7 +51,7 @@ const functionMapper = (func: Func) => {
     const functionHeader = `void ${func.name}(${params.join(', ')}) {`
 
     return `    ${functionHeader}
-        std::vector<uint8_t> dataToSend = splitInt8To7(voice);
+        std::vector<uint8_t> dataToSend;
         std::vector<uint8_t> functionIdVec = splitTo7(14, ${func.name}Id);${paramConverts.length > 0 ? `\n        ${paramConverts.join('\n        ')}` : ''}
         ${getDataToSendJoining(paramReserves, paramCombines)}
         voiceMidi->sendSysex(voice, SYSEX_CMD_RPC, &dataToSend);

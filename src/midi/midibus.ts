@@ -124,8 +124,15 @@ export const sysexCommands = {
 }
 
 export type Route = {
-    type: 'voice' | 'voiceGroup' | 'main' | 'all'
-    index?: number
+    type: 'voice'
+    index: number
+} | {
+    type: 'voiceGroup'
+    index: number
+} | {
+    type: 'main'
+} | {
+    type: 'all'
 }
 
 let midiOut: MIDIOutput | undefined
@@ -311,16 +318,14 @@ const encodeRouting = (route: Route): number => {
     if (route.type === 'all') return 127
     if (route.type === 'main') return 126
     if (route.type === 'voiceGroup') {
-        const index = route.index ?? 0
-        if (index < 0) return 0
-        if (index >= sharedConfig.VOICE_GROUPS.value) return sharedConfig.VOICE_GROUPS.value - 1
-        return index
+        if (route.index < 0) return 0
+        if (route.index >= sharedConfig.VOICE_GROUPS.value) return sharedConfig.VOICE_GROUPS.value - 1
+        return route.index
     }
     // default: voice
-    const index = route.index ?? 0
-    if (index < 0) return sharedConfig.VOICE_GROUPS.value
-    if (index >= sharedConfig.VOICE_COUNT.value) return sharedConfig.VOICE_GROUPS.value + sharedConfig.VOICE_COUNT.value - 1
-    return sharedConfig.VOICE_GROUPS.value + index
+    if (route.index < 0) return sharedConfig.VOICE_GROUPS.value
+    if (route.index >= sharedConfig.VOICE_COUNT.value) return sharedConfig.VOICE_GROUPS.value + sharedConfig.VOICE_COUNT.value - 1
+    return sharedConfig.VOICE_GROUPS.value + route.index
 }
 
 const decodeRouting = (routing: number): Route => {

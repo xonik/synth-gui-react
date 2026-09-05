@@ -12,6 +12,7 @@ import {
 import { sharedConfig } from '@/sharedConfig'
 import { useUiStore, useVoiceGroupStore, voiceGroupStores } from '@/store'
 import Button from '../components/Button'
+import { routeForVoice } from './voiceRouting'
 import './SettingsButtons.scss'
 
 type Props = { voice: number }
@@ -31,9 +32,9 @@ export const SettingsButtons = ({ voice }: Props) => {
         setManualTuneActive((prev) => {
             const updated = [...prev]
             if (updated[voice]) {
-                manualTuneVcoStop(voice)
+                manualTuneVcoStop(routeForVoice(voice))
             } else {
-                manualTuneVcoStart(voice)
+                manualTuneVcoStart(routeForVoice(voice))
             }
             updated[voice] = !updated[voice]
             return updated
@@ -70,10 +71,10 @@ export const SettingsButtons = ({ voice }: Props) => {
             <div className="settings-buttons__columns">
                 <div className="settings-buttons__column">
                     <div className="settings-buttons__column-heading">DCO</div>
-                    <Button active onClick={() => calibrateDCO1(voice)}>
+                    <Button active onClick={() => calibrateDCO1(routeForVoice(voice))}>
                         Calibrate DCO 1
                     </Button>
-                    <Button active onClick={() => calibrateDCO2(voice)}>
+                    <Button active onClick={() => calibrateDCO2(routeForVoice(voice))}>
                         Calibrate DCO 2
                     </Button>
                     <Button active={dco1Range === 1} onClick={toggleDco1Range}>
@@ -85,13 +86,13 @@ export const SettingsButtons = ({ voice }: Props) => {
                 </div>
                 <div className="settings-buttons__column">
                     <div className="settings-buttons__column-heading">VCO</div>
-                    <Button active onClick={() => tuneVco(voice)}>
+                    <Button active onClick={() => tuneVco(routeForVoice(voice))}>
                         Tune
                     </Button>
-                    <Button active onClick={() => measureVcoOctaves(voice)}>
+                    <Button active onClick={() => measureVcoOctaves(routeForVoice(voice))}>
                         Measure octaves
                     </Button>
-                    <Button active onClick={() => measureVcoAll(voice)}>
+                    <Button active onClick={() => measureVcoAll(routeForVoice(voice))}>
                         Measure all
                     </Button>
                     <Button active={manualTuneActive[voice]} onClick={handleManualTuneToggle}>

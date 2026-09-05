@@ -29,7 +29,7 @@ const voiceHeaderContents = fs.readFileSync(`${cppVoiceRoot}src/midiRPC/midiRPCF
     encoding: 'utf8',
     flag: 'r',
 })
-const voiceFuncs = parseCppHeaderFile(voiceHeaderContents)
+const voiceFuncs = parseCppHeaderFile(voiceHeaderContents, { type: "all" })
 console.log('BOOOOOICES', voiceFuncs)
 
 
@@ -38,7 +38,7 @@ const mainHeaderContents = fs.readFileSync(`${cppMainRoot}src/midiRPC/midiRPCFun
     encoding: 'utf8',
     flag: 'r',
 })
-const mainFuncs = parseCppHeaderFile(mainHeaderContents)
+const mainFuncs = parseCppHeaderFile(mainHeaderContents, { type: "main" })
 
 console.log(mainFuncs)
 

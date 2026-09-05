@@ -8,6 +8,7 @@ import {
     tuneSvf,
 } from '@/midi/rpc/api'
 import Button from '../components/Button'
+import { routeForVoice } from './voiceRouting'
 import './SettingsButtons.scss'
 import './FilterTuning.scss'
 
@@ -71,10 +72,10 @@ export const FilterTuning = ({ voice }: Props) => {
 
     const executeTuneAction = () => {
         switch (tuneAction) {
-            case 'tune': tuneSvf(target, precisionBits, voice); break
-            case 'findPeak': svfFindPeak(target, precisionBits, voice); break
-            case 'measureVRefAll': svfMeasureVRefAll(target, precisionBits, voice); break
-            case 'measureVRefAt': svfMeasureVRefAt(target, vRefNote, precisionBits, voice); break
+            case 'tune': tuneSvf(target, precisionBits, routeForVoice(voice)); break
+            case 'findPeak': svfFindPeak(target, precisionBits, routeForVoice(voice)); break
+            case 'measureVRefAll': svfMeasureVRefAll(target, precisionBits, routeForVoice(voice)); break
+            case 'measureVRefAt': svfMeasureVRefAt(target, vRefNote, precisionBits, routeForVoice(voice)); break
         }
     }
 
@@ -142,7 +143,7 @@ export const FilterTuning = ({ voice }: Props) => {
                             onChange={(e) => setWindowUs(Number(e.target.value))}
                         />
                     </label>
-                    <Button active onClick={() => svfMeasureAmplitudeOnce(trimmerSettingRaw, windowUs, voice)}>
+                    <Button active onClick={() => svfMeasureAmplitudeOnce(trimmerSettingRaw, windowUs, routeForVoice(voice))}>
                         Measure
                     </Button>
                 </div>
@@ -179,7 +180,7 @@ export const FilterTuning = ({ voice }: Props) => {
                             onChange={(e) => setSearchMidiNote(Number(e.target.value))}
                         />
                     </label>
-                    <Button active onClick={() => svfSearchCutoffOne(target, searchMidiNote, vRefMilliVolts, searchPrecisionBits, voice)}>
+                    <Button active onClick={() => svfSearchCutoffOne(target, searchMidiNote, vRefMilliVolts, searchPrecisionBits, routeForVoice(voice))}>
                         Search
                     </Button>
                 </div>

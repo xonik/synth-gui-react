@@ -1,8 +1,9 @@
 import type React from 'react'
 import { useCallback, useState } from 'react'
 import ReactSlider from 'react-slider'
-import { releaseCVOverride, releaseCVOverrides, setCVOverride, VOICE_ALL } from '../../midi/rpc/api'
+import { releaseCVOverride, releaseCVOverrides, setCVOverride } from '../../midi/rpc/api'
 import { sharedConfig } from '../../sharedConfig'
+import { routeForVoice, VOICE_ALL } from './voiceRouting'
 import Button from '../components/Button'
 import { CV_CHANNELS, CVs } from './CvDefinitions'
 import './CvRange.scss'
@@ -82,7 +83,7 @@ export const CvOverrides = ({ voice }: Props) => {
     const [cv, setCv] = useState<number>(0)
 
     const onRelease = useCallback(() => {
-        releaseCVOverride(cv, voice)
+        releaseCVOverride(cv, routeForVoice(voice))
     }, [cv, voice])
 
     const onReleaseAll = useCallback(() => {
@@ -100,7 +101,7 @@ export const CvOverrides = ({ voice }: Props) => {
                 } else {
                     updated[voice][cv].value = start
                 }
-                setCVOverride(cv, start, voice)
+                setCVOverride(cv, start, routeForVoice(voice))
                 return updated
             })
         },

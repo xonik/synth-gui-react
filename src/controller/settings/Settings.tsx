@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { sharedConfig } from '@/sharedConfig'
+import { VOICE_ALL } from './voiceRouting'
 import { CvOverrides } from './CvOverrides'
 import { CvRange } from './CvRange'
 import { MidiSettings } from './MidiSettings'
@@ -80,7 +81,7 @@ const Settings = () => {
                             Voice {i + 1}
                         </option>
                     ))}
-                    <option value={-1}>All voices</option>
+                    <option value={VOICE_ALL}>All voices</option>
                 </select>
             </div>
             {content}

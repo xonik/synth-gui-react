@@ -12,25 +12,29 @@ namespace midiRPC {
 
   uint16_t deserializeAndCallFunction(const uint8_t* data, uint16_t startPos) {
     uint16_t pos = startPos;
-    int8_t voice = getVoice(data, pos); // used during routing, not passed to functions
     uint16_t functionId = getFunctionId(data, pos);
 
-${functions.map(functionMapper).join('')}
+${functions.map((func, index) => functionMapper(func, index)).join('')}
+    else {
+      serialPrintln(String("Unknown function id ") + functionId);
+    }
 
     return pos;
   }
 }`
 }
 
-function functionMapper(func: Func) {
+function functionMapper(func: Func, index: number) {
     let paramsString = func.params.map(paramConverterMapper).join('\n')
     if (paramsString.length > 0) paramsString = `\n${paramsString}`
 
-    return `
-    if(functionId == ${func.name}Id) {${paramsString}
-      ${getSerialPrintln(func)}        
-      ${func.name}(${func.params.map((param) => param.name).join(', ')});
-    }
+   const keyword = index === 0 ? 'if' : 'else if'
+
+   return `
+   ${keyword}(functionId == ${func.name}Id) {${paramsString}
+     ${getSerialPrintln(func)}        
+     ${func.name}(${func.params.map((param) => param.name).join(', ')});
+   }
 `
 }
 

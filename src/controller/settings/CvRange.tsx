@@ -1,8 +1,9 @@
 import { useCallback, useState } from 'react'
 import ReactSlider from 'react-slider'
 import { curveNames } from '@/components/curves/shortCurveNames'
-import { clearCvMapping, saveCvMapping, saveCvMappings, setCvParams, VOICE_ALL } from '@/midi/rpc/api'
+import { clearCvMapping, saveCvMapping, saveCvMappings, setCvParams } from '@/midi/rpc/api'
 import { sharedConfig } from '@/sharedConfig'
+import { routeForVoice, VOICE_ALL } from './voiceRouting'
 import { Curve } from '@/synthcore/generatedTypes'
 import Button from '../components/Button'
 import {CV_CHANNELS, type CvDefinition, CVs} from './CvDefinitions'
@@ -194,11 +195,11 @@ function mutate(cvRanges: CvRange[], cv: number, changes: Partial<CvRange>) {
 
 function sendAll(voice: number, cvRanges: CvRange[], i: number) {
     const { cv, start, end, curve, reverse } = cvRanges[i]
-    setCvParams(cv, start, end, curve, reverse)
+    setCvParams(cv, start, end, curve, reverse, routeForVoice(voice))
 
     if (i < CV_CHANNELS) {
         if (i === CV_CHANNELS - 1) {
-            saveCvMappings(voice)
+            saveCvMappings(routeForVoice(voice))
         } else {
             setTimeout(() => {
                 sendAll(voice, cvRanges, i + 1)
@@ -234,7 +235,7 @@ export const CvRange = ({ voice }: Props) => {
 
     const sendCv = useCallback(
         (cvRange: CvRange, _v: number) => {
-            setCvParams(cvRange.cv, cvRange.start, cvRange.end, cvRange.curve, cvRange.reverse, voice)
+            setCvParams(cvRange.cv, cvRange.start, cvRange.end, cvRange.curve, cvRange.reverse, routeForVoice(voice))
         },
         [voice]
     )
@@ -251,7 +252,7 @@ export const CvRange = ({ voice }: Props) => {
             }
             save(updated)
             updateSaved(true)
-            saveCvMapping(cv, voice)
+            saveCvMapping(cv, routeForVoice(voice))
             return updated
         })
     }, [cv, voice, updateSaved])
@@ -389,7 +390,7 @@ export const CvRange = ({ voice }: Props) => {
                         onChange={(e) => setClearCv(Number(e.target.value))}
                         className="cv-range__clear-input"
                     />
-                    <Button active onClick={() => clearCvMapping(clearCv, voice)}>
+                    <Button active onClick={() => clearCvMapping(clearCv, routeForVoice(voice))}>
                         Clear single
                     </Button>
                 </div>

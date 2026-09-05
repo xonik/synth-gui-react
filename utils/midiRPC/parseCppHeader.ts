@@ -1,13 +1,14 @@
 import { type DataType, isDataType, KNOWN_DATATYPES } from './dataTypes'
 import type { Func } from './types'
+import type { Route } from "../../src/midi/midibus";
 
-export const parseCppHeaderFile = (file: string) => {
+export const parseCppHeaderFile = (file: string, defaultRoute: Route) => {
     const lines = file.split('\n')
 
     const funcs: Func[] = []
     lines.forEach((line: string) => {
         const foundFunc = parseLine(line)
-        if (foundFunc) funcs.push(foundFunc)
+        if (foundFunc) funcs.push({ ...foundFunc, defaultRoute })
     })
     console.log(lines)
     return funcs

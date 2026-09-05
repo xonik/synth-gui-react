@@ -1,4 +1,5 @@
 import type { DataType } from './dataTypes'
+import type { Route } from "../../src/midi/midibus";
 
 export type Param = {
     name: string
@@ -8,6 +9,7 @@ export type Param = {
 export type Func = {
     name: string
     returnType: DataType
+    defaultRoute: Route
     params: Param[]
     targets: string[]
 }
