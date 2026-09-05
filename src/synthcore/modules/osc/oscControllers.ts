@@ -68,7 +68,10 @@ interface OscControllers {
         LFO: ControllerConfigButton
         KBD: ControllerConfigButton
     }
-    WAVETABLE_SELECT: ControllerConfigSysex
+    WAVETABLE: {
+        props: FuncProps
+        SELECT: ControllerConfigSysex
+    }
 }
 
 const oscControllers: OscControllers = {
@@ -428,12 +431,15 @@ const oscControllers: OscControllers = {
             valueLabels: ['Off', 'On'],
         },
     },
-    WAVETABLE_SELECT: {
-        id: ControllerIdNonMod.WAVETABLE_SELECT,
-        label: 'Wavetable select',
-        type: 'com',
-        command: sysexCommands.WAVETABLE_SELECT,
-        values: [],
+    WAVETABLE: {
+        props: { label: 'Wavetable' },
+        SELECT: {
+            id: ControllerIdNonMod.WAVETABLE_SELECT,
+            label: 'Wavetable select',
+            type: 'com',
+            command: sysexCommands.WAVETABLE_SELECT,
+            values: [],
+        }
     },
 }
 

@@ -98,7 +98,7 @@ export const setOscWavetable = (voiceGroupIndex: number, oscillatorId: number, w
     })
 
     sysex.send({ type: 'voiceGroup', index: voiceGroupIndex }, {
-        ...oscControllers.WAVETABLE_SELECT,
+        ...oscControllers.WAVETABLE.SELECT,
         values,
     })
 }
@@ -178,7 +178,7 @@ export function startOscMidiReceive() {
         receiveUnsubscribers.push(() => button.unsubscribe(ctrl, id))
     }
 
-    const wavetableSelectCtrl = oscControllers.WAVETABLE_SELECT
+    const wavetableSelectCtrl = oscControllers.WAVETABLE.SELECT
     const sysexId = sysex.subscribe((route: Route, values: number[]) => {
         if(route.type !== 'voiceGroup') {
             console.log('Only voiceGroup routes are supported for wavetable select sysex messages, ignoring', route)
