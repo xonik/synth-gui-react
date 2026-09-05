@@ -10,6 +10,7 @@ import type {
     ControllerConfigSysex,
     MidiGroup,
 } from './types'
+import { sharedConfig } from "@/sharedConfig";
 
 // Use native DOM types for MIDI (instead of @types/webmidi which conflicts with built-in types)
 
@@ -35,7 +36,7 @@ type NRPNSubscriber = {
 
 type SysexSubscriber = {
     id: number
-    callback: (voiceGroupIndex: number, values: number[]) => void
+    callback: (route: Route, values: number[]) => void
 }
 
 /*
@@ -120,6 +121,11 @@ export const sysexCommands = {
     RPC: 0,
     WAVETABLE_SELECT: 1,
     WAVETABLE_UPDATE: 2,
+}
+
+export type Route = {
+    type: 'voice' | 'voiceGroup' | 'main' | 'all'
+    index?: number
 }
 
 let midiOut: MIDIOutput | undefined
@@ -293,6 +299,7 @@ const currNRPN = {
     loValue: 0,
 }
 
+// TODO: Not in use, but affects wavetable loading!
 // Teensy may drop sysex messages longer than this, so callers must split larger payloads.
 export const SYSEX_MAX_LENGTH = 60
 
@@ -300,8 +307,39 @@ export const SYSEX_MAX_LENGTH = 60
 // SYSEX_START, address bytes, command byte and SYSEX_END framing.
 export const getMaxSysexPayloadLength = () => SYSEX_MAX_LENGTH - (midiConfig.sysexAddr.length + 3)
 
-export const sendSysex = (command: number, data: number[]) => {
-    const midiBytes = [status.SYSEX_START, ...midiConfig.sysexAddr, command, ...data, status.SYSEX_END]
+const encodeRouting = (route: Route): number => {
+    if (route.type === 'all') return 127
+    if (route.type === 'main') return 126
+    if (route.type === 'voiceGroup') {
+        const index = route.index ?? 0
+        if (index < 0) return 0
+        if (index >= sharedConfig.VOICE_GROUPS.value) return sharedConfig.VOICE_GROUPS.value - 1
+        return index
+    }
+    // default: voice
+    const index = route.index ?? 0
+    if (index < 0) return sharedConfig.VOICE_GROUPS.value
+    if (index >= sharedConfig.VOICE_COUNT.value) return sharedConfig.VOICE_GROUPS.value + sharedConfig.VOICE_COUNT.value - 1
+    return sharedConfig.VOICE_GROUPS.value + index
+}
+
+const decodeRouting = (routing: number): Route => {
+    if (routing === 127) return { type: 'all' }
+    if (routing === 126) return { type: 'main' }
+    if (routing >= 0 && routing < sharedConfig.VOICE_GROUPS.value) return { type: 'voiceGroup', index: routing }
+    return { type: 'voice', index: routing - sharedConfig.VOICE_GROUPS.value }
+}
+
+export const sendSysex = (route: Route, command: number, data: number[]) => {
+    const routing = encodeRouting(route)
+    const midiBytes = [
+        status.SYSEX_START,
+        ...midiConfig.sysexAddr,
+        routing,
+        command,
+        ...data,
+        status.SYSEX_END,
+    ]
     console.log('sending sysex', midiBytes)
     if (midiBytes.length > SYSEX_MAX_LENGTH) {
         console.warn('Sysex message is more than 60 bytes, it may not work with teensy', midiBytes)
@@ -311,7 +349,7 @@ export const sendSysex = (command: number, data: number[]) => {
 }
 
 export const sysex = {
-    subscribe: (callback: (voiceGroupIndex: number, values: number[]) => void, { command }: ControllerConfigSysex) => {
+    subscribe: (callback: (route: Route, values: number[]) => void, { command }: ControllerConfigSysex) => {
         const id = idPool++
         sysexSubscribers[command] = [...(sysexSubscribers[command] || []), { id, callback }]
         return id
@@ -327,16 +365,16 @@ export const sysex = {
             ]
         }
     },
-    publish: (voiceGroupIndex: number, command: number, values: number[]) => {
+    publish: (route: Route, command: number, values: number[]) => {
         sysexSubscribers[command]?.forEach((subscriber) => {
-            subscriber.callback(voiceGroupIndex, values)
+            subscriber.callback(route, values)
         })
     },
-    send: (voiceGroupIndex: number, controller: ControllerConfigSysex, loopback = false) => {
+    send: (route: Route, controller: ControllerConfigSysex, loopback = false) => {
         if (loopback) {
-            sysex.publish(voiceGroupIndex, controller.command, controller.values)
+            sysex.publish(route, controller.command, controller.values)
         }
-        sendSysex(controller.command, controller.values)
+        sendSysex(route, controller.command, controller.values)
     },
 }
 
@@ -385,15 +423,16 @@ export const receiveMidiMessage = (midiEvent: MIDIMessageEvent) => {
             cc.publish(voiceGroupId, ccKey, ccValue)
         }
     } else if (midiStatus === status.SYSEX_START) {
-        // [SYSEX_START, ...sysexAddr, command, ...payload, SYSEX_END]
+        // [SYSEX_START, ...sysexAddr, route, command, ...payload, SYSEX_END]
         const headerLength = 1 + midiConfig.sysexAddr.length
-        const command = midiData[headerLength]
+        const route = decodeRouting(midiData[headerLength])
+        const command = midiData[headerLength + 1]
         const hasEnd = midiData[midiData.length - 1] === status.SYSEX_END
         const payloadEnd = hasEnd ? midiData.length - 1 : midiData.length
-        const values = Array.from(midiData.slice(headerLength + 1, payloadEnd))
+        const values = Array.from(midiData.slice(headerLength + 2, payloadEnd))
 
         if (sysexSubscribers[command]?.length) {
-            sysex.publish(-1, command, values)
+            sysex.publish(route, command, values)
         } else {
             console.log('Unhandled sysex message', midiData)
             midiOut?.send(midiData)

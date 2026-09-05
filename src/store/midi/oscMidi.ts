@@ -6,7 +6,7 @@
  * Handles all 3 oscillators: DCO1 (index 0), DCO2 (index 1), VCO (index 2).
  */
 
-import { button, cc, sysex } from '@/midi/midibus'
+import { button, cc, sysex, type Route } from '@/midi/midibus'
 import type { ControllerConfigButton, ControllerConfigCC } from '@/midi/types'
 import { type OscillatorState, useWavetableStore, voiceGroupStores } from '@/store'
 import oscControllers from '@/synthcore/modules/osc/oscControllers'
@@ -92,12 +92,12 @@ export const setOscWavetable = (voiceGroupIndex: number, oscillatorId: number, w
     logger.midi(`Setting oscillator ${oscillatorId} in voice group ${voiceGroupIndex} to wavetable ${wavetableId} (${entries.length} entries)`)
 
     // The wavetables are not stored on the voice card, so we send the whole table on every change.
-    const values = [voiceGroupIndex, oscillatorId, wavetableId, entries.length]
+    const values = [oscillatorId, wavetableId, entries.length]
     entries.forEach((entry) => {
         values.push(entry.position, entry.bankIndex, entry.waveIndex)
     })
 
-    sysex.send(voiceGroupIndex, {
+    sysex.send({ type: 'voiceGroup', index: voiceGroupIndex }, {
         ...oscControllers.WAVETABLE_SELECT,
         values,
     })
@@ -179,8 +179,13 @@ export function startOscMidiReceive() {
     }
 
     const wavetableSelectCtrl = oscControllers.WAVETABLE_SELECT
-    const sysexId = sysex.subscribe((_voiceGroupIndex: number, values: number[]) => {
-        const [voiceGroupIndex, oscIndex, wavetableId, count, ...entriesData] = values
+    const sysexId = sysex.subscribe((route: Route, values: number[]) => {
+        if(route.type !== 'voiceGroup') {
+            console.log('Only voiceGroup routes are supported for wavetable select sysex messages, ignoring', route)
+            return
+        }
+        const voiceGroupIndex = route.index ?? 0
+        const [oscIndex, wavetableId, count, ...entriesData] = values
         if (count === undefined) {
             withMidiReceive(() => {
                 voiceGroupStores[voiceGroupIndex].getState().set((state) => {

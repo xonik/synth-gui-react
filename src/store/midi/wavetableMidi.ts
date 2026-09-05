@@ -22,7 +22,7 @@ export const updateWavetable = (wavetableId: number, entries: WaveEntry[]) => {
     entries.forEach((entry) => {
         values.push(entry.position, entry.bankIndex, entry.waveIndex)
     })
-    sysex.send(-1, { ...wavetableControllers.UPDATE, values })
+    sysex.send({ type: 'all' }, { ...wavetableControllers.UPDATE, values })
 }
 
 let receiveUnsubscribers: (() => void)[] = []
@@ -30,7 +30,11 @@ let receiveUnsubscribers: (() => void)[] = []
 export function startWavetableMidiReceive() {
     stopWavetableMidiReceive()
 
-    const loadId = sysex.subscribe((_voiceGroupIndex, values) => {
+    const loadId = sysex.subscribe((route, values) => {
+        if(route.type !== 'all') {
+            console.log('Only broadcast messages are supported for wavetable updates, ignoring', route)
+            return
+        }
         const wavetableId = values[0] ?? 0
         const count = values[1] ?? 0
         const entries: WaveEntry[] = []
