@@ -306,14 +306,6 @@ const currNRPN = {
     loValue: 0,
 }
 
-// TODO: Not in use, but affects wavetable loading!
-// Teensy may drop sysex messages longer than this, so callers must split larger payloads.
-export const SYSEX_MAX_LENGTH = 60
-
-// Number of bytes available for the command payload, accounting for the
-// SYSEX_START, address bytes, command byte and SYSEX_END framing.
-export const getMaxSysexPayloadLength = () => SYSEX_MAX_LENGTH - (midiConfig.sysexAddr.length + 3)
-
 const encodeRouting = (route: Route): number => {
     if (route.type === 'all') return 127
     if (route.type === 'main') return 126
@@ -346,9 +338,6 @@ export const sendSysex = (route: Route, command: number, data: number[]) => {
         status.SYSEX_END,
     ]
     console.log('sending sysex', midiBytes)
-    if (midiBytes.length > SYSEX_MAX_LENGTH) {
-        console.warn('Sysex message is more than 60 bytes, it may not work with teensy', midiBytes)
-    }
 
     midiOut?.send(midiBytes)
 }

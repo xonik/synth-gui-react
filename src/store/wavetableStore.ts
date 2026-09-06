@@ -45,6 +45,13 @@ interface WavetableActions {
     loadWavetableEntries: (wavetableIndex: number, entries: WaveEntry[]) => void
 }
 
+const WAVETABLE_STORAGE_KEY = 'wavetable-store-v1'
+
+interface PersistedWavetableState {
+    wavetableNames: string[]
+    wavetables: WaveEntry[][]
+}
+
 const sortEntries = (entries: WaveEntry[]): WaveEntry[] => [...entries].sort((a, b) => a.position - b.position)
 
 /** Lowest free position at or above `position`, or -1 if none exists within bounds. */
@@ -73,13 +80,61 @@ const insertWave = (entries: WaveEntry[], entry: WaveEntry): WaveEntry[] => {
     return sortEntries([...bumped, entry])
 }
 
+const persistWavetables = (state: PersistedWavetableState) => {
+    localStorage.setItem(WAVETABLE_STORAGE_KEY, JSON.stringify(state))
+}
+
+const isValidWaveEntry = (entry: unknown): entry is WaveEntry => {
+    if (!entry || typeof entry !== 'object') return false
+    const candidate = entry as Record<string, unknown>
+    return (
+        Number.isInteger(candidate.bankIndex) &&
+        Number.isInteger(candidate.waveIndex) &&
+        Number.isInteger(candidate.position) &&
+        (candidate.bankIndex as number) >= 0 &&
+        (candidate.waveIndex as number) >= 0 &&
+        (candidate.position as number) >= 0 &&
+        (candidate.position as number) <= MAX_POSITION
+    )
+}
+
+const loadPersistedWavetables = (): PersistedWavetableState | null => {
+    const raw = localStorage.getItem(WAVETABLE_STORAGE_KEY)
+    if (!raw) return null
+    try {
+        const parsed = JSON.parse(raw) as {
+            wavetableNames?: unknown
+            wavetables?: unknown
+        }
+        if (!Array.isArray(parsed.wavetableNames) || !Array.isArray(parsed.wavetables)) return null
+        if (parsed.wavetableNames.length !== WAVETABLE_COUNT || parsed.wavetables.length !== WAVETABLE_COUNT) return null
+        if (!parsed.wavetableNames.every((name) => typeof name === 'string')) return null
+
+        const wavetables = parsed.wavetables.map((table) => {
+            if (!Array.isArray(table)) return []
+            const entries = table.filter(isValidWaveEntry)
+            return sortEntries(entries)
+        })
+
+        return {
+            wavetableNames: parsed.wavetableNames,
+            wavetables,
+        }
+    } catch (error) {
+        console.warn('Unable to load wavetable state from local storage', error)
+        return null
+    }
+}
+
+const persisted = loadPersistedWavetables()
+
 export const useWavetableStore = create<WavetableState & WavetableActions>((set, get) => ({
     selectedWavetable: 0,
     selectedBank: 0,
     selectedWave: 0,
     selectedPosition: 0,
-    wavetableNames: defaultWavetableNames,
-    wavetables: Array.from({ length: WAVETABLE_COUNT }, () => []),
+    wavetableNames: persisted?.wavetableNames ?? defaultWavetableNames,
+    wavetables: persisted?.wavetables ?? Array.from({ length: WAVETABLE_COUNT }, () => []),
 
     setSelectedWavetable: (index) => set({ selectedWavetable: index }),
     setSelectedBank: (index) => set({ selectedBank: index, selectedWave: 0 }),
@@ -87,10 +142,11 @@ export const useWavetableStore = create<WavetableState & WavetableActions>((set,
     setSelectedPosition: (pos) => set({ selectedPosition: pos }),
 
     setWavetableName: (wavetableIndex, name) => {
-        const { wavetableNames } = get()
+        const { wavetableNames, wavetables } = get()
         const nextNames = [...wavetableNames]
         nextNames[wavetableIndex] = name
         set({ wavetableNames: nextNames })
+        persistWavetables({ wavetableNames: nextNames, wavetables })
     },
 
     addWave: () => {
@@ -142,6 +198,7 @@ export const useWavetableStore = create<WavetableState & WavetableActions>((set,
         const newWavetables = [...wavetables]
         newWavetables[wavetableIndex] = insertWave(wavetables[wavetableIndex], { bankIndex, waveIndex, position })
         set({ wavetables: newWavetables })
+        persistWavetables({ wavetableNames: get().wavetableNames, wavetables: newWavetables })
 
         if (!isMidiReceiving()) {
             updateWavetable(wavetableIndex, newWavetables[wavetableIndex])
@@ -153,6 +210,7 @@ export const useWavetableStore = create<WavetableState & WavetableActions>((set,
         const newWavetables = [...wavetables]
         newWavetables[wavetableIndex] = wavetables[wavetableIndex].filter((e) => e.position !== position)
         set({ wavetables: newWavetables })
+        persistWavetables({ wavetableNames: get().wavetableNames, wavetables: newWavetables })
 
         if (!isMidiReceiving()) {
             updateWavetable(wavetableIndex, newWavetables[wavetableIndex])
@@ -174,6 +232,7 @@ export const useWavetableStore = create<WavetableState & WavetableActions>((set,
         const newWavetables = [...wavetables]
         newWavetables[wavetableIndex] = sortEntries(table)
         set({ wavetables: newWavetables })
+        persistWavetables({ wavetableNames: get().wavetableNames, wavetables: newWavetables })
 
         if (!isMidiReceiving()) {
             updateWavetable(wavetableIndex, newWavetables[wavetableIndex])
@@ -186,6 +245,7 @@ export const useWavetableStore = create<WavetableState & WavetableActions>((set,
         const newWavetables = [...wavetables]
         newWavetables[wavetableIndex] = sorted
         set({ wavetables: newWavetables })
+        persistWavetables({ wavetableNames: get().wavetableNames, wavetables: newWavetables })
 
         if (!isMidiReceiving()) {
             updateWavetable(wavetableIndex, sorted)
