@@ -5,8 +5,9 @@ export function generateApiTs(funcs: Func[]) {
 // js-to-midi RPC wrapper
 import { jsToMidiEncoder, splitTo7 } from './serializer'
 import { FunctionNames } from './functionNames'
-import { sendSysex, sysexCommands, type Route } from '../midibus'
+import { sendSysex, type Route } from '../midibus'
 import { call, callWithReturn } from './functionCaller'
+import rpcControllers from '@/synthcore/modules/rpc/rpcControllers'
 
 ${funcs.map(functionMapper).join('\n\n')}
 `
@@ -32,7 +33,7 @@ ${paramBytesBlock}
     const data = [
       ${dataItems.join(',\n      ')},
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }`
     }
@@ -49,7 +50,7 @@ ${paramBytesBlock}
     const data = [
       ${dataItems.join(',\n      ')},
     ]
-    sendSysex(route, sysexCommands.RPC, data)
+    sendSysex(route, rpcControllers.RPC.command, data)
   }, '${func.returnType}')
 }`
 }

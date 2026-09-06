@@ -311,10 +311,12 @@ export enum ControllerIdNonMod {
 
     WAVETABLE_SELECT,
     WAVETABLE_UPDATE,
+
+    RPC,
 }
 
 export enum ControllerIdEnvNonMod {
-    ENV_RESET_ON_TRIGGER = 222,
+    ENV_RESET_ON_TRIGGER = 223,
     ENV_RELEASE_MODE,
     ENV_LOOP_MODE,
     ENV_MAX_LOOPS,
@@ -326,13 +328,13 @@ export enum ControllerIdEnvNonMod {
 export const ENV_NON_MOD_COUNT = Object.keys(ControllerIdEnvNonMod).filter((o) => isNotNumber(o)).length
 
 export enum ControllerIdEnvStageNonMod {
-    ENV_CURVE = 230,
+    ENV_CURVE = 231,
     ENV_TOGGLE_STAGE,
 }
 export const ENV_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdEnvStageNonMod).filter((o) => isNotNumber(o)).length
 
 export enum ControllerIdLfoNonMod {
-    LFO_SHAPE = 232,
+    LFO_SHAPE = 233,
     LFO_SYNC,
     LFO_RESET,
     LFO_BIPOLAR,
@@ -351,7 +353,7 @@ export enum ControllerIdLfoNonMod {
 export const LFO_NON_MOD_COUNT = Object.keys(ControllerIdLfoNonMod).filter((o) => isNotNumber(o)).length
 
 export enum ControllerIdLfoStageNonMod {
-    LFO_CURVE = 247,
+    LFO_CURVE = 248,
     LFO_TOGGLE_STAGE,
 }
 export const LFO_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdLfoStageNonMod).filter((o) => isNotNumber(o)).length

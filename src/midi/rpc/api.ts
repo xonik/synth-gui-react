@@ -2,8 +2,9 @@
 // js-to-midi RPC wrapper
 import { jsToMidiEncoder, splitTo7 } from './serializer'
 import { FunctionNames } from './functionNames'
-import { sendSysex, sysexCommands, type Route } from '../midibus'
+import { sendSysex, type Route } from '../midibus'
 import { call, callWithReturn } from './functionCaller'
+import rpcControllers from '@/synthcore/modules/rpc/rpcControllers'
 
 export function setCvStart(cv: number, start: number, route: Route = { type: 'all' }) {
   call('setCvStart', () => {
@@ -15,7 +16,7 @@ export function setCvStart(cv: number, start: number, route: Route = { type: 'al
       ...splitTo7(FunctionNames.setCvStart, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -29,7 +30,7 @@ export function setCvEnd(cv: number, end: number, route: Route = { type: 'all' }
       ...splitTo7(FunctionNames.setCvEnd, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -43,7 +44,7 @@ export function setCvCurve(cv: number, curve: number, route: Route = { type: 'al
       ...splitTo7(FunctionNames.setCvCurve, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -60,7 +61,7 @@ export function setCvParams(cv: number, start: number, end: number, curve: numbe
       ...splitTo7(FunctionNames.setCvParams, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -73,7 +74,7 @@ export function saveCvMapping(cv: number, route: Route = { type: 'all' }) {
       ...splitTo7(FunctionNames.saveCvMapping, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -86,7 +87,7 @@ export function saveCvMappings(route: Route = { type: 'all' }) {
       ...splitTo7(FunctionNames.saveCvMappings, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -99,7 +100,7 @@ export function loadCvMapping(cv: number, route: Route = { type: 'all' }) {
       ...splitTo7(FunctionNames.loadCvMapping, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -112,7 +113,7 @@ export function loadCvMappings(route: Route = { type: 'all' }) {
       ...splitTo7(FunctionNames.loadCvMappings, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -125,7 +126,7 @@ export function clearCvMapping(cv: number, route: Route = { type: 'all' }) {
       ...splitTo7(FunctionNames.clearCvMapping, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -139,7 +140,7 @@ export function setTrimmerSetting(trimmer: number, value: number, route: Route =
       ...splitTo7(FunctionNames.setTrimmerSetting, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -152,7 +153,7 @@ export function saveTrimmerSettings(route: Route = { type: 'all' }) {
       ...splitTo7(FunctionNames.saveTrimmerSettings, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -166,7 +167,7 @@ export function setCVOverride(cv: number, value: number, route: Route = { type: 
       ...splitTo7(FunctionNames.setCVOverride, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -179,7 +180,7 @@ export function releaseCVOverride(cv: number, route: Route = { type: 'all' }) {
       ...splitTo7(FunctionNames.releaseCVOverride, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -192,7 +193,7 @@ export function releaseCVOverrides(route: Route = { type: 'all' }) {
       ...splitTo7(FunctionNames.releaseCVOverrides, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -205,7 +206,7 @@ export function toggleSvfInSummedToCalibrateMix(on: boolean, route: Route = { ty
       ...splitTo7(FunctionNames.toggleSvfInSummedToCalibrateMix, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -218,7 +219,7 @@ export function tuneVco(route: Route = { type: 'all' }) {
       ...splitTo7(FunctionNames.tuneVco, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -231,7 +232,7 @@ export function calibrateDCO1(route: Route = { type: 'all' }) {
       ...splitTo7(FunctionNames.calibrateDCO1, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -244,7 +245,7 @@ export function calibrateDCO2(route: Route = { type: 'all' }) {
       ...splitTo7(FunctionNames.calibrateDCO2, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -257,7 +258,7 @@ export function measureVcoOctaves(route: Route = { type: 'all' }) {
       ...splitTo7(FunctionNames.measureVcoOctaves, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -270,7 +271,7 @@ export function measureVcoAll(route: Route = { type: 'all' }) {
       ...splitTo7(FunctionNames.measureVcoAll, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -283,7 +284,7 @@ export function manualTuneVcoStart(route: Route = { type: 'all' }) {
       ...splitTo7(FunctionNames.manualTuneVcoStart, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -296,7 +297,7 @@ export function manualTuneVcoStop(route: Route = { type: 'all' }) {
       ...splitTo7(FunctionNames.manualTuneVcoStop, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -310,7 +311,7 @@ export function tuneSvf(target: number, precisionBits: number, route: Route = { 
       ...splitTo7(FunctionNames.tuneSvf, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -324,7 +325,7 @@ export function svfMeasureAmplitudeOnce(trimmerSettingRaw: number, windowUs: num
       ...splitTo7(FunctionNames.svfMeasureAmplitudeOnce, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -338,7 +339,7 @@ export function svfFindPeak(target: number, precisionBits: number, route: Route 
       ...splitTo7(FunctionNames.svfFindPeak, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -353,7 +354,7 @@ export function svfMeasureVRefAt(target: number, midiNote: number, precisionBits
       ...splitTo7(FunctionNames.svfMeasureVRefAt, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -367,7 +368,7 @@ export function svfMeasureVRefAll(target: number, precisionBits: number, route: 
       ...splitTo7(FunctionNames.svfMeasureVRefAll, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -383,7 +384,7 @@ export function svfSearchCutoffOne(target: number, midiNote: number, vRefMilliVo
       ...splitTo7(FunctionNames.svfSearchCutoffOne, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -396,7 +397,7 @@ export function powerDown(route: Route = { type: 'all' }) {
       ...splitTo7(FunctionNames.powerDown, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -409,7 +410,7 @@ export function powerUp(route: Route = { type: 'all' }) {
       ...splitTo7(FunctionNames.powerUp, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -422,7 +423,7 @@ export function dacStopUpdates(route: Route = { type: 'all' }) {
       ...splitTo7(FunctionNames.dacStopUpdates, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -435,7 +436,7 @@ export function dacStartUpdates(route: Route = { type: 'all' }) {
       ...splitTo7(FunctionNames.dacStartUpdates, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -448,7 +449,7 @@ export function unisonDetuneFactor(factor: number, route: Route = { type: 'all' 
       ...splitTo7(FunctionNames.unisonDetuneFactor, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -461,7 +462,7 @@ export function setCtrlAllParams(settings: number[], route: Route = { type: 'all
       ...splitTo7(FunctionNames.setCtrlAllParams, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -474,7 +475,7 @@ export function setCtrlAllNonModSettings(settings: number[], route: Route = { ty
       ...splitTo7(FunctionNames.setCtrlAllNonModSettings, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -488,7 +489,7 @@ export function setCtrlAllEnvParams(env: number, params: number[], route: Route 
       ...splitTo7(FunctionNames.setCtrlAllEnvParams, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -502,7 +503,7 @@ export function setCtrlAllEnvSettings(env: number, settings: number[], route: Ro
       ...splitTo7(FunctionNames.setCtrlAllEnvSettings, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -517,7 +518,7 @@ export function setCtrlAllEnvStageSettings(env: number, stage: number, settings:
       ...splitTo7(FunctionNames.setCtrlAllEnvStageSettings, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -531,7 +532,7 @@ export function setCtrlAllLfoParams(lfo: number, params: number[], route: Route 
       ...splitTo7(FunctionNames.setCtrlAllLfoParams, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -545,7 +546,7 @@ export function setCtrlAllLfoSettings(lfo: number, settings: number[], route: Ro
       ...splitTo7(FunctionNames.setCtrlAllLfoSettings, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -560,7 +561,7 @@ export function setCtrlAllLfoStageSettings(lfo: number, stage: number, settings:
       ...splitTo7(FunctionNames.setCtrlAllLfoStageSettings, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -574,7 +575,7 @@ export function setAllModAmounts(offsetDst: number, sourceAmounts: number[], rou
       ...splitTo7(FunctionNames.setAllModAmounts, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -589,7 +590,7 @@ export function setAllEnvModAmounts(env: number, offsetDst: number, sourceAmount
       ...splitTo7(FunctionNames.setAllEnvModAmounts, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -604,7 +605,7 @@ export function setAllLfoModAmounts(lfo: number, offsetDst: number, sourceAmount
       ...splitTo7(FunctionNames.setAllLfoModAmounts, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -617,7 +618,7 @@ export function changeMidiSpeed(speed: number, route: Route = { type: 'all' }) {
       ...splitTo7(FunctionNames.changeMidiSpeed, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -631,7 +632,7 @@ export function toggleVoicePower(voiceCardId: number, on: boolean, route: Route 
       ...splitTo7(FunctionNames.toggleVoicePower, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -644,7 +645,7 @@ export function voiceDacStopUpdates(voiceCardId: number, route: Route = { type: 
       ...splitTo7(FunctionNames.voiceDacStopUpdates, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }
 
@@ -657,6 +658,6 @@ export function voiceDacStartUpdates(voiceCardId: number, route: Route = { type:
       ...splitTo7(FunctionNames.voiceDacStartUpdates, 14),
       ...paramBytes,
     ]
-        sendSysex(route, sysexCommands.RPC, data)
+        sendSysex(route, rpcControllers.RPC.command, data)
   })
 }

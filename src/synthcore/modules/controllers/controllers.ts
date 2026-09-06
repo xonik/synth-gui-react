@@ -16,6 +16,7 @@ import outControllers from '../out/outControllers'
 import performanceControllers from '../performance/performanceControllers'
 import postMixControllers from '../postMix/postMixControllers'
 import ringModControllers from '../ringMod/ringModControllers'
+import rpcControllers from '../rpc/rpcControllers'
 import settingsControllers from '../settings/settingsControllers'
 import srcMixControllers from '../srcMix/srcMixControllers'
 import voicesControllers from '../voices/voicesControllers'
@@ -126,6 +127,13 @@ const controllers = {
     PERFORMANCE: performanceControllers,
     SETTINGS: settingsControllers,
     WAVETABLE: wavetableControllers,
+
+    // These are special, they aren't normal
+    // controllers but a place holder for
+    // the command that is used for all
+    // midiRPC calls - as they use the same
+    // sysex mechanism as other sysex controllers
+    RPC: rpcControllers,
 }
 
 export default controllers
