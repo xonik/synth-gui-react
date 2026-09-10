@@ -2,13 +2,7 @@ import { buttonMidiValues } from '@/midi/buttonMidiValues'
 import CC from '@/midi/mapCC'
 import NRPN from '@/midi/mapNRPN'
 import { sysexCommands } from '@/midi/midibus'
-import type {
-    ControllerConfigButton,
-    ControllerConfigCC,
-    ControllerConfigNRPN,
-    ControllerConfigSysex,
-    FuncProps,
-} from '@/midi/types'
+import type { ControllerConfigButton, ControllerConfigCC, ControllerConfigNRPN, ControllerConfigSysex, FuncProps } from '@/midi/types'
 import { ControllerIdDst, ControllerIdNonMod } from '../controllers/controllerIds'
 
 interface OscControllers {
@@ -35,6 +29,7 @@ interface OscControllers {
         MORPH_MODE: ControllerConfigButton
         MORPH_POINT: ControllerConfigButton
         SAMPLE_SELECT: ControllerConfigButton
+        WAVETABLE: ControllerConfigSysex
     }
     DCO2: {
         props: FuncProps
@@ -59,6 +54,7 @@ interface OscControllers {
         MORPH_MODE: ControllerConfigButton
         MORPH_POINT: ControllerConfigButton
         SAMPLE_SELECT: ControllerConfigButton
+        WAVETABLE: ControllerConfigSysex
     }
     VCO: {
         props: FuncProps
@@ -78,435 +74,74 @@ interface OscControllers {
         LFO: ControllerConfigButton
         KBD: ControllerConfigButton
     }
-    WAVETABLE: {
-        props: FuncProps
-        SELECT: ControllerConfigSysex
-    }
 }
 
 const oscControllers: OscControllers = {
     DCO1: {
         props: { label: 'Osc 1' },
-        // pots
-        PITCH: {
-            id: ControllerIdDst.DCO1_PITCH,
-            label: 'Pitch',
-            isDstDigi: true,
-            type: 'pot',
-            addr: NRPN.DCO1_PITCH,
-        },
-        NOTE: {
-            id: ControllerIdDst.DCO1_NOTE,
-            label: 'Note',
-            isDstDigi: true,
-            type: 'pot',
-            cc: CC.DCO1_NOTE,
-        },
-        DETUNE: {
-            id: ControllerIdDst.DCO1_DETUNE,
-            label: 'Detune',
-            isDstDigi: true,
-            type: 'pot',
-            cc: CC.DCO1_DETUNE,
-        },
-        RANGE: {
-            id: ControllerIdNonMod.DCO1_RANGE,
-            label: 'Range',
-            type: 'button',
-            values: [buttonMidiValues.OSC1_RANGE_LOW, buttonMidiValues.OSC1_RANGE_HIGH],
-            valueLabels: ['Low', 'High'],
-        },
-        WAVEFORM: {
-            id: ControllerIdDst.DCO1_WAVEFORM,
-            label: 'Waveform',
-            isDstDigi: true,
-            type: 'pot',
-            cc: CC.DCO1_WAVEFORM,
-        },
-        SUB1: {
-            id: ControllerIdDst.DCO1_SUB1,
-            label: 'Sub 1',
-            isDstDigi: true,
-            type: 'pot',
-            cc: CC.DCO1_SUB1,
-        },
-        SUB2: {
-            id: ControllerIdDst.DCO1_SUB2,
-            label: 'Sub 2',
-            isDstDigi: true,
-            type: 'pot',
-            cc: CC.DCO1_SUB2,
-        },
-        PW: {
-            id: ControllerIdDst.DCO1_PW,
-            label: 'PW',
-            isDstDigi: true,
-            type: 'pot',
-            cc: CC.DCO1_PW,
-        },
-
-        //buttons
-        SYNC: {
-            id: ControllerIdNonMod.DCO1_SYNC,
-            label: 'Sync DCO 1',
-            type: 'button',
-            values: [buttonMidiValues.OSC1_SYNC_OFF, buttonMidiValues.OSC1_SYNC_HARD, buttonMidiValues.OSC1_SYNC_METAL],
-            valueLabels: ['Off', 'Hard', 'Metal'],
-        },
-        MODE: {
-            id: ControllerIdNonMod.DCO1_MODE,
-            label: 'Mode',
-            type: 'button',
-            values: [buttonMidiValues.OSC1_MODE_DCO, buttonMidiValues.OSC1_MODE_WT, buttonMidiValues.OSC1_MODE_PCM],
-            valueLabels: ['DCO', 'WT', 'PCM'],
-        },
-        SUB_WAVE: {
-            id: ControllerIdNonMod.DCO1_SUB_WAVE,
-            label: 'Sub wave',
-            type: 'button',
-            values: [buttonMidiValues.OSC1_SUB_WAVE_SQR, buttonMidiValues.OSC1_SUB_WAVE_SAW],
-            valueLabels: ['Square', 'Saw'],
-        },
-        WHEEL: {
-            id: ControllerIdNonMod.DCO1_WHEEL,
-            label: 'Mod wheel',
-            type: 'button',
-            values: [buttonMidiValues.OSC1_WHEEL_OFF, buttonMidiValues.OSC1_WHEEL_ON],
-            valueLabels: ['Off', 'On'],
-        },
-        LFO: {
-            id: ControllerIdNonMod.DCO1_LFO,
-            label: 'LFO mod',
-            type: 'button',
-            values: [buttonMidiValues.OSC1_LFO_OFF, buttonMidiValues.OSC1_LFO_ON],
-            valueLabels: ['Off', 'On'],
-        },
-        KBD: {
-            id: ControllerIdNonMod.DCO1_KBD,
-            label: 'Keyboard track',
-            type: 'button',
-            values: [buttonMidiValues.OSC1_KBD_OFF, buttonMidiValues.OSC1_KBD_ON],
-            valueLabels: ['Off', 'On'],
-        },
-        SAW_INV: {
-            id: ControllerIdNonMod.DCO1_SAW_INV,
-            label: 'Saw invert',
-            type: 'button',
-            values: [buttonMidiValues.OSC1_SAW_INV_OFF, buttonMidiValues.OSC1_SAW_INV_ON],
-            valueLabels: ['Off', 'On'],
-        },
-        PRE_FILTER_SINE: {
-            id: ControllerIdNonMod.DCO1_PRE_FILTER_SINE,
-            label: 'Sine toggle',
-            type: 'button',
-            values: [buttonMidiValues.OSC1_PRE_FILTER_SINE_OFF, buttonMidiValues.OSC1_PRE_FILTER_SINE_ON],
-            valueLabels: ['Off', 'On'],
-        },
-        DAC_BITS: {
-            id: ControllerIdNonMod.DCO1_DAC_BITS,
-            label: 'DAC bits',
-            type: 'button',
-            values: [buttonMidiValues.OSC1_DAC_16BIT, buttonMidiValues.OSC1_DAC_12BIT],
-            valueLabels: ['16-bit', '12-bit'],
-        },
-        MORPH_MODE: {
-            id: ControllerIdNonMod.DCO1_MORPH_MODE,
-            label: 'Morph mode',
-            type: 'button',
-            values: [buttonMidiValues.OSC1_MORPH_MODE_CONTINUOUS, buttonMidiValues.OSC1_MORPH_MODE_STEPPED],
-            valueLabels: ['Continuous', 'Stepped'],
-        },
-        MORPH_POINT: {
-            id: ControllerIdNonMod.DCO1_MORPH_POINT,
-            label: 'Morph point',
-            type: 'button',
-            values: [buttonMidiValues.OSC1_MORPH_POINT_CONTINUOUS, buttonMidiValues.OSC1_MORPH_POINT_PHASE_START],
-            valueLabels: ['Continuous', 'Phase start'],
-        },
-        SAMPLE_SELECT: {
-            id: ControllerIdNonMod.DCO1_SAMPLE_SELECT,
-            label: 'Sample select',
-            type: 'button',
-            values: [buttonMidiValues.OSC1_SAMPLE_SELECT_INTERPOLATE, buttonMidiValues.OSC1_SAMPLE_SELECT_NEAREST],
-            valueLabels: ['Interpolate', 'Nearest'],
-        },
-
+        PITCH: { id: ControllerIdDst.DCO1_PITCH, label: 'Pitch', isDstDigi: true, type: 'pot', addr: NRPN.DCO1_PITCH },
+        NOTE: { id: ControllerIdDst.DCO1_NOTE, label: 'Note', isDstDigi: true, type: 'pot', cc: CC.DCO1_NOTE },
+        DETUNE: { id: ControllerIdDst.DCO1_DETUNE, label: 'Detune', isDstDigi: true, type: 'pot', cc: CC.DCO1_DETUNE },
+        RANGE: { id: ControllerIdNonMod.DCO1_RANGE, label: 'Range', type: 'button', values: [buttonMidiValues.OSC1_RANGE_LOW, buttonMidiValues.OSC1_RANGE_HIGH], valueLabels: ['Low', 'High'] },
+        WAVEFORM: { id: ControllerIdDst.DCO1_WAVEFORM, label: 'Waveform', isDstDigi: true, type: 'pot', cc: CC.DCO1_WAVEFORM },
+        SUB1: { id: ControllerIdDst.DCO1_SUB1, label: 'Sub 1', isDstDigi: true, type: 'pot', cc: CC.DCO1_SUB1 },
+        SUB2: { id: ControllerIdDst.DCO1_SUB2, label: 'Sub 2', isDstDigi: true, type: 'pot', cc: CC.DCO1_SUB2 },
+        PW: { id: ControllerIdDst.DCO1_PW, label: 'PW', isDstDigi: true, type: 'pot', cc: CC.DCO1_PW },
+        SYNC: { id: ControllerIdNonMod.DCO1_SYNC, label: 'Sync DCO 1', type: 'button', values: [buttonMidiValues.OSC1_SYNC_OFF, buttonMidiValues.OSC1_SYNC_HARD, buttonMidiValues.OSC1_SYNC_METAL], valueLabels: ['Off', 'Hard', 'Metal'] },
+        MODE: { id: ControllerIdNonMod.DCO1_MODE, label: 'Mode', type: 'button', values: [buttonMidiValues.OSC1_MODE_DCO, buttonMidiValues.OSC1_MODE_WT, buttonMidiValues.OSC1_MODE_PCM], valueLabels: ['DCO', 'WT', 'PCM'] },
+        SUB_WAVE: { id: ControllerIdNonMod.DCO1_SUB_WAVE, label: 'Sub wave', type: 'button', values: [buttonMidiValues.OSC1_SUB_WAVE_SQR, buttonMidiValues.OSC1_SUB_WAVE_SAW], valueLabels: ['Square', 'Saw'] },
+        WHEEL: { id: ControllerIdNonMod.DCO1_WHEEL, label: 'Mod wheel', type: 'button', values: [buttonMidiValues.OSC1_WHEEL_OFF, buttonMidiValues.OSC1_WHEEL_ON], valueLabels: ['Off', 'On'] },
+        LFO: { id: ControllerIdNonMod.DCO1_LFO, label: 'LFO mod', type: 'button', values: [buttonMidiValues.OSC1_LFO_OFF, buttonMidiValues.OSC1_LFO_ON], valueLabels: ['Off', 'On'] },
+        KBD: { id: ControllerIdNonMod.DCO1_KBD, label: 'Keyboard track', type: 'button', values: [buttonMidiValues.OSC1_KBD_OFF, buttonMidiValues.OSC1_KBD_ON], valueLabels: ['Off', 'On'] },
+        SAW_INV: { id: ControllerIdNonMod.DCO1_SAW_INV, label: 'Saw invert', type: 'button', values: [buttonMidiValues.OSC1_SAW_INV_OFF, buttonMidiValues.OSC1_SAW_INV_ON], valueLabels: ['Off', 'On'] },
+        PRE_FILTER_SINE: { id: ControllerIdNonMod.DCO1_PRE_FILTER_SINE, label: 'Sine toggle', type: 'button', values: [buttonMidiValues.OSC1_PRE_FILTER_SINE_OFF, buttonMidiValues.OSC1_PRE_FILTER_SINE_ON], valueLabels: ['Off', 'On'] },
+        DAC_BITS: { id: ControllerIdNonMod.DCO1_DAC_BITS, label: 'DAC bits', type: 'button', values: [buttonMidiValues.OSC1_DAC_16BIT, buttonMidiValues.OSC1_DAC_12BIT], valueLabels: ['16-bit', '12-bit'] },
+        MORPH_MODE: { id: ControllerIdNonMod.DCO1_MORPH_MODE, label: 'Morph mode', type: 'button', values: [buttonMidiValues.OSC1_MORPH_MODE_CONTINUOUS, buttonMidiValues.OSC1_MORPH_MODE_STEPPED], valueLabels: ['Continuous', 'Stepped'] },
+        MORPH_POINT: { id: ControllerIdNonMod.DCO1_MORPH_POINT, label: 'Morph point', type: 'button', values: [buttonMidiValues.OSC1_MORPH_POINT_CONTINUOUS, buttonMidiValues.OSC1_MORPH_POINT_PHASE_START], valueLabels: ['Continuous', 'Phase start'] },
+        SAMPLE_SELECT: { id: ControllerIdNonMod.DCO1_SAMPLE_SELECT, label: 'Sample select', type: 'button', values: [buttonMidiValues.OSC1_SAMPLE_SELECT_INTERPOLATE, buttonMidiValues.OSC1_SAMPLE_SELECT_NEAREST], valueLabels: ['Interpolate', 'Nearest'] },
+        WAVETABLE: { id: ControllerIdNonMod.WAVETABLE_SELECT, label: 'Wavetable select', type: 'com', command: sysexCommands.WAVETABLE_SELECT_OSC1, values: [] },
     },
     DCO2: {
         props: { label: 'Osc 2' },
-        // pots
-        PITCH: {
-            id: ControllerIdDst.DCO2_PITCH,
-            label: 'Pitch',
-            isDstDigi: true,
-            type: 'pot',
-            addr: NRPN.DCO2_PITCH,
-        },
-        NOTE: {
-            id: ControllerIdDst.DCO2_NOTE,
-            label: 'Note',
-            isDstDigi: true,
-            type: 'pot',
-            cc: CC.DCO2_NOTE,
-        },
-        RANGE: {
-            id: ControllerIdNonMod.DCO2_RANGE,
-            label: 'Range',
-            type: 'button',
-            values: [buttonMidiValues.OSC2_RANGE_LOW, buttonMidiValues.OSC2_RANGE_HIGH],
-            valueLabels: ['Low', 'High'],
-        },
-        DETUNE: {
-            id: ControllerIdDst.DCO2_DETUNE,
-            label: 'Detune',
-            isDstDigi: true,
-            type: 'pot',
-            cc: CC.DCO2_DETUNE,
-        },
-        WAVEFORM: {
-            id: ControllerIdDst.DCO2_WAVEFORM,
-            label: 'Waveform',
-            isDstDigi: true,
-            type: 'pot',
-            cc: CC.DCO2_WAVEFORM,
-        },
-        SUB1: {
-            id: ControllerIdDst.DCO2_SUB1,
-            label: 'Sub 1',
-            isDstDigi: true,
-            type: 'pot',
-            cc: CC.DCO2_SUB1,
-        },
-        SUB2: {
-            id: ControllerIdDst.DCO2_SUB2,
-            label: 'Sub 2',
-            isDstDigi: true,
-            type: 'pot',
-            cc: CC.DCO2_SUB2,
-        },
-        PW: {
-            id: ControllerIdDst.DCO2_PW,
-            label: 'PW',
-            isDstDigi: true,
-            type: 'pot',
-            cc: CC.DCO2_PW,
-        },
-
-        //buttons
-        SYNC: {
-            id: ControllerIdNonMod.DCO2_SYNC,
-            label: 'Sync DCO 2',
-            type: 'button',
-            values: [buttonMidiValues.OSC2_SYNC_OFF, buttonMidiValues.OSC2_SYNC_HARD, buttonMidiValues.OSC2_SYNC_METAL],
-            valueLabels: ['Off', 'Hard', 'Metal'],
-        },
-        MODE: {
-            id: ControllerIdNonMod.DCO2_MODE,
-            label: 'Mode',
-            type: 'button',
-            values: [buttonMidiValues.OSC2_MODE_DCO, buttonMidiValues.OSC2_MODE_WT, buttonMidiValues.OSC2_MODE_PCM],
-            valueLabels: ['DCO', 'WT', 'PCM'],
-        },
-        SUB_WAVE: {
-            id: ControllerIdNonMod.DCO2_SUB_WAVE,
-            label: 'Sub wave',
-            type: 'button',
-            values: [buttonMidiValues.OSC2_SUB_WAVE_SQR, buttonMidiValues.OSC2_SUB_WAVE_SAW],
-            valueLabels: ['Square', 'Saw'],
-        },
-        WHEEL: {
-            id: ControllerIdNonMod.DCO2_WHEEL,
-            label: 'Mod wheel',
-            type: 'button',
-            values: [buttonMidiValues.OSC2_WHEEL_OFF, buttonMidiValues.OSC2_WHEEL_ON],
-            valueLabels: ['Off', 'On'],
-        },
-        LFO: {
-            id: ControllerIdNonMod.DCO2_LFO,
-            label: 'LFO mod',
-            type: 'button',
-            values: [buttonMidiValues.OSC2_LFO_OFF, buttonMidiValues.OSC2_LFO_ON],
-            valueLabels: ['Off', 'On'],
-        },
-        KBD: {
-            id: ControllerIdNonMod.DCO2_KBD,
-            label: 'Keyboard track',
-            type: 'button',
-            values: [buttonMidiValues.OSC2_KBD_OFF, buttonMidiValues.OSC2_KBD_ON],
-            valueLabels: ['Off', 'On'],
-        },
-        SAW_INV: {
-            id: ControllerIdNonMod.DCO2_SAW_INV,
-            label: 'Saw invert',
-            type: 'button',
-            values: [buttonMidiValues.OSC2_SAW_INV_OFF, buttonMidiValues.OSC2_SAW_INV_ON],
-            valueLabels: ['Off', 'On'],
-        },
-        PRE_FILTER_SINE: {
-            id: ControllerIdNonMod.DCO2_PRE_FILTER_SINE,
-            label: 'Sine toggle',
-            type: 'button',
-            values: [buttonMidiValues.OSC2_PRE_FILTER_SINE_OFF, buttonMidiValues.OSC2_PRE_FILTER_SINE_ON],
-            valueLabels: ['Off', 'On'],
-        },
-        DAC_BITS: {
-            id: ControllerIdNonMod.DCO2_DAC_BITS,
-            label: 'DAC bits',
-            type: 'button',
-            values: [buttonMidiValues.OSC2_DAC_16BIT, buttonMidiValues.OSC2_DAC_12BIT],
-            valueLabels: ['16-bit', '12-bit'],
-        },
-        MORPH_MODE: {
-            id: ControllerIdNonMod.DCO2_MORPH_MODE,
-            label: 'Morph mode',
-            type: 'button',
-            values: [buttonMidiValues.OSC2_MORPH_MODE_CONTINUOUS, buttonMidiValues.OSC2_MORPH_MODE_STEPPED],
-            valueLabels: ['Continuous', 'Stepped'],
-        },
-        MORPH_POINT: {
-            id: ControllerIdNonMod.DCO2_MORPH_POINT,
-            label: 'Morph point',
-            type: 'button',
-            values: [buttonMidiValues.OSC2_MORPH_POINT_CONTINUOUS, buttonMidiValues.OSC2_MORPH_POINT_PHASE_START],
-            valueLabels: ['Continuous', 'Phase start'],
-        },
-        SAMPLE_SELECT: {
-            id: ControllerIdNonMod.DCO2_SAMPLE_SELECT,
-            label: 'Sample select',
-            type: 'button',
-            values: [buttonMidiValues.OSC2_SAMPLE_SELECT_INTERPOLATE, buttonMidiValues.OSC2_SAMPLE_SELECT_NEAREST],
-            valueLabels: ['Interpolate', 'Nearest'],
-        },
+        PITCH: { id: ControllerIdDst.DCO2_PITCH, label: 'Pitch', isDstDigi: true, type: 'pot', addr: NRPN.DCO2_PITCH },
+        NOTE: { id: ControllerIdDst.DCO2_NOTE, label: 'Note', isDstDigi: true, type: 'pot', cc: CC.DCO2_NOTE },
+        DETUNE: { id: ControllerIdDst.DCO2_DETUNE, label: 'Detune', isDstDigi: true, type: 'pot', cc: CC.DCO2_DETUNE },
+        RANGE: { id: ControllerIdNonMod.DCO2_RANGE, label: 'Range', type: 'button', values: [buttonMidiValues.OSC2_RANGE_LOW, buttonMidiValues.OSC2_RANGE_HIGH], valueLabels: ['Low', 'High'] },
+        WAVEFORM: { id: ControllerIdDst.DCO2_WAVEFORM, label: 'Waveform', isDstDigi: true, type: 'pot', cc: CC.DCO2_WAVEFORM },
+        SUB1: { id: ControllerIdDst.DCO2_SUB1, label: 'Sub 1', isDstDigi: true, type: 'pot', cc: CC.DCO2_SUB1 },
+        SUB2: { id: ControllerIdDst.DCO2_SUB2, label: 'Sub 2', isDstDigi: true, type: 'pot', cc: CC.DCO2_SUB2 },
+        PW: { id: ControllerIdDst.DCO2_PW, label: 'PW', isDstDigi: true, type: 'pot', cc: CC.DCO2_PW },
+        SYNC: { id: ControllerIdNonMod.DCO2_SYNC, label: 'Sync DCO 2', type: 'button', values: [buttonMidiValues.OSC2_SYNC_OFF, buttonMidiValues.OSC2_SYNC_HARD, buttonMidiValues.OSC2_SYNC_METAL], valueLabels: ['Off', 'Hard', 'Metal'] },
+        MODE: { id: ControllerIdNonMod.DCO2_MODE, label: 'Mode', type: 'button', values: [buttonMidiValues.OSC2_MODE_DCO, buttonMidiValues.OSC2_MODE_WT, buttonMidiValues.OSC2_MODE_PCM], valueLabels: ['DCO', 'WT', 'PCM'] },
+        SUB_WAVE: { id: ControllerIdNonMod.DCO2_SUB_WAVE, label: 'Sub wave', type: 'button', values: [buttonMidiValues.OSC2_SUB_WAVE_SQR, buttonMidiValues.OSC2_SUB_WAVE_SAW], valueLabels: ['Square', 'Saw'] },
+        WHEEL: { id: ControllerIdNonMod.DCO2_WHEEL, label: 'Mod wheel', type: 'button', values: [buttonMidiValues.OSC2_WHEEL_OFF, buttonMidiValues.OSC2_WHEEL_ON], valueLabels: ['Off', 'On'] },
+        LFO: { id: ControllerIdNonMod.DCO2_LFO, label: 'LFO mod', type: 'button', values: [buttonMidiValues.OSC2_LFO_OFF, buttonMidiValues.OSC2_LFO_ON], valueLabels: ['Off', 'On'] },
+        KBD: { id: ControllerIdNonMod.DCO2_KBD, label: 'Keyboard track', type: 'button', values: [buttonMidiValues.OSC2_KBD_OFF, buttonMidiValues.OSC2_KBD_ON], valueLabels: ['Off', 'On'] },
+        SAW_INV: { id: ControllerIdNonMod.DCO2_SAW_INV, label: 'Saw invert', type: 'button', values: [buttonMidiValues.OSC2_SAW_INV_OFF, buttonMidiValues.OSC2_SAW_INV_ON], valueLabels: ['Off', 'On'] },
+        PRE_FILTER_SINE: { id: ControllerIdNonMod.DCO2_PRE_FILTER_SINE, label: 'Sine toggle', type: 'button', values: [buttonMidiValues.OSC2_PRE_FILTER_SINE_OFF, buttonMidiValues.OSC2_PRE_FILTER_SINE_ON], valueLabels: ['Off', 'On'] },
+        DAC_BITS: { id: ControllerIdNonMod.DCO2_DAC_BITS, label: 'DAC bits', type: 'button', values: [buttonMidiValues.OSC2_DAC_16BIT, buttonMidiValues.OSC2_DAC_12BIT], valueLabels: ['16-bit', '12-bit'] },
+        MORPH_MODE: { id: ControllerIdNonMod.DCO2_MORPH_MODE, label: 'Morph mode', type: 'button', values: [buttonMidiValues.OSC2_MORPH_MODE_CONTINUOUS, buttonMidiValues.OSC2_MORPH_MODE_STEPPED], valueLabels: ['Continuous', 'Stepped'] },
+        MORPH_POINT: { id: ControllerIdNonMod.DCO2_MORPH_POINT, label: 'Morph point', type: 'button', values: [buttonMidiValues.OSC2_MORPH_POINT_CONTINUOUS, buttonMidiValues.OSC2_MORPH_POINT_PHASE_START], valueLabels: ['Continuous', 'Phase start'] },
+        SAMPLE_SELECT: { id: ControllerIdNonMod.DCO2_SAMPLE_SELECT, label: 'Sample select', type: 'button', values: [buttonMidiValues.OSC2_SAMPLE_SELECT_INTERPOLATE, buttonMidiValues.OSC2_SAMPLE_SELECT_NEAREST], valueLabels: ['Interpolate', 'Nearest'] },
+        WAVETABLE: { id: ControllerIdNonMod.WAVETABLE_SELECT, label: 'Wavetable select', type: 'com', command: sysexCommands.WAVETABLE_SELECT_OSC2, values: [] },
     },
     VCO: {
         props: { label: 'Osc 3' },
-        // pots
-        PITCH: {
-            id: ControllerIdDst.VCO_PITCH,
-            label: 'Pitch',
-            isDstDigi: true,
-            type: 'pot',
-            addr: NRPN.VCO_PITCH,
-        },
-        NOTE: {
-            id: ControllerIdDst.VCO_NOTE,
-            label: 'Note',
-            isDstDigi: true,
-            type: 'pot',
-            cc: CC.VCO_NOTE,
-        },
-        DETUNE: {
-            id: ControllerIdDst.VCO_DETUNE,
-            label: 'Detune',
-            isDstDigi: true,
-            type: 'pot',
-            cc: CC.VCO_DETUNE,
-        },
-        WAVEFORM: {
-            id: ControllerIdDst.VCO_WAVEFORM,
-            label: 'Waveform',
-            isDstDigi: true,
-            type: 'pot',
-            cc: CC.VCO_WAVEFORM,
-        },
-        FM_AMT: {
-            id: ControllerIdDst.VCO_FM_AMT,
-            label: 'FM Amt',
-            shortLabel: 'FM',
-            isDstDigi: true,
-            type: 'pot',
-            cc: CC.VCO_FM_AMT,
-        },
-        PW: {
-            id: ControllerIdDst.VCO_PW,
-            label: 'PW',
-            isDstDigi: true,
-            type: 'pot',
-            cc: CC.VCO_PW,
-        },
-        LIN_FM: {
-            id: ControllerIdDst.VCO_LIN_FM,
-            label: 'Lin FM',
-            isDstDigi: true,
-            type: 'pot',
-            cc: CC.VCO_LIN_FM,
-        },
-
-        //buttons
-        SYNC: {
-            id: ControllerIdNonMod.VCO_SYNC,
-            label: 'Sync',
-            type: 'button',
-            values: [
-                buttonMidiValues.OSC3_SYNC_OFF,
-                buttonMidiValues.OSC3_SYNC_HARD,
-                buttonMidiValues.OSC3_SYNC_CEM_HARD,
-            ],
-            valueLabels: ['Off', 'Hard', 'CEM'],
-        },
-        SYNC_SRC: {
-            id: ControllerIdNonMod.VCO_SYNC_SRC,
-            label: 'Sync',
-            type: 'button',
-            values: [buttonMidiValues.OSC3_SYNC_SRC_OSC_1, buttonMidiValues.OSC3_SYNC_SRC_OSC_2],
-            valueLabels: ['Osc 1', 'Osc 2'],
-        },
-        FM_SRC: {
-            id: ControllerIdNonMod.VCO_FM_SRC,
-            label: 'Cross mod source',
-            type: 'button',
-            values: [buttonMidiValues.OSC3_FM_SRC_OSC2, buttonMidiValues.OSC3_FM_SRC_EXT],
-            valueLabels: ['Osc 2', 'Ext'],
-        },
-        FM_MODE: {
-            id: ControllerIdNonMod.VCO_FM_MODE,
-            label: 'Cross mod source',
-            type: 'button',
-            values: [
-                buttonMidiValues.OSC3_FM_MODE_OFF,
-                buttonMidiValues.OSC3_FM_MODE_LIN,
-                buttonMidiValues.OSC3_FM_MODE_LOG,
-            ],
-            valueLabels: ['Off', 'Lin', 'Log'],
-        },
-        EXT_CV: {
-            id: ControllerIdNonMod.VCO_EXT_CV,
-            label: 'Ext. CV',
-            type: 'button',
-            values: [buttonMidiValues.OSC3_EXT_CV_OFF, buttonMidiValues.OSC3_EXT_CV_ON],
-            valueLabels: ['Off', 'On'],
-        },
-        WHEEL: {
-            id: ControllerIdNonMod.VCO_WHEEL,
-            label: 'Mod wheel',
-            type: 'button',
-            values: [buttonMidiValues.OSC3_WHEEL_OFF, buttonMidiValues.OSC3_WHEEL_ON],
-            valueLabels: ['Off', 'On'],
-        },
-        LFO: {
-            id: ControllerIdNonMod.VCO_LFO,
-            label: 'LFO mod',
-            type: 'button',
-            values: [buttonMidiValues.OSC3_LFO_OFF, buttonMidiValues.OSC3_LFO_ON],
-            valueLabels: ['Off', 'On'],
-        },
-        KBD: {
-            id: ControllerIdNonMod.VCO_KBD,
-            label: 'Keyboard track',
-            type: 'button',
-            values: [buttonMidiValues.OSC3_KBD_OFF, buttonMidiValues.OSC3_KBD_ON],
-            valueLabels: ['Off', 'On'],
-        },
-    },
-    WAVETABLE: {
-        props: { label: 'Wavetable' },
-        SELECT: {
-            id: ControllerIdNonMod.WAVETABLE_SELECT,
-            label: 'Wavetable select',
-            type: 'com',
-            command: sysexCommands.WAVETABLE_SELECT,
-            values: [],
-        }
+        PITCH: { id: ControllerIdDst.VCO_PITCH, label: 'Pitch', isDstDigi: true, type: 'pot', addr: NRPN.VCO_PITCH },
+        NOTE: { id: ControllerIdDst.VCO_NOTE, label: 'Note', isDstDigi: true, type: 'pot', cc: CC.VCO_NOTE },
+        DETUNE: { id: ControllerIdDst.VCO_DETUNE, label: 'Detune', isDstDigi: true, type: 'pot', cc: CC.VCO_DETUNE },
+        WAVEFORM: { id: ControllerIdDst.VCO_WAVEFORM, label: 'Waveform', isDstDigi: true, type: 'pot', cc: CC.VCO_WAVEFORM },
+        FM_AMT: { id: ControllerIdDst.VCO_FM_AMT, label: 'FM Amt', shortLabel: 'FM', isDstDigi: true, type: 'pot', cc: CC.VCO_FM_AMT },
+        PW: { id: ControllerIdDst.VCO_PW, label: 'PW', isDstDigi: true, type: 'pot', cc: CC.VCO_PW },
+        LIN_FM: { id: ControllerIdDst.VCO_LIN_FM, label: 'Lin FM', isDstDigi: true, type: 'pot', cc: CC.VCO_LIN_FM },
+        SYNC: { id: ControllerIdNonMod.VCO_SYNC, label: 'Sync', type: 'button', values: [buttonMidiValues.OSC3_SYNC_OFF, buttonMidiValues.OSC3_SYNC_HARD, buttonMidiValues.OSC3_SYNC_CEM_HARD], valueLabels: ['Off', 'Hard', 'CEM'] },
+        SYNC_SRC: { id: ControllerIdNonMod.VCO_SYNC_SRC, label: 'Sync', type: 'button', values: [buttonMidiValues.OSC3_SYNC_SRC_OSC_1, buttonMidiValues.OSC3_SYNC_SRC_OSC_2], valueLabels: ['Osc 1', 'Osc 2'] },
+        FM_SRC: { id: ControllerIdNonMod.VCO_FM_SRC, label: 'Cross mod source', type: 'button', values: [buttonMidiValues.OSC3_FM_SRC_OSC2, buttonMidiValues.OSC3_FM_SRC_EXT], valueLabels: ['Osc 2', 'Ext'] },
+        FM_MODE: { id: ControllerIdNonMod.VCO_FM_MODE, label: 'Cross mod source', type: 'button', values: [buttonMidiValues.OSC3_FM_MODE_OFF, buttonMidiValues.OSC3_FM_MODE_LIN, buttonMidiValues.OSC3_FM_MODE_LOG], valueLabels: ['Off', 'Lin', 'Log'] },
+        EXT_CV: { id: ControllerIdNonMod.VCO_EXT_CV, label: 'Ext. CV', type: 'button', values: [buttonMidiValues.OSC3_EXT_CV_OFF, buttonMidiValues.OSC3_EXT_CV_ON], valueLabels: ['Off', 'On'] },
+        WHEEL: { id: ControllerIdNonMod.VCO_WHEEL, label: 'Mod wheel', type: 'button', values: [buttonMidiValues.OSC3_WHEEL_OFF, buttonMidiValues.OSC3_WHEEL_ON], valueLabels: ['Off', 'On'] },
+        LFO: { id: ControllerIdNonMod.VCO_LFO, label: 'LFO mod', type: 'button', values: [buttonMidiValues.OSC3_LFO_OFF, buttonMidiValues.OSC3_LFO_ON], valueLabels: ['Off', 'On'] },
+        KBD: { id: ControllerIdNonMod.VCO_KBD, label: 'Keyboard track', type: 'button', values: [buttonMidiValues.OSC3_KBD_OFF, buttonMidiValues.OSC3_KBD_ON], valueLabels: ['Off', 'On'] },
     },
 }
 

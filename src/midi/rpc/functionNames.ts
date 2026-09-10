@@ -42,11 +42,12 @@ export enum FunctionNames {
   setCtrlAllLfoParams = 38,
   setCtrlAllLfoSettings = 39,
   setCtrlAllLfoStageSettings = 40,
-  setAllModAmounts = 41,
-  setAllEnvModAmounts = 42,
-  setAllLfoModAmounts = 43,
-  changeMidiSpeed = 44,
-  toggleVoicePower = 45,
-  voiceDacStopUpdates = 46,
-  voiceDacStartUpdates = 47
+  setCtrlWavetable = 41,
+  setAllModAmounts = 42,
+  setAllEnvModAmounts = 43,
+  setAllLfoModAmounts = 44,
+  changeMidiSpeed = 45,
+  toggleVoicePower = 46,
+  voiceDacStopUpdates = 47,
+  voiceDacStartUpdates = 48
 }

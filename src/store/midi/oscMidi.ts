@@ -89,16 +89,17 @@ let receiveUnsubscribers: (() => void)[] = []
 
 export const setOscWavetable = (voiceGroupIndex: number, oscillatorId: number, wavetableId: number) => {
     const entries = useWavetableStore.getState().wavetables[wavetableId] ?? []
+    const wavetableCtrl = oscillatorId === 0 ? oscControllers.DCO1.WAVETABLE : oscControllers.DCO2.WAVETABLE
     logger.midi(`Setting oscillator ${oscillatorId} in voice group ${voiceGroupIndex} to wavetable ${wavetableId} (${entries.length} entries)`)
 
     // The wavetables are not stored on the voice card, so we send the whole table on every change.
-    const values = [oscillatorId, wavetableId, entries.length]
+    const values = [wavetableId, entries.length]
     entries.forEach((entry) => {
         values.push(entry.position, entry.bankIndex, entry.waveIndex)
     })
 
     sysex.send({ type: 'voiceGroup', index: voiceGroupIndex }, {
-        ...oscControllers.WAVETABLE.SELECT,
+        ...wavetableCtrl,
         values,
     })
 }
@@ -178,43 +179,44 @@ export function startOscMidiReceive() {
         receiveUnsubscribers.push(() => button.unsubscribe(ctrl, id))
     }
 
-    const wavetableSelectCtrl = oscControllers.WAVETABLE.SELECT
-    const sysexId = sysex.subscribe((route: Route, values: number[]) => {
-        if(route.type !== 'voiceGroup') {
-            console.log('Only voiceGroup routes are supported for wavetable select sysex messages, ignoring', route)
-            return
-        }
-        const voiceGroupIndex = route.index ?? 0
-        const [oscIndex, wavetableId, count, ...entriesData] = values
-        if (count === undefined) {
+    for (const [oscIndex, ctrl] of [
+        [0, oscControllers.DCO1.WAVETABLE],
+        [1, oscControllers.DCO2.WAVETABLE],
+    ] as const) {
+        const sysexId = sysex.subscribe((route: Route, values: number[]) => {
+            if (route.type !== 'voiceGroup') {
+                console.log('Only voiceGroup routes are supported for wavetable select sysex messages, ignoring', route)
+                return
+            }
+            const voiceGroupIndex = route.index ?? 0
+            const [wavetableId, count, ...entriesData] = values
+            if (count === undefined) {
+                withMidiReceive(() => {
+                    voiceGroupStores[voiceGroupIndex].getState().set((state) => {
+                        state.oscillators[oscIndex].wavetable = wavetableId
+                    })
+                })
+                return
+            }
+
+            const entries: WaveEntry[] = []
+            for (let i = 0; i + 2 < entriesData.length && entries.length < count; i += 3) {
+                entries.push({
+                    position: entriesData[i],
+                    bankIndex: entriesData[i + 1],
+                    waveIndex: entriesData[i + 2],
+                })
+            }
+
             withMidiReceive(() => {
+                useWavetableStore.getState().loadWavetableEntries(wavetableId, entries)
                 voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                     state.oscillators[oscIndex].wavetable = wavetableId
                 })
             })
-            return
-        }
-
-        // The current implementation sends the whole wavetable on every change
-        // as it is not stored on the voice card. This is likely not useful for the front end as it
-        // already has the wavetable data in the store, but we can still handle it here for completeness.
-        const entries: WaveEntry[] = []
-        for (let i = 0; i + 2 < entriesData.length && entries.length < count; i += 3) {
-            entries.push({
-                position: entriesData[i],
-                bankIndex: entriesData[i + 1],
-                waveIndex: entriesData[i + 2],
-            })
-        }
-
-        withMidiReceive(() => {
-            useWavetableStore.getState().loadWavetableEntries(wavetableId, entries)
-            voiceGroupStores[voiceGroupIndex].getState().set((state) => {
-                state.oscillators[oscIndex].wavetable = wavetableId
-            })
-        })
-    }, wavetableSelectCtrl)
-    receiveUnsubscribers.push(() => sysex.unsubscribe(wavetableSelectCtrl, sysexId))
+        }, ctrl)
+        receiveUnsubscribers.push(() => sysex.unsubscribe(ctrl, sysexId))
+    }
 }
 
 export function stopOscMidiReceive() {

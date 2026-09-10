@@ -100,7 +100,6 @@ const controllers = {
     DCO1: oscControllers.DCO1,
     DCO2: oscControllers.DCO2,
     VCO: oscControllers.VCO,
-    OSC_WAVETABLE: oscControllers.WAVETABLE,
     NOISE: noiseControllers,
     RING_MOD: ringModControllers,
     DISTORTION: fxControllers.DISTORTION,

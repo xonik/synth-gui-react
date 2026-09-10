@@ -565,6 +565,20 @@ export function setCtrlAllLfoStageSettings(lfo: number, stage: number, settings:
   })
 }
 
+export function setCtrlWavetable(osc: number, waveTable: number[], route: Route = { type: 'all' }) {
+  call('setCtrlWavetable', () => {
+    const paramBytes: number[] = [
+      ...jsToMidiEncoder['uint8_t'](osc),
+      ...jsToMidiEncoder['std::vector<uint8_t>'](waveTable)
+    ]
+    const data = [
+      ...splitTo7(FunctionNames.setCtrlWavetable, 14),
+      ...paramBytes,
+    ]
+        sendSysex(route, rpcControllers.RPC.command, data)
+  })
+}
+
 export function setAllModAmounts(offsetDst: number, sourceAmounts: number[], route: Route = { type: 'all' }) {
   call('setAllModAmounts', () => {
     const paramBytes: number[] = [

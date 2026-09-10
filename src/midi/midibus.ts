@@ -119,8 +119,9 @@ const midiConfig = {
 
 export const sysexCommands = {
     RPC: 0,
-    WAVETABLE_SELECT: 1,
-    WAVETABLE_UPDATE: 2,
+    WAVETABLE_SELECT_OSC1: 1,
+    WAVETABLE_SELECT_OSC2: 2,
+    WAVETABLE_UPDATE: 3,
 }
 
 export type Route = {
