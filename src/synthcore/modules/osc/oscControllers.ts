@@ -30,6 +30,11 @@ interface OscControllers {
         KBD: ControllerConfigButton
         SAW_INV: ControllerConfigButton
         PRE_FILTER_SINE: ControllerConfigButton
+
+        DAC_BITS: ControllerConfigButton
+        MORPH_MODE: ControllerConfigButton
+        MORPH_POINT: ControllerConfigButton
+        SAMPLE_SELECT: ControllerConfigButton
     }
     DCO2: {
         props: FuncProps
@@ -49,6 +54,11 @@ interface OscControllers {
         KBD: ControllerConfigButton
         SAW_INV: ControllerConfigButton
         PRE_FILTER_SINE: ControllerConfigButton
+
+        DAC_BITS: ControllerConfigButton
+        MORPH_MODE: ControllerConfigButton
+        MORPH_POINT: ControllerConfigButton
+        SAMPLE_SELECT: ControllerConfigButton
     }
     VCO: {
         props: FuncProps
@@ -192,6 +202,35 @@ const oscControllers: OscControllers = {
             values: [buttonMidiValues.OSC1_PRE_FILTER_SINE_OFF, buttonMidiValues.OSC1_PRE_FILTER_SINE_ON],
             valueLabels: ['Off', 'On'],
         },
+        DAC_BITS: {
+            id: ControllerIdNonMod.DCO1_DAC_BITS,
+            label: 'DAC bits',
+            type: 'button',
+            values: [buttonMidiValues.OSC1_DAC_16BIT, buttonMidiValues.OSC1_DAC_12BIT],
+            valueLabels: ['16-bit', '12-bit'],
+        },
+        MORPH_MODE: {
+            id: ControllerIdNonMod.DCO1_MORPH_MODE,
+            label: 'Morph mode',
+            type: 'button',
+            values: [buttonMidiValues.OSC1_MORPH_MODE_CONTINUOUS, buttonMidiValues.OSC1_MORPH_MODE_STEPPED],
+            valueLabels: ['Continuous', 'Stepped'],
+        },
+        MORPH_POINT: {
+            id: ControllerIdNonMod.DCO1_MORPH_POINT,
+            label: 'Morph point',
+            type: 'button',
+            values: [buttonMidiValues.OSC1_MORPH_POINT_CONTINUOUS, buttonMidiValues.OSC1_MORPH_POINT_PHASE_START],
+            valueLabels: ['Continuous', 'Phase start'],
+        },
+        SAMPLE_SELECT: {
+            id: ControllerIdNonMod.DCO1_SAMPLE_SELECT,
+            label: 'Sample select',
+            type: 'button',
+            values: [buttonMidiValues.OSC1_SAMPLE_SELECT_INTERPOLATE, buttonMidiValues.OSC1_SAMPLE_SELECT_NEAREST],
+            valueLabels: ['Interpolate', 'Nearest'],
+        },
+
     },
     DCO2: {
         props: { label: 'Osc 2' },
@@ -309,6 +348,34 @@ const oscControllers: OscControllers = {
             type: 'button',
             values: [buttonMidiValues.OSC2_PRE_FILTER_SINE_OFF, buttonMidiValues.OSC2_PRE_FILTER_SINE_ON],
             valueLabels: ['Off', 'On'],
+        },
+        DAC_BITS: {
+            id: ControllerIdNonMod.DCO2_DAC_BITS,
+            label: 'DAC bits',
+            type: 'button',
+            values: [buttonMidiValues.OSC2_DAC_16BIT, buttonMidiValues.OSC2_DAC_12BIT],
+            valueLabels: ['16-bit', '12-bit'],
+        },
+        MORPH_MODE: {
+            id: ControllerIdNonMod.DCO2_MORPH_MODE,
+            label: 'Morph mode',
+            type: 'button',
+            values: [buttonMidiValues.OSC2_MORPH_MODE_CONTINUOUS, buttonMidiValues.OSC2_MORPH_MODE_STEPPED],
+            valueLabels: ['Continuous', 'Stepped'],
+        },
+        MORPH_POINT: {
+            id: ControllerIdNonMod.DCO2_MORPH_POINT,
+            label: 'Morph point',
+            type: 'button',
+            values: [buttonMidiValues.OSC2_MORPH_POINT_CONTINUOUS, buttonMidiValues.OSC2_MORPH_POINT_PHASE_START],
+            valueLabels: ['Continuous', 'Phase start'],
+        },
+        SAMPLE_SELECT: {
+            id: ControllerIdNonMod.DCO2_SAMPLE_SELECT,
+            label: 'Sample select',
+            type: 'button',
+            values: [buttonMidiValues.OSC2_SAMPLE_SELECT_INTERPOLATE, buttonMidiValues.OSC2_SAMPLE_SELECT_NEAREST],
+            valueLabels: ['Interpolate', 'Nearest'],
         },
     },
     VCO: {

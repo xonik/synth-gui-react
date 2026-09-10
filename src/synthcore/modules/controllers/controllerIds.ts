@@ -194,6 +194,10 @@ export enum ControllerIdNonMod {
     DCO1_KBD,
     DCO1_SAW_INV,
     DCO1_PRE_FILTER_SINE,
+    DCO1_DAC_BITS,
+    DCO1_MORPH_MODE,
+    DCO1_MORPH_POINT,
+    DCO1_SAMPLE_SELECT,
 
     DCO2_RANGE,
     DCO2_SYNC,
@@ -204,6 +208,10 @@ export enum ControllerIdNonMod {
     DCO2_KBD,
     DCO2_SAW_INV,
     DCO2_PRE_FILTER_SINE,
+    DCO2_DAC_BITS,
+    DCO2_MORPH_MODE,
+    DCO2_MORPH_POINT,
+    DCO2_SAMPLE_SELECT,
 
     VCO_SYNC,
     VCO_SYNC_SRC,
@@ -316,7 +324,7 @@ export enum ControllerIdNonMod {
 }
 
 export enum ControllerIdEnvNonMod {
-    ENV_RESET_ON_TRIGGER = 223,
+    ENV_RESET_ON_TRIGGER = 231,
     ENV_RELEASE_MODE,
     ENV_LOOP_MODE,
     ENV_MAX_LOOPS,
@@ -328,13 +336,13 @@ export enum ControllerIdEnvNonMod {
 export const ENV_NON_MOD_COUNT = Object.keys(ControllerIdEnvNonMod).filter((o) => isNotNumber(o)).length
 
 export enum ControllerIdEnvStageNonMod {
-    ENV_CURVE = 231,
+    ENV_CURVE = 239,
     ENV_TOGGLE_STAGE,
 }
 export const ENV_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdEnvStageNonMod).filter((o) => isNotNumber(o)).length
 
 export enum ControllerIdLfoNonMod {
-    LFO_SHAPE = 233,
+    LFO_SHAPE = 241,
     LFO_SYNC,
     LFO_RESET,
     LFO_BIPOLAR,
@@ -353,7 +361,7 @@ export enum ControllerIdLfoNonMod {
 export const LFO_NON_MOD_COUNT = Object.keys(ControllerIdLfoNonMod).filter((o) => isNotNumber(o)).length
 
 export enum ControllerIdLfoStageNonMod {
-    LFO_CURVE = 248,
+    LFO_CURVE = 256,
     LFO_TOGGLE_STAGE,
 }
 export const LFO_STAGE_NON_MOD_COUNT = Object.keys(ControllerIdLfoStageNonMod).filter((o) => isNotNumber(o)).length
