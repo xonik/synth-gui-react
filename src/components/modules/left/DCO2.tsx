@@ -82,7 +82,7 @@ const DCO2 = ({ x, y, height, width }: ModuleProps) => {
         (s, v) => {
             s.oscillators[OSC].mode = v
         },
-        3
+        2
     )
     const { value: syncValue, toggle: syncToggle } = useButton(
         (s) => s.oscillators[OSC].sync,
@@ -144,8 +144,8 @@ const DCO2 = ({ x, y, height, width }: ModuleProps) => {
                 x={col1}
                 y={topRow}
                 ledPosition="right"
-                ledCount={3}
-                ledLabels={['DCO', 'WT', 'PCM']}
+                ledCount={2}
+                ledLabels={['DCO', 'WT']}
                 label="Mode"
                 labelPosition="bottom-pot"
                 value={modeValue}
