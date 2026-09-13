@@ -5,13 +5,14 @@ import type { Point } from '@/utils/types'
 import Button from '../components/Button'
 import './WaveformsScreen.scss'
 
+const INT16_MAX_ABS = 32768
+
 const mapSamplesToPoints = (samples: number[]): Point[] => {
     if (samples.length === 0) return []
 
-    const maxAmplitude = samples.reduce((max, sample) => Math.max(max, Math.abs(sample)), 1)
     return samples.map((sample, index) => ({
         x: samples.length === 1 ? 0 : index / (samples.length - 1),
-        y: 0.5 - sample / (maxAmplitude * 2),
+        y: 0.5 - sample / (INT16_MAX_ABS * 2),
     }))
 }
 
