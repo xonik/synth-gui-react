@@ -87,10 +87,10 @@ const buttonMappings: ButtonMapping[] = [
 let sendUnsubscribers: (() => void)[] = []
 let receiveUnsubscribers: (() => void)[] = []
 
-export const setOscWavetable = (voiceGroupIndex: number, oscillatorId: number, wavetableId: number) => {
-    const entries = useWavetableStore.getState().wavetablesByBank[0]?.[wavetableId] ?? []
+export const setOscWavetable = (voiceGroupIndex: number, oscillatorId: number, wavetableId: number, wavetableBank = 0) => {
+    const entries = useWavetableStore.getState().wavetablesByBank[wavetableBank]?.[wavetableId] ?? []
     const wavetableCtrl = oscillatorId === 0 ? oscControllers.DCO1.WAVETABLE : oscControllers.DCO2.WAVETABLE
-    logger.midi(`Setting oscillator ${oscillatorId} in voice group ${voiceGroupIndex} to wavetable ${wavetableId} (${entries.length} entries)`)
+    logger.midi(`Setting oscillator ${oscillatorId} in voice group ${voiceGroupIndex} to wavetable ${wavetableId} from bank ${wavetableBank} (${entries.length} entries)`)
 
     // The wavetables are not stored on the voice card, so we send the whole table on every change.
     const values = [wavetableId, entries.length]

@@ -79,6 +79,11 @@
     gap: 0.25rem;
   }
 
+  &__row {
+    display: flex;
+    gap: 0.4rem;
+  }
+
   &__label {
     color: $text-mid;
     font-size: 0.72rem;
@@ -103,6 +108,15 @@
     &:focus {
       outline: none;
       border-color: $accent-primary;
+    }
+
+    &--bank {
+      flex: 0 0 7rem;
+    }
+
+    &--table {
+      flex: 1 1 auto;
+      min-width: 0;
     }
   }
 
