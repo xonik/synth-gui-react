@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import OscControl from './OscControl'
+import WaveformsScreen from './WaveformsScreen'
 import WavetableScreen from './WavetableScreen'
 import './Oscillators.scss'
 
@@ -10,12 +11,12 @@ const Oscillators = () => {
 
     useEffect(() => {
         const saved = localStorage.getItem(MENU_KEY)
-        if (saved === 'Control' || saved === 'Wavetables') {
+        if (saved === 'Control' || saved === 'Wavetables' || saved === 'Waveforms') {
             setSelected(saved)
         }
     }, [])
 
-    const handleSelect = (menu: 'Control' | 'Wavetables') => {
+    const handleSelect = (menu: 'Control' | 'Wavetables' | 'Waveforms') => {
         setSelected(menu)
         localStorage.setItem(MENU_KEY, menu)
     }
@@ -35,8 +36,16 @@ const Oscillators = () => {
                 >
                     Wavetables
                 </div>
+                <div
+                    className={`oscillators-menu-item${selected === 'Waveforms' ? ' active' : ''}`}
+                    onClick={() => handleSelect('Waveforms')}
+                >
+                    Waveforms
+                </div>
             </div>
-            <div className="oscillators-content">{selected === 'Control' ? <OscControl /> : <WavetableScreen />}</div>
+            <div className="oscillators-content">
+                {selected === 'Control' ? <OscControl /> : selected === 'Waveforms' ? <WaveformsScreen /> : <WavetableScreen />}
+            </div>
         </div>
     )
 }
