@@ -1,14 +1,19 @@
 import { useCallback, useMemo, useState } from 'react'
+import { button } from '@/midi/midibus'
 import { useUiStore, useVoiceGroupStore, useWavetableStore, voiceGroupStores } from '@/store'
-import { CLASSIC_WAVETABLES, PROPHET_VS_WAVETABLES, wavetableBankNames } from '@/synthcore/modules/wavetable/wavetableData'
+import { setOscWavetable as sendOscWavetable } from '@/store/midi/oscMidi'
 import oscControllers from '@/synthcore/modules/osc/oscControllers'
 import { buildPpgWavetables } from '@/synthcore/modules/wavetable/ppgWavetables'
-import { button } from '@/midi/midibus'
-import { setOscWavetable as sendOscWavetable } from '@/store/midi/oscMidi'
+import {
+    CLASSIC_WAVETABLES,
+    PROPHET_VS_WAVETABLES,
+    wavetableBankNames,
+} from '@/synthcore/modules/wavetable/wavetableData'
 
 const ppgWavetableNames = buildPpgWavetables(0, 0).map((table) => table.name)
 const USER_BANK_INDEX = wavetableBankNames.indexOf('User')
 const EMPTY_WAVETABLE_SELECTION = -1
+const getWavetableOptionKey = (bankIndex: number, wavetableName: string) => `${bankIndex}-${wavetableName}`
 
 const OscControl = () => {
     const voiceGroupIndex = useUiStore((s) => s.currentVoiceGroupIndex)
@@ -78,7 +83,10 @@ const OscControl = () => {
                         >
                             <option value={EMPTY_WAVETABLE_SELECTION}>---</option>
                             {osc1CurrentNames.map((wavetableName, wavetableIndex) => (
-                                <option key={wavetableIndex} value={wavetableIndex}>
+                                <option
+                                    key={getWavetableOptionKey(osc1SelectedBank, wavetableName)}
+                                    value={wavetableIndex}
+                                >
                                     {`${wavetableIndex + 1}: ${wavetableName}`}
                                 </option>
                             ))}
@@ -87,28 +95,44 @@ const OscControl = () => {
                 </div>
                 <div className="oscillators-control__field">
                     <div className="oscillators-control__label">DAC</div>
-                    <select className="oscillators-control__select" defaultValue={0} onChange={(e) => sendButtonValue(0, 'DAC_BITS', Number(e.target.value))}>
+                    <select
+                        className="oscillators-control__select"
+                        defaultValue={0}
+                        onChange={(e) => sendButtonValue(0, 'DAC_BITS', Number(e.target.value))}
+                    >
                         <option value={0}>16bit</option>
                         <option value={1}>12bit</option>
                     </select>
                 </div>
                 <div className="oscillators-control__field">
                     <div className="oscillators-control__label">Morph</div>
-                    <select className="oscillators-control__select" defaultValue={0} onChange={(e) => sendButtonValue(0, 'MORPH_MODE', Number(e.target.value))}>
+                    <select
+                        className="oscillators-control__select"
+                        defaultValue={0}
+                        onChange={(e) => sendButtonValue(0, 'MORPH_MODE', Number(e.target.value))}
+                    >
                         <option value={0}>Continuous</option>
                         <option value={1}>Stepped</option>
                     </select>
                 </div>
                 <div className="oscillators-control__field">
                     <div className="oscillators-control__label">Sample select</div>
-                    <select className="oscillators-control__select" defaultValue={0} onChange={(e) => sendButtonValue(0, 'SAMPLE_SELECT', Number(e.target.value))}>
+                    <select
+                        className="oscillators-control__select"
+                        defaultValue={0}
+                        onChange={(e) => sendButtonValue(0, 'SAMPLE_SELECT', Number(e.target.value))}
+                    >
                         <option value={0}>Interpolate</option>
                         <option value={1}>Nearest</option>
                     </select>
                 </div>
                 <div className="oscillators-control__field">
                     <div className="oscillators-control__label">Morph point</div>
-                    <select className="oscillators-control__select" defaultValue={0} onChange={(e) => sendButtonValue(0, 'MORPH_POINT', Number(e.target.value))}>
+                    <select
+                        className="oscillators-control__select"
+                        defaultValue={0}
+                        onChange={(e) => sendButtonValue(0, 'MORPH_POINT', Number(e.target.value))}
+                    >
                         <option value={0}>Continuous</option>
                         <option value={1}>Phase start</option>
                     </select>
@@ -142,7 +166,10 @@ const OscControl = () => {
                         >
                             <option value={EMPTY_WAVETABLE_SELECTION}>---</option>
                             {osc2CurrentNames.map((wavetableName, wavetableIndex) => (
-                                <option key={wavetableIndex} value={wavetableIndex}>
+                                <option
+                                    key={getWavetableOptionKey(osc2SelectedBank, wavetableName)}
+                                    value={wavetableIndex}
+                                >
                                     {`${wavetableIndex + 1}: ${wavetableName}`}
                                 </option>
                             ))}
@@ -151,28 +178,44 @@ const OscControl = () => {
                 </div>
                 <div className="oscillators-control__field">
                     <div className="oscillators-control__label">DAC</div>
-                    <select className="oscillators-control__select" defaultValue={0} onChange={(e) => sendButtonValue(1, 'DAC_BITS', Number(e.target.value))}>
+                    <select
+                        className="oscillators-control__select"
+                        defaultValue={0}
+                        onChange={(e) => sendButtonValue(1, 'DAC_BITS', Number(e.target.value))}
+                    >
                         <option value={0}>16bit</option>
                         <option value={1}>12bit</option>
                     </select>
                 </div>
                 <div className="oscillators-control__field">
                     <div className="oscillators-control__label">Morph</div>
-                    <select className="oscillators-control__select" defaultValue={0} onChange={(e) => sendButtonValue(1, 'MORPH_MODE', Number(e.target.value))}>
+                    <select
+                        className="oscillators-control__select"
+                        defaultValue={0}
+                        onChange={(e) => sendButtonValue(1, 'MORPH_MODE', Number(e.target.value))}
+                    >
                         <option value={0}>Continuous</option>
                         <option value={1}>Stepped</option>
                     </select>
                 </div>
                 <div className="oscillators-control__field">
                     <div className="oscillators-control__label">Sample select</div>
-                    <select className="oscillators-control__select" defaultValue={0} onChange={(e) => sendButtonValue(1, 'SAMPLE_SELECT', Number(e.target.value))}>
+                    <select
+                        className="oscillators-control__select"
+                        defaultValue={0}
+                        onChange={(e) => sendButtonValue(1, 'SAMPLE_SELECT', Number(e.target.value))}
+                    >
                         <option value={0}>Interpolate</option>
                         <option value={1}>Nearest</option>
                     </select>
                 </div>
                 <div className="oscillators-control__field">
                     <div className="oscillators-control__label">Morph point</div>
-                    <select className="oscillators-control__select" defaultValue={0} onChange={(e) => sendButtonValue(1, 'MORPH_POINT', Number(e.target.value))}>
+                    <select
+                        className="oscillators-control__select"
+                        defaultValue={0}
+                        onChange={(e) => sendButtonValue(1, 'MORPH_POINT', Number(e.target.value))}
+                    >
                         <option value={0}>Continuous</option>
                         <option value={1}>Phase start</option>
                     </select>

@@ -17,10 +17,7 @@ const DstLabel = ({ funcIndex, paramIndex, dst }: DstLabelProps) => {
     const isSelected = funcIndex === selectedDstFunc && paramIndex === selectedDstParam
 
     return (
-        <div
-            className={classNames('mod-ctrl__dst__label', { 'mod-ctrl__dst__label--selected': isSelected })}
-            key={paramIndex}
-        >
+        <div className={classNames('mod-ctrl__dst__label', { 'mod-ctrl__dst__label--selected': isSelected })}>
             {shortLabel(dst)}
         </div>
     )
@@ -33,9 +30,9 @@ const DstLabels = ({ onMouseDown, onMouseMove }: DraggableElementProps) => {
     return (
         <div className="mod-ctrl__dsts" onMouseDown={onMouseDown} onMouseMove={onMouseMove}>
             {dstGroup.map((func, funcIndex) => {
+                const funcKey = `${dstGroupId}-${modDst.funcProps[dstGroupId][funcIndex].label}`
                 return (
-                    // biome-ignore lint/suspicious/noArrayIndexKey: group ordering won't change and we currently don't have an id anyway
-                    <div className="mod-ctrl__dst" key={funcIndex}>
+                    <div className="mod-ctrl__dst" key={funcKey}>
                         {
                             <div className="mod-ctrl__dst__func">
                                 {shortLabel(modDst.funcProps[dstGroupId][funcIndex])}

@@ -13,7 +13,7 @@ const SourceLabel = ({ sourceIndex, source }: LabelProps) => {
     const selectedSource = useUiStore((s) => s.modRouting.sourceId ?? 0)
     const isSelected = sourceIndex === selectedSource
     return (
-        <div className={classNames('mod-ctrl__source', { 'mod-ctrl__source--selected': isSelected })} key={sourceIndex}>
+        <div className={classNames('mod-ctrl__source', { 'mod-ctrl__source--selected': isSelected })}>
             {shortLabel(source)}
         </div>
     )

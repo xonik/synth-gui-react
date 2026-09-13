@@ -29,12 +29,18 @@ const VoiceSelector = ({ x, y, width }: ModuleProps) => {
     const buttonRow = y
     const buttonDistance = 25
     const offsetX = x + (width - 7 * buttonDistance) / 2
+    const voiceIndices = Array.from({ length: 8 }, (_, i) => i)
 
     return (
         <>
-            {Array.from({ length: 8 }, (_, i) => (
-                // biome-ignore lint/suspicious/noArrayIndexKey: Index will always be the same as it is generated right here
-                <VoiceButton key={i} x={offsetX + buttonDistance * i} y={buttonRow} index={i} label={`${i + 1}`} />
+            {voiceIndices.map((voiceIndex) => (
+                <VoiceButton
+                    key={`voice-${voiceIndex + 1}`}
+                    x={offsetX + buttonDistance * voiceIndex}
+                    y={buttonRow}
+                    index={voiceIndex}
+                    label={`${voiceIndex + 1}`}
+                />
             ))}
         </>
     )

@@ -58,8 +58,7 @@ const AmountCell = ({ sourceIndex, funcIndex, funcCtrlIndex, paramIndex, sourceI
 
     const cellRef = useRef<HTMLDivElement>(null)
 
-    // TODO: Claude fix - is it a problem to add onSelected here?
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    // biome-ignore lint/correctness/useExhaustiveDependencies: onSelected is stable for the lifecycle of this row and would only retrigger redundant scrolling
     useEffect(() => {
         if (isSelectedCell && cellRef.current) {
             const { offsetWidth, offsetLeft } = cellRef.current
@@ -108,23 +107,25 @@ const AmountsRow = ({ sourceId, sourceIndex }: RowProps) => {
 
     return (
         <div className="mod-ctrl__dsts" ref={ref}>
-            {dstGroup.map((func, funcIndex) => (
-                // biome-ignore lint/suspicious/noArrayIndexKey: group ordering won't change and we currently don't have an id anyway
-                <div className="mod-ctrl__amount-group" key={funcIndex}>
-                    {func.map((dstParam, paramIndex) => (
-                        <AmountCell
-                            key={dstParam.id}
-                            sourceIndex={sourceIndex}
-                            funcIndex={funcIndex}
-                            funcCtrlIndex={modDst.funcProps[dstGroupId][funcIndex].ctrlIndex || 0}
-                            paramIndex={paramIndex}
-                            sourceId={sourceId}
-                            dstId={dstParam.id}
-                            onSelected={onSelected}
-                        />
-                    ))}
-                </div>
-            ))}
+            {dstGroup.map((func, funcIndex) => {
+                const funcKey = `${dstGroupId}-${modDst.funcProps[dstGroupId][funcIndex].label}`
+                return (
+                    <div className="mod-ctrl__amount-group" key={funcKey}>
+                        {func.map((dstParam, paramIndex) => (
+                            <AmountCell
+                                key={dstParam.id}
+                                sourceIndex={sourceIndex}
+                                funcIndex={funcIndex}
+                                funcCtrlIndex={modDst.funcProps[dstGroupId][funcIndex].ctrlIndex || 0}
+                                paramIndex={paramIndex}
+                                sourceId={sourceId}
+                                dstId={dstParam.id}
+                                onSelected={onSelected}
+                            />
+                        ))}
+                    </div>
+                )
+            })}
         </div>
     )
 }

@@ -1,4 +1,5 @@
 import { useWavetableStore } from '@/store'
+import { buildPpgWavetables } from '@/synthcore/modules/wavetable/ppgWavetables'
 import {
     bankNames,
     CLASSIC_WAVETABLES,
@@ -7,12 +8,12 @@ import {
     waveBanks,
     wavetableBankNames,
 } from '@/synthcore/modules/wavetable/wavetableData'
-import { buildPpgWavetables } from '@/synthcore/modules/wavetable/ppgWavetables'
 import './WavetableScreen.scss'
 
 const positionOptions = Array.from({ length: MAX_POSITION + 1 }, (_, i) => i)
 
 const ppgWavetableNames = buildPpgWavetables(0, 0).map((table) => table.name)
+const getWavetableOptionKey = (bankIndex: number, wavetableName: string) => `${bankIndex}-${wavetableName}`
 const WavetableScreen = () => {
     const {
         selectedWavetableBank,
@@ -39,14 +40,17 @@ const WavetableScreen = () => {
     const currentWavetables = isUserBank
         ? wavetableNames
         : selectedWavetableBank === 0
-            ? ppgWavetableNames
-            : selectedWavetableBank === 1
-                ? PROPHET_VS_WAVETABLES
-                : CLASSIC_WAVETABLES
+          ? ppgWavetableNames
+          : selectedWavetableBank === 1
+            ? PROPHET_VS_WAVETABLES
+            : CLASSIC_WAVETABLES
     const currentWaves = waveBanks[selectedBank]?.waves ?? []
     const currentBankTables = wavetablesByBank[selectedWavetableBank] ?? []
-    const currentTableEntries = selectedWavetable >= 0 ? currentBankTables[selectedWavetable] ?? [] : []
-    const currentWavetableName = selectedWavetable >= 0 ? (isUserBank ? wavetableNames[selectedWavetable] : currentWavetables[selectedWavetable]) ?? '' : ''
+    const currentTableEntries = selectedWavetable >= 0 ? (currentBankTables[selectedWavetable] ?? []) : []
+    const currentWavetableName =
+        selectedWavetable >= 0
+            ? ((isUserBank ? wavetableNames[selectedWavetable] : currentWavetables[selectedWavetable]) ?? '')
+            : ''
     const occupiedPositions = new Set(currentTableEntries.map((entry) => entry.position))
     const canAdd = positionOptions.some((pos) => pos >= selectedPosition && !occupiedPositions.has(pos))
 
@@ -73,7 +77,10 @@ const WavetableScreen = () => {
                     disabled={currentWavetables.length === 0}
                 >
                     {currentWavetables.map((wavetableName, wavetableIndex) => (
-                        <option key={`${selectedWavetableBank}-${wavetableIndex}`} value={wavetableIndex}>
+                        <option
+                            key={getWavetableOptionKey(selectedWavetableBank, wavetableName)}
+                            value={wavetableIndex}
+                        >
                             {`${wavetableIndex + 1}: ${wavetableName}`}
                         </option>
                     ))}
@@ -115,7 +122,7 @@ const WavetableScreen = () => {
                                 onChange={(e) => setSelectedBank(Number(e.target.value))}
                             >
                                 {Array.from(bankNames.entries()).map(([bankIndex, name]) => (
-                                    <option key={bankIndex} value={bankIndex}>
+                                    <option key={name} value={bankIndex}>
                                         {name}
                                     </option>
                                 ))}
@@ -130,7 +137,7 @@ const WavetableScreen = () => {
                                 onChange={(e) => setSelectedWave(Number(e.target.value))}
                             >
                                 {currentWaves.map((wave, waveIndex) => (
-                                    <option key={waveIndex} value={waveIndex}>
+                                    <option key={wave.name} value={waveIndex}>
                                         {wave.name}
                                     </option>
                                 ))}
@@ -177,46 +184,46 @@ const WavetableScreen = () => {
                                         {waveBanks[entry.bankIndex]?.waves[entry.waveIndex]?.name ?? ''}
                                     </span>
                                     <div className="wavetable-screen__wave-entry-actions">
-                                       {isUserBank ? (
-                                           <>
-                                               <select
-                                                   className="wt-position-select"
-                                                   value={entry.position}
-                                                   onChange={(e) => setWavePosition(i, Number(e.target.value))}
-                                               >
-                                                   {positionOptions.map((pos) => (
-                                                       <option key={pos} value={pos}>
-                                                           {pos + 1}
-                                                       </option>
-                                                   ))}
-                                               </select>
-                                               <button
-                                                   type="button"
-                                                   className="wt-btn"
-                                                   onClick={() => moveWave(i, 'up')}
-                                                   disabled={i === 0}
-                                               >
-                                                   ↑
-                                               </button>
-                                               <button
-                                                   type="button"
-                                                   className="wt-btn"
-                                                   onClick={() => moveWave(i, 'down')}
-                                                   disabled={i === currentTableEntries.length - 1}
-                                               >
-                                                   ↓
-                                               </button>
-                                               <button
-                                                   type="button"
-                                                   className="wt-btn wt-btn--danger"
-                                                   onClick={() => removeWave(i)}
-                                               >
-                                                   ✕
-                                               </button>
-                                           </>
-                                       ) : (
-                                           <span className="wt-position-select">{entry.position + 1}</span>
-                                       )}
+                                        {isUserBank ? (
+                                            <>
+                                                <select
+                                                    className="wt-position-select"
+                                                    value={entry.position}
+                                                    onChange={(e) => setWavePosition(i, Number(e.target.value))}
+                                                >
+                                                    {positionOptions.map((pos) => (
+                                                        <option key={pos} value={pos}>
+                                                            {pos + 1}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                                <button
+                                                    type="button"
+                                                    className="wt-btn"
+                                                    onClick={() => moveWave(i, 'up')}
+                                                    disabled={i === 0}
+                                                >
+                                                    ↑
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className="wt-btn"
+                                                    onClick={() => moveWave(i, 'down')}
+                                                    disabled={i === currentTableEntries.length - 1}
+                                                >
+                                                    ↓
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className="wt-btn wt-btn--danger"
+                                                    onClick={() => removeWave(i)}
+                                                >
+                                                    ✕
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <span className="wt-position-select">{entry.position + 1}</span>
+                                        )}
                                     </div>
                                 </div>
                             ))
