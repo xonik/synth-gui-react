@@ -7,7 +7,7 @@ import {
     MAX_POSITION,
     PROPHET_VS_WAVETABLES,
     USER_WAVETABLES,
-    WAVES_PER_BANK,
+    waveBanks,
     wavetableBankNames,
     WAVETABLE_COUNT,
 } from '@/synthcore/modules/wavetable/wavetableData'
@@ -222,7 +222,10 @@ export const useWavetableStore = create<WavetableState & WavetableActions>((set,
         })
     },
     setSelectedWavetable: (index) => set({ selectedWavetable: index }),
-    setSelectedBank: (index) => set({ selectedBank: index, selectedWave: 0 }),
+    setSelectedBank: (index) => set({
+        selectedBank: index,
+        selectedWave: 0,
+    }),
     setSelectedWave: (index) => set({ selectedWave: index }),
     setSelectedPosition: (pos) => set({ selectedPosition: pos }),
 
@@ -240,9 +243,10 @@ export const useWavetableStore = create<WavetableState & WavetableActions>((set,
         const currentEntries = getCurrentEntries(state)
         if (!canInsertAt(currentEntries, selectedPosition)) return
         get().addWaveAt(selectedWavetableBank, selectedWavetable, selectedBank, selectedWave, selectedPosition)
+        const waveCount = waveBanks[selectedBank]?.waves.length ?? 0
         set({
             selectedPosition: Math.min(selectedPosition + 1, MAX_POSITION),
-            selectedWave: Math.min(selectedWave + 1, WAVES_PER_BANK - 1),
+            selectedWave: waveCount > 0 ? Math.min(selectedWave + 1, waveCount - 1) : 0,
         })
     },
 

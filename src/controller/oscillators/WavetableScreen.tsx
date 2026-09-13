@@ -4,7 +4,7 @@ import {
     MAX_POSITION,
     PROPHET_VS_WAVETABLES,
     USER_WAVETABLES,
-    waveNames,
+    waveBanks,
     wavetableBankNames,
 } from '@/synthcore/modules/wavetable/wavetableData'
 import { buildPpgWavetables } from '@/synthcore/modules/wavetable/ppgWavetables'
@@ -39,7 +39,7 @@ const WavetableScreen = () => {
 
     const isUserBank = selectedWavetableBank === wavetableBankNames.indexOf('User')
     const currentWavetables = wavetableNamesByBank[selectedWavetableBank] ?? []
-    const currentWaves = waveNames[selectedBank]
+    const currentWaves = waveBanks[selectedBank]?.waves ?? []
     const currentBankTables = wavetablesByBank[selectedWavetableBank] ?? []
     const currentTableEntries = selectedWavetable >= 0 ? currentBankTables[selectedWavetable] ?? [] : []
     const currentWavetableName = selectedWavetable >= 0 ? (isUserBank ? wavetableNames[selectedWavetable] : currentWavetables[selectedWavetable]) ?? '' : ''
@@ -123,16 +123,16 @@ const WavetableScreen = () => {
                                 value={selectedWave}
                                 onChange={(e) => setSelectedWave(Number(e.target.value))}
                             >
-                                {Array.from(currentWaves.entries()).map(([waveIndex, name]) => (
+                                {currentWaves.map((wave, waveIndex) => (
                                     <option key={waveIndex} value={waveIndex}>
-                                        {name}
+                                        {wave.name}
                                     </option>
                                 ))}
                             </select>
                         </div>
 
                         <div className="wavetable-screen__field">
-                            <span className="wavetable-screen__field-label">Position</span>
+                            <span className="wavetable-screen__field-label">At position</span>
                             <select
                                 className="wt-select"
                                 value={selectedPosition}
@@ -147,7 +147,7 @@ const WavetableScreen = () => {
                         </div>
 
                         <button type="button" className="wt-btn wt-btn--add" onClick={addWave} disabled={!canAdd}>
-                            Add
+                            Assign
                         </button>
                     </div>
                 )}
@@ -168,7 +168,7 @@ const WavetableScreen = () => {
                                         {`${bankNames[entry.bankIndex]}, Wave ${entry.waveIndex + 1}`}
                                     </span>
                                     <span className="wavetable-screen__wave-entry-name">
-                                        {waveNames[entry.bankIndex][entry.waveIndex]}
+                                        {waveBanks[entry.bankIndex]?.waves[entry.waveIndex]?.name ?? ''}
                                     </span>
                                     <div className="wavetable-screen__wave-entry-actions">
                                        {isUserBank ? (
