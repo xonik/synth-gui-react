@@ -1,6 +1,7 @@
 import { useWavetableStore } from '@/store'
 import {
     bankNames,
+    CLASSIC_WAVETABLES,
     MAX_POSITION,
     PROPHET_VS_WAVETABLES,
     waveBanks,
@@ -39,7 +40,9 @@ const WavetableScreen = () => {
         ? wavetableNames
         : selectedWavetableBank === 0
             ? ppgWavetableNames
-            : PROPHET_VS_WAVETABLES
+            : selectedWavetableBank === 1
+                ? PROPHET_VS_WAVETABLES
+                : CLASSIC_WAVETABLES
     const currentWaves = waveBanks[selectedBank]?.waves ?? []
     const currentBankTables = wavetablesByBank[selectedWavetableBank] ?? []
     const currentTableEntries = selectedWavetable >= 0 ? currentBankTables[selectedWavetable] ?? [] : []

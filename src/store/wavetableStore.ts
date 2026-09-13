@@ -3,6 +3,7 @@ import { isMidiReceiving } from '@/store/midi/midiGuard'
 import { updateWavetable } from '@/store/midi/wavetableMidi'
 import { buildPpgWavetables } from '@/synthcore/modules/wavetable/ppgWavetables'
 import {
+    CLASSIC_WAVETABLES,
     defaultWavetableNames,
     MAX_POSITION,
     PROPHET_VS_WAVETABLES,
@@ -142,7 +143,7 @@ const loadPersistedWavetables = (): PersistedWavetableState | null => {
         }
 
         if (Array.isArray(parsed.wavetablesByBank) && parsed.wavetablesByBank.length === wavetableBankNames.length) {
-            const userTables = parsed.wavetablesByBank[2]
+            const userTables = parsed.wavetablesByBank[USER_BANK_INDEX]
             if (isValidPersistedUserWavetables(userTables)) {
                 return {
                     wavetableNames: parsed.wavetableNames,
@@ -171,7 +172,8 @@ const loadPersistedWavetables = (): PersistedWavetableState | null => {
 
 const ppgDefaultWavetables = buildPpgWavetables(0, 0)
 const ppgWavetableNames = ppgDefaultWavetables.map((table) => table.name)
-const wavetableNamesByBank: string[][] = [ppgWavetableNames, PROPHET_VS_WAVETABLES, USER_WAVETABLES]
+const USER_BANK_INDEX = wavetableBankNames.indexOf('User')
+const wavetableNamesByBank: string[][] = [ppgWavetableNames, PROPHET_VS_WAVETABLES, CLASSIC_WAVETABLES, USER_WAVETABLES]
 const defaultWavetableBank = 0
 
 function createDefaultPpgWavetables(): WavetableBankEntryLists {
@@ -193,6 +195,7 @@ const persisted = loadPersistedWavetables()
 
 const initialWavetablesByBank = [
     createDefaultPpgWavetables(),
+    createEmptyWavetableBank(),
     createEmptyWavetableBank(),
     persisted?.userWavetables ?? createEmptyWavetableBank(),
 ]
@@ -234,7 +237,7 @@ export const useWavetableStore = create<WavetableState & WavetableActions>((set,
         const nextNames = [...wavetableNames]
         nextNames[wavetableIndex] = name
         set({ wavetableNames: nextNames })
-        persistWavetables({ wavetableNames: nextNames, userWavetables: wavetablesByBank[2] })
+        persistWavetables({ wavetableNames: nextNames, userWavetables: wavetablesByBank[USER_BANK_INDEX] })
     },
 
     addWave: () => {
@@ -288,7 +291,7 @@ export const useWavetableStore = create<WavetableState & WavetableActions>((set,
         const newWavetablesByBank = cloneWavetablesByBank(wavetablesByBank)
         newWavetablesByBank[bankIndex][wavetableIndex] = insertWave(currentEntries, { bankIndex: waveBankIndex, waveIndex, position })
         set({ wavetablesByBank: newWavetablesByBank })
-        persistWavetables({ wavetableNames, userWavetables: newWavetablesByBank[2] })
+        persistWavetables({ wavetableNames, userWavetables: newWavetablesByBank[USER_BANK_INDEX] })
 
         if (!isMidiReceiving()) {
             updateWavetable(wavetableIndex, newWavetablesByBank[bankIndex][wavetableIndex])
@@ -300,7 +303,7 @@ export const useWavetableStore = create<WavetableState & WavetableActions>((set,
         const newWavetablesByBank = cloneWavetablesByBank(wavetablesByBank)
         newWavetablesByBank[bankIndex][wavetableIndex] = newWavetablesByBank[bankIndex][wavetableIndex].filter((e) => e.position !== position)
         set({ wavetablesByBank: newWavetablesByBank })
-        persistWavetables({ wavetableNames, userWavetables: newWavetablesByBank[2] })
+        persistWavetables({ wavetableNames, userWavetables: newWavetablesByBank[USER_BANK_INDEX] })
 
         if (!isMidiReceiving()) {
             updateWavetable(wavetableIndex, newWavetablesByBank[bankIndex][wavetableIndex])
@@ -322,7 +325,7 @@ export const useWavetableStore = create<WavetableState & WavetableActions>((set,
         const newWavetablesByBank = cloneWavetablesByBank(wavetablesByBank)
         newWavetablesByBank[bankIndex][wavetableIndex] = sortEntries(table)
         set({ wavetablesByBank: newWavetablesByBank })
-        persistWavetables({ wavetableNames, userWavetables: newWavetablesByBank[2] })
+        persistWavetables({ wavetableNames, userWavetables: newWavetablesByBank[USER_BANK_INDEX] })
 
         if (!isMidiReceiving()) {
             updateWavetable(wavetableIndex, newWavetablesByBank[bankIndex][wavetableIndex])
@@ -334,7 +337,7 @@ export const useWavetableStore = create<WavetableState & WavetableActions>((set,
         const newWavetablesByBank = cloneWavetablesByBank(wavetablesByBank)
         newWavetablesByBank[bankIndex][wavetableIndex] = sortEntries(entries)
         set({ wavetablesByBank: newWavetablesByBank })
-        persistWavetables({ wavetableNames, userWavetables: newWavetablesByBank[2] })
+        persistWavetables({ wavetableNames, userWavetables: newWavetablesByBank[USER_BANK_INDEX] })
 
         if (!isMidiReceiving()) {
             updateWavetable(wavetableIndex, newWavetablesByBank[bankIndex][wavetableIndex])

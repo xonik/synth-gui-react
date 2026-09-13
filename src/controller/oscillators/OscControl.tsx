@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 import { useUiStore, useVoiceGroupStore, useWavetableStore, voiceGroupStores } from '@/store'
-import { PROPHET_VS_WAVETABLES, wavetableBankNames } from '@/synthcore/modules/wavetable/wavetableData'
+import { CLASSIC_WAVETABLES, PROPHET_VS_WAVETABLES, wavetableBankNames } from '@/synthcore/modules/wavetable/wavetableData'
 import oscControllers from '@/synthcore/modules/osc/oscControllers'
 import { buildPpgWavetables } from '@/synthcore/modules/wavetable/ppgWavetables'
 import { button } from '@/midi/midibus'
@@ -21,7 +21,7 @@ const OscControl = () => {
     const [osc2LoadedBank, setOsc2LoadedBank] = useState(USER_BANK_INDEX)
 
     const wavetableNamesByBank = useMemo(
-        () => [ppgWavetableNames, PROPHET_VS_WAVETABLES, wavetableNames],
+        () => [ppgWavetableNames, PROPHET_VS_WAVETABLES, CLASSIC_WAVETABLES, wavetableNames],
         [wavetableNames]
     )
 
