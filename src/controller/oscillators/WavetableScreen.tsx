@@ -3,7 +3,6 @@ import {
     bankNames,
     MAX_POSITION,
     PROPHET_VS_WAVETABLES,
-    USER_WAVETABLES,
     waveBanks,
     wavetableBankNames,
 } from '@/synthcore/modules/wavetable/wavetableData'
@@ -13,8 +12,6 @@ import './WavetableScreen.scss'
 const positionOptions = Array.from({ length: MAX_POSITION + 1 }, (_, i) => i)
 
 const ppgWavetableNames = buildPpgWavetables(0, 0).map((table) => table.name)
-const wavetableNamesByBank: string[][] = [ppgWavetableNames, PROPHET_VS_WAVETABLES, USER_WAVETABLES]
-
 const WavetableScreen = () => {
     const {
         selectedWavetableBank,
@@ -38,7 +35,11 @@ const WavetableScreen = () => {
     } = useWavetableStore()
 
     const isUserBank = selectedWavetableBank === wavetableBankNames.indexOf('User')
-    const currentWavetables = wavetableNamesByBank[selectedWavetableBank] ?? []
+    const currentWavetables = isUserBank
+        ? wavetableNames
+        : selectedWavetableBank === 0
+            ? ppgWavetableNames
+            : PROPHET_VS_WAVETABLES
     const currentWaves = waveBanks[selectedBank]?.waves ?? []
     const currentBankTables = wavetablesByBank[selectedWavetableBank] ?? []
     const currentTableEntries = selectedWavetable >= 0 ? currentBankTables[selectedWavetable] ?? [] : []
@@ -77,14 +78,16 @@ const WavetableScreen = () => {
                 {isUserBank ? (
                     <input
                         type="text"
-                        className="wt-input wt-input--header"
+                        className="wt-input wt-input--header wt-input--header-wavetable"
                         value={selectedWavetable >= 0 ? wavetableNames[selectedWavetable] : ''}
+                        onFocus={(e) => {
+                            requestAnimationFrame(() => e.target.select())
+                        }}
                         onChange={(e) => setWavetableName(selectedWavetable, e.target.value)}
                         disabled={selectedWavetable < 0}
+                        placeholder="Table name"
                     />
-                ) : (
-                    <div className="wt-input wt-input--header">{currentWavetableName}</div>
-                )}
+                ) : null}
                 <button
                     type="button"
                     className="wt-btn wt-btn--load"

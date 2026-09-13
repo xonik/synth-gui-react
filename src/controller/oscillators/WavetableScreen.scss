@@ -26,6 +26,22 @@
     text-transform: uppercase;
   }
 
+  &__header-name {
+    background: $bg-mid;
+    color: $text-bright;
+    border: 1px solid $bg-highlight;
+    border-radius: 3px;
+    padding: 3px 6px;
+    font-size: 0.85em;
+    width: 220px;
+    max-width: 35%;
+    min-width: 0;
+    flex-grow: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   &__body {
     display: flex;
     flex-direction: row;
@@ -214,6 +230,11 @@
     width: 220px;
     max-width: 35%;
     flex-grow: 0;
+  }
+
+  &--header-wavetable {
+    width: 220px;
+    max-width: 28%;
   }
 }
 
