@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { isMidiReceiving } from '@/store/midi/midiGuard'
 import { updateWavetable } from '@/store/midi/wavetableMidi'
+import { buildPpgWavetables } from '@/synthcore/modules/wavetable/ppgWavetables'
 import {
     defaultWavetableNames,
     MAX_POSITION,
@@ -80,8 +81,19 @@ const insertWave = (entries: WaveEntry[], entry: WaveEntry): WaveEntry[] => {
     return sortEntries([...bumped, entry])
 }
 
+const getStorage = (): Storage | null => {
+    if (typeof window === 'undefined' || !('localStorage' in window)) return null
+    try {
+        return window.localStorage
+    } catch {
+        return null
+    }
+}
+
 const persistWavetables = (state: PersistedWavetableState) => {
-    localStorage.setItem(WAVETABLE_STORAGE_KEY, JSON.stringify(state))
+    const storage = getStorage()
+    if (!storage) return
+    storage.setItem(WAVETABLE_STORAGE_KEY, JSON.stringify(state))
 }
 
 const isValidWaveEntry = (entry: unknown): entry is WaveEntry => {
@@ -99,7 +111,9 @@ const isValidWaveEntry = (entry: unknown): entry is WaveEntry => {
 }
 
 const loadPersistedWavetables = (): PersistedWavetableState | null => {
-    const raw = localStorage.getItem(WAVETABLE_STORAGE_KEY)
+    const storage = getStorage()
+    if (!storage) return null
+    const raw = storage.getItem(WAVETABLE_STORAGE_KEY)
     if (!raw) return null
     try {
         const parsed = JSON.parse(raw) as {
@@ -126,6 +140,15 @@ const loadPersistedWavetables = (): PersistedWavetableState | null => {
     }
 }
 
+const ppgDefaultWavetables = buildPpgWavetables(0, 0)
+const defaultWavetables = Array.from({ length: WAVETABLE_COUNT }, (_, wavetableIndex) => {
+    const preset = ppgDefaultWavetables.find((table) => table.wavetableId === wavetableIndex)
+    return preset ? preset.entries : []
+})
+const defaultWavetableNamesFromPpg = Array.from({ length: WAVETABLE_COUNT }, (_, wavetableIndex) => {
+    const preset = ppgDefaultWavetables.find((table) => table.wavetableId === wavetableIndex)
+    return preset?.name ?? defaultWavetableNames[wavetableIndex]
+})
 const persisted = loadPersistedWavetables()
 
 export const useWavetableStore = create<WavetableState & WavetableActions>((set, get) => ({
@@ -133,8 +156,8 @@ export const useWavetableStore = create<WavetableState & WavetableActions>((set,
     selectedBank: 0,
     selectedWave: 0,
     selectedPosition: 0,
-    wavetableNames: persisted?.wavetableNames ?? defaultWavetableNames,
-    wavetables: persisted?.wavetables ?? Array.from({ length: WAVETABLE_COUNT }, () => []),
+    wavetableNames: persisted?.wavetableNames ?? defaultWavetableNamesFromPpg,
+    wavetables: persisted?.wavetables ?? defaultWavetables,
 
     setSelectedWavetable: (index) => set({ selectedWavetable: index }),
     setSelectedBank: (index) => set({ selectedBank: index, selectedWave: 0 }),

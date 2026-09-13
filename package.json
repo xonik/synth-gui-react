@@ -35,6 +35,7 @@
         "run-ts": "tsx",
         "generateCppFiles": "npm run run-ts utils/cppMidiGenerator/cppMidiConfigGenerator.ts",
         "generateMidiRPCFiles": "npm run run-ts utils/midiRPC/midiRPCGenerator.ts",
+        "convertWavetables": "npm run run-ts utils/convertWavetableTables.ts -- --from /Users/joakim/git/xonik/xm8-voice-controller/src/modules/wavetable/tables --out-dir src/synthcore/modules/wavetable",
         "bomPopulator": "npm run run-ts utils/bomPopulator/bomPopulator.ts",
         "convertToFrequency": "npm run run-ts utils/frequencyChecker/convertToFrequency.ts",
         "calcSoftClip": "npm run run-ts utils/softClipCalculator/calcSoftClip.ts",
