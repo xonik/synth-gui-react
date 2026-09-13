@@ -7,6 +7,7 @@
   height: 100%;
   min-height: 0;
   overflow: hidden;
+  position: relative;
 
   &__header {
     display: flex;
@@ -53,9 +54,16 @@
     padding: 0.5rem;
     background: $bg-dark;
     border: 1px solid $bg-highlight;
+    text-align: left;
+    cursor: pointer;
 
     &:hover {
       border-color: $accent-primary-dim;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $accent-primary;
     }
   }
 
@@ -83,6 +91,116 @@
 
     .curve {
       stroke: $accent-primary;
+    }
+  }
+
+  &__modal {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+    background: rgba($bg-darkest, 0.72);
+    border: 0;
+    z-index: 1000;
+    cursor: pointer;
+  }
+
+  &__modal-card {
+    position: relative;
+    width: min(72%, 42rem);
+    max-width: calc(100% - 2.5rem);
+    max-height: calc(100% - 2.5rem);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0.85rem;
+    background: rgba($bg-darkest, 0.88);
+    border: 1px solid rgba($accent-primary, 0.3);
+    border-radius: 6px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    cursor: default;
+  }
+
+  &__modal-title {
+    color: $accent-primary;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    text-align: center;
+    margin-bottom: 0.35rem;
+  }
+
+  &__modal-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    flex: 1;
+    min-height: 0;
+    padding: 0.7rem 0 0.9rem;
+  }
+
+  &__modal-graph {
+    flex: 0 1 auto;
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 2.2;
+    overflow: hidden;
+    background: $bg-dark;
+    padding: 0.5rem 0.8rem;
+    box-sizing: border-box;
+    border: 1px solid $bg-highlight;
+    border-radius: 4px;
+  }
+
+  &__modal-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__modal-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+
+    .gui-ctrl-button {
+      width: 1.6rem;
+      height: 1.6rem;
+      padding: 0;
+      font-size: 1rem;
+      line-height: 1;
+      background-color: $accent-primary;
+      color: $bg-darkest;
+      border-color: $accent-primary;
+    }
+  }
+
+  &__modal-nav {
+    flex-shrink: 0;
+
+    .gui-ctrl-button {
+      width: 2rem;
+      height: 2rem;
+      padding: 0;
+      font-size: 1.35rem;
+      line-height: 1;
+      background-color: $accent-primary;
+      color: $bg-darkest;
+      border-color: $accent-primary;
+    }
+
+    &--previous {
+      margin-left: 0.1rem;
+    }
+
+    &--next {
+      margin-right: 0.1rem;
     }
   }
 }
