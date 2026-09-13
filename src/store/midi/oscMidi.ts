@@ -88,7 +88,7 @@ let sendUnsubscribers: (() => void)[] = []
 let receiveUnsubscribers: (() => void)[] = []
 
 export const setOscWavetable = (voiceGroupIndex: number, oscillatorId: number, wavetableId: number) => {
-    const entries = useWavetableStore.getState().wavetables[wavetableId] ?? []
+    const entries = useWavetableStore.getState().wavetablesByBank[0]?.[wavetableId] ?? []
     const wavetableCtrl = oscillatorId === 0 ? oscControllers.DCO1.WAVETABLE : oscControllers.DCO2.WAVETABLE
     logger.midi(`Setting oscillator ${oscillatorId} in voice group ${voiceGroupIndex} to wavetable ${wavetableId} (${entries.length} entries)`)
 
@@ -209,7 +209,7 @@ export function startOscMidiReceive() {
             }
 
             withMidiReceive(() => {
-                useWavetableStore.getState().loadWavetableEntries(wavetableId, entries)
+                useWavetableStore.getState().loadWavetableEntries(0, wavetableId, entries)
                 voiceGroupStores[voiceGroupIndex].getState().set((state) => {
                     state.oscillators[oscIndex].wavetable = wavetableId
                 })

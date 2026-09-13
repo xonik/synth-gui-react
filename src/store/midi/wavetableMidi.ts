@@ -42,7 +42,7 @@ export function startWavetableMidiReceive() {
             entries.push({ position: values[i], bankIndex: values[i + 1], waveIndex: values[i + 2] })
         }
         withMidiReceive(() => {
-            useWavetableStore.getState().loadWavetableEntries(wavetableId, entries)
+            useWavetableStore.getState().loadWavetableEntries(0, wavetableId, entries)
         })
     }, wavetableControllers.UPDATE)
     receiveUnsubscribers.push(() => sysex.unsubscribe(wavetableControllers.UPDATE, loadId))

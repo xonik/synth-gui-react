@@ -5,7 +5,10 @@ import { buildPpgWavetables } from '@/synthcore/modules/wavetable/ppgWavetables'
 import {
     defaultWavetableNames,
     MAX_POSITION,
+    PROPHET_VS_WAVETABLES,
+    USER_WAVETABLES,
     WAVES_PER_BANK,
+    wavetableBankNames,
     WAVETABLE_COUNT,
 } from '@/synthcore/modules/wavetable/wavetableData'
 
@@ -15,47 +18,48 @@ export interface WaveEntry {
     position: number
 }
 
+type WavetableBankEntryLists = WaveEntry[][]
+type WavetableEntriesByBank = WavetableBankEntryLists[]
+
 interface WavetableState {
+    selectedWavetableBank: number
     selectedWavetable: number
     selectedBank: number
     selectedWave: number
     selectedPosition: number
     wavetableNames: string[]
-    wavetables: WaveEntry[][]
+    wavetablesByBank: WavetableEntriesByBank
 }
 
 interface WavetableActions {
+    setSelectedWavetableBank: (index: number) => void
     setSelectedWavetable: (index: number) => void
     setSelectedBank: (index: number) => void
     setSelectedWave: (index: number) => void
     setSelectedPosition: (pos: number) => void
     setWavetableName: (wavetableIndex: number, name: string) => void
 
-    // GUI actions operating on the current selection / list indices.
     addWave: () => void
     removeWave: (entryIndex: number) => void
     moveWave: (entryIndex: number, direction: 'up' | 'down') => void
     setWavePosition: (entryIndex: number, position: number) => void
     updateWavetable: (wavetableIndex: number) => void
 
-    // Core mutators keyed by explicit wavetable/position. Shared by the GUI
-    // actions and by MIDI receive; they emit MIDI unless a receive is in flight.
-    addWaveAt: (wavetableIndex: number, bankIndex: number, waveIndex: number, position: number) => void
-    removeWaveAt: (wavetableIndex: number, position: number) => void
-    moveWaveTo: (wavetableIndex: number, fromPosition: number, toPosition: number) => void
-    loadWavetableEntries: (wavetableIndex: number, entries: WaveEntry[]) => void
+    addWaveAt: (bankIndex: number, wavetableIndex: number, waveBankIndex: number, waveIndex: number, position: number) => void
+    removeWaveAt: (bankIndex: number, wavetableIndex: number, position: number) => void
+    moveWaveTo: (bankIndex: number, wavetableIndex: number, fromPosition: number, toPosition: number) => void
+    loadWavetableEntries: (bankIndex: number, wavetableIndex: number, entries: WaveEntry[]) => void
 }
 
 const WAVETABLE_STORAGE_KEY = 'wavetable-store-v1'
 
 interface PersistedWavetableState {
     wavetableNames: string[]
-    wavetables: WaveEntry[][]
+    userWavetables: WavetableBankEntryLists
 }
 
 const sortEntries = (entries: WaveEntry[]): WaveEntry[] => [...entries].sort((a, b) => a.position - b.position)
 
-/** Lowest free position at or above `position`, or -1 if none exists within bounds. */
 const firstFreeFrom = (entries: WaveEntry[], position: number): number => {
     const occupied = new Set(entries.map((e) => e.position))
     for (let p = position; p <= MAX_POSITION; p++) {
@@ -64,14 +68,11 @@ const firstFreeFrom = (entries: WaveEntry[], position: number): number => {
     return -1
 }
 
-/** Whether a wave can be inserted at `position` without cascading past MAX_POSITION. */
 const canInsertAt = (entries: WaveEntry[], position: number): boolean => firstFreeFrom(entries, position) !== -1
 
-/** Recursively bump any entry occupying `position` to `position + 1`, cascading as needed. */
 const bumpPosition = (entries: WaveEntry[], position: number): WaveEntry[] => {
     const conflictIndex = entries.findIndex((e) => e.position === position)
     if (conflictIndex === -1) return entries
-    // Cascade: resolve the next position first, then bump the conflicting entry
     const resolved = bumpPosition(entries, position + 1)
     return resolved.map((e, i) => (i === conflictIndex ? { ...e, position: position + 1 } : e))
 }
@@ -89,6 +90,9 @@ const getStorage = (): Storage | null => {
         return null
     }
 }
+
+const cloneWavetablesByBank = (wavetablesByBank: WavetableEntriesByBank): WavetableEntriesByBank =>
+    wavetablesByBank.map((bank) => bank.map((entries) => entries.map((entry) => ({ ...entry }))))
 
 const persistWavetables = (state: PersistedWavetableState) => {
     const storage = getStorage()
@@ -110,6 +114,11 @@ const isValidWaveEntry = (entry: unknown): entry is WaveEntry => {
     )
 }
 
+const isValidPersistedUserWavetables = (tables: unknown): tables is WavetableBankEntryLists =>
+    Array.isArray(tables) &&
+    tables.length === WAVETABLE_COUNT &&
+    tables.every((table) => Array.isArray(table) && table.every(isValidWaveEntry))
+
 const loadPersistedWavetables = (): PersistedWavetableState | null => {
     const storage = getStorage()
     if (!storage) return null
@@ -118,22 +127,42 @@ const loadPersistedWavetables = (): PersistedWavetableState | null => {
     try {
         const parsed = JSON.parse(raw) as {
             wavetableNames?: unknown
+            userWavetables?: unknown
+            wavetablesByBank?: unknown
             wavetables?: unknown
         }
-        if (!Array.isArray(parsed.wavetableNames) || !Array.isArray(parsed.wavetables)) return null
-        if (parsed.wavetableNames.length !== WAVETABLE_COUNT || parsed.wavetables.length !== WAVETABLE_COUNT) return null
+        if (!Array.isArray(parsed.wavetableNames) || parsed.wavetableNames.length !== WAVETABLE_COUNT) return null
         if (!parsed.wavetableNames.every((name) => typeof name === 'string')) return null
 
-        const wavetables = parsed.wavetables.map((table) => {
-            if (!Array.isArray(table)) return []
-            const entries = table.filter(isValidWaveEntry)
-            return sortEntries(entries)
-        })
-
-        return {
-            wavetableNames: parsed.wavetableNames,
-            wavetables,
+        if (isValidPersistedUserWavetables(parsed.userWavetables)) {
+            return {
+                wavetableNames: parsed.wavetableNames,
+                userWavetables: parsed.userWavetables.map((table) => sortEntries(table)),
+            }
         }
+
+        if (Array.isArray(parsed.wavetablesByBank) && parsed.wavetablesByBank.length === wavetableBankNames.length) {
+            const userTables = parsed.wavetablesByBank[2]
+            if (isValidPersistedUserWavetables(userTables)) {
+                return {
+                    wavetableNames: parsed.wavetableNames,
+                    userWavetables: userTables.map((table) => sortEntries(table)),
+                }
+            }
+        }
+
+        if (Array.isArray(parsed.wavetables) && parsed.wavetables.length === WAVETABLE_COUNT) {
+            const userTables = parsed.wavetables.map((table) => {
+                if (!Array.isArray(table)) return []
+                return sortEntries(table.filter(isValidWaveEntry))
+            })
+            return {
+                wavetableNames: parsed.wavetableNames,
+                userWavetables: userTables,
+            }
+        }
+
+        return null
     } catch (error) {
         console.warn('Unable to load wavetable state from local storage', error)
         return null
@@ -141,41 +170,76 @@ const loadPersistedWavetables = (): PersistedWavetableState | null => {
 }
 
 const ppgDefaultWavetables = buildPpgWavetables(0, 0)
-const defaultWavetables = Array.from({ length: WAVETABLE_COUNT }, (_, wavetableIndex) => {
-    const preset = ppgDefaultWavetables.find((table) => table.wavetableId === wavetableIndex)
-    return preset ? preset.entries : []
-})
+const ppgWavetableNames = ppgDefaultWavetables.map((table) => table.name)
+const wavetableNamesByBank: string[][] = [ppgWavetableNames, PROPHET_VS_WAVETABLES, USER_WAVETABLES]
+const defaultWavetableBank = 0
+
+function createDefaultPpgWavetables(): WavetableBankEntryLists {
+    return Array.from({ length: WAVETABLE_COUNT }, (_, wavetableIndex) => {
+        const preset = ppgDefaultWavetables.find((table) => table.wavetableId === wavetableIndex)
+        return preset ? preset.entries.map((entry) => ({ ...entry })) : []
+    })
+}
+
+function createEmptyWavetableBank(): WavetableBankEntryLists {
+    return Array.from({ length: WAVETABLE_COUNT }, () => [])
+}
+
 const defaultWavetableNamesFromPpg = Array.from({ length: WAVETABLE_COUNT }, (_, wavetableIndex) => {
     const preset = ppgDefaultWavetables.find((table) => table.wavetableId === wavetableIndex)
     return preset?.name ?? defaultWavetableNames[wavetableIndex]
 })
 const persisted = loadPersistedWavetables()
 
+const initialWavetablesByBank = [
+    createDefaultPpgWavetables(),
+    createEmptyWavetableBank(),
+    persisted?.userWavetables ?? createEmptyWavetableBank(),
+]
+
+const getBankedNames = (bankIndex: number): string[] => {
+    const names = wavetableNamesByBank[bankIndex] ?? []
+    return names.slice(0, WAVETABLE_COUNT)
+}
+
+const getCurrentEntries = (state: WavetableState) => state.wavetablesByBank[state.selectedWavetableBank]?.[state.selectedWavetable] ?? []
+
 export const useWavetableStore = create<WavetableState & WavetableActions>((set, get) => ({
+    selectedWavetableBank: defaultWavetableBank,
     selectedWavetable: 0,
     selectedBank: 0,
     selectedWave: 0,
     selectedPosition: 0,
     wavetableNames: persisted?.wavetableNames ?? defaultWavetableNamesFromPpg,
-    wavetables: persisted?.wavetables ?? defaultWavetables,
+    wavetablesByBank: cloneWavetablesByBank(initialWavetablesByBank),
 
+    setSelectedWavetableBank: (index) => {
+        const safeIndex = Math.max(0, Math.min(index, wavetableBankNames.length - 1))
+        const available = getBankedNames(safeIndex)
+        set({
+            selectedWavetableBank: safeIndex,
+            selectedWavetable: available.length > 0 ? 0 : -1,
+        })
+    },
     setSelectedWavetable: (index) => set({ selectedWavetable: index }),
     setSelectedBank: (index) => set({ selectedBank: index, selectedWave: 0 }),
     setSelectedWave: (index) => set({ selectedWave: index }),
     setSelectedPosition: (pos) => set({ selectedPosition: pos }),
 
     setWavetableName: (wavetableIndex, name) => {
-        const { wavetableNames, wavetables } = get()
+        const { wavetableNames, wavetablesByBank } = get()
         const nextNames = [...wavetableNames]
         nextNames[wavetableIndex] = name
         set({ wavetableNames: nextNames })
-        persistWavetables({ wavetableNames: nextNames, wavetables })
+        persistWavetables({ wavetableNames: nextNames, userWavetables: wavetablesByBank[2] })
     },
 
     addWave: () => {
-        const { selectedWavetable, selectedBank, selectedWave, selectedPosition, wavetables } = get()
-        if (!canInsertAt(wavetables[selectedWavetable], selectedPosition)) return
-        get().addWaveAt(selectedWavetable, selectedBank, selectedWave, selectedPosition)
+        const state = get()
+        const { selectedWavetableBank, selectedWavetable, selectedBank, selectedWave, selectedPosition } = state
+        const currentEntries = getCurrentEntries(state)
+        if (!canInsertAt(currentEntries, selectedPosition)) return
+        get().addWaveAt(selectedWavetableBank, selectedWavetable, selectedBank, selectedWave, selectedPosition)
         set({
             selectedPosition: Math.min(selectedPosition + 1, MAX_POSITION),
             selectedWave: Math.min(selectedWave + 1, WAVES_PER_BANK - 1),
@@ -183,66 +247,65 @@ export const useWavetableStore = create<WavetableState & WavetableActions>((set,
     },
 
     removeWave: (entryIndex) => {
-        const { selectedWavetable, wavetables } = get()
-        const entry = wavetables[selectedWavetable][entryIndex]
+        const state = get()
+        const entry = getCurrentEntries(state)[entryIndex]
         if (!entry) return
-        get().removeWaveAt(selectedWavetable, entry.position)
+        get().removeWaveAt(state.selectedWavetableBank, state.selectedWavetable, entry.position)
     },
 
     moveWave: (entryIndex, direction) => {
-        const { selectedWavetable, wavetables } = get()
-        const table = wavetables[selectedWavetable]
+        const state = get()
+        const table = getCurrentEntries(state)
         const swapIndex = direction === 'up' ? entryIndex - 1 : entryIndex + 1
         if (swapIndex < 0 || swapIndex >= table.length) return
-        get().moveWaveTo(selectedWavetable, table[entryIndex].position, table[swapIndex].position)
+        get().moveWaveTo(state.selectedWavetableBank, state.selectedWavetable, table[entryIndex].position, table[swapIndex].position)
     },
 
     setWavePosition: (entryIndex, position) => {
-        const { selectedWavetable, wavetables } = get()
-        const entry = wavetables[selectedWavetable][entryIndex]
+        const state = get()
+        const table = getCurrentEntries(state)
+        const entry = table[entryIndex]
         if (!entry || entry.position === position) return
-        // Check feasibility against the table without the moved entry: if the
-        // cascade can't fit below MAX_POSITION, don't move at all.
-        const others = wavetables[selectedWavetable].filter((_, i) => i !== entryIndex)
+        const others = table.filter((_, i) => i !== entryIndex)
         if (!canInsertAt(others, position)) return
-        // Re-insert at the new position so any occupants cascade up to the next
-        // free slots, rather than swapping with the entry currently there.
-        get().removeWaveAt(selectedWavetable, entry.position)
-        get().addWaveAt(selectedWavetable, entry.bankIndex, entry.waveIndex, position)
+        get().removeWaveAt(state.selectedWavetableBank, state.selectedWavetable, entry.position)
+        get().addWaveAt(state.selectedWavetableBank, state.selectedWavetable, entry.bankIndex, entry.waveIndex, position)
     },
 
     updateWavetable: (wavetableIndex) => {
-        get().loadWavetableEntries(wavetableIndex, get().wavetables[wavetableIndex])
+        const { selectedWavetableBank, wavetablesByBank } = get()
+        get().loadWavetableEntries(selectedWavetableBank, wavetableIndex, wavetablesByBank[selectedWavetableBank]?.[wavetableIndex] ?? [])
     },
 
-    addWaveAt: (wavetableIndex, bankIndex, waveIndex, position) => {
-        const { wavetables } = get()
-        if (!canInsertAt(wavetables[wavetableIndex], position)) return
-        const newWavetables = [...wavetables]
-        newWavetables[wavetableIndex] = insertWave(wavetables[wavetableIndex], { bankIndex, waveIndex, position })
-        set({ wavetables: newWavetables })
-        persistWavetables({ wavetableNames: get().wavetableNames, wavetables: newWavetables })
+    addWaveAt: (bankIndex, wavetableIndex, waveBankIndex, waveIndex, position) => {
+        const { wavetablesByBank, wavetableNames } = get()
+        const currentEntries = wavetablesByBank[bankIndex]?.[wavetableIndex] ?? []
+        if (!canInsertAt(currentEntries, position)) return
+        const newWavetablesByBank = cloneWavetablesByBank(wavetablesByBank)
+        newWavetablesByBank[bankIndex][wavetableIndex] = insertWave(currentEntries, { bankIndex: waveBankIndex, waveIndex, position })
+        set({ wavetablesByBank: newWavetablesByBank })
+        persistWavetables({ wavetableNames, userWavetables: newWavetablesByBank[2] })
 
         if (!isMidiReceiving()) {
-            updateWavetable(wavetableIndex, newWavetables[wavetableIndex])
+            updateWavetable(wavetableIndex, newWavetablesByBank[bankIndex][wavetableIndex])
         }
     },
 
-    removeWaveAt: (wavetableIndex, position) => {
-        const { wavetables } = get()
-        const newWavetables = [...wavetables]
-        newWavetables[wavetableIndex] = wavetables[wavetableIndex].filter((e) => e.position !== position)
-        set({ wavetables: newWavetables })
-        persistWavetables({ wavetableNames: get().wavetableNames, wavetables: newWavetables })
+    removeWaveAt: (bankIndex, wavetableIndex, position) => {
+        const { wavetablesByBank, wavetableNames } = get()
+        const newWavetablesByBank = cloneWavetablesByBank(wavetablesByBank)
+        newWavetablesByBank[bankIndex][wavetableIndex] = newWavetablesByBank[bankIndex][wavetableIndex].filter((e) => e.position !== position)
+        set({ wavetablesByBank: newWavetablesByBank })
+        persistWavetables({ wavetableNames, userWavetables: newWavetablesByBank[2] })
 
         if (!isMidiReceiving()) {
-            updateWavetable(wavetableIndex, newWavetables[wavetableIndex])
+            updateWavetable(wavetableIndex, newWavetablesByBank[bankIndex][wavetableIndex])
         }
     },
 
-    moveWaveTo: (wavetableIndex, fromPosition, toPosition) => {
-        const { wavetables } = get()
-        const table = wavetables[wavetableIndex].map((e) => ({ ...e }))
+    moveWaveTo: (bankIndex, wavetableIndex, fromPosition, toPosition) => {
+        const { wavetablesByBank, wavetableNames } = get()
+        const table = (wavetablesByBank[bankIndex]?.[wavetableIndex] ?? []).map((e) => ({ ...e }))
         const moved = table.find((e) => e.position === fromPosition)
         if (!moved) return
 
@@ -252,26 +315,25 @@ export const useWavetableStore = create<WavetableState & WavetableActions>((set,
         }
         moved.position = toPosition
 
-        const newWavetables = [...wavetables]
-        newWavetables[wavetableIndex] = sortEntries(table)
-        set({ wavetables: newWavetables })
-        persistWavetables({ wavetableNames: get().wavetableNames, wavetables: newWavetables })
+        const newWavetablesByBank = cloneWavetablesByBank(wavetablesByBank)
+        newWavetablesByBank[bankIndex][wavetableIndex] = sortEntries(table)
+        set({ wavetablesByBank: newWavetablesByBank })
+        persistWavetables({ wavetableNames, userWavetables: newWavetablesByBank[2] })
 
         if (!isMidiReceiving()) {
-            updateWavetable(wavetableIndex, newWavetables[wavetableIndex])
+            updateWavetable(wavetableIndex, newWavetablesByBank[bankIndex][wavetableIndex])
         }
     },
 
-    loadWavetableEntries: (wavetableIndex, entries) => {
-        const { wavetables } = get()
-        const sorted = sortEntries(entries)
-        const newWavetables = [...wavetables]
-        newWavetables[wavetableIndex] = sorted
-        set({ wavetables: newWavetables })
-        persistWavetables({ wavetableNames: get().wavetableNames, wavetables: newWavetables })
+    loadWavetableEntries: (bankIndex, wavetableIndex, entries) => {
+        const { wavetablesByBank, wavetableNames } = get()
+        const newWavetablesByBank = cloneWavetablesByBank(wavetablesByBank)
+        newWavetablesByBank[bankIndex][wavetableIndex] = sortEntries(entries)
+        set({ wavetablesByBank: newWavetablesByBank })
+        persistWavetables({ wavetableNames, userWavetables: newWavetablesByBank[2] })
 
         if (!isMidiReceiving()) {
-            updateWavetable(wavetableIndex, sorted)
+            updateWavetable(wavetableIndex, newWavetablesByBank[bankIndex][wavetableIndex])
         }
     },
 }))

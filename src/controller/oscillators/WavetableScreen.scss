@@ -179,6 +179,16 @@
     max-width: 45%;
     flex-shrink: 0;
   }
+
+  &--header-table-bank {
+    width: 120px;
+    max-width: 15%;
+  }
+
+  &--header-wavetable {
+    width: 220px;
+    max-width: 28%;
+  }
 }
 
 .wt-input {
