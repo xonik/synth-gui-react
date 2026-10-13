@@ -1,5 +1,6 @@
 // startIndex = where in the list of wavetables to place this
 // bank: What bank ppg waveforms are found.
+// source: https://gist.github.com/Jacajack/509370b54d1d7c197d019987ffb438fb (Jacajack/evu10_wavetable_info.txt)
 export function buildPpgWavetables(startIndex: number, bank: number) {
   const ppgWavetables = [[ // 0x0000 -- Wavetable   0 (00h):
     { wave: 101, pos: 0 },
