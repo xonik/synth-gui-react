@@ -1,7 +1,7 @@
 import type React from 'react'
 import { useCallback, useState } from 'react'
 import ReactSlider from 'react-slider'
-import { releaseCVOverride, releaseCVOverrides, setCVOverride } from '../../midi/rpc/api'
+import { releaseCVOverride, releaseCVOverrides, setCVOverride, toggleEnvelopeOverride } from '../../midi/rpc/api'
 import { sharedConfig } from '../../sharedConfig'
 import { routeForVoice, VOICE_ALL } from './voiceRouting'
 import Button from '../components/Button'
@@ -24,7 +24,11 @@ const VerticalSelector = ({ setRange, value }: RangeProps) => (
         invert
         value={value}
         onChange={setRange}
-        renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
+        renderThumb={({ key, ...props }, state) => (
+            <div key={key} {...props}>
+                {getAsVolts(state.valueNow)} V
+            </div>
+        )}
     />
 )
 
@@ -81,6 +85,7 @@ type Props = { voice: number }
 export const CvOverrides = ({ voice }: Props) => {
     const [allCvs, setAllCvs] = useState<CvRange[][]>(getInitialAllCVs())
     const [cv, setCv] = useState<number>(0)
+    const [envelopeOverride, setEnvelopeOverride] = useState<boolean>(true)
 
     const onRelease = useCallback(() => {
         releaseCVOverride(cv, routeForVoice(voice))
@@ -89,6 +94,12 @@ export const CvOverrides = ({ voice }: Props) => {
     const onReleaseAll = useCallback(() => {
         releaseCVOverrides()
     }, [])
+
+    const onToggleEnvelopeOverride = useCallback(() => {
+        const next = !envelopeOverride
+        setEnvelopeOverride(next)
+        toggleEnvelopeOverride(next, routeForVoice(voice))
+    }, [envelopeOverride, voice])
 
     const updateCV = useCallback(
         (start: number) => {
@@ -114,19 +125,27 @@ export const CvOverrides = ({ voice }: Props) => {
     return (
         <div className="cv-range">
             <div className="cv-range__main">
-                <div className="cv-range__graph-controls">
-                    <VerticalSelector setRange={updateCV} value={currentCVs[cv].value} />
+                <div className="cv-range__column cv-range__column--two-thirds">
+                    <div className="cv-range__column__heading">Voltage overrides</div>
+                    <div className="cv-range__graph-controls">
+                        <VerticalSelector setRange={updateCV} value={currentCVs[cv].value} />
+                    </div>
+                    <div className="cv-range__params">
+                        <CvSelector onSelect={setCv} cv={cv} />
+                        <div className="cv-range__params__actions">
+                            <Button active onClick={onRelease}>
+                                Release
+                            </Button>
+                            <Button active onClick={onReleaseAll}>
+                                Release all
+                            </Button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div className="cv-range__params">
-                <CvSelector onSelect={setCv} cv={cv} />
-                <div className="cv-range__nowrap">Voltage: {getAsVolts(currentCVs[cv].value)}</div>
-                <div className="cv-range__params__actions">
-                    <Button active onClick={onRelease}>
-                        Release
-                    </Button>
-                    <Button active onClick={onReleaseAll}>
-                        Release all
+                <div className="cv-range__side-buttons">
+                    <div className="cv-range__side-buttons__heading">Toggles</div>
+                    <Button className="cv-range__toggle" active={envelopeOverride} onClick={onToggleEnvelopeOverride}>
+                        Env override {envelopeOverride ? 'on' : 'off'}
                     </Button>
                 </div>
             </div>

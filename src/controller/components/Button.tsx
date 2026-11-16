@@ -4,16 +4,17 @@ import './Button.scss'
 interface Props {
     active: boolean
     disabled?: boolean
+    className?: string
     onClick: (event?: React.MouseEvent<HTMLElement>) => void
     children?: React.ReactChild | React.ReactChild[]
 }
 
 // Draw the desired slope between from and to. NB: SVG has 0,0 in upper left corner.
-const Button = ({ active, disabled, onClick, children }: Props) => {
+const Button = ({ active, disabled, className, onClick, children }: Props) => {
     return (
         <div
             onMouseDown={onClick}
-            className={classNames('gui-ctrl-button', {
+            className={classNames('gui-ctrl-button', className, {
                 'gui-ctrl-button--active': active,
                 'gui-ctrl-button--disabled': disabled,
             })}

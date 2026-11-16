@@ -48,6 +48,23 @@
     border-radius: 2px;
   }
 
+  &__column {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    gap: 0.5rem;
+    padding-top: 0.25rem;
+
+    &--two-thirds {
+      flex: 0 0 calc(66.667% - 0.75rem);
+    }
+
+    &__heading {
+      @extend .cv-range__side-buttons__heading;
+    }
+  }
+
   &__side-buttons {
     display: flex;
     flex-direction: column;
@@ -68,6 +85,11 @@
       height: 2.5em;
       min-width: 7em;
       box-sizing: border-box;
+    }
+
+    .gui-ctrl-button.cv-range__toggle {
+      padding-left: 1em;
+      padding-right: 1em;
     }
 
     button {
