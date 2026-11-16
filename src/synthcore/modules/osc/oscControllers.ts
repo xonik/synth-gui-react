@@ -5,6 +5,23 @@ import { sysexCommands } from '@/midi/midibus'
 import type { ControllerConfigButton, ControllerConfigCC, ControllerConfigNRPN, ControllerConfigSysex, FuncProps } from '@/midi/types'
 import { ControllerIdDst, ControllerIdNonMod } from '../controllers/controllerIds'
 
+const getMidiValue = (value: number) => Math.floor(value * 127)
+const formatSigned = (value: number, precision: number, unit: string) =>
+    `${value > 0 ? '+' : ''}${value.toFixed(precision)} ${unit}`
+
+const formatNoteSemitones = (value: number) => {
+    const midiValue = getMidiValue(value)
+    return formatSigned(((midiValue - 63) * 12) / 64, 2, 'semitones')
+}
+
+const formatDcoDetuneCents = (value: number) => {
+    const midiValue = getMidiValue(value)
+    return formatSigned(((midiValue - 63) * 100) / 128, 1, 'cents')
+}
+
+const formatVcoDetuneCents = (value: number) =>
+    `${(getMidiValue(value) * 50).toFixed(1)} cents`
+
 interface OscControllers {
     DCO1: {
         props: FuncProps
@@ -80,8 +97,22 @@ const oscControllers: OscControllers = {
     DCO1: {
         props: { label: 'Osc 1' },
         PITCH: { id: ControllerIdDst.DCO1_PITCH, label: 'Pitch', isDstDigi: true, type: 'pot', addr: NRPN.DCO1_PITCH },
-        NOTE: { id: ControllerIdDst.DCO1_NOTE, label: 'Note', isDstDigi: true, type: 'pot', cc: CC.DCO1_NOTE },
-        DETUNE: { id: ControllerIdDst.DCO1_DETUNE, label: 'Detune', isDstDigi: true, type: 'pot', cc: CC.DCO1_DETUNE },
+        NOTE: {
+            id: ControllerIdDst.DCO1_NOTE,
+            label: 'Note',
+            isDstDigi: true,
+            type: 'pot',
+            cc: CC.DCO1_NOTE,
+            popupFormatter: formatNoteSemitones,
+        },
+        DETUNE: {
+            id: ControllerIdDst.DCO1_DETUNE,
+            label: 'Detune',
+            isDstDigi: true,
+            type: 'pot',
+            cc: CC.DCO1_DETUNE,
+            popupFormatter: formatDcoDetuneCents,
+        },
         RANGE: { id: ControllerIdNonMod.DCO1_RANGE, label: 'Range', type: 'button', values: [buttonMidiValues.OSC1_RANGE_LOW, buttonMidiValues.OSC1_RANGE_HIGH], valueLabels: ['Low', 'High'] },
         WAVEFORM: { id: ControllerIdDst.DCO1_WAVEFORM, label: 'Waveform', isDstDigi: true, type: 'pot', cc: CC.DCO1_WAVEFORM },
         SUB1: { id: ControllerIdDst.DCO1_SUB1, label: 'Sub 1', isDstDigi: true, type: 'pot', cc: CC.DCO1_SUB1 },
@@ -104,8 +135,22 @@ const oscControllers: OscControllers = {
     DCO2: {
         props: { label: 'Osc 2' },
         PITCH: { id: ControllerIdDst.DCO2_PITCH, label: 'Pitch', isDstDigi: true, type: 'pot', addr: NRPN.DCO2_PITCH },
-        NOTE: { id: ControllerIdDst.DCO2_NOTE, label: 'Note', isDstDigi: true, type: 'pot', cc: CC.DCO2_NOTE },
-        DETUNE: { id: ControllerIdDst.DCO2_DETUNE, label: 'Detune', isDstDigi: true, type: 'pot', cc: CC.DCO2_DETUNE },
+        NOTE: {
+            id: ControllerIdDst.DCO2_NOTE,
+            label: 'Note',
+            isDstDigi: true,
+            type: 'pot',
+            cc: CC.DCO2_NOTE,
+            popupFormatter: formatNoteSemitones,
+        },
+        DETUNE: {
+            id: ControllerIdDst.DCO2_DETUNE,
+            label: 'Detune',
+            isDstDigi: true,
+            type: 'pot',
+            cc: CC.DCO2_DETUNE,
+            popupFormatter: formatDcoDetuneCents,
+        },
         RANGE: { id: ControllerIdNonMod.DCO2_RANGE, label: 'Range', type: 'button', values: [buttonMidiValues.OSC2_RANGE_LOW, buttonMidiValues.OSC2_RANGE_HIGH], valueLabels: ['Low', 'High'] },
         WAVEFORM: { id: ControllerIdDst.DCO2_WAVEFORM, label: 'Waveform', isDstDigi: true, type: 'pot', cc: CC.DCO2_WAVEFORM },
         SUB1: { id: ControllerIdDst.DCO2_SUB1, label: 'Sub 1', isDstDigi: true, type: 'pot', cc: CC.DCO2_SUB1 },
@@ -128,8 +173,22 @@ const oscControllers: OscControllers = {
     VCO: {
         props: { label: 'Osc 3' },
         PITCH: { id: ControllerIdDst.VCO_PITCH, label: 'Pitch', isDstDigi: true, type: 'pot', addr: NRPN.VCO_PITCH },
-        NOTE: { id: ControllerIdDst.VCO_NOTE, label: 'Note', isDstDigi: true, type: 'pot', cc: CC.VCO_NOTE },
-        DETUNE: { id: ControllerIdDst.VCO_DETUNE, label: 'Detune', isDstDigi: true, type: 'pot', cc: CC.VCO_DETUNE },
+        NOTE: {
+            id: ControllerIdDst.VCO_NOTE,
+            label: 'Note',
+            isDstDigi: true,
+            type: 'pot',
+            cc: CC.VCO_NOTE,
+            popupFormatter: formatNoteSemitones,
+        },
+        DETUNE: {
+            id: ControllerIdDst.VCO_DETUNE,
+            label: 'Detune',
+            isDstDigi: true,
+            type: 'pot',
+            cc: CC.VCO_DETUNE,
+            popupFormatter: formatVcoDetuneCents,
+        },
         WAVEFORM: { id: ControllerIdDst.VCO_WAVEFORM, label: 'Waveform', isDstDigi: true, type: 'pot', cc: CC.VCO_WAVEFORM },
         FM_AMT: { id: ControllerIdDst.VCO_FM_AMT, label: 'FM Amt', shortLabel: 'FM', isDstDigi: true, type: 'pot', cc: CC.VCO_FM_AMT },
         PW: { id: ControllerIdDst.VCO_PW, label: 'PW', isDstDigi: true, type: 'pot', cc: CC.VCO_PW },

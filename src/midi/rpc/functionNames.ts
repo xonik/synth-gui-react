@@ -47,7 +47,8 @@ export enum FunctionNames {
   setAllEnvModAmounts = 43,
   setAllLfoModAmounts = 44,
   changeMidiSpeed = 45,
-  toggleVoicePower = 46,
-  voiceDacStopUpdates = 47,
-  voiceDacStartUpdates = 48
+  toggleEnvelopeOverride = 46,
+  toggleVoicePower = 47,
+  voiceDacStopUpdates = 48,
+  voiceDacStartUpdates = 49
 }

@@ -3,7 +3,7 @@
 import { jsToMidiEncoder, splitTo7 } from './serializer'
 import { FunctionNames } from './functionNames'
 import { sendSysex, type Route } from '../midibus'
-import { call, callWithReturn } from './functionCaller'
+import { call } from './functionCaller'
 import rpcControllers from '@/synthcore/modules/rpc/rpcControllers'
 
 export function setCvStart(cv: number, start: number, route: Route = { type: 'all' }) {
@@ -630,6 +630,19 @@ export function changeMidiSpeed(speed: number, route: Route = { type: 'all' }) {
     ]
     const data = [
       ...splitTo7(FunctionNames.changeMidiSpeed, 14),
+      ...paramBytes,
+    ]
+        sendSysex(route, rpcControllers.RPC.command, data)
+  })
+}
+
+export function toggleEnvelopeOverride(on: boolean, route: Route = { type: 'all' }) {
+  call('toggleEnvelopeOverride', () => {
+    const paramBytes: number[] = [
+      ...jsToMidiEncoder['bool'](on)
+    ]
+    const data = [
+      ...splitTo7(FunctionNames.toggleEnvelopeOverride, 14),
       ...paramBytes,
     ]
         sendSysex(route, rpcControllers.RPC.command, data)

@@ -15,6 +15,7 @@ export interface ControllerConfig {
     readonly isSourceDigi?: boolean
     readonly isDstDigi?: boolean
     readonly type: ControllerType
+    readonly popupFormatter?: (value: number) => string
 
     // Funcs to use if pots should behave differently from stored/midi value
     readonly uiResponse?: {
