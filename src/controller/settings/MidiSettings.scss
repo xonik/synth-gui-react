@@ -51,6 +51,21 @@
     }
   }
 
+  &__led {
+    width: 0.75rem;
+    height: 0.75rem;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: $bg-highlight;
+    border: 1px solid $bg-light;
+
+    &.is-active {
+      background: $accent-primary;
+      border-color: $accent-primary;
+      box-shadow: 0 0 8px rgba($accent-primary, 0.7);
+    }
+  }
+
   &__toggle {
     display: flex;
     align-items: center;

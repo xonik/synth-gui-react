@@ -142,17 +142,51 @@ let midiOut: MIDIOutput | undefined
 let midiIn: MIDIInput | undefined
 let midiIn2: MIDIInput | undefined
 
+type MidiInputSlot = 1 | 2
+
+const midiInputActivityListeners = new Set<(slot: MidiInputSlot) => void>()
+const midiInputHandlers = new Map<MIDIInput, (event: MIDIMessageEvent) => void>()
+
+export const subscribeMidiInputActivity = (listener: (slot: MidiInputSlot) => void) => {
+    midiInputActivityListeners.add(listener)
+    return () => {
+        midiInputActivityListeners.delete(listener)
+    }
+}
+
 const setMidiInputs = (input: MIDIInput | undefined, input2: MIDIInput | undefined) => {
     const previousInputs = new Set([midiIn, midiIn2])
     previousInputs.forEach((previousInput) => {
-        if (previousInput?.onmidimessage === receiveMidiMessage) {
-            previousInput.onmidimessage = null
+        if (previousInput) {
+            const handler = midiInputHandlers.get(previousInput)
+            if (handler && previousInput.onmidimessage === handler) {
+                previousInput.onmidimessage = null
+            }
+            midiInputHandlers.delete(previousInput)
         }
     })
     midiIn = input
     midiIn2 = input2
-    if (midiIn) midiIn.onmidimessage = receiveMidiMessage
-    if (midiIn2) midiIn2.onmidimessage = receiveMidiMessage
+
+    const inputSlots = new Map<MIDIInput, MidiInputSlot[]>()
+    if (midiIn) inputSlots.set(midiIn, [...(inputSlots.get(midiIn) ?? []), 1])
+    if (midiIn2) inputSlots.set(midiIn2, [...(inputSlots.get(midiIn2) ?? []), 2])
+
+    inputSlots.forEach((slots, midiInput) => {
+        const handler = (event: MIDIMessageEvent) => {
+            const data = event.data
+            if (data && data.length >= 3 && (data[0] & 0xf0) === 0x90 && data[2] > 0) {
+                slots.forEach((slot) => {
+                    midiInputActivityListeners.forEach((listener) => {
+                        listener(slot)
+                    })
+                })
+            }
+            receiveMidiMessage(event)
+        }
+        midiInputHandlers.set(midiInput, handler)
+        midiInput.onmidimessage = handler
+    })
 }
 
 let idPool = 0

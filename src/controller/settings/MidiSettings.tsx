@@ -1,5 +1,11 @@
-import { useEffect, useState, useSyncExternalStore } from 'react'
-import { applyMidiSelection, getActiveMidiIds, getAvailableMidiInterfaces, MIDI_SELECTED_KEY } from '../../midi/midibus'
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import {
+    applyMidiSelection,
+    getActiveMidiIds,
+    getAvailableMidiInterfaces,
+    MIDI_SELECTED_KEY,
+    subscribeMidiInputActivity,
+} from '../../midi/midibus'
 import { getSynthConnectionStatus, subscribeSynthConnectionStatus } from '../../midi/synthConnection'
 import { getMidiLogging, setMidiLogging } from '../../utils/logger'
 import './MidiSettings.scss'
@@ -30,6 +36,11 @@ export const MidiSettings = () => {
     const [saveConfirmed, setSaveConfirmed] = useState(false)
     const [midiLogging, setMidiLoggingState] = useState(getMidiLogging)
     const synthStatus = useSyncExternalStore(subscribeSynthConnectionStatus, getSynthConnectionStatus)
+    const [activeNoteInputs, setActiveNoteInputs] = useState<[boolean, boolean]>([false, false])
+    const noteActivityTimers = useRef<[ReturnType<typeof setTimeout> | undefined, ReturnType<typeof setTimeout> | undefined]>([
+        undefined,
+        undefined,
+    ])
 
     useEffect(() => {
         const active = getActiveMidiIds()
@@ -51,6 +62,33 @@ export const MidiSettings = () => {
             navigator.requestMIDIAccess({ sysex: true }).then((midiAccess) => {
                 setInputs(Array.from(midiAccess.inputs.values()))
                 setOutputs(Array.from(midiAccess.outputs.values()))
+            })
+        }
+    }, [])
+
+    useEffect(() => {
+        const unsubscribe = subscribeMidiInputActivity((slot) => {
+            const index = slot - 1
+            if (noteActivityTimers.current[index]) clearTimeout(noteActivityTimers.current[index])
+            setActiveNoteInputs((current) => {
+                const next: [boolean, boolean] = [...current]
+                next[index] = true
+                return next
+            })
+            noteActivityTimers.current[index] = setTimeout(() => {
+                setActiveNoteInputs((current) => {
+                    const next: [boolean, boolean] = [...current]
+                    next[index] = false
+                    return next
+                })
+                noteActivityTimers.current[index] = undefined
+            }, 150)
+        })
+
+        return () => {
+            unsubscribe()
+            noteActivityTimers.current.forEach((timer) => {
+                if (timer) clearTimeout(timer)
             })
         }
     }, [])
@@ -117,6 +155,11 @@ export const MidiSettings = () => {
                         </option>
                     ))}
                 </select>
+                <span
+                    className={`midi-settings__led${activeNoteInputs[0] ? ' is-active' : ''}`}
+                    role="img"
+                    aria-label={`MIDI In 1 note activity: ${activeNoteInputs[0] ? 'active' : 'inactive'}`}
+                />
             </div>
             <div className="midi-settings__section">
                 <div className="midi-settings__label">MIDI In 2</div>
@@ -132,6 +175,11 @@ export const MidiSettings = () => {
                         </option>
                     ))}
                 </select>
+                <span
+                    className={`midi-settings__led${activeNoteInputs[1] ? ' is-active' : ''}`}
+                    role="img"
+                    aria-label={`MIDI In 2 note activity: ${activeNoteInputs[1] ? 'active' : 'inactive'}`}
+                />
             </div>
             <div className="midi-settings__section">
                 <div className="midi-settings__label">MIDI Out</div>
