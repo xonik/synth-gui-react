@@ -42,6 +42,15 @@
     }
   }
 
+  &__connection {
+    color: $text-mid;
+    font-size: 0.9em;
+
+    &.is-connected {
+      color: $accent-primary;
+    }
+  }
+
   &__toggle {
     display: flex;
     align-items: center;

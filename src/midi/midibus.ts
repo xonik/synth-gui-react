@@ -123,6 +123,7 @@ export const sysexCommands = {
     WAVETABLE_SELECT_OSC1: 1,
     WAVETABLE_SELECT_OSC2: 2,
     WAVETABLE_UPDATE: 3,
+    SYNTH_READY: 4,
 }
 
 export type Route = {
@@ -359,12 +360,15 @@ export const sendSysex = (route: Route, command: number, data: number[]) => {
 }
 
 export const sysex = {
-    subscribe: (callback: (route: Route, values: number[]) => void, { command }: ControllerConfigSysex) => {
+    subscribe: (
+        callback: (route: Route, values: number[]) => void,
+        { command }: Pick<ControllerConfigSysex, 'command'>
+    ) => {
         const id = idPool++
         sysexSubscribers[command] = [...(sysexSubscribers[command] || []), { id, callback }]
         return id
     },
-    unsubscribe: (controller: ControllerConfigSysex, id: number) => {
+    unsubscribe: (controller: Pick<ControllerConfigSysex, 'command'>, id: number) => {
         const subscribersForCommand = sysexSubscribers[controller.command]
         if (!subscribersForCommand) return
         const index = subscribersForCommand.map((sub) => sub.id).indexOf(id)

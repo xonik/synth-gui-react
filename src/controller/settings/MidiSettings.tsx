@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useSyncExternalStore } from 'react'
 import { applyMidiSelection, getActiveMidiIds, getAvailableMidiInterfaces, MIDI_SELECTED_KEY } from '../../midi/midibus'
+import { getSynthConnectionStatus, subscribeSynthConnectionStatus } from '../../midi/synthConnection'
 import { getMidiLogging, setMidiLogging } from '../../utils/logger'
 import './MidiSettings.scss'
 
@@ -28,6 +29,7 @@ export const MidiSettings = () => {
     const [initialOutput, setInitialOutput] = useState<string>('')
     const [saveConfirmed, setSaveConfirmed] = useState(false)
     const [midiLogging, setMidiLoggingState] = useState(getMidiLogging)
+    const synthStatus = useSyncExternalStore(subscribeSynthConnectionStatus, getSynthConnectionStatus)
 
     useEffect(() => {
         const active = getActiveMidiIds()
@@ -145,6 +147,13 @@ export const MidiSettings = () => {
                         </option>
                     ))}
                 </select>
+            </div>
+            <div className="midi-settings__section" role="status" aria-live="polite">
+                <div className="midi-settings__label">Synth</div>
+                <span className={`midi-settings__connection${synthStatus.connected ? ' is-connected' : ''}`}>
+                    {synthStatus.connected ? 'Connected' : 'Disconnected'}
+                    {synthStatus.synthId !== null && ` — ID ${synthStatus.synthId}`}
+                </span>
             </div>
             <button type="button" className="midi-settings__save" onClick={handleSave} disabled={!canSave}>
                 {saveConfirmed ? 'Saved!' : 'Save'}
