@@ -49,6 +49,7 @@ export const MIDI_SELECTED_KEY = 'midi_selected_ids'
 
 type MidiSelectedIds = {
     inputId: string | null
+    input2Id: string | null
     outputId: string | null
 }
 
@@ -57,7 +58,7 @@ const loadSavedMidiIds = (): MidiSelectedIds => {
         const saved = localStorage.getItem(MIDI_SELECTED_KEY)
         if (saved) return JSON.parse(saved)
     } catch {}
-    return { inputId: null, outputId: null }
+    return { inputId: null, input2Id: null, outputId: null }
 }
 
 let storedMidiAccess: MIDIAccess | undefined
@@ -72,19 +73,17 @@ export const getAvailableMidiInterfaces = () => {
 
 export const getActiveMidiIds = () => ({
     inputId: midiIn?.id ?? null,
+    input2Id: midiIn2?.id ?? null,
     outputId: midiOut?.id ?? null,
 })
 
-export const applyMidiSelection = (inputId: string | null, outputId: string | null) => {
+export const applyMidiSelection = (inputId: string | null, input2Id: string | null, outputId: string | null) => {
     if (!storedMidiAccess) return
-    if (inputId && storedMidiAccess.inputs.has(inputId)) {
-        midiIn = storedMidiAccess.inputs.get(inputId)
-        if (midiIn) midiIn.onmidimessage = receiveMidiMessage
-        console.log('Selected midi input', midiIn?.name)
-    } else {
-        midiIn = undefined
-        console.log('Selected midi input: none')
-    }
+    const input = inputId ? storedMidiAccess.inputs.get(inputId) : undefined
+    const input2 = input2Id ? storedMidiAccess.inputs.get(input2Id) : undefined
+    setMidiInputs(input, input2)
+    console.log('Selected midi input', midiIn?.name ?? 'none')
+    console.log('Selected midi input 2', midiIn2?.name ?? 'none')
     if (outputId && storedMidiAccess.outputs.has(outputId)) {
         midiOut = storedMidiAccess.outputs.get(outputId)
         console.log('Selected midi output', midiOut?.name)
@@ -102,7 +101,9 @@ const midiConfig = {
         '-1515485747', // Steinberg UR22C Port 1
         'vdYvBfG28aCbHM9U6S3RAB8EwW4YMLWpA6pdZ0Eq9tM=', // Steinberg UR22C Port 1 Firefox
         'l0+mSOnHhAPqGL1UqdZwvtLsPg6lMbdKY6RNwwwdWzQ=', // Steinberg UR22C Port 1 Firefox
-        //'-762163153', // Steinberg UR22C Port 2
+    ],
+    input2Ids: [
+        '-762163153', // Steinberg UR22C Port 2
     ],
     outputIds: [
         '-259958146',
@@ -138,6 +139,20 @@ export type Route = {
 
 let midiOut: MIDIOutput | undefined
 let midiIn: MIDIInput | undefined
+let midiIn2: MIDIInput | undefined
+
+const setMidiInputs = (input: MIDIInput | undefined, input2: MIDIInput | undefined) => {
+    const previousInputs = new Set([midiIn, midiIn2])
+    previousInputs.forEach((previousInput) => {
+        if (previousInput?.onmidimessage === receiveMidiMessage) {
+            previousInput.onmidimessage = null
+        }
+    })
+    midiIn = input
+    midiIn2 = input2
+    if (midiIn) midiIn.onmidimessage = receiveMidiMessage
+    if (midiIn2) midiIn2.onmidimessage = receiveMidiMessage
+}
 
 let idPool = 0
 let buttonSubscribers: ButtonSubscriber[] = []
@@ -455,22 +470,24 @@ const updateSelectedMidi = async (midiAccess: MIDIAccess) => {
             ? saved.inputId
             : midiConfig.inputIds.find((id) => midiAccess.inputs.has(id))
 
+    const foundInput2Id =
+        saved.input2Id && midiAccess.inputs.has(saved.input2Id)
+            ? saved.input2Id
+            : midiConfig.input2Ids.find((id) => midiAccess.inputs.has(id))
+
     const foundOutputId =
         saved.outputId && midiAccess.outputs.has(saved.outputId)
             ? saved.outputId
             : midiConfig.outputIds.find((id) => midiAccess.outputs.has(id))
 
-    if (foundInputId) {
-        midiIn = midiAccess.inputs.get(foundInputId)
-        if (midiIn) {
-            midiIn.onmidimessage = receiveMidiMessage
-        }
-        console.log('Selected midi input', midiIn?.name)
-    } else {
-        midiIn = undefined
-        console.log('Desired midi input not found', midiConfig.inputIds)
-        console.log(midiConfig)
-    }
+    setMidiInputs(
+        foundInputId ? midiAccess.inputs.get(foundInputId) : undefined,
+        foundInput2Id ? midiAccess.inputs.get(foundInput2Id) : undefined
+    )
+    console.log('Selected midi input', midiIn?.name ?? 'none')
+    console.log('Selected midi input 2', midiIn2?.name ?? 'none')
+    if (!foundInputId) console.log('Desired midi input not found', midiConfig.inputIds)
+    if (!foundInput2Id) console.log('Desired midi input 2 not found', midiConfig.input2Ids)
 
     if (foundOutputId) {
         midiOut = midiAccess.outputs.get(foundOutputId)
@@ -502,6 +519,7 @@ if (navigator.requestMIDIAccess) {
     navigator.requestMIDIAccess({ sysex: true }).then(onMIDISuccess, onMIDIFailure)
     window.addEventListener('beforeunload', () => {
         midiIn?.close()
+        if (midiIn2 !== midiIn) midiIn2?.close()
         midiOut?.close()
     })
 }

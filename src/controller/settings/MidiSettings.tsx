@@ -5,6 +5,7 @@ import './MidiSettings.scss'
 
 type MidiSelectedIds = {
     inputId: string | null
+    input2Id: string | null
     outputId: string | null
 }
 
@@ -13,15 +14,17 @@ const loadFromLocalStorage = (): MidiSelectedIds => {
         const saved = localStorage.getItem(MIDI_SELECTED_KEY)
         if (saved) return JSON.parse(saved)
     } catch {}
-    return { inputId: null, outputId: null }
+    return { inputId: null, input2Id: null, outputId: null }
 }
 
 export const MidiSettings = () => {
     const [inputs, setInputs] = useState<MIDIInput[]>([])
     const [outputs, setOutputs] = useState<MIDIOutput[]>([])
     const [selectedInput, setSelectedInput] = useState<string>('')
+    const [selectedInput2, setSelectedInput2] = useState<string>('')
     const [selectedOutput, setSelectedOutput] = useState<string>('')
     const [initialInput, setInitialInput] = useState<string>('')
+    const [initialInput2, setInitialInput2] = useState<string>('')
     const [initialOutput, setInitialOutput] = useState<string>('')
     const [saveConfirmed, setSaveConfirmed] = useState(false)
     const [midiLogging, setMidiLoggingState] = useState(getMidiLogging)
@@ -29,10 +32,13 @@ export const MidiSettings = () => {
     useEffect(() => {
         const active = getActiveMidiIds()
         const inputId = active.inputId ?? ''
+        const input2Id = active.input2Id ?? ''
         const outputId = active.outputId ?? ''
         setSelectedInput(inputId)
+        setSelectedInput2(input2Id)
         setSelectedOutput(outputId)
         setInitialInput(inputId)
+        setInitialInput2(input2Id)
         setInitialOutput(outputId)
 
         const { inputs: availableInputs, outputs: availableOutputs } = getAvailableMidiInterfaces()
@@ -59,13 +65,20 @@ export const MidiSettings = () => {
         console.log('MIDI Out selected:', name, id || '(none)')
     }
 
+    const handleInput2Change = (id: string) => {
+        setSelectedInput2(id)
+        const name = inputs.find((i) => i.id === id)?.name ?? 'none'
+        console.log('MIDI In 2 selected:', name, id || '(none)')
+    }
+
     const handleMidiLoggingChange = (enabled: boolean) => {
         setMidiLogging(enabled)
         setMidiLoggingState(enabled)
     }
 
-    const hasChanged = selectedInput !== initialInput || selectedOutput !== initialOutput
-    const hasSelection = selectedInput !== '' || selectedOutput !== ''
+    const hasChanged =
+        selectedInput !== initialInput || selectedInput2 !== initialInput2 || selectedOutput !== initialOutput
+    const hasSelection = selectedInput !== '' || selectedInput2 !== '' || selectedOutput !== ''
     const canSave = hasChanged && hasSelection
 
     const handleSave = () => {
@@ -74,11 +87,13 @@ export const MidiSettings = () => {
         const updated: MidiSelectedIds = {
             ...existing,
             inputId: selectedInput || null,
+            input2Id: selectedInput2 || null,
             outputId: selectedOutput || null,
         }
         localStorage.setItem(MIDI_SELECTED_KEY, JSON.stringify(updated))
-        applyMidiSelection(updated.inputId, updated.outputId)
+        applyMidiSelection(updated.inputId, updated.input2Id, updated.outputId)
         setInitialInput(selectedInput)
+        setInitialInput2(selectedInput2)
         setInitialOutput(selectedOutput)
         setSaveConfirmed(true)
         setTimeout(() => setSaveConfirmed(false), 2000)
@@ -87,11 +102,26 @@ export const MidiSettings = () => {
     return (
         <div className="midi-settings">
             <div className="midi-settings__section">
-                <div className="midi-settings__label">MIDI In</div>
+                <div className="midi-settings__label">MIDI In 1</div>
                 <select
                     className="midi-settings__select"
                     value={selectedInput}
                     onChange={(e) => handleInputChange(e.target.value)}
+                >
+                    <option value="">— None —</option>
+                    {inputs.map((input) => (
+                        <option key={input.id} value={input.id}>
+                            {input.name}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <div className="midi-settings__section">
+                <div className="midi-settings__label">MIDI In 2</div>
+                <select
+                    className="midi-settings__select"
+                    value={selectedInput2}
+                    onChange={(e) => handleInput2Change(e.target.value)}
                 >
                     <option value="">— None —</option>
                     {inputs.map((input) => (
