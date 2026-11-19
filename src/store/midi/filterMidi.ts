@@ -32,7 +32,7 @@ interface ButtonMapping {
     ctrl: ControllerConfigButton
 }
 
-const ccMappings: CCMapping[] = [
+export const ccMappings: CCMapping[] = [
     // LPF
     { filterIndex: 0, field: 'input', ctrl: filtersControllers.LPF.INPUT },
     { filterIndex: 0, field: 'resonance', ctrl: filtersControllers.LPF.RESONANCE },
@@ -51,7 +51,7 @@ const ccMappings: CCMapping[] = [
     { filterIndex: 1, field: 'kbdAmt', ctrl: filtersControllers.SVF.KBD_AMT },
 ]
 
-const nrpnMappings: NrpnMapping[] = [
+export const nrpnMappings: NrpnMapping[] = [
     // LPF
     { filterIndex: 0, field: 'wheelAmt', ctrl: filtersControllers.LPF.WHEEL_AMT },
     // Shared (stored on filters[0])
@@ -60,7 +60,7 @@ const nrpnMappings: NrpnMapping[] = [
     { filterIndex: 1, field: 'wheelAmt', ctrl: filtersControllers.SVF.WHEEL_AMT },
 ]
 
-const buttonMappings: ButtonMapping[] = [
+export const buttonMappings: ButtonMapping[] = [
     // LPF
     { filterIndex: 0, field: 'fmMode', ctrl: filtersControllers.LPF.FM_MODE },
     { filterIndex: 0, field: 'filterType', ctrl: filtersControllers.LPF.FILTER_TYPE },

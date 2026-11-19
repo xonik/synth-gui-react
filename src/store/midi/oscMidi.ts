@@ -28,7 +28,7 @@ interface ButtonMapping {
     ctrl: ControllerConfigButton
 }
 
-const ccMappings: CCMapping[] = [
+export const ccMappings: CCMapping[] = [
     // DCO1
     { oscIndex: 0, field: 'note', ctrl: oscControllers.DCO1.NOTE },
     { oscIndex: 0, field: 'detune', ctrl: oscControllers.DCO1.DETUNE },
@@ -52,7 +52,7 @@ const ccMappings: CCMapping[] = [
     { oscIndex: 2, field: 'linFm', ctrl: oscControllers.VCO.LIN_FM },
 ]
 
-const buttonMappings: ButtonMapping[] = [
+export const buttonMappings: ButtonMapping[] = [
     // DCO1
     { oscIndex: 0, field: 'range', ctrl: oscControllers.DCO1.RANGE },
     { oscIndex: 0, field: 'sync', ctrl: oscControllers.DCO1.SYNC },
@@ -87,10 +87,9 @@ const buttonMappings: ButtonMapping[] = [
 let sendUnsubscribers: (() => void)[] = []
 let receiveUnsubscribers: (() => void)[] = []
 
-export const setOscWavetable = (voiceGroupIndex: number, oscillatorId: number, wavetableId: number, wavetableBank = 0) => {
+export const createOscWavetableMessage = (oscillatorId: number, wavetableId: number, wavetableBank = 0) => {
     const entries = useWavetableStore.getState().wavetablesByBank[wavetableBank]?.[wavetableId] ?? []
     const wavetableCtrl = oscillatorId === 0 ? oscControllers.DCO1.WAVETABLE : oscControllers.DCO2.WAVETABLE
-    logger.midi(`Setting oscillator ${oscillatorId} in voice group ${voiceGroupIndex} to wavetable ${wavetableId} from bank ${wavetableBank} (${entries.length} entries)`)
 
     // The wavetables are not stored on the voice card, so we send the whole table on every change.
     const values = [wavetableId, entries.length]
@@ -98,10 +97,16 @@ export const setOscWavetable = (voiceGroupIndex: number, oscillatorId: number, w
         values.push(entry.position, entry.bankIndex, entry.waveIndex)
     })
 
-    sysex.send({ type: 'voiceGroup', index: voiceGroupIndex }, {
+    return {
         ...wavetableCtrl,
         values,
-    })
+    }
+}
+
+export const setOscWavetable = (voiceGroupIndex: number, oscillatorId: number, wavetableId: number, wavetableBank = 0) => {
+    const message = createOscWavetableMessage(oscillatorId, wavetableId, wavetableBank)
+    logger.midi(`Setting oscillator ${oscillatorId} in voice group ${voiceGroupIndex} to wavetable ${wavetableId} from bank ${wavetableBank} (${message.values[1]} entries)`)
+    sysex.send({ type: 'voiceGroup', index: voiceGroupIndex }, message)
 }
 
 export function startOscMidiSend() {

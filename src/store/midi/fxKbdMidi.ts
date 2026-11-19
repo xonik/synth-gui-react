@@ -17,7 +17,7 @@ interface ButtonMapping {
     ctrl: ControllerConfigButton
 }
 
-const ccMappings: CCMapping[] = [
+export const ccMappings: CCMapping[] = [
     {
         selector: (s) => s.fx.distortion.drive,
         mutator: (s, v) => {
@@ -62,7 +62,7 @@ const ccMappings: CCMapping[] = [
     },
 ]
 
-const buttonMappings: ButtonMapping[] = [
+export const buttonMappings: ButtonMapping[] = [
     {
         selector: (s) => s.fx.distortion.in,
         mutator: (s, v) => {

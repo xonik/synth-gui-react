@@ -7,7 +7,7 @@ import { isMidiReceiving, withMidiReceive } from './midiGuard'
 type LevelField = 'levelOsc1' | 'levelOsc2' | 'levelOsc3' | 'levelNoise' | 'levelRingMod' | 'levelExtAudio'
 type OutField = 'outOsc1' | 'outOsc2' | 'outOsc3' | 'outNoise' | 'outRingMod' | 'outExtAudio'
 
-const levelMappings: { field: LevelField; ctrl: ControllerConfigCC }[] = [
+export const levelMappings: { field: LevelField; ctrl: ControllerConfigCC }[] = [
     { field: 'levelOsc1', ctrl: srcMixControllers.LEVEL_OSC1 },
     { field: 'levelOsc2', ctrl: srcMixControllers.LEVEL_OSC2 },
     { field: 'levelOsc3', ctrl: srcMixControllers.LEVEL_OSC3 },
@@ -16,7 +16,7 @@ const levelMappings: { field: LevelField; ctrl: ControllerConfigCC }[] = [
     { field: 'levelExtAudio', ctrl: srcMixControllers.LEVEL_EXT_AUDIO },
 ]
 
-const outMappings: { field: OutField; ctrl: ControllerConfigButton }[] = [
+export const outMappings: { field: OutField; ctrl: ControllerConfigButton }[] = [
     { field: 'outOsc1', ctrl: srcMixControllers.OUT_OSC1 },
     { field: 'outOsc2', ctrl: srcMixControllers.OUT_OSC2 },
     { field: 'outOsc3', ctrl: srcMixControllers.OUT_OSC3 },

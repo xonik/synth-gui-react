@@ -1,5 +1,20 @@
 # synth-gui-react
 
+## Sending the current patch to the synth
+
+On Settings > Midi, select and save a MIDI output, then choose a voice group
+beside **Send voice group patch**. This sends that group's current patch without
+changing the UI state. Sending is manual; heartbeats do not trigger it.
+
+The sender uses existing CC/button mappings for ordinary controls and bulk
+SysEx RPCs for envelopes, LFOs and modulation (including zero routes to clear old
+connections), followed by both oscillator wavetable selections. Messages are
+paced for the serial links to the voice cards. "Sent" confirms transmission, not
+an acknowledgement from the synth.
+
+Global controllers, including clock, arpeggiator, common effects and master
+outputs, are excluded; their manual send action is not implemented yet.
+
 ## Generating C files for Teensy
 
 npm run generateCppFiles

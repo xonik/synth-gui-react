@@ -7,6 +7,9 @@ import {
     subscribeMidiInputActivity,
 } from '../../midi/midibus'
 import { getSynthConnectionStatus, subscribeSynthConnectionStatus } from '../../midi/synthConnection'
+import { sendVoiceGroupPatch } from '../../store/midi/sendVoiceGroupPatch'
+import { voiceGroupStores } from '../../store/patchStore'
+import { useUiStore } from '../../store/uiStore'
 import { getMidiLogging, setMidiLogging } from '../../utils/logger'
 import './MidiSettings.scss'
 
@@ -15,6 +18,8 @@ type MidiSelectedIds = {
     input2Id: string | null
     outputId: string | null
 }
+
+const patchVoiceGroups = voiceGroupStores.map((_store, id) => id)
 
 const loadFromLocalStorage = (): MidiSelectedIds => {
     try {
@@ -35,12 +40,14 @@ export const MidiSettings = () => {
     const [initialOutput, setInitialOutput] = useState<string>('')
     const [saveConfirmed, setSaveConfirmed] = useState(false)
     const [midiLogging, setMidiLoggingState] = useState(getMidiLogging)
+    const [patchVoiceGroup, setPatchVoiceGroup] = useState(() => useUiStore.getState().currentVoiceGroupIndex)
+    const [sendingPatch, setSendingPatch] = useState(false)
+    const [patchSendStatus, setPatchSendStatus] = useState('')
     const synthStatus = useSyncExternalStore(subscribeSynthConnectionStatus, getSynthConnectionStatus)
     const [activeNoteInputs, setActiveNoteInputs] = useState<[boolean, boolean]>([false, false])
-    const noteActivityTimers = useRef<[ReturnType<typeof setTimeout> | undefined, ReturnType<typeof setTimeout> | undefined]>([
-        undefined,
-        undefined,
-    ])
+    const noteActivityTimers = useRef<
+        [ReturnType<typeof setTimeout> | undefined, ReturnType<typeof setTimeout> | undefined]
+    >([undefined, undefined])
 
     useEffect(() => {
         const active = getActiveMidiIds()
@@ -139,81 +146,133 @@ export const MidiSettings = () => {
         setTimeout(() => setSaveConfirmed(false), 2000)
     }
 
+    const handleSendPatch = async () => {
+        setSendingPatch(true)
+        setPatchSendStatus('')
+        try {
+            await sendVoiceGroupPatch(patchVoiceGroup)
+            setPatchSendStatus(`Voice group ${patchVoiceGroup + 1} patch sent`)
+        } catch (error) {
+            console.error('Failed to send voice group patch', error)
+            setPatchSendStatus(error instanceof Error ? error.message : 'Failed to send voice group patch')
+        } finally {
+            setSendingPatch(false)
+        }
+    }
+
     return (
         <div className="midi-settings">
-            <div className="midi-settings__section">
-                <div className="midi-settings__label">MIDI In 1</div>
-                <select
-                    className="midi-settings__select"
-                    value={selectedInput}
-                    onChange={(e) => handleInputChange(e.target.value)}
-                >
-                    <option value="">— None —</option>
-                    {inputs.map((input) => (
-                        <option key={input.id} value={input.id}>
-                            {input.name}
-                        </option>
-                    ))}
-                </select>
-                <span
-                    className={`midi-settings__led${activeNoteInputs[0] ? ' is-active' : ''}`}
-                    role="img"
-                    aria-label={`MIDI In 1 note activity: ${activeNoteInputs[0] ? 'active' : 'inactive'}`}
-                />
+            <div className="midi-settings__column">
+                <h2 className="midi-settings__heading">Midi interfaces</h2>
+                <div className="midi-settings__section">
+                    <div className="midi-settings__label">MIDI In 1</div>
+                    <select
+                        className="midi-settings__select"
+                        value={selectedInput}
+                        onChange={(e) => handleInputChange(e.target.value)}
+                    >
+                        <option value="">— None —</option>
+                        {inputs.map((input) => (
+                            <option key={input.id} value={input.id}>
+                                {input.name}
+                            </option>
+                        ))}
+                    </select>
+                    <span
+                        className={`midi-settings__led${activeNoteInputs[0] ? ' is-active' : ''}`}
+                        role="img"
+                        aria-label={`MIDI In 1 note activity: ${activeNoteInputs[0] ? 'active' : 'inactive'}`}
+                    />
+                </div>
+                <div className="midi-settings__section">
+                    <div className="midi-settings__label">MIDI In 2</div>
+                    <select
+                        className="midi-settings__select"
+                        value={selectedInput2}
+                        onChange={(e) => handleInput2Change(e.target.value)}
+                    >
+                        <option value="">— None —</option>
+                        {inputs.map((input) => (
+                            <option key={input.id} value={input.id}>
+                                {input.name}
+                            </option>
+                        ))}
+                    </select>
+                    <span
+                        className={`midi-settings__led${activeNoteInputs[1] ? ' is-active' : ''}`}
+                        role="img"
+                        aria-label={`MIDI In 2 note activity: ${activeNoteInputs[1] ? 'active' : 'inactive'}`}
+                    />
+                </div>
+                <div className="midi-settings__section">
+                    <div className="midi-settings__label">MIDI Out</div>
+                    <select
+                        className="midi-settings__select"
+                        value={selectedOutput}
+                        onChange={(e) => handleOutputChange(e.target.value)}
+                    >
+                        <option value="">— None —</option>
+                        {outputs.map((output) => (
+                            <option key={output.id} value={output.id}>
+                                {output.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <button type="button" className="midi-settings__save" onClick={handleSave} disabled={!canSave}>
+                    {saveConfirmed ? 'Saved!' : 'Save'}
+                </button>
             </div>
-            <div className="midi-settings__section">
-                <div className="midi-settings__label">MIDI In 2</div>
-                <select
-                    className="midi-settings__select"
-                    value={selectedInput2}
-                    onChange={(e) => handleInput2Change(e.target.value)}
-                >
-                    <option value="">— None —</option>
-                    {inputs.map((input) => (
-                        <option key={input.id} value={input.id}>
-                            {input.name}
-                        </option>
-                    ))}
-                </select>
-                <span
-                    className={`midi-settings__led${activeNoteInputs[1] ? ' is-active' : ''}`}
-                    role="img"
-                    aria-label={`MIDI In 2 note activity: ${activeNoteInputs[1] ? 'active' : 'inactive'}`}
-                />
+            <div className="midi-settings__stack">
+                <section className="midi-settings__column" aria-labelledby="midi-voice-group-state">
+                    <h2 id="midi-voice-group-state" className="midi-settings__heading">
+                        Send state
+                    </h2>
+                    <select
+                        id="midi-patch-voice-group"
+                        aria-label="Patch voice group"
+                        className="midi-settings__select"
+                        value={patchVoiceGroup}
+                        onChange={(e) => {
+                            setPatchVoiceGroup(Number(e.target.value))
+                            setPatchSendStatus('')
+                        }}
+                        disabled={sendingPatch}
+                    >
+                        {patchVoiceGroups.map((id) => (
+                            <option key={id} value={id}>
+                                Voice group {id + 1}
+                            </option>
+                        ))}
+                    </select>
+                    <button
+                        type="button"
+                        className="midi-settings__save"
+                        onClick={handleSendPatch}
+                        disabled={sendingPatch}
+                    >
+                        {sendingPatch ? 'Sending...' : 'Send'}
+                    </button>
+                    {patchSendStatus && <div role="status">{patchSendStatus}</div>}
+                </section>
+                <section className="midi-settings__column" aria-label="Misc">
+                    <div className="midi-settings__section" role="status" aria-live="polite">
+                        <div className="midi-settings__label">Synth</div>
+                        <span className={`midi-settings__connection${synthStatus.connected ? ' is-connected' : ''}`}>
+                            {synthStatus.connected ? 'Connected' : 'Disconnected'}
+                            {synthStatus.synthId !== null && ` — ID ${synthStatus.synthId}`}
+                        </span>
+                    </div>
+                    <label className="midi-settings__toggle">
+                        <input
+                            type="checkbox"
+                            checked={midiLogging}
+                            onChange={(e) => handleMidiLoggingChange(e.target.checked)}
+                        />{' '}
+                        Log MIDI traffic
+                    </label>
+                </section>
             </div>
-            <div className="midi-settings__section">
-                <div className="midi-settings__label">MIDI Out</div>
-                <select
-                    className="midi-settings__select"
-                    value={selectedOutput}
-                    onChange={(e) => handleOutputChange(e.target.value)}
-                >
-                    <option value="">— None —</option>
-                    {outputs.map((output) => (
-                        <option key={output.id} value={output.id}>
-                            {output.name}
-                        </option>
-                    ))}
-                </select>
-            </div>
-            <div className="midi-settings__section" role="status" aria-live="polite">
-                <div className="midi-settings__label">Synth</div>
-                <span className={`midi-settings__connection${synthStatus.connected ? ' is-connected' : ''}`}>
-                    {synthStatus.connected ? 'Connected' : 'Disconnected'}
-                    {synthStatus.synthId !== null && ` — ID ${synthStatus.synthId}`}
-                </span>
-            </div>
-            <button type="button" className="midi-settings__save" onClick={handleSave} disabled={!canSave}>
-                {saveConfirmed ? 'Saved!' : 'Save'}
-            </button>
-            <label className="midi-settings__toggle">
-                <input
-                    type="checkbox"
-                    checked={midiLogging}
-                    onChange={(e) => handleMidiLoggingChange(e.target.checked)}
-                />
-                {' '}Log MIDI traffic
-            </label>
         </div>
     )
 }

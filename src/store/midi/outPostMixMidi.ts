@@ -26,7 +26,7 @@ const outputMappings: CCPotMapping[] = [
     },
 ]
 
-const postMixMappings: CCPotMapping[] = [
+export const postMixMappings: CCPotMapping[] = [
     {
         selector: (s) => s.postMix.lpf,
         mutator: (s, v) => {
