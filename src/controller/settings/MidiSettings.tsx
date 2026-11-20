@@ -260,7 +260,6 @@ export const MidiSettings = () => {
                         <div className="midi-settings__label">Synth</div>
                         <span className={`midi-settings__connection${synthStatus.connected ? ' is-connected' : ''}`}>
                             {synthStatus.connected ? 'Connected' : 'Disconnected'}
-                            {synthStatus.synthId !== null && ` — ID ${synthStatus.synthId}`}
                         </span>
                     </div>
                     <label className="midi-settings__toggle">
